@@ -1,4 +1,4 @@
-#O Compiler
+# O Compiler
 
 ## Donations
 The *donations* section is here
