@@ -1,0 +1,68 @@
+
+<p>O Compiler 1.3.9: <b>EntryLinux</b> added. Returns <i>exit</i> in the scope at <i>return</i>s.</p>
+
+<p>O Compiler 1.3.8: <b>ImportAfterCall</b> added. Used in objects to import an extern defined AfterCall.</p>
+
+<p>O Compiler 1.3.7: <b>AfterCall</b> added. Set a value to be tested with zero at every call and to return if it is not zero.</p>
+
+<p>O Compiler 1.3.4: <b>FunctionX</b> added. It works with ImportX and to be called from C 64-bit code.</p>
+
+<p>O Compiler 1.3.2: Size of an integer constant sign added: <b>:</b>. Returns 4B on 32-bits, 8B on 64-bits.</p>
+
+<p>O Compiler 1.3.1: <b>IncSt</b> command added. Adds 32/64 bits at the argument, depending on the build format.</p>
+
+<p>O Compiler 1.3: Build objects for 64 bit windows applications. New format: ElfObj64Microsoft. New tags: ImportX, SetX.</p>
+
+<p>O Compiler 1.2.82: Log imported functions preference.</p>
+
+<p>O Compiler 1.2.80: Semicolon added for breaking the lines. Previous sings were new line and carriage return plus new line.</p>
+
+<p>O Compiler 1.2.79: CallEx added for prepared calls.</p>
+
+<p>O Compiler 1.2.75: <b>warning on</b> and <b>warning off</b> language commands. This can be used for example to share files between projects.</p>
+
+<p>O Compiler 1.2.74: strings definitions can have multiple rows startings from this version</p>
+
+<p>O Compiler 1.2.68: Not sign (~) at numbers and constants added. Fix at quotation and comma values parser.</p>
+
+<p>O Compiler 1.2.66: Fix at function in code.</p>
+
+<p>O Compiler 1.2.64: Raw strings(not depending on variables) can be used at the code operations starting with this version.</p>
+
+<p>O Compiler 1.2.62: Added prefix at any variable operation, the current data section cursor with the "!" character, and function name placed in code option for debuggers.</p>
+
+<p>O Compiler 1.2.50: Numbers and constants usage at code operations added: arithmetic, bitwise operations, and the rest.</p>
+
+<p>O Compiler 1.2.41: stack variables are now aligned ascendent (like data).</p>
+
+<p>O Compiler 1.2.35: Stack variables added. These can be used at recursive functions or for volatile variable causes.</p>
+
+<p>O Compiler 1.2.22: Update: A variables that points to a function (imported or created) can be called like a function.</p>
+
+<p>O Compiler 1.2.18: Additional symbol preferences options for warnings and for log file. Used to handle code functions at object format.</p>
+
+<p>O Compiler 1.2.17: Additional <b>include</b> option added: The active folder can now be changed relative to the include command. To achieve that there is the "Include active folder" at the preferences.</p>
+
+<p>O Compiler 1.2.16: Flexibility added: at <b>chars</b> (chars name=value); at <b>str</b> (str name="string").</p>
+
+<p>O Compiler 1.2.10:
+ 	New preference option: <b>log file</b>, used when a log with the working path and all the compiled files results needed.<br>
+	New command: <b>Exit</b>, it will perform a linux sys_exit command, see the laguage documentation for details.</p>
+
+
+<p>O Compiler 1.2.8: Improvement added: arguments at function declaration can now be prefixed with unreference safety sign (*).</p>
+
+<p>O Compiler 1.2.1: Functions at object format can now have pointers: Pointer data declaration method now accepts functions (without constants).</p>
+
+<p>O Compiler 1.2, October 19 2012:
+	New format added: <b>ElfObj</b>. Can be used to create object files that can be united with a linker (e.g: gcc from gnu).
+	<br>
+	New declaration sign added: <b>%</b>. Used at elfobj format, has no effect at executables. Relocations are added automatically, but % sign can be used instead of = sign to add a data relocation, if required.</p>
+
+<p>O Compiler 1.1, October 13 2012:
+	O Compiler can now creates elf files for linux systems. Use the "Format elf" command at the start of the program.
+	<br>
+	All functions can now be called in combinations like AddCall, OrCall, AndCall, etc.</p>
+
+<p>O Compiler 1.0, October 2 2012: Release date.</p>
+

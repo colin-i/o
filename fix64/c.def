@@ -1,0 +1,16 @@
+LIBRARY msvcrt.dll
+EXPORTS
+realloc
+free
+sprintf
+memcpy
+memset
+exit
+_open
+_close
+_read
+_write
+_chdir
+_getcwd
+_lseek
+strcat
