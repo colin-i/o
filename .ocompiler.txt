@@ -3,7 +3,7 @@ This file is parsed by the program to set the preferences. The first char right 
 
 Display unreferenced variables/functions warning
 To set to not display the unreferenced variables/functions warning set the following value.
-0 is Hide; 1 is Show;
+0 is Hide; 1 is Show
 warnings=1
 
 Log file
@@ -21,7 +21,7 @@ includedir=1
 
 Take the following action at FUNCTION entries at the object format that are not refered in the object and when the reference warning is enabled.
 [if warnings is 1]
-0 is Ignore them; 1 is Print/Show warning; 2[if logfile is 1] is Write them to the log file if the log option is enabled
+0 is Ignore them; 1 is Print/Show warning; 2 [if logfile is 1] is Write them to the file, else take 1
 codeFnObj=2
 
 Write the function names above the function in code section, useful when debugging asm instructions.

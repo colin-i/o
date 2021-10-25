@@ -23,7 +23,7 @@ Function warnings(data searchinfunctions,data includes,data nameoffset)
 		EndIf
 	EndIf
 	If var!=null
-		Chars unrefformat="Unreferenced variable/function: %s. Scope Termination File: %s. To disable this warning see 'preferences.txt'"
+		Chars unrefformat="Unreferenced variable/function: %s. Scope Termination File: %s. To disable this warning see '.ocompiler.txt'"
 		Str ptrunrefformat^unrefformat
 
 		Data printbuffer#1
@@ -81,7 +81,7 @@ function setpreferences(str scrpath)
 	set folders# null
 	sub folders scrpath
 
-	Str preferences="preferences.txt"
+	Str preferences=".ocompiler.txt"
 	data prefsz#1
 	setcall prefsz strlen(preferences)
 	inc prefsz
@@ -116,13 +116,15 @@ function setpreferences(str scrpath)
 	
 	data true=TRUE
 	data false=FALSE
-	data defaultcodeFnObj=showcodeFnObj
+	data defaultcodeFnObj=logcodeFnObj
 
 	set ptrwarningsbool# true
 	set ptrlogbool# false
-	set ptrincludedir# false
+	set ptrincludedir# true
 	set ptrcodeFnObj# defaultcodeFnObj
-	#fn_text_info 0
+	sd text_fn_info
+	setcall text_fn_info fn_text_info()
+	set text_fn_info# true
 	set ptr_log_import_functions# true
 	
 	Str preferencescontent#1
@@ -133,8 +135,12 @@ function setpreferences(str scrpath)
 	SetCall err file_get_content_ofs(ptrmem,ptrpreferencessize,ptrpreferencescontent,null)
 	call free(ptrmem)
 	If err!=noerr
-		Call safeMessage(err)
-	Else
+		setcall err prefextra(err,preferences,ptrpreferencessize,ptrpreferencescontent)
+		If err!=noerr
+			Call safeMessage(err)
+		endif
+	EndIf
+	If err==noerr
 		Data freepreferences#1
 		Set freepreferences preferencescontent
 
@@ -146,14 +152,11 @@ function setpreferences(str scrpath)
 		
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrcodeFnObj)
 
-		sd text_fn_info
-		setcall text_fn_info fn_text_info()
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,text_fn_info)
 
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptr_log_import_functions)
 
 		Call free(freepreferences)
-	endelse
+	endif
 EndFunction
 #void
-

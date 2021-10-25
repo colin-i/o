@@ -16,6 +16,6 @@ If fileformat==pe_exec
 	EndIf
 EndIf
 
-#verify unreferenced
+#verify preferences
 Call warnings(true,includes,nameofstoffile)
 

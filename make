@@ -3,4 +3,4 @@
 
 mkdir ./build
 mv ./src/linux/o ./build/
-cp preferences.txt ./build/
+cp .ocompiler.txt ./build/

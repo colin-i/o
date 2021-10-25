@@ -2,4 +2,4 @@
 cmd.exe /c "o.exe \"src/windows/obj32.s\""
 mkdir ./buildg
 ld -mi386pe -e _start "./src/windows/obj32.o" -o "./buildg/o.exe" -luser32 -lkernel32 -lcomdlg32 -lmsvcrt
-cp preferences.txt ./buildg/
+cp .ocompiler.txt ./buildg/

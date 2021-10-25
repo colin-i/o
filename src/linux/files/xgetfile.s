@@ -47,7 +47,7 @@ EndIf
 #if the file was executed from the PATH, then the root folder it is searched
 str scriptfullname#1
 set scriptfullname null
-chars slash="/"
+chars slash=asciislash
 data accessresult#1
 data slashtest#1
 

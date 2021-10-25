@@ -228,7 +228,7 @@ EndFunction
 #true if match or false
 Function filepathdelims(chars chr)
 	Chars bslash="\\"
-	Chars slash="/"
+	Chars slash=asciislash
 	Data true=TRUE
 	Data false=FALSE
 	If chr==bslash

@@ -105,10 +105,7 @@ Set allocerrormsg null
 #implibsstarted for closing at the end and for import parts
 Set implibsstarted false
 
-#fn info text
-sd text_fn_info
-setcall text_fn_info fn_text_info()
-set text_fn_info# 0
+#fn info text is at preferences
 
 #pref
 sd prefix
