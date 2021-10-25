@@ -1,8 +1,9 @@
 
 #err
-function prefextra(sd err,ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
+function prefextra(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
 	ss homestr="HOME"
 	ss envhome
+	sd err
 	setcall envhome getenv(homestr)
 	if envhome!=(NULL)
 		sd s1;sd s2;sd s3=2

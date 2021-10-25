@@ -1,4 +1,4 @@
 
-function prefextra(sd err,ss *file,sd *ptrpreferencessize,sd *ptrpreferencescontent)
-	return err
+function prefextra(ss *file,sd *ptrpreferencessize,sd *ptrpreferencescontent)
+	return (noerror)
 endfunction

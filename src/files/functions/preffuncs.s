@@ -135,9 +135,12 @@ function setpreferences(str scrpath)
 	SetCall err file_get_content_ofs(ptrmem,ptrpreferencessize,ptrpreferencescontent,null)
 	call free(ptrmem)
 	If err!=noerr
-		setcall err prefextra(err,preferences,ptrpreferencessize,ptrpreferencescontent)
+		Call safeMessage(err)
 		If err!=noerr
-			Call safeMessage(err)
+			setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent)
+			If err!=noerr
+				Call safeMessage(err)
+			endif
 		endif
 	EndIf
 	If err==noerr
