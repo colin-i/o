@@ -1,30 +1,24 @@
 
 
+include "../../files/_/cimports.h"
 
-Import "_realloc" realloc
-Import "_free" free
-Import "_sprintf" sprintf
-Import "_memcpy" memtomem
-Import "_memset" memset
-Import "_exit" exit
+Import "_open" open
+Import "_close" close
+Import "_read" read
+Import "_write" write
+Import "_chdir" chdir
+Import "_getcwd" getcwd
 
-Import "__open" open
-Import "__close" close
-Import "__read" read
-Import "__write" write
-Import "__chdir" chdir
-Import "__getcwd" getcwd
-
-Import "__lseek" lseek
-Import "_strcat" strcat
+Import "_lseek" lseek
+Import "strcat" strcat
 
 #kernel32
-Import "_GetCommandLineA@0" GetCommandName
-Import "_GetTickCount@0" GetTickCount
-Import "_GetModuleFileNameA@12" GetModuleFileName
+Import "GetCommandLineA" GetCommandName
+Import "GetTickCount" GetTickCount
+Import "GetModuleFileNameA" GetModuleFileName
 
 #user32
-Import "_MessageBoxA@16" MessageBox
+Import "MessageBoxA" MessageBox
 
 #comdlg32
-Import "_GetOpenFileNameA@4" GetOpenFileName
+Import "GetOpenFileNameA" GetOpenFileName
