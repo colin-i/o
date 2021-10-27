@@ -1,6 +1,7 @@
 # O Compiler
 
 ## Install
+On Windows here https://github.com/colin-i/o/releases .
 On Ubuntu, but other distros may have the same tree and dependencies.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
