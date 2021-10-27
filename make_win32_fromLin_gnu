@@ -1,19 +1,19 @@
 
 #this is the new make for windows
 
-i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix64/user.def -l ./fix64/libuser.a
-i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix64/kernel.def -l ./fix64/libkernel.a
-i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix64/comdlg.def -l ./fix64/libcomdlg.a
-i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix64/c.def -l ./fix64/libc.a
+i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix/user.def -l ./fix/libuser.a
+i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix/kernel.def -l ./fix/libkernel.a
+i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix/comdlg.def -l ./fix/libcomdlg.a
+i686-w64-mingw32-dlltool --no-leading-underscore -d ./fix/c.def -l ./fix/libc.a
 
 o ./src/windows/obj32.s
-i686-w64-mingw32-ld -s -nostdlib -entry _start ./src/windows/obj32.o -L./fix64 -luser -l kernel -lcomdlg -lc -o ./o.exe
+i686-w64-mingw32-ld -s -nostdlib -entry _start ./src/windows/obj32.o -L./fix -luser -l kernel -lcomdlg -lc -o ./o.exe
 
 rm ./src/windows/obj32.o
-rm ./fix64/libuser.a
-rm ./fix64/libkernel.a
-rm ./fix64/libcomdlg.a
-rm ./fix64/libc.a
+rm ./fix/libuser.a
+rm ./fix/libkernel.a
+rm ./fix/libcomdlg.a
+rm ./fix/libc.a
 
 mkdir ocompiler
 mv o.exe ocompiler
