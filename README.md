@@ -10,7 +10,7 @@ Or the *manual installation step* from this link *https://gist.github.com/colin-
 Update and install:
 ```sh
 sudo apt-get update
-sudo apt-get install o
+sudo apt-get install ocompiler
 ```
 
 ## Donations
