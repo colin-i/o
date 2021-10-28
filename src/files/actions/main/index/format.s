@@ -22,8 +22,13 @@ If formatresponse==false
 		
 		SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64MICROSOFT",p_is_for_64_resp)
 		If elfobjformresp==true
+			sd neg_64;setcall neg_64 p_neg_is_for_64()
+			if neg_64#==(TRUE)
+				if p_is_for_64_resp#==(TRUE)
+					set p_is_for_64_resp# (FALSE)
+				endif
+			endif
 			Set object true
-			
 			SetCall errormsg elfaddstrsym(ptrnull,null,null,null,null,null,ptrtable)
 			If errormsg==noerr
 				Chars elfdata=".data"

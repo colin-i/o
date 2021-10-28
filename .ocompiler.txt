@@ -32,3 +32,7 @@ Log import functions
 [if logfile is 1]
 0 is No; 1 is Yes
 log_import_functions=1
+
+Ignore 64-bits tags if detected
+0 is No; 1 is Yes
+neg_64=0

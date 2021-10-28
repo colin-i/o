@@ -126,6 +126,9 @@ function setpreferences(str scrpath)
 	setcall text_fn_info fn_text_info()
 	set text_fn_info# false
 	set ptr_log_import_functions# true
+	sd neg_64
+	setcall neg_64 p_neg_is_for_64()
+	set neg_64# false
 	
 	Str preferencescontent#1
 	Data ptrpreferencescontent^preferencescontent
@@ -148,16 +151,12 @@ function setpreferences(str scrpath)
 		Set freepreferences preferencescontent
 
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrwarningsbool)
-		
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrlogbool)
-		
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrincludedir)
-		
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrcodeFnObj)
-
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,text_fn_info)
-
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptr_log_import_functions)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
 
 		Call free(freepreferences)
 	endif

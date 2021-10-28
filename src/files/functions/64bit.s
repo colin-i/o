@@ -9,6 +9,11 @@ endfunction
 function is_for_64()
 	sd p;setcall p p_is_for_64();return p#
 endfunction
+#p_bits
+function p_neg_is_for_64()
+	data bool#1
+	return #bool
+endfunction
 
 #get
 function is_for_64_is_impX_or_fnX_p_get();data b#1;return #b;endfunction
