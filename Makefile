@@ -8,7 +8,7 @@ FULLOBJO = $(FULLOBJ).o
 OBT = $(OB).txt
 
 %.o: ${FULLOBJS}
-	-if [ -s $(OBT) ];then base64 -d $(OBT) > $@;else o $<;fi
+	if [ -s $(OBT) ];then base64 -d $(OBT) > $@;else o $<;fi
 
 ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc
 
