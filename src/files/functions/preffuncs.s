@@ -124,7 +124,7 @@ function setpreferences(str scrpath)
 	set ptrcodeFnObj# defaultcodeFnObj
 	sd text_fn_info
 	setcall text_fn_info fn_text_info()
-	set text_fn_info# true
+	set text_fn_info# false
 	set ptr_log_import_functions# true
 	
 	Str preferencescontent#1
