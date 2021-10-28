@@ -75,13 +75,10 @@ EndFunction
 
 Function msgerrexit(data msg)
 	Call Message(msg)
-	Call freeclose()
-	Data false=FALSE
-	Call exit(false)
+	call errexit()
 EndFunction
 
 Function errexit()
 	Call freeclose()
-	Data false=FALSE
-	Call exit(false)
+	Call exit(-1)
 EndFunction

@@ -12,4 +12,4 @@ Include "../files/actions.s"
 
 Include "./files/winend.s"
 
-Call exit(true)
+Call exit(zero)

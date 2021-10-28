@@ -7,4 +7,4 @@ Include "./files/xgetfile.s"
 
 Include "../files/actions.s"
 
-Exit one
+Exit zero
