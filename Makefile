@@ -32,4 +32,7 @@ distclean: clean
 uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
 
-.PHONY: all install clean distclean uninstall
+test:
+	echo "Nothing"
+
+.PHONY: all install clean distclean uninstall test
