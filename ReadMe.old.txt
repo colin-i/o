@@ -35,10 +35,6 @@ make.bat
 
 - Windows bat file to compile the source for executable; the output file will be in the './build/' folder
 
-make_lin_gnu
-
-- Linux shell file to compile the source and to link it with gcc (mingw binutils tools); the output file will be in the './buildg/' folder
-
 make_win32_fromLin_gnu
 
 - Linux shell file to compile the source and to link it with mingw-w64-i686 for linux; the output file will be 'ocompiler.zip'

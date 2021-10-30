@@ -190,8 +190,10 @@ Function addrel(data offset,chars type,data symbolindex,data struct)
 	Data elf_rel_offset#1
 	#Relocation type and symbol index
 	#Direct 32 bit
+	#R_X86_64_32=10
 	Const R_386_32=1
 	#PC relative 32 bit
+	#=R_X86_64_PC32
 	Const R_386_PC32=2
 	
 	Chars elf_rel_info_type#1

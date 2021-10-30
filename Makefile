@@ -11,6 +11,7 @@ OBT = $(OB).txt
 	if [ -s $(OBT) ];then base64 -d $(OBT) > $@;else o $<;fi
 
 ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc
+#gcc -Wl,-melf_i386 -nostdlib "./src/linux/obj.o" -o "./buildg/o" -lc
 
 o: $(OBJ)
 	if [ -f ${OBJ} ];then $(ATLDCOM) $^;else $(ATLDCOM) ${FULLOBJO};fi
