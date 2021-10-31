@@ -27,13 +27,22 @@ If object==false
 	#######
 	Set elf32_ehd_e_phoff elf_fileheaders_size
 	#######
-	Set elf32_ehd_e_shoff null
-	#######
 	Data elf_sections_start_count=2
 	data ptrelf_sections_start_count^elf_sections_start_count
 	call memtomem(ptrelf32_ehd_e_phnum,ptrelf_sections_start_count,wordsize)
 	#######
-	call memtomem(ptrelf32_ehd_e_shnum,ptrnull,wordsize)
+	if implibsstarted==false
+		call memtomem(ptrelf32_ehd_e_shnum,#one,wordsize)
+	else
+		call memtomem(ptrelf32_ehd_e_shnum,#three,wordsize)
+		#add here, next will be calculations and these will be above
+		chars dynstr_c=".dynstr";data dynstr#1
+		setcall errormsg addtonames(#dynstr_c,#dynstr)
+		If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
+		chars dynsec_c=".dynamic";data dynsec#1
+		setcall errormsg addtonames(#dynsec_c,#dynsec)
+		If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
+	endelse
 	#######
 	call memtomem(ptrelf32_ehd_e_shstrndx,ptrnull,wordsize)
 	#######
@@ -120,9 +129,8 @@ Else
 
 	Chars elfstrtab=".strtab"
 	Str ptrelfstrtab^elfstrtab
-	Data SHT_STRTAB=3
 	Add elf_sec_fileoff extraReg
-	SetCall errormsg elfaddstrsec(ptrelfstrtab,SHT_STRTAB,null,elf_sec_fileoff,ptrnames,null,null,bytesize,null)
+	SetCall errormsg elfaddstrsec(ptrelfstrtab,(SHT_STRTAB),null,elf_sec_fileoff,ptrnames,null,null,bytesize,null)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
@@ -237,6 +245,11 @@ If implibsstarted==true
 	###strsz
 	Set elf32_dyn_d_val_strsz namesReg
 
+	#stroff
+	data elf_str_offset#1
+	set elf_str_offset elf32_phdr_p_offset_lib
+	add elf_str_offset elf32_phdr_p_filesz_lib
+
 	#
 	Add elf32_phdr_p_filesz_lib namesReg
 	#
@@ -307,17 +320,12 @@ If implibsstarted==true
 	#
 
 	Set elf32_phdr_p_memsz_lib elf32_phdr_p_filesz_lib
-
-
-
-	
-	#sub elf32_phdr_p_offset_lib elf32_phdr_p_filesz_interp
-	#sub elf32_phdr_p_offset_lib elf32_phdr_p_filesz_dyn
-
-	#add elf32_phdr_p_filesz_lib elf32_phdr_p_filesz_interp
-	#add elf32_phdr_p_filesz_lib elf32_phdr_p_filesz_dyn
-
-	#Set elf32_phdr_p_paddr_lib elf32_phdr_p_vaddr_lib
-	#Set elf32_phdr_p_memsz_lib elf32_phdr_p_filesz_lib
 EndIf
 
+if object==false
+	#######some section/s for readelf
+	sd sections_start=elf32_ehd_e_phentsize
+	mult sections_start elf32_ehd_e_phnum
+	add sections_start elf_fileheaders_size
+	call memtomem(ptrelf32_ehd_e_shoff,#sections_start,wordsize)
+endif

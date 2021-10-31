@@ -53,6 +53,7 @@ Data dwordsize=dwsz
 Data zero=0
 Data one=1
 data two=2
+data three=3
 Data negative=-1
 Data i#1
 Chars dot="."

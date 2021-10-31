@@ -18,7 +18,7 @@ Function addtonames(data str,data regoff)
 EndFunction
 
 #err
-Function elfaddsec(data stringname,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
+function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd link,sd info,sd align,sd entsize,sd addr,sd ptrbag)
 	#Section header
 	#Section name (string tbl index)
 	Data sh_name#1
@@ -27,7 +27,7 @@ Function elfaddsec(data stringname,data type,data flags,data fileoffset,data sec
 	#Section flags
 	Data sh_flags#1
 	#Section virtual addr at execution
-	Data *sh_addr=0
+	Data sh_addr#1
 	#Section file offset
 	Data sh_offset#1
 	#Section size in bytes
@@ -51,6 +51,7 @@ Function elfaddsec(data stringname,data type,data flags,data fileoffset,data sec
 	Const SHT_PROGBITS=1
 	Const SHT_NOBITS=8
 		
+	const SHF_WRITE=1
 		#Occupies memory during execution,1 << 1
 	Const SHF_ALLOC=2*1
 		#Executable,1 << 2
@@ -59,46 +60,54 @@ Function elfaddsec(data stringname,data type,data flags,data fileoffset,data sec
 	Const SHF_INFO_LINK=2*6
 
 	Data err#1
-	Data ptrmiscbag%ptrmiscbag
 
-	Data SHT_NULL=SHT_NULL
 	Data SHT_PROGBITS=SHT_PROGBITS
 	Data SHT_NOBITS=SHT_NOBITS
 	Data zero=0
-
-	If type==SHT_NULL
-		Call memset(elf_section,zero,elf_section_size)
-	Else
-		Set sh_name stringname
-		
-		Data ptrsh_size^sh_size
-		Call getcontReg(seccont,ptrsh_size)
-		If type==SHT_PROGBITS
-			If sh_size==zero
-				Set type SHT_NOBITS
-			EndIf
+	
+	set sh_size bsize
+	#
+	Set sh_name stringname
+	#
+	If type==SHT_PROGBITS
+		If sh_size==zero
+			Set type SHT_NOBITS
 		EndIf
-		Set sh_type type
-
-		Set sh_flags flags
-		Set sh_offset fileoffset
-		#   sh_size
-		Set sh_link link
-		Set sh_info info
-		Set sh_addralign align
-		Set sh_entsize entsize
+	EndIf
+	Set sh_type type
+	#
+	Set sh_flags flags
+	set sh_addr addr
+	Set sh_offset fileoffset
+	#sh_size
+	Set sh_link link
+	Set sh_info info
+	Set sh_addralign align
+	Set sh_entsize entsize
+	
+	SetCall err addtosec(elf_section,elf_section_size,ptrbag)
+	Return err
+endfunction
+#err
+Function elfaddsec(data stringname,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
+	sd bsize
+	If type==(SHT_NULL)
+		set bsize 0
+	Else
+		Call getcontReg(seccont,#bsize)
 	EndElse
-	SetCall err addtosec(elf_section,elf_section_size,ptrmiscbag)
+	Data ptrmiscbag%ptrmiscbag
+	sd err
+	SetCall err elfaddsec_base(stringname,type,flags,fileoffset,bsize,link,info,align,entsize,(NULL),ptrmiscbag)
 	Return err
 EndFunction
-
 #err
-Function elfaddstrsec(data stringoffname,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
+Function elfaddstrsec(data stringofname,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
 	Data regnr#1
 	Data ptrregnr^regnr
 	Data err#1
 	Data noerr=noerror
-	SetCall err addtonames(stringoffname,ptrregnr)
+	SetCall err addtonames(stringofname,ptrregnr)
 	If err==noerr
 		SetCall err elfaddsec(regnr,type,flags,fileoffset,seccont,link,info,align,entsize)
 	EndIf
