@@ -33,19 +33,24 @@ If object==false
 	#######
 	if implibsstarted==false
 		call memtomem(ptrelf32_ehd_e_shnum,#one,wordsize)
+		#######
+		call memtomem(ptrelf32_ehd_e_shstrndx,ptrnull,wordsize)
 	else
 		call memtomem(ptrelf32_ehd_e_shnum,#three,wordsize)
+		#######
 		#add here, next will be calculations and these will be above
+		data secstrs_off_atnames#1
+		setcall errormsg addtonames(ptrnull,#secstrs_off_atnames)
 		chars dynstr_c=".dynstr";data dynstr#1
+		#shstrtab
 		setcall errormsg addtonames(#dynstr_c,#dynstr)
 		If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
 		chars dynsec_c=".dynamic";data dynsec#1
 		setcall errormsg addtonames(#dynsec_c,#dynsec)
 		If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
+		#
+		call memtomem(ptrelf32_ehd_e_shstrndx,#one,wordsize)
 	endelse
-	#######
-	call memtomem(ptrelf32_ehd_e_shstrndx,ptrnull,wordsize)
-	#######
 
 	#commons#
 	Set virtuallocalsoffset elf32_phdr_p_vaddr_code
@@ -78,7 +83,7 @@ Else
 	Data SHT_PROGBITS=SHT_PROGBITS
 	Data elf_sec_fileoff#1
 
-	SetCall errormsg elfaddsec(null,null,null,null,null,null,null,null,null)
+	SetCall errormsg elfaddsecn()
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf

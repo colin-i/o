@@ -45,19 +45,19 @@ EndIf
 If fileformat==elf_unix
 	If object==false
 		if implibsstarted==false
-			SetCall errormsg elfaddsec(null,null,null,null,null,null,null,null,null)
+			SetCall errormsg elfaddsecn()
 			If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
 			SetCall writeres writefile(fileout,miscbag,miscbagReg)
 			If writeres==writefalse;Call errexit();EndIf
 			Add sizefileheaders miscbagReg
 		else
-			SetCall errormsg elfaddsec_base(null,0,0,null,null,0,0,0,0,null,ptrextra)
+			SetCall errormsg elfaddsec_base(secstrs_off_atnames,0,0,null,null,0,0,0,0,null,ptrextra)
 			If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
 			SetCall errormsg elfaddsec_base(dynstr,(SHT_STRTAB),(SHF_ALLOC),elf_str_offset,elf32_dyn_d_val_strsz,0,0,bytesize,0,elf32_dyn_d_ptr_strtab,ptrextra)
 			#                                                   dynstr has alloc, the other str,no
 			If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
 			const SHT_DYNAMIC=6
-			SetCall errormsg elfaddsec_base(dynsec,(SHT_DYNAMIC),(SHF_WRITE|SHF_ALLOC),elf32_phdr_p_offset_dyn,elf32_phdr_p_filesz_dyn,1,0,elf32_phdr_p_align_dyn,dwordsize,elf32_phdr_p_vaddr_dyn,ptrextra)
+			SetCall errormsg elfaddsec_base(dynsec,(SHT_DYNAMIC),(SHF_WRITE|SHF_ALLOC),elf32_phdr_p_offset_dyn,elf32_phdr_p_filesz_dyn,1,0,elf32_phdr_p_align_dyn,qwordsize,elf32_phdr_p_vaddr_dyn,ptrextra)
 			If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
 			#
 			SetCall writeres writefile(fileout,extra,extraReg)

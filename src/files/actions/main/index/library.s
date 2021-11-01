@@ -29,11 +29,21 @@ EndElse
 If errormsg==noerr
 	SetCall errormsg quotinmem(pcontent,pcomsize,ptrlibquotsz,ptrlibescapes)
 	If errormsg==noerr
+		#if implibsstarted==false
+		#	If fileformat==elf_unix
+		#		#the first section to be null
+		#		SetCall errormsg elfaddstrsec(ptrnull,null,0,0,null,null,0,0,0,0)
+		#		#reset miscbag used at resolve maybe
+		#		set miscbagReg 0
+		#	endif
+		#endif
+		#If errormsg==noerr
 		SetCall errormsg addtosecstresc(pcontent,pcomsize,libquotsz,libescapes,ptrnames,true)
 		If errormsg==noerr
 			Call stepcursors(pcontent,pcomsize)
 			Set implibsstarted true
 		EndIf
+		#endif
 	EndIf
 EndIf
 

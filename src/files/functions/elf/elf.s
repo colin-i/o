@@ -89,29 +89,31 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Return err
 endfunction
 #err
-Function elfaddsec(data stringname,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
-	sd bsize
-	If type==(SHT_NULL)
-		set bsize 0
-	Else
-		Call getcontReg(seccont,#bsize)
-	EndElse
+function elfaddsecn()
 	Data ptrmiscbag%ptrmiscbag
 	sd err
-	SetCall err elfaddsec_base(stringname,type,flags,fileoffset,bsize,link,info,align,entsize,(NULL),ptrmiscbag)
+	SetCall err elfaddsec_base((NULL),(SHT_NULL),0,(NULL),(NULL),0,0,0,0,(NULL),ptrmiscbag)
+	Return err
+endfunction
+#err
+Function elfaddsec(data stringoff,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
+	sd bsize
+	Call getcontReg(seccont,#bsize)
+	Data ptrmiscbag%ptrmiscbag
+	sd err
+	SetCall err elfaddsec_base(stringoff,type,flags,fileoffset,bsize,link,info,align,entsize,(NULL),ptrmiscbag)
 	Return err
 EndFunction
 #err
 Function elfaddstrsec(data stringofname,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
-	Data regnr#1
-	Data ptrregnr^regnr
-	Data err#1
-	Data noerr=noerror
+	sd err
+	sd regnr#1
+	sd ptrregnr^regnr
 	SetCall err addtonames(stringofname,ptrregnr)
-	If err==noerr
-		SetCall err elfaddsec(regnr,type,flags,fileoffset,seccont,link,info,align,entsize)
-	EndIf
-	Return err
+	If err==(noerror)
+		setcall err elfaddsec(regnr,type,flags,fileoffset,seccont,link,info,align,entsize)
+	endif
+	return err
 EndFunction
 
 #err
