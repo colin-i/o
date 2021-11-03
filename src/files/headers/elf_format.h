@@ -11,11 +11,15 @@ const ELFMAG1=asciiE
 const ELFMAG2=asciiL
 const ELFMAG3=asciiF
 
+const ELFCLASS32=1
+const ELFCLASS64=2
+const EM_386=3
+const EM_X86_64=62
+const ET_REL=1
+
 chars elf32_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
 
 #32-bit objects
-const ELFCLASS32=1
-#const ELFCLASS64=2
 chars *elf32_ehd_e_ident_class={ELFCLASS32}
 
 #2's complement, little endian
@@ -41,8 +45,6 @@ chars *elf32_ehd_e_ident_pad={0,0,0,0,0,0,0}
 #Object file type
 Chars elf32_ehd_e_type#2
 #Architecture,Intel 80386
-const EM_386=3
-#const EM_X86_64=62
 Chars *elf32_ehd_e_machine={EM_386,0}
 
 data *elf32_ehd_e_version=EV_CURRENT
@@ -54,8 +56,7 @@ data elf32_ehd_e_phoff#1
 data elf32_ehd_e_shoff#1
 data *elf32_ehd_e_flags=0
 #Size of this header
-Const elfhdsize=52
-chars *elf32_ehd_e_ehsize={elfhdsize,0}
+chars *elf32_ehd_e_ehsize={52,0}
 #Program header table entry size
 Const elf32_ehd_e_phentsize=32
 chars *elf32_ehd_e_phentsize={elf32_ehd_e_phentsize,0}
@@ -81,6 +82,33 @@ data ptrelf32_ehd_e_shoff^elf32_ehd_e_shoff
 data ptrelf32_ehd_e_phnum^elf32_ehd_e_phnum
 data ptrelf32_ehd_e_shnum^elf32_ehd_e_shnum
 data ptrelf32_ehd_e_shstrndx^elf32_ehd_e_shstrndx
+
+
+#64 bit objects
+Const elf64_fileheaders_start=!
+chars elf64_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
+chars *elf64_ehd_e_ident_class={ELFCLASS64}
+chars *elf64_ehd_e_ident_data={ELFDATA2LSB}
+chars *elf64_ehd_e_ident_version={EV_CURRENT}
+chars *elf64_ehd_e_ident_osabi={ELFOSABI_NONE}
+chars *elf64_ehd_e_ident_abiversion={EI_ABIVERSION}
+chars *elf64_ehd_e_ident_pad={0,0,0,0,0,0,0}
+Chars *elf64_ehd_e_type={ET_REL,0}
+Chars *elf64_ehd_e_machine={EM_X86_64,0}
+data *elf64_ehd_e_version=EV_CURRENT
+data *elf64_ehd_e_entry={0,0}
+data *elf64_ehd_e_phoff={0,0}
+data elf64_ehd_e_shoff#1;data *=0
+data *elf64_ehd_e_flags=0
+chars *elf64_ehd_e_ehsize={64,0}
+chars *elf64_ehd_e_phentsize={0,0}
+chars *elf64_ehd_e_phnum={0,0}
+chars *elf64_ehd_e_shentsize={64,0}
+chars elf64_ehd_e_shnum#2
+chars elf64_ehd_e_shstrndx#2
+chars *pad={0,0}
+Const elf64_fileheaders_size=!-elf64_fileheaders_start
+
 
 #program headers
 

@@ -54,10 +54,12 @@ If object==false
 
 	#commons#
 	Set virtuallocalsoffset elf32_phdr_p_vaddr_code
+	Set fileheaders elf_fileheaders
+	Set sizefileheaders elf_fileheaders_size
 	#commons#
 Else
 	#######
-	Data ET_REL=1
+	Data ET_REL=ET_REL
 	Data ptrET_REL^ET_REL
 	Call memtomem(ptrelf32_ehd_e_type,ptrET_REL,wordsize)
 	#######
@@ -65,20 +67,30 @@ Else
 	#######
 	Set elf32_ehd_e_phoff null
 	#######
-	Set elf32_ehd_e_shoff elf_fileheaders_size
-	#######
 	call memtomem(ptrelf32_ehd_e_phnum,ptrnull,wordsize)
 	#######
 	Const elf_sec_nr=7
 	Const elf_sec_strtab_nr=elf_sec_nr-1
 	Data elf_sec_nr=elf_sec_nr
 	data ptrelf_sec_nr^elf_sec_nr
-	call memtomem(ptrelf32_ehd_e_shnum,ptrelf_sec_nr,wordsize)
 	#######
 	Data elf_sec_strtab_nr=elf_sec_strtab_nr
 	data ptrelf_sec_strtab_nr^elf_sec_strtab_nr
-	call memtomem(ptrelf32_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
 	#######
+
+	if p_is_for_64_resp#==(TRUE)
+		Set elf64_ehd_e_shoff (elf64_fileheaders_size)
+		call memtomem(#elf64_ehd_e_shnum,ptrelf_sec_nr,wordsize)
+		call memtomem(#elf64_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
+		Set fileheaders #elf64_ehd_e_ident_sign
+		Set sizefileheaders (elf64_fileheaders_size)
+	else
+		Set elf32_ehd_e_shoff elf_fileheaders_size
+		call memtomem(ptrelf32_ehd_e_shnum,ptrelf_sec_nr,wordsize)
+		call memtomem(ptrelf32_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
+		Set fileheaders elf_fileheaders
+		Set sizefileheaders elf_fileheaders_size
+	endelse
 
 	Data SHT_PROGBITS=SHT_PROGBITS
 	Data elf_sec_fileoff#1
@@ -143,10 +155,6 @@ Else
 	Set startofdata elf_startofdata
 EndElse
 
-#commons#
-Set fileheaders elf_fileheaders
-Set sizefileheaders elf_fileheaders_size
-#commons#
 
 #imports
 If implibsstarted==true

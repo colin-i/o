@@ -19,6 +19,7 @@ EndFunction
 
 #err
 function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd link,sd info,sd align,sd entsize,sd addr,sd ptrbag)
+	Const elf_section=!
 	#Section header
 	#Section name (string tbl index)
 	Data sh_name#1
@@ -40,12 +41,20 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Data sh_addralign#1
 	#Entry size if section holds table
 	Data sh_entsize#1
-
-	Const elf_section^sh_name
-	Const lastsectionh^sh_entsize
-	Const elf_section_size=lastsectionh+dwsz-elf_section
-	Data elf_section%elf_section
-	Data elf_section_size=elf_section_size
+	Const elf_section_size=!-elf_section
+	
+	Const elf64_section=!
+	Data sh64_name#1
+	Data sh64_type#1
+	Data sh64_flags#1;data *=0
+	Data sh64_addr#1;data *=0
+	Data sh64_offset#1;data *=0
+	Data sh64_size#1;data *=0
+	Data sh64_link#1
+	Data sh64_info#1
+	Data sh64_addralign#1;data *=0
+	Data sh64_entsize#1;data *=0
+	Const elf64_section_size=!-elf64_section
 
 	Const SHT_NULL=0
 	Const SHT_PROGBITS=1
@@ -58,34 +67,28 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Const SHF_EXECINSTR=2*2
 		#`sh_info' contains SHT index,1 << 6
 	Const SHF_INFO_LINK=2*6
-
-	Data err#1
-
+	
 	Data SHT_PROGBITS=SHT_PROGBITS
 	Data SHT_NOBITS=SHT_NOBITS
 	Data zero=0
-	
-	set sh_size bsize
-	#
-	Set sh_name stringname
-	#
 	If type==SHT_PROGBITS
-		If sh_size==zero
+		If bsize==zero
 			Set type SHT_NOBITS
 		EndIf
 	EndIf
-	Set sh_type type
-	#
-	Set sh_flags flags
-	set sh_addr addr
-	Set sh_offset fileoffset
-	#sh_size
-	Set sh_link link
-	Set sh_info info
-	Set sh_addralign align
-	Set sh_entsize entsize
 	
-	SetCall err addtosec(elf_section,elf_section_size,ptrbag)
+	Data err#1
+	#is false at inits, no worry about only at object
+	sd e64;setcall e64 is_for_64()
+	if e64==(TRUE)
+		Set sh64_name stringname;Set sh64_type type;Set sh64_flags flags;set sh64_addr addr;Set sh64_offset fileoffset
+		set sh64_size bsize;Set sh64_link link;Set sh64_info info;Set sh64_addralign align;Set sh64_entsize entsize
+		setcall err addtosec(#sh64_name,(elf64_section_size),ptrbag)
+	else
+		Set sh_name stringname;Set sh_type type;Set sh_flags flags;set sh_addr addr;Set sh_offset fileoffset
+		set sh_size bsize;Set sh_link link;Set sh_info info;Set sh_addralign align;Set sh_entsize entsize
+		SetCall err addtosec(#sh_name,(elf_section_size),ptrbag)
+	endelse
 	Return err
 endfunction
 #err
