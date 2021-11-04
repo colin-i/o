@@ -1,7 +1,7 @@
 
 
 #sectionalignment
-Const elf_startofdata=0x200
+Const elf_startofdata=0x400
 Data elf_startofdata=elf_startofdata
 Const elf_imagebase=0x8048000
 
@@ -270,3 +270,6 @@ Data elf_rel_entries_size#1
 
 
 const SHT_STRTAB=3
+
+Const elf64_dyn_d_val_syment=0x18
+Const elf64_dyn_d_val_relent=0x10

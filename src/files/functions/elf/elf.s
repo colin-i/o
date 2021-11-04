@@ -121,45 +121,63 @@ EndFunction
 
 #err
 Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,data index,data struct)
-	#Symbol table entry
-	#Symbol name (string tbl index)
-	Data elf32_sym_st_name#1
-	#Symbol value
-	Data elf32_sym_st_value#1
-	#Symbol size
-	Data elf32_sym_st_size#1
-	#Symbol type and binding
-	Const STB_LOCAL=0
-	Const STB_GLOBAL=1
-	Const STT_NOTYPE=0
-	Const STT_FUNC=2
-	Const STT_SECTION=3
-	Chars elf32_sym_st_info#1
-	#Symbol visibility
-	Chars *elf32_sym_st_other={0}
-	#Section index
-	Chars elf32_sym_st_shndx#2
-
-	Const elf_sym_start^elf32_sym_st_name
-	Data elf_sym_size=!-elf_sym_start
-	Data elf_sym%elf_sym_start
-
-	Set elf32_sym_st_name stringoff
-	Set elf32_sym_st_value value
-	Set elf32_sym_st_size size
-
-	Set elf32_sym_st_info type
 	Chars tohibyte={16}
+	sd st_info
+	Set st_info type
 	Mult bind tohibyte
-	Or elf32_sym_st_info bind
+	Or st_info bind
 
-	Data ptrndxdest^elf32_sym_st_shndx
 	Data ptrndxsrc^index
 	Data wsz=wsz
-	Call memtomem(ptrndxdest,ptrndxsrc,wsz)
 
 	sd err
-	SetCall err addtosec(elf_sym,elf_sym_size,struct)
+	sd x;setcall x is_for_64()
+	if x==(TRUE)
+		Data elf64_sym_st_name#1
+		Chars elf64_sym_st_info#1
+		Chars *elf64_sym_st_other={0}
+		Chars elf64_sym_st_shndx#2
+		Data elf64_sym_st_value#1;data *=0
+		Data elf64_sym_st_size#1;data *=0
+	
+		Set elf64_sym_st_name stringoff
+		Set elf64_sym_st_value value
+		Set elf64_sym_st_size size
+		set elf64_sym_st_info st_info
+		Call memtomem(#elf64_sym_st_shndx,ptrndxsrc,wsz)
+
+		Const elf64_sym_start^elf64_sym_st_name
+		SetCall err addtosec(#elf64_sym_st_name,(!-elf64_sym_start),struct)
+	else
+		#Symbol table entry
+		#Symbol name (string tbl index)
+		Data elf32_sym_st_name#1
+		#Symbol value
+		Data elf32_sym_st_value#1
+		#Symbol size
+		Data elf32_sym_st_size#1
+		#Symbol type and binding
+		Const STB_LOCAL=0
+		Const STB_GLOBAL=1
+		Const STT_NOTYPE=0
+		Const STT_FUNC=2
+		Const STT_SECTION=3
+		Chars elf32_sym_st_info#1
+		#Symbol visibility
+		Chars *elf32_sym_st_other={0}
+		#Section index
+		Chars elf32_sym_st_shndx#2
+	
+		Set elf32_sym_st_name stringoff
+		Set elf32_sym_st_value value
+		Set elf32_sym_st_size size
+		set elf32_sym_st_info st_info
+		Call memtomem(#elf32_sym_st_shndx,ptrndxsrc,wsz)
+
+		Const elf_sym_start^elf32_sym_st_name
+		SetCall err addtosec(#elf32_sym_st_name,(!-elf_sym_start),struct)
+	endelse
+	
 	Return err
 EndFunction
 #err

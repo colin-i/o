@@ -78,18 +78,21 @@ Else
 	data ptrelf_sec_strtab_nr^elf_sec_strtab_nr
 	#######
 
+	sd syment;sd relent
 	if p_is_for_64_resp#==(TRUE)
 		Set elf64_ehd_e_shoff (elf64_fileheaders_size)
 		call memtomem(#elf64_ehd_e_shnum,ptrelf_sec_nr,wordsize)
 		call memtomem(#elf64_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
 		Set fileheaders #elf64_ehd_e_ident_sign
 		Set sizefileheaders (elf64_fileheaders_size)
+		set syment (elf64_dyn_d_val_syment);set relent (elf64_dyn_d_val_relent)
 	else
 		Set elf32_ehd_e_shoff elf_fileheaders_size
 		call memtomem(ptrelf32_ehd_e_shnum,ptrelf_sec_nr,wordsize)
 		call memtomem(ptrelf32_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
 		Set fileheaders elf_fileheaders
 		Set sizefileheaders elf_fileheaders_size
+		set syment elf32_dyn_d_val_syment;set relent elf32_dyn_d_val_relent
 	endelse
 
 	Data SHT_PROGBITS=SHT_PROGBITS
@@ -120,7 +123,7 @@ Else
 	Add elf_sec_fileoff codesecReg
 	Data oneGreaterThanLastSTB_LOCAL=oneGreaterThanLastSTB_LOCAL
 
-	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,oneGreaterThanLastSTB_LOCAL,dwordsize,elf32_dyn_d_val_syment)
+	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,oneGreaterThanLastSTB_LOCAL,dwordsize,syment)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
@@ -131,7 +134,7 @@ Else
 	Chars elfreldata=".rel.data"
 	Str ptrelfreldata^elfreldata
 	Add elf_sec_fileoff tableReg
-	SetCall errormsg elfaddstrsec(ptrelfreldata,SHT_REL,null,elf_sec_fileoff,ptraddresses,symind,dataind,dwordsize,elf32_dyn_d_val_relent)
+	SetCall errormsg elfaddstrsec(ptrelfreldata,SHT_REL,null,elf_sec_fileoff,ptraddresses,symind,dataind,dwordsize,relent)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
@@ -139,7 +142,7 @@ Else
 	Chars elfreltxt=".rel.text"
 	Str ptrelfreltxt^elfreltxt
 	Add elf_sec_fileoff addressesReg
-	SetCall errormsg elfaddstrsec(ptrelfreltxt,SHT_REL,null,elf_sec_fileoff,ptrextra,symind,codeind,dwordsize,elf32_dyn_d_val_relent)
+	SetCall errormsg elfaddstrsec(ptrelfreltxt,SHT_REL,null,elf_sec_fileoff,ptrextra,symind,codeind,dwordsize,relent)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
