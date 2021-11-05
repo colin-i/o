@@ -220,6 +220,7 @@ Const ptrobjfnmask^objfnmask
 Function addrel(sd offset,sd type,sd symbolindex,sd struct)
 	#Direct 32 bit
 	Const R_386_32=1
+	const R_X86_64_64=1
 	const R_X86_64_32=10
 	#PC relative 32 bit
 	Const R_386_PC32=2
@@ -241,7 +242,7 @@ Function addrel(sd offset,sd type,sd symbolindex,sd struct)
 		if type==(R_386_32)
 			set elf64_rel_info_type (R_X86_64_32)
 		else
-			Set elf64_rel_info_type type
+			Set elf64_rel_info_type (R_X86_64_64)
 		endelse
 		set elf64_rel_info_symbolindex symbolindex
 		
