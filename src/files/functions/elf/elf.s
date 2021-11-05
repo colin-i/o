@@ -249,7 +249,7 @@ Function addrel(sd offset,sd type,sd symbolindex,sd struct)
 	else
 		#offset
 		Data elf_rel_offset#1
-		#Relocation type and symbol index		
+		#Relocation type and symbol index
 		Chars elf_rel_info_type#1
 		Data elf_rel_info_symbolindex#1
 
