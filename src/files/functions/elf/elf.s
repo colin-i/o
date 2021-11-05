@@ -240,8 +240,9 @@ Function addrel(sd offset,sd type,sd symbolindex,sd struct)
 		set elf64_rel_offset offset
 		if type==(R_386_32)
 			set elf64_rel_info_type (R_X86_64_32)
-		endif
-		Set elf64_rel_info_type type
+		else
+			Set elf64_rel_info_type type
+		endelse
 		set elf64_rel_info_symbolindex symbolindex
 		
 		set elf_rel #elf64_rel_offset
