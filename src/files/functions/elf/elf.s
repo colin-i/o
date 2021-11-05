@@ -217,28 +217,50 @@ Data objfnmask#1
 Const ptrobjfnmask^objfnmask
 
 #err
-Function addrel(data offset,chars type,data symbolindex,data struct)
-	#offset
-	Data elf_rel_offset#1
-	#Relocation type and symbol index
+Function addrel(sd offset,sd type,sd symbolindex,sd struct)
 	#Direct 32 bit
-	#R_X86_64_32=10
 	Const R_386_32=1
+	const R_X86_64_32=10
 	#PC relative 32 bit
-	#=R_X86_64_PC32
 	Const R_386_PC32=2
-	
-	Chars elf_rel_info_type#1
-	Data elf_rel_info_symbolindex#1
-	
-	Data elf_rel^elf_rel_offset
-	Data elf_rel_sz=elf32_dyn_d_val_relent
+	#=R_X86_64_PC32
 
-	Set elf_rel_offset offset
-	Set elf_rel_info_type type
-	Set elf_rel_info_symbolindex symbolindex
+	Data elf_rel#1
+	Data elf_rel_sz#1
 
-	Data err#1
+	sd err
+	sd x;setcall x is_for_64()
+	if x==(TRUE)
+		Data elf64_rel_offset#1;data *=0
+		data elf64_rel_info_type#1
+		data elf64_rel_info_symbolindex#1
+		
+		#it is not enough
+		#Call memtomem(#elf64_rel_offset,#offset,(qwsz))
+		set elf64_rel_offset offset
+		if type==(R_386_32)
+			set elf64_rel_info_type (R_X86_64_32)
+		endif
+		Set elf64_rel_info_type type
+		set elf64_rel_info_symbolindex symbolindex
+		
+		set elf_rel #elf64_rel_offset
+		set elf_rel_sz (elf64_dyn_d_val_relent)
+	else
+		#offset
+		Data elf_rel_offset#1
+		#Relocation type and symbol index		
+		Chars elf_rel_info_type#1
+		Data elf_rel_info_symbolindex#1
+
+		Set elf_rel_offset offset
+		Set elf_rel_info_type type
+		Set elf_rel_info_symbolindex symbolindex
+
+		set elf_rel #elf_rel_offset
+		set elf_rel_sz (elf32_dyn_d_val_relent)
+	endelse
+	
 	SetCall err addtosec(elf_rel,elf_rel_sz,struct)
 	Return err
 EndFunction

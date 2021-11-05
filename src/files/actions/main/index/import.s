@@ -37,12 +37,16 @@ If errormsg==noerr
 			Set functionoffset tableReg
 		EndElse
 		#get the function index
-		Div functionoffset elf32_dyn_d_val_syment
 		If object==false
+			Div functionoffset elf32_dyn_d_val_syment
 			#get the dword offset to call at, index*dword
 			Mult functionoffset dwordsize
 			SetCall errormsg elfaddsym(namesReg,null,null,STT_FUNC,STB_GLOBAL,null,ptraddresses)
-		EndIf
+		ElseIf p_is_for_64_resp#==(TRUE)
+			div functionoffset (elf64_dyn_d_val_syment)
+		Else
+			Div functionoffset elf32_dyn_d_val_syment
+		EndElse
 	EndElse
 	If errormsg==noerr
 		SetCall errormsg quotinmem(pcontent,pcomsize,ptrimpquotsz,ptrimpescapes)

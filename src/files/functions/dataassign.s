@@ -329,23 +329,21 @@ function get_function_value(sd importbit,sd pointer)
 	if importbit!=0
 		#imports
 		return pointer#
-	else
-		#local
-		sd value
-		call get_fn_pos(pointer,#value)
-		return value
-	endelse
+	endif
+	#local
+	sd value
+	call get_fn_pos(pointer,#value)
+	return value
 endfunction
 #relocindex
 function get_function_values(sd importbit,sd p_value,sd pointer)
 	If importbit==0
 		#code
 		return (codeind)
-	Else
-		#import
-		set p_value# 0
-		return pointer#
-	EndElse
+	endif
+	#import
+	set p_value# 0
+	return pointer#
 endfunction
 
 #err
