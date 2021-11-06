@@ -14,7 +14,8 @@ Function unresolvedcallsfn(data struct,data inneroffset,data valuedata,data aten
 	Data ptrobject%ptrobject
 
 	If ptrobject#==true
-		Chars elf_rel_info_type={R_386_PC32}
+		#Chars elf_rel_info_type={R_386_PC32}
+		Chars elf_rel_info_type={R_386_32}
 		Data ptrextra%ptrextra
 		SetCall err addrel_base(offset,elf_rel_info_type,valuedata,atend,ptrextra)
 	Else
@@ -253,33 +254,35 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	EndIf
 
 	If boolindirect==(FALSE)
-		Chars directcall={0xe8}
+		Chars directcall#1
 		Data directcalloff#1
-
+		chars *={0xff,0xd0}
+		
 		Data ptrdirectcall^directcall
-		Data directcallsize=1+dwsz
+		const directcallsize=1+dwsz
 		data ptrdirectcalloff^directcalloff
 
 		If fnmask!=idatafn
+			set directcall 0xe8
 			setcall err unresolvedLocal(1,code,ptrdata,ptrdirectcalloff)
-			If err!=(noerror)
-				Return err
-			EndIf
+			If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(ptrdirectcall,(directcallsize),code)
+			If err!=(noerror);Return err;EndIf
 		Else
-			#reloc when linking;0-dwsz(appears to be dwsz from Data directcallsize=1+dwsz)
-			Set directcalloff (0-dwsz)
+			#was: reloc when linking;0-dwsz(appears to be dwsz from Data directcallsize=1+dwsz), no truncation, so direct better
+			set directcall 0xb8
+			Set directcalloff 0
 			SetCall err unresolvedcallsfn(code,1,ptrdata#,directcalloff)
 			If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(ptrdirectcall,(directcallsize+2),code)
+			If err!=(noerror);Return err;EndIf
 		EndElse
-
-		SetCall err addtosec(ptrdirectcall,directcallsize,code)
-		If err!=(noerror)
-			Return err
-		EndIf
 	Else
-		data ptrvirtualimportsoffset%ptrvirtualimportsoffset
-		SetCall err unresolvedcallsfn(code,1,ptrdata#,ptrvirtualimportsoffset)
-		If err!=(noerror);Return err;EndIf
+		if fnmask==idatafn
+			data ptrvirtualimportsoffset%ptrvirtualimportsoffset
+			SetCall err unresolvedcallsfn(code,1,ptrdata#,ptrvirtualimportsoffset)
+			If err!=(noerror);Return err;EndIf
+		endif
 		Chars callaction={0xff}
 		Data noreg=noregnumber
 		Chars callactionopcode={2}
@@ -336,7 +339,8 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 				const global_err_obj_sz=!-global_err_obj_start
 			set g_err_cmp_disp32 (0-global_err_obj_sz)
 			sd ac_off;call getcontReg(code,#ac_off)
-			SetCall err addrel(ac_off,(R_386_PC32),global_err_ptr#,ptrextra);If err!=(noerror);Return err;EndIf
+			#R_386_PC32
+			SetCall err addrel(ac_off,(R_386_32),global_err_ptr#,ptrextra);If err!=(noerror);Return err;EndIf
 			#
 			SetCall err addtosec(#g_err_cmp_disp32,(global_err_obj_sz),code)
 		EndElse

@@ -71,7 +71,7 @@ function writetake(sd takeindex,sd entry)
 		setcall var function_in_code()
 		if var#==0
 			Data dataind=dataind
-			SetCall errnr adddirectrel(ptrextra,relocoff,dataind)
+			SetCall errnr adddirectrel_base(ptrextra,relocoff,dataind,takeloc)
 			If errnr!=(noerror)
 				Return errnr
 			EndIf

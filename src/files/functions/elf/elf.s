@@ -223,9 +223,10 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	#const R_X86_64_64=1
 	const R_X86_64_32=10
 	#PC relative 32 bit
-	Const R_386_PC32=2
+	#Const R_386_PC32=2
 	#=R_X86_64_PC32
-
+	#const R_X86_64_PC64=24
+	
 	Data elf_rel#1
 	Data elf_rel_sz#1
 
@@ -233,20 +234,14 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	sd x;setcall x is_for_64()
 	if x==(TRUE)
 		Data elf64_r_offset#1;data *=0
-		data elf64_r_info_type#1
+		data *elf64_r_info_type=R_X86_64_32
 		data elf64_r_info_symbolindex#1
 		data elf64_r_addend#1;data *=0
 		
 		#it is not enough
 		#Call memtomem(#elf64_r_offset,#offset,(qwsz))
 		set elf64_r_offset offset
-		#if type==(R_386_32)
-		set elf64_r_info_type (R_X86_64_32)
-		#else
-		#	Set elf64_r_info_type (R_X86_64_64)
-		#endelse
 		set elf64_r_info_symbolindex symbolindex
-		#Call memtomem(#elf64_r_addendt,#addend,(qwsz))
 		set elf64_r_addend addend
 		
 		set elf_rel #elf64_r_offset
@@ -256,12 +251,12 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 		Data elf_r_offset#1
 		#Relocation type and symbol index
 		Chars elf_r_info_type#1
-		Data elf_r_info_symbolindex#1
+		chars elf_r_info_symbolindex#3
 		data elf_r_addend#1
 
 		Set elf_r_offset offset
 		Set elf_r_info_type type
-		Set elf_r_info_symbolindex symbolindex
+		Call memtomem(#elf_r_info_symbolindex,#symbolindex,3)
 		set elf_r_addend addend
 		
 		set elf_rel #elf_r_offset

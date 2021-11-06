@@ -14,6 +14,9 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 				#data
 				Data ptraddresses%ptraddresses
 				Data relocoff=0
+				#data ptrcodesec%ptrcodesec
+				#sd takeloc;call getcontReg(ptrcodesec,#takeloc)
+				#_base ,takeloc
 				SetCall err adddirectrel(ptraddresses,relocoff,relindex)
 			else
 				#code
