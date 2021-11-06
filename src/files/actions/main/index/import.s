@@ -11,8 +11,8 @@ Data impescapes=0
 Data ptrimpquotsz^impquotsz
 Data ptrimpescapes^impescapes
 
-If implibsstarted==false
-	If object==false
+If object==false
+	If implibsstarted==false
 		Chars noliberr="Unexpected IMPORT statement; there is no LIBRARY opened."
 		Str ptrnoliberr^noliberr
 		Set errormsg ptrnoliberr

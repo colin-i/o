@@ -16,7 +16,7 @@ Function unresolvedcallsfn(data struct,data inneroffset,data valuedata,data aten
 	If ptrobject#==true
 		Chars elf_rel_info_type={R_386_PC32}
 		Data ptrextra%ptrextra
-		SetCall err addrel(offset,elf_rel_info_type,valuedata,ptrextra)
+		SetCall err addrel_base(offset,elf_rel_info_type,valuedata,atend,ptrextra)
 	Else
 		#add to resolve at end
 		Data unressz=3*dwsz
@@ -247,11 +247,6 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	And fnmask idatafn
 	
 	If fnmask==idatafn
-		data ptrvirtualimportsoffset%ptrvirtualimportsoffset
-		SetCall err unresolvedcallsfn(code,1,ptrdata#,ptrvirtualimportsoffset)
-		If err!=(noerror)
-			Return err
-		EndIf
 		If ptrobject#==(FALSE)
 			Set boolindirect (TRUE)
 		EndIf
@@ -273,6 +268,8 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		Else
 			#reloc when linking;0-dwsz(appears to be dwsz from Data directcallsize=1+dwsz)
 			Set directcalloff (0-dwsz)
+			SetCall err unresolvedcallsfn(code,1,ptrdata#,directcalloff)
+			If err!=(noerror);Return err;EndIf
 		EndElse
 
 		SetCall err addtosec(ptrdirectcall,directcallsize,code)
@@ -280,6 +277,9 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			Return err
 		EndIf
 	Else
+		data ptrvirtualimportsoffset%ptrvirtualimportsoffset
+		SetCall err unresolvedcallsfn(code,1,ptrdata#,ptrvirtualimportsoffset)
+		If err!=(noerror);Return err;EndIf
 		Chars callaction={0xff}
 		Data noreg=noregnumber
 		Chars callactionopcode={2}

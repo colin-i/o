@@ -25,6 +25,13 @@ If fileformat==elf_unix
 			Call errexit()
 		EndIf
 		Add sizefileheaders elf_progdeffileheaders_size
+		If implibsstarted==true
+			SetCall writeres writefile(fileout,importfileheaders,sizeimportfileheaders)
+			If writeres==writefalse
+				Call errexit()
+			EndIf
+			Add sizefileheaders sizeimportfileheaders
+		EndIf
 	Else
 		SetCall writeres writefile(fileout,miscbag,miscbagReg)
 		If writeres==writefalse
@@ -34,13 +41,6 @@ If fileformat==elf_unix
 		#cannot see why i set this zero
 		#Set miscbagReg zero
 	EndElse
-EndIf
-If implibsstarted==true
-	SetCall writeres writefile(fileout,importfileheaders,sizeimportfileheaders)
-	If writeres==writefalse
-		Call errexit()
-	EndIf
-	Add sizefileheaders sizeimportfileheaders
 EndIf
 If fileformat==elf_unix
 	If object==false

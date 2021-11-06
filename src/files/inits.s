@@ -102,7 +102,7 @@ Set fnavailable one
 
 Set allocerrormsg null
 
-#implibsstarted for closing at the end and for import parts
+#implibsstarted for closing at the end and for import parts; is here because 0 bytes src is something and asking for this at end
 Set implibsstarted false
 
 #fn info text is at preferences

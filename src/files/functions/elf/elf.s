@@ -217,10 +217,10 @@ Data objfnmask#1
 Const ptrobjfnmask^objfnmask
 
 #err
-Function addrel(sd offset,sd type,sd symbolindex,sd struct)
+Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	#Direct 32 bit
 	Const R_386_32=1
-	const R_X86_64_64=1
+	#const R_X86_64_64=1
 	const R_X86_64_32=10
 	#PC relative 32 bit
 	Const R_386_PC32=2
@@ -232,34 +232,39 @@ Function addrel(sd offset,sd type,sd symbolindex,sd struct)
 	sd err
 	sd x;setcall x is_for_64()
 	if x==(TRUE)
-		Data elf64_rel_offset#1;data *=0
-		data elf64_rel_info_type#1
-		data elf64_rel_info_symbolindex#1
+		Data elf64_r_offset#1;data *=0
+		data elf64_r_info_type#1
+		data elf64_r_info_symbolindex#1
+		data elf64_r_addend#1;data *=0
 		
 		#it is not enough
-		#Call memtomem(#elf64_rel_offset,#offset,(qwsz))
-		set elf64_rel_offset offset
-		if type==(R_386_32)
-			set elf64_rel_info_type (R_X86_64_32)
-		else
-			Set elf64_rel_info_type (R_X86_64_64)
-		endelse
-		set elf64_rel_info_symbolindex symbolindex
+		#Call memtomem(#elf64_r_offset,#offset,(qwsz))
+		set elf64_r_offset offset
+		#if type==(R_386_32)
+		set elf64_r_info_type (R_X86_64_32)
+		#else
+		#	Set elf64_r_info_type (R_X86_64_64)
+		#endelse
+		set elf64_r_info_symbolindex symbolindex
+		#Call memtomem(#elf64_r_addendt,#addend,(qwsz))
+		set elf64_r_addend addend
 		
-		set elf_rel #elf64_rel_offset
+		set elf_rel #elf64_r_offset
 		set elf_rel_sz (elf64_dyn_d_val_relent)
 	else
 		#offset
-		Data elf_rel_offset#1
+		Data elf_r_offset#1
 		#Relocation type and symbol index
-		Chars elf_rel_info_type#1
-		Data elf_rel_info_symbolindex#1
+		Chars elf_r_info_type#1
+		Data elf_r_info_symbolindex#1
+		data elf_r_addend#1
 
-		Set elf_rel_offset offset
-		Set elf_rel_info_type type
-		Set elf_rel_info_symbolindex symbolindex
-
-		set elf_rel #elf_rel_offset
+		Set elf_r_offset offset
+		Set elf_r_info_type type
+		Set elf_r_info_symbolindex symbolindex
+		set elf_r_addend addend
+		
+		set elf_rel #elf_r_offset
 		set elf_rel_sz (elf32_dyn_d_val_relent)
 	endelse
 	
@@ -268,7 +273,14 @@ Function addrel(sd offset,sd type,sd symbolindex,sd struct)
 EndFunction
 
 #err
-Function adddirectrel(data relsec,data extraoff,data index)
+Function addrel(sd offset,sd type,sd symbolindex,sd struct)
+	sd err
+	setcall err addrel_base(offset,type,symbolindex,0,struct)
+	return err
+endfunction
+
+#err
+Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
 	Data noerr=noerror
 	Data ptrobject%ptrobject
 	Data false=FALSE
@@ -290,6 +302,13 @@ Function adddirectrel(data relsec,data extraoff,data index)
 	Call getcontReg(struct,ptroff)
 	Add off extraoff
 	Chars elf_rel_info_type={R_386_32}
-	SetCall err addrel(off,elf_rel_info_type,index,relsec)
+	SetCall err addrel_base(off,elf_rel_info_type,index,addend,relsec)
 	Return err
 EndFunction
+
+#err
+Function adddirectrel(sd relsec,sd extraoff,sd index)
+	sd err
+	setcall err adddirectrel_base(relsec,extraoff,index,0)
+	return err
+endfunction

@@ -83,7 +83,7 @@ function writetake(sd takeindex,sd entry)
 			setcall takeloc get_function_value(importbit,entry)
 			sd index
 			setcall index get_function_values(importbit,#takeloc,entry)
-			SetCall errnr adddirectrel(ptrextra,relocoff,index)
+			SetCall errnr adddirectrel_base(ptrextra,relocoff,index,takeloc)
 			If errnr!=(noerror)
 				Return errnr
 			EndIf
