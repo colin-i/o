@@ -34,7 +34,12 @@ else
 	if errormsg==(noerror)
 		set g_e_b_p# (TRUE)
 		if object==(TRUE)
-			set g_e_p# tableReg;div g_e_p# elf32_dyn_d_val_syment
+			set g_e_p# tableReg
+			if p_is_for_64_resp#==(TRUE)
+				div g_e_p# (elf64_dyn_d_val_syment)
+			else
+				div g_e_p# elf32_dyn_d_val_syment
+			endelse
 			#adding at current names reg the content lenghting comsize
 			SetCall errormsg elfaddstrszsym(ac_store_content,ac_store_size,acsym_value,acsym_size,(STT_NOTYPE),(STB_GLOBAL),acsym_shndx,ptrtable)
 		endif

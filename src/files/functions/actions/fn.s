@@ -298,7 +298,6 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	if global_err_pB#!=(FALSE)
 		sd global_err_ptr;setcall global_err_ptr global_err_p()
 		Data ptrextra%ptrextra
-		#pointing to data. at 32 disp32 is absolute,at 64 relative
 		If ptrobject#==(FALSE)
 		#absolute
 			const global_err_ex_start=!
@@ -312,36 +311,14 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			#
 			SetCall err addtosec(#g_err_mov,(global_err_ex_sz),code)
 		Else
-			sd is64;setcall is64 is_for_64()
-			if is64==(FALSE)
-			#relative: using ecx(code absolute)+disp32
-				const g_err_o32_b=!
-				#mov ecx,coderel
-				chars g_err_o32=0xb8+ecxregnumber;data g_err_rel#1
-				#cmp byte[ecx+imm32],0
-				chars *={0x80,7*toregopcode|ecxregnumber|0x80}
-				#
-				const g_err_o32_sz=!-g_err_o32_b
-				#
-				call getcontReg(code,#g_err_rel);add g_err_rel (bsz+dwsz+bsz+bsz+dwsz+bsz)
-				SetCall err adddirectrel_base(ptrextra,(bsz),(codeind),g_err_rel);If err!=(noerror);Return err;EndIf
-				SetCall err addtosec(#g_err_o32,(g_err_o32_sz),code);If err!=(noerror);Return err;EndIf
-			else
-			#relative
-			#cmp byte[imm32],0
-				chars g_err_cmp={0x80,7*toregopcode|5}
-				#
-				SetCall err addtosec(#g_err_cmp,(bsz+bsz),code);If err!=(noerror);Return err;EndIf
-			endelse
-				const global_err_obj_start=!
-			data g_err_cmp_disp32#1
-			chars *=0
-				const global_err_obj_sz=!-global_err_obj_start
-			set g_err_cmp_disp32 (0-global_err_obj_sz)
-			sd ac_off;call getcontReg(code,#ac_off)
-			SetCall err addrel_base(ac_off,(R_386_PC32),global_err_ptr#,g_err_cmp_disp32,ptrextra);If err!=(noerror);Return err;EndIf
+			const global_err_obj_start=!
+			chars g_err=0xb9
+			data *rel=0
+			chars *g_cmp={0x80,7*toregopcode|ecxregnumber,0}
+			const global_err_obj_sz=!-global_err_obj_start
 			#
-			SetCall err addtosec(#g_err_cmp_disp32,(global_err_obj_sz),code)
+			setcall err adddirectrel_base(ptrextra,(bsz),global_err_ptr#,0);If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(#g_err,(global_err_obj_sz),code)
 		EndElse
 		If err!=(noerror);Return err;EndIf
 		#jz

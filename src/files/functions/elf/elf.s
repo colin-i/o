@@ -223,8 +223,8 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	#const R_X86_64_64=1
 	const R_X86_64_32=10
 	#PC relative 32 bit
-	const R_386_PC32=2
-	const R_X86_64_PC32=R_386_PC32
+	#const R_386_PC32=2
+	#const R_X86_64_PC32=R_386_PC32
 	#const R_X86_64_PC64=24
 	
 	Data elf_rel#1
@@ -234,12 +234,7 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	sd x;setcall x is_for_64()
 	if x==(TRUE)
 		Data elf64_r_offset#1;data *=0
-		data elf64_r_info_type#1
-		if type==(R_386_PC32)
-			set elf64_r_info_type (R_X86_64_PC32)
-		else
-			set elf64_r_info_type (R_X86_64_32)
-		endelse
+		data *elf64_r_info_type=R_X86_64_32
 		data elf64_r_info_symbolindex#1
 		data elf64_r_addend#1;data *=0
 		
