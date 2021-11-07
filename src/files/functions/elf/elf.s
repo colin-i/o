@@ -305,10 +305,3 @@ Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
 	SetCall err addrel_base(off,elf_rel_info_type,index,addend,relsec)
 	Return err
 EndFunction
-
-#err
-Function adddirectrel(sd relsec,sd extraoff,sd index)
-	sd err
-	setcall err adddirectrel_base(relsec,extraoff,index,0)
-	return err
-endfunction
