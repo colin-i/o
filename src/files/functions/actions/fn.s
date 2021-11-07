@@ -324,7 +324,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 				const g_err_o32_sz=!-g_err_o32_b
 				#
 				call getcontReg(code,#g_err_rel);add g_err_rel (bsz+dwsz+bsz+bsz+dwsz+bsz)
-				SetCall err adddirectrel(ptrextra,(bsz),(codeind));If err!=(noerror);Return err;EndIf
+				SetCall err adddirectrel_base(ptrextra,(bsz),(codeind),g_err_rel);If err!=(noerror);Return err;EndIf
 				SetCall err addtosec(#g_err_o32,(g_err_o32_sz),code);If err!=(noerror);Return err;EndIf
 			else
 			#relative
@@ -339,8 +339,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 				const global_err_obj_sz=!-global_err_obj_start
 			set g_err_cmp_disp32 (0-global_err_obj_sz)
 			sd ac_off;call getcontReg(code,#ac_off)
-			#R_386_PC32
-			SetCall err addrel(ac_off,(R_386_32),global_err_ptr#,ptrextra);If err!=(noerror);Return err;EndIf
+			SetCall err addrel_base(ac_off,(R_386_PC32),global_err_ptr#,g_err_cmp_disp32,ptrextra);If err!=(noerror);Return err;EndIf
 			#
 			SetCall err addtosec(#g_err_cmp_disp32,(global_err_obj_sz),code)
 		EndElse

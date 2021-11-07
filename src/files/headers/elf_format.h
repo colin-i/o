@@ -235,16 +235,12 @@ Data *DT_STRTAB=5
 Data elf32_dyn_d_ptr_strtab#1
 Data *DT_STRSZ=10
 Data elf32_dyn_d_val_strsz#1
-#Data *DT_REL=17
 Data *DT_RELA=7
 Data elf32_dyn_d_ptr_rel#1
-#Data *DT_RELSZ=18
 Data *DT_RELASZ=8
 Data elf32_dyn_d_val_relsz#1
-#Data *DT_RELENT=19
 Data *DT_RELAENT=9
 Const elf32_dyn_d_val_relent=12
-#Const elf32_dyn_d_val_relent=8
 Data elf32_dyn_d_val_relent=elf32_dyn_d_val_relent
 Data *DT_NULL=0
 Data elf32_dyn_d_val_null=0
@@ -276,5 +272,4 @@ Data elf_rel_entries_size#1
 const SHT_STRTAB=3
 
 Const elf64_dyn_d_val_syment=0x18
-#Const elf64_dyn_d_val_relent=0x10
 Const elf64_dyn_d_val_relent=0x18

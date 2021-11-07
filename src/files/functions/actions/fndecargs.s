@@ -94,7 +94,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	Data ptrextra%ptrextra
 	Data reloff=offend-offstart
 	Data dataind=dataind
-	SetCall err adddirectrel(ptrextra,reloff,dataind)
+	SetCall err adddirectrel_base(ptrextra,reloff,dataind,memoff)
 	If err!=noerr
 		Return err
 	EndIf
