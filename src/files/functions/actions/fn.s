@@ -311,6 +311,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			#
 			SetCall err addtosec(#g_err_mov,(global_err_ex_sz),code)
 		Else
+			#mov to ecx is reseting the high part of the rcx
 			const global_err_obj_start=!
 			chars g_err=0xb9
 			data *rel=0

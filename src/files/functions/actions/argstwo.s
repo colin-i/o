@@ -193,6 +193,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				add opsec 1
 			elseif subtype==(cCALLEX)
 				add opsec 1
+				call val64_phase_1();call val64_phase_2()
 			endelseif
 		endif
 		SetCall errnr writeop_immfilter(dataargsec,opsec,intchar,sufixsec,regopcode)

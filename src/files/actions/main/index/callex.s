@@ -52,7 +52,7 @@ if errormsg==(noerror)
 					#dec ecx
 					chars *=0xFF;chars *=1*toregopcode|ecxregnumber|0xc0
 				const callex_size1=!-callex_start
-					# mov edx,[eax+ecx*4]
+					# mov [eax+ecx*4],edx
 					chars callex_c2=0x8b;chars *=edxregnumber*toregopcode|4;chars callex_sib#1
 					#push e(r)dx
 					chars *=0x52
