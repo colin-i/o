@@ -13,34 +13,7 @@ if errormsg==(noerror)
 			#
 			sd callex64;setcall callex64 is_for_64_is_impX_or_fnX_get()
 			if callex64==(TRUE)
-				#Stack aligned on 16 bytes.
-				const callex64_start=!
-				#bt rsp,3 (bit offset 3)
-				chars callex64_code={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
-				#jc @ (jump when rsp=....8)
-				chars *=0x72;chars *=6+2+4+2+2
-				#6cmp ecx,5
-				chars *={0x81,0xf9};data *=5
-				#2jb $
-				chars *=0x72;chars *=4+2+2+6+2+4+2+4
-				#4bt ecx,0
-				chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
-				#2jc %
-				chars *=0x72;chars *=2+6+2+4+2
-				#2jmp $
-				chars *=0xEB;chars *=6+2+4+2+4
-				#6@ cmp ecx,5
-				chars *={0x81,0xf9};data *=5
-				#2jb %
-				chars *=0x72;chars *=4+2
-				#4bt ecx,0
-				chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
-				#2jc $
-				chars *=0x72;chars *=4
-				#4% sub rsp,8
-				chars *={REX_Operand_64,0x83,0xEC};chars *=8
-				#$
-				SetCall errormsg addtosec(#callex64_code,(!-callex64_start),ptrcodesec)
+				setcall errormsg callex64_call((microsoft_convention_preset_args))
 			endif
 			#
 			if errormsg==(noerror)
@@ -52,7 +25,7 @@ if errormsg==(noerror)
 					#dec ecx
 					chars *=0xFF;chars *=1*toregopcode|ecxregnumber|0xc0
 				const callex_size1=!-callex_start
-					# mov [eax+ecx*4],edx
+					# mov [eax+ecx*4],edx  this is gdb view
 					chars callex_c2=0x8b;chars *=edxregnumber*toregopcode|4;chars callex_sib#1
 					#push e(r)dx
 					chars *=0x52

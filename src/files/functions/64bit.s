@@ -152,7 +152,7 @@ function val64_p_get()
 	data x#1;return #x
 endfunction
 
-function function_call_64m(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd hex_x)
+function function_call_64m(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd hex_x,sd conv)
 	sd err
 	Data code%ptrcodesec
 	sd nr_of_args;setcall nr_of_args nr_of_args_64need()
@@ -169,9 +169,9 @@ function function_call_64m(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd h
 		endif
 	endif
 	#shadow space
-	set args_push# 4
+	set args_push# conv
 	if nr_of_args<args_push#;set args_push# nr_of_args;endif
-	sub args_push# 4;mult args_push# -1
+	sub args_push# conv;mult args_push# -1
 	if args_push#!=0
 		mult args_push# (qwsz)
 		call rex_w(#err);If err!=(noerror);Return err;EndIf
@@ -181,14 +181,14 @@ function function_call_64m(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd h
 	sd stack_align_p;setcall stack_align_p stack_align_off_p_get()
 	ss code_pointer;call getcont(code,#code_pointer)
 	add code_pointer stack_align_p#
-	sd against_one=4;if nr_of_args>4;set against_one nr_of_args;endif;and against_one 1
+	sd against_one;if nr_of_args>conv;set against_one nr_of_args;else;set against_one conv;endelse;and against_one 1
 	#Jump short if not carry
 	if against_one==0;set code_pointer# (0x73)
 	#Jump short if carry
 	else;set code_pointer# (0x72);endelse
 	return (noerror)
 endfunction
-function function_call_64(sd is_callex)
+function function_call_64(sd is_callex,sd conv)
 	sd err
 	Data code%ptrcodesec
 	#
@@ -204,7 +204,7 @@ function function_call_64(sd is_callex)
 	chars hex_x={0x83,0xEC};chars args_push#1
 		
 	if is_callex==(FALSE)
-		setcall err function_call_64m(#hex_1,#hex_2,#hex_3,#hex_4,#args_push,#hex_x)
+		setcall err function_call_64m(#hex_1,#hex_2,#hex_3,#hex_4,#args_push,#hex_x,conv)
 		Return err
 	endif
 	#
@@ -247,7 +247,7 @@ function function_call_64(sd is_callex)
 	set callex_jump (0x77)
 	set args_push (qwsz)
 	#4*REX.W
-	data jump64#1;set jump64 4
+	data jump64#1;set jump64 conv
 	#
 	set cmp_imm32 3
 	set j_off (3+7+3+7+3+7+3);add j_off jump64
@@ -271,7 +271,7 @@ function function_call_64(sd is_callex)
 					SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
 	return (noerror)
 endfunction
-
+#err
 function function_start_64()
 	Data code%ptrcodesec
 	sd err
@@ -285,4 +285,40 @@ function function_start_64()
 	#mov [rsp+20h],r9
 	chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24,0x20}
 	SetCall err addtosec(#functionx_code,(!-functionx_start),code)
+endfunction
+#err
+function callex64_call(sd conv)
+	#Stack aligned on 16 bytes.
+	const callex64_start=!
+	#bt rsp,3 (bit offset 3)
+	chars callex64_code={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
+	#jc @ (jump when rsp=....8)
+	chars *=0x72;chars *=6+2+4+2+2
+	#6cmp ecx,5
+	chars *={0x81,0xf9};data jcase1#1
+	set jcase1 conv;inc jcase1
+	#2jb $
+	chars *=0x72;chars *=4+2+2+6+2+4+2+4
+	#4bt ecx,0
+	chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
+	#2jc %
+	chars *=0x72;chars *=2+6+2+4+2
+	#2jmp $
+	chars *=0xEB;chars *=6+2+4+2+4
+	#6@ cmp ecx,5
+	chars *={0x81,0xf9};data jcase2#1
+	set jcase2 conv;inc jcase2
+	#2jb %
+	chars *=0x72;chars *=4+2
+	#4bt ecx,0
+	chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
+	#2jc $
+	chars *=0x72;chars *=4
+	#4% sub rsp,8
+	chars *={REX_Operand_64,0x83,0xEC};chars *=8
+	#$
+	sd ptrcodesec%ptrcodesec
+	sd err
+	SetCall err addtosec(#callex64_code,(!-callex64_start),ptrcodesec)
+	return err
 endfunction

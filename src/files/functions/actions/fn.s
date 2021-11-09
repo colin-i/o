@@ -233,7 +233,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	
 	sd b;setcall b is_for_64_is_impX_or_fnX_get()
 	if b==(TRUE)
-		setcall err function_call_64(is_callex)
+		setcall err function_call_64(is_callex,(microsoft_convention_preset_args))
 		If err!=(noerror);Return err;EndIf
 	endif
 
