@@ -139,6 +139,7 @@ Function writeoperation(data location,chars operationopcode,data regprepare,data
 
 	Data true=TRUE
 	If sufix==true
+		#setcall errnr rex_w_if64();If errnr!=noerr;Return errnr;EndIf it's not ok will break data
 		Chars newtake={moveatprocthemem}
 		Const edxtoedx=edxregnumber*8|edxregnumber
 		Chars *newtakemodrm={edxtoedx}

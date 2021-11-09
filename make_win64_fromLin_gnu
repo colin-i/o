@@ -1,3 +1,7 @@
+
+#is old staying for information
+exit
+
 #########
 #the build is working
 #attention at GetCommandNameA to not return a 64 bit pointer and at realloc
