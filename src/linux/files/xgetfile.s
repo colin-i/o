@@ -29,8 +29,6 @@ Data argumentssize#1
 Data ptrscript^script
 Data ptrargumentssize^argumentssize
 
-Data qwordsize=qwsz
-
 Call memset(ptrscript,zero,qwordsize)
 
 Data getdelimreturn#1

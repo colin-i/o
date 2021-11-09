@@ -50,6 +50,7 @@ Const void=0
 Data bytesize=bsz
 Data wordsize=wsz
 Data dwordsize=dwsz
+Data qwordsize=qwsz
 Data zero=0
 Data one=1
 data two=2
