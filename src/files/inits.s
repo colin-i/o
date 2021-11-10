@@ -124,6 +124,7 @@ set var# 0
 sd p_is_for_64_value;setcall p_is_for_64_value p_is_for_64();set p_is_for_64_value# (FALSE)
 call stack64_op_set_get((TRUE),(FALSE))
 call val64_phase_0()
+call two64_false()
 
 #afterCall
 data g_e_b_p#1;setcall g_e_b_p global_err_pBool();set g_e_b_p# (FALSE)

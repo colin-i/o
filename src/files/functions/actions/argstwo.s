@@ -203,6 +203,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		If errnr!=noerr
 			Return errnr
 		EndIf
+		call two64_test()
 	Else
 		if divmul==(TRUE)
 			#only at multcall and divcall
@@ -228,10 +229,12 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		chars immcomparationtake=0xb9
 		set opprim immcomparationtake
 	endif
+
 	SetCall errnr writeop_immfilter(dataargprim,opprim,noreg,sufixprim,eaxreg)
 	If errnr!=noerr
 		Return errnr
 	EndIf
+
 	if imm==true
 		#continue to write the imm comparation(first is imm, second doesnt care)ex: 1(constant)==1(constant)->cmp ecx,eax (eax,ecx can be if switch)
 		chars immcompdata#1
@@ -244,7 +247,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Return errnr
 		EndIf
 	endif
-
 	If divmul==true
 		Data regreg=RegReg
 

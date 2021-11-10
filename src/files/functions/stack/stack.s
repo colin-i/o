@@ -141,6 +141,8 @@ function addtocodeforstack(data value,data rightstackpointer)
 		set movtostack movreg
 		data sizereg=2+4
 		set size sizereg
+		
+		setcall err rex_w_if64();if err!=(noerror);return err;endif
 	endelse
 
 	setcall rampindex addramp()
@@ -150,5 +152,3 @@ function addtocodeforstack(data value,data rightstackpointer)
 	setcall err addtosec(stack,size,ptrcodesec)
 	return err
 endfunction
-
-

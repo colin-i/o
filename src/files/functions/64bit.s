@@ -137,7 +137,7 @@ function val64_phase_1()
 endfunction
 function val64_phase_2()
 	sd p;setcall p val64_p_get()
-	if p#==1;set p# 2;endif
+	if p#==1;set p# (val64_willbe);endif
 endfunction
 #er
 function val64_phase_3()
@@ -150,6 +150,20 @@ function val64_phase_3()
 endfunction
 function val64_p_get()
 	data x#1;return #x
+endfunction
+function two64_test()
+	sd a;setcall a two64_p_get()
+	if a#==(TRUE)
+		setcall a val64_p_get()
+		set a# (val64_willbe)
+		set a# (FALSE)
+	endif
+endfunction
+function two64_p_get()
+	data x#1;return #x
+endfunction
+function two64_false()
+	sd p;setcall p two64_p_get();set p# (FALSE)
 endfunction
 
 function function_call_64m(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd hex_x,sd conv)
