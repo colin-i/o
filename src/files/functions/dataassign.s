@@ -281,6 +281,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	EndElse
 	if skipNumberValue==false
 		If typenumber!=constantsnr
+			#is a bug here with this line chars test={0x90,0x90,0x90};call addtosec(#test,3,ptrcodesec)
 			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer)
 			If err!=noerr
 				Return err

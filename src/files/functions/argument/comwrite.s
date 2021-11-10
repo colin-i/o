@@ -143,13 +143,13 @@ Function writeoperation(data location,chars operationopcode,data regprepare,data
 		sd for_64;setcall for_64 is_for_64()
 		if for_64==(TRUE)
 			set take64stack (TRUE)
+			setcall v64 val64_p_get();set v64# (val64_willbe)
 		endif
 	endif
 	Data true=TRUE
 	If sufix==true
 		if take64stack==(TRUE)
 			call rex_w(#errnr);If errnr!=noerr;Return errnr;EndIf
-			setcall v64 val64_p_get();set v64# (val64_willbe)
 		endif
 		Chars newtake={moveatprocthemem}
 		Const edxtoedx=edxregnumber*8|edxregnumber
@@ -160,10 +160,6 @@ Function writeoperation(data location,chars operationopcode,data regprepare,data
 			Return errnr
 		EndIf
 	EndIf
-	if take64stack==(TRUE)
-		sd t64;setcall t64 two64_p_get();set t64# (TRUE)
-		setcall v64 val64_p_get();set v64# (val64_willbe)
-	endif
 	
 	If regprepare!=noreg
 		Chars comprepare1={0x33}

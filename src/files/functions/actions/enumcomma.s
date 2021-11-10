@@ -7,31 +7,40 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 	data true=TRUE
 	data false=FALSE
 	data ptrobject%ptrobject
-
-	if ptrobject#==1
-		If ptrrelocbool#==true
-			if stack==false
+	
+	if stack==false
+		if ptrobject#==1
+			If ptrrelocbool#==true
 				#data
 				Data ptraddresses%ptraddresses
 				Data relocoff=0
 				SetCall err adddirectrel_base(ptraddresses,relocoff,relindex,ptrvalue#)
-			else
-				#code
-				data ptrextra%ptrextra
-				data stackoff=rampadd_value_off
-				setcall err adddirectrel_base(ptrextra,stackoff,relindex,ptrvalue#)
-			endelse
+				If err!=noerr
+					Return err
+				EndIf
+			endif
+		endif
+		data ptrdatasec%ptrdatasec
+		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec)
+		return err
+	endif
+	
+	sd for_64;setcall for_64 is_for_64()
+	if ptrobject#==1
+		If ptrrelocbool#==true
+			#code
+			sd stackoff=rampadd_value_off
+			if for_64==(TRUE)
+				inc stackoff
+			endif
+			data ptrextra%ptrextra
+			setcall err adddirectrel_base(ptrextra,stackoff,relindex,ptrvalue#)
 			If err!=noerr
 				Return err
 			EndIf
 		EndIf
 	endif
-	if stack==false
-		data ptrdatasec%ptrdatasec
-		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec)
-	else
-		setcall err addtocodeforstack(ptrvalue#,rightstackpointer)
-	endelse
+	setcall err addtocodeforstack(ptrvalue#,rightstackpointer,for_64)
 	return err
 endfunction
 

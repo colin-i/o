@@ -203,7 +203,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		If errnr!=noerr
 			Return errnr
 		EndIf
-		call two64_test()
 	Else
 		if divmul==(TRUE)
 			#only at multcall and divcall

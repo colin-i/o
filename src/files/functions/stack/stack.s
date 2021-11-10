@@ -112,7 +112,7 @@ endfunction
 
 
 #er
-function addtocodeforstack(data value,data rightstackpointer)
+function addtocodeforstack(sd value,sd rightstackpointer,sd for_64)
 	data eax=eaxregnumber
 
 	data null=0
@@ -141,9 +141,11 @@ function addtocodeforstack(data value,data rightstackpointer)
 		set movtostack movreg
 		data sizereg=2+4
 		set size sizereg
-		
-		setcall err rex_w_if64();if err!=(noerror);return err;endif
 	endelse
+
+	if for_64==(TRUE)
+		call rex_w(#err);if err!=(noerror);return err;endif
+	endif
 
 	setcall rampindex addramp()
 	setcall rampindex neg(rampindex)
