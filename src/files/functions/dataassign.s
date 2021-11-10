@@ -281,7 +281,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	EndElse
 	if skipNumberValue==false
 		If typenumber!=constantsnr
-			#is a bug here with this line chars test={0x90,0x90,0x90};call addtosec(#test,3,ptrcodesec)
+			#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
 			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer)
 			If err!=noerr
 				Return err
