@@ -7,7 +7,8 @@ Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";
 	Chars cCONST_c="CONST";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
 Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT"
-Chars cSET_c="SET";Chars cSETX_c="SETX";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
+Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
+#                 ;Chars cSETX_c="SETX"
 Chars cLIBRARY_c="LIBRARY";
 Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX";
 Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRY_c="ENTRY";Chars cENTRYLINUX_c="ENTRYLINUX"
@@ -116,11 +117,11 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			Data *=cPRIMSEC
 			Data *=cSET
 			Data *=spacereq
-		Const cSETX=!-cPRIMSEC_top
-			data *^cSETX_c
-			Data *=cPRIMSEC
-			Data *=cSETX
-			Data *=spacereq
+		#Const cSETX=!-cPRIMSEC_top
+		#	data *^cSETX_c
+		#	Data *=cPRIMSEC
+		#	Data *=cSETX
+		#	Data *=spacereq
 		Const cADD=!-cPRIMSEC_top
 			data *^cADD_c
 			Data *=cPRIMSEC

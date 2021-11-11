@@ -69,14 +69,15 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		if subtype_test!=0
 			xor subtype (x_call_flag)
 			Set primcalltype true
-			if subtype==(cSETX)
-				if lowprim==(TRUE)
-					return "SetX is not encodable at an 8-bit argument."
-				endif
-				set subtype (cSET);call val64_phase_1()
-			endif
-		elseif subtype==(cSETX);return "SetX is used at SetXCall only.64 bit variables are not available at the moment."
-		endelseif
+			#if subtype==(cSETX)
+			#	if lowprim==(TRUE)
+			#		return "SetX is not encodable at an 8-bit argument."
+			#	endif
+			#	set subtype (cSET);call val64_phase_1()
+			#endif
+		#elseif subtype==(cSETX);return "SetX is used at SetXCall only.64 bit variables are not available at the moment."
+		#endelseif
+		endif
 		if subtype==(cSET)
 			Set opprim atmemtheproc
 		ElseIf subtype==(cADD)
@@ -195,7 +196,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				add opsec 1
 				sd is_sta;setcall is_sta is_stack(dataargprim)
 				if is_sta!=(NULL)
-					call val64_phase_1();call val64_phase_2()
+					call val64_phase_1();#call val64_phase_2()
 				endif
 			endelseif
 		endif
@@ -203,8 +204,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		If errnr!=noerr
 			Return errnr
 		EndIf
-	Else
-		if divmul==(TRUE)
+	Elseif divmul==(TRUE)
 			#only at multcall and divcall
 			chars transferreturntoecx={0x89,0xc1}
 			str ptrcall^transferreturntoecx
@@ -213,10 +213,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			If errnr!=noerr
 				Return errnr
 			EndIf
-		else
-			call val64_phase_2()
-		endelse
-	EndElse
+		#else
+		#	call val64_phase_2()
+		#endelse
+	EndElseif
 	
 	#write first arg, the second already was
 	set p_prefix# remind_first_prefix

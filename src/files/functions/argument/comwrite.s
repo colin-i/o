@@ -184,9 +184,11 @@ Function writeoperation(data location,chars operationopcode,data regprepare,data
 		set mod (RegReg)
 		set prefix# 0
 	endif
+			#chars teste={0x90};data codeq%ptrcodesec;call addtosec(#teste,1,codeq)
 	#reset the behaviour, return if (RegReg), write
 	SetCall errnr stack64_op(takeindex,#mod)
 	If errnr!=noerr;Return errnr;EndIf
+			#call addtosec(#teste,1,codeq)
 	SetCall actionmodrm formmodrm(mod,regopcode,takeindex)
 	
 	SetCall errnr val64_phase_3();If errnr!=noerr;Return errnr;EndIf

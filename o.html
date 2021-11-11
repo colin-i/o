@@ -697,8 +697,8 @@
 	</p>
   </div>
   <div>
-	64-bit objects with some 64-bit code commands for Microsoft calling convention can be created by adding <b>64Microsoft</b> at <i>Format ElfObj</i>.<br>
-	To call with Microsoft calling convention use <b>ImportX</b>. To set the 64-bit return value use <b>SetX</b>. To prepare 64-bit convention function entry use <b>FunctionX</b>.
+	64-bit objects with 64-bit stack data for Microsoft calling convention can be created by adding <b>64Microsoft</b> at <i>Format ElfObj</i>.<br>
+	To call with Microsoft calling convention use <b>ImportX</b>. To prepare 64-bit convention function entry use <b>FunctionX</b>.
 	<p>
 	Example:
 	<br>
@@ -706,9 +706,14 @@
         Format ElfObj64Microsoft<br>
         Entry main(data *argc,data *argv)<br>
         importx "printf" printf<br>
-        data returnvalue#1;data test#1<br>
-        setxcall returnvalue printf("Test: ")<br>
-        call printf("Low: %i, High: %i",returnvalue,test)<br>
+        if :!=8<br>
+          call printf("Not at 64 bits")<br>
+          return 1<br>
+        endif<br>
+        sd returnvalue<br>
+        setcall returnvalue printf("Test: ")<br>
+        sd b^returnvalue;add b 4<br>
+        call printf("Low: %i, High: %i",returnvalue,b#)<br>
         Return 1</a>
 	</p>
 	64-bit can be ignored from preferences.

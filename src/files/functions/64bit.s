@@ -106,12 +106,16 @@ function stack64_op(sd takeindex,sd p_mod)
 	call stack64_op_set_get((TRUE),(FALSE))
 	#return if outside mod=3
 	if p_mod#==(RegReg);return (noerror);endif
+	
+	sd err
+	SetCall err val64_phase_3();If err!=(noerror);Return err;EndIf
+	
 	#set outside mod=3
 	set p_mod# (RegReg)
 	#mov reg,[reg]
 	chars x=moveatprocthemem;chars y#1
 	setcall y formmodrm((mod_0),takeindex,takeindex)
-	sd err;data code%ptrcodesec
+	data code%ptrcodesec
 	setcall err addtosec(#x,2,code)
 	return err
 endfunction
@@ -132,13 +136,13 @@ endfunction
 function val64_phase_1()
 	sd b;setcall b is_for_64()
 	if b==(TRUE)
-		sd p;setcall p val64_p_get();set p# 1
+		sd p;setcall p val64_p_get();set p# (val64_willbe)
 	endif
 endfunction
-function val64_phase_2()
-	sd p;setcall p val64_p_get()
-	if p#==1;set p# (val64_willbe);endif
-endfunction
+#function val64_phase_2()
+#	sd p;setcall p val64_p_get()
+#	if p#==1;set p# (val64_willbe);endif
+#endfunction
 #er
 function val64_phase_3()
 	sd p;setcall p val64_p_get()
