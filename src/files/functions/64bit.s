@@ -139,10 +139,6 @@ function val64_phase_1()
 		sd p;setcall p val64_p_get();set p# (val64_willbe)
 	endif
 endfunction
-#function val64_phase_2()
-#	sd p;setcall p val64_p_get()
-#	if p#==1;set p# (val64_willbe);endif
-#endfunction
 #er
 function val64_phase_3()
 	sd p;setcall p val64_p_get()
@@ -156,10 +152,36 @@ function val64_p_get()
 	data x#1;return #x
 endfunction
 
-function function_call_64m(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd hex_x,sd conv)
+function winconv(sd dest,sd is_call)
+	if is_call==(TRUE)
+		#rcx,[rsp+0]
+		chars hex_1={REX_Operand_64,0x8B,0x0C,0x24}
+		#rdx,rsp+8
+		chars hex_2={REX_Operand_64,0x8B,0x54,0x24,0x08}
+		#r8,rsp+16
+		chars hex_3={REX_R8_15,0x8B,0x44,0x24,0x10}
+		#r9,rsp+24
+		chars hex_4={REX_R8_15,0x8B,0x4C,0x24,0x18}
+		set dest# #hex_1
+		add dest :;set dest# #hex_2
+		add dest :;set dest# #hex_3
+		return #hex_4
+	endif
+	const functionx_start=!
+	#mov [rsp+8h],rcx
+	chars functionx_code={REX_Operand_64,moveatmemtheproc,0x4C,0x24,0x08}
+	#mov [rsp+10h],rdx
+	chars *={REX_Operand_64,moveatmemtheproc,0x54,0x24,0x10}
+	#mov [rsp+18h],r8
+	chars *={REX_R8_15,moveatmemtheproc,0x44,0x24,0x18}
+	#mov [rsp+20h],r9
+	chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24,0x20}
+	set dest# (!-functionx_start)
+	return #functionx_code
+endfunction
+
+function function_call_64fm(sd nr_of_args,sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd code)
 	sd err
-	Data code%ptrcodesec
-	sd nr_of_args;setcall nr_of_args nr_of_args_64need()
 	if nr_of_args>0
 		SetCall err addtosec(hex_1,4,code);If err!=(noerror);Return err;EndIf
 		if nr_of_args>1
@@ -172,6 +194,14 @@ function function_call_64m(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd h
 			endif
 		endif
 	endif
+	return err
+endfunction
+function function_call_64f(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd hex_x,sd conv,sd code)
+	sd err
+	sd nr_of_args;setcall nr_of_args nr_of_args_64need()
+	#
+	setcall err function_call_64fm(nr_of_args,hex_1,hex_2,hex_3,hex_4,code);If err!=(noerror);Return err;EndIf
+	#
 	#shadow space
 	set args_push# conv
 	if nr_of_args<args_push#;set args_push# nr_of_args;endif
@@ -196,19 +226,13 @@ function function_call_64(sd is_callex,sd conv)
 	sd err
 	Data code%ptrcodesec
 	#
-	#rcx,[rsp+0]
-	chars hex_1={REX_Operand_64,0x8B,0x0C,0x24}
-	#rdx,rsp+8
-	chars hex_2={REX_Operand_64,0x8B,0x54,0x24,0x08}
-	#r8,rsp+16
-	chars hex_3={REX_R8_15,0x8B,0x44,0x24,0x10}
-	#r9,rsp+24
-	chars hex_4={REX_R8_15,0x8B,0x4C,0x24,0x18}
 	#sub esp,x;default 4 args stack space convention
 	chars hex_x={0x83,0xEC};chars args_push#1
-		
+	sd hex_1;sd hex_2;sd hex_3;sd hex_4
+	setcall hex_4 winconv(#hex_1,(TRUE))
+	#
 	if is_callex==(FALSE)
-		setcall err function_call_64m(#hex_1,#hex_2,#hex_3,#hex_4,#args_push,#hex_x,conv)
+		setcall err function_call_64f(hex_1,hex_2,hex_3,hex_4,#args_push,#hex_x,conv,code)
 		Return err
 	endif
 	#
@@ -229,47 +253,49 @@ function function_call_64(sd is_callex,sd conv)
 	set callex_jump (0x74)
 	#
 	set cmp_imm32 0
-	set j_off (4+7+5+7+5+7+5)
+	sd j_nr=5+7
+	set j_off conv;dec j_off;mult j_off j_nr;add j_off 4
 	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(#hex_1,4,code);If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(hex_1,4,code);If err!=(noerror);Return err;EndIf
 	#
 		set cmp_imm32 1
-		set j_off (5+7+5+7+5)
+		sub j_off j_nr;inc j_off
 		SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(#hex_2,5,code);If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
 	#
 			set cmp_imm32 2
-			set j_off (5+7+5)
+			sub j_off j_nr
 			SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-				SetCall err addtosec(#hex_3,5,code);If err!=(noerror);Return err;EndIf
+				SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
 	#
 				set cmp_imm32 3
-				set j_off (5)
+				sub j_off j_nr
 				SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-					SetCall err addtosec(#hex_4,5,code);If err!=(noerror);Return err;EndIf
+					SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
 	#jump if above
 	set callex_jump (0x77)
 	set args_push (qwsz)
-	#4*REX.W
-	data jump64#1;set jump64 conv
 	#
 	set cmp_imm32 3
-	set j_off (3+7+3+7+3+7+3);add j_off jump64
+	set j_nr (3+7)
+	set j_off conv;dec j_off;mult j_off j_nr;add j_off 3
+	#4*REX.W
+	add j_off conv
 	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-		subcall jump64 rex_w(#err);If err!=(noerror);Return err;EndIf
+		subcall j_off rex_w(#err);If err!=(noerror);Return err;EndIf
 		SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
 		set cmp_imm32 2
-		set j_off (3+7+3+7+3);add j_off jump64
+		sub j_off j_nr
 		SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-			subcall jump64 rex_w(#err);If err!=(noerror);Return err;EndIf
+			subcall j_off rex_w(#err);If err!=(noerror);Return err;EndIf
 			SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
 			set cmp_imm32 1
-			set j_off (3+7+3);add j_off jump64
+			sub j_off j_nr
 			SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-				subcall jump64 rex_w(#err);If err!=(noerror);Return err;EndIf
+				subcall j_off rex_w(#err);If err!=(noerror);Return err;EndIf
 				SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
 				set cmp_imm32 0
-				set j_off (3);add j_off jump64
+				sub j_off j_nr
 				SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
 					call rex_w(#err);If err!=(noerror);Return err;EndIf
 					SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
@@ -278,17 +304,11 @@ endfunction
 #err
 function function_start_64()
 	Data code%ptrcodesec
+	sd data;sd sz
+	setcall data winconv(#sz,(FALSE))
 	sd err
-	const functionx_start=!
-	#mov [rsp+8h],rcx
-	chars functionx_code={REX_Operand_64,moveatmemtheproc,0x4C,0x24,0x08}
-	#mov [rsp+10h],rdx
-	chars *={REX_Operand_64,moveatmemtheproc,0x54,0x24,0x10}
-	#mov [rsp+18h],r8
-	chars *={REX_R8_15,moveatmemtheproc,0x44,0x24,0x18}
-	#mov [rsp+20h],r9
-	chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24,0x20}
-	SetCall err addtosec(#functionx_code,(!-functionx_start),code)
+	SetCall err addtosec(data,sz,code)
+	return err
 endfunction
 #err
 function callex64_call(sd conv)
