@@ -13,7 +13,7 @@ if errormsg==(noerror)
 			#
 			sd callex64;setcall callex64 is_for_64_is_impX_or_fnX_get()
 			if callex64==(TRUE)
-				setcall errormsg callex64_call((microsoft_convention_preset_args))
+				setcall errormsg callex64_call()
 			endif
 			#
 			if errormsg==(noerror)

@@ -28,6 +28,9 @@ If formatresponse==false
 					set p_is_for_64_resp# (FALSE)
 				endif
 			endif
+			if p_is_for_64_resp#==(TRUE)
+				call convdata((convdata_init),4)
+			endif
 			Set object true
 			SetCall errormsg elfaddstrsym(ptrnull,null,null,null,null,null,ptrtable)
 			If errormsg==noerr

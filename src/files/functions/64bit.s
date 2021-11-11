@@ -152,32 +152,45 @@ function val64_p_get()
 	data x#1;return #x
 endfunction
 
-function winconv(sd dest,sd is_call)
-	if is_call==(TRUE)
+const convdata_total=0
+const convdata_call=1
+const convdata_fn=2
+const convdata_init=3
+function convdata(sd type,sd dest)
+	if type==(convdata_total)
+		data nr_of_args#1
+		return nr_of_args
+	elseif type==(convdata_call)
 		#rcx,[rsp+0]
-		chars hex_1={REX_Operand_64,0x8B,0x0C,0x24}
+		chars hex_3={REX_Operand_64,0x8B};chars c3#1;chars *=0x24
 		#rdx,rsp+8
-		chars hex_2={REX_Operand_64,0x8B,0x54,0x24,0x08}
+		chars hex_4={REX_Operand_64,0x8B};chars c4#1;chars *={0x24,0x08}
 		#r8,rsp+16
-		chars hex_3={REX_R8_15,0x8B,0x44,0x24,0x10}
+		chars hex_5={REX_R8_15,0x8B,0x44,0x24,0x10}
 		#r9,rsp+24
-		chars hex_4={REX_R8_15,0x8B,0x4C,0x24,0x18}
-		set dest# #hex_1
-		add dest :;set dest# #hex_2
-		add dest :;set dest# #hex_3
-		return #hex_4
-	endif
-	const functionx_start=!
-	#mov [rsp+8h],rcx
-	chars functionx_code={REX_Operand_64,moveatmemtheproc,0x4C,0x24,0x08}
-	#mov [rsp+10h],rdx
-	chars *={REX_Operand_64,moveatmemtheproc,0x54,0x24,0x10}
-	#mov [rsp+18h],r8
-	chars *={REX_R8_15,moveatmemtheproc,0x44,0x24,0x18}
-	#mov [rsp+20h],r9
-	chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24,0x20}
-	set dest# (!-functionx_start)
-	return #functionx_code
+		chars hex_6={REX_R8_15,0x8B,0x4C,0x24,0x18}
+		set dest# #hex_3
+		add dest :;set dest# #hex_4
+		add dest :;set dest# #hex_5
+		return #hex_6
+	elseif type==(convdata_fn)
+		const functionx_start=!
+		#mov [rsp+8h],rcx
+		chars functionx_code={REX_Operand_64,moveatmemtheproc};chars f3#1;chars *={0x24,0x08}
+		#mov [rsp+10h],rdx
+		chars *={REX_Operand_64,moveatmemtheproc};chars f4#1;chars *={0x24,0x10}
+		#mov [rsp+18h],r8
+		chars *={REX_R8_15,moveatmemtheproc,0x44,0x24,0x18}
+		#mov [rsp+20h],r9
+		chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24,0x20}
+		set dest# (!-functionx_start)
+		return #functionx_code
+	endelseif
+	set nr_of_args dest
+	set c3 0x0C
+	set c4 0x54
+	set f3 0x4C
+	set f4 0x54
 endfunction
 
 function function_call_64fm(sd nr_of_args,sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd code)
@@ -194,7 +207,7 @@ function function_call_64fm(sd nr_of_args,sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd
 			endif
 		endif
 	endif
-	return err
+	return (noerror)
 endfunction
 function function_call_64f(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd hex_x,sd conv,sd code)
 	sd err
@@ -222,14 +235,15 @@ function function_call_64f(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd h
 	else;set code_pointer# (0x72);endelse
 	return (noerror)
 endfunction
-function function_call_64(sd is_callex,sd conv)
+function function_call_64(sd is_callex)
+	sd conv;setcall conv convdata((convdata_total))
 	sd err
 	Data code%ptrcodesec
 	#
 	#sub esp,x;default 4 args stack space convention
 	chars hex_x={0x83,0xEC};chars args_push#1
 	sd hex_1;sd hex_2;sd hex_3;sd hex_4
-	setcall hex_4 winconv(#hex_1,(TRUE))
+	setcall hex_4 convdata((convdata_call),#hex_1)
 	#
 	if is_callex==(FALSE)
 		setcall err function_call_64f(hex_1,hex_2,hex_3,hex_4,#args_push,#hex_x,conv,code)
@@ -305,13 +319,14 @@ endfunction
 function function_start_64()
 	Data code%ptrcodesec
 	sd data;sd sz
-	setcall data winconv(#sz,(FALSE))
+	setcall data convdata((convdata_fn),#sz)
 	sd err
 	SetCall err addtosec(data,sz,code)
 	return err
 endfunction
 #err
-function callex64_call(sd conv)
+function callex64_call()
+	sd conv;setcall conv convdata((convdata_total))
 	#Stack aligned on 16 bytes.
 	const callex64_start=!
 	#bt rsp,3 (bit offset 3)
