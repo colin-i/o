@@ -248,13 +248,9 @@ function function_call_64(sd is_callex)
 		Return err
 	endif
 	##
-	#mov rax,rbx
-	chars find_args={REX_Operand_64,0x8b,0xc3}
-	#sub rax,rsp
-	chars *={REX_Operand_64,0x2b,0xc4}
-	#edx=0;ecx=QWORD;div edx:eax,ecx
-	chars *=0xba;data *=0;chars *=0xb9;data *=qwsz;chars *={0xF7,0xF1}
-	SetCall err addtosec(#find_args,0x12,code);If err!=(noerror);Return err;EndIf
+	#mov edx,eax
+	chars find_args={0x8b,edxregnumber|regregmod}
+	SetCall err addtosec(#find_args,2,code);If err!=(noerror);Return err;EndIf
 	#
 	#convention and shadow space
 	#cmp eax,imm32
@@ -274,25 +270,21 @@ function function_call_64(sd is_callex)
 	chars *={0xb1,5}
 	#mult al cl
 	chars *={0xf6,4*toregopcode|ecxregnumber|regregmod}
-	#jump
-	chars *={0xeb,10}
+	#call
+	chars *={0xe8,0,0,0,0}
 	#pop c
 	chars *=0x59
 	#add rax rcx    can be --image-base=int64 but more than 0xff000000 x64 dbg says invalid but there is int64 rip in parent x64 debug
 	chars *={REX_Operand_64,0x01,ecxregnumber|regregmod}
 	#pop a
 	chars *=0x58
-	#add ecx,2
-	chars *={0x83,ecxregnumber|regregmod,2}
+	#add rcx,imm8
+	chars *={REX_Operand_64,0x83,ecxregnumber|regregmod,11}
 	#j cl
 	chars *={0xff,4*toregopcode|ecxregnumber|regregmod}
-	#call
-	chars *={0xe8,0,0,0,0}
-	#jump back
-	chars *={0xeb,-17}
-	set j_off 29
+	set j_off 26
 	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-	SetCall err addtosec(#callex_conv,29,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#callex_conv,26,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
@@ -358,6 +350,7 @@ function callex64_call()
 	#4% sub rsp,8
 	chars *={REX_Operand_64,0x83,0xEC};chars *=8
 	#$
+	chars *keep_nr_args={0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
 	sd ptrcodesec%ptrcodesec
 	sd err
 	SetCall err addtosec(#callex64_code,(!-callex64_start),ptrcodesec)

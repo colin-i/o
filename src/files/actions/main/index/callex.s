@@ -21,38 +21,28 @@ if errormsg==(noerror)
 				# ## cmp ecx,0
 				chars callex_c1={0x81,0xf9};data *=0
 				#je ###
-				chars *={0x74};chars callex_je#1
-					#dec ecx
-					chars *=0xFF;chars *=1*toregopcode|ecxregnumber|0xc0
-				const callex_size1=!-callex_start
-					# mov [eax+ecx*4],edx  this is gdb view
-					chars callex_c2=0x8b;chars *=edxregnumber*toregopcode|4;chars callex_sib#1
-					#push e(r)dx
-					chars *=0x52
-					#jmp ##
-					chars *=0xEB;chars callex_jmp#1
+				chars *={0x74};chars *callex_je=7
+				#dec ecx
+				chars *=0xFF;chars *=1*toregopcode|ecxregnumber|0xc0
+				#const callex_size1=!-callex_start
+				# push [eax+ecx*4]  this is gdb view
+				chars *callex_c2=0xff;chars *=6*toregopcode|espregnumber;chars callex_sib#1
+				#jmp ##
+				chars *=0xEB;chars *callex_jmp=0xf1
 				# ###
-				const callex_size2=!-callex_start-callex_size1
-				#set jumps and mov.sib: index ecx and base eax
-				set callex_sib 8
-				#set jumps,index*4(2) or *8(3)
+				const callex_size=!-callex_start
+				#
+				#set mov.sib: index ecx and base eax
+				set callex_sib (ecxregnumber*toregopcode)
 				sd callex_bool;setcall callex_bool is_for_64()
-				set callex_je 0x08;set callex_jmp 0xf0
 				if callex_bool==(FALSE);or callex_sib (2*tomod)
 				else;#for 64
 					or callex_sib (3*tomod)
-					inc callex_je;dec callex_jmp
 				endelse
 				#
-				SetCall errormsg addtosec(#callex_c1,(callex_size1),ptrcodesec)
+				SetCall errormsg addtosec(#callex_c1,(callex_size),ptrcodesec)
 				if errormsg==(noerror)
-					if callex_bool==(TRUE);call rex_w(#errormsg);endif
-					if errormsg==(noerror)
-						SetCall errormsg addtosec(#callex_c2,(callex_size2),ptrcodesec)
-						if errormsg==(noerror)
-							setcall errormsg write_function_call(top_data,bool_indirect,(TRUE))
-						endif
-					endif
+					setcall errormsg write_function_call(top_data,bool_indirect,(TRUE))
 				endif
 			endif
 		endif
