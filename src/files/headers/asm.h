@@ -29,6 +29,8 @@ Const mod_0=0
 Const disp32=2
 Const RegReg=3
 
+const regregmod=RegReg*tomod
+
 #regopcodes
 Const noregnumber=-1
 Const eaxregnumber=0

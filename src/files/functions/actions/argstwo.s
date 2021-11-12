@@ -267,18 +267,17 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Chars d4_0#1
 			Chars d4_1#1
 			
-			Const bitsregreg=RegReg*8*8
 			Const bitsedxregop=edxregnumber*8
 			Const bitsahregop=ahregnumber*8
 			Const bitsnotop=Notregopcode*8
 
-			Const pre1_1_h=bitsregreg|bitsedxregop|edxregnumber
+			Const pre1_1_h=regregmod|bitsedxregop|edxregnumber
 			Chars predef1_1_high={pre1_1_h}
-			Const pre4_1_h=bitsregreg|bitsnotop|edxregnumber
+			Const pre4_1_h=regregmod|bitsnotop|edxregnumber
 			Chars predef4_1_high={pre4_1_h}
-			Const pre1_1_l=bitsregreg|bitsahregop|ahregnumber
+			Const pre1_1_l=regregmod|bitsahregop|ahregnumber
 			Chars predef1_1_low={pre1_1_l}
-			Const pre4_1_l=bitsregreg|bitsnotop|ahregnumber
+			Const pre4_1_l=regregmod|bitsnotop|ahregnumber
 			Chars predef4_1_low={pre4_1_l}
 
 			Str setdivsign^d1_0

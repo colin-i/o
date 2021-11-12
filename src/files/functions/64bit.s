@@ -69,12 +69,10 @@ endfunction
 
 
 ##REX_W
-#size of prefix(=1)
 function rex_w(sd p_err)
 	Data code%ptrcodesec
-	chars r=REX_Operand_64;data sz=1
-	SetCall p_err# addtosec(#r,sz,code)
-	return sz
+	chars r=REX_Operand_64
+	SetCall p_err# addtosec(#r,1,code)
 endfunction
 #er
 function rex_w_if64()
@@ -162,7 +160,7 @@ function convdata(sd type,sd dest)
 		return nr_of_args
 	elseif type==(convdata_call)
 		#rcx,[rsp+0]
-		chars hex_3={REX_Operand_64,0x8B};chars c3#1;chars *=0x24
+		chars hex_3={REX_Operand_64,0x8B};chars c3#1;chars *=0x24;chars *=0
 		#rdx,rsp+8
 		chars hex_4={REX_Operand_64,0x8B};chars c4#1;chars *={0x24,0x08}
 		#r8,rsp+16
@@ -209,20 +207,22 @@ function function_call_64fm(sd nr_of_args,sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd
 	endif
 	return (noerror)
 endfunction
-function function_call_64f(sd hex_1,sd hex_2,sd hex_3,sd hex_4,ss args_push,sd hex_x,sd conv,sd code)
+function function_call_64f(sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd conv,sd code)
 	sd err
 	sd nr_of_args;setcall nr_of_args nr_of_args_64need()
 	#
 	setcall err function_call_64fm(nr_of_args,hex_1,hex_2,hex_3,hex_4,code);If err!=(noerror);Return err;EndIf
 	#
 	#shadow space
-	set args_push# conv
-	if nr_of_args<args_push#;set args_push# nr_of_args;endif
-	sub args_push# conv;mult args_push# -1
-	if args_push#!=0
-		mult args_push# (qwsz)
+	#sub esp,x;default 4 args stack space convention
+	chars hex_X={0x83,0xEC};chars argspush#1
+	set argspush conv
+	if nr_of_args<argspush;set argspush nr_of_args;endif
+	sub argspush conv;mult argspush -1
+	if argspush!=0
+		mult argspush (qwsz)
 		call rex_w(#err);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(hex_x,3,code);If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(hex_X,3,code);If err!=(noerror);Return err;EndIf
 	endif
 	#stack align,more to see when the offset was taken
 	sd stack_align_p;setcall stack_align_p stack_align_off_p_get()
@@ -240,20 +240,13 @@ function function_call_64(sd is_callex)
 	sd err
 	Data code%ptrcodesec
 	#
-	#sub esp,x;default 4 args stack space convention
-	chars hex_x={0x83,0xEC};chars args_push#1
 	sd hex_1;sd hex_2;sd hex_3;sd hex_4
 	setcall hex_4 convdata((convdata_call),#hex_1)
 	#
 	if is_callex==(FALSE)
-		setcall err function_call_64f(hex_1,hex_2,hex_3,hex_4,#args_push,#hex_x,conv,code)
+		setcall err function_call_64f(hex_1,hex_2,hex_3,hex_4,conv,code)
 		Return err
 	endif
-	#
-	#cmp eax,imm32
-	chars cmp_je=0x3d;data cmp_imm32#1
-	#jump
-	chars callex_jump#1;chars j_off#1
 	##
 	#mov eax,ebx
 	chars find_args={0x8b,0xc3}
@@ -261,59 +254,58 @@ function function_call_64(sd is_callex)
 	chars *={0x2b,0xc4}
 	#edx=0;ecx=QWORD;div edx:eax,ecx
 	chars *=0xba;data *=0;chars *=0xb9;data *=qwsz;chars *={0xF7,0xF1}
-	#
 	SetCall err addtosec(#find_args,0x10,code);If err!=(noerror);Return err;EndIf
-	#jump if equal
-	set callex_jump (0x74)
 	#
-	set cmp_imm32 0
-	sd j_nr=5+7
-	set j_off conv;dec j_off;mult j_off j_nr;add j_off 4
-	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(hex_1,4,code);If err!=(noerror);Return err;EndIf
-	#
-		set cmp_imm32 1
-		sub j_off j_nr;inc j_off
-		SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
-	#
-			set cmp_imm32 2
-			sub j_off j_nr
-			SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-				SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
-	#
-				set cmp_imm32 3
-				sub j_off j_nr
-				SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-					SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
+	#convention and shadow space
+	#cmp eax,imm32
+	chars cmp_je=0x3d;data cmp_imm32#1
+	set cmp_imm32 conv;dec cmp_imm32
 	#jump if above
-	set callex_jump (0x77)
-	set args_push (qwsz)
+	chars *callex_jump=0x77;chars j_off#1
 	#
-	set cmp_imm32 3
-	set j_nr (3+7)
-	set j_off conv;dec j_off;mult j_off j_nr;add j_off 3
-	#4*REX.W
-	add j_off conv
+	#convention gdb view
+	#push a
+	chars callex_conv=0x50
+	#neg al
+	chars *={0xf6,3*toregopcode|regregmod}
+	#add al 4
+	chars *={0x80,regregmod,4}
+	#mov cl 5
+	chars *={0xb1,5}
+	#mult al cl
+	chars *={0xf6,4*toregopcode|ecxregnumber|regregmod}
+	#mov al cl
+	chars *={0x88,ecxregnumber*toregopcode|regregmod}
+	#pop a
+	chars *=0x58
+	#j cl
+	chars *={0xff,4*toregopcode|ecxregnumber|regregmod}
+	set j_off 15
 	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-		subcall j_off rex_w(#err);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
-		set cmp_imm32 2
-		sub j_off j_nr
-		SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-			subcall j_off rex_w(#err);If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
-			set cmp_imm32 1
-			sub j_off j_nr
-			SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-				subcall j_off rex_w(#err);If err!=(noerror);Return err;EndIf
-				SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
-				set cmp_imm32 0
-				sub j_off j_nr
-				SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-					call rex_w(#err);If err!=(noerror);Return err;EndIf
-					SetCall err addtosec(#hex_x,3,code);If err!=(noerror);Return err;EndIf
-	return (noerror)
+	SetCall err addtosec(#callex_conv,15,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
+	ss rspwithoffset;set rspwithoffset hex_1;add rspwithoffset 2;or rspwithoffset# 0x40
+	SetCall err addtosec(hex_1,5,code);If err!=(noerror);Return err;EndIf
+	xor rspwithoffset# 0x40
+	#
+	#shadow space
+	#neg al
+	chars callex_shadow={0xf6,3*toregopcode|regregmod}
+	#add al 3
+	chars *={0x04,4}
+	#push qwordsz
+	chars *={0x6a,qwsz}
+	#mult al [esp]
+	chars *={0xf6,4*toregopcode|espregnumber}
+	#sub esp,al
+	chars *={REX_Operand_64,0x2b,espregnumber|regregmod}
+	#
+	set j_off 11
+	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#callex_shadow,11,code)
+	return err
 endfunction
 #err
 function function_start_64()
