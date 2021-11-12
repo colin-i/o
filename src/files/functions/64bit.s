@@ -222,7 +222,7 @@ function function_call_64f(sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd conv,sd code)
 	if argspush!=0
 		mult argspush (qwsz)
 		call rex_w(#err);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(hex_X,3,code);If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(#hex_X,3,code);If err!=(noerror);Return err;EndIf
 	endif
 	#stack align,more to see when the offset was taken
 	sd stack_align_p;setcall stack_align_p stack_align_off_p_get()
@@ -248,13 +248,13 @@ function function_call_64(sd is_callex)
 		Return err
 	endif
 	##
-	#mov eax,ebx
-	chars find_args={0x8b,0xc3}
-	#sub eax,esp
-	chars *={0x2b,0xc4}
+	#mov rax,rbx
+	chars find_args={REX_Operand_64,0x8b,0xc3}
+	#sub rax,rsp
+	chars *={REX_Operand_64,0x2b,0xc4}
 	#edx=0;ecx=QWORD;div edx:eax,ecx
 	chars *=0xba;data *=0;chars *=0xb9;data *=qwsz;chars *={0xF7,0xF1}
-	SetCall err addtosec(#find_args,0x10,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#find_args,0x12,code);If err!=(noerror);Return err;EndIf
 	#
 	#convention and shadow space
 	#cmp eax,imm32
@@ -263,7 +263,7 @@ function function_call_64(sd is_callex)
 	#jump if above
 	chars *callex_jump=0x77;chars j_off#1
 	#
-	#convention gdb view
+	#convention gdb view,and gui view
 	#push a
 	chars callex_conv=0x50
 	#neg al
@@ -274,15 +274,25 @@ function function_call_64(sd is_callex)
 	chars *={0xb1,5}
 	#mult al cl
 	chars *={0xf6,4*toregopcode|ecxregnumber|regregmod}
-	#mov al cl
-	chars *={0x88,ecxregnumber*toregopcode|regregmod}
+	#jump
+	chars *={0xeb,9}
+	#pop c
+	chars *=0x59
+	#add eax ecx
+	chars *={0x01,ecxregnumber|regregmod}
 	#pop a
 	chars *=0x58
+	#add ecx,2
+	chars *={0x83,ecxregnumber|regregmod,2}
 	#j cl
 	chars *={0xff,4*toregopcode|ecxregnumber|regregmod}
-	set j_off 15
+	#call
+	chars *={0xe8,0,0,0,0}
+	#jump back
+	chars *={0xeb,-16}
+	set j_off 28
 	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-	SetCall err addtosec(#callex_conv,15,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#callex_conv,28,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
@@ -294,17 +304,17 @@ function function_call_64(sd is_callex)
 	#neg al
 	chars callex_shadow={0xf6,3*toregopcode|regregmod}
 	#add al 3
-	chars *={0x04,4}
+	chars *={0x04,3}
 	#push qwordsz
 	chars *={0x6a,qwsz}
-	#mult al [esp]
-	chars *={0xf6,4*toregopcode|espregnumber}
-	#sub esp,al
-	chars *={REX_Operand_64,0x2b,espregnumber|regregmod}
+	#mul al [esp]
+	chars *={0xf6,4*toregopcode|espregnumber,espregnumber*toregopcode|espregnumber}
+	#sub rsp,rax
+	chars *={REX_Operand_64,0x2b,espregnumber*toregopcode|regregmod}
 	#
-	set j_off 11
+	set j_off 12
 	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-	SetCall err addtosec(#callex_shadow,11,code)
+	SetCall err addtosec(#callex_shadow,12,code)
 	return err
 endfunction
 #err
