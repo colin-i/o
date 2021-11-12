@@ -275,11 +275,11 @@ function function_call_64(sd is_callex)
 	#mult al cl
 	chars *={0xf6,4*toregopcode|ecxregnumber|regregmod}
 	#jump
-	chars *={0xeb,9}
+	chars *={0xeb,10}
 	#pop c
 	chars *=0x59
-	#add eax ecx
-	chars *={0x01,ecxregnumber|regregmod}
+	#add rax rcx    can be --image-base=int64 but more than 0xff000000 x64 dbg says invalid but there is int64 rip in parent x64 debug
+	chars *={REX_Operand_64,0x01,ecxregnumber|regregmod}
 	#pop a
 	chars *=0x58
 	#add ecx,2
@@ -289,10 +289,10 @@ function function_call_64(sd is_callex)
 	#call
 	chars *={0xe8,0,0,0,0}
 	#jump back
-	chars *={0xeb,-16}
-	set j_off 28
+	chars *={0xeb,-17}
+	set j_off 29
 	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
-	SetCall err addtosec(#callex_conv,28,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#callex_conv,29,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
