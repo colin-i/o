@@ -30,10 +30,10 @@ If formatresponse==false
 			elseif p_is_for_64_resp#==(TRUE)
 				if neg_64#==0
 					call convdata((convdata_init),(variable_convention))
-				elseif (variable_convention)==(first_convention)
-					call convdata((convdata_init),(second_convention))
+				elseif (variable_convention)==(ms_convention)
+					call convdata((convdata_init),(lin_convention))
 				else
-					call convdata((convdata_init),(first_convention))
+					call convdata((convdata_init),(ms_convention))
 				endelse
 			endelseif
 			Set object true

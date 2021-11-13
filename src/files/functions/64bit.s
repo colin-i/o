@@ -171,7 +171,7 @@ function convdata(sd type,sd dest)
 		chars hex_5={REX_R8_15,moveatprocthemem,0x44,0x24};chars c5o#1
 		#r9,rsp+
 		chars hex_6={REX_R8_15,moveatprocthemem,0x4C,0x24};chars c6o#1
-		if nr_of_args!=(first_convention)
+		if nr_of_args==(lin_convention)
 			set dest# #hex_1
 			incst dest;set dest# #hex_2
 			incst dest
@@ -194,7 +194,7 @@ function convdata(sd type,sd dest)
 		chars *={REX_R8_15,moveatmemtheproc,0x44,0x24};chars f5o#1
 		#mov [rsp++20h],r9
 		chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24};chars f6o#1
-		if nr_of_args==(first_convention)
+		if nr_of_args==(ms_convention)
 			set dest# (!-functionx_start)
 			return #functionx_code
 		else
@@ -203,7 +203,7 @@ function convdata(sd type,sd dest)
 		endelse
 	endelseif
 	set nr_of_args dest
-	if nr_of_args==(first_convention)
+	if nr_of_args==(ms_convention)
 		set c3 0x0C;set c3o 0
 		set c4 0x54;set c4o 8
 		set c5o 16;set c6o 24
@@ -230,7 +230,7 @@ function function_call_64fm(sd nr_of_args,sd hex_n,sd conv,sd code)
 				incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
 				if nr_of_args>3
 					incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
-					if conv!=(first_convention)
+					if conv==(lin_convention)
 						if nr_of_args>4
 							incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
 							if nr_of_args>5
@@ -250,16 +250,12 @@ function function_call_64f(sd hex_n,sd conv,sd code)
 	#
 	setcall err function_call_64fm(nr_of_args,hex_n,conv,code);If err!=(noerror);Return err;EndIf
 	#
-	#shadow space
-	#sub esp,x;default win4/lin.. args stack space convention
-	chars hex_X={0x83,0xEC};chars argspush#1
-	set argspush conv
-	if nr_of_args<argspush;set argspush nr_of_args;endif
-	sub argspush conv;mult argspush -1
-	if argspush!=0
-		mult argspush (qwsz)
-		call rex_w(#err);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(#hex_X,3,code);If err!=(noerror);Return err;EndIf
+	if nr_of_args<conv
+		#shadow space
+		#sub esp,x;default win4/lin.. args stack space convention
+		chars hex_X={REX_Operand_64,0x83,0xEC};chars argspush#1
+		set argspush nr_of_args;sub argspush conv;mult argspush (-1*qwsz)
+		SetCall err addtosec(#hex_X,4,code);If err!=(noerror);Return err;EndIf
 	endif
 	#stack align,more to see when the offset was taken
 	sd stack_align_p;setcall stack_align_p stack_align_off_p_get()
@@ -276,7 +272,17 @@ function function_call_64(sd is_callex)
 	sd conv;setcall conv convdata((convdata_total))
 	sd err
 	Data code%ptrcodesec
-	#
+	setcall err function_call_64_base(is_callex,conv,code)
+	if err!=(noerror);return err;endif
+	if conv==(lin_convention)
+		#no shadow space at lin calls
+		chars add_esp_conv8={REX_Operand_64,0x83,regregmod|espregnumber};chars *=lin_convention*qwsz
+		SetCall err addtosec(#add_esp_conv8,4,code)
+	endif
+	return err
+endfunction
+function function_call_64_base(sd is_callex,sd conv,sd code)
+	sd err
 	sd hex_1;sd hex_2;sd hex_3;sd hex_4;sd hex_5;sd hex_6
 	call convdata((convdata_call),#hex_1)
 	#
@@ -301,8 +307,8 @@ function function_call_64(sd is_callex)
 	chars callex_conv=0x50
 	#neg al
 	chars *={0xf6,3*toregopcode|regregmod}
-	#add al 4
-	chars *={0x80,regregmod,4}
+	#add al conv
+	chars *=0x04;chars conv_neg#1
 	#mov cl 5
 	chars *={0xb1,5}
 	#mult al cl
@@ -319,25 +325,12 @@ function function_call_64(sd is_callex)
 	chars *={REX_Operand_64,0x83,ecxregnumber|regregmod,11}
 	#j cl
 	chars *={0xff,4*toregopcode|ecxregnumber|regregmod}
-	set j_off 26
-	SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
-	SetCall err addtosec(#callex_conv,26,code);If err!=(noerror);Return err;EndIf
-	if conv!=(first_convention)
-		SetCall err addtosec(hex_6,5,code);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(hex_5,5,code);If err!=(noerror);Return err;EndIf
-	endif
-	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
-	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
-	SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
-	ss rspwithoffset;set rspwithoffset hex_1;add rspwithoffset 2;or rspwithoffset# 0x40
-	SetCall err addtosec(hex_1,5,code);If err!=(noerror);Return err;EndIf
-	xor rspwithoffset# 0x40
 	#
-	#shadow space
+	#and shadow space data
 	#neg al
 	chars callex_shadow={0xf6,3*toregopcode|regregmod}
-	#add al 3
-	chars *={0x04,3}
+	#add al conv-1
+	chars *=0x04;chars shadow_neg#1
 	#push qwordsz
 	chars *={0x6a,qwsz}
 	#mul al [esp]
@@ -345,6 +338,23 @@ function function_call_64(sd is_callex)
 	#sub rsp,rax
 	chars *={REX_Operand_64,0x2b,espregnumber*toregopcode|regregmod}
 	#
+	set conv_neg conv;set shadow_neg conv;dec shadow_neg
+	#
+	set j_off 25
+	SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#callex_conv,25,code);If err!=(noerror);Return err;EndIf
+	if conv==(lin_convention)
+		SetCall err addtosec(hex_6,5,code);If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(hex_5,5,code);If err!=(noerror);Return err;EndIf
+	endif
+	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
+	ss rspwithoffset;set rspwithoffset hex_1;add rspwithoffset 2;or rspwithoffset# (disp8mod)
+	SetCall err addtosec(hex_1,5,code);If err!=(noerror);Return err;EndIf
+	xor rspwithoffset# (disp8mod)
+	#
+	#shadow space
 	set j_off 12
 	SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(#callex_shadow,12,code)

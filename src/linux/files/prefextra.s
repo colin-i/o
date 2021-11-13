@@ -1,5 +1,5 @@
 
-const variable_convention=second_convention
+const variable_convention=lin_convention
 
 #err
 function prefextra(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)

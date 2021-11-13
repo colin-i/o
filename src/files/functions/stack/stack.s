@@ -117,7 +117,7 @@ function addtocodeforstack(sd value,sd rightstackpointer,sd for_64)
 
 	data null=0
 	chars movtostack#1
-	chars *modrm=disp32*tomod|ebxregnumber
+	chars *modrm=disp32mod|ebxregnumber
 	data rampindex#1
 	data rampvalue#1
 

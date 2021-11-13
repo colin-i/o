@@ -30,6 +30,7 @@ Const disp32=2
 Const RegReg=3
 
 const disp8mod=disp8*tomod
+const disp32mod=disp32*tomod
 const regregmod=RegReg*tomod
 
 #regopcodes
