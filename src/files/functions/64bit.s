@@ -183,7 +183,13 @@ function convdata(sd type,sd dest)
 		return (void)
 	elseif type==(convdata_fn)
 		const functionxlin_start=!
-		chars functionxlin_code={REX_Operand_64,moveatmemtheproc,ediregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
+		#pop a
+		chars functionxlin_code=0x58
+		#sub esp,conv8
+		chars *={REX_Operand_64,0x83,5*toregopcode|regregmod|espregnumber};chars *=lin_convention*qwsz
+		#push a
+		chars *=0x50
+		chars *={REX_Operand_64,moveatmemtheproc,ediregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
 		chars *={REX_Operand_64,moveatmemtheproc,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,16}
 		const functionx_start=!
 		#mov [rsp++8h],rcx
