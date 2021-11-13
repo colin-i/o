@@ -33,6 +33,6 @@ Log import functions
 0 is No; 1 is Yes
 log_import_functions=1
 
-Ignore 64-bits tags if detected
-0 is No; 1 is Yes
-neg_64=0
+Ignore elfobj64
+0 is No,use microsoft convention; 1 is Yes; 2 is No,use linux convention if ocompiler was compiled for linux,else use microsoft
+neg_64=2

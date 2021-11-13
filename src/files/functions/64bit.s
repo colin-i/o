@@ -159,62 +159,99 @@ function convdata(sd type,sd dest)
 		data nr_of_args#1
 		return nr_of_args
 	elseif type==(convdata_call)
-		#rcx,[rsp+0]
-		chars hex_3={REX_Operand_64,0x8B};chars c3#1;chars *=0x24;chars *=0
-		#rdx,rsp+8
-		chars hex_4={REX_Operand_64,0x8B};chars c4#1;chars *={0x24,0x08}
-		#r8,rsp+16
-		chars hex_5={REX_R8_15,0x8B,0x44,0x24,0x10}
-		#r9,rsp+24
-		chars hex_6={REX_R8_15,0x8B,0x4C,0x24,0x18}
+		#rdi
+		chars hex_1={REX_Operand_64,moveatprocthemem,ediregnumber*toregopcode|espregnumber,0x24,0}
+		#rsi
+		chars hex_2={REX_Operand_64,moveatprocthemem,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
+		#rcx/rdx,rsp+
+		chars hex_3={REX_Operand_64,moveatprocthemem};chars c3#1;chars *=0x24;chars c3o#1
+		#rdx/rcx,rsp+
+		chars hex_4={REX_Operand_64,moveatprocthemem};chars c4#1;chars *=0x24;chars c4o#1
+		#r8,rsp+
+		chars hex_5={REX_R8_15,moveatprocthemem,0x44,0x24};chars c5o#1
+		#r9,rsp+
+		chars hex_6={REX_R8_15,moveatprocthemem,0x4C,0x24};chars c6o#1
+		if nr_of_args!=(first_convention)
+			set dest# #hex_1
+			incst dest;set dest# #hex_2
+			incst dest
+		endif
 		set dest# #hex_3
-		add dest :;set dest# #hex_4
-		add dest :;set dest# #hex_5
-		return #hex_6
+		incst dest;set dest# #hex_4
+		incst dest;set dest# #hex_5
+		incst dest;set dest# #hex_6
+		return (void)
 	elseif type==(convdata_fn)
+		const functionxlin_start=!
+		chars functionxlin_code={REX_Operand_64,moveatmemtheproc,ediregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
+		chars *={REX_Operand_64,moveatmemtheproc,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,16}
 		const functionx_start=!
-		#mov [rsp+8h],rcx
-		chars functionx_code={REX_Operand_64,moveatmemtheproc};chars f3#1;chars *={0x24,0x08}
-		#mov [rsp+10h],rdx
-		chars *={REX_Operand_64,moveatmemtheproc};chars f4#1;chars *={0x24,0x10}
-		#mov [rsp+18h],r8
-		chars *={REX_R8_15,moveatmemtheproc,0x44,0x24,0x18}
-		#mov [rsp+20h],r9
-		chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24,0x20}
-		set dest# (!-functionx_start)
-		return #functionx_code
+		#mov [rsp++8h],rcx
+		chars functionx_code={REX_Operand_64,moveatmemtheproc};chars f3#1;chars *=0x24;chars f3o#1
+		#mov [rsp++10h],rdx
+		chars *={REX_Operand_64,moveatmemtheproc};chars f4#1;chars *=0x24;chars f4o#1
+		#mov [rsp++18h],r8
+		chars *={REX_R8_15,moveatmemtheproc,0x44,0x24};chars f5o#1
+		#mov [rsp++20h],r9
+		chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24};chars f6o#1
+		if nr_of_args==(first_convention)
+			set dest# (!-functionx_start)
+			return #functionx_code
+		else
+			set dest# (!-functionxlin_start)
+			return #functionxlin_code
+		endelse
 	endelseif
 	set nr_of_args dest
-	set c3 0x0C
-	set c4 0x54
-	set f3 0x4C
-	set f4 0x54
+	if nr_of_args==(first_convention)
+		set c3 0x0C;set c3o 0
+		set c4 0x54;set c4o 8
+		set c5o 16;set c6o 24
+		set f3 0x4C;set f3o 8
+		set f4 0x54;set f4o 16
+		set f5o 24;set f6o 32
+	else
+		set c3 0x54;set c3o 16
+		set c4 0x4C;set c4o 24
+		set c5o 32;set c6o 40
+		set f3 0x54;set f3o 24
+		set f4 0x4C;set f4o 32
+		set f5o 40;set f6o 48
+	endelse
 endfunction
 
-function function_call_64fm(sd nr_of_args,sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd code)
+function function_call_64fm(sd nr_of_args,sd hex_n,sd conv,sd code)
 	sd err
 	if nr_of_args>0
-		SetCall err addtosec(hex_1,4,code);If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(hex_n#,4,code);If err!=(noerror);Return err;EndIf
 		if nr_of_args>1
-			SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf
+			incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
 			if nr_of_args>2
-				SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
+				incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
 				if nr_of_args>3
-					SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
+					incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
+					if conv!=(first_convention)
+						if nr_of_args>4
+							incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
+							if nr_of_args>5
+								incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
+							endif
+						endif
+					endif
 				endif
 			endif
 		endif
 	endif
 	return (noerror)
 endfunction
-function function_call_64f(sd hex_1,sd hex_2,sd hex_3,sd hex_4,sd conv,sd code)
+function function_call_64f(sd hex_n,sd conv,sd code)
 	sd err
 	sd nr_of_args;setcall nr_of_args nr_of_args_64need()
 	#
-	setcall err function_call_64fm(nr_of_args,hex_1,hex_2,hex_3,hex_4,code);If err!=(noerror);Return err;EndIf
+	setcall err function_call_64fm(nr_of_args,hex_n,conv,code);If err!=(noerror);Return err;EndIf
 	#
 	#shadow space
-	#sub esp,x;default 4 args stack space convention
+	#sub esp,x;default win4/lin.. args stack space convention
 	chars hex_X={0x83,0xEC};chars argspush#1
 	set argspush conv
 	if nr_of_args<argspush;set argspush nr_of_args;endif
@@ -240,11 +277,11 @@ function function_call_64(sd is_callex)
 	sd err
 	Data code%ptrcodesec
 	#
-	sd hex_1;sd hex_2;sd hex_3;sd hex_4
-	setcall hex_4 convdata((convdata_call),#hex_1)
+	sd hex_1;sd hex_2;sd hex_3;sd hex_4;sd hex_5;sd hex_6
+	call convdata((convdata_call),#hex_1)
 	#
 	if is_callex==(FALSE)
-		setcall err function_call_64f(hex_1,hex_2,hex_3,hex_4,conv,code)
+		setcall err function_call_64f(#hex_1,conv,code)
 		Return err
 	endif
 	##
@@ -285,6 +322,10 @@ function function_call_64(sd is_callex)
 	set j_off 26
 	SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(#callex_conv,26,code);If err!=(noerror);Return err;EndIf
+	if conv!=(first_convention)
+		SetCall err addtosec(hex_6,5,code);If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(hex_5,5,code);If err!=(noerror);Return err;EndIf
+	endif
 	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_2,5,code);If err!=(noerror);Return err;EndIf

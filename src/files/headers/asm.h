@@ -25,10 +25,11 @@ Const moveatregthemodrm=moveatprocthemem
 
 #mods
 Const mod_0=0
-#Const disp8=1
+Const disp8=1
 Const disp32=2
 Const RegReg=3
 
+const disp8mod=disp8*tomod
 const regregmod=RegReg*tomod
 
 #regopcodes
@@ -39,6 +40,8 @@ Const edxregnumber=2
 Const ebxregnumber=3
 Const espregnumber=4
 Const ebpregnumber=5
+Const esiregnumber=6
+Const ediregnumber=7
 Const ahregnumber=4
 Const regopcode_mask=0x7
 #mixt

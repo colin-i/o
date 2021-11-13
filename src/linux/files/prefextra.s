@@ -1,4 +1,6 @@
 
+const variable_convention=6
+
 #err
 function prefextra(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
 	ss homestr="HOME"
