@@ -34,5 +34,5 @@ Log import functions
 log_import_functions=1
 
 Ignore elfobj64
-0 is No,use microsoft convention; 1 is Yes; 2 is No,use linux convention if ocompiler was compiled for linux,else use microsoft
-neg_64=2
+0 is No,use linux convention if ocompiler was compiled for linux,else use microsoft; 1 is Yes; 2 is No,and cross-compile
+neg_64=0

@@ -697,13 +697,13 @@
 	</p>
   </div>
   <div>
-	64-bit objects with 64-bit stack data for Microsoft calling convention can be created by adding <b>64Microsoft</b> at <i>Format ElfObj</i>.<br>
-	To call with Microsoft calling convention use <b>ImportX</b>. To prepare 64-bit convention function entry use <b>FunctionX</b>.
+	64-bit objects with 64-bit stack data and Microsoft/Linux calling convention can be created by adding <b>64</b> at <i>Format ElfObj</i>.<br>
+	To mark a function for 64-bit convention convention import with <b>ImportX</b> or declare with <b>FunctionX</b>.
 	<p>
 	Example:
 	<br>
 	<a class="code">
-        Format ElfObj64Microsoft<br>
+        Format ElfObj64<br>
         Entry main(data *argc,data *argv)<br>
         importx "printf" printf<br>
         if :!=8<br>
@@ -715,7 +715,7 @@
         call printf("long %lx,returnvalue)<br>
         Return 0</a>
 	</p>
-	64-bit can be ignored from preferences.
+	64-bit can be ignored from preferences. Cross-compiles can be made at the same option from preferences.
   </div>
 </p>
 <h3><a name="otheroperations">XIII. Other operations</a></h3>

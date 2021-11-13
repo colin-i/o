@@ -315,3 +315,4 @@ Const hexenum=1
 const val64_willbe=2
 
 const first_convention=4
+const second_convention=6
