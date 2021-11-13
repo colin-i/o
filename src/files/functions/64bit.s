@@ -249,12 +249,12 @@ function function_call_64(sd is_callex)
 	endif
 	##
 	#mov edx,eax
-	chars find_args={0x8b,edxregnumber|regregmod}
-	SetCall err addtosec(#find_args,2,code);If err!=(noerror);Return err;EndIf
+	chars find_args={REX_Operand_64,0x8b,edxregnumber|regregmod}
+	SetCall err addtosec(#find_args,3,code);If err!=(noerror);Return err;EndIf
 	#
 	#convention and shadow space
-	#cmp eax,imm32
-	chars cmp_je=0x3d;data cmp_imm32#1
+	#cmp rax,imm32
+	chars cmp_je={REX_Operand_64,0x3d};data cmp_imm32#1
 	set cmp_imm32 conv;dec cmp_imm32
 	#jump if above
 	chars *callex_jump=0x77;chars j_off#1
@@ -283,7 +283,7 @@ function function_call_64(sd is_callex)
 	#j cl
 	chars *={0xff,4*toregopcode|ecxregnumber|regregmod}
 	set j_off 26
-	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(#callex_conv,26,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_4,5,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(hex_3,5,code);If err!=(noerror);Return err;EndIf
@@ -305,7 +305,7 @@ function function_call_64(sd is_callex)
 	chars *={REX_Operand_64,0x2b,espregnumber*toregopcode|regregmod}
 	#
 	set j_off 12
-	SetCall err addtosec(#cmp_je,7,code);If err!=(noerror);Return err;EndIf
+	SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(#callex_shadow,12,code)
 	return err
 endfunction
@@ -326,20 +326,20 @@ function callex64_call()
 	#bt rsp,3 (bit offset 3)
 	chars callex64_code={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
 	#jc @ (jump when rsp=....8)
-	chars *=0x72;chars *=6+2+4+2+2
-	#6cmp ecx,5
-	chars *={0x81,0xf9};data jcase1#1
+	chars *=0x72;chars *=7+2+4+2+2
+	#7cmp ecx,5
+	chars *={REX_Operand_64,0x81,0xf9};data jcase1#1
 	set jcase1 conv;inc jcase1
 	#2jb $
-	chars *=0x72;chars *=4+2+2+6+2+4+2+4
+	chars *=0x72;chars *=4+2+2+7+2+4+2+4
 	#4bt ecx,0
 	chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
 	#2jc %
-	chars *=0x72;chars *=2+6+2+4+2
+	chars *=0x72;chars *=2+7+2+4+2
 	#2jmp $
-	chars *=0xEB;chars *=6+2+4+2+4
-	#6@ cmp ecx,5
-	chars *={0x81,0xf9};data jcase2#1
+	chars *=0xEB;chars *=7+2+4+2+4
+	#7@ cmp ecx,5
+	chars *={REX_Operand_64,0x81,0xf9};data jcase2#1
 	set jcase2 conv;inc jcase2
 	#2jb %
 	chars *=0x72;chars *=4+2
@@ -347,10 +347,11 @@ function callex64_call()
 	chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
 	#2jc $
 	chars *=0x72;chars *=4
-	#4% sub rsp,8
+	#%
+	#4 sub rsp,8
 	chars *={REX_Operand_64,0x83,0xEC};chars *=8
 	#$
-	chars *keep_nr_args={0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
+	chars *keep_nr_args={REX_Operand_64,0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
 	sd ptrcodesec%ptrcodesec
 	sd err
 	SetCall err addtosec(#callex64_code,(!-callex64_start),ptrcodesec)
