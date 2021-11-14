@@ -88,7 +88,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			Data mask#1
 			Data ptrobjfnmask%ptrobjfnmask
 			Set mask ptrobjfnmask#
-			if subtype==(cFUNCTIONX)
+			#functionx,entry,entrylinux in 64 conventions
+			if subtype!=(cFUNCTION)
 				setcall b is_for_64()
 				if b==(TRUE);or mask (x86_64bit);endif
 			endif
@@ -136,15 +137,19 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 				EndIf
 			EndIf
 			
-			if subtype==(cFUNCTIONX)
+			sd scope64=FALSE
+			#functionx,entry,entrylinux in 64 conventions
+			if subtype!=(cFUNCTION)
 				setcall b is_for_64()
 				if b==(TRUE)
 					setcall err function_start_64()
 					If err!=noerr
 						Return err
 					EndIf
+					set scope64 (TRUE)
 				endif
 			endif
+			call scope64_set(scope64)
 		endelse
 	Else
 		data boolindirect#1
@@ -213,7 +218,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 	
 	#move over the stack arguments
 	#mov esp,ebx
-		#callex(64) also use ebx to find the number of args
+		#this is not true now: callex(64) also use ebx to find the number of args
 	Data code%ptrcodesec
 	sd err
 	#
@@ -326,18 +331,19 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		chars g_err_jz=0x74;chars ret_end_sz#1
 		#
 		ss ret_end_p
-		setcall ret_end_sz getreturn(#ret_end_p)
 		sd is_linux_term;setcall is_linux_term is_linux_end()
 		if is_linux_term==(TRUE)
 			#int 0x80, sys_exit, eax 1,ebx the return number
 			const g_err_sys_start=!
 			chars g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
 			chars *={0xb8,1,0,0,0}
-			Chars *={0xCD,0x80}
+			Chars *={intimm8,0x80}
 			const g_err_sys_size=!-g_err_sys_start
 			set ret_end_sz (g_err_sys_size)
 			set ret_end_p #g_err_sys
-		endif
+		else
+			setcall ret_end_sz getreturn(#ret_end_p)
+		endelse
 		SetCall err addtosec(#g_err_jz,(bsz+bsz),code);If err!=(noerror);Return err;EndIf
 		#return
 		SetCall err addtosec(ret_end_p,ret_end_sz,code);If err!=(noerror);Return err;EndIf

@@ -316,3 +316,8 @@ const val64_willbe=2
 
 const ms_convention=4
 const lin_convention=6
+
+const convdata_total=0
+const convdata_call=1
+const convdata_fn=2
+const convdata_init=3

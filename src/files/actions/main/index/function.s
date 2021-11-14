@@ -28,6 +28,8 @@ Else
 		Set objfnmask null
 		Set innerfunction true
 	EndElse
-	Data declarefn=declarefunction
-	SetCall errormsg parsefunction(pcontent,pcomsize,declarefn,subtype)
+	if errormsg==(noerror)
+		Data declarefn=declarefunction
+		SetCall errormsg parsefunction(pcontent,pcomsize,declarefn,subtype)
+	endif
 EndElse

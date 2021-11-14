@@ -15,6 +15,16 @@ function p_neg_is_for_64()
 	return #bool
 endfunction
 
+function scope64_p()
+	data bool#1;return #bool
+endfunction
+function scope64_get()
+	sd p;setcall p scope64_p();return p#
+endfunction
+function scope64_set(sd b)
+	sd p;setcall p scope64_p();set p# b
+endfunction
+
 #get
 function is_for_64_is_impX_or_fnX_p_get();data b#1;return #b;endfunction
 #get
@@ -150,10 +160,6 @@ function val64_p_get()
 	data x#1;return #x
 endfunction
 
-const convdata_total=0
-const convdata_call=1
-const convdata_fn=2
-const convdata_init=3
 function convdata(sd type,sd dest)
 	if type==(convdata_total)
 		data nr_of_args#1

@@ -1,6 +1,18 @@
 
 
 function getreturn(data ptrptrcontinuation)
+	sd b;setcall b scope64_get()
+	if b==(TRUE)
+		sd conv;setcall conv convdata((convdata_total))
+		if conv==(lin_convention)
+			chars lin64_return={0xc9,0x5b}
+			#pop c;add rsp,8*conv;push c
+			chars *={0x59,REX_Operand_64,0x83,regregmod|espregnumber,lin_convention*qwsz,0x51}
+			chars *=retcom
+			set ptrptrcontinuation# #lin64_return
+			return (2+6+1)
+		endif
+	endif
 	Chars returncontinuation={0xc9,0x5b,retcom}
 	str ptrreturncontinuation^returncontinuation
 	data sizeretcontinuation=3
@@ -80,7 +92,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 				add immop ebxregnumber
 
 				#
-				Chars unixcontinuation={0xCD,0x80}
+				Chars unixcontinuation={intimm8,0x80}
 				data ptrunixcontinuation^unixcontinuation
 				Data two=2
 				Set ptrcontinuation ptrunixcontinuation
