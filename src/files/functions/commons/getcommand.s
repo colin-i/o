@@ -6,7 +6,7 @@ Const spacenotreq=0
 Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS"
 	Chars cCONST_c="CONST";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
-Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT"
+Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
 #                 ;Chars cSETX_c="SETX"
 Chars cLIBRARY_c="LIBRARY";
@@ -109,6 +109,11 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			data *^cEXIT_c
 			Data *=cONEARG
 			Data *=cEXIT
+			Data *=spacereq
+		Const cNEG=!-cONEARG_top
+			data *^cNEG_c
+			Data *=cONEARG
+			Data *=cNEG
 			Data *=spacereq
 	Const cPRIMSEC=!-coms_start
 	Const cPRIMSEC_top=!

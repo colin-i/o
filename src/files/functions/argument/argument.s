@@ -117,12 +117,15 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			else;set incs_sz (qwsz);endelse
 			set ptrcontinuation #incs_sz
 			set sizeofcontinuation (bsz)
-		Else
-		#dec
+		ElseIf subtype==(cDEC)
 			Chars dec={0xFF}
 			Chars decregopcode={1}
 			Set op dec
 			Set regopcode decregopcode
+		Else
+		#cNOT
+			set op (0xf7)
+			set regopcode 3
 		EndElse
 	Else
 	#push imm prepare test

@@ -49,6 +49,6 @@ Const regopcode_mask=0x7
 #mixt
 Const Notregopcode=2
 #
-const bt_reg_imm8=4*toregopcode|0xc0
+const bt_reg_imm8=espregnumber*toregopcode|regregmod
 
 #rms
