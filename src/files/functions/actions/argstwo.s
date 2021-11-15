@@ -169,6 +169,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Set intchar eaxreg
 			If lowprim==true
 				#case compare low vs high, then: get low on all eax compare with high but op from mem vs proc becomes proc vs mem
+				#note that xor eax,eax will zero rax (not needing xor rax,rax
 				Add opprim two
 				Data aux#1
 				Set aux dataargprim

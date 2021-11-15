@@ -79,8 +79,8 @@ function entryscope()
 	#mov e(r)bx e(r)sp
 	const scope3_start=!;chars scope3={moveatregthemodrm,0xdc};const scope3_sz=!-scope3_start
 	#sub e(r)bx dword
-	const scope4_start=!;chars scope4={0x81,0xc3};const scope4_sz=!-scope4_start
-	data scopestack=0
+	const scope4_start=!;chars scope4={0x81,0xc3}
+	data *scopestack=0;const scope4_sz=!-scope4_start
 	
 	setcall err addtosec(#scope1,(scope1_sz),container);if err!=(noerror);return err;endif
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
@@ -89,7 +89,6 @@ function entryscope()
 	setcall err addtosec(#scope3,(scope3_sz),container);if err!=(noerror);return err;endif
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
 	setcall err addtosec(#scope4,(scope4_sz),container);if err!=(noerror);return err;endif
-	setcall err addtosec(#scopestack,(dwsz),container);if err!=(noerror);return err;endif
 	#
 	data set=0;call ramp_index(set,container)
 	return (noerror)

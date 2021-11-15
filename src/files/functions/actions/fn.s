@@ -216,9 +216,8 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 	EndElse
 	Call advancecursors(pcontent,psize,sz)
 	
-	#move over the stack arguments
+	#move over the stack arguments, ebx is also shorting the first stack variable (mov rbx,rdx)
 	#mov esp,ebx
-		#this is not true now: callex(64) also use ebx to find the number of args
 	Data code%ptrcodesec
 	sd err
 	#

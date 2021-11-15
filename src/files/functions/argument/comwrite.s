@@ -45,7 +45,6 @@ function writetake(sd takeindex,sd entry)
 	data null=0
 
 	Data errnr#1
-	Data noerr=noerror
 
 	Chars takeini={0xb8}
 
@@ -94,33 +93,24 @@ function writetake(sd takeindex,sd entry)
 				EndIf
 			endif
 		endelse
-	endif
-
-	SetCall errnr addtosec(ptrtake,sz1,ptrcodesec)
-	If errnr!=noerr
-		Return errnr
-	EndIf
-	
-	if stack==null
-		return noerr
+		SetCall errnr addtosec(ptrtake,sz1,ptrcodesec)
 	else
-		setcall errnr rex_w_if64();if errnr!=(noerror);return errnr;endif
-		
-		chars getfromstack={0x03}
-		chars getfromstack_modrm#1
-
 		chars stack_relative#1
 		chars regreg=RegReg
-
 		setcall stack_relative stack_get_relative(entry)
+		chars getfromstack={0x03}
+		chars getfromstack_modrm#1
 		SetCall getfromstack_modrm formmodrm(regreg,takeindex,stack_relative)
-
 		data ptrgetfromstack^getfromstack
 		data sizegetfromstack=2
-
+		if takeloc!=0
+			SetCall errnr addtosec(ptrtake,sz1,ptrcodesec)
+			set getfromstack 0x03
+		else;set getfromstack (moveatprocthemem);endelse
+		setcall errnr rex_w_if64();if errnr!=(noerror);return errnr;endif
 		SetCall errnr addtosec(ptrgetfromstack,sizegetfromstack,ptrcodesec)
-		Return errnr
 	endelse
+	Return errnr
 endfunction
 
 #er
