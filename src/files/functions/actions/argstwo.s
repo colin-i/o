@@ -206,14 +206,14 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Return errnr
 		EndIf
 	Elseif divmul==(TRUE)
-			#only at multcall and divcall
-			chars transferreturntoecx={0x89,0xc1}
-			str ptrcall^transferreturntoecx
-			data calltransfersize=2
-			setcall errnr addtosec(ptrcall,calltransfersize,codeptr)
-			If errnr!=noerr
-				Return errnr
-			EndIf
+		#only at multcall and divcall
+		chars transferreturntoecx={0x89,0xc1}
+		str ptrcall^transferreturntoecx
+		data calltransfersize=2
+		setcall errnr addtosec(ptrcall,calltransfersize,codeptr)
+		If errnr!=noerr
+			Return errnr
+		EndIf
 		#else
 		#	call val64_phase_2()
 		#endelse
@@ -293,11 +293,11 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Set d4_0 d4_0ini
 
 			If lowprim==false
-				Set d1_1 predef1_1_high
-				Set d4_1 predef4_1_high
+				Set	d1_1 predef1_1_high
+				Set	d4_1 predef4_1_high
 			Else
 				Dec d1_0
-				Dec	d2_0
+				Dec d2_0
 				Dec d4_0
 				Set d1_1 predef1_1_low
 				Set d4_1 predef4_1_low

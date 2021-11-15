@@ -320,7 +320,7 @@
 	<br>
 	The return command is used to terminate the program or a function.
 	<br>
-	It returns the value. The asm value termination is <i>ret</i> (0xc3). To return <i>int 0x80</i>(0xcd,0x80;linux sys_exit;eax=1,ebx=return value) use <b>Exit</b>. If the scope is started with <b>EntryLinux</b> all returns will use <i>exit code</i> at <i>return</i> commands.
+	It returns the value. The asm value termination is <i>ret</i> (0xc3). To return <i>int 0x80</i>(0xcd,0x80;linux sys_exit;eax=1,ebx=return value) use <b>Exit</b>. If the scope is started with <b>EntryLinux</b> all returns from the main scope will use <i>exit code</i> at <i>return</i> commands.
 	<br>
 	Example:
 	<br>
@@ -347,63 +347,11 @@
         set string "text test"<br>
         #string will point to "text test"</a>
 	</p>
-	<p>
-	3. Incrementation
-	<br>
-	Language command: <b>Inc</b>
-	<br>
-	The incrementation command adds one to the value.
-	<br>
-	Example:
-	<br>
-	<a class="code">
-        Data value=30<br>
-        Inc value<br>
-        #the value will be 31</a>
-	<b>IncSt</b> adds 4 bytes to the argument or 8 bytes when building for 64-bit application.
-	<br>
-	Example:
-	<br>
-	<a class="code">
-        sd x#2;sd z^x<br>
-        set z# 1;incst z;set z# 2<br>
-        add z# x<br>
-        #at z# will be 3</a>
-	</p>
-	<p>
-	4. Decrementation
-	<br>
-	Language command: <b>Dec</b>
-	<br>
-	The decrementation command subtracts one from the value.
-	<br>
-	Example:
-	<br>
-	<a class="code">
-        Data value=30<br>
-        Dec value<br>
-        #the value will be 29</a>
-	</p>
-	<p>
-	5. Negation
-	<br>
-	Language command: <b>Neg</b>
-	<br>
-	Subtract the operand from 0.
-	<br>
-	Example:
-	<br>
-	<a class="code">
-        Data value=30<br>
-        Neg value<br>
-        #the value will be -30</a>
-	</p>
 </p>
 
 
 <h3><a name="arithmeticoperations">IV. Arithmetic operations</a></h3>
 <p>
-	O language has 4 arithmetic operations.
 	<p>
 	1. Addition
 	<br>
@@ -455,6 +403,57 @@
         Data valueB=20<br>
         Div valueA valueB<br>
         #the valueA will be 2</a>
+	</p>
+	<p>
+	5. Incrementation
+	<br>
+	Language command: <b>Inc</b>
+	<br>
+	The incrementation command adds one to the value.
+	<br>
+	Example:
+	<br>
+	<a class="code">
+        Data value=30<br>
+        Inc value<br>
+        #the value will be 31</a>
+	<b>IncSt</b> adds 4 bytes to the argument or 8 bytes when building for 64-bit application.
+	<br>
+	Example:
+	<br>
+	<a class="code">
+        sd x#2;sd z^x<br>
+        set z# 1;incst z;set z# 2<br>
+        add z# x<br>
+        #at z# will be 3</a>
+	</p>
+	<p>
+	6. Decrementation
+	<br>
+	Language command: <b>Dec</b>
+	<br>
+	The decrementation command subtracts one from the value.
+	<br>
+	Example:
+	<br>
+	<a class="code">
+        Data value=30<br>
+        Dec value<br>
+        #the value will be 29</a>
+	</p>
+	<p>
+	7. Negation
+	<br>
+	Language command: <b>Neg</b>
+	<br>
+	Subtract the operand from 0.
+	<br>
+	Example:
+	<br>
+	<a class="code">
+        Data value=30<br>
+        Neg value<br>
+        #the value will be -30</a>
 	</p>
 </p>
 <h3><a name="bitwiseoperations">V. Bitwise operations</a></h3>
