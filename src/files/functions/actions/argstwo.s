@@ -1,5 +1,4 @@
 
-
 #err
 Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Data lowprim#1
@@ -186,6 +185,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	
 	Data codeptr%ptrcodesec
 
+	sd is_sta
 	If primcalltype==false
 		setcall imm getisimm()
 		if imm==true
@@ -195,7 +195,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				add opsec 1
 			elseif subtype==(cCALLEX)
 				add opsec 1
-				sd is_sta;setcall is_sta is_stack(dataargprim)
+				setcall is_sta is_stack(dataargprim)
 				if is_sta!=(NULL)
 					call val64_phase_1();#call val64_phase_2()
 				endif
@@ -210,6 +210,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		chars transferreturntoecx={0x89,0xc1}
 		str ptrcall^transferreturntoecx
 		data calltransfersize=2
+		setcall is_sta is_stack(dataargprim)
+		if is_sta!=(NULL);setcall errnr rex_w_if64()
+			if errnr!=(noerror);return errnr;endif
+		endif
 		setcall errnr addtosec(ptrcall,calltransfersize,codeptr)
 		If errnr!=noerr
 			Return errnr
