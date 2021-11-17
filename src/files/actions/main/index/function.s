@@ -16,7 +16,9 @@ ElseIf programentrypoint!=codesecReg
 Else
 	If subtype==(cENTRYLINUX)
 		set subtype (cENTRY)
-		set el_b_p# (TRUE)
+		if twoparse==1
+			set el_b_p# (TRUE)
+		endif
 	endif
 	If subtype==(cENTRY)
 		Data referencebit=referencebit
