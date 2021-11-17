@@ -103,7 +103,7 @@ function is_big(sd dataarg)
 	return (FALSE)
 endfunction
 #er
-function rex_w_ifbig_if64(sd dataarg)
+function rex_w_ifbig(sd dataarg)
 	sd big;setcall big is_big(dataarg)
 	if big==(TRUE)
 		sd errnr;call rex_w(#errnr)

@@ -210,7 +210,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		chars transferreturntoecx={0x89,0xc1}
 		str ptrcall^transferreturntoecx
 		data calltransfersize=2
-		setcall errnr rex_w_ifbig_if64(dataargprim)
+		setcall errnr rex_w_ifbig(dataargprim)
 		If errnr!=noerr
 			Return errnr
 		EndIf
