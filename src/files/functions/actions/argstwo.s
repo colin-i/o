@@ -61,6 +61,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Chars two=2
 
 	Set primcalltype false
+	
+	sd big
 	If ptrcondition==false
 		#imm second arg
 		call setimm()
@@ -90,6 +92,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Set regprep ecxreg
 			Set regopcode ecxreg
 			Set divmul true
+			setcall big is_big(dataargprim)
 		ElseIf subtype<=(cXOR)
 			Set sameimportant false
 			If subtype==(cAND)
@@ -210,10 +213,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		chars transferreturntoecx={0x89,0xc1}
 		str ptrcall^transferreturntoecx
 		data calltransfersize=2
-		setcall errnr rex_w_ifbig(dataargprim)
-		If errnr!=noerr
-			Return errnr
-		EndIf
+		if big==(TRUE)
+			call rex_w(#errnr)
+			If errnr!=noerr;Return errnr;EndIf
+		endif
 		setcall errnr addtosec(ptrcall,calltransfersize,codeptr)
 		If errnr!=noerr
 			Return errnr
@@ -252,8 +255,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		EndIf
 	endif
 	If divmul==true
-		sd big;setcall big is_big(dataargprim)
-		
 		Data regreg=RegReg
 
 		Chars regopcodemult={5}
