@@ -210,10 +210,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		chars transferreturntoecx={0x89,0xc1}
 		str ptrcall^transferreturntoecx
 		data calltransfersize=2
-		setcall is_sta is_stack(dataargprim)
-		if is_sta!=(NULL);setcall errnr rex_w_if64()
-			if errnr!=(noerror);return errnr;endif
-		endif
+		setcall errnr rex_w_ifbig_if64(dataargprim)
+		If errnr!=noerr
+			Return errnr
+		EndIf
 		setcall errnr addtosec(ptrcall,calltransfersize,codeptr)
 		If errnr!=noerr
 			Return errnr
@@ -252,6 +252,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		EndIf
 	endif
 	If divmul==true
+		sd big;setcall big is_big(dataargprim)
+		
 		Data regreg=RegReg
 
 		Chars regopcodemult={5}
@@ -268,7 +270,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Chars d1_1#1
 			Chars d2_0#1
 			Chars *d2_1={0xc0}
-			Chars *d3={0x79,0x02}
+			Chars d3_0=0x79;chars d3_1#1
 			Chars d4_0#1
 			Chars d4_1#1
 			
@@ -284,9 +286,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Chars predef1_1_low={pre1_1_l}
 			Const pre4_1_l=regregmod|bitsnotop|ahregnumber
 			Chars predef4_1_low={pre4_1_l}
-
-			Str setdivsign^d1_0
-			Data divsignsize=8
 
 			Chars d1_0ini={0x33}
 			Chars d2_0ini={0x85}
@@ -306,10 +305,22 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				Set d1_1 predef1_1_low
 				Set d4_1 predef4_1_low
 			EndElse
-			SetCall errnr addtosec(setdivsign,divsignsize,codeptr)
-			If errnr!=noerr
-				Return errnr
-			EndIf
+			SetCall errnr addtosec(#d1_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
+			if big==(TRUE)
+				call rex_w(#errnr)
+				If errnr!=noerr;Return errnr;EndIf
+			endif
+			SetCall errnr addtosec(#d2_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
+			if big==(TRUE)
+				set d3_1 3
+				SetCall errnr addtosec(#d3_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
+				call rex_w(#errnr)
+				If errnr!=noerr;Return errnr;EndIf
+			else
+				set d3_1 2
+				SetCall errnr addtosec(#d3_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
+			endelse
+			SetCall errnr addtosec(#d4_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
 		EndElse
 
 		Chars opcodexini={0xF7}
@@ -330,6 +341,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		SetCall modrmex formmodrm(regreg,regopcodeex,ecxreg)
 		Set regopcodeex modrmex
 
+		if big==(TRUE)
+			call rex_w(#errnr)
+			If errnr!=noerr;Return errnr;EndIf
+		endif
 		SetCall errnr addtosec(ptropcodeex,sizeex,codeptr)
 		If errnr!=noerr
 			Return errnr

@@ -94,6 +94,23 @@ function rex_w_if64()
 	call rex_w(#err)
 	return err
 endfunction
+function is_big(sd dataarg)
+	sd b;setcall b is_stack(dataarg)
+	if b!=(NULL)
+		setcall b is_for_64()
+		return b
+	endif
+	return (FALSE)
+endfunction
+#er
+function rex_w_ifbig_if64(sd dataarg)
+	sd big;setcall big is_big(dataarg)
+	if big==(TRUE)
+		sd errnr;call rex_w(#errnr)
+		return errnr
+	endif
+	return (noerror)
+endfunction
 
 function stack64_op_set()
 	sd b;setcall b is_for_64()
