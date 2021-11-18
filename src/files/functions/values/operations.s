@@ -93,7 +93,7 @@ Function signop(chars byte,data outval)
 	Chars or={asciivbar}
 	Chars xor={asciicirc}
 	
-	Chars pow={asciidolar}
+	Chars pow={asciidollar}
 
 	Data addnumber=addNumber
 	Data subnumber=subNumber
