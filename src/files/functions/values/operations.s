@@ -8,6 +8,7 @@ Const andNumber=4
 Const orNumber=5
 Const xorNumber=6
 Const powNumber=7
+#asciiminus and asciinot for one arg
 
 #err pointer
 Function operation(str content,data size,data inoutvalue,data number)
@@ -92,7 +93,7 @@ Function signop(chars byte,data outval)
 	Chars or={asciivbar}
 	Chars xor={asciicirc}
 	
-	Chars pow="$"
+	Chars pow={asciidolar}
 
 	Data addnumber=addNumber
 	Data subnumber=subNumber

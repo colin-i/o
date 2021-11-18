@@ -3,6 +3,7 @@
 #some ascii Constants commonly used
 Const asciiExclamationmark=0x21
 Const asciiNumber=0x23
+Const asciidollar=0x24
 Const asciiand=0x26
 Const asciiparenthesisstart=0x28
 Const asciiast=0x2A
