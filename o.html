@@ -32,7 +32,7 @@
 
 <h3><a href="#includingfiles">X. Including files</a></h3>
 
-<h3><a href="#linux">XI. Creating elf files for linux</a></h3>
+<h3><a href="#exec">XI. Creating executable files</a></h3>
 
 <h3><a href="#object">XII. Creating object files</a></h3>
 
@@ -666,9 +666,9 @@
         Include "files\\main.o"</a>
 	</p>
 </p>
-<h3><a name="linux">XI. Creating elf files for linux</a></h3>
+<h3><a name="exec">XI. Creating executable files</a></h3>
 <p>
-	Executable and Linking Format (ELF) files can be created for Unix - System V, operable on linux platforms.
+	Exe files for windows will be created by default. Executable and Linking Format (ELF) files can be created for Unix - System V, operable on linux platforms. <i>format elf</i> will override the default <i>format exe</i>.
 	<p>
 	Example:
 	<br>
@@ -747,7 +747,7 @@
 	<br>
 	Write bytes in the code section.
 	<br>
-	4. Warnings
+	4. Warning
 	<br>
 	Turn on or off the warnings.
 	<p>
@@ -761,7 +761,8 @@
         #this will write 3 bytes in the code section<br>
         warning off<br>
         import "common_function" common<br>
-        #if the warnings are on this will let the function in peace</a>
+        #useful when having a header in multiple objects<br>
+        warning on</a>
 	</p>
 	<p>
 	When the option function_name from the .ocompiler.txt file is set to Yes(1), the name is wrote in the code section above the function, for debugging asm code.<br>

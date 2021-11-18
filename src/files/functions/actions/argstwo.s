@@ -70,14 +70,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		if subtype_test!=0
 			xor subtype (x_call_flag)
 			Set primcalltype true
-			#if subtype==(cSETX)
-			#	if lowprim==(TRUE)
-			#		return "SetX is not encodable at an 8-bit argument."
-			#	endif
-			#	set subtype (cSET);call val64_phase_1()
-			#endif
-		#elseif subtype==(cSETX);return "SetX is used at SetXCall only.64 bit variables are not available at the moment."
-		#endelseif
 		endif
 		if subtype==(cSET)
 			Set opprim atmemtheproc
@@ -161,17 +153,24 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			EndElse
 		EndElseIf
 	Else
+		sd store_big;set store_big (FALSE)
 		If lowprim==lowsec
 			If lowprim==true
 				Dec opprim
 				Dec opsec
-			EndIf
+			else
+			#this code with the rex promotes, if this near comp later,undefined dataargsec(1==1)will go wrong in is_big, viol
+				setcall imm getisimm()
+				if imm==false
+					setcall store_big is_big(dataargsec)
+				endif
+			endelse
 		Else
 			Dec opsec
 			Set intchar eaxreg
 			If lowprim==true
 				#case compare low vs high, then: get low on all eax compare with high but op from mem vs proc becomes proc vs mem
-				#note that xor eax,eax will zero rax (not needing xor rax,rax
+				#note that xor eax,eax will zero rax (not needing xor rax,rax)
 				Add opprim two
 				Data aux#1
 				Set aux dataargprim
@@ -200,7 +199,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				add opsec 1
 				setcall is_sta is_stack(dataargprim)
 				if is_sta!=(NULL)
-					call val64_phase_1();#call val64_phase_2()
+					call val64_phase_1()
 				endif
 			endelseif
 		endif
@@ -221,9 +220,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		If errnr!=noerr
 			Return errnr
 		EndIf
-		#else
-		#	call val64_phase_2()
-		#endelse
 	EndElseif
 	
 	#write first arg, the second already was
@@ -244,11 +240,16 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 
 	if imm==true
 		#continue to write the imm comparation(first is imm, second doesnt care)ex: 1(constant)==1(constant)->cmp ecx,eax (eax,ecx can be if switch)
+		#the jump for this is below, if imm or if not imm
 		chars immcompdata#1
 		set immcompdata compimmop
 		chars *immcompdatamodrm=0xc1
 		str immcomp^immcompdata
 		data immcompsz=2
+		if store_big==(TRUE)
+			call rex_w(#errnr)
+			If errnr!=noerr;Return errnr;EndIf
+		endif
 		SetCall errnr addtosec(immcomp,immcompsz,codeptr)
 		If errnr!=noerr
 			Return errnr
