@@ -62,7 +62,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 
 	Set primcalltype false
 	
-	sd big
+	sd big;sd rem
 	If ptrcondition==false
 		#imm second arg
 		call setimm()
@@ -84,7 +84,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Set regprep ecxreg
 			Set regopcode ecxreg
 			Set divmul true
-			setcall big is_big(dataargprim)
+			if lowprim==(FALSE);setcall big is_big(dataargprim)
+			else;set big (FALSE);endelse
+			if subtype==(cREM);set rem (TRUE)
+			else;set rem (FALSE);endelse
 		ElseIf subtype<=(cXOR)
 			Set sameimportant false
 			If subtype==(cAND)
@@ -331,7 +334,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		Data sizeex=2
 		Str ptropcodeex^opcodeex
 		Chars storeex#1
-
+		chars storeexrm#1
+		
 		Set opcodeex opcodexini
 		Set storeex atmemtheproc
 
@@ -352,7 +356,22 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Return errnr
 		EndIf
 
-		SetCall errnr writeop(dataargprim,storeex,noreg,sufixprim,eaxreg)
+		if lowprim==(TRUE)
+		# str# ss# chars
+		#rdx is ready
+			if rem==(FALSE)
+				setcall storeexrm formmodrm((mod_0),eaxreg,(edxregnumber))
+			else
+				setcall storeexrm formmodrm((mod_0),(ahregnumber),(edxregnumber))
+			endelse
+			setcall errnr addtosec(#storeex,2,codeptr)
+		else
+			if rem==(FALSE)
+				SetCall errnr writeop(dataargprim,storeex,noreg,sufixprim,eaxreg)
+			else
+				SetCall errnr writeoperation(dataargprim,storeex,noreg,sufixprim,(edxregnumber),ecxreg)
+			endelse
+		endelse
 		Return errnr
 	ElseIf ptrcondition!=false
 		Chars jumpifnotcond={0x0f}

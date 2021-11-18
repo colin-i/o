@@ -405,7 +405,20 @@
         #the valueA will be 2</a>
 	</p>
 	<p>
-	5. Incrementation
+	5. Division reminder (signed)
+	<br>
+	Language command: <b>Rem</b>
+	<br>
+	Example:
+	<br>
+	<a class="code">
+        Data valueA=43<br>
+        Data valueB=20<br>
+        Rem valueA valueB<br>
+        #the valueA will be 3</a>
+	</p>
+	<p>
+	6. Incrementation
 	<br>
 	Language command: <b>Inc</b>
 	<br>
@@ -428,7 +441,7 @@
         #at z# will be 3</a>
 	</p>
 	<p>
-	6. Decrementation
+	7. Decrementation
 	<br>
 	Language command: <b>Dec</b>
 	<br>
@@ -442,7 +455,7 @@
         #the value will be 29</a>
 	</p>
 	<p>
-	7. Negation
+	8. Negation
 	<br>
 	Language command: <b>Neg</b>
 	<br>
@@ -458,7 +471,6 @@
 </p>
 <h3><a name="bitwiseoperations">V. Bitwise operations</a></h3>
 <p>
-	O language has 4 bitwise operations.
 	<p>
 	1. And
 	<br>
@@ -501,6 +513,26 @@
         Data valueA=0x0f0F0f0F<br>
         Not valueA<br>
         #the valueA will be 0xF0f0F0f0</a>
+	</p>
+	<p>
+	5. ShL
+	<br>
+	Example:
+	<br>
+	<a class="code">
+        sd shift_left_once=2<br>
+        shl shift_left_once<br>
+        #the value will be 4</a>
+	</p>
+	<p>
+	6. ShR
+	<br>
+	Example:
+	<br>
+	<a class="code">
+        sd shift_right_once=0x10<br>
+        SHR shift_right_once<br>
+        #the value will be 8</a>
 	</p>
 </p>
 <h3><a name="usingpointers">VI. Using pointers</a></h3>

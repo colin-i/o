@@ -1,5 +1,4 @@
 
-
 function getreturn(data ptrptrcontinuation)
 	sd b;setcall b scope64_get()
 	if b==(TRUE)
@@ -122,10 +121,17 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			Chars decregopcode={1}
 			Set op dec
 			Set regopcode decregopcode
-		Else
-		#cNOT
+		ElseIf subtype==(cNEG)
 			set op (0xf7)
 			set regopcode 3
+		Else
+			set op (0xD1)
+			If subtype==(cSHL)
+				set regopcode 4
+			Else
+			#cSHR
+				set regopcode 5
+			EndElse
 		EndElse
 	Else
 	#push imm prepare test

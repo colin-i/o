@@ -6,8 +6,8 @@ Const spacenotreq=0
 Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS"
 	Chars cCONST_c="CONST";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
-Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG"
-Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
+Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR"
+Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
 #                 ;Chars cSETX_c="SETX"
 Chars cLIBRARY_c="LIBRARY";
 Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX";
@@ -115,6 +115,16 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			Data *=cONEARG
 			Data *=cNEG
 			Data *=spacereq
+		Const cSHL=!-cONEARG_top
+			data *^cSHL_c
+			Data *=cONEARG
+			Data *=cSHL
+			Data *=spacereq
+		Const cSHR=!-cONEARG_top
+			data *^cSHR_c
+			Data *=cONEARG
+			Data *=cSHR
+			Data *=spacereq
 	Const cPRIMSEC=!-coms_start
 	Const cPRIMSEC_top=!
 		Const cSET=!-cPRIMSEC_top
@@ -122,11 +132,6 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			Data *=cPRIMSEC
 			Data *=cSET
 			Data *=spacereq
-		#Const cSETX=!-cPRIMSEC_top
-		#	data *^cSETX_c
-		#	Data *=cPRIMSEC
-		#	Data *=cSETX
-		#	Data *=spacereq
 		Const cADD=!-cPRIMSEC_top
 			data *^cADD_c
 			Data *=cPRIMSEC
@@ -146,6 +151,11 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			data *^cDIV_c
 			Data *=cPRIMSEC
 			Data *=cDIV
+			Data *=spacereq
+		Const cREM=!-cPRIMSEC_top
+			data *^cREM_c
+			Data *=cPRIMSEC
+			Data *=cREM
 			Data *=spacereq
 		Const cAND=!-cPRIMSEC_top
 			data *^cAND_c

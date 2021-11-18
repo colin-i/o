@@ -141,10 +141,10 @@ Function writeoperation(data location,chars operationopcode,data regprepare,data
 		if take64stack==(TRUE)
 			call rex_w(#errnr);If errnr!=noerr;Return errnr;EndIf
 		endif
-		Chars newtake={moveatprocthemem}
-		Const edxtoedx=edxregnumber*8|edxregnumber
-		Chars *newtakemodrm={edxtoedx}
+		Chars newtake=moveatprocthemem
+		Chars newtakemodrm#1
 		Str ptrnewtake^newtake
+		setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
 		SetCall errnr addtosec(ptrnewtake,sz2,ptrcodesec)
 		If errnr!=noerr
 			Return errnr
