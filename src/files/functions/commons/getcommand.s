@@ -6,7 +6,7 @@ Const spacenotreq=0
 Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS"
 	Chars cCONST_c="CONST";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
-Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR"
+Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
 #                 ;Chars cSETX_c="SETX"
 Chars cLIBRARY_c="LIBRARY";
@@ -124,6 +124,11 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			data *^cSHR_c
 			Data *=cONEARG
 			Data *=cSHR
+			Data *=spacereq
+		Const cSAR=!-cONEARG_top
+			data *^cSAR_c
+			Data *=cONEARG
+			Data *=cSAR
 			Data *=spacereq
 	Const cPRIMSEC=!-coms_start
 	Const cPRIMSEC_top=!

@@ -69,7 +69,7 @@
 	<br>
 	There are 2 scopes: the global scope and the function scope.
 	<br>
-	The commands are from i386(but with the HEX macro anything can be wrote to code section).
+	The commands are from i386 with extension for x86-64 (but with the HEX macro anything can be wrote to code section).
 </p>
 
 <h3><a name="declaringdata">Declaring data</a></h3>
@@ -248,7 +248,7 @@
 	</p>
 <br>
 	<p>
-	Operations can be performed at declarations with arithmetic (+,-,*,/,$) and bitwise (&,|,^,~) signs.
+	Operations can be performed at declarations with arithmetic (+,-,*,/,$) and bitwise (&,|,^,~) signs. - and ~ are not requireing two numbers/constants.
 	<br>
 	Example:
 	<br>
@@ -366,7 +366,7 @@
         #the valueA will be 50</a>
 	</p>
 	<p>
-	2. Substraction
+	2. Subtraction
 	<br>
 	Language command: <b>Sub</b>
 	<br>
@@ -394,33 +394,22 @@
 	<p>
 	4. Division (signed)
 	<br>
-	Language command: <b>Div</b>
+	Language command: <b>Div</b> <b>Rem</b>
 	<br>
 	Example:
 	<br>
 	<a class="code">
-        Data valueA=40<br>
+        Data valueA=465<br>
         Data valueB=20<br>
         Div valueA valueB<br>
-        #the valueA will be 2</a>
-	</p>
-	<p>
-	5. Division reminder (signed)
-	<br>
-	Language command: <b>Rem</b>
-	<br>
-	Example:
-	<br>
-	<a class="code">
-        Data valueA=43<br>
-        Data valueB=20<br>
+        #the valueA will be 23<br>
         Rem valueA valueB<br>
         #the valueA will be 3</a>
 	</p>
 	<p>
-	6. Incrementation
+	5. Incrementation
 	<br>
-	Language command: <b>Inc</b>
+	Language command: <b>Inc</b> <b>IncSt</b>
 	<br>
 	The incrementation command adds one to the value.
 	<br>
@@ -441,7 +430,7 @@
         #at z# will be 3</a>
 	</p>
 	<p>
-	7. Decrementation
+	6. Decrementation
 	<br>
 	Language command: <b>Dec</b>
 	<br>
@@ -455,7 +444,7 @@
         #the value will be 29</a>
 	</p>
 	<p>
-	8. Negation
+	7. Negation
 	<br>
 	Language command: <b>Neg</b>
 	<br>
@@ -525,7 +514,7 @@
         #the value will be 4</a>
 	</p>
 	<p>
-	6. ShR
+	6. ShR SaR
 	<br>
 	Example:
 	<br>
@@ -533,6 +522,9 @@
         sd shift_right_once=0x10<br>
         SHR shift_right_once<br>
         #the value will be 8</a>
+        sd shift_right_signed_once=-2<br>
+        SaR shift_right_signed_once<br>
+        #the value will be -1</a>
 	</p>
 </p>
 <h3><a name="usingpointers">VI. Using pointers</a></h3>

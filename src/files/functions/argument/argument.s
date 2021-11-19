@@ -127,9 +127,11 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			set op (0xD1)
 			If subtype==(cSHL)
 				set regopcode 4
-			Else
-			#cSHR
+			ElseIf subtype==(cSHR)
 				set regopcode 5
+			Else
+			#cSAR
+				set regopcode 7
 			EndElse
 		EndElse
 	Else
