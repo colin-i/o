@@ -376,7 +376,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	ElseIf ptrcondition!=false
 		Chars jumpifnotcond={0x0f}
 		Chars cond#1
-		Data *jump=0
+		#this will be resolved at endcond
+		Data *jump#1
 
 		Data jumpcond^jumpifnotcond
 		Data conddatasz=6
