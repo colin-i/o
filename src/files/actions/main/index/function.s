@@ -14,17 +14,15 @@ ElseIf programentrypoint!=codesecReg
 	Call sprintf(allocerrormsg,fnafteren,ptrentrystartfile,entrylinenumber)
 	Set errormsg allocerrormsg
 Else
-	If subtype==(cENTRYLINUX)
-		set subtype (cENTRY)
-		if twoparse==1
-			set el_b_p# (TRUE)
-		endif
-	endif
-	If subtype==(cENTRY)
+	sd el_or_e=FALSE;if subtype==(cENTRY);set el_or_e (TRUE);elseif subtype==(cENTRYLINUX);set el_or_e (TRUE);endelseif
+	If el_or_e==(TRUE)
 		Data referencebit=referencebit
 		Set objfnmask referencebit
 		if twoparse==1
 			set fnavailable two
+			If subtype==(cENTRYLINUX)
+				set el_b_p# (TRUE)
+			endif
 		endif
 	Else
 		Set objfnmask null

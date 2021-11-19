@@ -62,19 +62,15 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		If subtype==(cRETURN)
 			call setimm()
 			set immop immtake
-
-			Chars return={moveatprocthemem}
-
-			setcall sizeofcontinuation getreturn(ptrptrcontinuation)
-
-			Set op return
-			set regopcode (eaxregnumber)
 			Set integerreminder true
+			Set op (moveatprocthemem)
 
-			#not cEXIT
-			if termswitch==(FALSE)
-				setcall termswitch is_linux_end();endif
+			#exit from linux term
+			if termswitch==(FALSE);setcall termswitch is_linux_end();endif
+
 			if termswitch==true
+				setcall err entrylinux_end_top();If err!=noerr;Return err;EndIf
+				
 				#int 0x80, sys_exit, eax 1,ebx the return number
 				chars sys_exit={0xb8,1,0,0,0}
 				data exinit^sys_exit
@@ -96,7 +92,10 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 				Data two=2
 				Set ptrcontinuation ptrunixcontinuation
 				set sizeofcontinuation two
-			endif
+			else
+				set regopcode (eaxregnumber)
+				setcall sizeofcontinuation getreturn(ptrptrcontinuation)
+			endelse
 			#fileformat#
 		ElseIf subtype==(cNOT)
 			Chars not={0xF7}

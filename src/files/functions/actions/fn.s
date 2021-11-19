@@ -32,6 +32,15 @@ Function unresolvedcallsfn(data struct,data inneroffset,data valuedata,data aten
 	Return err
 EndFunction
 
+#b
+function is_funcx_subtype(sd subtype)
+	if subtype==(cFUNCTIONX)
+		return (TRUE)
+	elseif subtype==(cENTRY)
+		return (TRUE)
+	endelseif
+	return (FALSE)
+endfunction
 #subtype is only when declarefn(not callfn)
 #err
 Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
@@ -71,6 +80,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		Data value#1
 		Data ptrvalue^value
 
+		sd scope64
 		data p_two_parse%cptr_twoparse
 		if p_two_parse#==2
 			Data globalinnerfunction%globalinnerfunction
@@ -88,8 +98,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			Data mask#1
 			Data ptrobjfnmask%ptrobjfnmask
 			Set mask ptrobjfnmask#
-			#functionx,entry,entrylinux in 64 conventions
-			if subtype!=(cFUNCTION)
+			
+			setcall scope64 is_funcx_subtype(subtype)
+			if scope64==(TRUE)
 				setcall b is_for_64()
 				if b==(TRUE);or mask (x86_64bit);endif
 			endif
@@ -137,19 +148,25 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 				EndIf
 			EndIf
 			
-			sd scope64=FALSE
-			#functionx,entry,entrylinux in 64 conventions
-			if subtype!=(cFUNCTION)
-				setcall b is_for_64()
-				if b==(TRUE)
+			setcall scope64 is_funcx_subtype(subtype)
+			#functionx,entry in 64 conventions
+			#entrylinux has no return but has argc,aexec,a1...an
+			if scope64==(TRUE)
+				setcall scope64 is_for_64()
+				if scope64==(TRUE)
 					setcall err function_start_64()
 					If err!=noerr
 						Return err
 					EndIf
-					set scope64 (TRUE)
 				endif
-			endif
-			call scope64_set(scope64)
+				call scope64_set(scope64)
+			elseif subtype==(cENTRYLINUX)
+				#scope64 not using, never get into getreturn here
+				setcall err entrylinux_top();if err!=noerr;Return err;EndIf
+			else
+				#cFUNCTION
+				call scope64_set((FALSE))
+			endelse
 		endelse
 	Else
 		data boolindirect#1
@@ -332,6 +349,8 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		ss ret_end_p
 		sd is_linux_term;setcall is_linux_term is_linux_end()
 		if is_linux_term==(TRUE)
+			setcall err entrylinux_end_top();If err!=(noerror);Return err;EndIf
+			
 			#int 0x80, sys_exit, eax 1,ebx the return number
 			const g_err_sys_start=!
 			chars g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
@@ -370,4 +389,25 @@ endfunction
 function is_linux_end()
 	sd entrylinux_bool_ptr;setcall entrylinux_bool_ptr entrylinux_bool_p()
 	return entrylinux_bool_ptr#
+endfunction
+#er
+function entrylinux_top()
+	chars s={0x6a,0}
+	data code%ptrcodesec
+	sd err
+	setcall err addtosec(#s,2,code)
+	return err
+endfunction
+#er
+function entrylinux_end_top()
+	sd b;setcall b is_for_64()
+	sd err
+	chars s={0x83,0xec};chars n#1
+	if b==(TRUE)
+		call rex_w(#err);if err!=(noerror);return err;endif
+		set n (qwsz)
+	else;set n (dwsz);endelse
+	data code%ptrcodesec
+	setcall err addtosec(#s,3,code)
+	return err
 endfunction
