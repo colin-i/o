@@ -8,7 +8,39 @@ Const andNumber=4
 Const orNumber=5
 Const xorNumber=6
 Const powNumber=7
+#Const remNumber=8
+#Const shlNumber=9
+#Const shrNumber=10
 #asciiminus and asciinot for one arg
+
+function const_security(sd item)
+	#2$31 is last one
+	#1 shl 63 is last one
+	#maximum first overflow, ok
+	#data maximum=qwsz*8
+	data maximum=dwsz*8
+	if item>=maximum
+		call safeMessage("Overflow at constants.")
+		return maximum
+	endif
+	return item
+endfunction
+#function shift_right(sd a,sd n)
+#	setcall n const_security(n)
+#	while n>0
+#		dec n
+#		shr a
+#	endwhile
+#	return a
+#endfunction
+#function shift_left(sd a,sd n)
+#	setcall n const_security(n)
+#	while n>0
+#		dec n
+#		shl a
+#	endwhile
+#	return a
+#endfunction
 
 #err pointer
 Function operation(str content,data size,data inoutvalue,data number)
@@ -24,23 +56,15 @@ Function operation(str content,data size,data inoutvalue,data number)
 		Return errptr
 	EndIf
 
-	Data addnumber=addNumber
-	Data subnumber=subNumber
-	Data mulnumber=mulNumber
-	Data divnumber=divNumber
-	Data andnumber=andNumber
-	Data ornumber=orNumber
-	Data xornumber=xorNumber
-
 	Data currentitem=0
 	Set currentitem inoutvalue#
-	If number==addnumber
+	If number==(addNumber)
 		Add currentitem newitem
-	ElseIf number==subnumber
+	ElseIf number==(subNumber)
 		Sub currentitem newitem
-	ElseIf number==mulnumber
+	ElseIf number==(mulNumber)
 		Mult currentitem newitem
-	ElseIf number==divnumber
+	ElseIf number==(divNumber)
 		Data zero=0
 		If newitem==zero
 			Chars zerodiv="Division by 0 error."
@@ -48,16 +72,17 @@ Function operation(str content,data size,data inoutvalue,data number)
 			Return ptrzerodiv
 		EndIf
 		Div currentitem newitem
-	ElseIf number==andnumber
+	ElseIf number==(andNumber)
 		And currentitem newitem
-	ElseIf number==ornumber
+	ElseIf number==(orNumber)
 		Or currentitem newitem
-	ElseIf number==xornumber
+	ElseIf number==(xorNumber)
 		Xor currentitem newitem
 	Else
+	#If number==(powNumber)
 		if newitem<0
 			if currentitem==0
-				#is 0 power -n
+				#is 1/(0 power n)
 				Return ptrzerodiv
 			elseif currentitem==1
 				#is 1/(1 power n)
@@ -68,13 +93,33 @@ Function operation(str content,data size,data inoutvalue,data number)
 		elseif newitem==0
 			set currentitem 1
 		else
-			sd item
-			set item currentitem
+			setcall newitem const_security(newitem)
+			sd item;set item currentitem
 			while newitem!=1
 				mult currentitem item
 				dec newitem
 			endwhile
 		endelse
+	#ElseIf number==(remNumber)
+	#	If newitem==zero
+	#		Return ptrzerodiv
+	#	EndIf
+		#Rem currentitem newitem
+	#ElseIf number==(shlNumber)
+	#	if newitem<0
+	#		neg newitem
+	#		setcall currentitem shift_right(currentitem,newitem)
+	#	else
+	#		setcall currentitem shift_left(currentitem,newitem)
+	#	endelse
+	#Else
+	#If number==(shrNumber)
+	#	if newitem<0
+	#		neg newitem
+	#		setcall currentitem shift_left(currentitem,newitem)
+	#	else
+	#		setcall currentitem shift_right(currentitem,newitem)
+	#	endelse
 	EndElse
 
 	Set inoutvalue# currentitem
@@ -83,53 +128,44 @@ EndFunction
 
 #bool
 Function signop(chars byte,data outval)
-	Chars plus={asciiplus}
-	Chars minus={asciiminus}
+	Chars plus=asciiplus
+	Chars minus=asciiminus
 
-	Chars mult={asciiast}
-	Chars div={asciislash}
+	Chars mult=asciiast
+	Chars div=asciislash
 	
-	Chars and={asciiand}
-	Chars or={asciivbar}
-	Chars xor={asciicirc}
+	Chars and=asciiand
+	Chars or=asciivbar
+	Chars xor=asciicirc
 	
-	Chars pow={asciidollar}
-
-	Data addnumber=addNumber
-	Data subnumber=subNumber
-	Data mulnumber=mulNumber
-	Data divnumber=divNumber
-	Data andnumber=andNumber
-	Data ornumber=orNumber
-	Data xornumber=xorNumber
-	Data pownumber=powNumber
+	Chars pow=asciidollar
 
 	Data false=FALSE
 	Data true=TRUE
 
 	If byte==plus
-		Set outval# addnumber
+		Set outval# (addNumber)
 		Return true
 	ElseIf byte==minus
-		Set outval# subnumber
+		Set outval# (subNumber)
 		Return true
 	ElseIf byte==mult
-		Set outval# mulnumber
+		Set outval# (mulNumber)
 		Return true
 	ElseIf byte==div
-		Set outval# divnumber
+		Set outval# (divNumber)
 		Return true
 	ElseIf byte==and
-		Set outval# andnumber
+		Set outval# (andNumber)
 		Return true
 	ElseIf byte==or
-		Set outval# ornumber
+		Set outval# (orNumber)
 		Return true
 	ElseIf byte==xor
-		Set outval# xornumber
+		Set outval# (xorNumber)
 		Return true
 	ElseIf byte==pow
-		Set outval# pownumber
+		Set outval# (powNumber)
 		Return true
 	EndElseIf
 	
