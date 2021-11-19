@@ -69,7 +69,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			if termswitch==(FALSE);setcall termswitch is_linux_end();endif
 
 			if termswitch==true
-				setcall err entrylinux_end_top();If err!=noerr;Return err;EndIf
+				#if to keep rsp can be leave pop sub rsp,4
 				
 				#int 0x80, sys_exit, eax 1,ebx the return number
 				chars sys_exit={0xb8,1,0,0,0}

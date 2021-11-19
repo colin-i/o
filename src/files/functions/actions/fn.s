@@ -349,8 +349,6 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		ss ret_end_p
 		sd is_linux_term;setcall is_linux_term is_linux_end()
 		if is_linux_term==(TRUE)
-			setcall err entrylinux_end_top();If err!=(noerror);Return err;EndIf
-			
 			#int 0x80, sys_exit, eax 1,ebx the return number
 			const g_err_sys_start=!
 			chars g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
@@ -396,18 +394,5 @@ function entrylinux_top()
 	data code%ptrcodesec
 	sd err
 	setcall err addtosec(#s,2,code)
-	return err
-endfunction
-#er
-function entrylinux_end_top()
-	sd b;setcall b is_for_64()
-	sd err
-	chars s={0x83,0xec};chars n#1
-	if b==(TRUE)
-		call rex_w(#err);if err!=(noerror);return err;endif
-		set n (qwsz)
-	else;set n (dwsz);endelse
-	data code%ptrcodesec
-	setcall err addtosec(#s,3,code)
 	return err
 endfunction
