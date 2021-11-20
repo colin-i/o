@@ -131,11 +131,14 @@ Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd
 	sd take64stack=FALSE;sd v64
 	sd stacktest;setcall stacktest is_stack(location)
 	if stacktest!=(NULL)
+		#p test
 		sd for_64;setcall for_64 is_for_64()
 		if for_64==(TRUE)
 			set take64stack (TRUE)
 			setcall v64 val64_p_get();set v64# (val64_willbe)
+			#rex if p
 		endif
+		#take on takeindex
 	endif
 	Data true=TRUE
 	If sufix==true
