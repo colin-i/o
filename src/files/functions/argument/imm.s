@@ -77,13 +77,13 @@ endfunction
 
 
 #er
-function writeop_immfilter(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode)
+function writeop_immfilter(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd is_low)
 	sd isimm
 	setcall isimm getisimm()
 	data false=0
 	sd err
 	if isimm==false
-		setcall err writeop(dataarg,op,intchar,sufix,regopcode)
+		setcall err writeop(dataarg,op,intchar,sufix,regopcode,is_low)
 		return err
 	endif
 	chars immop#1

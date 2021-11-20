@@ -114,7 +114,8 @@ function writetake(sd takeindex,sd entry)
 endfunction
 
 #er
-Function writeoperation(data location,chars operationopcode,data regprepare,data sufix,data regopcode,data takeindex)
+Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd regopcode,sd takeindex,sd is_low)
+#last parameter is optional
 	Data ptrcodesec%ptrcodesec
 	Data errnr#1
 	Data noerr=noerror
@@ -140,6 +141,10 @@ Function writeoperation(data location,chars operationopcode,data regprepare,data
 	If sufix==true
 		if take64stack==(TRUE)
 			call rex_w(#errnr);If errnr!=noerr;Return errnr;EndIf
+			if is_low==(TRUE)
+			#not ss, rex.w op r/m8 is ok but is useless
+				set v64# (val64_no)
+			endif
 		endif
 		Chars newtake=moveatprocthemem
 		Chars newtakemodrm#1
@@ -186,9 +191,9 @@ Function writeoperation(data location,chars operationopcode,data regprepare,data
 EndFunction
 
 #er
-Function writeop(data location,chars operationopcode,data regprepare,data sufix,data regopcode)
+Function writeop(sd location,sd operationopcode,sd regprepare,sd sufix,sd regopcode,sd is_low)
 	Data err#1
 	Data edxregnumber=edxregnumber
-	SetCall err writeoperation(location,operationopcode,regprepare,sufix,regopcode,edxregnumber)
+	SetCall err writeoperation(location,operationopcode,regprepare,sufix,regopcode,edxregnumber,is_low)
 	Return err
 EndFunction

@@ -184,11 +184,11 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	If lowbyte==true
 		Dec op
 		If integerreminder==true
-			Set intchar eaxreg
+			Set intchar regopcode
 		EndIf
 	EndIf
 	
-	SetCall err writeop_immfilter(dataarg,op,intchar,sufix,regopcode)
+	SetCall err writeop_immfilter(dataarg,op,intchar,sufix,regopcode,lowbyte)
 	If err!=noerr
 		Return err
 	EndIf

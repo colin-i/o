@@ -145,8 +145,13 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 
 	If ptrcondition==false
 		If lowprim==true
-			Dec opsec
 			Dec opprim
+			if subtype!=(cCALLEX)
+				#at callex they can be different
+				Dec opsec
+			elseif lowsec==true
+				dec opsec
+			endelseif
 		ElseIf lowsec==true
 			Dec opsec
 			If sameimportant==true
@@ -184,13 +189,14 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				Set sufixsec aux
 				call switchimm()
 				add compimmop two
+				#and for ss#
+				set aux lowprim;set lowprim lowsec;set lowsec aux
 			EndIf
 		EndElse
 	EndElse
 	
 	Data codeptr%ptrcodesec
 
-	sd is_sta
 	If primcalltype==false
 		setcall imm getisimm()
 		if imm==true
@@ -200,13 +206,9 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				add opsec 1
 			elseif subtype==(cCALLEX)
 				add opsec 1
-				setcall is_sta is_stack(dataargprim)
-				if is_sta!=(NULL)
-					call val64_phase_1()
-				endif
 			endelseif
 		endif
-		SetCall errnr writeop_immfilter(dataargsec,opsec,intchar,sufixsec,regopcode)
+		SetCall errnr writeop_immfilter(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec)
 		If errnr!=noerr
 			Return errnr
 		EndIf
@@ -236,7 +238,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		set opprim immcomparationtake
 	endif
 
-	SetCall errnr writeop_immfilter(dataargprim,opprim,noreg,sufixprim,eaxreg)
+	SetCall errnr writeop_immfilter(dataargprim,opprim,noreg,sufixprim,eaxreg,lowprim)
 	If errnr!=noerr
 		Return errnr
 	EndIf
@@ -367,9 +369,9 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			setcall errnr addtosec(#storeex,2,codeptr)
 		else
 			if rem==(FALSE)
-				SetCall errnr writeop(dataargprim,storeex,noreg,sufixprim,eaxreg)
+				SetCall errnr writeop(dataargprim,storeex,noreg,sufixprim,eaxreg,lowprim)
 			else
-				SetCall errnr writeoperation(dataargprim,storeex,noreg,sufixprim,(edxregnumber),ecxreg)
+				SetCall errnr writeoperation(dataargprim,storeex,noreg,sufixprim,(edxregnumber),ecxreg,lowprim)
 			endelse
 		endelse
 		Return errnr

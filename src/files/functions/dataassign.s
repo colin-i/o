@@ -216,7 +216,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 					Data noreg=noregnumber
 					Call getcont(pointer_structure,ptrcontainer)
 					Add container offset
-					SetCall err writeop(container,op,noreg,false,eax)
+					SetCall err writeop(container,op,noreg,false,eax)#last missing param is at sufix and at declare is not
 					If err!=noerr
 						Return err
 					EndIf

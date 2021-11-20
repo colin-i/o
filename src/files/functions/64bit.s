@@ -147,20 +147,14 @@ endfunction
 #setx
 
 function val64_phase_0()
-	sd p;setcall p val64_p_get();set p# 0
-endfunction
-function val64_phase_1()
-	sd b;setcall b is_for_64()
-	if b==(TRUE)
-		sd p;setcall p val64_p_get();set p# (val64_willbe)
-	endif
+	sd p;setcall p val64_p_get();set p# (val64_no)
 endfunction
 #er
 function val64_phase_3()
 	sd p;setcall p val64_p_get()
-	if p#==2
+	if p#==(val64_willbe)
 		sd er;call rex_w(#er);if er!=(noerror);return er;endif
-		set p# 0
+		set p# (val64_no)
 	endif
 	return (noerror)
 endfunction

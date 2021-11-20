@@ -309,7 +309,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		Chars callactionopcode={2}
 		Data eaxregnumber=eaxregnumber
 		call stack64_op_set()
-		SetCall err writeoperation(ptrdata,callaction,noreg,(FALSE),callactionopcode,eaxregnumber)
+		SetCall err writeoperation(ptrdata,callaction,noreg,(FALSE),callactionopcode,eaxregnumber)#last missing param is at sufix and at declare is not
 		If err!=(noerror)
 			Return err
 		EndIf
