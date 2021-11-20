@@ -4,6 +4,7 @@
 Const asciiExclamationmark=0x21
 Const asciiNumber=0x23
 Const asciidollar=0x24
+Const asciipercent=0x25
 Const asciiand=0x26
 Const asciiparenthesisstart=0x28
 Const asciiast=0x2A
@@ -14,6 +15,8 @@ Const asciizero=0x30
 Const asciinine=0x39
 Const asciiColon=0x3A
 Const asciiSemicolon=0x3B
+Const asciiless=0x3C
+Const asciigreater=0x3E
 Const asciiaround=0x40
 Const asciiA=0x41
 Const asciiE=0x45

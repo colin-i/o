@@ -4,6 +4,7 @@
 	.code
 	{
 		font-family:'courier';
+		font-style:italic;
 		display:block;
 		margin-top:10px;
 		margin-bottom:10px;
@@ -248,20 +249,16 @@
 	</p>
 <br>
 	<p>
-	Operations can be performed at declarations with arithmetic (+,-,*,/,$) and bitwise (&,|,^,~) signs. - and ~ can prefix a number/constant.
+	Operations can be performed at declarations with arithmetic (+,-,*,/,%,$) and bitwise (&,|,^,~,<,>) signs. - and ~ can prefix a number/constant.
 	<br>
 	Example:
 	<br>
-	<a class="code">
-        Const Apples=3<br>
-        Const Pears=4<br>
-        Data Fruits=Apples+Pears<br>
-        Const Bananas=5<br>
-        Data FruitsStore={Apples,Pears+Bananas-2}<br>
-        Const value1=3*2<br>
-        Const value2=16/8<br>
-        Data variable=value1^value2<br>
-        #The result will be 4</a>
+	<table class="code">
+	<tr><td>const a=1</td></tr>
+	<tr><td>#</td><td>add</td><td>sub</td><td>mul</td><td>div</td><td>rem</td><td>pow</td><td>and</td><td>or</td><td>xor</td><td>not</td><td>shl</td><td>shr</td><td>neg</td></tr>
+	<tr><td>chars *examples={</td><td>3+2,</td><td>6-4.</td><td>5*5,</td><td>32/10,</td><td>32/10,</td><td>3$2,</td><td>7&2,</td><td>5|2,</td><td>7^2,</td><td>~0,</td><td>2<2,</td><td>8>3,</td><td>-a}</td></tr>
+	<tr><td>#</td><td>5</td><td>2</td><td>25</td><td>3</td><td>2</td><td>9</td><td>2</td><td>7</td><td>5</td><td>0xff</td><td>8</td><td>1</td><td>-1</td></tr>
+	</table>
 	</p>
 
 	<p>

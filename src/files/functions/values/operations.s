@@ -8,39 +8,38 @@ Const andNumber=4
 Const orNumber=5
 Const xorNumber=6
 Const powNumber=7
-#Const remNumber=8
-#Const shlNumber=9
-#Const shrNumber=10
+Const remNumber=8
+Const shlNumber=9
+Const shrNumber=10
 #asciiminus and asciinot for one arg
 
 function const_security(sd item)
 	#2$31 is last one
 	#1 shl 63 is last one
 	#maximum first overflow, ok
-	#data maximum=qwsz*8
-	data maximum=dwsz*8
+	data maximum=qwsz*8
 	if item>=maximum
 		call safeMessage("Overflow at constants.")
 		return maximum
 	endif
 	return item
 endfunction
-#function shift_right(sd a,sd n)
-#	setcall n const_security(n)
-#	while n>0
-#		dec n
-#		shr a
-#	endwhile
-#	return a
-#endfunction
-#function shift_left(sd a,sd n)
-#	setcall n const_security(n)
-#	while n>0
-#		dec n
-#		shl a
-#	endwhile
-#	return a
-#endfunction
+function shift_right(sd a,sd n)
+	setcall n const_security(n)
+	while n>0
+		dec n
+		shr a
+	endwhile
+	return a
+endfunction
+function shift_left(sd a,sd n)
+	setcall n const_security(n)
+	while n>0
+		dec n
+		shl a
+	endwhile
+	return a
+endfunction
 
 #err pointer
 Function operation(str content,data size,data inoutvalue,data number)
@@ -78,8 +77,7 @@ Function operation(str content,data size,data inoutvalue,data number)
 		Or currentitem newitem
 	ElseIf number==(xorNumber)
 		Xor currentitem newitem
-	Else
-	#If number==(powNumber)
+	ElseIf number==(powNumber)
 		if newitem<0
 			if currentitem==0
 				#is 1/(0 power n)
@@ -100,26 +98,26 @@ Function operation(str content,data size,data inoutvalue,data number)
 				dec newitem
 			endwhile
 		endelse
-	#ElseIf number==(remNumber)
-	#	If newitem==zero
-	#		Return ptrzerodiv
-	#	EndIf
-		#Rem currentitem newitem
-	#ElseIf number==(shlNumber)
-	#	if newitem<0
-	#		neg newitem
-	#		setcall currentitem shift_right(currentitem,newitem)
-	#	else
-	#		setcall currentitem shift_left(currentitem,newitem)
-	#	endelse
-	#Else
+	ElseIf number==(remNumber)
+		If newitem==zero
+			Return ptrzerodiv
+		EndIf
+		Rem currentitem newitem
+	ElseIf number==(shlNumber)
+		if newitem<0
+			neg newitem
+			setcall currentitem shift_right(currentitem,newitem)
+		else
+			setcall currentitem shift_left(currentitem,newitem)
+		endelse
+	Else
 	#If number==(shrNumber)
-	#	if newitem<0
-	#		neg newitem
-	#		setcall currentitem shift_left(currentitem,newitem)
-	#	else
-	#		setcall currentitem shift_right(currentitem,newitem)
-	#	endelse
+		if newitem<0
+			neg newitem
+			setcall currentitem shift_left(currentitem,newitem)
+		else
+			setcall currentitem shift_right(currentitem,newitem)
+		endelse
 	EndElse
 
 	Set inoutvalue# currentitem
@@ -130,46 +128,45 @@ EndFunction
 Function signop(chars byte,data outval)
 	Chars plus=asciiplus
 	Chars minus=asciiminus
-
 	Chars mult=asciiast
 	Chars div=asciislash
-	
 	Chars and=asciiand
 	Chars or=asciivbar
 	Chars xor=asciicirc
-	
 	Chars pow=asciidollar
+	Chars rem=asciipercent
+	Chars shl=asciiless
+	Chars shr=asciigreater
 
 	Data false=FALSE
 	Data true=TRUE
 
 	If byte==plus
 		Set outval# (addNumber)
-		Return true
 	ElseIf byte==minus
 		Set outval# (subNumber)
-		Return true
 	ElseIf byte==mult
 		Set outval# (mulNumber)
-		Return true
 	ElseIf byte==div
 		Set outval# (divNumber)
-		Return true
 	ElseIf byte==and
 		Set outval# (andNumber)
-		Return true
 	ElseIf byte==or
 		Set outval# (orNumber)
-		Return true
 	ElseIf byte==xor
 		Set outval# (xorNumber)
-		Return true
 	ElseIf byte==pow
 		Set outval# (powNumber)
-		Return true
-	EndElseIf
-	
-	Return false
+	ElseIf byte==rem
+		Set outval# (remNumber)
+	ElseIf byte==shl
+		Set outval# (shlNumber)
+	ElseIf byte==shr
+		Set outval# (shrNumber)
+	Else
+		return false
+	EndElse
+	Return true
 EndFunction
 
 #err
