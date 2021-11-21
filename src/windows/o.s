@@ -9,4 +9,3 @@ Include "./files/winimports.h"
 Include "./head.h"
 
 Include "./text.s"
-

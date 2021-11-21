@@ -22,20 +22,22 @@ If formatresponse==false
 		
 		SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_resp)
 		If elfobjformresp==true
-			sd neg_64;setcall neg_64 p_neg_is_for_64()
-			if neg_64#==1
-				if p_is_for_64_resp#==(TRUE)
-					set p_is_for_64_resp# (FALSE)
+			if p_is_for_64_resp#==(TRUE)
+				if convention_64==(no_convention_input)
+					setcall convention_64 p_neg_is_for_64()
+					set convention_64 convention_64#
 				endif
-			elseif p_is_for_64_resp#==(TRUE)
-				if neg_64#==0
+				if convention_64==(ignore_convention_input)
+					set p_is_for_64_resp# (FALSE)
+				elseif convention_64==(direct_convention_input)
 					call convdata((convdata_init),(variable_convention))
+				#cross_convention_input
 				elseif (variable_convention)==(ms_convention)
 					call convdata((convdata_init),(lin_convention))
 				else
 					call convdata((convdata_init),(ms_convention))
 				endelse
-			endelseif
+			endif
 			Set object true
 			SetCall errormsg elfaddstrsym(ptrnull,null,null,null,null,null,ptrtable)
 			If errormsg==noerr

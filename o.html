@@ -150,6 +150,8 @@
 	<br>
 	Language command: <b>SV</b> = Stack Value
 	<br>
+	At 64bit code all stack variables are 8 bytes. 4 bytes at 32.
+	<br>
 	Stack Value differentiates at 64bit code. It will point at 8 bytes ('sv#') when sd is pointing at 4 and ss at 1.
 	At 32bit code sd and sv are the same.
 	<br>
@@ -578,7 +580,7 @@
 	<br>
 	All functions can be used in combinations like AddCall, OrCall, XorCall, etc.
 	<br>
-	Another feature CallEx for prepared calls. This is a 3 argument operation. The first argument is the function name, the second argument is the arguments pointer and the third argument is the number of arguments. The arguments are passed forward respecting the size of the integer(4 bytes on 32-bits app, 8 on 64). One usage can be when there is a call with a number of arguments detected at run-time and want to pass them all to another call.
+	<b>CallEx</b> is for prepared calls. This is a 3 argument operation. The first argument is the function name, the second argument is the arguments pointer and the third argument is the number of arguments. The arguments are passed forward respecting the size of the integer(4 bytes on 32-bits app, 8 on 64). One usage can be when there is a call with a number of arguments detected at run-time and want to pass them all to another call.
 	<br>
 	The <b>Entry</b> command acts like a <b>Function</b> command but with some differences: 1. the scope is not changed to a local scope; 2. the function is not added to the unreferences list; 3. the <b>endfunction</b> command is not used at this function.
 	<p>

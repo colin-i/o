@@ -1,6 +1,12 @@
 
+#msvcrt
 
-include "../../files/_/cimports.h"
+Import "_realloc" realloc
+Import "_free" free
+Import "_sprintf" sprintf
+Import "_memcpy" memtomem
+Import "_memset" memset
+Import "_exit" exit
 
 Import "_open" open
 Import "_close" close
@@ -10,15 +16,15 @@ Import "_chdir" chdir
 Import "_getcwd" getcwd
 
 Import "_lseek" lseek
-Import "strcat" strcat
+Import "_strcat" strcat
 
 #kernel32
-Import "GetCommandLineA" GetCommandName
-Import "GetTickCount" GetTickCount
-Import "GetModuleFileNameA" GetModuleFileName
+Import "_GetCommandLineA@0" GetCommandName
+Import "_GetTickCount@0" GetTickCount
+Import "_GetModuleFileNameA@12" GetModuleFileName
 
 #user32
-Import "MessageBoxA" MessageBox
+Import "_MessageBoxA@16" MessageBox
 
 #comdlg32
-Import "GetOpenFileNameA" GetOpenFileName
+Import "_GetOpenFileNameA@4" GetOpenFileName

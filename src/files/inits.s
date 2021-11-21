@@ -18,7 +18,6 @@ Set startofdata page_sectionalignment
 Set object false
 #fileformat#
 
-
 #for function in function rule
 Set innerfunction false
 

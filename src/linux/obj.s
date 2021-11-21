@@ -20,7 +20,6 @@ EndFunction
 
 Include "./head.h"
 
-Entry _start()
-	Include "./text.s"
+Include "./text.s"
 
 
