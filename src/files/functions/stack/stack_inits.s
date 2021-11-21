@@ -1,10 +1,10 @@
 
 
 
-function data_get_maskbit(ss pointer,ss bit)
+function data_get_maskbit(ss pointer,sd bit)
 	add pointer (maskoffset)
-	and bit# pointer#
-	return bit#
+	and bit pointer#
+	return bit
 endfunction
 
 function stackbit(sd pointer)
@@ -14,7 +14,7 @@ function stackbit(sd pointer)
 endfunction
 function pointbit(sd pointer)
 	sd bit
-	setcall bit data_get_maskbit(pointer,(stackbit))
+	setcall bit data_get_maskbit(pointer,(pointbit))
 	return bit
 endfunction
 
