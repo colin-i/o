@@ -75,8 +75,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 				set value stackoffset
 				or mask ebp_relative
 			endelse
-			data stackbit=stackbit
-			or mask stackbit
+			or mask (stackbit)
 		endelse
 	Else
 		Data structure#1

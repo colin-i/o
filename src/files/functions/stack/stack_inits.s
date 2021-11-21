@@ -1,20 +1,22 @@
 
 
 
-function is_stack(data pointer)
-	data mask#1
-	data maskoffset=maskoffset
-	data stackb=stackbit
-	data stack#1
-	
-	set mask pointer
-	add mask maskoffset
-	set stack stackb
-	and stack mask#
-	return stack
+function data_get_maskbit(ss pointer,ss bit)
+	add pointer (maskoffset)
+	and bit# pointer#
+	return bit#
 endfunction
 
-
+function stackbit(sd pointer)
+	sd bit
+	setcall bit data_get_maskbit(pointer,(stackbit))
+	return bit
+endfunction
+function pointbit(sd pointer)
+	sd bit
+	setcall bit data_get_maskbit(pointer,(stackbit))
+	return bit
+endfunction
 
 function stack_get_relative(sd location)
 	sd mask

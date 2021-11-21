@@ -42,7 +42,6 @@ EndFunction
 
 function writetake(sd takeindex,sd entry)
 	Data ptrcodesec%ptrcodesec
-	data null=0
 
 	Data errnr#1
 
@@ -61,9 +60,9 @@ function writetake(sd takeindex,sd entry)
 
 	
 	data stack#1
-	setcall stack is_stack(entry)
+	setcall stack stackbit(entry)
 
-	if stack==null
+	if stack==0
 		Data ptrextra%ptrextra
 		data relocoff=1
 		sd var
@@ -129,8 +128,8 @@ Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd
 	Data sz2=bsz+bsz
 
 	sd take64stack=FALSE;sd v64
-	sd stacktest;setcall stacktest is_stack(location)
-	if stacktest!=(NULL)
+	sd stacktest;setcall stacktest stackbit(location)
+	if stacktest!=0
 		#p test
 		sd for_64;setcall for_64 is_for_64()
 		if for_64==(TRUE)
@@ -147,7 +146,13 @@ Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd
 			if is_low==(TRUE)
 			#not ss, rex.w op r/m8 is ok but is useless
 				set v64# (val64_no)
-			endif
+			else
+				sd pbit;setcall pbit pointbit(location)
+				if pbit==0
+					#not needed at sd#
+					set v64# (val64_no)
+				endif
+			endelse
 		endif
 		Chars newtake=moveatprocthemem
 		Chars newtakemodrm#1

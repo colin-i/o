@@ -84,7 +84,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Set regprep ecxreg
 			Set regopcode ecxreg
 			Set divmul true
-			if lowprim==(FALSE);setcall big is_big(dataargprim)
+			if lowprim==(FALSE);setcall big is_big(dataargprim,sufixprim)
 			else;set big (FALSE);endelse
 			if subtype==(cREM);set rem (TRUE)
 			else;set rem (FALSE);endelse
@@ -170,7 +170,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			#this code with the rex promotes, if this near comp later,undefined dataargsec(1==1)will go wrong in is_big, viol
 				setcall imm getisimm()
 				if imm==false
-					setcall store_big is_big(dataargsec)
+				#it is 1==big/medium
+					setcall store_big is_big(dataargsec,sufixsec)
 				endif
 			endelse
 		Else
@@ -243,23 +244,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		Return errnr
 	EndIf
 
-	if imm==true
-		#continue to write the imm comparation(first is imm, second doesnt care)ex: 1(constant)==1(constant)->cmp ecx,eax (eax,ecx can be if switch)
-		#the jump for this is below, if imm or if not imm
-		chars immcompdata#1
-		set immcompdata compimmop
-		chars *immcompdatamodrm=0xc1
-		str immcomp^immcompdata
-		data immcompsz=2
-		if store_big==(TRUE)
-			call rex_w(#errnr)
-			If errnr!=noerr;Return errnr;EndIf
-		endif
-		SetCall errnr addtosec(immcomp,immcompsz,codeptr)
-		If errnr!=noerr
-			Return errnr
-		EndIf
-	endif
 	If divmul==true
 		Data regreg=RegReg
 
@@ -376,6 +360,24 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		endelse
 		Return errnr
 	ElseIf ptrcondition!=false
+		if imm==true
+			#first imm true only at comparations
+			#continue to write the imm comparation(first is imm, second doesnt care)ex: 1(constant)==1(constant)->cmp ecx,eax (eax,ecx can be if switch)
+			chars immcompdata#1
+			set immcompdata compimmop
+			chars *immcompdatamodrm=0xc1
+			str immcomp^immcompdata
+			data immcompsz=2
+			if store_big==(TRUE)
+				call rex_w(#errnr)
+				If errnr!=noerr;Return errnr;EndIf
+			endif
+			SetCall errnr addtosec(immcomp,immcompsz,codeptr)
+			If errnr!=noerr
+				Return errnr
+			EndIf
+		endif
+		
 		Chars jumpifnotcond={0x0f}
 		Chars cond#1
 		#this will be resolved at endcond

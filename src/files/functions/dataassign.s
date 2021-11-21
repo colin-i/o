@@ -200,9 +200,9 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 		Data pointer#1
 		SetCall pointer strinvars(content,size,tp)
 		If pointer!=zero
-			data rightstackbool#1
-			setcall rightstackbool is_stack(pointer)
-			if rightstackbool==false
+			data rightstackbit#1
+			setcall rightstackbit stackbit(pointer)
+			if rightstackbit==0
 				Set value pointer#
 			else
 				set ptrrelocbool# false

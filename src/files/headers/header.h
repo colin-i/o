@@ -12,7 +12,8 @@ Const stackbit=0x04
 Const tostack_relative=0x08
 #bit offset 6: is importX
 const x86_64bit=0x40
-#bit offset 7=unused
+#bit offset 7; pointer bit (sv# with rex, sd# without rex)
+const pointbit=0x80
 const dummy_mask=0
 
 Const maskoffset=dwsz
