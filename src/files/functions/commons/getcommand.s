@@ -3,7 +3,7 @@
 Const spacereq=1
 Const spacenotreq=0
 
-Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS"
+Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
 	Chars cCONST_c="CONST";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
 Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
@@ -52,6 +52,11 @@ const commandsvars_start=!
 			data *^cSS_c
 			Data *=cDECLARE
 			Data *=cSS
+			Data *=spacereq
+		Const cSV=!-cDECLARE_top
+			data *^cSV_c
+			Data *=cDECLARE
+			Data *=cSV
 			Data *=spacereq
 #numberofcommandsvars to set these commands to search for them at function parameter declare
 Const numberofcommandsvars=!-commandsvars_start/4/dwsz
@@ -316,6 +321,7 @@ function commandSubtypeDeclare_to_typenumber(sd subtype)
 	elseif subtype==(cSTR);return (stringsnumber)
 	elseif subtype==(cSD);return (stackdatanumber)
 	elseif subtype==(cSS);return (stackstringnumber)
+	elseif subtype==(cSV);return (stackvaluenumber)
 	else
 	#cCONST
 		return (constantsnumber)

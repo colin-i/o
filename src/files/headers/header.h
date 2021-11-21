@@ -87,6 +87,9 @@ Data *#1
 Data ssMax#1
 Data *#1
 Data *#1
+Data svMax#1
+Data *#1
+Data *#1
 
 Data integerfnscopeMax#1
 Data *#1
@@ -103,6 +106,9 @@ Data *#1
 Data ssfnMax#1
 Data *#1
 Data *#1
+Data svfnMax#1
+Data *#1
+Data *#1
 
 Const memvariablesnumber=0
 	Const integersnumber=memvariablesnumber+0
@@ -111,7 +117,9 @@ Const memvariablesnumber=0
 Const totalmemvariables=charsnumber+1
 	Const stackdatanumber=totalmemvariables+integersnumber
 	Const stackstringnumber=totalmemvariables+stringsnumber
-Const numberofvars=stackstringnumber+1
+	Const stackvaluenumber=totalmemvariables+charsnumber
+	#that was +charsnumber because it is compared once against charsnumber, to remember
+Const numberofvars=stackvaluenumber+1
 #from numberofvars to afterscopes comes inner function local scopes
 Const afterscopes=numberofvars*2
 	Const constantsnumber=afterscopes+0

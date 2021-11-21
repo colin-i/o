@@ -75,7 +75,7 @@
 
 <h3><a name="declaringdata">Declaring data</a></h3>
 <p>
-	The language has 6 names for data declaration (1 for constants and 5 for variables).
+	The language has 7 names for data declaration (1 for constants and 6 for variables).
 
 	<p>
 	1. Constants
@@ -142,15 +142,20 @@
 	</p>
 
 	<p>
-	5 and 6. Stack variables
+	5 - 7. Stack variables
 	<br>
 	Language command: <b>SD</b> = Stack Data
 	<br>
 	Language command: <b>SS</b> = Stack String
 	<br>
-	These variables are located on the stack. The methods for declaring SD/SS are the same as for Data/String.
+	Language command: <b>SV</b> = Stack Value
 	<br>
-	When declaring stack variables without a sign this is equivalent with reserve one unit.
+	Stack Value differentiates at 64bit code. It will point at 8 bytes ('sv#') when sd is pointing at 4 and ss at 1.
+	At 32bit code sd and sv are the same.
+	<br>
+	These variables are located on the stack. The methods for declaring SD/SS/SV are the same as for Data/String.
+	<br>
+	Stack variables can be declared without a sign. The implicit method in this case is '#1' (reserve one unit).
 	<br>
 	Example:
 	<br>
@@ -163,12 +168,12 @@
     sd another_reserve#1</a>
 	</p>
 
-	Data can be declared using 5 methods with 4 signs (the first sign has two methods):
+	Data can be declared using the following methods:
 
 	<p>
 	1. Equal sign ('=')
 	<p>
-	First method is without '{}' signs.
+	First method.
 	<br>
 	Example:
 	<br>
@@ -223,7 +228,7 @@
 	4. Relocation sign ('%')
 	<br>
 	Used at the object format. It acts like equal sign and then the offset is added to the REL section.
-	At executables it is ignored. At Str and quotations declaration the equal sign adds at object to Rel and this sign cannot be used here. At Chars the sign cannot be used.
+	At executables it translated to '='. At Str and quotations declaration the equal sign adds at object to Rel and this sign cannot be used here. At Chars the sign cannot be used.
 	<br>
 	Example:
 	<br>

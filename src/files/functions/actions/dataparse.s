@@ -76,6 +76,9 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 				or mask ebp_relative
 			endelse
 			or mask (stackbit)
+			if typenumber==(stackvaluenumber)
+				or mask (pointbit)
+			endif
 		endelse
 	Else
 		Data structure#1
@@ -159,9 +162,11 @@ function getsign(str content,data size,data typenumber,str assigntype,data reloc
 	SetCall valsize valinmem_pipes(content,size,pointersign,ptrsz)
 	If valsize!=size
 		If typenumber==charsnr
-			Chars ptrchar="Incorrect pointer sign ('^') used at CHARS declaration."
-			Str ptrptrchar^ptrchar
-			Return ptrptrchar
+			if stack==(FALSE)
+				Chars ptrchar="Incorrect pointer sign ('^') used at CHARS declaration."
+				Str ptrptrchar^ptrchar
+				Return ptrptrchar
+			endif
 		EndIf
 		Set assigntype# pointersign
 		If typenumber!=constnr

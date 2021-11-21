@@ -62,12 +62,14 @@ Set stringMax mainscope
 Set charsMax mainscope
 Set sdMax mainscope
 Set ssMax mainscope
+Set svMax mainscope
 
 Set integerfnscopeMax subscope
 Set stringfnscopeMax subscope
 Set charsfnscopeMax subscope
 Set sdfnMax subscope
 Set ssfnMax subscope
+Set svfnMax subscope
 
 Set constantsMax constantssize
 Set functionsMax mainscope
