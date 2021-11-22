@@ -111,7 +111,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	if b==(TRUE)
 		#at 64 code:
 		#A3 XX.XX.XX.XX_XX.XX.XX.XX
-		sd z=i386_obj_default_reloc_eaxh
+		sd z=i386_obj_default_reloc_rah
 		SetCall err addtosec(#z,(dwsz),_codesec)
 		If err!=noerr;Return err;EndIf
 	endif
