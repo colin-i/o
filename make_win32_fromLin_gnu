@@ -4,7 +4,7 @@
 o ./src/windows/obj32.s
 #is out from nostdlib and ld, was trying with gcc to have argc argv, but no, and gcc want -8 at rels and ld 0
 #, and ld same as gcc command but undefined realloc and with _ and __ is finding msvcrt but then maybe nothing
-i686-w64-mingw32-gcc -s -entry=_WinMain@16 ./src/windows/obj32.o -o ./o.exe
+i686-w64-mingw32-gcc -s -Wl,-entry=_WinMain@16 ./src/windows/obj32.o -o ./o.exe
 
 rm ./src/windows/obj32.o
 
