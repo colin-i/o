@@ -89,16 +89,19 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		Return err
 	EndIf
 
-	Const offend^memoff
-	Const offstart^stacktransfer1
-	Data ptrextra%ptrextra
-	Data reloff=offend-offstart
-	Data dataind=dataind
-	SetCall err adddirectrel_base(ptrextra,reloff,dataind,memoff)
-	If err!=noerr
-		Return err
-	EndIf
-
+	data p_is_object%ptrobject
+	if p_is_object#==(TRUE)
+		Const offend^memoff
+		Const offstart^stacktransfer1
+		Data ptrextra%ptrextra
+		Data reloff=offend-offstart
+		Data dataind=dataind
+		SetCall err adddirectrel_base(ptrextra,reloff,dataind,memoff)
+		If err!=noerr
+			Return err
+		EndIf
+		set memoff (i386_obj_default_reloc)
+	endif
 	Str codeops^stacktransfer1
 	Data _codesec%ptrcodesec
 	SetCall err addtosec(codeops,sizeoftransfer,_codesec)
@@ -108,7 +111,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	if b==(TRUE)
 		#at 64 code:
 		#A3 XX.XX.XX.XX_XX.XX.XX.XX
-		sd z=0
+		sd z=i386_obj_default_reloc_eaxh
 		SetCall err addtosec(#z,(dwsz),_codesec)
 		If err!=noerr;Return err;EndIf
 	endif

@@ -1,5 +1,9 @@
 
 #is old staying for information
+#rm ./fix/libuser.a
+#rm ./fix/libkernel.a
+#rm ./fix/libcomdlg.a
+#rm ./fix/libc.a
 exit
 
 #########
@@ -40,5 +44,5 @@ x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/c.def -l ./fix/libc.
 ./o ./src/windows/obj32_64code.s
 objcopy --input-target=elf32-i386 --output-target=elf64-x86-64 "./src/windows/obj32_64code.o" "./src/windows/obj64.o"
 mkdir ./buildg
-x86_64-w64-mingw32-ld -s -nostdlib -entry _start "./src/windows/obj64.o" -L./fix -luser -l kernel -lcomdlg -lc -o "./buildg/o64.exe"
+x86_64-w64-mingw32-ld -s -nostdlib -entry _WinMain@16 "./src/windows/obj64.o" -L./fix -luser -l kernel -lcomdlg -lc -o "./buildg/o64.exe"
 cp ./.ocompiler.txt ./buildg/

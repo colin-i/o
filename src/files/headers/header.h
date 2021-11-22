@@ -340,3 +340,4 @@ const convdata_init=3
 
 #this for i686-gcc at make... more info
 const i386_obj_default_reloc=-8
+const i386_obj_default_reloc_eaxh=-1

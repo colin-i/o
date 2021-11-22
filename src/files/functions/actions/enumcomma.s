@@ -9,6 +9,7 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 	data ptrobject%ptrobject
 	
 	if stack==false
+		data ptrdatasec%ptrdatasec
 		if ptrobject#==1
 			If ptrrelocbool#==true
 				#data
@@ -18,9 +19,18 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 				If err!=noerr
 					Return err
 				EndIf
+				sd inplacevalue
+				if relindex==(dataind)
+				#data a^dataB
+					set inplacevalue (i386_obj_default_reloc)
+				else
+				#data^functionReloc
+					set inplacevalue ptrvalue#
+				endelse
+				SetCall err addtosec(#inplacevalue,(dwsz),ptrdatasec)
+				return err
 			endif
 		endif
-		data ptrdatasec%ptrdatasec
 		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec)
 		return err
 	endif

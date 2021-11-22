@@ -56,6 +56,7 @@ function takewithimm(sd ind,sd addr)
 	return err
 endfunction
 function writetake(sd takeindex,sd entry)
+	data p_is_object%ptrobject
 	Data ptrcodesec%ptrcodesec
 	Data errnr#1
 	
@@ -63,39 +64,41 @@ function writetake(sd takeindex,sd entry)
 	sd stack
 	setcall stack stackbit(entry)
 	if stack==0
-		Data ptrextra%ptrextra
-		data relocoff=1
-		sd take_locat
-		sd var
-		setcall var function_in_code()
-		if var#==0
-			Data dataind=dataind
-			SetCall errnr adddirectrel_base(ptrextra,relocoff,dataind,take_loc)
-			If errnr!=(noerror)
-				Return errnr
-			EndIf
-			set take_locat (i386_obj_default_reloc)
-		else
-			#function in code
-			#var# 0? is static bool
-			set var# 0
-			sd importbit
-			setcall importbit get_importbit(entry)
-			setcall take_locat get_function_value(importbit,entry)
-			sd index
-			setcall index get_function_values(importbit,#take_locat,entry)
-			SetCall errnr adddirectrel_base(ptrextra,relocoff,index,take_locat)
-			If errnr!=(noerror)
-				Return errnr
-			EndIf
-			if importbit==0
-				setcall errnr unresLc(1,ptrcodesec,0)
+		if p_is_object#==(TRUE)
+			Data ptrextra%ptrextra
+			data relocoff=1
+			sd var
+			setcall var function_in_code()
+			if var#==0
+				Data dataind=dataind
+				SetCall errnr adddirectrel_base(ptrextra,relocoff,dataind,take_loc)
 				If errnr!=(noerror)
 					Return errnr
 				EndIf
-			endif
-		endelse
-		setcall errnr takewithimm(takeindex,take_locat)
+				set take_loc (i386_obj_default_reloc)
+			else
+				#function in code, not sd^local, sd^imp
+				#function in code is only at objects at the moment, is set only once at arg.s
+				#var# 0? is static bool
+				set var# 0
+				sd importbit
+				setcall importbit get_importbit(entry)
+				setcall take_loc get_function_value(importbit,entry)
+				sd index
+				setcall index get_function_values(importbit,#take_loc,entry)
+				SetCall errnr adddirectrel_base(ptrextra,relocoff,index,take_loc)
+				If errnr!=(noerror)
+					Return errnr
+				EndIf
+				if importbit==0
+					setcall errnr unresLc(1,ptrcodesec,0)
+					If errnr!=(noerror)
+						Return errnr
+					EndIf
+				endif
+			endelse
+		endif
+		setcall errnr takewithimm(takeindex,take_loc)
 	else
 		chars stack_relative#1
 		chars regreg=RegReg

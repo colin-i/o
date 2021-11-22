@@ -217,11 +217,11 @@ Data objfnmask#1
 Const ptrobjfnmask^objfnmask
 
 #not changing inplace
-#from addrel once
+#from addrel        before writes
 #from addrel_base   at call
-#from adddirect     writetake,function
+#from adddirect     writetake,function   importaftercall
 #changing inplace
-#from adddirect     fndecargs   writevar(data a^dataB)  writevar(sd^arg,will use from writetake)    importaftercall    writetake,data (take_locat),argInCall
+#from adddirect     fndecargs   writevar(examples there)   writevar(sd^arg,will use from writetake)   writetake,data (take_locat),argInCall
 #err
 Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	#Direct 32 bit
@@ -282,12 +282,6 @@ endfunction
 
 #err
 Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
-	Data noerr=noerror
-	Data ptrobject%ptrobject
-	Data false=FALSE
-	If ptrobject#==false
-		Return noerr
-	EndIf
 	Data err#1
 	Data off#1
 	Data ptroff^off
