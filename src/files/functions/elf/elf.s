@@ -216,6 +216,12 @@ Data codestrtab#1
 Data objfnmask#1
 Const ptrobjfnmask^objfnmask
 
+#not changing inplace
+#from addrel once
+#from addrel_base   at call
+#from adddirect     writetake,function
+#changing inplace
+#from adddirect     fndecargs   writevar(data a^dataB)  writevar(sd^arg,will use from writetake)    importaftercall    writetake,data (take_locat),argInCall
 #err
 Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	#Direct 32 bit

@@ -40,48 +40,51 @@ Function formmodrm(data mod,data regopcode,data rm)
 	Return modrm
 EndFunction
 
-function writetake(sd takeindex,sd entry)
-	Data ptrcodesec%ptrcodesec
-
-	Data errnr#1
-
-	Chars takeini={0xb8}
-
+function takewithimm(sd ind,sd addr)
 	Chars takeop#1
 	Data takeloc#1
-
-	Data ptrtake^takeop
-	Data sz1=bsz+dwsz
-
-	Set takeop takeini
-	Add takeop takeindex
-
-	Set takeloc entry#
-
 	
-	data stack#1
+	Set takeop (0xb8)
+	Add takeop ind
+	set takeloc addr
+	
+	Data ptrcodesec%ptrcodesec
+	Data sz1=bsz+dwsz
+	
+	sd err
+	SetCall err addtosec(#takeop,sz1,ptrcodesec)
+	return err
+endfunction
+function writetake(sd takeindex,sd entry)
+	Data ptrcodesec%ptrcodesec
+	Data errnr#1
+	
+	sd take_loc;set take_loc entry#
+	sd stack
 	setcall stack stackbit(entry)
-
 	if stack==0
 		Data ptrextra%ptrextra
 		data relocoff=1
+		sd take_locat
 		sd var
 		setcall var function_in_code()
 		if var#==0
 			Data dataind=dataind
-			SetCall errnr adddirectrel_base(ptrextra,relocoff,dataind,takeloc)
+			SetCall errnr adddirectrel_base(ptrextra,relocoff,dataind,take_loc)
 			If errnr!=(noerror)
 				Return errnr
 			EndIf
+			set take_locat (i386_obj_default_reloc)
 		else
 			#function in code
+			#var# 0? is static bool
 			set var# 0
 			sd importbit
 			setcall importbit get_importbit(entry)
-			setcall takeloc get_function_value(importbit,entry)
+			setcall take_locat get_function_value(importbit,entry)
 			sd index
-			setcall index get_function_values(importbit,#takeloc,entry)
-			SetCall errnr adddirectrel_base(ptrextra,relocoff,index,takeloc)
+			setcall index get_function_values(importbit,#take_locat,entry)
+			SetCall errnr adddirectrel_base(ptrextra,relocoff,index,take_locat)
 			If errnr!=(noerror)
 				Return errnr
 			EndIf
@@ -92,7 +95,7 @@ function writetake(sd takeindex,sd entry)
 				EndIf
 			endif
 		endelse
-		SetCall errnr addtosec(ptrtake,sz1,ptrcodesec)
+		setcall errnr takewithimm(takeindex,take_locat)
 	else
 		chars stack_relative#1
 		chars regreg=RegReg
@@ -102,8 +105,8 @@ function writetake(sd takeindex,sd entry)
 		SetCall getfromstack_modrm formmodrm(regreg,takeindex,stack_relative)
 		data ptrgetfromstack^getfromstack
 		data sizegetfromstack=2
-		if takeloc!=0
-			SetCall errnr addtosec(ptrtake,sz1,ptrcodesec)
+		if take_loc!=0
+			setcall errnr takewithimm(takeindex,take_loc);If errnr!=(noerror);Return errnr;EndIf
 			set getfromstack 0x03
 		else;set getfromstack (moveatprocthemem);endelse
 		setcall errnr rex_w_if64();if errnr!=(noerror);return errnr;endif
