@@ -31,26 +31,8 @@ If fileformat==elf_unix
 				Call errexit()
 			EndIf
 			Add sizefileheaders sizeimportfileheaders
-		EndIf
-	Else
-		SetCall writeres writefile(fileout,miscbag,miscbagReg)
-		If writeres==writefalse
-			Call errexit()
-		EndIf
-		Add sizefileheaders miscbagReg
-		#cannot see why i set this zero
-		#Set miscbagReg zero
-	EndElse
-EndIf
-If fileformat==elf_unix
-	If object==false
-		if implibsstarted==false
-			SetCall errormsg elfaddsecn()
-			If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
-			SetCall writeres writefile(fileout,miscbag,miscbagReg)
-			If writeres==writefalse;Call errexit();EndIf
-			Add sizefileheaders miscbagReg
-		else
+			#
+			#
 			SetCall errormsg elfaddsec_base(secstrs_off_atnames,0,0,null,null,0,0,0,0,null,ptrextra)
 			If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
 			SetCall errormsg elfaddsec_base(dynstr,(SHT_STRTAB),(SHF_ALLOC),elf_str_offset,elf32_dyn_d_val_strsz,0,0,bytesize,0,elf32_dyn_d_ptr_strtab,ptrextra)
@@ -64,9 +46,23 @@ If fileformat==elf_unix
 			If writeres==writefalse;Call errexit();EndIf
 			Add sizefileheaders extraReg
 			#extra used nomore
-		endelse
-	endif
-endif
+		Else
+			SetCall errormsg elfaddsecn()
+			If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
+			SetCall writeres writefile(fileout,miscbag,miscbagReg)
+			If writeres==writefalse;Call errexit();EndIf
+			Add sizefileheaders miscbagReg
+		EndElse
+	Else
+		SetCall writeres writefile(fileout,miscbag,miscbagReg)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+		Add sizefileheaders miscbagReg
+		#cannot see why i set this zero
+		#Set miscbagReg zero
+	EndElse
+EndIf
 
 SetCall writeres padsec(fileout,sizefileheaders,startofdata)
 If writeres==writefalse

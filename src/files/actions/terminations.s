@@ -6,7 +6,7 @@ If errormsg!=noerr
 	Call msgerrexit(errormsg)
 EndIf
 
-#verify at executables that LIBRARY are closed
+#close the last LIBRARY
 If fileformat==pe_exec
 	If implibsstarted==true
 		SetCall errormsg closelib()

@@ -101,6 +101,8 @@ If implibsstarted==true
 	Data idatasectionsize=idatasectionsize
 
 	Add SizeOfHeaders idatasectionsize
+	#without this "There is an import table, but the section containing it could not be found"
+	add sizefileheaders idatasectionsize
 	##############################################
 
 	Const iaddressesoffset=itablesize
