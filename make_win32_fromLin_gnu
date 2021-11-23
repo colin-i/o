@@ -2,9 +2,8 @@
 #this is the new make for windows
 
 o ./src/windows/obj32.s
-#is out from nostdlib and ld, was trying with gcc to have argc argv, but no, and gcc want -8 at rels and ld 0
-#, and ld same as gcc command but undefined realloc and with _ and __ is finding msvcrt but then maybe nothing
-i686-w64-mingw32-gcc -s -Wl,-entry=_WinMain@16 ./src/windows/obj32.o -o ./o.exe
+#argc argv?, no. gcc want -8 at rels and ld 0
+i686-w64-mingw32-ld -s -entry=_WinMain@16 ./src/windows/obj32.o -lmsvcrt -luser32 -lkernel32 -lcomdlg32 -o ./o.exe
 
 rm ./src/windows/obj32.o
 

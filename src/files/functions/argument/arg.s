@@ -223,81 +223,80 @@ Function argfilters(data ptrcondition,data ptrcontent,data ptrsize,data ptrdata,
 	If ptrcondition==null
 		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward)
 		Return err
-	Else
-		call setimm()
+	EndIf
+	call setimm()
 
-		Data content#1
-		Data size#1
-		Set content ptrcontent#
-		Set size ptrsize#
-		Data argsz#1
-		
+	Data content#1
+	Data size#1
+	Set content ptrcontent#
+	Set size ptrsize#
+	Data argsz#1
+	
 Const enterifNOTequal=0x84
-		Chars s1="!="
-		Data *=enterifNOTequal
+	Chars s1="!="
+	Data *=enterifNOTequal
 
 Const enterifLESSorEQUAL=0x8F
-		Chars *s2="<="
-		Data *=enterifLESSorEQUAL
+	Chars *s2="<="
+	Data *=enterifLESSorEQUAL
 
 Const enterifGREATERorEQUAL=0x8C
-		Chars *s3=">="
-		Data *=enterifGREATERorEQUAL
+	Chars *s3=">="
+	Data *=enterifGREATERorEQUAL
 
 Const enterifEQUAL=0x85
-		Chars *s4="=="
-		Data *=enterifEQUAL
+	Chars *s4="=="
+	Data *=enterifEQUAL
 
 Const enterifLESS=0x8D
-		Chars *s5="<"
-		Data *=enterifLESS
+	Chars *s5="<"
+	Data *=enterifLESS
 
 Const enterifGREATER=0x8E
-		Chars *s6=">"
-		Data *=enterifGREATER
+	Chars *s6=">"
+	Data *=enterifGREATER
 
-		Chars term={0}
+	Chars term={0}
 
-		Data ptr#1
-		Data ptrini^s1
-		Chars byte#1
+	Data ptr#1
+	Data ptrini^s1
+	Chars byte#1
 
-		Set ptr ptrini
+	Set ptr ptrini
+	Set byte ptr#
+	
+	While byte!=term
+		SetCall argsz strinmem(content,size,ptr)
+		If argsz!=size
+			Set ptrcondition# ptr
+			Data errnr#1
+			sd verifyafter
+			set verifyafter content
+			add verifyafter argsz
+			SetCall errnr getarg(ptrcontent,ptrsize,argsz,ptrdata,ptrlow,ptrsufix,forward)
+			data noerrnr=noerror
+			if errnr!=noerrnr
+				Return errnr
+			endif
+			if verifyafter!=ptrcontent#
+				str moreatprimcond="Unrecognized characters at first condition argument."
+				return moreatprimcond
+			endif
+			return noerrnr
+		EndIf
+		Data sz#1
+		Data one=1
+		Data four=4
+		SetCall sz strlen(ptr)
+		Add ptr sz
+		Add ptr one
+		Add ptr four
 		Set byte ptr#
-		
-		While byte!=term
-			SetCall argsz strinmem(content,size,ptr)
-			If argsz!=size
-				Set ptrcondition# ptr
-				Data errnr#1
-				sd verifyafter
-				set verifyafter content
-				add verifyafter argsz
-				SetCall errnr getarg(ptrcontent,ptrsize,argsz,ptrdata,ptrlow,ptrsufix,forward)
-				data noerrnr=noerror
-				if errnr!=noerrnr
-					Return errnr
-				endif
-				if verifyafter!=ptrcontent#
-					str moreatprimcond="Unrecognized characters at first condition argument."
-					return moreatprimcond
-				endif
-				return noerrnr
-			EndIf
-			Data sz#1
-			Data one=1
-			Data four=4
-			SetCall sz strlen(ptr)
-			Add ptr sz
-			Add ptr one
-			Add ptr four
-			Set byte ptr#
-		EndWhile
-		Chars conderr="Condition sign(s) expected."
-		Str _conderr^conderr
-		Return _conderr
-		Return err
-	EndElse
+	EndWhile
+	Chars conderr="Condition sign(s) expected."
+	Str _conderr^conderr
+	Return _conderr
+	Return err
 EndFunction
 
 

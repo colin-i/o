@@ -76,7 +76,9 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 				or mask ebp_relative
 			endelse
 			or mask (stackbit)
-			if typenumber==(stackvaluenumber)
+			sd vbool
+			if typenumber==(stackvaluenumber);set vbool (TRUE);else;setcall vbool sd_as_sv((sd_as_sv_bool),typenumber);endelse
+			if vbool==(TRUE)
 				or mask (pointbit)
 			endif
 		endelse

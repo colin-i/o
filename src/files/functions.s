@@ -36,7 +36,9 @@ Include "./functions/actions/argstwo.s"
 Include "./functions/commands/cond.s"
 Include "./functions/commands/lib.s"
 
-Include "./functions/preffuncs.s"
+Include "./functions/pref/preffuncs.s"
+Include "./functions/pref/sdsv.s"
+
 Include "./functions/incld.s"
 Include "./functions/dataassign.s"
 Include "./functions/enumbags.s"

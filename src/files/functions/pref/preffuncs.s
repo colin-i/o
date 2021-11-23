@@ -129,6 +129,9 @@ function setpreferences(str scrpath)
 	sd neg_64
 	setcall neg_64 p_neg_is_for_64()
 	set neg_64# false
+	sd sdsv_p
+	setcall sdsv_p sd_as_sv((sd_as_sv_get))
+	set sdsv_p# false
 	
 	Str preferencescontent#1
 	Data ptrpreferencescontent^preferencescontent
@@ -157,6 +160,7 @@ function setpreferences(str scrpath)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,text_fn_info)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptr_log_import_functions)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,sdsv_p)
 
 		Call free(freepreferences)
 	endif

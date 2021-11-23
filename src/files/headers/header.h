@@ -339,5 +339,10 @@ const convdata_fn=2
 const convdata_init=3
 
 #this for i686-gcc at make... more info
-const i386_obj_default_reloc=-8
-const i386_obj_default_reloc_rah=-1
+#const i386_obj_default_reloc=-8
+#const i386_obj_default_reloc_rah=-1
+const i386_obj_default_reloc=0
+const i386_obj_default_reloc_rah=0
+
+const sd_as_sv_bool=0
+const sd_as_sv_get=1
