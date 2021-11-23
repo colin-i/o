@@ -1,15 +1,6 @@
 
 #is old staying for information
-#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/user.def -l ./fix/libuser.a
-#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/kernel.def -l ./fix/libkernel.a
-#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/comdlg.def -l ./fix/libcomdlg.a
-#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/c.def -l ./fix/libc.a
-#x86_64-w64-mingw32-ld --image-base=0 -s -nostdlib -entry _WinMain@16 "./src/windows/obj64.o" -L./fix -luser -l kernel -lcomdlg -lc -o "./o64.exe"
-#rm ./fix/libuser.a
-#rm ./fix/libkernel.a
-#rm ./fix/libcomdlg.a
-#rm ./fix/libc.a
-#rm ./src/windows/obj64.o
+#x86_64-w64-mingw32-ld --image-base=0 -s -entry _WinMain@16 "./obj64.o" -luser32 -lkernel32 -lcomdlg32 -lmsvcrt -o "./o64.exe"
 exit
 
 #########
@@ -42,7 +33,19 @@ exit
 #       DWORD         FlagsEx;           -
 #endif
 
+x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/user.def -l ./fix/libuser.a
+x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/kernel.def -l ./fix/libkernel.a
+x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/comdlg.def -l ./fix/libcomdlg.a
+x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/c.def -l ./fix/libc.a
+
 ./o ./src/windows/obj32_64code.s
 objcopy --input-target=elf32-i386 --output-target=elf64-x86-64 "./src/windows/obj32_64code.o" "./src/windows/obj64.o"
 mkdir ./buildg
+x86_64-w64-mingw32-ld --image-base=0 -s -nostdlib -entry _WinMain@16 "./src/windows/obj64.o" -L./fix -luser -l kernel -lcomdlg -lc -o "./buildg/o64.exe"
 cp ./.ocompiler.txt ./buildg/
+
+rm ./fix/libuser.a
+rm ./fix/libkernel.a
+rm ./fix/libcomdlg.a
+rm ./fix/libc.a
+rm ./src/windows/obj64.o
