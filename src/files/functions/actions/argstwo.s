@@ -217,6 +217,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			else
 			#only take at prefix on regcode
 				call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
+				#pprefix is reset in the road at remind
 			endelse
 		endelse
 		If errnr!=noerr
@@ -246,7 +247,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		#first value is imm, or second value is imm (switched)
 		SetCall errnr write_imm(dataargprim,(0xb8+ecxregnumber))
 	else
-		SetCall errnr writeop(dataargprim,opprim,noreg,sufixprim,eaxreg,lowprim)
+		SetCall errnr writeop_prim(dataargprim,opprim,sufixprim,lowprim,sameimportant,lowsec)
 	endelse
 	If errnr!=noerr
 		Return errnr
@@ -399,3 +400,18 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	EndElseIf
 	Return errnr
 EndFunction
+
+function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameimportant,sd lowsec)
+	sd err
+	if sameimportant==(FALSE)
+		if lowsec==(TRUE)
+			#this is and/or... at sd low not needing to write rex
+			call writeoperation_take(#err,dataargprim,sufixprim,(edxregnumber),lowprim)
+			if err!=(noerror);return err;endif
+			setcall err writeoperation_op(opprim,(noregnumber),(eaxregnumber),(edxregnumber))
+			return err
+		endif
+	endif
+	SetCall err writeop(dataargprim,opprim,(noregnumber),sufixprim,(eaxregnumber),lowprim)
+	return err
+endfunction

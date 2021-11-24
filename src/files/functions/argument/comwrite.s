@@ -185,7 +185,9 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 	sd prefix
 	setcall prefix prefix_bool()
 	sd mod=mod_0
-
+	#this will reset call,push and set v64
+	Call stack64_op()
+	
 	#if is low
 	If regprepare!=(noregnumber)
 		Chars comprepare1={0x33}
@@ -195,24 +197,24 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 		If errnr!=noerr
 			Return errnr
 		EndIf
-	ElseIf prefix#!=0
-	#there is no prefix at low
-		set mod (RegReg)
-		set prefix# 0
-	EndElseIf
-	#this will reset call,push and set v64
-	Call stack64_op()
+	Else
+	#there is no prefix at low, and no val64
+		If prefix#!=0
+			set mod (RegReg)
+			set prefix# 0
+		EndIf
+		sd v64;setcall v64 val64_p_get()
+		if v64#==(val64_willbe)
+			call rex_w(#errnr);if errnr!=(noerror);return errnr;endif
+			set v64# (val64_no)
+		endif
+	EndElse
 	
 	Chars actionop#1
 	Chars actionmodrm#1
 	
 	Set actionop operationopcode
 	SetCall actionmodrm formmodrm(mod,regopcode,takeindex)
-	sd v64;setcall v64 val64_p_get()
-	if v64#==(val64_willbe)
-		call rex_w(#errnr);if errnr!=(noerror);return errnr;endif
-		set v64# (val64_no)
-	endif
 	SetCall errnr addtosec(#actionop,sz2,ptrcodesec)
 	Return errnr
 Endfunction
