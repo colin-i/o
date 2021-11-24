@@ -243,6 +243,7 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	ElseIf is_str==false
 		Set ptrlow# false
 	Else
+	#str ss
 		If sufix==true
 			if prefix#==0
 				Set ptrlow# true

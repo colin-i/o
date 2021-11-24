@@ -123,25 +123,28 @@ function stack64_op_set_get(sd b,sd val)
 	endelse
 endfunction
 #err
-function stack64_op(sd takeindex,sd p_mod)
+function stack64_op()
 	sd b;setcall b stack64_op_set_get((FALSE))
-	if b==(FALSE);return (noerror);endif
-	#reset
-	call stack64_op_set_get((TRUE),(FALSE))
+	if b!=(FALSE)
+		#reset
+		call stack64_op_set_get((TRUE),(FALSE))
+		#at push 64 and call 64, without rex is ok
+		sd p;setcall p val64_p_get()
+		set p# (val64_no)
+	endif
 	#return if outside mod=3
-	if p_mod#==(RegReg);return (noerror);endif
-	
-	sd err
-	SetCall err val64_phase_3();If err!=(noerror);Return err;EndIf
+	#if mod!=(RegReg)
+	#sd err
+	#SetCall err val64_phase_3();If err!=(noerror);Return err;EndIf
 	
 	#set outside mod=3
-	set p_mod# (RegReg)
+	#set p_mod# (RegReg)
 	#mov reg,[reg]
-	chars x=moveatprocthemem;chars y#1
-	setcall y formmodrm((mod_0),takeindex,takeindex)
-	data code%ptrcodesec
-	setcall err addtosec(#x,2,code)
-	return err
+	#chars x=moveatprocthemem;chars y#1
+	#setcall y formmodrm((mod_0),takeindex,takeindex)
+	#data code%ptrcodesec
+	#setcall err addtosec(#x,2,code)
+	#return err
 endfunction
 
 function stack64_add(sd val)
@@ -154,17 +157,8 @@ endfunction
 
 #setx
 
-function val64_phase_0()
+function val64_init()
 	sd p;setcall p val64_p_get();set p# (val64_no)
-endfunction
-#er
-function val64_phase_3()
-	sd p;setcall p val64_p_get()
-	if p#==(val64_willbe)
-		sd er;call rex_w(#er);if er!=(noerror);return er;endif
-		set p# (val64_no)
-	endif
-	return (noerror)
 endfunction
 function val64_p_get()
 	data x#1;return #x

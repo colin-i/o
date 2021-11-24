@@ -192,6 +192,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				add compimmop two
 				#and for ss#
 				set aux lowprim;set lowprim lowsec;set lowsec aux
+				#and char==#sd
+				set aux remind_first_prefix;set remind_first_prefix p_prefix#;set p_prefix# aux
 			EndIf
 		EndElse
 	EndElse

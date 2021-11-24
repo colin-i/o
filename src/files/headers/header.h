@@ -322,7 +322,7 @@ Const hexenum=1
 
 
 const val64_no=0
-const val64_willbe=2
+const val64_willbe=1
 
 const no_convention_input=-1
 const direct_convention_input=0

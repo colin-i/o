@@ -119,7 +119,7 @@ function writetake(sd takeindex,sd entry)
 endfunction
 
 #er
-Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd regopcode,sd takeindex,sd is_low)
+Function writeoperation_take(sd location,sd sufix,sd takeindex,sd is_low)
 #last parameter is optional
 	Data ptrcodesec%ptrcodesec
 	Data errnr#1
@@ -130,8 +130,6 @@ Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd
 		Return errnr
 	EndIf
 
-	Data noreg=noregnumber
-	Data sz2=bsz+bsz
 
 	sd take64stack=FALSE;sd v64
 	sd stacktest;setcall stacktest stackbit(location)
@@ -156,21 +154,33 @@ Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd
 				sd pbit;setcall pbit pointbit(location)
 				if pbit==0
 					#not needed at sd#
-					set v64# (val64_no)
+					sd prefix
+					setcall prefix prefix_bool()
+					if prefix#==0
+					#but keep at prefix, this is a #a# case,the logic is fragile
+						set v64# (val64_no)
+					endif
 				endif
 			endelse
 		endif
 		Chars newtake=moveatprocthemem
 		Chars newtakemodrm#1
 		Str ptrnewtake^newtake
+		Data sz2=bsz+bsz
 		setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
 		SetCall errnr addtosec(ptrnewtake,sz2,ptrcodesec)
-		If errnr!=noerr
-			Return errnr
-		EndIf
+		Return errnr
 	EndIf
-	
-	If regprepare!=noreg
+	Return (noerror)
+EndFunction
+#er
+Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd takeindex)
+	Data ptrcodesec%ptrcodesec
+	Data errnr#1
+	Data noerr=noerror
+	Data sz2=bsz+bsz
+
+	If regprepare!=(noregnumber)
 		Chars comprepare1={0x33}
 		Chars comprepare2#1
 		setcall comprepare2 formmodrm((RegReg),regprepare,regprepare)
@@ -185,24 +195,33 @@ Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd
 	
 	Set actionop operationopcode
 	
-	sd mod=0
-	#prefix is tested here; the suffix is above
 	sd prefix
 	setcall prefix prefix_bool()
+	sd mod=mod_0
+	#prefix is tested here; the suffix is above
 	if prefix#!=0
 		set mod (RegReg)
 		set prefix# 0
 	endif
-	#reset the behaviour, return if (RegReg), write
-	SetCall errnr stack64_op(takeindex,#mod)
-	If errnr!=noerr;Return errnr;EndIf
+	Call stack64_op()
+	#
 	SetCall actionmodrm formmodrm(mod,regopcode,takeindex)
-	
-	SetCall errnr val64_phase_3();If errnr!=noerr;Return errnr;EndIf
-	
+	sd v64;setcall v64 val64_p_get()
+	if v64#==(val64_willbe)
+		call rex_w(#errnr);if errnr!=(noerror);return errnr;endif
+		set v64# (val64_no)
+	endif
 	SetCall errnr addtosec(#actionop,sz2,ptrcodesec)
 	Return errnr
-EndFunction
+Endfunction
+#er
+Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd regopcode,sd takeindex,sd is_low)
+	sd err
+	setcall err writeoperation_take(location,sufix,takeindex,is_low)
+	if err!=(noerror);return err;endif
+	setcall err writeoperation_op(operationopcode,regprepare,regopcode,takeindex)
+	return err
+Endfunction
 
 #er
 Function writeop(sd location,sd operationopcode,sd regprepare,sd sufix,sd regopcode,sd is_low)
