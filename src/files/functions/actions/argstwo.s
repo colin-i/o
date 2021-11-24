@@ -210,8 +210,15 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			elseif subtype==(cCALLEX)
 				add opsec 1
 			endelseif
-		endif
-		SetCall errnr writeop_immfilter(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec)
+			SetCall errnr write_imm(dataargsec,opsec)
+		else
+			if p_prefix#==(FALSE)
+				SetCall errnr writeop(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec)
+			else
+			#only take at prefix on eax
+				setcall errnr writeoperation_take(dataargsec,sufixsec,eaxreg,lowsec)
+			endelse
+		endelse
 		If errnr!=noerr
 			Return errnr
 		EndIf
@@ -235,13 +242,12 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	call restorefirst_isimm()
 	setcall imm getisimm()
 	if imm==true
-	#comparations
-		#first value is imm or was the switch
-		chars immcomparationtake=0xb9
-		set opprim immcomparationtake
-	endif
-
-	SetCall errnr writeop_immfilter(dataargprim,opprim,noreg,sufixprim,eaxreg,lowprim)
+		#first argument imm are comparations
+		#first value is imm, or second value is imm (switched)
+		SetCall errnr write_imm(dataargprim,(0xb8+ecxregnumber))
+	else
+		SetCall errnr writeop(dataargprim,opprim,noreg,sufixprim,eaxreg,lowprim)
+	endelse
 	If errnr!=noerr
 		Return errnr
 	EndIf
@@ -360,7 +366,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				SetCall errnr writeoperation(dataargprim,storeex,noreg,sufixprim,(edxregnumber),ecxreg,lowprim)
 			endelse
 		endelse
-		Return errnr
 	ElseIf ptrcondition!=false
 		if imm==true
 			#first imm true only at comparations

@@ -41,13 +41,6 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 
 	Set sizeofcontinuation zero
 
-	data termswitch#1
-	set termswitch false
-	if subtype==(cEXIT)
-		set termswitch true
-		set subtype (cRETURN)
-	endif
-
 	Data codeptr%ptrcodesec
 	Data regopcode#1
 	
@@ -59,15 +52,22 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	call unsetimm()
 	Data forward=FORWARD
 	If forwardORcallsens==forward
+		sd termswitch=FALSE
+		if subtype==(cEXIT)
+			set subtype (cRETURN)
+			set termswitch (TRUE)
+		endif
 		If subtype==(cRETURN)
 			call setimm()
 			set immop immtake
 			Set integerreminder true
 			Set op (moveatprocthemem)
 
-			#exit from linux term
-			if termswitch==(FALSE);setcall termswitch is_linux_end();endif
-
+			if termswitch==(FALSE)
+				#exit from linux term
+				setcall termswitch is_linux_end()
+			endif
+			
 			if termswitch==true
 				#if to keep rsp can be leave pop sub rsp,:
 				
@@ -188,7 +188,11 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		EndIf
 	EndIf
 	
-	SetCall err writeop_immfilter(dataarg,op,intchar,sufix,regopcode,lowbyte)
+	if imm==true
+		setcall err write_imm(dataarg,op)
+	else
+		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
+	endelse
 	If err!=noerr
 		Return err
 	EndIf

@@ -77,15 +77,7 @@ endfunction
 
 
 #er
-function writeop_immfilter(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd is_low)
-	sd isimm
-	setcall isimm getisimm()
-	data false=0
-	sd err
-	if isimm==false
-		setcall err writeop(dataarg,op,intchar,sufix,regopcode,is_low)
-		return err
-	endif
+function write_imm(sd dataarg,sd op)
 	chars immop#1
 	data value#1
 	data immadd^immop
@@ -93,6 +85,7 @@ function writeop_immfilter(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd 
 	set value dataarg
 	data sz=5
 	data code%ptrcodesec
+	sd err
 	setcall err addtosec(immadd,sz,code)
 	return err
 endfunction
