@@ -215,8 +215,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			if p_prefix#==(FALSE)
 				SetCall errnr writeop(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec)
 			else
-			#only take at prefix on eax
-				setcall errnr writeoperation_take(dataargsec,sufixsec,regopcode,lowsec)
+			#only take at prefix on regcode
+				call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
 			endelse
 		endelse
 		If errnr!=noerr

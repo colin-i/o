@@ -132,19 +132,6 @@ function stack64_op()
 		sd p;setcall p val64_p_get()
 		set p# (val64_no)
 	endif
-	#return if outside mod=3
-	#if mod!=(RegReg)
-	#sd err
-	#SetCall err val64_phase_3();If err!=(noerror);Return err;EndIf
-	
-	#set outside mod=3
-	#set p_mod# (RegReg)
-	#mov reg,[reg]
-	#chars x=moveatprocthemem;chars y#1
-	#setcall y formmodrm((mod_0),takeindex,takeindex)
-	#data code%ptrcodesec
-	#setcall err addtosec(#x,2,code)
-	#return err
 endfunction
 
 function stack64_add(sd val)

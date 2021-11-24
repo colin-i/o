@@ -118,8 +118,8 @@ function writetake(sd takeindex,sd entry)
 	Return errnr
 endfunction
 
-#er
-Function writeoperation_take(sd location,sd sufix,sd takeindex,sd is_low)
+#val64. is one call at this that will break val64 if not a return value
+Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_low)
 #last parameter is optional
 	Data ptrcodesec%ptrcodesec
 	Data errnr#1
@@ -127,18 +127,18 @@ Function writeoperation_take(sd location,sd sufix,sd takeindex,sd is_low)
 
 	setcall errnr writetake(takeindex,location)
 	If errnr!=noerr
-		Return errnr
+		set p_errnr# errnr;return (void)
 	EndIf
 
 
-	sd take64stack=FALSE;sd v64
+	sd take64stack=FALSE;sd v_64=val64_no
 	sd stacktest;setcall stacktest stackbit(location)
 	if stacktest!=0
 		#p test
 		sd for_64;setcall for_64 is_for_64()
 		if for_64==(TRUE)
 			set take64stack (TRUE)
-			setcall v64 val64_p_get();set v64# (val64_willbe)
+			set v_64 (val64_willbe)
 			#rex if p
 		endif
 		#take on takeindex
@@ -146,10 +146,11 @@ Function writeoperation_take(sd location,sd sufix,sd takeindex,sd is_low)
 	Data true=TRUE
 	If sufix==true
 		if take64stack==(TRUE)
-			call rex_w(#errnr);If errnr!=noerr;Return errnr;EndIf
+			call rex_w(#errnr);If errnr!=noerr
+				set p_errnr# errnr;return (void);EndIf
 			if is_low==(TRUE)
 			#not ss, rex.w op r/m8 is ok but is useless
-				set v64# (val64_no)
+				set v_64 (val64_no)
 			else
 				sd pbit;setcall pbit pointbit(location)
 				if pbit==0
@@ -158,7 +159,7 @@ Function writeoperation_take(sd location,sd sufix,sd takeindex,sd is_low)
 					setcall prefix prefix_bool()
 					if prefix#==0
 					#but keep at prefix, this is a #a# case,the logic is fragile
-						set v64# (val64_no)
+						set v_64 (val64_no)
 					endif
 				endif
 			endelse
@@ -169,9 +170,9 @@ Function writeoperation_take(sd location,sd sufix,sd takeindex,sd is_low)
 		Data sz2=bsz+bsz
 		setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
 		SetCall errnr addtosec(ptrnewtake,sz2,ptrcodesec)
-		Return errnr
-	EndIf
-	Return (noerror)
+		set p_errnr# errnr
+	Else;set p_errnr# (noerror);EndElse
+	Return v_64
 EndFunction
 #er
 Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd takeindex)
@@ -180,6 +181,12 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 	Data noerr=noerror
 	Data sz2=bsz+bsz
 
+
+	sd prefix
+	setcall prefix prefix_bool()
+	sd mod=mod_0
+
+	#if is low
 	If regprepare!=(noregnumber)
 		Chars comprepare1={0x33}
 		Chars comprepare2#1
@@ -188,23 +195,18 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 		If errnr!=noerr
 			Return errnr
 		EndIf
-	EndIf
-
+	ElseIf prefix#!=0
+	#there is no prefix at low
+		set mod (RegReg)
+		set prefix# 0
+	EndElseIf
+	#this will reset call,push and set v64
+	Call stack64_op()
+	
 	Chars actionop#1
 	Chars actionmodrm#1
 	
 	Set actionop operationopcode
-	
-	sd prefix
-	setcall prefix prefix_bool()
-	sd mod=mod_0
-	#prefix is tested here; the suffix is above
-	if prefix#!=0
-		set mod (RegReg)
-		set prefix# 0
-	endif
-	Call stack64_op()
-	#
 	SetCall actionmodrm formmodrm(mod,regopcode,takeindex)
 	sd v64;setcall v64 val64_p_get()
 	if v64#==(val64_willbe)
@@ -216,9 +218,10 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 Endfunction
 #er
 Function writeoperation(sd location,sd operationopcode,sd regprepare,sd sufix,sd regopcode,sd takeindex,sd is_low)
-	sd err
-	setcall err writeoperation_take(location,sufix,takeindex,is_low)
+	sd err;sd v_64
+	setcall v_64 writeoperation_take(#err,location,sufix,takeindex,is_low)
 	if err!=(noerror);return err;endif
+	sd v64;setcall v64 val64_p_get();set v64# v_64
 	setcall err writeoperation_op(operationopcode,regprepare,regopcode,takeindex)
 	return err
 Endfunction
