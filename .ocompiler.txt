@@ -21,7 +21,7 @@ includedir=1
 
 4.Take the following action at FUNCTION entries at the object format that are not refered in the object and when the reference warning is enabled.
 [if warnings is 1]
-0 is Ignore them; 1 is Print/Show warning; 2 [if logfile is 1] is Write them to the file, else take 1
+0 is Ignore them; 1 is Print/Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 0
 codeFnObj=2
 
 5.Write the function names above the function in code section, useful when debugging asm instructions.
