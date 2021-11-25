@@ -20,7 +20,7 @@ function logincludes_bool()
 endfunction
 
 #void
-Function warnings(data searchInAll,data includes,data nameoffset)
+Function warnings(sd searchInAll,sd includes,sd nameoffset,sd p_err)
 	Data warningsboolptr%ptrwarningsbool
 	Data warningsbool#1
 	Data null=NULL
@@ -34,19 +34,19 @@ Function warnings(data searchInAll,data includes,data nameoffset)
 
 	Data var#1
 	
-	SetCall var searchinvars(null,null,null,true)
+	SetCall var searchinvars(null,null,null,p_err)
 	If var==null
 		If searchInAll==true
 			data ptrcodeFnObj%ptrcodeFnObj
 			if ptrcodeFnObj#!=(ignore_warn)
 				Data functionsptr%ptrfunctions
-				SetCall var varscore(null,null,functionsptr,true)
+				SetCall var varscore(null,null,functionsptr,p_err)
 			endif
 			if var==null
 				sd cb;setcall cb constants_bool((const_warn_get))
 				if cb!=(ignore_warn)
 					data constantsptr%ptrconstants
-					SetCall var varscore(null,null,constantsptr,true)
+					SetCall var varscore(null,null,constantsptr,p_err)
 				endif
 			endif
 		EndIf

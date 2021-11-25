@@ -1,17 +1,23 @@
 
 
 #same or zero
-function warn_or_log(ss str1,sd return_value,ss symbolname,sd log_option)
+function warn_or_log(ss str1,sd return_value,ss symbolname,sd log_option,sd p_err)
 	data ptrobject%ptrobject
 	if ptrobject#==(TRUE)
 		if log_option==(log_warn)
 			data ptrlogfile%ptrlogfile
 			if ptrlogfile#!=-1
+				sd len
+				setcall len strlen(str1)
+				setcall p_err# writefile_errversion(ptrlogfile#,str1,len)
+				if p_err#!=(noerror)
+					return return_value
+				endif
 				add symbolname (dwsz)
-				data log#1
-				setcall log errorDefOut(str1,symbolname)
-				call addtolog(log)
-				call clearmessage()
+				setcall p_err# addtolog(symbolname)
+				if p_err#!=(noerror)
+					return return_value
+				endif
 			endif
 			set return_value 0
 		endif
@@ -37,9 +43,7 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 		Set entrypoint container
 		Add container dwlen
 		Sub containerReg dwlen
-		Data true=TRUE
-		Data false=FALSE
-		If warningssearch==true
+		If warningssearch!=(NULL)
 			Data ReferenceBit=referencebit
 			Data checkvalue#1
 			Set checkvalue container#
@@ -55,13 +59,13 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 					And checkvalue idatabitfunction
 					if checkvalue==zero
 						data ptrcodeFnObj%ptrcodeFnObj
-						setcall returnvalue warn_or_log("f",returnvalue,container,ptrcodeFnObj#)
+						setcall returnvalue warn_or_log("f",returnvalue,container,ptrcodeFnObj#,warningssearch)
 					endif
 				else
 					data ptrconstants%ptrconstants
 					if ptrconstants==ptrstructure
 						sd cb;setcall cb constants_bool((const_warn_get))
-						setcall returnvalue warn_or_log("c",returnvalue,container,cb)
+						setcall returnvalue warn_or_log("c",returnvalue,container,cb,warningssearch)
 					endif
 				endelse
 				if returnvalue!=zero
@@ -72,7 +76,7 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 		Add container dwlen
 		Sub containerReg dwlen
 		SetCall varsize strlen(container)
-		If warningssearch==false
+		If warningssearch==(NULL)
 			If varsize==size
 				Data cmpret#1
 				SetCall cmpret memcmp(container,content,size)
@@ -112,15 +116,14 @@ EndFunction
 function vars_ignoreref(str content,data size,data ptrstructure)
 	Data pointer#1
 	Data false=FALSE
-	SetCall pointer vars_core_ref(content,size,ptrstructure,false,false)
+	SetCall pointer vars_core_ref(content,size,ptrstructure,(NULL),false)
 	Return pointer
 endfunction
 
 #varscore
 Function vars(str content,data size,data ptrstructure)
 	Data pointer#1
-	Data false=FALSE
-	SetCall pointer varscore(content,size,ptrstructure,false)
+	SetCall pointer varscore(content,size,ptrstructure,(NULL))
 	Return pointer
 EndFunction
 
@@ -165,8 +168,7 @@ EndFunction
 #searchinvars
 Function strinvars(str content,data size,data ptrtype)
 	Data pointer#1
-	Data false=FALSE
-	SetCall pointer searchinvars(content,size,ptrtype,false)
+	SetCall pointer searchinvars(content,size,ptrtype,(NULL))
 	Return pointer
 EndFunction
 

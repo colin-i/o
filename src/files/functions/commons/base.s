@@ -95,23 +95,28 @@ Function congruentmoduloatsegments(data virtual,data offset,data modulo,data new
 	return virtual
 EndFunction
 
-#void
+#err
 function addtolog(str content)
 	data sizetowrite#1
 	setcall sizetowrite strlen(content)
-	call addtolog_ex(content,sizetowrite)
+	sd err
+	setcall err addtolog_ex(content,sizetowrite)
+	return err
 endfunction
-#void
+#err
 function addtolog_ex(ss content,sd sizetowrite)
 	data ptrfilehandle%ptrlogfile
 	data filehandle#1
 	set filehandle ptrfilehandle#
-	call writefile(filehandle,content,sizetowrite)
+	sd err
+	setcall err writefile_errversion(filehandle,content,sizetowrite)
+	if err!=(noerror);return err;endif
 
 	chars textterm={0xd,0xa,0}
 	str text^textterm
 	data sz=2
-	call writefile(filehandle,text,sz)
+	setcall err writefile_errversion(filehandle,text,sz)
+	return err
 endfunction
 
 function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data1,sd data2)

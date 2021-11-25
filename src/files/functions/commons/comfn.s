@@ -146,15 +146,24 @@ EndFunction
 
 #return _write (-1 or wrln)
 Function writefile(data hfile,str buf,data ln)
-	Data writefalse=writeno
-	Data writeres=0
+	sd writeres
 	SetCall writeres write(hfile,buf,ln)
-	If writeres==writefalse
+	If writeres!=ln
 		Chars writeerr="Cannot write data to a file."
 		Call Message(writeerr)
-		Return writefalse
+		Return (writeno)
 	EndIf
 	Return writeres
+EndFunction
+#err
+Function writefile_errversion(data hfile,str buf,data ln)
+	sd writeres
+	SetCall writeres write(hfile,buf,ln)
+	If writeres!=ln
+		Chars writeerr="Cannot write data to a file."
+		Return writeerr
+	EndIf
+	Return (noerror)
 EndFunction
 
 #return required pad, so value can be a multiple of pad
@@ -350,7 +359,7 @@ function clearmessage()
 	data null=NULL
 	If ptrallocerrormsg#!=null
 		Call free(ptrallocerrormsg#)
-		#at preferences, required next, clear here
+		#if was a safe message when cleaning from a fatal message , don't free
 		set ptrallocerrormsg# null
 	EndIf
 endfunction

@@ -17,5 +17,7 @@ If fileformat==pe_exec
 EndIf
 
 #verify preferences
-Call warnings(true,includes,nameofstoffile)
-
+Call warnings(true,includes,nameofstoffile,#errormsg)
+If errormsg!=noerr
+	Call msgerrexit(errormsg)
+EndIf

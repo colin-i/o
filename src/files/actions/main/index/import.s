@@ -69,12 +69,16 @@ If errormsg==noerr
 						if logbool==(TRUE)
 							if log_import_functions==(TRUE)
 								ss imp_f="Import Function:";sd imp_f_sz;setcall imp_f_sz strlen(imp_f)
-								call writefile(logfile,imp_f,imp_f_sz)
-								call addtolog_ex(content,comsize)
+								setcall errormsg writefile_errversion(logfile,imp_f,imp_f_sz)
+								If errormsg==noerr
+									setcall errormsg addtolog_ex(content,comsize)
+								endIf
 							endif
 						endif
-						Data functionsnr=functionsnumber
-						SetCall errormsg addaref(functionoffset,pcontent,pcomsize,comsize,functionsnr,import_ref_mask)
+						If errormsg==noerr
+							Data functionsnr=functionsnumber
+							SetCall errormsg addaref(functionoffset,pcontent,pcomsize,comsize,functionsnr,import_ref_mask)
+						endIf
 					EndIf
 				EndElse
 			EndIf
