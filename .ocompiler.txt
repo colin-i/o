@@ -42,5 +42,6 @@ neg_64=0
 sd_as_sv=0
 
 9.CONST to unreferenced warnings
+[if warnings is 1]
 0 is No; 1 is Yes
 const_warn=0

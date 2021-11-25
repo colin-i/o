@@ -11,7 +11,7 @@ function constants_bool(sd direction)
 endfunction
 
 #void
-Function warnings(data searchinfunctions,data includes,data nameoffset)
+Function warnings(data searchInAll,data includes,data nameoffset)
 	Data warningsboolptr%ptrwarningsbool
 	Data warningsbool#1
 	Data null=NULL
@@ -27,9 +27,12 @@ Function warnings(data searchinfunctions,data includes,data nameoffset)
 	
 	SetCall var searchinvars(null,null,null,true)
 	If var==null
-		If searchinfunctions==true
-			Data functionsptr%ptrfunctions
-			SetCall var varscore(null,null,functionsptr,true)
+		If searchInAll==true
+			data ptrcodeFnObj%ptrcodeFnObj
+			if ptrcodeFnObj#!=(ignorecodeFnObj)
+				Data functionsptr%ptrfunctions
+				SetCall var varscore(null,null,functionsptr,true)
+			endif
 			if var==null
 				sd cb;setcall cb constants_bool((constants_bool_get))
 				if cb==(TRUE)
@@ -40,7 +43,7 @@ Function warnings(data searchinfunctions,data includes,data nameoffset)
 		EndIf
 	EndIf
 	If var!=null
-		Chars unrefformat="Unreferenced variable/function: %s. Scope Termination File: %s. To disable this warning see '.ocompiler.txt'"
+		Chars unrefformat="Unreferenced variable/function/constant: %s. Scope Termination File: %s. To disable this warning see '.ocompiler.txt'"
 		Str ptrunrefformat^unrefformat
 
 		Data printbuffer#1

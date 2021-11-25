@@ -36,7 +36,6 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 					if checkvalue==zero
 						data ptrobject%ptrobject
 						if ptrobject#==true
-							data ignorecodeFnObj=ignorecodeFnObj
 							data logcodeFnObj=logcodeFnObj
 							data ptrcodeFnObj%ptrcodeFnObj
 							if ptrcodeFnObj#==logcodeFnObj
@@ -52,9 +51,7 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 									call addtolog(log)
 									call clearmessage()
 								endif
-							elseif ptrcodeFnObj#==ignorecodeFnObj
-								set returnvalue zero
-							endelseif
+							endif
 						endif
 					endif
 				endif
