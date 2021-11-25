@@ -40,3 +40,7 @@ neg_64=0
 8.sd as sv (old programs don't have sv and may be with 64 logic)
 0 is No; 1 is Yes
 sd_as_sv=0
+
+9.CONST to unreferenced warnings
+0 is No; 1 is Yes
+const_warn=0

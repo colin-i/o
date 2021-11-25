@@ -1,5 +1,15 @@
 
 
+const constants_bool_get=0
+const constants_bool_get_init=1
+function constants_bool(sd direction)
+	data bool#1
+	if direction==(constants_bool_get)
+		return bool
+	endif
+	return #bool
+endfunction
+
 #void
 Function warnings(data searchinfunctions,data includes,data nameoffset)
 	Data warningsboolptr%ptrwarningsbool
@@ -20,6 +30,13 @@ Function warnings(data searchinfunctions,data includes,data nameoffset)
 		If searchinfunctions==true
 			Data functionsptr%ptrfunctions
 			SetCall var varscore(null,null,functionsptr,true)
+			if var==null
+				sd cb;setcall cb constants_bool((constants_bool_get))
+				if cb==(TRUE)
+					data constantsptr%ptrconstants
+					SetCall var varscore(null,null,constantsptr,true)
+				endif
+			endif
 		EndIf
 	EndIf
 	If var!=null
@@ -73,40 +90,6 @@ endfunction
 
 #void
 function setpreferences(str scrpath)
-	data null=0
-	data void#1
-
-	str folders#1
-	setcall folders endoffolders(scrpath)
-	set folders# null
-	sub folders scrpath
-
-	Str preferences=".ocompiler.txt"
-	data prefsz#1
-	setcall prefsz strlen(preferences)
-	inc prefsz
-
-	data total#1
-	set total folders
-	add total prefsz
-
-	data err#1
-	data noerr=noerror
-	data ptrmem#1
-	data allocptrmem^ptrmem
-	setcall err memoryalloc(total,allocptrmem)
-	if err!=noerr
-		call Message(err)
-		return void
-	endif
-
-	call memtomem(ptrmem,scrpath,folders)
-
-	str apppath#1
-	set apppath ptrmem
-	add apppath folders
-	call memtomem(apppath,preferences,prefsz)
-
 	#defaults
 	data ptrwarningsbool%ptrwarningsbool
 	data ptrlogbool%ptrlogbool
@@ -132,23 +115,59 @@ function setpreferences(str scrpath)
 	sd sdsv_p
 	setcall sdsv_p sd_as_sv((sd_as_sv_get))
 	set sdsv_p# false
-	
+	sd cb;setcall cb constants_bool((constants_bool_get_init))
+	set cb# (FALSE)
+
+
+	Str preferences=".ocompiler.txt"
+	data err#1
+	data noerr=noerror
 	Str preferencescontent#1
 	Data ptrpreferencescontent^preferencescontent
 	Data preferencessize#1
 	Data ptrpreferencessize^preferencessize
 
-	SetCall err file_get_content_ofs(ptrmem,ptrpreferencessize,ptrpreferencescontent,null)
-	call free(ptrmem)
+	setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent)
 	If err!=noerr
 		Call safeMessage(err)
-		If err!=noerr
-			setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent)
-			If err!=noerr
-				Call safeMessage(err)
-			endif
+
+		data null=0
+		data void#1
+	
+		str folders#1
+		setcall folders endoffolders(scrpath)
+		set folders# null
+		sub folders scrpath
+	
+		data prefsz#1
+		setcall prefsz strlen(preferences)
+		inc prefsz
+	
+		data total#1
+		set total folders
+		add total prefsz
+	
+		data ptrmem#1
+		data allocptrmem^ptrmem
+		setcall err memoryalloc(total,allocptrmem)
+		if err!=noerr
+			call Message(err)
+			return void
 		endif
-	EndIf
+	
+		call memtomem(ptrmem,scrpath,folders)
+	
+		str apppath#1
+		set apppath ptrmem
+		add apppath folders
+		call memtomem(apppath,preferences,prefsz)
+			
+		SetCall err file_get_content_ofs(ptrmem,ptrpreferencessize,ptrpreferencescontent,null)
+		call free(ptrmem)
+		If err!=noerr
+			Call safeMessage(err)
+		EndIf
+	endif
 	If err==noerr
 		Data freepreferences#1
 		Set freepreferences preferencescontent
@@ -161,6 +180,7 @@ function setpreferences(str scrpath)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptr_log_import_functions)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,sdsv_p)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,cb)
 
 		Call free(freepreferences)
 	endif
