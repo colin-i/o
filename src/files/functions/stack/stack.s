@@ -6,7 +6,7 @@ function ramp_index(data mode,data container)
 	data set=0
 	if mode==set
 		data ptrreg^reg
-		const ramppointer^reg
+		#const ramppointer^reg
 		call getcontReg(container,ptrreg)
 		data dword=4
 		sub reg dword

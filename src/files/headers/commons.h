@@ -14,7 +14,7 @@ Const _O_TRUNC=0x0200
 
  #seek
 Const SEEK_SET=0
-Const SEEK_CUR=1
+#Const SEEK_CUR=1
 Const SEEK_END=2
  #write
 Const writeno=-1
@@ -28,7 +28,7 @@ Const wsz=2
 Const dwsz=4
 Const qwsz=8
 Const A_from_AZ=asciiA
-Const Z_from_AZ=asciiZ
+#Const Z_from_AZ=asciiZ
 Const a_from_az=asciia
 Const z_from_az=asciiz
 Const az_to_AZ=a_from_az-A_from_AZ

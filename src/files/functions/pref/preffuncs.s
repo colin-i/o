@@ -1,12 +1,21 @@
 
 
-const constants_bool_get=0
-const constants_bool_get_init=1
 function constants_bool(sd direction)
 	data bool#1
-	if direction==(constants_bool_get)
+	if direction==(const_warn_get)
 		return bool
 	endif
+	return #bool
+endfunction
+
+function logincludes_decision(ss str)
+	sd b;setcall b logincludes_bool()
+	if b#==(TRUE)
+		call addtolog(str)
+	endif
+endfunction
+function logincludes_bool()
+	data bool#1
 	return #bool
 endfunction
 
@@ -29,13 +38,13 @@ Function warnings(data searchInAll,data includes,data nameoffset)
 	If var==null
 		If searchInAll==true
 			data ptrcodeFnObj%ptrcodeFnObj
-			if ptrcodeFnObj#!=(ignorecodeFnObj)
+			if ptrcodeFnObj#!=(ignore_warn)
 				Data functionsptr%ptrfunctions
 				SetCall var varscore(null,null,functionsptr,true)
 			endif
 			if var==null
-				sd cb;setcall cb constants_bool((constants_bool_get))
-				if cb==(TRUE)
+				sd cb;setcall cb constants_bool((const_warn_get))
+				if cb!=(ignore_warn)
 					data constantsptr%ptrconstants
 					SetCall var varscore(null,null,constantsptr,true)
 				endif
@@ -102,7 +111,7 @@ function setpreferences(str scrpath)
 	
 	data true=TRUE
 	data false=FALSE
-	data defaultcodeFnObj=logcodeFnObj
+	data defaultcodeFnObj=log_warn
 
 	set ptrwarningsbool# true
 	set ptrlogbool# false
@@ -118,8 +127,10 @@ function setpreferences(str scrpath)
 	sd sdsv_p
 	setcall sdsv_p sd_as_sv((sd_as_sv_get))
 	set sdsv_p# false
-	sd cb;setcall cb constants_bool((constants_bool_get_init))
+	sd cb;setcall cb constants_bool((const_warn_get_init))
 	set cb# (FALSE)
+	sd li;setcall li logincludes_bool()
+	set li# (TRUE)
 
 
 	Str preferences=".ocompiler.txt"
@@ -184,6 +195,7 @@ function setpreferences(str scrpath)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,sdsv_p)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,cb)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,li)
 
 		Call free(freepreferences)
 	endif

@@ -67,7 +67,7 @@ if logbool==true
 		else
 			Set storeachar filenameloc#
 			Set filenameloc# null
-			call addtolog(path)
+			call logincludes_decision(path)
 			Set filenameloc# storeachar
 		endelse
 		set appendextension# null

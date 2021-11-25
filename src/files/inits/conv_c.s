@@ -1,4 +1,6 @@
 
+const cross_convention_input=ignore_convention_input+1
+const last_convention_input=cross_convention_input
 
 set convention_64 argv2#
 

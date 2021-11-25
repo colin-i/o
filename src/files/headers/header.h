@@ -168,7 +168,7 @@ Data addressesReg#1
 Const ptraddresses^addressesMax
 
 Const sizeofienames=sizeofsecdata-iaddressessize-itablesize
-Const inamessize=sizeofienames
+#Const inamessize=sizeofienames
 #namessize
 Data namesMax#1
 Data names#1
@@ -274,16 +274,18 @@ const ptrlogfile^logfile
 data includedir#1
 const ptrincludedir^includedir
 
+const ignore_warn=0
+#const show_warn=1
+const log_warn=2
 
-const ignorecodeFnObj=0
-const showcodeFnObj=1
-const logcodeFnObj=2
 data codeFnObj#1
 const ptrcodeFnObj^codeFnObj
 
 Data log_import_functions#1
 const ptr_log_import_functions^log_import_functions
 
+const const_warn_get=0
+const const_warn_get_init=1
 
 
 #main alloc error msg
@@ -327,8 +329,9 @@ const val64_willbe=1
 const no_convention_input=-1
 const direct_convention_input=0
 const ignore_convention_input=1
-const cross_convention_input=2
-const last_convention_input=cross_convention_input
+#this is not needed at windows and unreferenced
+#const cross_convention_input=2
+#const last_convention_input=cross_convention_input
 #
 const ms_convention=4
 const lin_convention=6

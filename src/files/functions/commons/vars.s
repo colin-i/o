@@ -1,5 +1,24 @@
 
 
+#same or zero
+function warn_or_log(ss str1,sd return_value,ss symbolname,sd log_option)
+	data ptrobject%ptrobject
+	if ptrobject#==(TRUE)
+		if log_option==(log_warn)
+			data ptrlogfile%ptrlogfile
+			if ptrlogfile#!=-1
+				add symbolname (dwsz)
+				data log#1
+				setcall log errorDefOut(str1,symbolname)
+				call addtolog(log)
+				call clearmessage()
+			endif
+			set return_value 0
+		endif
+	endif
+	return return_value
+endfunction
+
 #null or a pointer to the constant/variable/function
 function vars_core_ref(str content,data size,data ptrstructure,data warningssearch,sd setref)
 	Data zero=0
@@ -28,33 +47,23 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 			If checkvalue==zero
 				data returnvalue#1
 				set returnvalue entrypoint
+				#
 				data ptrfunctions%ptrfunctions
 				if ptrfunctions==ptrstructure
 					Set checkvalue container#
 					data idatabitfunction=idatabitfunction
 					And checkvalue idatabitfunction
 					if checkvalue==zero
-						data ptrobject%ptrobject
-						if ptrobject#==true
-							data logcodeFnObj=logcodeFnObj
-							data ptrcodeFnObj%ptrcodeFnObj
-							if ptrcodeFnObj#==logcodeFnObj
-								set returnvalue zero
-								data ptrlogfile%ptrlogfile
-								if ptrlogfile#!=-1
-									data symbolname#1
-									set symbolname container
-									add symbolname dwlen
-									str str1="Symbol(unused in the obj):"
-									data log#1
-									setcall log errorDefOut(str1,symbolname)
-									call addtolog(log)
-									call clearmessage()
-								endif
-							endif
-						endif
+						data ptrcodeFnObj%ptrcodeFnObj
+						setcall returnvalue warn_or_log("f",returnvalue,container,ptrcodeFnObj#)
 					endif
-				endif
+				else
+					data ptrconstants%ptrconstants
+					if ptrconstants==ptrstructure
+						sd cb;setcall cb constants_bool((const_warn_get))
+						setcall returnvalue warn_or_log("c",returnvalue,container,cb)
+					endif
+				endelse
 				if returnvalue!=zero
 					Return returnvalue
 				endif

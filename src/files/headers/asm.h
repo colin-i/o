@@ -16,7 +16,7 @@ const REX_R8_15=REX_default|REX_W|REX_R
 
 Const retcom=0xc3
 const intimm8=0xCD
-Const atedximm=0xba
+#Const atedximm=0xba
 
 Const moveatmemtheproc=0x89
 Const moveatprocthemem=0x8b

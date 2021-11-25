@@ -7,7 +7,7 @@
 #File Structures
 
 Const dossize=0x1e*wsz+dwsz
-Const alldossize=dossize+0x40
+#Const alldossize=dossize+0x40
 Chars dos_header#dossize
 Const stublength=0x40
 Chars stub#stublength
@@ -39,7 +39,7 @@ Const pe_imagebase=0x00400000
 Data *ImageBase=pe_imagebase
 Data SectionAlignment=page_sectionalignment
 Data FileAlignment=0x200
-Const VersionsSize=6*wsz
+#Const VersionsSize=6*wsz
 Chars *MajorOperatingSystemVersion={1,0}
 Chars *MinorOperatingSystemVersion={0,0}
 Chars *MajorImageVersion={0,0}
@@ -70,10 +70,10 @@ Data directoryentries#imgdirsInts
 #IMAGE_DATA_DIRECTORY
 	#DWORD   VirtualAddress
     #DWORD   Size
-Const IMAGE_DIRECTORY_ENTRY_EXPORT=0
+#Const IMAGE_DIRECTORY_ENTRY_EXPORT=0
 Const IMAGE_DIRECTORY_ENTRY_IMPORT=1
 Const img_dir_entry_sz=img_dir_entry*dwsz
-Const im_d_entry_export_offset=IMAGE_DIRECTORY_ENTRY_EXPORT*img_dir_entry_sz
+#Const im_d_entry_export_offset=IMAGE_DIRECTORY_ENTRY_EXPORT*img_dir_entry_sz
 Const im_d_entry_import_offset=IMAGE_DIRECTORY_ENTRY_IMPORT*img_dir_entry_sz
 
 #IMAGE_SECTION_HEADERs

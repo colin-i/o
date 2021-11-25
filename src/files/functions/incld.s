@@ -33,7 +33,7 @@ Function include(Str path)
 
 	data ptrlogfile%ptrlogfile
 	if ptrlogfile#!=negative
-		call addtolog(path)
+		call logincludes_decision(path)
 	endif
 	
 	Str contentoffl#1
@@ -71,7 +71,7 @@ Function include(Str path)
 		endif
 
 		if ptrlogfile#!=negative
-			call addtolog(pcontentoffl#)
+			call logincludes_decision(pcontentoffl#)
 		endif
 
 

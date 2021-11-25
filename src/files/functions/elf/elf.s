@@ -66,7 +66,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 		#Executable,1 << 2
 	Const SHF_EXECINSTR=2*2
 		#`sh_info' contains SHT index,1 << 6
-	Const SHF_INFO_LINK=2*6
+	#Const SHF_INFO_LINK=2*6
 	
 	Data SHT_PROGBITS=SHT_PROGBITS
 	Data SHT_NOBITS=SHT_NOBITS
