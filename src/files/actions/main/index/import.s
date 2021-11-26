@@ -59,25 +59,29 @@ If errormsg==noerr
 			If errormsg==noerr
 				Call stepcursors(pcontent,pcomsize)
 				Call spaces(pcontent,pcomsize)
-				If comsize==zero
+				#after this will find var in vars/fns and if not add a new
+				sd imp_size;setcall imp_size find_whitespaceORcomment(content,comsize)
+				If imp_size==zero
 					Chars missimportref="Import name for compiler must be specified after the name for output."
 					Str ptrimpref^missimportref
 					Set errormsg ptrimpref
 				Else
-					SetCall errormsg entryvarsfns(content,comsize)
+					SetCall errormsg entryvarsfns(content,imp_size)
 					If errormsg==noerr
 						if logbool==(TRUE)
 							if log_import_functions==(TRUE)
-								ss imp_f="Import Function:";sd imp_f_sz;setcall imp_f_sz strlen(imp_f)
+								ss imp_f="i"
+								#ss imp_f="Import Function:"
+								sd imp_f_sz;setcall imp_f_sz strlen(imp_f)
 								setcall errormsg writefile_errversion(logfile,imp_f,imp_f_sz)
 								If errormsg==noerr
-									setcall errormsg addtolog_ex(content,comsize)
+									setcall errormsg addtolog_ex(content,imp_size)
 								endIf
 							endif
 						endif
 						If errormsg==noerr
 							Data functionsnr=functionsnumber
-							SetCall errormsg addaref(functionoffset,pcontent,pcomsize,comsize,functionsnr,import_ref_mask)
+							SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
 						endIf
 					EndIf
 				EndElse

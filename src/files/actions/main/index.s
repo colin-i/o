@@ -133,14 +133,17 @@ If comsize!=0
 		EndElse
 		If errormsg==zero
 			If comsize!=zero
-				if content#!=(asciiNumber)
-					Chars _unreccomaftererr="Unrecognized data after command."
-					Str unreccomaftererr^_unreccomaftererr
-					Set errormsg unreccomaftererr
-				else
-					#this is comment after command
-					Call advancecursors(pcontent,pcomsize,comsize)
-				endelse
+				call spaces(pcontent,pcomsize)
+				If comsize!=zero
+					if content#!=(commentascii)
+						Chars _unreccomaftererr="Unrecognized data after command."
+						Str unreccomaftererr^_unreccomaftererr
+						Set errormsg unreccomaftererr
+					else
+						#this is comment after command
+						Call advancecursors(pcontent,pcomsize,comsize)
+					endelse
+				endIf
 			#twoparse==2 more
 			#after the first noncomment command, the format command cannot be changed
 			elseif formatdefined==1;Set formatdefined 2

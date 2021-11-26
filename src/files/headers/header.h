@@ -349,3 +349,5 @@ const i386_obj_default_reloc_rah=0
 
 const sd_as_sv_bool=0
 const sd_as_sv_get=1
+
+const commentascii=asciiNumber

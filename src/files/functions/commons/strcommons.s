@@ -118,35 +118,57 @@ function mem_spaces(ss content,ss last)
 	endwhile
 	return content
 endfunction
+#new size
+function find_whitespaceORcomment(ss content,sd size)
+#size is greater than zero
+	ss end;set end content;add end size
+	ss start;set start content
+	while content<end
+		chars b#1;set b content#
+		if b==(commentascii)
+			sub content start
+			return content
+		endif
+		sd bool
+		setcall bool is_whitespace(b)
+		if bool==(TRUE)
+			sub content start
+			return content
+		endif
+		inc content
+	endwhile
+	sub content start
+	return content
+endfunction
+function is_whitespace(chars c)
+	if c==(asciispace)
+		return (TRUE)
+	endif
+	if c==(asciitab)
+		return (TRUE)
+	endif
+	return (FALSE)
+endfunction
 #spaces;return 1 if at least one spc/tab;0 otherwise
-Function spaces(Str pcontent,data psize)
-	Data b=0
-	Data localview=0
-	Data true=TRUE
-	Data false=FALSE
-	Data var=0
-	Chars spc=" "
-	Str pspc^spc
-	Chars tab={0x9,0}
-	Str ptab^tab
-
-	Set b false
-	Set localview true
-	
-	While localview==true
-		Set localview false
-		SetCall var stratmem(pcontent,psize,pspc)
-		If var==true
-			Set b true
-			Set localview true
-		EndIf
-		SetCall var stratmem(pcontent,psize,ptab)
-		If var==true
-			Set b true
-			Set localview true
-		EndIf
-	EndWhile
-	Return b
+Function spaces(sd pcontent,sd psize)
+	ss cursor;sd end
+	set cursor pcontent#;set end cursor;add end psize#;dec end
+	sd b=TRUE
+	while b==(TRUE)
+		setcall b is_whitespace(cursor#)
+		if b==(TRUE)
+			inc cursor
+		elseif cursor==end
+			set b (FALSE)
+		endelseif
+	endwhile
+	if pcontent#==cursor
+		return (FALSE)
+	endif
+	sub pcontent# cursor
+	add psize# pcontent#
+	set pcontent# cursor
+	return (TRUE)
 EndFunction
 
 #bool;return 1 or 0

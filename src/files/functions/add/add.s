@@ -33,7 +33,7 @@ endfunction
 
 #errnr
 Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumber,data mask)
-	Str content#1
+	Ss content
 	Set content ptrcontent#
 	Chars byte#1
 
@@ -45,18 +45,16 @@ Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumb
 	if bool!=(TRUE)
 		Return _err
 	EndIf
-	Data len#1
-	Set len size
-	Data zero=0
+	ss end;set end content;add end size
+	inc content
 	Data false=FALSE
-	While len!=zero
+	While content<end
 		Set byte content#
 		SetCall bool is_variable_char(byte)
 		If bool==false
 			Return _err
 		EndIf
 		Inc content
-		Dec len
 	EndWhile
 
 	#set the referenced bit if warnings are off
