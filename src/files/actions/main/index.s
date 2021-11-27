@@ -76,7 +76,7 @@ if loop==1
 	#inc comsize
 	#\r\n case end
 
-	ss was_whitespaces;ss was_whitespaces_warning="Hidden whitespaces"
+	ss was_whitespaces
 	If comsize!=0
 		Data pointtosearchat%compointersloc
 		SetCall commandset getcommand(pcontent,pcomsize,ptrsubtype,_errormsg,pointtosearchat)
@@ -136,7 +136,7 @@ if loop==1
 				if twoparse==1
 					set was_whitespaces content;dec was_whitespaces;setcall was_whitespaces is_whitespace(was_whitespaces#)
 					if was_whitespaces==(TRUE)
-						call Message(was_whitespaces_warning)
+						call warn_hidden_whitespaces(includes,nameofstoffile)
 					endif
 				endif
 			EndElse
@@ -154,7 +154,7 @@ if loop==1
 						endelse
 					elseIf was_whitespaces==(TRUE)
 						if twoparse==1
-							call Message(was_whitespaces_warning)
+							call warn_hidden_whitespaces(includes,nameofstoffile)
 						endif
 					endelseIf
 				#twoparse==2 more
@@ -169,20 +169,20 @@ if loop==1
 					Add currentfile nameofstoffile
 					Data sizeshortstr=shortstrsize
 					Call memtomem(ptrentrystartfile,currentfile,sizeshortstr)
-	
+
 					Set entrylinenumber lineoffile
 					Inc entrylinenumber
-	
+
 					Set fnavailable zero
 				EndElseIf
 			EndIf
 		EndIf
 	Elseif cursor!=content
 		if twoparse==1
-			call Message(was_whitespaces_warning)
+			call warn_hidden_whitespaces(includes,nameofstoffile)
 		endif
 	Endelseif
-	
+
 	If errormsg==noerr
 		#parse the line termination,then is the include that will retain the next line and advance to the next file
 		Data lineincrease#1
@@ -194,22 +194,22 @@ if loop==1
 			endif
 		EndIf
 		Add lineoffile lineincrease
-	
+
 		#include next file
 		If includebool==one
 			Data inccursor#1
 			Set inccursor includes
 			Add inccursor includesReg
-	
+
 			Sub inccursor sizeofincludeset
-		
+
 			Add inccursor contentoffsetinclude
 			Data contentoffset=0
 			Set contentoffset content
 			Sub contentoffset contentoffile
 			Set inccursor# contentoffset
 			Add inccursor dwordsize
-		
+
 			Set inccursor# lineoffile
 			SetCall errormsg include(miscbag)
 			If errormsg!=noerr

@@ -27,14 +27,14 @@ While includesReg!=null
 		Set lineoffile cursorforincludes#
 		Add cursorforincludes dwordsize
 		Sub cursorforincludes includes
-		
+
 		Set nameofstoffile cursorforincludes
-		
+
 		Set content contentoffile
 		Add content offsetoffile
 		Set last contentoffile
 		Add last sizeoffile
-		
+
 		While content!=last
 			Include "./main/index.s"
 			If errormsg!=noerr

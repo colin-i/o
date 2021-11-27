@@ -137,6 +137,7 @@ function find_whitespaceORcomment(ss content,sd size)
 	sub content start
 	return content
 endfunction
+#bool
 function is_whitespace(chars c)
 	if c==(asciispace)
 		return (TRUE)
@@ -146,6 +147,13 @@ function is_whitespace(chars c)
 	endif
 	return (FALSE)
 endfunction
+function warn_hidden_whitespaces(sd inc,sd add)
+	ss was_whitespaces_warning="Hidden whitespaces at :"
+	call Message(was_whitespaces_warning)
+	add inc add
+	call Message(inc)
+endfunction
+
 Function spaces_helper(ss cursor,sd size)
 	sd end;set end cursor;add end size
 	while cursor!=end
