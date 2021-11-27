@@ -48,7 +48,7 @@ Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumb
 	ss end;set end content;add end size
 	inc content
 	Data false=FALSE
-	While content<end
+	While content!=end
 		Set byte content#
 		SetCall bool is_variable_char(byte)
 		If bool==false

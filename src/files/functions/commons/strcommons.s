@@ -106,13 +106,10 @@ EndFunction
 
 #pointer
 function mem_spaces(ss content,ss last)
-	Chars spc=" "
-	Chars tab=0x9
 	while content!=last
-		if content#!=spc
-			if content#!=tab
-				return content
-			endif
+		sd bool;setcall bool is_whitespace(content#)
+		if bool==(FALSE)
+			return content
 		endif
 		inc content
 	endwhile
@@ -123,7 +120,7 @@ function find_whitespaceORcomment(ss content,sd size)
 #size is greater than zero
 	ss end;set end content;add end size
 	ss start;set start content
-	while content<end
+	while content!=end
 		chars b#1;set b content#
 		if b==(commentascii)
 			sub content start
@@ -149,25 +146,28 @@ function is_whitespace(chars c)
 	endif
 	return (FALSE)
 endfunction
-#spaces;return 1 if at least one spc/tab;0 otherwise
-Function spaces(sd pcontent,sd psize)
-	ss cursor;sd end
-	set cursor pcontent#;set end cursor;add end psize#;dec end
-	sd b=TRUE
-	while b==(TRUE)
+Function spaces_helper(ss cursor,sd size)
+	sd end;set end cursor;add end size
+	while cursor!=end
+		sd b
 		setcall b is_whitespace(cursor#)
 		if b==(TRUE)
 			inc cursor
-		elseif cursor==end
-			set b (FALSE)
-		endelseif
+		else
+			return cursor
+		endelse
 	endwhile
-	if pcontent#==cursor
+	return cursor
+endfunction
+#spaces;return 1 if at least one spc/tab;0 otherwise
+Function spaces(sd pcontent,sd psize)
+	sd start;set start pcontent#
+	setcall pcontent# spaces_helper(pcontent#,psize#)
+	if pcontent#==start
 		return (FALSE)
 	endif
-	sub pcontent# cursor
-	add psize# pcontent#
-	set pcontent# cursor
+	sub start pcontent#
+	add psize# start
 	return (TRUE)
 EndFunction
 

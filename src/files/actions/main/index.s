@@ -26,7 +26,7 @@ set pointer content
 sd loop=2
 sd is_comment=0
 if pointer!=last
-	if pointer#==(asciiNumber)
+	if pointer#==(commentascii)
 		set is_comment 1
 	endif
 endif
@@ -131,7 +131,7 @@ If comsize!=0
 #comments command
 			Call advancecursors(pcontent,pcomsize,comsize)
 		EndElse
-		If errormsg==zero
+		If errormsg==(noerror)
 			If comsize!=zero
 				call spaces(pcontent,pcomsize)
 				If comsize!=zero

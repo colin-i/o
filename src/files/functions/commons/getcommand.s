@@ -20,7 +20,7 @@ Chars cINCLUDE_c="INCLUDE"
 Chars cI3_c="I3"
 Chars cHEX_c="HEX"
 Chars cWARNING_c="WARNING"
-Chars cCOMMENT_c="#"
+Chars cCOMMENT_c={commentascii,0}
 
 const not_a_subtype=-1
 

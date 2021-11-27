@@ -210,11 +210,11 @@ Function parseoperations(data ptrcontent,data ptrsize,data sz,data outvalue)
 	Data pnr^nr
 	Chars byte#1
 	Data find#1
-	
-	Data opsize#1
-	Set opsize sz
 
-	While sz!=zero
+	sd end;set end content;add end sz
+
+	#<end?maybe unsigned cursor
+	While content!=end
 		Set bool false
 		Set byte content#
 		SetCall find signop(byte,pnr)
@@ -229,12 +229,8 @@ Function parseoperations(data ptrcontent,data ptrsize,data sz,data outvalue)
 			EndIf
 		EndIf
 		Inc content
-		Dec sz
 		If bool==true
-			Data p_content^content
-			Data p_sz^sz
-			Call spaces(p_content,p_sz)
-
+			setcall content mem_spaces(content,end)
 			Set initial content
 		EndIf
 	EndWhile
@@ -245,6 +241,6 @@ Function parseoperations(data ptrcontent,data ptrsize,data sz,data outvalue)
 	EndIf
 	Set outvalue# val
 
-	Call advancecursors(ptrcontent,ptrsize,opsize)
+	Call advancecursors(ptrcontent,ptrsize,sz)
 	Return noerr
 EndFunction
