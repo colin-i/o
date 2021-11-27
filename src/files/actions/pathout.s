@@ -17,14 +17,14 @@ Set cursorpath pointofpathout
 Sub minpath unit
 Sub cursorpath unit
 
-While minpath<cursorpath
+While minpath!=cursorpath
 	Chars teststr=""
 	Set teststr cursorpath#
 	If teststr==dot
 		Set pointofpathout cursorpath
 		Set cursorpath minpath
 	EndIf
-	If minpath<cursorpath
+	If minpath!=cursorpath
 		Sub cursorpath unit
 	EndIf
 EndWhile

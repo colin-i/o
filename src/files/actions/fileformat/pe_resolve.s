@@ -129,7 +129,7 @@ If implibsstarted==true
 
 	Sub resolveitab itabentrysize
 	Data resolvevalue#1
-	While table<resolveitab
+	While table!=resolveitab
 		Sub resolveitab dwordsize
 		Set resolvevalue resolveitab#
 		Add resolvevalue iaddressesoffset
@@ -150,7 +150,7 @@ If implibsstarted==true
 	Set resolveiadr addresses
 	Add resolveiadr addressesReg
 
-	While addresses<resolveiadr
+	While addresses!=resolveiadr
 		Sub resolveiadr dwordsize
 		Set resolvevalue resolveiadr#
 		#offset 0 can be wrong but is not because there it is the first library name and these are functions names

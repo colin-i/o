@@ -13,7 +13,7 @@ if dot_comma_end==0
 endif
 
 #cursor for hidden whitespaces
-sd cursor;set cursor content
+sd cursor_start;set cursor_start content
 setcall content mem_spaces(content,last)
 
 #test the line size and set the size of line break
@@ -177,7 +177,7 @@ if loop==1
 				EndElseIf
 			EndIf
 		EndIf
-	Elseif cursor!=content
+	Elseif cursor_start!=content
 		if twoparse==1
 			call warn_hidden_whitespaces(includes,nameofstoffile)
 		endif
