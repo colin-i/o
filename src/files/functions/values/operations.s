@@ -187,7 +187,7 @@ Function oneoperation(data ptrcontent,str initial,str content,data val,data op)
 EndFunction
 
 #err pointer
-Function parseoperations(data ptrcontent,data ptrsize,data sz,data outvalue)
+Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
 	Str content#1
 	Str initial#1
 	Data number#1
@@ -235,12 +235,20 @@ Function parseoperations(data ptrcontent,data ptrsize,data sz,data outvalue)
 		EndIf
 	EndWhile
 
-	SetCall errptr oneoperation(ptrcontent,initial,content,ptrval,number)
+	#allow line end comment, this will put unintentionally one start comments inline
+	sd szz
+	set szz end;sub szz initial
+	sd size
+	setcall size find_whitespaceORcomment(initial,szz)
+	
+	SetCall errptr operation(initial,size,ptrval,number)
 	If errptr!=noerr
 		Return errptr
 	EndIf
 	Set outvalue# val
 
+	sub szz size
+	sub sz szz
 	Call advancecursors(ptrcontent,ptrsize,sz)
 	Return noerr
 EndFunction

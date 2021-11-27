@@ -167,13 +167,11 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 	#
 	If sens==(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
-		Call spaces(ptrcontent,ptrsize)
 		Return noerr
-	Else
-		data f^verify_syntax_end
-		setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
-		return errnr
-	EndElse
+	endIf
+	data f^verify_syntax_end
+	setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
+	return errnr
 EndFunction
 
 function function_in_code()
@@ -216,6 +214,16 @@ EndFunction
 
 #err
 Function argfilters(data ptrcondition,data ptrcontent,data ptrsize,data ptrdata,data ptrlow,data ptrsufix)
+	sd err
+	setcall err argfilters_helper(ptrcondition,ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix)
+	if err==(noerror)
+		#this is only at first arg
+		call spaces(ptrcontent,ptrsize)
+	endif
+	return err
+endfunction
+#err
+function argfilters_helper(data ptrcondition,data ptrcontent,data ptrsize,data ptrdata,data ptrlow,data ptrsufix)
 	Data null=NULL
 	Data err#1
 	Data forward=FORWARD
