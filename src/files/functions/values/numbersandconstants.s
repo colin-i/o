@@ -285,10 +285,10 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 	Return closeerr
 endfunction
 #er
-function parenthesis_all_size(sd content,sd size,sd ptr_sz)
+function parenthesis_all_size(ss content,sd size,sd ptr_sz)
 	data noerr=noerror
 	Chars fnbegin="("
-	if content!=fnbegin
+	if content#!=fnbegin
 		return noerr
 	endif
 	inc content

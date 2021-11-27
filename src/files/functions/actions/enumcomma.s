@@ -120,7 +120,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 			Else
 				Data value#1
 				Data ptrvalue^value
-				SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue)
+				SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue,(FALSE))
 				If err!=noerr
 					Return err
 				EndIf

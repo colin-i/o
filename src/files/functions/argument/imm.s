@@ -6,7 +6,7 @@ function imm_values(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
 	dec sz
 	dec sz
 	sd err
-	setcall err parseoperations(ptrcontent,ptrsize,sz,outvalue)
+	setcall err parseoperations(ptrcontent,ptrsize,sz,outvalue,(FALSE))
 	return err
 endfunction
 

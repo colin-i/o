@@ -120,7 +120,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 				endif
 			Else
 			#=value+constant-/&...
-				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue)
+				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
 					return err
 				endif
@@ -155,7 +155,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 		EndElse
 	Chars reserve="#"
 	ElseIf sign==reserve
-		SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue)
+		SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 		If err!=noerr
 			Return err
 		EndIf
