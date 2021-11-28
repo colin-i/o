@@ -17,17 +17,17 @@ EndFunction
 #bool
 Function memtoint(str content,data size,data outvalue,data minusbool)
 	#if size==0 not required in the program, it already comes at least 1
-	
+
 	Data value#1
 	Data number#1
-	
+
 	data multx#1
 	Set value 0
 	set multx 1
 	Add content size
 	While size!=0
 		Dec content;Dec size
-		
+
 		Data bool#1
 		Chars byte#1
 		Set byte content#
@@ -37,7 +37,7 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		EndIf
 		Sub byte (asciizero)
 		Set number byte
-		
+
 		const bil_1=1000*1000*1000
 		const bil_2=2*bil_1
 		const max_int=0x80*0x100*0x100*0x100
@@ -67,7 +67,7 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 				endelseif
 			endelseif
 		endif
-		
+
 		mult number multx;mult multx 10
 		Add value number
 	EndWhile
@@ -118,7 +118,7 @@ Function memtohex(str content,data size,data outvalue)
 
 	Set val initialval
 	Set limit initiallimit
-	
+
 	If size<limit
 		Return false
 	EndIf
@@ -135,7 +135,7 @@ Function memtohex(str content,data size,data outvalue)
 	Data nr#1
 	Data initialmultp=1
 	Data multp#1
-	
+
 	Set multp initialmultp
 	SetCall bool stratmem(pc,ps,"0X")
 	If bool==false
@@ -255,7 +255,7 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 	sd last
 	Chars closefnexp="Close parenthesis sign (')') expected."
 	Str closeerr^closefnexp
-	
+
 	set mark content
 	set last content
 	add last size

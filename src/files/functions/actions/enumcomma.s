@@ -7,7 +7,7 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 	data true=TRUE
 	data false=FALSE
 	data ptrobject%ptrobject
-	
+
 	if stack==false
 		data ptrdatasec%ptrdatasec
 		if ptrobject#==1
@@ -34,7 +34,7 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec)
 		return err
 	endif
-	
+
 	sd for_64;setcall for_64 is_for_64()
 	if ptrobject#==1
 		If ptrrelocbool#==true
@@ -183,7 +183,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 			if delim==comma
 				SetCall argsize valinmemsens(content,sz,comma,sens)
 			endif
-			
+
 			Data negvalue#1
 			Set negvalue zero
 			Sub negvalue argsize

@@ -10,7 +10,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	data stack#1
 	data ptrS^stack
 	data rightstackpointer#1
-	
+
 	setcall typenumber stackfilter(typenumber,ptrS)
 	if stack==true
 		#######must be at the start
@@ -48,7 +48,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	Data relocindx#1
 	Data dataind=dataind
 	Set relocindx dataind
-	
+
 	SetCall err dataparse(ptrcontent,ptrsize,typenumber,assignsign,ptrrelocbool,stack)
 	If err!=noerr
 		Return err
@@ -69,7 +69,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	Data ptrfunctions%ptrfunctions
 
 	Data zero=0
-	
+
 	Data dwSz=dwsz
 	data bsz=bsz
 	data valuewritesize#1
@@ -82,7 +82,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	set skipNumberValue false
 	Data importbittest#1
 	set importbittest -1
-	
+
 	Set size ptrsize#
 	If size==zero
 		Chars rightsideerr="Right side of the assignment expected."
@@ -253,7 +253,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 					dec doublepointer
 					set addatend ptrvirtualimportsoffset
 				endelse
-				
+
 				sd section
 				sd section_offset
 				if stack==false

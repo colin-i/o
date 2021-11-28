@@ -18,7 +18,7 @@ Function openlib()
 	Data *ForwarderChain=0
 	Data Name#1
 	Data FirstThunk#1
-	
+
 	Set Name namesReg
 	Set FirstThunk addressesReg
 
@@ -66,7 +66,7 @@ Function closelib()
 
 	Data iidsize=IMAGE_IMPORT_DESCRIPTORsize
 	Sub itab iidsize
-	
+
 	Set itab# adrsize
 
 	Data src#1

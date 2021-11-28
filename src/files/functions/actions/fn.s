@@ -61,7 +61,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 
 	Set content ptrcontent#
 	Set size ptrsize#
-	
+
 	SetCall sz valinmem(content,size,fnbegin)
 	If sz==zero
 		Chars funnameexp="Function name expected."
@@ -98,7 +98,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			Data mask#1
 			Data ptrobjfnmask%ptrobjfnmask
 			Set mask ptrobjfnmask#
-			
+
 			setcall scope64 is_funcx_subtype(subtype)
 			if scope64==(TRUE)
 				setcall b is_for_64()
@@ -115,7 +115,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			sd pointer
 			setcall pointer vars_ignoreref(content,sz,fns)
 			Call advancecursors(ptrcontent,ptrsize,sz)
-			
+
 			#add the function name to the code section if the option is set
 			sd fn_text
 			setcall fn_text fn_text_info()
@@ -131,7 +131,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 					Return err
 				EndIf
 			endif
-			
+
 			Call getcontReg(code,ptrvalue)
 			set pointer# value
 
@@ -147,7 +147,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 					Return err
 				EndIf
 			EndIf
-			
+
 			setcall scope64 is_funcx_subtype(subtype)
 			#functionx,entry in 64 conventions
 			#entrylinux has no return but has argc,aexec,a1...an
@@ -177,7 +177,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		endif
 		setcall err nr_of_args_64need_set();if err!=(noerror);return err;endif
 	EndElse
-	
+
 	Call stepcursors(ptrcontent,ptrsize)
 	data ptr_sz^sz
 	setcall err parenthesis_size(ptrcontent#,ptrsize#,ptr_sz)
@@ -192,7 +192,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			Return err
 		EndIf
 	EndIf
-	
+
 	If declare==true
 		call entryscope()
 	else
@@ -214,7 +214,7 @@ endfunction
 function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect)
 	set p_bool_indirect# (FALSE)
 	Data fns%ptrfunctions
-	
+
 	SetCall p_data# vars(pcontent#,sz,fns)
 	If p_data#==0
 		setcall p_data# vars_number(pcontent#,sz,(integersnumber))
@@ -235,7 +235,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 		call is_for_64_is_impX_or_fnX_set(p_data#)
 	EndElse
 	Call advancecursors(pcontent,psize,sz)
-	
+
 	#move over the stack arguments, ebx is also shorting the first stack variable (mov rbx,rdx)
 	#mov esp,ebx
 	Data code%ptrcodesec
@@ -254,7 +254,7 @@ endfunction
 function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	sd err
 	Data code%ptrcodesec
-	
+
 	sd b;setcall b is_for_64_is_impX_or_fnX_get()
 	if b==(TRUE)
 		setcall err function_call_64(is_callex)
@@ -264,13 +264,13 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	Data ptrfnmask#1
 	Set ptrfnmask ptrdata
 	Add ptrfnmask (maskoffset)
-	
+
 	Data fnmask#1
 	Data idatafn=idatabitfunction
 	Data ptrobject%ptrobject
 	Set fnmask ptrfnmask#
 	And fnmask idatafn
-	
+
 	If fnmask==idatafn
 		If ptrobject#==(FALSE)
 			Set boolindirect (TRUE)
@@ -281,7 +281,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		Chars directcall#1
 		Data directcalloff#1
 		chars *={0xff,0xd0}
-		
+
 		Data ptrdirectcall^directcall
 		const directcallsize=1+dwsz
 		data ptrdirectcalloff^directcalloff
@@ -317,7 +317,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			Return err
 		EndIf
 	EndElse
-	
+
 	sd global_err_pB;setcall global_err_pB global_err_pBool()
 	if global_err_pB#!=(FALSE)
 		sd global_err_ptr;setcall global_err_ptr global_err_p()
@@ -367,7 +367,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		#return
 		SetCall err addtosec(ret_end_p,ret_end_sz,code);If err!=(noerror);Return err;EndIf
 	endif
-	
+
 	return (noerror)
 endfunction
 

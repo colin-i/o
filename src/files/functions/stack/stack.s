@@ -81,7 +81,7 @@ function entryscope()
 	#sub e(r)bx dword
 	const scope4_start=!;chars scope4={0x81,0xc3}
 	data *scopestack=0;const scope4_sz=!-scope4_start
-	
+
 	setcall err addtosec(#scope1,(scope1_sz),container);if err!=(noerror);return err;endif
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
 	setcall err addtosec(#scope2,(scope2_sz),container);if err!=(noerror);return err;endif
@@ -149,7 +149,7 @@ function addtocodeforstack(sd value,sd rightstackpointer,sd for_64)
 	setcall rampindex addramp()
 	setcall rampindex neg(rampindex)
 	set rampvalue value
-	
+
 	setcall err addtosec(stack,size,ptrcodesec)
 	return err
 endfunction

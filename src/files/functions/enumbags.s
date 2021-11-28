@@ -45,7 +45,7 @@ EndFunction
 Function freeclose()
 	Data value#1
 	Data zero=0
-	
+
 	Data ptrpath%ptrpath
 	Set value ptrpath#
 	If value!=zero
@@ -53,7 +53,7 @@ Function freeclose()
 	EndIf
 
 	Call enumbags(zero)
-	
+
 	Data negative=-1
 
 	Data ptrfileout%ptrfileout

@@ -22,9 +22,9 @@ Function addtosec(str content,data size,data dst)
 	Data destMax#1
 	Data pdestReg#1
 	Data ppdestReg^pdestReg
-	
+
 	Call getptrcontReg(dst,ppdestReg)
-	
+
 	Set destMax dst#
 
 	Data null=0

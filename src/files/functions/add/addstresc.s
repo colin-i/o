@@ -5,7 +5,7 @@ Function addtosecstresc(data pcontent,data psize,data sz,data escapes,data pdest
 	Data odd=0
 	Data zero=0
 	Data nonzero=1
-	
+
 	#set destination start
 	Data destReg#1
 	Data ptrdestReg^destReg

@@ -38,7 +38,7 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 	Data ptrcontainerReg^containerReg
 	Call getcontandcontReg(ptrstructure,ptrcontainer,ptrcontainerReg)
 	Data entrypoint#1
-	
+
 	While containerReg>zero
 		Set entrypoint container
 		Add container dwlen
@@ -83,7 +83,7 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 				If cmpret==zero
 					#go back from string to mask
 					Sub container dwlen
-					
+
 					#if set the reference is true
 					if setref==1
 						#get the value and change the reference bit of the mask to true
@@ -199,7 +199,7 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	Data ptrtype^type
 	Data false=FALSE
 	Data true=TRUE
-	
+
 	#size is expecting to be greater than zero
 	Str viewsfx#1
 	Set viewsfx content
@@ -216,7 +216,7 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	Else
 		Set sufix false
 	EndElse
-	
+
 	Data null=NULL
 	Data data#1
 
@@ -233,7 +233,7 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	Data charsnumber=charsnumber
 	sd is_str
 	setcall is_str is_string(type)
-	
+
 	sd prefix
 	setcall prefix prefix_bool()
 	If type==charsnumber
@@ -264,7 +264,7 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	EndElse
 
 	Set ptrsufix# sufix
-	
+
 	Data noerr=noerror
 	Return noerr
 EndFunction

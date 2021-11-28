@@ -20,7 +20,7 @@ If object==false
 EndIf
 If errormsg==noerr
 	Data functionoffset#1
-	
+
 	If fileformat==pe_exec
 		Set functionoffset addressesReg
 

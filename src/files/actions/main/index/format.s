@@ -17,9 +17,9 @@ If formatresponse==false
 		Chars elfobjformat="OBJ"
 		Str ptrelfobjformat^elfobjformat
 		Data elfobjformresp#1
-		
+
 		sd p_is_for_64_resp;setcall p_is_for_64_resp p_is_for_64()
-		
+
 		SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_resp)
 		If elfobjformresp==true
 			if p_is_for_64_resp#==(TRUE)

@@ -13,7 +13,7 @@ Else
 			data sizereturn#1
 			data ptrptrreturn^ptrreturn
 			setcall sizereturn getreturn(ptrptrreturn)
-	
+
 			SetCall errormsg addtoCode_set_programentrypoint(ptrreturn,sizereturn)
 			If errormsg==noerr
 				Call warnings(false,includes,nameofstoffile,#errormsg)

@@ -40,7 +40,7 @@ Function condbegin(data ptrcontent,data ptrsize,data condnumber)
 	Data ptrcond^cond
 	Data err#1
 	Data noerr=noerror
-	
+
 	SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
 	If err!=noerr
 		Return err
@@ -107,7 +107,7 @@ Function condend(data number)
 	Data dsz=dwsz
 	Sub regnr dsz
 	Add structure regnr
-	
+
 	Data lastcondition#1
 	Set lastcondition structure#
 
@@ -126,7 +126,7 @@ Function condend(data number)
 	Data codeoffset#1
 	Data ptrcodeoff^codeoffset
 	Data codesec%ptrcodesec
-	
+
 	Call getcontReg(codesec,ptrcodeoff)
 
 	Data noerr=noerror
@@ -138,7 +138,7 @@ Function condend(data number)
 
 		Data whileloopstart#1
 		Data whileloopsize#1
-		
+
 		Sub regnr dsz
 		Sub structure dsz
 
@@ -185,7 +185,7 @@ Function conditionscondend(data close1,data close2)
 	Data loopini=1
 	Data loopstop=0
 	Set loop loopini
-	
+
 	Data number#1
 	Set number close1
 

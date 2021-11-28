@@ -8,13 +8,13 @@ function localResolve(sd unrLc,sd unrLcReg)
 
 	sd struct
 	sd offset
-	
+
 	while unrLcReg!=0
 		set struct unrLc#
 		sd cont
 		sd ptr_cont^cont
 		call getcont(struct,ptr_cont)
-		
+
 		add unrLc 4
 
 		set offset unrLc#
@@ -61,9 +61,9 @@ function unresLc(sd addition,sd structure,sd direct)
 
 	sd ptradd^struct
 	sd ptroff^offset
-				
+
 	Call getcontReg(structure,ptroff)
-			
+
 	add offset addition
 
 	set struct structure
@@ -82,7 +82,7 @@ function unresolvedLocal(sd addition,sd structure,sd currentfnpointer,sd ptr_out
 	If err!=(noerror)
 		Return err
 	EndIf
-	
+
 	call get_fn_pos(currentfnpointer,ptr_out)
 	return (noerror)
 endfunction

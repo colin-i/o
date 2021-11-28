@@ -31,7 +31,7 @@ While unresptr!=unresptrlastpoint
 	add unresptr dwordsize
 	Set unresoff unresptr#
 	add unresstructure unresoff
-	
+
 	add unresptr dwordsize
 	set unresadd unresptr#
 	set unresadd unresadd#

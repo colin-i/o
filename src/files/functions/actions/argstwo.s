@@ -21,19 +21,19 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Data noreg=noregnumber
 	Data eaxreg=eaxregnumber
 	Data ecxreg=ecxregnumber
-	
+
 	Data intchar#1
 	Set intchar noreg
 
 	Data sameimportant#1
 	Set sameimportant true
-	
+
 	Chars opprim#1
 	Chars opsec#1
 	Chars atprocthemem={moveatprocthemem}
 	Chars atmemtheproc={moveatmemtheproc}
 	Set opsec atprocthemem
-	
+
 	Data divmul#1
 	Set divmul false
 	Data regprep#1
@@ -61,7 +61,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Chars two=2
 
 	Set primcalltype false
-	
+
 	sd big;sd rem
 	If ptrcondition==false
 		#imm second arg
@@ -129,7 +129,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		chars compimmop#1
 		set compimmop compimminitial
 	EndElse
-	
+
 	If primcalltype==false
 		SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true)
 		If errnr!=noerr
@@ -197,7 +197,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			EndIf
 		EndElse
 	EndElse
-	
+
 	Data codeptr%ptrcodesec
 
 	If primcalltype==false
@@ -237,7 +237,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Return errnr
 		EndIf
 	EndElseif
-	
+
 	#write first arg, the second already was
 	set p_prefix# remind_first_prefix
 	call restorefirst_isimm()
@@ -273,7 +273,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Chars d3_0=0x79;chars d3_1#1
 			Chars d4_0#1
 			Chars d4_1#1
-			
+
 			Const bitsedxregop=edxregnumber*8
 			Const bitsahregop=ahregnumber*8
 			Const bitsnotop=Notregopcode*8
@@ -330,7 +330,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		Str ptropcodeex^opcodeex
 		Chars storeex#1
 		chars storeexrm#1
-		
+
 		Set opcodeex opcodexini
 		Set storeex atmemtheproc
 
@@ -385,7 +385,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				Return errnr
 			EndIf
 		endif
-		
+
 		Chars jumpifnotcond={0x0f}
 		Chars cond#1
 		#this will be resolved at endcond

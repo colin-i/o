@@ -58,10 +58,10 @@ EndFunction
 #0 equal -1 not
 Function memcmp(str m1,str m2,data size)
 	Data zero=0
-	
+
 	Data equal=0
 	Data notequal=-1
-	
+
 	Chars c1#1
 	Chars c2#1
 	While size!=zero

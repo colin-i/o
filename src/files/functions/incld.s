@@ -35,7 +35,7 @@ Function include(Str path)
 	if ptrlogfile#!=negative
 		call logincludes_decision(path)
 	endif
-	
+
 	Str contentoffl#1
 	Data sizeoffl#1
 	Data offsetoffl#1
@@ -44,13 +44,13 @@ Function include(Str path)
 
 	Data err#1
 	Data noerr=noerror
-	
+
 	Const includeset^contentoffl
 	Data includeset%includeset
 
 	Data psizeoffl^sizeoffl
 	Data pcontentoffl%includeset
-	
+
 	setcall offsetoffl offsetoffile_value()
 
 	SetCall err file_get_content_ofs(path,psizeoffl,pcontentoffl,offsetoffl)
@@ -78,7 +78,7 @@ Function include(Str path)
 		chars storechar#1
 		set storechar folders#
 		set folders# 0
-		
+
 		data int#1
 		data chdirok=chdirok
 		setcall int changedir(path)
@@ -113,7 +113,7 @@ Function include(Str path)
 		Sub fnamesize one
 		Set moresize one
 	EndIf
-	
+
 	Str dest#1
 	Str initialdest^nameoffl
 	Set dest initialdest
@@ -125,18 +125,18 @@ Function include(Str path)
 		Set dest# morestr
 		Add dest one
 	EndIf
-	
+
 	Set dest# 0
-	
-	
+
+
 	Data pincludes%ptrincludes
 	Data isetsize=includesetSz
-	
+
 	SetCall err addtosec(includeset,isetsize,pincludes)
 	If err!=noerr
 		Return err
 	EndIf
-	
+
 	Data pointers%includestructure
 	Data sizeadd#1
 	Set sizeadd isetsize
@@ -152,6 +152,6 @@ Function include(Str path)
 	Set envinccursor pointers
 	Add envinccursor sizeadd
 	Set envinccursor# includespoint
-	
+
 	Return noerr
 EndFunction

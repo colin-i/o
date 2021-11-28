@@ -13,7 +13,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	Data err#1
 	Data perr^err
 	data subtype#1
-	
+
 	Data ptrsearchsize^sz
 	Data len#1
 	Set len sz
@@ -25,7 +25,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	EndIf
 	Data vartype#1
 	setcall vartype commandSubtypeDeclare_to_typenumber(subtype)
-	
+
 	#substract from the big size the parsed size
 	Sub len sz
 	Data length#1
@@ -106,7 +106,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	Data _codesec%ptrcodesec
 	SetCall err addtosec(codeops,sizeoftransfer,_codesec)
 	If err!=noerr;Return err;EndIf
-	
+
 	sd b;setcall b is_for_64()
 	if b==(TRUE)
 		#at 64 code:
@@ -115,6 +115,6 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		SetCall err addtosec(#z,(dwsz),_codesec)
 		If err!=noerr;Return err;EndIf
 	endif
-	
+
 	Return err
 EndFunction

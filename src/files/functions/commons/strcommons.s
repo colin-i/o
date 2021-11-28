@@ -226,7 +226,7 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	Chars byte#1
 	Chars bs={asciibs}
 	Data zero=0
-	
+
 	Set content pcontent#
 	Set size psize#
 	Set byte content#
@@ -277,7 +277,7 @@ Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
 	Set pescapes# zero
 	Data escbefore=0
 	Data escafter=0
-	
+
 	Chars byte={0}
 	Chars bnull={0}
 	While length!=zero
@@ -323,7 +323,7 @@ function maxpathverif(str safecurrentdirtopath,str logextension)
 	setcall size2 strlen(logextension)
 	add size1 size2
 	inc size1
-	
+
 	data err#1
 	setcall err compareagainstmaxpath(size1)
 	return err

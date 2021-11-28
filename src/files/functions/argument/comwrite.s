@@ -26,7 +26,7 @@ Function formmodrm(data mod,data regopcode,data rm)
 	Set bitshift initialbitshift
 
 	Set modrm rm
-	
+
 	SetCall bitshift rol(bitshift,toregopcode)
 	Set store bitshift
 	Mult store regopcode
@@ -43,14 +43,14 @@ EndFunction
 function takewithimm(sd ind,sd addr)
 	Chars takeop#1
 	Data takeloc#1
-	
+
 	Set takeop (0xb8)
 	Add takeop ind
 	set takeloc addr
-	
+
 	Data ptrcodesec%ptrcodesec
 	Data sz1=bsz+dwsz
-	
+
 	sd err
 	SetCall err addtosec(#takeop,sz1,ptrcodesec)
 	return err
@@ -59,7 +59,7 @@ function writetake(sd takeindex,sd entry)
 	data p_is_object%ptrobject
 	Data ptrcodesec%ptrcodesec
 	Data errnr#1
-	
+
 	sd take_loc;set take_loc entry#
 	sd stack
 	setcall stack stackbit(entry)
@@ -187,7 +187,7 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 	sd mod=mod_0
 	#this will reset call,push and set v64
 	Call stack64_op()
-	
+
 	#if is low
 	If regprepare!=(noregnumber)
 		Chars comprepare1={0x33}
@@ -209,10 +209,10 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 			set v64# (val64_no)
 		endif
 	EndElse
-	
+
 	Chars actionop#1
 	Chars actionmodrm#1
-	
+
 	Set actionop operationopcode
 	SetCall actionmodrm formmodrm(mod,regopcode,takeindex)
 	SetCall errnr addtosec(#actionop,sz2,ptrcodesec)

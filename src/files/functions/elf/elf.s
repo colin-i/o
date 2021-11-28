@@ -42,7 +42,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	#Entry size if section holds table
 	Data sh_entsize#1
 	Const elf_section_size=!-elf_section
-	
+
 	Const elf64_section=!
 	Data sh64_name#1
 	Data sh64_type#1
@@ -59,7 +59,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Const SHT_NULL=0
 	Const SHT_PROGBITS=1
 	Const SHT_NOBITS=8
-		
+
 	const SHF_WRITE=1
 		#Occupies memory during execution,1 << 1
 	Const SHF_ALLOC=2*1
@@ -67,7 +67,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Const SHF_EXECINSTR=2*2
 		#`sh_info' contains SHT index,1 << 6
 	#Const SHF_INFO_LINK=2*6
-	
+
 	Data SHT_PROGBITS=SHT_PROGBITS
 	Data SHT_NOBITS=SHT_NOBITS
 	Data zero=0
@@ -76,7 +76,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 			Set type SHT_NOBITS
 		EndIf
 	EndIf
-	
+
 	Data err#1
 	#is false at inits, no worry about only at object
 	sd e64;setcall e64 is_for_64()
@@ -139,7 +139,7 @@ Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,dat
 		Chars elf64_sym_st_shndx#2
 		Data elf64_sym_st_value#1;data *=0
 		Data elf64_sym_st_size#1;data *=0
-	
+
 		Set elf64_sym_st_name stringoff
 		Set elf64_sym_st_value value
 		Set elf64_sym_st_size size
@@ -167,7 +167,7 @@ Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,dat
 		Chars *elf32_sym_st_other={0}
 		#Section index
 		Chars elf32_sym_st_shndx#2
-	
+
 		Set elf32_sym_st_name stringoff
 		Set elf32_sym_st_value value
 		Set elf32_sym_st_size size
@@ -177,7 +177,7 @@ Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,dat
 		Const elf_sym_start^elf32_sym_st_name
 		SetCall err addtosec(#elf32_sym_st_name,(!-elf_sym_start),struct)
 	endelse
-	
+
 	Return err
 EndFunction
 #err
@@ -232,7 +232,7 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	#const R_386_PC32=2
 	#const R_X86_64_PC32=R_386_PC32
 	#const R_X86_64_PC64=24
-	
+
 	Data elf_rel#1
 	Data elf_rel_sz#1
 
@@ -243,13 +243,13 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 		data *elf64_r_info_type=R_X86_64_32
 		data elf64_r_info_symbolindex#1
 		data elf64_r_addend#1;data *=0
-		
+
 		#it is not enough
 		#Call memtomem(#elf64_r_offset,#offset,(qwsz))
 		set elf64_r_offset offset
 		set elf64_r_info_symbolindex symbolindex
 		set elf64_r_addend addend
-		
+
 		set elf_rel #elf64_r_offset
 		set elf_rel_sz (elf64_dyn_d_val_relent)
 	else
@@ -264,11 +264,11 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 		Set elf_r_info_type type
 		Call memtomem(#elf_r_info_symbolindex,#symbolindex,3)
 		set elf_r_addend addend
-		
+
 		set elf_rel #elf_r_offset
 		set elf_rel_sz (elf32_dyn_d_val_relent)
 	endelse
-	
+
 	SetCall err addtosec(elf_rel,elf_rel_sz,struct)
 	Return err
 EndFunction

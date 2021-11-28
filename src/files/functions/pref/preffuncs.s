@@ -33,7 +33,7 @@ Function warnings(sd searchInAll,sd includes,sd nameoffset,sd p_err)
 	EndIf
 
 	Data var#1
-	
+
 	SetCall var searchinvars(null,null,null,p_err)
 	If var==null
 		If searchInAll==true
@@ -108,7 +108,7 @@ function setpreferences(str scrpath)
 	data ptrincludedir%ptrincludedir
 	data ptrcodeFnObj%ptrcodeFnObj
 	data ptr_log_import_functions%ptr_log_import_functions
-	
+
 	data true=TRUE
 	data false=FALSE
 	data defaultcodeFnObj=log_warn
@@ -147,20 +147,20 @@ function setpreferences(str scrpath)
 
 		data null=0
 		data void#1
-	
+
 		str folders#1
 		setcall folders endoffolders(scrpath)
 		set folders# null
 		sub folders scrpath
-	
+
 		data prefsz#1
 		setcall prefsz strlen(preferences)
 		inc prefsz
-	
+
 		data total#1
 		set total folders
 		add total prefsz
-	
+
 		data ptrmem#1
 		data allocptrmem^ptrmem
 		setcall err memoryalloc(total,allocptrmem)
@@ -168,14 +168,14 @@ function setpreferences(str scrpath)
 			call Message(err)
 			return void
 		endif
-	
+
 		call memtomem(ptrmem,scrpath,folders)
-	
+
 		str apppath#1
 		set apppath ptrmem
 		add apppath folders
 		call memtomem(apppath,preferences,prefsz)
-			
+
 		SetCall err file_get_content_ofs(ptrmem,ptrpreferencessize,ptrpreferencescontent,null)
 		call free(ptrmem)
 		If err!=noerr

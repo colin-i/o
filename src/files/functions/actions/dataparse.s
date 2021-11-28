@@ -14,7 +14,7 @@ Function entryvarsfns(data content,data size)
 			Return noerr
 		EndIf
 	EndIf
-	
+
 	Chars varfndup="Variable/Function name is already defined."
 	Str ptrvarfndup^varfndup
 	Return ptrvarfndup
@@ -33,7 +33,7 @@ function get_img_vdata_dataReg()
 		Set value ptrimageoff#
 		Set inter ptrdataoff#
 		Add value inter
-	
+
 		Call getcontReg(ptrdataSec,ptrinter)
 		Add value inter
 		return value
@@ -116,7 +116,7 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 	Chars unrefoption#1
 	Set unrefoption content#
 	Chars unrefsign="*"
-	
+
 	If unrefoption!=unrefsign
 		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,stackoffset)
 		If err!=noerr

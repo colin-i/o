@@ -43,7 +43,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 
 	Data codeptr%ptrcodesec
 	Data regopcode#1
-	
+
 	Data err#1
 	Data noerr=noerror
 	chars immop#1
@@ -67,10 +67,10 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 				#exit from linux term
 				setcall termswitch is_linux_end()
 			endif
-			
+
 			if termswitch==true
 				#if to keep rsp can be leave pop sub rsp,:
-				
+
 				#int 0x80, sys_exit, eax 1,ebx the return number
 				chars sys_exit={0xb8,1,0,0,0}
 				data exinit^sys_exit
@@ -187,7 +187,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			Set intchar regopcode
 		EndIf
 	EndIf
-	
+
 	if imm==true
 		setcall err write_imm(dataarg,op)
 	else
@@ -201,7 +201,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
 		return err
 	EndIf
-	
+
 	return noerr
 
 endfunction

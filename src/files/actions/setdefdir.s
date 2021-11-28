@@ -51,7 +51,7 @@ if logbool==true
 		set logfilecannotinit true
 	else
 		str appendextension#1
-	
+
 		set appendextension safecurrentdirloc
 		add appendextension movesize
 		dec appendextension
@@ -60,7 +60,7 @@ if logbool==true
 		setcall sizelogext strlen(logextension)
 		inc sizelogext
 		call memtomem(appendextension,logextension,sizelogext)
-		
+
 		setcall errormsg openfile(ptrlogfile,safecurrentdirtopath,_open_write)
 		if errormsg!=noerr
 			set logfilecannotinit true

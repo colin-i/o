@@ -37,7 +37,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 	ss content
 	sd size
 	sd errnr
-	
+
 	Set content ptrcontent#
 	set size ptrsize#
 
@@ -47,7 +47,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 	if sizetoverify==0
 		Return argnameerr
 	endif
-	
+
 	sd argsize
 	if content#!=string_arg
 		setcall errnr arg_size(content,sizetoverify,#argsize)
@@ -58,7 +58,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 
 	Data noerr=noerror
 	data false=0
-	
+
 	call resetisimm()
 	sd bool
 	setcall bool is_constant_related_ascii(content#)
@@ -118,14 +118,14 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			#lower than argsize in case of a prefix
 			sd argsize_filter
 			set argsize_filter argsize
-			
+
 			#at object var/fn,non-object var
 			sd undvar_err
 			sd possible_err
 			setcall undvar_err undefinedvariable()
 			set possible_err undvar_err
 			set ptrdata# 0
-			
+
 			chars arg_pointer="#"
 			if content#==arg_pointer
 				#prefix
@@ -239,7 +239,7 @@ function argfilters_helper(data ptrcondition,data ptrcontent,data ptrsize,data p
 	Set content ptrcontent#
 	Set size ptrsize#
 	Data argsz#1
-	
+
 Const enterifNOTequal=0x84
 	Chars s1="!="
 	Data *=enterifNOTequal
@@ -272,7 +272,7 @@ Const enterifGREATER=0x8E
 
 	Set ptr ptrini
 	Set byte ptr#
-	
+
 	While byte!=term
 		SetCall argsz strinmem(content,size,ptr)
 		If argsz!=size

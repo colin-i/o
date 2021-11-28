@@ -34,7 +34,7 @@ Function getstructcont(data typenumber)
 	Data dest#1
 	Data scopes%ptrscopes
 	Data sizeofdataset=sizeofcontainer
-	
+
 	Data fnboolptr%globalinnerfunction
 	Data fnbool#1
 
@@ -42,7 +42,7 @@ Function getstructcont(data typenumber)
 
 	Data true=TRUE
 	Data scopeindependent=afterscopes
-	
+
 	If fnbool==true
 		If typenumber<scopeindependent
 			Data nrofvars=numberofvars
@@ -65,7 +65,7 @@ Function congruentmoduloatsegments(data virtual,data offset,data modulo,data new
 
     #add newbytes at virtual, offset already has them
 	Add virtual newbytes
-	
+
 	SetCall virtualtop remainder(virtual,modulo)
 
 	SetCall offsettop remainder(offset,modulo)

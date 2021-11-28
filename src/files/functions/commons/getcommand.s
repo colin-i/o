@@ -24,6 +24,8 @@ Chars cCOMMENT_c={commentascii,0}
 
 const not_a_subtype=-1
 
+#where is =0 can be #1 but is =0 because diff tests will give binary files differ
+
 const coms_start=!
 const commandsvars_start=!
 	Const cDECLARE=!-coms_start
@@ -81,7 +83,7 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 	Const cFORMAT=!-coms_start
 		data *^cFORMAT_c
 		Data *=cFORMAT
-		Data *#1
+		Data *=0
 		Data *=spacereq
 	Const cONEARG=!-coms_start
 	Const cONEARG_top=!
@@ -185,7 +187,7 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 	Const cLIBRARY=!-coms_start
 		data *^cLIBRARY_c
 		Data *=cLIBRARY
-		Data *#1
+		Data *=0
 		Data *=spacenotreq
 	Const cIMPORTLINK=!-coms_start;Const cIMPORTLINK_top=!
 		const cIMPORT=!-cIMPORTLINK_top
@@ -223,17 +225,17 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 	Const cENDFUNCTION=!-coms_start
 		data *^cENDFUNCTION_c
 		Data *=cENDFUNCTION
-		Data *#1
+		Data *=0
 		Data *=spacenotreq
 	Const cCALL=!-coms_start
 		data *^cCALL_c
 		Data *=cCALL
-		Data *#1
+		Data *=0
 		Data *=spacereq
 	Const cCALLEX=!-coms_start
 		data *^cCALLEX_c
 		Data *=cCALLEX
-		Data *#1
+		Data *=0
 		Data *=spacereq
 	Const cCONDITIONS=!-coms_start
 	Const cCONDITIONS_top=!
@@ -280,27 +282,27 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 	Const cINCLUDE=!-coms_start
 		data *^cINCLUDE_c
 		Data *=cINCLUDE
-		Data *#1
+		Data *=0
 		Data *=spacenotreq
 	Const cI3=!-coms_start
 		data *^cI3_c
 		Data *=cI3
-		Data *#1
+		Data *=0
 		Data *=spacenotreq
 	Const cHEX=!-coms_start
 		data *^cHEX_c
 		Data *=cHEX
-		Data *#1
+		Data *=0
 		Data *=spacereq
 	Const cWARNING=!-coms_start
 		data *^cWARNING_c
 		Data *=cWARNING
-		Data *#1
+		Data *=0
 		Data *=spacereq
 	Const cCOMMENT=!-coms_start
 		data *^cCOMMENT_c
 		Data *=cCOMMENT
-		Data *#1
+		Data *=0
 		Data *=spacenotreq
 Const numberofcommands=!-coms_start/4/dwsz
 
@@ -336,7 +338,7 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 	Data true=TRUE
 
 	Data dsz=dwsz
-	
+
 	Set cursor pointercommands#
 	While cursor!=zero
 		Data offset#1
@@ -356,7 +358,7 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		Str extstr#1
 		Data extbooldata#1
 		Data extbool^extbooldata
-		
+
 		If command==(cPRIMSEC)
 			Set extstr call
 		Else

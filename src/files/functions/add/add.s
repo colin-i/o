@@ -62,7 +62,7 @@ Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumb
 	if warningsboolptr#==(FALSE)
 		or mask (referencebit)
 	endif
-	
+
 	sd dest
 	SetCall dest getstructcont(typenumber)
 	sd errnr
@@ -70,7 +70,7 @@ Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumb
 	If errnr!=(noerror)
 		Return errnr
 	EndIf
-	
+
 	Call advancecursors(ptrcontent,ptrsize,size)
 
 	Return errnr
@@ -92,6 +92,6 @@ function add_ref_to_sec(sd sec,sd value,sd mask,sd name,sd size)
 	If errnr!=(noerror)
 		Return errnr
 	EndIf
-	
+
 	return (noerror)
 EndFunction
