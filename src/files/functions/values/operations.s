@@ -19,7 +19,7 @@ function const_security(sd item)
 	#maximum first overflow, ok
 	data maximum=qwsz*8
 	if item>=maximum
-		call safeMessage("Overflow at constants.")
+		call Message("Overflow at constants.")
 		return maximum
 	endif
 	return item

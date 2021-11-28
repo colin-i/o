@@ -113,7 +113,7 @@ Function printbuf(str format,str message)
 	Return buf
 EndFunction
 
-#err
+#str1/newPointer
 function errorDefOut(str str1,str str2)
 	str format="%s%s"
 	data ptrallocerrormsg%ptrallocerrormsg
@@ -359,7 +359,7 @@ function clearmessage()
 	data null=NULL
 	If ptrallocerrormsg#!=null
 		Call free(ptrallocerrormsg#)
-		#if was a safe message when cleaning from a fatal message , don't free
+		#if the error from file_get.. is from open here is ok, else if is only a str err alloc was not
 		set ptrallocerrormsg# null
 	EndIf
 endfunction

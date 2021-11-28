@@ -21,9 +21,9 @@ If commnamesize!=zero
 		Else
 			SetCall launchsize valinmem(commandname,commnamesize,space)
 		EndElse
-		
+
 #
-		
+
 		Add commandname launchsize
 		Sub commnamesize launchsize
 		If commnamesize!=zero

@@ -148,10 +148,10 @@ function is_whitespace(chars c)
 	return (FALSE)
 endfunction
 function warn_hidden_whitespaces(sd inc,sd add)
-	ss was_whitespaces_warning="Hidden whitespaces at :"
-	call Message(was_whitespaces_warning)
 	add inc add
-	call Message(inc)
+	sd goodwrongstring
+	setcall goodwrongstring errorDefOut("Hidden whitespaces at :",inc)
+	call safeMessage(goodwrongstring)
 endfunction
 
 Function spaces_helper(ss cursor,sd size)
