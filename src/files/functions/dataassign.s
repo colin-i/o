@@ -28,14 +28,16 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	Data charsnr=charsnumber
 	Data stringsnr=stringsnumber
 
-	sd offset
+	data offset#1
 	Data ptroffset^offset
 	Data constantsstruct%ptrconstants
 	Data container#1
 	Data pointer_structure#1
 	Data ptrcontainer^container
 	#at constants and at data^sd,str^ss
+
 	If typenumber!=charsnr
+	#for const and at pointer with stack false
 		if typenumber==constantsnr
 			set pointer_structure constantsstruct
 		else
@@ -99,8 +101,11 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 			If byte==stringstart
 			#"text"
 				If typenumber==charsnr
-					set stringtodata true
-					set skipNumberValue true
+					if stack==false
+					#else is at stack value   grep stackfilter2   2
+						set stringtodata true
+						set skipNumberValue true
+					endif
 				ElseIf typenumber==stringsnr
 					set stringtodata true
 					setcall value get_img_vdata_dataReg()
@@ -125,7 +130,10 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 					return err
 				endif
 				If typenumber==charsnr
-					set valuewritesize bsz
+					if stack==false
+					#else is at stack value   grep stackfilter2   3
+						set valuewritesize bsz
+					endif
 				EndIf
 			EndElse
 		Else
@@ -159,24 +167,23 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 		If err!=noerr
 			Return err
 		EndIf
+		Chars negreserve="Unexpected negative value at reserve declaration."
+		Str ptrnegreserve^negreserve
 		If value<zero
-			Chars negreserve="Unexpected negative value at reserve declaration."
-			Str ptrnegreserve^negreserve
 			Return ptrnegreserve
 		EndIf
 		Data dsz=dwsz
 		if stack==false
-			SetCall err maxvaluecheck(value)
-			If err!=noerr
-				Return err
-			EndIf
 			If typenumber!=charsnr
-				Mult value dsz
 				SetCall err maxvaluecheck(value)
 				If err!=noerr
 					Return err
 				EndIf
+				Mult value dsz
 			EndIf
+			If value<zero
+				return ptrnegreserve
+			endIf
 			SetCall err addtosec(null,value,ptrdatasec)
 			Return err
 		else

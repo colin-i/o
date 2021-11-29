@@ -24,6 +24,7 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 	data multx#1
 	Set value 0
 	set multx 1
+
 	Add content size
 	While size!=0
 		Dec content;Dec size

@@ -147,11 +147,17 @@ function is_whitespace(chars c)
 	endif
 	return (FALSE)
 endfunction
+data warn_hidden_whitespaces_times#1
+const warn_hidden_whitespaces_times_p^warn_hidden_whitespaces_times
 function warn_hidden_whitespaces(sd inc,sd add)
-	add inc add
-	sd goodwrongstring
-	setcall goodwrongstring errorDefOut("Hidden whitespaces at :",inc)
-	call safeMessage(goodwrongstring)
+	data warn_hidden_whitespaces_times_p%warn_hidden_whitespaces_times_p
+	if warn_hidden_whitespaces_times_p#==0
+		add inc add
+		sd goodwrongstring
+		setcall goodwrongstring errorDefOut("Hidden whitespaces at :",inc)
+		call safeMessage(goodwrongstring)
+		inc warn_hidden_whitespaces_times_p#
+	endif
 endfunction
 
 Function spaces_helper(ss cursor,sd size)

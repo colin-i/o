@@ -164,6 +164,7 @@ function getsign(str content,data size,data typenumber,str assigntype,data reloc
 	SetCall valsize valinmem_pipes(content,size,pointersign,ptrsz)
 	If valsize!=size
 		If typenumber==charsnr
+			#grep    stackfilter2 4
 			if stack==(FALSE)
 				Chars ptrchar="Incorrect pointer sign ('^') used at CHARS declaration."
 				Str ptrptrchar^ptrchar
@@ -183,11 +184,13 @@ function getsign(str content,data size,data typenumber,str assigntype,data reloc
 		Chars ptrrelchar="Incorrect relocation sign ('%') used at CHARS/CONST declaration."
 		Str ptrptrrelchar^ptrrelchar
 		If typenumber==charsnr
+			#stackfilter2   grep5
+			if stack==(FALSE)
+				Return ptrptrrelchar
+			endif
+		ElseIf typenumber==constnr
 			Return ptrptrrelchar
-		EndIf
-		If typenumber==constnr
-			Return ptrptrrelchar
-		EndIf
+		EndElseIf
 		Set assigntype# equalsign
 		Set relocbool# true
 		return noerr

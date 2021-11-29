@@ -87,6 +87,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 			Data unitsize#1
 			Data charsnr=charsnumber
 			If typenumber==charsnr
+			#ignored at stack value   grep stackfilter2  1
 				Set unitsize bSz
 			Else
 				Set unitsize dwSz
