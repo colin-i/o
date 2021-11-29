@@ -9,14 +9,12 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	data null=0
 	data stack#1
 	data ptrS^stack
-	data rightstackpointer#1
 
 	setcall typenumber stackfilter(typenumber,ptrS)
 	if stack==true
 		#######must be at the start
 		call entryscope_verify_code()
 	endif
-	set rightstackpointer false
 
 	Str err#1
 	Data noerr=noerror
@@ -36,8 +34,11 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	Data ptrcontainer^container
 	#at constants and at data^sd,str^ss
 
+	Data ptrrelocbool%ptrrelocbool
+
 	If typenumber!=charsnr
 	#for const and at pointer with stack false
+	#this can't go after dataparse, addvarref will increase the offset
 		if typenumber==constantsnr
 			set pointer_structure constantsstruct
 		else
@@ -45,12 +46,6 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 		endelse
 		Call getcontReg(pointer_structure,ptroffset)
 	EndIf
-
-	Data ptrrelocbool%ptrrelocbool
-	Data relocindx#1
-	Data dataind=dataind
-	Set relocindx dataind
-
 	SetCall err dataparse(ptrcontent,ptrsize,typenumber,assignsign,ptrrelocbool,stack)
 	If err!=noerr
 		Return err
@@ -60,6 +55,13 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 		call addramp()
 		Return noerr
 	endif
+
+	data rightstackpointer#1
+	set rightstackpointer false
+
+	Data relocindx#1
+	Data dataind=dataind
+	Set relocindx dataind
 
 	Data value#1
 	Data ptrvalue^value
