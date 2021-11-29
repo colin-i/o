@@ -4,6 +4,7 @@
 Const asciitab=0x9
 Const asciispace=0x20
 Const asciiExclamationmark=0x21
+Const asciidoublequote=0x22
 Const asciiNumber=0x23
 Const asciidollar=0x24
 Const asciipercent=0x25

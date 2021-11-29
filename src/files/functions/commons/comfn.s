@@ -94,15 +94,17 @@ Function strlen(str str)
 EndFunction
 
 #null or buffer
-Function printbuf(str format,str message)
+Function printbuf(sd format,sd message,sd s1,sd nr,sd n1,sd n2)
 	Data bufsize#1
-	Data bufpartsize#1
-	SetCall bufpartsize strlen(format)
-	Set bufsize bufpartsize
-	SetCall bufpartsize strlen(message)
-	Add bufsize bufpartsize
-	Data safesize=100
-	Add bufsize safesize
+	SetCall bufsize strlen(format)
+	addCall bufsize strlen(message)
+	addCall bufsize strlen(s1)
+	if nr>0
+		add bufsize (max_uint64)
+		if nr>1
+			add bufsize (max_uint64)
+		endif
+	endif
 
 	Str buf#1
 	SetCall buf memalloc(bufsize)
@@ -110,6 +112,7 @@ Function printbuf(str format,str message)
 	If buf==null
 		Return null
 	EndIf
+	call sprintf(buf,format,message,s1,n1,n2)
 	Return buf
 EndFunction
 
@@ -117,12 +120,11 @@ EndFunction
 function errorDefOut(str str1,str str2)
 	str format="%s%s"
 	data ptrallocerrormsg%ptrallocerrormsg
-	SetCall ptrallocerrormsg# printbuf(str1,str2)
+	SetCall ptrallocerrormsg# printbuf(format,str1,str2,0)
 	data null=NULL
 	If ptrallocerrormsg#==null
 		return str1
 	EndIf
-	Call sprintf(ptrallocerrormsg#,format,str1,str2)
 	return ptrallocerrormsg#
 endfunction
 

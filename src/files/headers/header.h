@@ -351,3 +351,7 @@ const sd_as_sv_bool=0
 const sd_as_sv_get=1
 
 const commentascii=asciiNumber
+
+const max_uint64=20
+chars uint64c#max_uint64+1
+str uint64s^uint64c

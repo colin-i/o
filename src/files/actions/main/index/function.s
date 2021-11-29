@@ -4,14 +4,14 @@ If innerfunction==true
 	Str ptrfinf^finferr
 	Set errormsg ptrfinf
 ElseIf programentrypoint!=codesecReg
-	Chars funcafterentry="Unavailable FUNCTION/ENTRY[...] statement; The start address was at File: %s; Line: %u."
+	Chars funcafterentry="Unavailable FUNCTION/ENTRY[...] statement; The start address was at File: %s; Line: %s."
 	Str fnafteren^funcafterentry
 
-	SetCall allocerrormsg printbuf(fnafteren,ptrentrystartfile)
+	call sprintf(uint64s,"%u",entrylinenumber)
+	SetCall allocerrormsg printbuf(fnafteren,ptrentrystartfile,uint64s,0)
 	If allocerrormsg==null
 		Call errexit()
 	EndIf
-	Call sprintf(allocerrormsg,fnafteren,ptrentrystartfile,entrylinenumber)
 	Set errormsg allocerrormsg
 Else
 	sd el_or_e=FALSE;if subtype==(cENTRY);set el_or_e (TRUE);elseif subtype==(cENTRYLINUX);set el_or_e (TRUE);endelseif

@@ -330,54 +330,53 @@ function maxpathverif(str safecurrentdirtopath,str logextension)
 endfunction
 
 #err
-function quotes_forward(sd p_content,ss last,sd p_newlines)
-	if p_content#==last
-		return (noerror)
-	endif
+function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
+#this version is knowing that the first char is "
+	chars delim=asciidoublequote
 	ss content
 	set content p_content#
-	chars delim="\""
-	if content#!=delim
-		return (noerror)
-	endif
 	str unend="end string (\") expected"
 	sd escapes=0
-    inc content
-    if content==last
+	inc content
+	if content==last
 		return unend
 	endif
 	sd newlines=0
-    while content#!=delim
-        chars escape="\\"
-        while content#==escape
-            if escapes==0
-                set escapes 1
-            else
-                set escapes 0
-            endelse
-            inc content
-            if content==last
+	while content#!=delim
+		chars escape="\\"
+		while content#==escape
+			if escapes==0
+				set escapes 1
+			else
+				set escapes 0
+			endelse
+			inc content
+			if content==last
 				return unend
 			endif
-        endwhile
-        chars newline=0xa
-        if content#==newline
-			inc newlines
+		endwhile
+		chars newline=0xa
+		if content#==newline
+			if p_newlines!=0
+				inc newlines
+				set p_lastlinestart# content
+				inc p_lastlinestart#
+			endif
 		endif
-        if escapes==1
-            inc content
-            set escapes 0
-        elseif content#!=delim
-            inc content
-        endelseif
-        if content==last
+		if escapes==1
+			inc content
+			set escapes 0
+		elseif content#!=delim
+			inc content
+		endelseif
+		if content==last
 			return unend
 		endif
-    endwhile
-    inc content
-    set p_content# content
-    if p_newlines!=0
+	endwhile
+	inc content
+	set p_content# content
+	if p_newlines!=0
 		set p_newlines# newlines
-    endif
-    return (noerror)
+	endif
+	return (noerror)
 endfunction

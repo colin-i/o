@@ -59,13 +59,13 @@ Function warnings(sd searchInAll,sd includes,sd nameoffset,sd p_err)
 
 		Data fileoff=nameoffset
 		Add var fileoff
-		SetCall printbuffer printbuf(ptrunrefformat,var)
+		Add includes nameoffset
+		SetCall printbuffer printbuf(ptrunrefformat,var,includes,0)
 		If printbuffer!=null
-			Add includes nameoffset
-			Call sprintf(printbuffer,ptrunrefformat,var,includes)
-			Call Message(printbuffer)
-			Call free(printbuffer)
+			sd pallocerrormsg%ptrallocerrormsg
+			set pallocerrormsg# printbuffer
 		EndIf
+		Call safeMessage(printbuffer)
 	EndIf
 EndFunction
 

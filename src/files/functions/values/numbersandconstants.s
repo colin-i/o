@@ -260,10 +260,12 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 	set last content
 	add last size
 	while content!=last
-		sd er
-		setcall er quotes_forward(#content,last,0)
-		if er!=(noerror)
-			return er
+		if content#==(asciidoublequote)
+			sd er
+			setcall er quotes_forward(#content,last,0)
+			if er!=(noerror)
+				return er
+			endif
 		endif
 		if content==last
 			return closeerr

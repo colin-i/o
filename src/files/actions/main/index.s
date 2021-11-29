@@ -7,9 +7,9 @@ sd totalnewlines=0
 Data pcontent^content
 Data pcomsize^comsize
 
-Str commstart#1
+Str textlinestart#1
 if dot_comma_end==0
-	Set commstart content
+	Set textlinestart content
 endif
 
 #cursor for hidden whitespaces
@@ -21,7 +21,6 @@ Chars newline=0xa
 Data linebreaksize#1
 Set linebreaksize bytesize
 
-chars quote="\""
 #set comsize 0
 ss pointer
 set pointer content
@@ -50,8 +49,8 @@ while loop==2
 			EndIf
 		endif
 	elseif is_comment==0
-		if pointer#==quote
-			setcall errormsg quotes_forward(#pointer,last,#newlines)
+		if pointer#==(asciidoublequote)
+			setcall errormsg quotes_forward(#pointer,last,#newlines,#textlinestart)
 			if errormsg!=(noerror)
 				set loop 0
 			else
@@ -68,7 +67,6 @@ while loop==2
 	endelse
 endwhile
 if loop==1
-	add lineoffile totalnewlines
 	set comsize pointer
 	sub comsize content
 	#\r\n case begin
@@ -184,6 +182,7 @@ if loop==1
 	Endelseif
 
 	If errormsg==noerr
+		add lineoffile totalnewlines
 		#parse the line termination,then is the include that will retain the next line and advance to the next file
 		Data lineincrease#1
 		Set lineincrease zero
@@ -204,7 +203,7 @@ if loop==1
 			Sub inccursor sizeofincludeset
 
 			Add inccursor contentoffsetinclude
-			Data contentoffset=0
+			Data contentoffset#1
 			Set contentoffset content
 			Sub contentoffset contentoffile
 			Set inccursor# contentoffset
@@ -213,7 +212,7 @@ if loop==1
 			Set inccursor# lineoffile
 			SetCall errormsg include(miscbag)
 			If errormsg!=noerr
-				Set content commstart
+				Set content textlinestart
 				Sub lineoffile lineincrease
 			Else
 				Set content contentoffile

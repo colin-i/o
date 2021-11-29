@@ -44,26 +44,22 @@ While includesReg!=null
 
 				Data columnoffile#1
 				Set columnoffile content
-				Sub columnoffile commstart
+				Sub columnoffile textlinestart
 
 				Add lineoffile one
 				Add columnoffile one
 
-				Chars errformat="%s File %s, Row %i, Column %i"
-				Str perrformat^errformat
-
 				Data printbuffer#1
 
-				SetCall printbuffer printbuf(perrformat,errormsg)
+				if totalnewlines==0
+					setcall printbuffer printbuf("%s File %s, Row %u, Column %u",errormsg,nameoffilewitherr,2,lineoffile,columnoffile)
+				else
+				#first textlinestart is lost at multilines command
+					setcall printbuffer printbuf("%s File %s, Row %u",errormsg,nameoffilewitherr,1,lineoffile)
+				endelse
 				If printbuffer==null
 					Call errexit()
 				EndIf
-				if totalnewlines==0
-					Call sprintf(printbuffer,perrformat,errormsg,nameoffilewitherr,lineoffile,columnoffile)
-				else
-					sub lineoffile totalnewlines
-					Call sprintf(printbuffer,"%s File %s, Row %i",errormsg,nameoffilewitherr,lineoffile)
-				endelse
 				Call Message(printbuffer)
 				Call free(printbuffer)
 				Set content last
