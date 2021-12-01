@@ -22,7 +22,7 @@ codeFnObj=2
 
 4.CONST to unreferenced warnings, same as with FUNCTION
 [if warnings is 1]
-0 is Ignore them; 1 is Print/Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
+0 is Ignore them; 1 is Print/Show warning; 2 [if logfile is 1] is Write them to the logfile (this will also log used constants), else take 1
 const_warn=2
 
 5. Log the folder path to the main file, the main file and the INCLUDE files.
