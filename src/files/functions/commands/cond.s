@@ -209,12 +209,8 @@ Function conditionscondend(data close1,data close2)
 			EndElse
 		EndIf
 		If number==elsenr
-			Data clreg#1
 			Data cl#1
-			Data ptrclreg^clreg
-			Data ptrcl^cl
-			Call getcontandcontReg(structure,ptrcl,ptrclreg)
-			Add cl clreg
+			Call getcontplusReg(structure,#cl)
 			Sub cl dsz
 			Data conditionsterminator#1
 			Set conditionsterminator cl#

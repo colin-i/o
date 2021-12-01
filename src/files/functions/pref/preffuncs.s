@@ -25,6 +25,9 @@ function logincludes_bool()
 	return #bool
 endfunction
 
+data nul_res_pref#1
+const p_nul_res_pref^nul_res_pref
+
 #void
 Function warnings(sd searchInAll,sd includes,sd nameoffset,sd p_err)
 	Data warningsboolptr%ptrwarningsbool
@@ -113,6 +116,7 @@ function setpreferences(str scrpath)
 	data ptrlogbool%ptrlogbool
 	data ptrincludedir%ptrincludedir
 	data ptrcodeFnObj%ptrcodeFnObj
+	data p_nul_res_pref%p_nul_res_pref
 
 	data true=TRUE
 	data false=FALSE
@@ -132,6 +136,7 @@ function setpreferences(str scrpath)
 	sd neg_64
 	setcall neg_64 p_neg_is_for_64()
 	set neg_64# false
+	set p_nul_res_pref# false
 	sd sdsv_p
 	setcall sdsv_p sd_as_sv((sd_as_sv_get))
 	set sdsv_p# false
@@ -198,6 +203,7 @@ function setpreferences(str scrpath)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrincludedir)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,text_fn_info)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,p_nul_res_pref)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,sdsv_p)
 
 		Call free(freepreferences)

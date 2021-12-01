@@ -78,7 +78,7 @@ If implibsstarted==true
 	Data itabentrysize=IMAGE_IMPORT_DESCRIPTORsize
 	Data itabloc#1
 	Set itabloc tableReg
-	SetCall errormsg addtosec(null,itabentrysize,ptrtable)
+	SetCall errormsg addtosec(0,itabentrysize,ptrtable)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf

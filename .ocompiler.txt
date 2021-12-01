@@ -43,7 +43,9 @@ function_name=0
 0 is No,use linux convention if ocompiler was compiled for linux,else use microsoft; 1 is Yes; 2 is No,and cross-compile
 neg_64=0
 
-zeroing reserves
+9.Zeroset reserved CHARS/DATA/STR
+0 is No; 1 is Yes
+nul_res_pref=0
 
 9.sd as sv (old programs don't have sv and may be with 64 logic)
 0 is No; 1 is Yes

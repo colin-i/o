@@ -91,7 +91,7 @@ Function addtosec(str content,data size,data dst)
 	If content!=null
 		Str destloc#1
 		Data ptrdest^destloc
-		SetCall destloc getcont(dst,ptrdest)
+		Call getcont(dst,ptrdest)
 		Add destloc destData
 		Call memtomem(destloc,content,size)
 	EndIf

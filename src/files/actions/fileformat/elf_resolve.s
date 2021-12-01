@@ -208,7 +208,7 @@ If object==false
 		Set elf_rel_entries_size sizeofchain
 		Mult elf_rel_entries_size dwordsize
 
-		SetCall errormsg addtosec(null,elf_rel_entries_size,ptrmiscbag)
+		SetCall errormsg addtosec(0,elf_rel_entries_size,ptrmiscbag)
 		If errormsg!=noerr
 			Call msgerrexit(errormsg)
 		EndIf

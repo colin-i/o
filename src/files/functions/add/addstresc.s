@@ -29,7 +29,7 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 
 	Data noerr=noerror
 	Data errnr#1
-	SetCall errnr addtosec(zero,sizeEsc,pdest)
+	SetCall errnr addtosec(0,sizeEsc,pdest)
 	If errnr!=noerr
 		Return errnr
 	EndIf
@@ -37,7 +37,7 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 	#set destination start
 	Str destloc#1
 	Data ptrdestloc^destloc
-	SetCall destloc getcont(pdest,ptrdestloc)
+	Call getcont(pdest,ptrdestloc)
 	Add destloc destReg
 
 	add end pcontent#

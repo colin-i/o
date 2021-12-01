@@ -25,6 +25,12 @@ Function getcontandcontReg(data ptrstrucutre,data ptrcontainer,data ptrcontainer
 	Call getcont(ptrstrucutre,ptrcontainer)
 EndFunction
 
+Function getcontplusReg(data ptrstrucutre,data ptrcontainer)
+	Call getcont(ptrstrucutre,ptrcontainer)
+	sd r
+	Call getcontReg(ptrstrucutre,#r)
+	add ptrcontainer# r
+EndFunction
 
 Data innerfunction#1
 Const globalinnerfunction^innerfunction

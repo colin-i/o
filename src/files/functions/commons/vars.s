@@ -48,6 +48,7 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 			Data checkvalue#1
 			Set checkvalue container#
 			And checkvalue ReferenceBit
+			data ptrconstants%ptrconstants;sd cb
 			If checkvalue==zero
 				data returnvalue#1
 				set returnvalue entrypoint
@@ -61,17 +62,17 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 						data ptrcodeFnObj%ptrcodeFnObj
 						setcall returnvalue warn_or_log("f",returnvalue,container,ptrcodeFnObj#,warningssearch)
 					endif
-				else
-					data ptrconstants%ptrconstants
-					if ptrconstants==ptrstructure
-						sd cb;setcall cb constants_bool((const_warn_get))
-						setcall returnvalue warn_or_log("c",returnvalue,container,cb,warningssearch)
-					endif
-				endelse
+				elseif ptrconstants==ptrstructure
+					setcall cb constants_bool((const_warn_get))
+					setcall returnvalue warn_or_log("c",returnvalue,container,cb,warningssearch)
+				endelseif
 				if returnvalue!=zero
 					Return returnvalue
 				endif
-			EndIf
+			elseIf ptrconstants==ptrstructure
+				setcall cb constants_bool((const_warn_get))
+				call warn_or_log("r",entrypoint,container,cb,warningssearch)
+			EndelseIf
 		EndIf
 		Add container dwlen
 		Sub containerReg dwlen

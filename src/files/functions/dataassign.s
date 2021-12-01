@@ -6,7 +6,6 @@
 Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 	Data false=FALSE
 	Data true=TRUE
-	data null=0
 	data stack#1
 	data ptrS^stack
 
@@ -186,8 +185,16 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 			If value<zero
 				return ptrnegreserve
 			endIf
-			SetCall err addtosec(null,value,ptrdatasec)
-			Return err
+			sd p_nul_res_pref%p_nul_res_pref
+			if p_nul_res_pref#==(TRUE)
+				sd datacont;call getcontplusReg(ptrdatasec,#datacont)
+			endif
+			SetCall err addtosec(0,value,ptrdatasec)
+			If err!=noerr;Return err;EndIf
+			if p_nul_res_pref#==(TRUE)
+				call memset(datacont,0,value)
+			endif
+			Return (noerror)
 		else
 			Mult value dsz
 			call growramp(value)

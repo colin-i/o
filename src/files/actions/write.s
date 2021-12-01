@@ -109,83 +109,81 @@ If object==true
 	If writeres==writefalse
 		Call errexit()
 	EndIf
-Else
+ElseIf implibsstarted==true
 	#idata section
-	If implibsstarted==true
-		If fileformat==pe_exec
-			#table
-			SetCall writeres paddedwrite(fileout,table,tableReg,tableMax)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-			#addresses
-			SetCall writeres paddedwrite(fileout,addresses,addressesReg,addressesMax)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-			#names
-			SetCall writeres paddedwrite(fileout,names,namesReg,namesMax)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-		Else
-			#interpreter
-			SetCall writeres writefile(fileout,ptrinterpreter,interpretersize)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
+	If fileformat==pe_exec
+		#table
+		SetCall writeres paddedwrite(fileout,table,tableReg,tableMax)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+		#addresses
+		SetCall writeres paddedwrite(fileout,addresses,addressesReg,addressesMax)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+		#names
+		SetCall writeres paddedwrite(fileout,names,namesReg,namesMax)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+	Else
+		#interpreter
+		SetCall writeres writefile(fileout,ptrinterpreter,interpretersize)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
 
-			#dynamic
-			SetCall writeres writefile(fileout,table,tableReg)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-			Data ptrelf_dyn%elf_dynfix_start
-			SetCall writeres writefile(fileout,ptrelf_dyn,elf_dynfix_size)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
+		#dynamic
+		SetCall writeres writefile(fileout,table,tableReg)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+		Data ptrelf_dyn%elf_dynfix_start
+		SetCall writeres writefile(fileout,ptrelf_dyn,elf_dynfix_size)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
 
-			#lib
-			##hashfix
-			Data ptrelf_hash%elf_hash_start
-			SetCall writeres writefile(fileout,ptrelf_hash,elf_hash_minsize)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-			##hashvar
-			Data elf_loop_write#1
-			Set elf_loop_write miscbag
-			SetCall writeres writefile(fileout,elf_loop_write,hash_var_size)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-			Add elf_loop_write hash_var_size
+		#lib
+		##hashfix
+		Data ptrelf_hash%elf_hash_start
+		SetCall writeres writefile(fileout,ptrelf_hash,elf_hash_minsize)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+		##hashvar
+		Data elf_loop_write#1
+		Set elf_loop_write miscbag
+		SetCall writeres writefile(fileout,elf_loop_write,hash_var_size)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+		Add elf_loop_write hash_var_size
 
-			##symtab
-			SetCall writeres writefile(fileout,addresses,addressesReg)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
+		##symtab
+		SetCall writeres writefile(fileout,addresses,addressesReg)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
 
-			##strtab
-			SetCall writeres writefile(fileout,names,namesReg)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
+		##strtab
+		SetCall writeres writefile(fileout,names,namesReg)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
 
-			##rel
-			SetCall writeres writefile(fileout,elf_loop_write,rel_var_size)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-			Add elf_loop_write rel_var_size
+		##rel
+		SetCall writeres writefile(fileout,elf_loop_write,rel_var_size)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+		Add elf_loop_write rel_var_size
 
-			##calls
-			SetCall writeres writefile(fileout,elf_loop_write,elf_rel_entries_size)
-			If writeres==writefalse
-				Call errexit()
-			EndIf
-		EndElse
-	EndIf
-EndElse
+		##calls
+		SetCall writeres writefile(fileout,elf_loop_write,elf_rel_entries_size)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+	EndElse
+EndElseIf
