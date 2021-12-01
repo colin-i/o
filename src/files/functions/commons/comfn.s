@@ -146,12 +146,14 @@ Function openfile(data pfile,str path,data oflag)
 	Return noerr
 EndFunction
 
+chars writefile_err="Cannot write data to a file."
+const writefile_err_p^writefile_err
 #return _write (-1 or wrln)
 Function writefile(data hfile,str buf,data ln)
 	sd writeres
 	SetCall writeres write(hfile,buf,ln)
 	If writeres!=ln
-		Chars writeerr="Cannot write data to a file."
+		sd writeerr%writefile_err_p
 		Call Message(writeerr)
 		Return (writeno)
 	EndIf
@@ -162,7 +164,7 @@ Function writefile_errversion(data hfile,str buf,data ln)
 	sd writeres
 	SetCall writeres write(hfile,buf,ln)
 	If writeres!=ln
-		Chars writeerr="Cannot write data to a file."
+		sd writeerr%writefile_err_p
 		Return writeerr
 	EndIf
 	Return (noerror)
