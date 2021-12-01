@@ -248,11 +248,8 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	Set byte content#
 	Set pcontent# content
 	Set psize# size
-	Data escapes#1
 	If pescapes!=zero
-		Set escapes pescapes#
-		Inc escapes
-		Set pescapes# escapes
+		Inc pescapes#
 	EndIf
 
 	Return byte
