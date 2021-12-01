@@ -32,11 +32,15 @@ function is_for_64_is_impX_or_fnX_get();sd p_b;setcall p_b is_for_64_is_impX_or_
 function is_for_64_is_impX_or_fnX_set(sd ptrdata)
 	sd p_b
 	setcall p_b is_for_64_is_impX_or_fnX_p_get()
-	#importX and functionX already has a test with is_for_64
-	add ptrdata (maskoffset)
-	sd val;set val ptrdata#;and val (x86_64bit)
-	if val!=(x86_64bit);set p_b# (FALSE);return (void);endif
-	set p_b# (TRUE)
+	sd b
+	setcall b is_for_64()
+	#importX and functionX used to have a test with is_for_64 outside of this, but at log need to know the type
+	if b==(TRUE)
+		add ptrdata (maskoffset)
+		sd val;set val ptrdata#;and val (x86_64bit)
+		if val==(x86_64bit);set p_b# (TRUE);return (void);endif
+	endif
+	set p_b# (FALSE)
 endfunction
 
 #get

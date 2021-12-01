@@ -74,7 +74,6 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		Return starterr
 	EndIf
 
-	sd b
 	If declare==true
 		Data fnnr=functionsnumber
 		Data value#1
@@ -101,8 +100,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 
 			setcall scope64 is_funcx_subtype(subtype)
 			if scope64==(TRUE)
-				setcall b is_for_64()
-				if b==(TRUE);or mask (x86_64bit);endif
+				or mask (x86_64bit)
 			endif
 			SetCall err addaref(value,ptrcontent,ptrsize,sz,fnnr,mask)
 			If err!=noerr

@@ -1,39 +1,28 @@
 
 
 #errnr
-Function addtosecstresc(data pcontent,data psize,data sz,data escapes,data pdest,data allowOdd)
-	Data odd=0
-	Data zero=0
-	Data nonzero=1
-
+Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad)
 	#set destination start
 	Data destReg#1
 	Data ptrdestReg^destReg
 	Call getcontReg(pdest,ptrdestReg)
 
+	Data odd#1
+	Data zero=0
+
 	# size of the string out with term
-	Data sizeEsc=0
+	Data sizeEsc#1
 	Set sizeEsc sz
+	sd end;set end sizeEsc
 	Sub sizeEsc escapes
-	# the "str" on src
-	Data sizeonsrc=0
-	Set sizeonsrc sizeEsc
 	Inc sizeEsc
 
-	Data sznr=0
 	Set odd zero
 	#into idata string is padded to word
-	If allowOdd!=zero
-		Set sznr sizeEsc
-		While sznr!=zero
-			If odd==zero
-				Set odd nonzero
-			Else
-				Set odd zero
-			EndElse
-			Dec sznr
-		EndWhile
-		If odd==nonzero
+	If wordpad!=zero
+		set odd sizeEsc
+		and odd 1
+		If odd!=zero
 			Inc sizeEsc
 		EndIf
 	EndIf
@@ -51,16 +40,16 @@ Function addtosecstresc(data pcontent,data psize,data sz,data escapes,data pdest
 	SetCall destloc getcont(pdest,ptrdestloc)
 	Add destloc destReg
 
-	While sizeonsrc!=zero
-		Chars byte={0}
+	add end pcontent#
+	While pcontent#!=end
+		Chars byte#1
 		SetCall byte quotescaped(pcontent,psize,zero)
 		Set destloc# byte
 		Inc destloc
 		Call stepcursors(pcontent,psize)
-		Dec sizeonsrc
 	EndWhile
 	Set destloc# zero
-	If odd==nonzero
+	If odd!=zero
 		Inc destloc
 		Set destloc# zero
 	EndIf

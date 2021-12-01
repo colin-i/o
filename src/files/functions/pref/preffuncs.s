@@ -11,7 +11,13 @@ endfunction
 function logincludes_decision(ss str)
 	sd b;setcall b logincludes_bool()
 	if b#==(TRUE)
-		call addtolog(str)
+		data ptrfilehandle%ptrlogfile
+		sd err
+		setcall err writefile_errversion(ptrfilehandle#,"p",1)
+		if err==(noerror)
+			setcall err addtolog(str)
+		endif
+		if err!=(noerror);call Message(err);endif
 	endif
 endfunction
 function logincludes_bool()
@@ -107,7 +113,6 @@ function setpreferences(str scrpath)
 	data ptrlogbool%ptrlogbool
 	data ptrincludedir%ptrincludedir
 	data ptrcodeFnObj%ptrcodeFnObj
-	data ptr_log_import_functions%ptr_log_import_functions
 
 	data true=TRUE
 	data false=FALSE
@@ -115,22 +120,21 @@ function setpreferences(str scrpath)
 
 	set ptrwarningsbool# true
 	set ptrlogbool# false
-	set ptrincludedir# true
 	set ptrcodeFnObj# defaultcodeFnObj
+	sd cb;setcall cb constants_bool((const_warn_get_init))
+	set cb# (FALSE)
+	sd li;setcall li logincludes_bool()
+	set li# (TRUE)
+	set ptrincludedir# true
 	sd text_fn_info
 	setcall text_fn_info fn_text_info()
 	set text_fn_info# false
-	set ptr_log_import_functions# true
 	sd neg_64
 	setcall neg_64 p_neg_is_for_64()
 	set neg_64# false
 	sd sdsv_p
 	setcall sdsv_p sd_as_sv((sd_as_sv_get))
 	set sdsv_p# false
-	sd cb;setcall cb constants_bool((const_warn_get_init))
-	set cb# (FALSE)
-	sd li;setcall li logincludes_bool()
-	set li# (TRUE)
 
 
 	Str preferences=".ocompiler.txt"
@@ -188,14 +192,13 @@ function setpreferences(str scrpath)
 
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrwarningsbool)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrlogbool)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrincludedir)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrcodeFnObj)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,text_fn_info)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptr_log_import_functions)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,sdsv_p)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,cb)
 		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,li)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrincludedir)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,text_fn_info)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
+		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,sdsv_p)
 
 		Call free(freepreferences)
 	endif

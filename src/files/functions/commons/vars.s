@@ -18,8 +18,8 @@ function warn_or_log(ss str1,sd return_value,ss symbolname,sd log_option,sd p_er
 				if p_err#!=(noerror)
 					return return_value
 				endif
+				return 0
 			endif
-			set return_value 0
 		endif
 	endif
 	return return_value
@@ -55,7 +55,7 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 				data ptrfunctions%ptrfunctions
 				if ptrfunctions==ptrstructure
 					Set checkvalue container#
-					data idatabitfunction=idatabitfunction
+					data idatabitfunction=idatabitfunction|x86_64bit
 					And checkvalue idatabitfunction
 					if checkvalue==zero
 						data ptrcodeFnObj%ptrcodeFnObj

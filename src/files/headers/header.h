@@ -10,7 +10,7 @@ Const stackbit=0x04
 #bit offset 3,4,5: stack ebx/ebp
 #0x8,0x10,0x20
 Const tostack_relative=0x08
-#bit offset 6: is importX
+#bit offset 6: is functionX/importX
 const x86_64bit=0x40
 #bit offset 7; pointer bit (sv# with rex, sd# without rex)
 const pointbit=0x80
@@ -281,8 +281,8 @@ const log_warn=2
 data codeFnObj#1
 const ptrcodeFnObj^codeFnObj
 
-Data log_import_functions#1
-const ptr_log_import_functions^log_import_functions
+#Data log_import_functions#1
+#const ptr_log_import_functions^log_import_functions
 
 const const_warn_get=0
 const const_warn_get_init=1

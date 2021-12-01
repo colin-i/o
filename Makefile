@@ -24,6 +24,7 @@ install: o
 clean-compile:
 	-rm -f $(FULLOBJO)
 	-rm -f $(OBJ)
+	-rm -f $(FULLOBJS).log
 
 clean-link:
 	-rm -f o

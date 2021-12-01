@@ -1,13 +1,7 @@
 
 
-sd import_ref_mask=idatabitfunction
-if subtype==(cIMPORTX)
-	sd importx_bool;setcall importx_bool is_for_64()
-	if importx_bool==(TRUE);or import_ref_mask (x86_64bit);endif
-endif
-
-Data impquotsz=0
-Data impescapes=0
+Data impquotsz#1
+Data impescapes#1
 Data ptrimpquotsz^impquotsz
 Data ptrimpescapes^impescapes
 
@@ -55,6 +49,7 @@ If errormsg==noerr
 				#the sym entry
 				SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,STB_GLOBAL,null,ptrtable)
 			EndIf
+			sd imp_mark;set imp_mark names;add imp_mark namesReg
 			SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames,true)
 			If errormsg==noerr
 				Call stepcursors(pcontent,pcomsize)
@@ -69,17 +64,21 @@ If errormsg==noerr
 					SetCall errormsg entryvarsfns(content,imp_size)
 					If errormsg==noerr
 						if logbool==(TRUE)
-							if log_import_functions==(TRUE)
-								ss imp_f="i"
-								#ss imp_f="Import Function:"
-								sd imp_f_sz;setcall imp_f_sz strlen(imp_f)
-								setcall errormsg writefile_errversion(logfile,imp_f,imp_f_sz)
-								If errormsg==noerr
-									setcall errormsg addtolog_ex(content,imp_size)
-								endIf
+							if codeFnObj==(log_warn)
+								if subtype==(cIMPORT)
+									setcall errormsg writefile_errversion(logfile,"i",1)
+									If errormsg==noerr
+										sub impquotsz impescapes
+										setcall errormsg addtolog_ex(imp_mark,impquotsz)
+									endIf
+								endif
 							endif
 						endif
 						If errormsg==noerr
+							sd import_ref_mask=idatabitfunction
+							if subtype==(cIMPORTX)
+								or import_ref_mask (x86_64bit)
+							endif
 							Data functionsnr=functionsnumber
 							SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
 						endIf
