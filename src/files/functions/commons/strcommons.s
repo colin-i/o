@@ -243,7 +243,7 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	If size==zero
 		Return byte
 	EndIf
-	
+
 	Inc content
 	Set byte content#
 	Set pcontent# content
