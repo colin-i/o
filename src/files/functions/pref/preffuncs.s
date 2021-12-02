@@ -110,7 +110,7 @@ function parsepreferences(sd ptrcontent,sd ptrsize,sd strs_pointers)
 endfunction
 #pointer/null
 function parsepreferences_back(sd sizeback,ss content,sd strs_pointers)
-	sd end
+	sd end;set end strs_pointers
 	add end (nr_of_prefs_jumper)
 	while strs_pointers!=end
 		sd i
@@ -150,7 +150,7 @@ function parsepreferences_back_helper(ss content,ss e,ss s)
 	while s!=e
 		dec content
 		dec e
-		if s#!=e#
+		if content#!=e#
 			return (FALSE)
 		endif
 	endwhile
@@ -181,9 +181,9 @@ function setpreferences(str scrpath)
 	sd text_fn_info
 	setcall text_fn_info fn_text_info()
 	set text_fn_info# false
-	sd neg_64
-	setcall neg_64 p_neg_is_for_64()
-	set neg_64# false
+	sd conv_64
+	setcall conv_64 p_neg_is_for_64()
+	set conv_64# (direct_convention_input)
 	set p_nul_res_pref# false
 	sd sdsv_p
 	setcall sdsv_p sd_as_sv((sd_as_sv_get))
@@ -243,10 +243,10 @@ function setpreferences(str scrpath)
 		Data freepreferences#1
 		Set freepreferences preferencescontent
 
-		sd p#nr_of_prefs;sd q;set q #p
-		sd s#nr_of_prefs;sd t;set t #s
-		set p ptrwarningsbool;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# neg_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q
-		set s "warnings";incst t;      set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "neg_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv"
+		sd p#nr_of_prefs;sd s#nr_of_prefs
+		sd q;set q #p;sd t;set t #s
+		set p ptrwarningsbool;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q
+		set s "warnings";incst t;      set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv"
 		sd n=nr_of_prefs
 		while n>0
 			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,q)
