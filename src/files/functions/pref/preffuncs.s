@@ -1,4 +1,6 @@
 
+const nr_of_prefs=10
+const nr_of_prefs_jumper=nr_of_prefs*:
 
 function constants_bool(sd direction)
 	data bool#1
@@ -80,7 +82,7 @@ EndFunction
 
 #void
 #parse and set the value, 0-9(one digit) values are expected here
-function parsepreferences(data ptrcontent,data ptrsize,data ptrvalue)
+function parsepreferences(sd ptrcontent,sd ptrsize,sd strs_pointers)
 	Chars searchsign="="
 	Data sizeuntilsign#1
 
@@ -93,20 +95,66 @@ function parsepreferences(data ptrcontent,data ptrsize,data ptrvalue)
 	call advancecursors(ptrcontent,ptrsize,sizeuntilsign)
 
 	If sizeuntilsign!=size
+		sd backp;setcall backp parsepreferences_back(sizeuntilsign,ptrcontent#,strs_pointers)
 		Call stepcursors(ptrcontent,ptrsize)
-		set content ptrcontent#
-		set size ptrsize#
-		data zero=0
-		If size!=zero
-			Call stepcursors(ptrcontent,ptrsize)
-			Set ptrvalue# content#
-			data asciiNumbersStart=asciizero
-			Sub ptrvalue# asciiNumbersStart
-		EndIf
+		if backp!=(NULL)
+			set size ptrsize#
+			If size!=0
+				set content ptrcontent#
+				Call stepcursors(ptrcontent,ptrsize)
+				Set backp# content#
+				Sub backp# (asciizero)
+			endIf
+		endif
 	EndIf
-
-	data false=FALSE
-	return false
+endfunction
+#pointer/null
+function parsepreferences_back(sd sizeback,ss content,sd strs_pointers)
+	sd end
+	add end (nr_of_prefs_jumper)
+	while strs_pointers!=end
+		sd i
+		ss s;set s strs_pointers#
+		setcall i strlen(s)
+		if sizeback>=i
+			ss e;set e s;add e i
+			sd b
+			setcall b parsepreferences_back_helper(content,e,s)
+			if b==(TRUE)
+				#and put this to last to not get it again without a fight
+				sd test;set test strs_pointers
+				sd test2;set test2 test;sub test2 (nr_of_prefs_jumper)
+				sd return
+				set return test2#
+				sd store
+				set store strs_pointers#
+				sd test3;set test3 test2
+				sub end :
+				while test!=end
+					incst test;incst test2
+					set strs_pointers# test#
+					set test3# test2#
+					incst strs_pointers;incst test3
+				endwhile
+				set test# store
+				set test2# return
+				return return
+			endif
+		endif
+		incst strs_pointers
+	endwhile
+	return (NULL)
+endfunction
+#bool
+function parsepreferences_back_helper(ss content,ss e,ss s)
+	while s!=e
+		dec content
+		dec e
+		if s#!=e#
+			return (FALSE)
+		endif
+	endwhile
+	return (TRUE)
 endfunction
 
 #void
@@ -195,16 +243,15 @@ function setpreferences(str scrpath)
 		Data freepreferences#1
 		Set freepreferences preferencescontent
 
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrwarningsbool)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrlogbool)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrcodeFnObj)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,cb)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,li)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,ptrincludedir)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,text_fn_info)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,neg_64)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,p_nul_res_pref)
-		call parsepreferences(ptrpreferencescontent,ptrpreferencessize,sdsv_p)
+		sd p#nr_of_prefs;sd q;set q #p
+		sd s#nr_of_prefs;sd t;set t #s
+		set p ptrwarningsbool;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# neg_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q
+		set s "warnings";incst t;      set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "neg_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv"
+		sd n=nr_of_prefs
+		while n>0
+			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,q)
+			dec n
+		endwhile
 
 		Call free(freepreferences)
 	endif

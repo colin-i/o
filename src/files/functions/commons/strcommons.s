@@ -230,7 +230,7 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	Str content#1
 	Data size#1
 	Chars byte#1
-	Chars bs={asciibs}
+	Chars bs=asciibs
 	Data zero=0
 
 	Set content pcontent#
@@ -257,7 +257,7 @@ EndFunction
 
 #return false or true
 Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
-	Chars quotation="\""
+	Chars quotation={asciidoublequote,0}
 	Str pquotation^quotation
 	Data intnr=0
 	Data zero=0
@@ -344,8 +344,8 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 	endif
 	sd newlines=0
 	while content#!=delim
-		chars escape="\\"
-		while content#==escape
+		chars escape_c=asciibs
+		while content#==escape_c
 			if escapes==0
 				set escapes 1
 			else

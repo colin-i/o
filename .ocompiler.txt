@@ -1,4 +1,4 @@
-This file is parsed by the program to set the preferences. The first char right of the equal sign is a value.
+This file is parsed by the program to set the preferences. "nameEQUALx" must be preserved.
 
 
 1.Display unreferenced variables/functions/constants warning.
