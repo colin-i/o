@@ -211,8 +211,6 @@ function setpreferences(str scrpath)
 
 	setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent)
 	If err!=noerr
-		Call safeMessage(err)
-
 		data null=0
 		data void#1
 

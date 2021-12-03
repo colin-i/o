@@ -3,6 +3,15 @@ const variable_convention=lin_convention
 
 #err
 function prefextra(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
+	sd err
+	setcall err prefextra_helper(prefpath,ptrpreferencessize,ptrpreferencescontent)
+	if err!=(noerror)
+		Call safeMessage(err)
+	endif
+	return err
+endfunction
+#err
+function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
 	ss homestr="HOME"
 	ss envhome
 	sd err
@@ -22,7 +31,7 @@ function prefextra(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
 				call free(mem)
 				return err
 			endif
-			str er="No preferences file found."
+			str er="No preferences file found in HOME. The file is here: https://raw.githubusercontent.com/colin-i/o/master/.ocompiler.txt"
 			return er
 		endif
 		return err
