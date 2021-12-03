@@ -42,6 +42,7 @@ Data flag_max_path=flag_MAX_PATH
 
 #more values
 Const noerror=0
+Const error=-1
 Const FORWARD=1
 Const BACKWARD=-1
 Const not_used=0
