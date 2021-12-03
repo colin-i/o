@@ -1,12 +1,9 @@
 
-const nr_of_prefs=11
+const nr_of_prefs=13
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 data nul_res_pref#1
 const p_nul_res_pref^nul_res_pref
-
-data w_as_e#1
-const p_w_as_e^w_as_e
 
 function constants_bool(sd direction)
 	data bool#1
@@ -169,6 +166,8 @@ endfunction
 function setpreferences(str scrpath)
 	#defaults
 	data ptrwarningsbool%ptrwarningsbool
+	data p_over_pref%p_over_pref
+	data p_hidden_pref%p_hidden_pref
 	data p_w_as_e%p_w_as_e
 	data ptrlogbool%ptrlogbool
 	data ptrincludedir%ptrincludedir
@@ -180,6 +179,8 @@ function setpreferences(str scrpath)
 	data defaultcodeFnObj=log_warn
 
 	set ptrwarningsbool# true
+	set p_over_pref# true
+	set p_hidden_pref# true
 	set p_w_as_e# true
 	set ptrlogbool# false
 	set ptrcodeFnObj# defaultcodeFnObj
@@ -255,8 +256,8 @@ function setpreferences(str scrpath)
 
 		sd p#nr_of_prefs;sd s#nr_of_prefs
 		sd q;set q #p;sd t;set t #s
-		set p ptrwarningsbool;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q
-		set s "warnings";incst t;      set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv"
+		set p ptrwarningsbool;incst q; set q# p_hidden_pref;incst q; set q# p_over_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q
+		set s "warnings";incst t;      set t# "hidden_pref";incst t; set t# "over_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv"
 		sd n=nr_of_prefs
 		while n>0
 			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,q)

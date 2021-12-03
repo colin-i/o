@@ -13,32 +13,47 @@ Const shlNumber=9
 Const shrNumber=10
 #asciiminus and asciinot for one arg
 
+#err
 function const_security(sd item)
 	#2$31 is last one
 	#1 shl 63 is last one
 	#maximum first overflow, ok
-	data maximum=qwsz*8
-	if item>=maximum
-		call Message("Overflow at constants.")
-		return maximum
+	sd maximum=qwsz*8-1
+	if item#>maximum
+		str err="Overflow at constants."
+		sd w%p_w_as_e
+		if w#==(TRUE)
+			sd p%p_over_pref
+			if p#==(TRUE)
+				return err
+			endif
+		endif
+		call Message(err)
+		set item# maximum
 	endif
-	return item
+	return (noerror)
 endfunction
+#err
 function shift_right(sd a,sd n)
-	setcall n const_security(n)
+	sd err
+	setcall err const_security(#n)
+	If err!=(noerror);return err;endif
 	while n>0
 		dec n
-		shr a
+		shr a#
 	endwhile
-	return a
+	return (noerror)
 endfunction
+#err
 function shift_left(sd a,sd n)
-	setcall n const_security(n)
+	sd err
+	setcall err const_security(#n)
+	If err!=(noerror);return err;endif
 	while n>0
 		dec n
-		shl a
+		shl a#
 	endwhile
-	return a
+	return (noerror)
 endfunction
 
 #err pointer
@@ -91,7 +106,8 @@ Function operation(str content,data size,data inoutvalue,data number)
 		elseif newitem==0
 			set currentitem 1
 		else
-			setcall newitem const_security(newitem)
+			SetCall errptr const_security(#newitem)
+			If errptr!=noerr;return errptr;endif
 			sd item;set item currentitem
 			while newitem!=1
 				mult currentitem item
@@ -106,18 +122,20 @@ Function operation(str content,data size,data inoutvalue,data number)
 	ElseIf number==(shlNumber)
 		if newitem<0
 			neg newitem
-			setcall currentitem shift_right(currentitem,newitem)
+			SetCall errptr shift_right(#currentitem,newitem)
 		else
-			setcall currentitem shift_left(currentitem,newitem)
+			SetCall errptr shift_left(#currentitem,newitem)
 		endelse
+		If errptr!=noerr;return errptr;endif
 	Else
 	#If number==(shrNumber)
 		if newitem<0
 			neg newitem
-			setcall currentitem shift_left(currentitem,newitem)
+			SetCall errptr shift_left(#currentitem,newitem)
 		else
-			setcall currentitem shift_right(currentitem,newitem)
+			SetCall errptr shift_right(#currentitem,newitem)
 		endelse
+		If errptr!=noerr;return errptr;endif
 	EndElse
 
 	Set inoutvalue# currentitem

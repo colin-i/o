@@ -134,7 +134,7 @@ if loop==1
 				if twoparse==1
 					set was_whitespaces content;dec was_whitespaces;setcall was_whitespaces is_whitespace(was_whitespaces#)
 					if was_whitespaces==(TRUE)
-						call warn_hidden_whitespaces(includes,nameofstoffile)
+						setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 					endif
 				endif
 			EndElse
@@ -152,7 +152,7 @@ if loop==1
 						endelse
 					elseIf was_whitespaces==(TRUE)
 						if twoparse==1
-							call warn_hidden_whitespaces(includes,nameofstoffile)
+							setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 						endif
 					endelseIf
 				#twoparse==2 more
@@ -177,7 +177,7 @@ if loop==1
 		EndIf
 	Elseif cursor_start!=content
 		if twoparse==1
-			call warn_hidden_whitespaces(includes,nameofstoffile)
+			setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 		endif
 	Endelseif
 

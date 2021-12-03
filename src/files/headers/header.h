@@ -355,3 +355,12 @@ const commentascii=asciiNumber
 const max_uint64=20
 chars uint64c#max_uint64+1
 str uint64s^uint64c
+
+data w_as_e#1
+const p_w_as_e^w_as_e
+
+data over_pref#1
+const p_over_pref^over_pref
+
+data hidden_pref#1
+const p_hidden_pref^hidden_pref
