@@ -1,16 +1,16 @@
 
 
-Const addNumber=0
-Const subNumber=1
-Const mulNumber=2
-Const divNumber=3
-Const andNumber=4
-Const orNumber=5
-Const xorNumber=6
-Const powNumber=7
-Const remNumber=8
-Const shlNumber=9
-Const shrNumber=10
+Const addNumber=asciiplus
+Const subNumber=asciiminus
+Const mulNumber=asciiast
+Const divNumber=asciislash
+Const andNumber=asciiand
+Const orNumber=asciivbar
+Const xorNumber=asciicirc
+Const powNumber=asciidollar
+Const remNumber=asciipercent
+Const shlNumber=asciiless
+Const shrNumber=asciigreater
 #asciiminus and asciinot for one arg
 
 #err
@@ -57,20 +57,29 @@ function shift_left(sd a,sd n)
 endfunction
 
 #err pointer
-Function operation(str content,data size,data inoutvalue,data number)
-	Data newitem#1
-	Data ptrnewitem^newitem
-	Data initialnewitem=0
-	Data errptr#1
+Function operation(ss content,sd size,sd inoutvalue,sd number)
+	sd newitem
+	sd ptrnewitem^newitem
+	sd errptr
 	Data noerr=noerror
 
-	Set newitem initialnewitem
-	SetCall errptr numbersconstants(content,size,ptrnewitem)
-	If errptr!=noerr
-		Return errptr
-	EndIf
+	if content#!=(asciiparenthesisstart)
+		#not needing set newitem 0
+		SetCall errptr numbersconstants(content,size,ptrnewitem)
+	else
+		inc content;sub size 2
+		setcall errptr parseoperations(#content,#size,size,ptrnewitem,(FALSE))
+	endelse
+	If errptr!=noerr;Return errptr;EndIf
 
-	Data currentitem=0
+	setcall errptr operation_core(inoutvalue,number,newitem)
+	return errptr
+EndFunction
+
+#err
+function operation_core(sd inoutvalue,sd number,sd newitem)
+	sd errptr
+	sd currentitem
 	Set currentitem inoutvalue#
 	If number==(addNumber)
 		Add currentitem newitem
@@ -107,7 +116,7 @@ Function operation(str content,data size,data inoutvalue,data number)
 			set currentitem 1
 		else
 			SetCall errptr const_security(#newitem)
-			If errptr!=noerr;return errptr;endif
+			If errptr!=(noerror);return errptr;endif
 			sd item;set item currentitem
 			while newitem!=1
 				mult currentitem item
@@ -126,7 +135,7 @@ Function operation(str content,data size,data inoutvalue,data number)
 		else
 			SetCall errptr shift_left(#currentitem,newitem)
 		endelse
-		If errptr!=noerr;return errptr;endif
+		If errptr!=(noerror);return errptr;endif
 	Else
 	#If number==(shrNumber)
 		if newitem<0
@@ -135,62 +144,40 @@ Function operation(str content,data size,data inoutvalue,data number)
 		else
 			SetCall errptr shift_right(#currentitem,newitem)
 		endelse
-		If errptr!=noerr;return errptr;endif
+		If errptr!=(noerror);return errptr;endif
 	EndElse
 
 	Set inoutvalue# currentitem
-	Return noerr
-EndFunction
+	Return (noerror)
+endfunction
 
 #bool
-Function signop(chars byte,data outval)
-	Chars plus=asciiplus
-	Chars minus=asciiminus
-	Chars mult=asciiast
-	Chars div=asciislash
-	Chars and=asciiand
-	Chars or=asciivbar
-	Chars xor=asciicirc
-	Chars pow=asciidollar
-	Chars rem=asciipercent
-	Chars shl=asciiless
-	Chars shr=asciigreater
-
+Function signop(chars byte,sd outval)
 	Data false=FALSE
 	Data true=TRUE
 
-	If byte==plus
-		Set outval# (addNumber)
-	ElseIf byte==minus
-		Set outval# (subNumber)
-	ElseIf byte==mult
-		Set outval# (mulNumber)
-	ElseIf byte==div
-		Set outval# (divNumber)
-	ElseIf byte==and
-		Set outval# (andNumber)
-	ElseIf byte==or
-		Set outval# (orNumber)
-	ElseIf byte==xor
-		Set outval# (xorNumber)
-	ElseIf byte==pow
-		Set outval# (powNumber)
-	ElseIf byte==rem
-		Set outval# (remNumber)
-	ElseIf byte==shl
-		Set outval# (shlNumber)
-	ElseIf byte==shr
-		Set outval# (shrNumber)
+	If byte==(addNumber)
+	ElseIf byte==(subNumber)
+	ElseIf byte==(mulNumber)
+	ElseIf byte==(divNumber)
+	ElseIf byte==(andNumber)
+	ElseIf byte==(orNumber)
+	ElseIf byte==(xorNumber)
+	ElseIf byte==(powNumber)
+	ElseIf byte==(remNumber)
+	ElseIf byte==(shlNumber)
+	ElseIf byte==(shrNumber)
 	Else
 		return false
 	EndElse
+	set outval# byte
 	Return true
 EndFunction
 
 #err
-Function oneoperation(data ptrcontent,str initial,str content,data val,data op)
-	Data size#1
-	Data errptr#1
+Function oneoperation(sd ptrcontent,ss initial,ss content,sd val,sd op)
+	sd size
+	sd errptr
 	Data noerr=noerror
 
 	Set size content
@@ -206,70 +193,77 @@ EndFunction
 
 #err pointer
 Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments)
-	Str content#1
-	Str initial#1
-	Data number#1
-	Data val#1
-	Data ptrval^val
+	ss content
+	ss initial
+	sd number
+	sd val
+	sd ptrval^val
 	Data zero=0
-	Data errptr#1
+	sd errptr
 	Data noerr=noerror
 
 	Set content ptrcontent#
 
 	Set initial content
-	Set number zero
+	Set number (addNumber)
 	Set val zero
 
-	Data bool#1
+	sd bool
 	Data false=FALSE
 	Data true=TRUE
-	Data nr#1
-	Data pnr^nr
-	Chars byte#1
-	Data find#1
+	sd nr
+	sd pnr^nr
+	sd find
 
 	sd end;set end content;add end sz
 
+	Set bool false
 	#<end?maybe unsigned cursor
 	While content!=end
-		Set bool false
-		Set byte content#
-		SetCall find signop(byte,pnr)
-		If find==true
+		SetCall find signop(content#,pnr)
+		if find==true
 			If initial!=content
 				SetCall errptr oneoperation(ptrcontent,initial,content,ptrval,number)
 				If errptr!=noerr
 					Return errptr
 				EndIf
-				Set bool true
 				Set number nr
+				Set bool true
 			EndIf
-		EndIf
+		elseif content#==(asciiparenthesisstart)
+			inc content
+			sd rest_sz;set rest_sz end;sub rest_sz content
+			sd insz
+			setcall errptr parenthesis_size(content,rest_sz,#insz)
+			if errptr!=(noerror);return errptr;endif
+			add content insz
+		endelseif
+
 		Inc content
 		If bool==true
 			setcall content mem_spaces(content,end)
 			Set initial content
+			Set bool false
 		EndIf
 	EndWhile
 
 	#allow line end comment
-	sd szz
-	set szz end;sub szz initial
 	if comments==(TRUE)
+		sd szz
+		set szz end;sub szz initial
 		sd size
 		setcall size find_whitespaceORcomment(initial,szz)
-		SetCall errptr operation(initial,size,ptrval,number)
-	else
-		SetCall errptr operation(initial,szz,ptrval,number)
-	endelse
+		sub szz size
+		sub content szz
+	endif
+	#oneoperation is with cursor adjuster for errors
+	SetCall errptr oneoperation(ptrcontent,initial,content,ptrval,number)
 	If errptr!=noerr
 		Return errptr
 	EndIf
 	Set outvalue# val
 
 	if comments==(TRUE)
-		sub szz size
 		sub sz szz
 	endif
 	Call advancecursors(ptrcontent,ptrsize,sz)

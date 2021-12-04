@@ -17,8 +17,7 @@ function canbeimm_orerror(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
 
 	sd err
 
-	chars canbeconstantsnumbers="("
-	if content#!=canbeconstantsnumbers
+	if content#!=(asciiparenthesisstart)
 		setcall err numbersconstants(content,sz,outvalue)
 		return err
 	endif

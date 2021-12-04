@@ -221,8 +221,8 @@ Function numbersconstants(str content,data size,data outval)
 	endif
 	sd bool
 	setcall bool is_variable_char_not_numeric(content#)
+	sd err
 	If bool==(FALSE)
-		sd err
 		setcall err numbertoint(content,size,outval,minusbool)
 	Else
 		Data constr%ptrconstants
@@ -271,8 +271,8 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 		if content==last
 			return closeerr
 		endif
-		Chars fnbegin="("
-		Chars fnend=")"
+		Chars fnbegin=asciiparenthesisstart
+		Chars fnend=asciiparenthesisend
 		if content#==fnend
 			dec opens
 			if opens==z
@@ -290,7 +290,7 @@ endfunction
 #er
 function parenthesis_all_size(ss content,sd size,sd ptr_sz)
 	data noerr=noerror
-	Chars fnbegin="("
+	Chars fnbegin=asciiparenthesisstart
 	if content#!=fnbegin
 		return noerr
 	endif

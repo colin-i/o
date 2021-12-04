@@ -47,7 +47,6 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 	Data true=TRUE
 	Data false=FALSE
 
-	Chars fnbegin="("
 	Data zero=0
 	Data fns%ptrfunctions
 	Data code%ptrcodesec
@@ -62,7 +61,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 	Set content ptrcontent#
 	Set size ptrsize#
 
-	SetCall sz valinmem(content,size,fnbegin)
+	SetCall sz valinmem(content,size,(asciiparenthesisstart))
 	If sz==zero
 		Chars funnameexp="Function name expected."
 		Str fnerr^funnameexp

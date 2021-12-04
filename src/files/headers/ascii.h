@@ -10,8 +10,10 @@ Const asciidollar=0x24
 Const asciipercent=0x25
 Const asciiand=0x26
 Const asciiparenthesisstart=0x28
+Const asciiparenthesisend=0x29
 Const asciiast=0x2A
 Const asciiplus=0x2B
+#2c comma
 Const asciiminus=0x2D
 Const asciislash=0x2F
 Const asciizero=0x30
@@ -27,10 +29,12 @@ Const asciiF=0x46
 Const asciiL=0x4c
 Const asciiZ=0x5A
 Const asciibs=0x5C
+Const asciicirc=0x5E
 Const asciiunderscore=0x5F
 Const asciia=0x61
 Const asciif=0x66
 Const asciiz=0x7A
-Const asciicirc=0x5E
+#7b left curly bracket {
 Const asciivbar=0x7C
+#7d }
 Const asciiequiv=0x7E

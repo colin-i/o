@@ -98,7 +98,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 		Set byte content#
 		Chars groupstart="{"
 		If byte!=groupstart
-			chars stringstart="\""
+			chars stringstart=asciidoublequote
 			If byte==stringstart
 			#"text"
 				If typenumber==charsnr

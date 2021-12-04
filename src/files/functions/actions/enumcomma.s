@@ -148,9 +148,9 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 				ss test
 				set test content
 				dec test
-				chars quot="\""
-				if test#==quot
-					set delim quot
+				chars d_quot=asciidoublequote
+				if test#==d_quot
+					set delim d_quot
 					#look later at escapes, here only at the margins
 					ss c
 					sd s
@@ -171,7 +171,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 						SetCall len valinmemsens(c,s,comma,sens)
 						mult len -1
 						Call advancecursors(#c,#s,len)
-						if c#==quot
+						if c#==d_quot
 							set loop 0
 						else
 							#here the string ".." is in a good condition when quotes_forward was called at fn(...)

@@ -41,7 +41,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 	Set content ptrcontent#
 	set size ptrsize#
 
-	chars string_arg="\""
+	chars d_q=asciidoublequote
 
 	Str argnameerr="Argument name expected."
 	if sizetoverify==0
@@ -49,7 +49,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 	endif
 
 	sd argsize
-	if content#!=string_arg
+	if content#!=d_q
 		setcall errnr arg_size(content,sizetoverify,#argsize)
 		If errnr!=(noerror)
 			Return errnr
@@ -86,7 +86,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 		#sufix is not used at imm value
 	else
 		sd prefix
-		if content#==string_arg
+		if content#==d_q
 			#get entry
 			sd sec%ptrdummyEntry
 			call getcont(sec,ptrdata)
