@@ -4,6 +4,10 @@ function platform_free()
 	if a#!=(NULL)
 		call free(a#)
 	endif
+	sd b%p_path_free
+	if b#!=(NULL)
+		call free(b#)
+	endif
 endfunction
 
 function wide_to_ansi(ss in)

@@ -1,46 +1,13 @@
 
-
-
-
-Chars cmdfileformpathdata="/proc/%u/cmdline"
-Str cmdfilepathform^cmdfileformpathdata
-Chars cmdfilepathdata#32
-Str cmdfilepath^cmdfilepathdata
-
-Data pid#1
-SetCall pid getpid()
-
-Call sprintf(cmdfilepath,cmdfilepathform,pid)
-
-Data cmdfile#1
-Data openno=openno
-Chars fopenreaddata="rb"
-Str fopenread^fopenreaddata
-SetCall cmdfile fopen(cmdfilepath,fopenread)
-If cmdfile==openno
-	Chars cmdopenerr="Cannot open command line file."
-	Str ptrcmdopenerr^cmdopenerr
-	Call msgerrexit(ptrcmdopenerr)
-EndIf
-
-Str script#1
 Data argumentssize#1
 
-Data ptrscript^script
-Data ptrargumentssize^argumentssize
-
-Call memset(ptrscript,zero,qwordsize)
-
-Data getdelimreturn#1
-Data getdelimreturnerr=-1
-
-#returns the argument+nullbyte size
-SetCall getdelimreturn getdelim(ptrscript,ptrargumentssize,null,cmdfile)
-If getdelimreturn==getdelimreturnerr
+if argc<1
 	Chars cmdscripterr="Cannot parse to input file name."
 	Str ptrcmdscripterr^cmdscripterr
 	Call msgerrexit(ptrcmdscripterr)
-EndIf
+endif
+
+setcall argumentssize strlen(argv0)
 
 #if the file was executed from the PATH, then the root folder it is searched
 str scriptfullname#1
@@ -50,9 +17,9 @@ data accessresult#1
 data slashtest#1
 
 set accessresult negative
-setcall slashtest valinmem(script,argumentssize,slash)
+setcall slashtest valinmem(argv0,argumentssize,slash)
 if slashtest!=argumentssize
-	set scriptfullname script
+	set scriptfullname argv0
 else
 	str envpath#1
 	str pathstr="PATH"
@@ -93,7 +60,7 @@ else
 					set scrpointer# slash
 					inc scrpointer
 				endif
-				call memtomem(scrpointer,script,argumentssize)
+				call memtomem(scrpointer,argv0,argumentssize)
 				add scrpointer argumentssize
 				set scrpointer# null
 
@@ -103,8 +70,6 @@ else
 			if accessresult==zero
 				#continue with this path to preferences
 				set sizeofpath zero
-				Call free(script)
-				set script scriptfullname
 			else
 				call free(scriptfullname)
 				set scriptfullname null
@@ -119,25 +84,20 @@ else
 	endwhile
 endelse
 
-if scriptfullname==false
+if scriptfullname==null
 	str patherr="Pathfind error."
 	call Message(patherr)
 else
 	call setpreferences(scriptfullname)
+	if scriptfullname!=argv0
+		call free(scriptfullname)
+	endif
 endelse
 
-Call free(script)
-
-Data ptrpath%ptrpath
-Set argumentssize flag_max_path
-SetCall getdelimreturn getdelim(ptrpath,ptrargumentssize,null,cmdfile)
-
-If getdelimreturn==getdelimreturnerr
-	Chars cmdnoinput="Enter the input file. O Compiler - usage: o \"filename.o\""
+if argc<2
+	Chars cmdnoinput="O Compiler - usage: o \"filename\" [conv_64]"
 	Str ptrcmdnoinput^cmdnoinput
 	Call msgerrexit(ptrcmdnoinput)
 EndIf
 
-Call fclose(cmdfile)
-
-
+set path_nofree argv1

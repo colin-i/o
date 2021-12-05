@@ -26,9 +26,6 @@ Set programentrypoint zero
 #include or not include for applying after command parse
 Set includebool zero
 
-#input path
-Set path zero
-
 #files
 Set fileout negative
 set logfile negative
@@ -132,7 +129,6 @@ data g_e_b_p#1;setcall g_e_b_p global_err_pBool();set g_e_b_p# (FALSE)
 #entrylinux bool
 data el_b_p#1;setcall el_b_p entrylinux_bool_p();set el_b_p# (FALSE)
 
-Include "../files/inits/alloc.s"
-
-
 set warn_hidden_whitespaces_times 0
+
+Include "../files/inits/alloc.s"

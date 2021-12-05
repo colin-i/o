@@ -1,4 +1,10 @@
 
+setcall path_free memalloc(flag_max_path)
+if path_free==(NULL)
+	#memalloc has message
+	call errexit()
+endif
+set path_free# 0
 
 #OPENFILENAME
 Const OFN_FILEMUSTEXIST=0x1000
@@ -19,8 +25,8 @@ Set ofnfiltermem ofnfiltermemvalue
 Data *ofnlpstrCustomFilter=0
 Data *ofnnMaxCustFilter=0
 Data *ofnnFilterIndex=0
-Str ofnlpstrFile=0
-Set ofnlpstrFile path
+Str ofnlpstrFile#1
+Set ofnlpstrFile path_free
 
 Data ofnnMaxFile#1
 Set ofnnMaxFile flag_max_path
@@ -51,10 +57,5 @@ SetCall openfilenameresult GetOpenFileName(OFNfile)
 Call free(ofnfiltermem)
 
 If openfilenameresult==zero
-	Chars ofnstop="No file selected or an error occurs."
-	Str ptrofnstop^ofnstop
-	Chars ocompiler="O Compiler"
-	Str ptrocompiler^ocompiler
-	Call MessageBox(null,ptrofnstop,ptrocompiler,null)
-	Call errexit()
+	Call msgerrexit("No file selected or an error occurs.")
 EndIf

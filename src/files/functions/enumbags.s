@@ -46,12 +46,6 @@ Function freeclose()
 	Data value#1
 	Data zero=0
 
-	Data ptrpath%ptrpath
-	Set value ptrpath#
-	If value!=zero
-		Call free(value)
-	EndIf
-
 	Call enumbags(zero)
 
 	Data negative=-1

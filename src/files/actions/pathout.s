@@ -48,7 +48,7 @@ If extension!=null
 	Data sz#1
 	SetCall sz strlen(extension)
 
-	setcall errormsg maxpathverif(path,extension)
+	setcall errormsg maxpathverif(safecurrentdirtopath,extension)
 	if errormsg!=noerr
 		Call msgerrexit(errormsg)
 	endif

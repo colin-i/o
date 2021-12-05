@@ -3,7 +3,7 @@
 
 Data err#1
 
-SetCall err openfile(ptrfileout,path,_open_write)
+SetCall err openfile(ptrfileout,safecurrentdirtopath,_open_write)
 If err!=noerr
 	Chars fouterr="Error with the file out open function."
 	Str fileouterr^fouterr

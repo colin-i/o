@@ -4,16 +4,16 @@ Chars safedirdata="./"
 Str safedir^safedirdata
 
 Str filenameloc#1
-SetCall filenameloc endoffolders(path)
+SetCall filenameloc endoffolders(path_nofree)
 Chars storeachar#1
 Set storeachar filenameloc#
 Set filenameloc# null
 
 sd chdirresult#1
-setcall chdirresult changedir(path)
+setcall chdirresult changedir(path_nofree)
 if chdirresult!=chdirok
 	str startchdirerr="Cannot set active folder:"
-	setcall errormsg errorDefOut(startchdirerr,path)
+	setcall errormsg errorDefOut(startchdirerr,path_nofree)
 	Call msgerrexit(errormsg)
 endif
 
@@ -67,7 +67,7 @@ if logbool==true
 		else
 			Set storeachar filenameloc#
 			Set filenameloc# null
-			call logincludes_decision(path)
+			call logincludes_decision(path_nofree)
 			Set filenameloc# storeachar
 		endelse
 		set appendextension# null
@@ -77,6 +77,3 @@ if logbool==true
 		call Message(errormsg)
 	endif
 endif
-
-Call free(path)
-Set path safecurrentdirtopath

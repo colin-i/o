@@ -11,3 +11,6 @@ Const pmode_mode=_S_IREAD|_S_IWRITE
 data argv#1
 const p_argv^argv
 data argc#1
+
+str path_free#1
+const p_path_free^path_free

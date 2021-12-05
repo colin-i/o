@@ -2,7 +2,7 @@
 
 Include "./actions/setdefdir.s"
 
-SetCall errormsg include(path)
+SetCall errormsg include(safecurrentdirtopath)
 If errormsg!=noerr
 	Call msgerrexit(errormsg)
 EndIf

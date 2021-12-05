@@ -15,14 +15,12 @@ if ptrmem!=null
 endif
 
 
-Data commandchar#1
-Set path# null
+Set path_nofree null
 Include "./wingetfile/getfilefromcommand.s"
-
-Set commandchar path#
-If commandchar==null
+If path_nofree==null
 	#open file name
 	Include "./wingetfile/getfilefromopenfilename.s"
+	set path_nofree path_free
 	Data timeatbegin#1
 	SetCall timeatbegin GetTickCount()
 	Set openfilenamemethod true

@@ -20,5 +20,5 @@ If openfilenamemethod==true
 	Str ptrouttimeformat^outtimeformat
 
 	Call sprintf(ptrouttime,ptrouttimeformat,seconds,timeatend)
-	Call MessageBox(null,ptrouttime,ptrocompiler,null)
+	Call MessageBox(null,ptrouttime,"Time",null)
 EndIf

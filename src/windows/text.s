@@ -3,6 +3,7 @@
 #main
 
 set argv (NULL)
+set path_free (NULL)
 
 Include "../files/inits.s"
 
@@ -10,7 +11,9 @@ Data openfilenamemethod#1
 Set openfilenamemethod false
 Include "./files/wingetfile.s"
 
-Include "../files/inits/conv_a.s"
+if argv!=(NULL)
+	Include "../files/inits/conv.s"
+endif
 
 Include "../files/actions.s"
 
