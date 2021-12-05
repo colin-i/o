@@ -363,3 +363,6 @@ const p_over_pref^over_pref
 
 data hidden_pref#1
 const p_hidden_pref^hidden_pref
+
+Data safecurrentdirtopath#1
+const p_safecurrentdirtopath^safecurrentdirtopath

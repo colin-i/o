@@ -29,7 +29,6 @@ if errormsg!=noerr
 	Call msgerrexit(errormsg)
 endif
 
-Data safecurrentdirtopath#1
 SetCall safecurrentdirtopath memalloc(flag_max_path)
 If safecurrentdirtopath==null
 	Call errexit()

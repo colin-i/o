@@ -66,6 +66,11 @@ Function freeclose()
 	#here at some main msgerrexits
 	call clearmessage()
 
+	sd p_safecurrentdirtopath%p_safecurrentdirtopath
+	if p_safecurrentdirtopath#!=(NULL)
+		call free(p_safecurrentdirtopath#)
+	endif
+
 	call platform_free()
 EndFunction
 
