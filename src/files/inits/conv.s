@@ -3,7 +3,7 @@ sd convention_64
 
 if argc>2
 	if argc>3
-		call msgerrexit("Too many arguments")
+		call exitMessage("Too many arguments")
 	endif
 
 
@@ -17,21 +17,21 @@ if argc>2
 	set convention_64 argv2#
 
 	if convention_64==0
-		call msgerrexit("argv2 null")
+		call exitMessage("argv2 null")
 	endif
 	inc argv2
 	if argv2#!=0
-		call msgerrexit("argv2 must have only one character")
+		call exitMessage("argv2 must have only one character")
 	endif
 
 	if convention_64<(asciizero)
-		call msgerrexit("argv2 must be greater than 0")
+		call exitMessage("argv2 must be greater than 0")
 	endif
 
 	sub convention_64 (asciizero)
 
 	if convention_64>(last_convention_input)
-		call msgerrexit("argv2 must be 0,1 or 2")
+		call exitMessage("argv2 must be 0,1 or 2")
 	endif
 else
 	set convention_64 (no_convention_input)

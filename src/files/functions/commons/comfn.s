@@ -387,5 +387,3 @@ function compareagainstmaxpath(data sizetocompare)
 		return noerr
 	endelse
 endfunction
-
-

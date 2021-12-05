@@ -14,9 +14,9 @@ if ptrmem!=null
 	call free(ptrmem)
 endif
 
-
-Set path_nofree null
+Set path_nofree (NULL)
 Include "./wingetfile/getfilefromcommand.s"
+set path_free (NULL)
 If path_nofree==null
 	#open file name
 	Include "./wingetfile/getfilefromopenfilename.s"

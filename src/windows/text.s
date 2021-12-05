@@ -2,11 +2,9 @@
 
 #main
 
-set argv (NULL)
-set path_free (NULL)
-
 Include "../files/inits.s"
 
+set argv (NULL)
 Data openfilenamemethod#1
 Set openfilenamemethod false
 Include "./files/wingetfile.s"

@@ -81,5 +81,14 @@ EndFunction
 
 Function errexit()
 	Call freeclose()
-	Call exit(-1)
+	call errorexit()
 EndFunction
+
+function errorexit()
+	Call exit(-1)
+endfunction
+
+function exitMessage(ss s)
+	call Message(s)
+	call errorexit()
+endfunction

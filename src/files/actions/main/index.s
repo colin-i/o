@@ -17,7 +17,7 @@ sd cursor_start;set cursor_start content
 setcall content mem_spaces(content,last)
 
 #test the line size and set the size of line break
-Chars newline=0xa
+Chars newline=asciireturn
 Data linebreaksize#1
 Set linebreaksize bytesize
 
@@ -39,7 +39,7 @@ while loop==2
 		set dot_comma_end 0
 		if pointer!=content
 			ss testcarriage
-			Chars carriage=0x0d
+			Chars carriage=asciicarriage
 			set testcarriage pointer
 			dec testcarriage
 			If testcarriage#==carriage

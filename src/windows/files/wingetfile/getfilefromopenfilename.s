@@ -1,11 +1,4 @@
 
-setcall path_free memalloc(flag_max_path)
-if path_free==(NULL)
-	#memalloc has message
-	call errexit()
-endif
-set path_free# 0
-
 #OPENFILENAME
 Const OFN_FILEMUSTEXIST=0x1000
 Const OFN_PATHMUSTEXIST=0x0800
@@ -14,7 +7,16 @@ Const ofnFlags=OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST
 
 Str ofnfiltermemvalue#1
 
+setcall path_free memalloc(flag_max_path)
+if path_free==(NULL)
+	#memalloc has message
+	call errorexit()
+endif
+#here is the start of mem worries for windows
+set path_free# 0
+
 Include "./getfilefromopenfilename/lpstrFilter.s"
+
 
 Data ofnlStructSize=0x58
 Data *ofnhwndOwner=0

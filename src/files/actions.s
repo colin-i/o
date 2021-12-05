@@ -1,5 +1,9 @@
 
 
+
+#allocs can stand with inits that need on top then some allocs at openfilename then frees needing inits
+Include "./inits/alloc.s"
+
 Include "./actions/setdefdir.s"
 
 SetCall errormsg include(safecurrentdirtopath)

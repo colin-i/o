@@ -118,7 +118,7 @@ function addtolog_ex(ss content,sd sizetowrite)
 	setcall err writefile_errversion(filehandle,content,sizetowrite)
 	if err!=(noerror);return err;endif
 
-	chars textterm={0xd,0xa,0}
+	chars textterm={asciicarriage,asciireturn,0}
 	str text^textterm
 	data sz=2
 	setcall err writefile_errversion(filehandle,text,sz)

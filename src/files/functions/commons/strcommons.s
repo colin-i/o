@@ -365,7 +365,7 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 				return unend
 			endif
 		endwhile
-		chars newline=0xa
+		chars newline=asciireturn
 		if content#==newline
 			if p_newlines!=0
 				inc newlines
