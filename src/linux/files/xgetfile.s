@@ -96,8 +96,10 @@ endelse
 
 if argc<2
 	Chars cmdnoinput="O Compiler - usage: o \"filename\" [conv_64]"
-	Str ptrcmdnoinput^cmdnoinput
-	Call msgerrexit(ptrcmdnoinput)
+	chars moreinfo="Documentation is here: https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html"
+	ss moreinfo_helper^moreinfo
+	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
+	Call msgerrexit(#cmdnoinput)
 EndIf
 
 set path_nofree argv1

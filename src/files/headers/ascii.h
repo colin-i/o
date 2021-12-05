@@ -2,6 +2,7 @@
 
 #some ascii Constants commonly used
 Const asciitab=0x9
+Const asciireturn=0xa
 Const asciispace=0x20
 Const asciiExclamationmark=0x21
 Const asciidoublequote=0x22
