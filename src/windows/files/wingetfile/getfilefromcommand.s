@@ -10,6 +10,7 @@ SetCall commname_size strlen(command_name)
 If commname_size!=zero
 	setcall argv CommandLineToArgvW(command_name,#argc)
 	if argv!=(NULL)
+		#here is the start of mem worries for windows
 		if argc>1
 			sd mirror
 			set mirror argv;incst mirror

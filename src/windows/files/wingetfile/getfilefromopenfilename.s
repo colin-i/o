@@ -10,9 +10,8 @@ Str ofnfiltermemvalue#1
 setcall path_free memalloc(flag_max_path)
 if path_free==(NULL)
 	#memalloc has message
-	call errorexit()
+	call errexit()
 endif
-#here is the start of mem worries for windows
 set path_free# 0
 
 Include "./getfilefromopenfilename/lpstrFilter.s"
