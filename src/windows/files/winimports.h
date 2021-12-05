@@ -13,7 +13,7 @@ Import "_lseek" lseek
 Import "strcat" strcat
 
 Library "kernel32.dll"
-Import "GetCommandLineA" GetCommandName
+Import "GetCommandLineW" GetCommandName
 Import "GetTickCount" GetTickCount
 Import "GetModuleFileNameA" GetModuleFileName
 
@@ -22,3 +22,6 @@ Import "MessageBoxA" MessageBox
 
 Library "comdlg32.dll"
 Import "GetOpenFileNameA" GetOpenFileName
+
+Library "shell32.dll"
+Import "CommandLineToArgvW" CommandLineToArgvW

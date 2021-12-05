@@ -2,6 +2,8 @@
 
 #main
 
+set argv (NULL)
+
 Include "../files/inits.s"
 
 Data openfilenamemethod#1

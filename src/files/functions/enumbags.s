@@ -71,6 +71,8 @@ Function freeclose()
 	#here if allocerrormsg was a submessage(included in sprintf)
 	#here at some main msgerrexits
 	call clearmessage()
+
+	call platform_free()
 EndFunction
 
 Function msgerrexit(data msg)

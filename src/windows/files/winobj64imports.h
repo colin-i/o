@@ -19,7 +19,7 @@ Importx "_lseek" lseek
 Importx "strcat" strcat
 
 #kernel32
-Importx "GetCommandLineA" GetCommandName
+Importx "GetCommandLineW" GetCommandName
 Importx "GetTickCount" GetTickCount
 Importx "GetModuleFileNameA" GetModuleFileName
 
@@ -28,3 +28,6 @@ Importx "MessageBoxA" MessageBox
 
 #comdlg32
 Importx "GetOpenFileNameA" GetOpenFileName
+
+#shell32
+ImportX "CommandLineToArgvW" CommandLineToArgvW
