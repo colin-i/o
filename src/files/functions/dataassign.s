@@ -3,7 +3,7 @@
 
 
 #err
-Function dataassign(data ptrcontent,data ptrsize,data typenumber)
+Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_bool)
 	Data false=FALSE
 	Data true=TRUE
 	data stack#1
@@ -181,6 +181,7 @@ Function dataassign(data ptrcontent,data ptrsize,data typenumber)
 					Return err
 				EndIf
 				Mult value dsz
+				call enlarge_value(#value,long_bool)
 			EndIf
 			If value<zero
 				return ptrnegreserve
@@ -380,4 +381,14 @@ function add_string_to_data(sd ptrcontent,sd ptrsize)
 		return err
 	endif
 	return (noerror)
+endfunction
+
+#v
+function enlarge_value(sd p_value,sd bool)
+	if bool==(TRUE)
+		sd is64;setcall is64 is_for_64()
+		if is64==(TRUE)
+			mult p_value# (qwsz/dwsz)
+		endif
+	endif
 endfunction

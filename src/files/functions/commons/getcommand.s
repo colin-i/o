@@ -4,7 +4,7 @@ Const spacereq=1
 Const spacenotreq=0
 
 Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
-	Chars cCONST_c="CONST";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
+	Chars cCONST_c="CONST";Chars cVDATA_c="VDATA";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
 Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
@@ -64,6 +64,11 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			data *^cCONST_c
 			Data *=cDECLARE
 			Data *=cCONST
+			Data *=spacereq
+		Const cVDATA=!-cDECLARE_top
+			data *^cVDATA_c
+			Data *=cDECLARE
+			Data *=cVDATA
 			Data *=spacereq
 #aftercall can be at function parameters but the get_img_vdata_dataReg() is set inside and codding must be done for not a big deal
 	Const cDECLAREAFTERCALL=!-coms_start
@@ -316,6 +321,7 @@ const x_call_flag=0x80000000
 
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype)
+#these numbers will be used at getstruct directly
 	if subtype==(cDATA);return (integersnumber)
 	elseif subtype==(cCHARS);return (charsnumber)
 	elseif subtype==(cSTR);return (stringsnumber)
@@ -430,6 +436,7 @@ Function sortcommands(data pointerscursor,data nrofcomms)
 EndFunction
 
 Function sortallcommands()
+#put commands pointers at init
 	Data pointerscursor%compointersloc
 	Data comms=numberofcommands
 

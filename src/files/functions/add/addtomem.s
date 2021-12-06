@@ -4,14 +4,17 @@
 
 #40...h*2 and can't compare signed<>unsigned and will loose control at alloc
 #this is also used at reserve *4 will be negative there
-Const maxsectionvalue=0x40000000-1
+#Const maxsectionvalue=0x40000000-1
 #                       aaBBccDD
+Const maxsectionvalue=0x20000000-1
+#knowing that enlarge value will qwsz them
 
 #err
 Function maxvaluecheck(data value)
 	Data secmax=maxsectionvalue
 	If value>secmax
-		Chars secsizeerr="Section size cannot be greater than 1 073 741 823."
+		#Chars secsizeerr="Section size cannot be greater than 1 073 741 823."
+		Chars secsizeerr="Section size cannot be greater than 536 870 911."
 		Str ptrsecsizeerr^secsizeerr
 		Return ptrsecsizeerr
 	EndIf
