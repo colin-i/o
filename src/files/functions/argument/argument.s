@@ -106,20 +106,24 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			Chars inc={0xFF}
 			Set op inc
 			set regopcode 0
-		ElseIf subtype==(cINCST)
+		ElseIf subtype==(cDEC)
+			Chars dec={0xFF}
+			Chars decregopcode={1}
+			Set op dec
+			Set regopcode decregopcode
+		ElseIf subtype<=(cDECST)
 			set op (0x83)
-			set regopcode 0
+			if subtype==(cINCST)
+				set regopcode 0
+			else
+				set regopcode 5
+			endelse
 			chars incs_sz#1
 			sd b;setcall b is_for_64()
 			if b==(FALSE);set incs_sz (dwsz)
 			else;set incs_sz (qwsz);endelse
 			set ptrcontinuation #incs_sz
 			set sizeofcontinuation (bsz)
-		ElseIf subtype==(cDEC)
-			Chars dec={0xFF}
-			Chars decregopcode={1}
-			Set op dec
-			Set regopcode decregopcode
 		ElseIf subtype==(cNEG)
 			set op (0xf7)
 			set regopcode 3

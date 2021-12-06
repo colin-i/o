@@ -6,7 +6,7 @@ Const spacenotreq=0
 Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
 	Chars cCONST_c="CONST";Chars cVDATA_c="VDATA";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
-Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cINCST_c="INCST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
+Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cDEC_c="DEC";Chars cINCST_c="INCST";Chars cDECST_c="DECST";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
 #                 ;Chars cSETX_c="SETX"
 Chars cLIBRARY_c="LIBRARY";
@@ -59,7 +59,7 @@ const commandsvars_start=!
 			Data *=cSV
 			Data *=spacereq
 #numberofcommandsvars to set these commands to search for them at function parameter declare
-Const numberofcommandsvars=!-commandsvars_start/4/dwsz
+Const numberofcommandsvars=(!-commandsvars_start)/4/dwsz
 		Const cCONST=!-cDECLARE_top
 			data *^cCONST_c
 			Data *=cDECLARE
@@ -105,15 +105,20 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 			Data *=cONEARG
 			Data *=cINC
 			Data *=spacereq
+		Const cDEC=!-cONEARG_top
+			data *^cDEC_c
+			Data *=cONEARG
+			Data *=cDEC
+			Data *=spacereq
 		Const cINCST=!-cONEARG_top
 			data *^cINCST_c
 			Data *=cONEARG
 			Data *=cINCST
 			Data *=spacereq
-		Const cDEC=!-cONEARG_top
-			data *^cDEC_c
+		Const cDECST=!-cONEARG_top
+			data *^cDECST_c
 			Data *=cONEARG
-			Data *=cDEC
+			Data *=cDECST
 			Data *=spacereq
 		Const cEXIT=!-cONEARG_top
 			data *^cEXIT_c
@@ -307,7 +312,7 @@ Const numberofcommandsvars=!-commandsvars_start/4/dwsz
 		Data *=cCOMMENT
 		Data *#1
 		Data *=spacenotreq
-Const numberofcommands=!-coms_start/4/dwsz
+Const numberofcommands=(!-coms_start)/4/dwsz
 
 Data pointers#numberofcommands+1
 Const compointersloc^pointers
