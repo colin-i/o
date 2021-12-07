@@ -5,7 +5,7 @@ if argc>2
 	endif
 
 	sd convention_input
-	
+
 	#argv will be freed on windows
 	set convention_input argv;add convention_input (2*:)
 	ss argv2
