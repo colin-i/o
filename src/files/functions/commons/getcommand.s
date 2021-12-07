@@ -4,11 +4,12 @@ Const spacereq=1
 Const spacenotreq=0
 
 Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
-	Chars cCONST_c="CONST";Chars cVDATA_c="VDATA";Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
+	Chars cCONST_c="CONST"
+	Chars cVDATA_c="VDATA"
+Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
 Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cDEC_c="DEC";Chars cINCST_c="INCST";Chars cDECST_c="DECST";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
-#                 ;Chars cSETX_c="SETX"
 Chars cLIBRARY_c="LIBRARY";
 Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX";
 Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRY_c="ENTRY";Chars cENTRYLINUX_c="ENTRYLINUX"
@@ -34,6 +35,7 @@ const commandsvars_start=!
 			Data *=cDATA
 			Data *=spacereq
 		Const cCHARS=!-cDECLARE_top
+Const com_size=cCHARS-cDATA
 			data *^cCHARS_c
 			Data *=cDECLARE
 			Data *=cCHARS
@@ -59,7 +61,7 @@ const commandsvars_start=!
 			Data *=cSV
 			Data *=spacereq
 #numberofcommandsvars to set these commands to search for them at function parameter declare
-Const numberofcommandsvars=(!-commandsvars_start)/4/dwsz
+Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Const cCONST=!-cDECLARE_top
 			data *^cCONST_c
 			Data *=cDECLARE
@@ -312,7 +314,7 @@ Const numberofcommandsvars=(!-commandsvars_start)/4/dwsz
 		Data *=cCOMMENT
 		Data *#1
 		Data *=spacenotreq
-Const numberofcommands=(!-coms_start)/4/dwsz
+Const numberofcommands=(!-coms_start)/com_size
 
 Data pointers#numberofcommands+1
 Const compointersloc^pointers
@@ -327,16 +329,8 @@ const x_call_flag=0x80000000
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype)
 #these numbers will be used at getstruct directly
-	if subtype==(cDATA);return (integersnumber)
-	elseif subtype==(cCHARS);return (charsnumber)
-	elseif subtype==(cSTR);return (stringsnumber)
-	elseif subtype==(cSD);return (stackdatanumber)
-	elseif subtype==(cSS);return (stackstringnumber)
-	elseif subtype==(cSV);return (stackvaluenumber)
-	else
-	#cCONST
-		return (constantsnumber)
-	endelse
+	div subtype com_size
+	return subtype
 endfunction
 #set errormsg to pointer error or return the find
 Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,data pointercommands)
