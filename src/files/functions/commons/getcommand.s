@@ -329,7 +329,7 @@ const x_call_flag=0x80000000
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype)
 #these numbers will be used at getstruct directly
-	div subtype com_size
+	div subtype (com_size)
 	return subtype
 endfunction
 #set errormsg to pointer error or return the find
