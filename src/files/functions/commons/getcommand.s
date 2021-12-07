@@ -329,6 +329,9 @@ const x_call_flag=0x80000000
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype)
 #these numbers will be used at getstruct directly
+	if subtype==(cCONST)
+		return (constantsnumber)
+	endif
 	div subtype (com_size)
 	return subtype
 endfunction
