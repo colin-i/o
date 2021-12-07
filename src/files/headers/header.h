@@ -325,12 +325,10 @@ Const hexenum=1
 const val64_no=0
 const val64_willbe=1
 
-const no_convention_input=-1
 const direct_convention_input=0
 const ignore_convention_input=1
-#this is not needed at windows and unreferenced
-#const cross_convention_input=2
-#const last_convention_input=cross_convention_input
+const cross_convention_input=2
+const last_convention_input=cross_convention_input
 #
 const ms_convention=4
 const lin_convention=6

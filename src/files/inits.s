@@ -1,7 +1,6 @@
 
 
 
-
 #fileformat#
 #file format variable
 
@@ -132,3 +131,6 @@ data el_b_p#1;setcall el_b_p entrylinux_bool_p();set el_b_p# (FALSE)
 set warn_hidden_whitespaces_times 0
 
 set safecurrentdirtopath (NULL)
+
+sd convention_64
+setcall convention_64 p_neg_is_for_64()

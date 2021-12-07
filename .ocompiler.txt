@@ -56,3 +56,5 @@ nul_res_pref=0
 13. sd as sv (old programs don't have sv and may be with 64 logic)
 0 is No; 1 is Yes
 sd_as_sv=0
+
+14. inplace reloc 0 or the addend for objects? (standard ld want addend, i686-w64-mingw32-ld want 0)

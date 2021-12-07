@@ -23,10 +23,7 @@ If formatresponse==false
 		SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_resp)
 		If elfobjformresp==true
 			if p_is_for_64_resp#==(TRUE)
-				if convention_64==(no_convention_input)
-					setcall convention_64 p_neg_is_for_64()
-					set convention_64 convention_64#
-				endif
+				set convention_64 convention_64#
 				if convention_64==(ignore_convention_input)
 					set p_is_for_64_resp# (FALSE)
 				elseif convention_64==(direct_convention_input)
