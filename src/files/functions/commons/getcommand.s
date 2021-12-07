@@ -3,7 +3,7 @@
 Const spacereq=1
 Const spacenotreq=0
 
-Chars cDATA_c="DATA";Chars cCHARS_c="CHARS";Chars cSTR_c="STR";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
+Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHARS_c="CHARS";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
 	Chars cCONST_c="CONST"
 	Chars cVDATA_c="VDATA"
 Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
@@ -34,16 +34,16 @@ const commandsvars_start=!
 			Data *=cDECLARE
 			Data *=cDATA
 			Data *=spacereq
-		Const cCHARS=!-cDECLARE_top
-Const com_size=cCHARS-cDATA
-			data *^cCHARS_c
-			Data *=cDECLARE
-			Data *=cCHARS
-			Data *=spacereq
 		Const cSTR=!-cDECLARE_top
+Const com_size=cSTR-cDATA
 			data *^cSTR_c
 			Data *=cDECLARE
 			Data *=cSTR
+			Data *=spacereq
+		Const cCHARS=!-cDECLARE_top
+			data *^cCHARS_c
+			Data *=cDECLARE
+			Data *=cCHARS
 			Data *=spacereq
 		Const cSD=!-cDECLARE_top
 			data *^cSD_c
