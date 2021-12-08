@@ -2,6 +2,9 @@
 const nr_of_prefs=14
 const nr_of_prefs_jumper=nr_of_prefs*:
 
+vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
+const nr_of_prefs_pointers_p^nr_of_prefs_pointers;const nr_of_prefs_strings_p^nr_of_prefs_strings
+
 data nul_res_pref#1
 const p_nul_res_pref^nul_res_pref
 
@@ -182,6 +185,11 @@ function setpreferences(str scrpath)
 	set sdsv_p# false
 	set p_inplace_reloc_pref# (addend_reloc)
 
+	#this is used also at arguments
+	sv q%nr_of_prefs_pointers_p;sv t%nr_of_prefs_strings_p
+	set q# ptrwarningsbool;incst q; set q# p_hidden_pref;incst q; set q# p_over_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref;incst q
+	set t# "warnings";incst t;      set t# "hidden_pref";incst t; set t# "over_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc"
+
 	Str preferences=".ocompiler.txt"
 	data err#1
 	data noerr=noerror
@@ -233,10 +241,6 @@ function setpreferences(str scrpath)
 		Data freepreferences#1
 		Set freepreferences preferencescontent
 
-		sd p#nr_of_prefs;sd s#nr_of_prefs
-		sd q;set q #p;sd t;set t #s
-		set p ptrwarningsbool;incst q; set q# p_hidden_pref;incst q; set q# p_over_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref;incst q
-		set s "warnings";incst t;      set t# "hidden_pref";incst t; set t# "over_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc"
 		sd n=nr_of_prefs
 		while n>0
 			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,q)
