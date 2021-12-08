@@ -87,8 +87,3 @@ EndFunction
 function errorexit()
 	Call exit(-1)
 endfunction
-
-function exitMessage(ss s)
-	call Message(s)
-	call errorexit()
-endfunction

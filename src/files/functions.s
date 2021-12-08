@@ -1,4 +1,5 @@
 
+Include "./functions/inits.s"
 
 Include "./functions/commons/comfn.s"
 Include "./functions/commons/base.s"

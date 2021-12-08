@@ -10,7 +10,10 @@ Set openfilenamemethod false
 Include "./files/wingetfile.s"
 
 if argv!=(NULL)
-	Include "../files/inits/conv.s"
+	setcall errormsg conv_inits(argc,argv)
+	if errormsg!=(noerror)
+		call msgerrexit(errormsg)
+	endif
 endif
 
 Include "../files/actions.s"

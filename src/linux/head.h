@@ -5,7 +5,6 @@ Include "./files/xheaders.h"
 Include "../files/headers.h"
 
 #functions
-function platform_free()
-endfunction
+include "./files/platform.s"
 include "./files/prefextra.s"
 Include "../files/functions.s"

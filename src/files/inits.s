@@ -29,9 +29,6 @@ Set includebool zero
 Set fileout negative
 set logfile negative
 
-#error message
-Set errormsg zero
-
 
 #containers initialisations
 Data containersptr%containersbegin

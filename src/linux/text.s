@@ -6,10 +6,10 @@ Include "../files/inits.s"
 
 Include "./files/xgetfile.s"
 
-sd argv
-set argv #argv0
-
-Include "../files/inits/conv.s"
+setcall errormsg conv_inits(argc,#argv0)
+if errormsg!=(noerror)
+	call exitMessage(errormsg)
+endif
 
 Include "../files/actions.s"
 
