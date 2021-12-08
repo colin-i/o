@@ -1,34 +1,14 @@
 
-const nr_of_prefs=13
+const nr_of_prefs=14
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 data nul_res_pref#1
 const p_nul_res_pref^nul_res_pref
 
-function constants_bool(sd direction)
-	data bool#1
-	if direction==(const_warn_get)
-		return bool
-	endif
-	return #bool
-endfunction
-
-function logincludes_decision(ss str)
-	sd b;setcall b logincludes_bool()
-	if b#==(TRUE)
-		data ptrfilehandle%ptrlogfile
-		sd err
-		setcall err writefile_errversion(ptrfilehandle#,"p",1)
-		if err==(noerror)
-			setcall err addtolog(str)
-		endif
-		if err!=(noerror);call Message(err);endif
-	endif
-endfunction
-function logincludes_bool()
-	data bool#1
-	return #bool
-endfunction
+data inplace_reloc_pref#1
+const p_inplace_reloc_pref^inplace_reloc_pref
+const zero_reloc=0
+const addend_reloc=1
 
 #void
 Function warnings(sd searchInAll,sd includes,sd nameoffset,sd p_err)
@@ -173,6 +153,7 @@ function setpreferences(str scrpath)
 	data ptrincludedir%ptrincludedir
 	data ptrcodeFnObj%ptrcodeFnObj
 	data p_nul_res_pref%p_nul_res_pref
+	data p_inplace_reloc_pref%p_inplace_reloc_pref
 
 	data true=TRUE
 	data false=FALSE
@@ -199,7 +180,7 @@ function setpreferences(str scrpath)
 	sd sdsv_p
 	setcall sdsv_p sd_as_sv((sd_as_sv_get))
 	set sdsv_p# false
-
+	set p_inplace_reloc_pref# (addend_reloc)
 
 	Str preferences=".ocompiler.txt"
 	data err#1
@@ -254,8 +235,8 @@ function setpreferences(str scrpath)
 
 		sd p#nr_of_prefs;sd s#nr_of_prefs
 		sd q;set q #p;sd t;set t #s
-		set p ptrwarningsbool;incst q; set q# p_hidden_pref;incst q; set q# p_over_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q
-		set s "warnings";incst t;      set t# "hidden_pref";incst t; set t# "over_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv"
+		set p ptrwarningsbool;incst q; set q# p_hidden_pref;incst q; set q# p_over_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref;incst q
+		set s "warnings";incst t;      set t# "hidden_pref";incst t; set t# "over_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc"
 		sd n=nr_of_prefs
 		while n>0
 			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,q)
@@ -266,3 +247,35 @@ function setpreferences(str scrpath)
 	endif
 EndFunction
 #void
+
+function constants_bool(sd direction)
+	data bool#1
+	if direction==(const_warn_get)
+		return bool
+	endif
+	return #bool
+endfunction
+
+function logincludes_decision(ss str)
+	sd b;setcall b logincludes_bool()
+	if b#==(TRUE)
+		data ptrfilehandle%ptrlogfile
+		sd err
+		setcall err writefile_errversion(ptrfilehandle#,"p",1)
+		if err==(noerror)
+			setcall err addtolog(str)
+		endif
+		if err!=(noerror);call Message(err);endif
+	endif
+endfunction
+function logincludes_bool()
+	data bool#1
+	return #bool
+endfunction
+
+function inplace_reloc(sd p_addend)
+	sd p_inplace_reloc_pref%p_inplace_reloc_pref
+	if p_inplace_reloc_pref#==(zero_reloc)
+		set p_addend# (i386_obj_default_reloc)
+	endif
+endfunction

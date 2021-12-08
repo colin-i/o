@@ -75,7 +75,7 @@ function writetake(sd takeindex,sd entry)
 				If errnr!=(noerror)
 					Return errnr
 				EndIf
-				set take_loc (i386_obj_default_reloc)
+				call inplace_reloc(#take_loc)
 			else
 				#function in code, not sd^local, sd^imp
 				#function in code is only at objects at the moment, is set only once at arg.s

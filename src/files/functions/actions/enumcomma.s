@@ -20,13 +20,12 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 					Return err
 				EndIf
 				sd inplacevalue
+				#data^functionReloc
+				set inplacevalue ptrvalue#
 				if relindex==(dataind)
 				#data a^dataB
-					set inplacevalue (i386_obj_default_reloc)
-				else
-				#data^functionReloc
-					set inplacevalue ptrvalue#
-				endelse
+					call inplace_reloc(#inplacevalue)
+				endif
 				SetCall err addtosec(#inplacevalue,(dwsz),ptrdatasec)
 				return err
 			endif

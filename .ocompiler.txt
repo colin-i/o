@@ -57,4 +57,6 @@ nul_res_pref=0
 0 is No; 1 is Yes
 sd_as_sv=0
 
-14. inplace reloc 0 or the addend for objects? (standard ld want addend, i686-w64-mingw32-ld want 0)
+14. inplace reloc 0 or the addend for objects? (standard ld wants addend, i686-w64-mingw32-ld wants 0)
+0 is Zero; 1 is Addend
+inplace_reloc=1

@@ -100,7 +100,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		If err!=noerr
 			Return err
 		EndIf
-		set memoff (i386_obj_default_reloc)
+		call inplace_reloc(#memoff)
 	endif
 	Str codeops^stacktransfer1
 	Data _codesec%ptrcodesec
