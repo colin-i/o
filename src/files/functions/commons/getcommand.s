@@ -61,7 +61,7 @@ Const com_size=cSTR-cDATA
 			Data *=cSV
 			Data *=spacereq
 #numberofcommandsvars to set these commands to search for them at function parameter declare
-Const numberofcommandsvars=!-commandsvars_start/com_size
+Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Const cCONST=!-cDECLARE_top
 			data *^cCONST_c
 			Data *=cDECLARE
@@ -314,7 +314,7 @@ Const numberofcommandsvars=!-commandsvars_start/com_size
 		Data *=cCOMMENT
 		Data *#1
 		Data *=spacenotreq
-Const numberofcommands=!-coms_start/com_size
+Const numberofcommands=(!-coms_start)/com_size
 
 Data pointers#numberofcommands+1
 Const compointersloc^pointers
