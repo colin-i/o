@@ -134,3 +134,5 @@ set safecurrentdirtopath (NULL)
 
 sd convention_64
 setcall convention_64 p_neg_is_for_64()
+
+call initpreferences()

@@ -1,19 +1,5 @@
 
 
-data ptrmem#1
-setcall ptrmem memalloc(flag_max_path)
-if ptrmem!=null
-	data sizep#1
-	setcall sizep GetModuleFileName(null,ptrmem,flag_max_path)
-	if sizep==null
-		str getmoderr="GetModuleFileName error."
-		call Message(getmoderr)
-	else
-		call setpreferences(ptrmem)
-	endelse
-	call free(ptrmem)
-endif
-
 Set path_nofree (NULL)
 Include "./wingetfile/getfilefromcommand.s"
 set path_free (NULL)

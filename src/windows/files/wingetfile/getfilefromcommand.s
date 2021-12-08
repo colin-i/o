@@ -11,15 +11,13 @@ If commname_size!=zero
 	setcall argv CommandLineToArgvW(command_name,#argc)
 	if argv!=(NULL)
 		#here is the start of mem worries for windows
-		if argc>1
-			sd mirror
-			set mirror argv;incst mirror
-			sd aux_mirror;set aux_mirror mirror#
-			call wide_to_ansi(aux_mirror)
-			set path_nofree aux_mirror
-			if argc>2
-				incst mirror
-				call wide_to_ansi(mirror#)
+		call argv_to_ansi(argc,argv)
+		if argc>0 #is this logic?
+			call setpreferences(argv#)
+			if argc>1
+				set path_nofree argv
+				incst path_nofree
+				set path_nofree path_nofree#
 			endif
 		endif
 	endif

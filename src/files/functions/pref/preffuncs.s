@@ -145,51 +145,49 @@ function parsepreferences_back_helper(ss content,ss e,ss s)
 	return (TRUE)
 endfunction
 
-#void
-function setpreferences(str scrpath)
+function initpreferences()
 	#defaults
-	data ptrwarningsbool%ptrwarningsbool
-	data p_over_pref%p_over_pref
-	data p_hidden_pref%p_hidden_pref
-	data p_w_as_e%p_w_as_e
-	data ptrlogbool%ptrlogbool
-	data ptrincludedir%ptrincludedir
-	data ptrcodeFnObj%ptrcodeFnObj
-	data p_nul_res_pref%p_nul_res_pref
-	data p_inplace_reloc_pref%p_inplace_reloc_pref
+	sd ptrwarningsbool%ptrwarningsbool
+	sd p_over_pref%p_over_pref
+	sd p_hidden_pref%p_hidden_pref
+	sd p_w_as_e%p_w_as_e
+	sd ptrlogbool%ptrlogbool
+	sd ptrcodeFnObj%ptrcodeFnObj
+	sd cb;setcall cb constants_bool((const_warn_get_init))
+	sd li;setcall li logincludes_bool()
+	sd ptrincludedir%ptrincludedir
+	sd text_fn_info;setcall text_fn_info fn_text_info()
+	sd conv_64;setcall conv_64 p_neg_is_for_64()
+	sd p_nul_res_pref%p_nul_res_pref
+	sd sdsv_p;setcall sdsv_p sd_as_sv((sd_as_sv_get))
+	sd p_inplace_reloc_pref%p_inplace_reloc_pref
 
 	data true=TRUE
 	data false=FALSE
-	data defaultcodeFnObj=log_warn
 
 	set ptrwarningsbool# true
 	set p_over_pref# true
 	set p_hidden_pref# true
 	set p_w_as_e# true
 	set ptrlogbool# false
-	set ptrcodeFnObj# defaultcodeFnObj
-	sd cb;setcall cb constants_bool((const_warn_get_init))
+	set ptrcodeFnObj# (log_warn)
 	set cb# (FALSE)
-	sd li;setcall li logincludes_bool()
 	set li# (TRUE)
 	set ptrincludedir# true
-	sd text_fn_info
-	setcall text_fn_info fn_text_info()
 	set text_fn_info# false
-	sd conv_64
-	setcall conv_64 p_neg_is_for_64()
 	set conv_64# (direct_convention_input)
 	set p_nul_res_pref# false
-	sd sdsv_p
-	setcall sdsv_p sd_as_sv((sd_as_sv_get))
 	set sdsv_p# false
 	set p_inplace_reloc_pref# (addend_reloc)
 
 	#this is used also at arguments
 	sv q%nr_of_prefs_pointers_p;sv t%nr_of_prefs_strings_p
-	set q# ptrwarningsbool;incst q; set q# p_hidden_pref;incst q; set q# p_over_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref;incst q
+	set q# ptrwarningsbool;incst q; set q# p_hidden_pref;incst q; set q# p_over_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref
 	set t# "warnings";incst t;      set t# "hidden_pref";incst t; set t# "over_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc"
+endfunction
 
+#void
+function setpreferences(str scrpath)
 	Str preferences=".ocompiler.txt"
 	data err#1
 	data noerr=noerror
@@ -241,9 +239,10 @@ function setpreferences(str scrpath)
 		Data freepreferences#1
 		Set freepreferences preferencescontent
 
+		sv t%nr_of_prefs_strings_p
 		sd n=nr_of_prefs
 		while n>0
-			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,q)
+			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,t)
 			dec n
 		endwhile
 

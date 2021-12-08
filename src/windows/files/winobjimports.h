@@ -21,7 +21,6 @@ Import "_strcat" strcat
 #kernel32
 Import "_GetCommandLineW@0" GetCommandName
 Import "_GetTickCount@0" GetTickCount
-Import "_GetModuleFileNameA@12" GetModuleFileName
 
 #user32
 Import "_MessageBoxA@16" MessageBox

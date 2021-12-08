@@ -28,7 +28,7 @@ Data _errormsg^errormsg
 Data noerr=noerror
 
 
-Str path_nofree#1
+vdata path_nofree#1
 Data fileout#1
 Const ptrfileout^fileout
 Data ptrfileout%ptrfileout

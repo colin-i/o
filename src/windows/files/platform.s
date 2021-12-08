@@ -10,6 +10,15 @@ function platform_free()
 	endif
 endfunction
 
+function argv_to_ansi(sd argc,sd argv)
+	mult argc :
+	add argc argv
+	while argv!=argc
+		call wide_to_ansi(argv#)
+		incst argv
+	endwhile
+endfunction
+
 function wide_to_ansi(ss in)
 	ss out
 	set out in
