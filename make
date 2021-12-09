@@ -1,4 +1,7 @@
 
+#use Makefile
+exit
+
 ./o "./src/linux/o.s"
 
 mkdir ./build
