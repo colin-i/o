@@ -94,7 +94,7 @@ else
 endelse
 
 if argc<2
-	Chars cmdnoinput="O Compiler - usage: o \"filename\" [conv_64]"
+	Chars cmdnoinput="O Compiler - usage: o \"filename\" [[pref1 value1]...[prefN valueN]]"
 	chars moreinfo="Documentation is here: https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html"
 	ss moreinfo_helper^moreinfo
 	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
