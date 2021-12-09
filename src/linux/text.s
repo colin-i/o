@@ -6,7 +6,7 @@ Include "../files/inits.s"
 
 Include "./files/xgetfile.s"
 
-setcall errormsg conv_inits(argc,#argv0)
+setcall errormsg comline_parse(argc,#argv0)
 if errormsg!=(noerror)
 	call exitMessage(errormsg)
 endif

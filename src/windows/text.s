@@ -10,7 +10,7 @@ Set openfilenamemethod false
 Include "./files/wingetfile.s"
 
 if argv!=(NULL)
-	setcall errormsg conv_inits(argc,argv)
+	setcall errormsg comline_parse(argc,argv)
 	if errormsg!=(noerror)
 		call msgerrexit(errormsg)
 	endif

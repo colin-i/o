@@ -1,10 +1,4 @@
 
-const nr_of_prefs=14
-const nr_of_prefs_jumper=nr_of_prefs*:
-
-vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
-const nr_of_prefs_pointers_p^nr_of_prefs_pointers;const nr_of_prefs_strings_p^nr_of_prefs_strings
-
 data nul_res_pref#1
 const p_nul_res_pref^nul_res_pref
 
