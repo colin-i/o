@@ -98,9 +98,10 @@ function rex_w_if64()
 	call rex_w(#err)
 	return err
 endfunction
+#b
 function is_big(sd dataarg,sd sufix)
 #called when lowbyte is false
-	sd b;setcall b stackbit(dataarg)
+	sd b;setcall b bigbits(dataarg)
 	if b!=0
 		setcall b pointbit(dataarg)
 		if b==0
@@ -113,6 +114,15 @@ function is_big(sd dataarg,sd sufix)
 		return b
 	endif
 	return (FALSE)
+endfunction
+#z
+function bigbits(sd data)
+	sd test
+	setcall test stackbit(data)
+	if test==0
+		setcall test datapointbit(data)
+	endif
+	return test
 endfunction
 
 function stack64_op_set()

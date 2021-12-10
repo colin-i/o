@@ -49,7 +49,7 @@ function_name=0
 0 is No,use linux convention if ocompiler was compiled for linux,else use microsoft; 1 is Yes; 2 is No,and cross-compile
 conv_64=0
 
-12. Zeroset reserved CHARS/DATA/STR
+12. Zeroset reserved data section declarations
 0 is No; 1 is Yes
 nul_res_pref=0
 

@@ -114,7 +114,24 @@
 	</p>
 
 	<p>
-	3. Characters
+	3. Strings
+	<br>
+	Language command: <b>Str</b>
+	<br>
+	Is a 32 bit value. It is used for pointer operations.
+	<br>
+	There is also <b>VStr</b> for reservation method that will reserve 8 bytes for a unit on 64 bit format file.
+	<br>
+	Example:
+	<br>
+	<a class="code">
+    Chars charsdata="Text"<br>
+    Str string^charsdata<br>
+    Str text="Text data"</a>
+	</p>
+
+	<p>
+	4. Characters
 	<br>
 	Language command: <b>Chars</b>
 	<br>
@@ -126,21 +143,6 @@
     Chars value={1}<br>
     Chars value=1<br>
     Chars value="Add text here"</a>
-	</p>
-
-	<p>
-	4. Strings
-	<br>
-	Language command: <b>Str</b>
-	<br>
-	Is a 32 bit value. It is used for pointer operations.
-	<br>
-	Example:
-	<br>
-	<a class="code">
-    Chars charsdata="Text"<br>
-    Str string^charsdata<br>
-    Str text="Text data"</a>
 	</p>
 
 	<p>

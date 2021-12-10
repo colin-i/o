@@ -55,18 +55,23 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_bool)
 		Return noerr
 	endif
 
+	Data size#1
+	Set size ptrsize#
+	If size==0
+		Chars rightsideerr="Right side of the assignment expected."
+		Str ptrrightsideerr^rightsideerr
+		Return ptrrightsideerr
+	endIf
+
 	data rightstackpointer#1
-	set rightstackpointer false
 
 	Data relocindx#1
 	Data dataind=dataind
-	Set relocindx dataind
 
 	Data value#1
 	Data ptrvalue^value
 
 	Str content#1
-	Data size#1
 	Data ptrdatasec%ptrdatasec
 	Data ptrcodesec%ptrcodesec
 	Data ptrfunctions%ptrfunctions
@@ -76,23 +81,21 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_bool)
 	Data dwSz=dwsz
 	data bsz=bsz
 	data valuewritesize#1
-	set valuewritesize dwSz
 	#is for chars name="value" or str name="value"
 	data stringtodata#1
-	set stringtodata false
 	#is for chars name="value"
 	data skipNumberValue#1
-	set skipNumberValue false
 	Data importbittest#1
+
+	set rightstackpointer false
+	Set relocindx dataind
+	set valuewritesize dwSz
+	set stringtodata false
+	set skipNumberValue false
 	set importbittest -1
 
-	Set size ptrsize#
-	If size==zero
-		Chars rightsideerr="Right side of the assignment expected."
-		Str ptrrightsideerr^rightsideerr
-		Return ptrrightsideerr
 	Chars equal="="
-	ElseIf sign==equal
+	If sign==equal
 		Chars byte#1
 		Set content ptrcontent#
 		Set byte content#
@@ -181,7 +184,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_bool)
 					Return err
 				EndIf
 				Mult value dsz
-				call enlarge_value(#value,long_bool)
+				call enlarge_value(#value,long_bool,pointer_structure,offset)
 			EndIf
 			If value<zero
 				return ptrnegreserve
@@ -195,12 +198,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_bool)
 			if p_nul_res_pref#==(TRUE)
 				call memset(datacont,0,value)
 			endif
-			Return (noerror)
 		else
 			Mult value dsz
 			call growramp(value)
-			return noerr
 		endelse
+		Return (noerror)
 	Else
 	#^ pointer
 		Set content ptrcontent#
@@ -384,11 +386,16 @@ function add_string_to_data(sd ptrcontent,sd ptrsize)
 endfunction
 
 #v
-function enlarge_value(sd p_value,sd bool)
+function enlarge_value(sd p_value,sd bool,sd structure,sd oldoffset)
 	if bool==(TRUE)
 		sd is64;setcall is64 is_for_64()
 		if is64==(TRUE)
 			mult p_value# (qwsz/dwsz)
+			sd c
+			Call getcont(structure,#c)
+			Add c oldoffset
+			add c (maskoffset)
+			or c# (datapointbit)
 		endif
 	endif
 endfunction

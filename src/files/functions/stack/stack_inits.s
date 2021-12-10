@@ -17,6 +17,11 @@ function pointbit(sd pointer)
 	setcall bit data_get_maskbit(pointer,(pointbit))
 	return bit
 endfunction
+function datapointbit(sd pointer)
+	sd bit
+	setcall bit data_get_maskbit(pointer,(datapointbit))
+	return bit
+endfunction
 
 function stack_get_relative(sd location)
 	sd mask

@@ -131,13 +131,13 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	EndIf
 
 
-	sd take64stack=FALSE;sd v_64=val64_no
-	sd stacktest;setcall stacktest stackbit(location)
-	if stacktest!=0
+	sd take64=FALSE;sd v_64=val64_no
+	sd bittest;setcall bittest bigbits(location)
+	if bittest!=0
 		#p test
 		sd for_64;setcall for_64 is_for_64()
 		if for_64==(TRUE)
-			set take64stack (TRUE)
+			set take64 (TRUE)
 			set v_64 (val64_willbe)
 			#rex if p
 		endif
@@ -145,7 +145,7 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	endif
 	Data true=TRUE
 	If sufix==true
-		if take64stack==(TRUE)
+		if take64==(TRUE)
 			call rex_w(#errnr);If errnr!=noerr
 				set p_errnr# errnr;return (void);EndIf
 			if is_low==(TRUE)

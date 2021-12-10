@@ -7,9 +7,14 @@ Const referencebit=0x01
 Const idatabitfunction=0x02
 #bit offset 2: 1 means stack variable
 Const stackbit=0x04
-#bit offset 3,4,5: stack ebx/ebp
-#0x8,0x10,0x20
-Const tostack_relative=0x08
+	#stackbit
+	#bit offset 3,4,5: stack ebx/ebp
+	#0x8,0x10,0x20
+	Const tostack_relative=0x08
+	#
+	#nostackbit
+	#bit offset 3: datapointbit
+	Const datapointbit=0x08
 #bit offset 6: is functionX/importX
 const x86_64bit=0x40
 #bit offset 7; pointer bit (sv# with rex, sd# without rex)
