@@ -3,7 +3,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_bool)
+Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 	Data false=FALSE
 	Data true=TRUE
 	data stack#1
@@ -184,7 +184,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_bool)
 					Return err
 				EndIf
 				Mult value dsz
-				call enlarge_value(#value,long_bool,pointer_structure,offset)
+				call enlarge_value(#value,long_mask,pointer_structure,offset)
 			EndIf
 			If value<zero
 				return ptrnegreserve
@@ -386,8 +386,8 @@ function add_string_to_data(sd ptrcontent,sd ptrsize)
 endfunction
 
 #v
-function enlarge_value(sd p_value,sd bool,sd structure,sd oldoffset)
-	if bool==(TRUE)
+function enlarge_value(sd p_value,sd mask,sd structure,sd oldoffset)
+	if mask!=0
 		sd is64;setcall is64 is_for_64()
 		if is64==(TRUE)
 			mult p_value# (qwsz/dwsz)
@@ -395,7 +395,7 @@ function enlarge_value(sd p_value,sd bool,sd structure,sd oldoffset)
 			Call getcont(structure,#c)
 			Add c oldoffset
 			add c (maskoffset)
-			or c# (datapointbit)
+			or c# mask
 		endif
 	endif
 endfunction

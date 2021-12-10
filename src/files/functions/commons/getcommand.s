@@ -5,7 +5,7 @@ Const spacenotreq=0
 
 Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHARS_c="CHARS";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
 	Chars cCONST_c="CONST"
-	Chars cVDATA_c="VDATA";Chars cVSTR_c="VSTR"
+	Chars cVDATA_c="VDATA";Chars cVSTR_c="VSTR";Chars cVALUE_c="VALUE"
 Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
 Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cDEC_c="DEC";Chars cINCST_c="INCST";Chars cDECST_c="DECST";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
@@ -76,6 +76,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			data *^cVSTR_c
 			Data *=cDECLARE
 			Data *=cVSTR
+			Data *=spacereq
+		Const cVALUE=!-cDECLARE_top
+			data *^cVALUE_c
+			Data *=cDECLARE
+			Data *=cVALUE
 			Data *=spacereq
 #aftercall can be at function parameters but the get_img_vdata_dataReg() is set inside and codding must be done for not a big deal
 	Const cDECLAREAFTERCALL=!-coms_start

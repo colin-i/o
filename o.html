@@ -73,7 +73,7 @@
 	The commands are from i386 with extension for x86-64 (but with the HEX macro anything can be wrote to code section).
 </p>
 
-<h3><a name="declaringdata">Declaring data</a></h3>
+<h3><a name="declaringdata">II. Declaring data</a></h3>
 <p>
 	The language has 7 names for data declaration (1 for constants and 6 for variables).
 
@@ -106,8 +106,6 @@
 	<br>
 	Is a 32 bit value. It is used for operations, pointer operations.
 	<br>
-	There is also <b>VData</b> for reservation method that will reserve 8 bytes for a unit on 64 bit format file.
-	<br>
 	Example:
 	<br>
 	<a class="code">Data variable=100</a>
@@ -119,8 +117,6 @@
 	Language command: <b>Str</b>
 	<br>
 	Is a 32 bit value. It is used for pointer operations.
-	<br>
-	There is also <b>VStr</b> for reservation method that will reserve 8 bytes for a unit on 64 bit format file.
 	<br>
 	Example:
 	<br>
@@ -156,8 +152,9 @@
 	<br>
 	At 64bit code all stack variables are 8 bytes. 4 bytes at 32.
 	<br>
-	Stack Value differentiates at 64bit code. It will point at 8 bytes ('sv#') when sd is pointing at 4 and ss at 1.
+	Stack Value differentiates at 64bit code. It will point at 8 bytes ('sv#').
 	At 32bit code sd and sv are the same.
+	Sd is pointing at 4 and ss at 1.
 	<br>
 	These variables are located on the stack. The methods for declaring SD/SS/SV are the same as for Data/String.
 	<br>
@@ -174,7 +171,27 @@
     sd another_reserve#1</a>
 	</p>
 
+	<p>
+	8 - 10. Value variables
+	<br>
+	Language command: <b>VDATA</b>
+	<br>
+	Language command: <b>VSTR</b>
+	<br>
+	Language command: <b>VALUE</b>
+	<br>
+	Uset at reservation method only. These are not implemented for other methods, will act like DATA/STR there.
+	<br>
+	They will reserve 8 bytes for a unit on 64 bit format file.
+	<br>
+	The pointer is like for stack variables; vdata 4, vstr 1, value 4/8.
+	</p>
+
+	<br>
+
+	<p>
 	Data can be declared using the following methods:
+	</p>
 
 	<p>
 	1. Equal sign ('=')
