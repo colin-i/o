@@ -148,7 +148,6 @@ function initpreferences()
 	sd ptrlogbool%ptrlogbool
 	sd ptrcodeFnObj%ptrcodeFnObj
 	sd cb;setcall cb constants_bool((const_warn_get_init))
-	sd li;setcall li logincludes_bool()
 	sd ptrincludedir%ptrincludedir
 	sd text_fn_info;setcall text_fn_info fn_text_info()
 	sd conv_64;setcall conv_64 p_neg_is_for_64()
@@ -165,8 +164,7 @@ function initpreferences()
 	set p_w_as_e# true
 	set ptrlogbool# true
 	set ptrcodeFnObj# (log_warn)
-	set cb# (FALSE)
-	set li# (TRUE)
+	set cb# (log_warn)
 	set ptrincludedir# true
 	set text_fn_info# false
 	set conv_64# (direct_convention_input)
@@ -176,8 +174,8 @@ function initpreferences()
 
 	#this is used also at arguments
 	sv q%nr_of_prefs_pointers_p;sv t%nr_of_prefs_strings_p
-	set q# ptrwarningsbool;incst q; set q# p_over_pref;incst q; set q# p_hidden_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# li;incst q;            set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref
-	set t# "warnings";incst t;      set t# "over_pref";incst t; set t# "hidden_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "logincludes";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc"
+	set q# ptrwarningsbool;incst q; set q# p_over_pref;incst q; set q# p_hidden_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref
+	set t# "warnings";incst t;      set t# "over_pref";incst t; set t# "hidden_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc"
 endfunction
 
 #void
@@ -254,8 +252,9 @@ function constants_bool(sd direction)
 endfunction
 
 function logincludes_decision(ss str)
-	sd b;setcall b logincludes_bool()
-	if b#==(TRUE)
+#when logfile is opened
+	sd bl;setcall bl constants_bool((const_warn_get))
+	if bl==(log_warn)
 		data ptrfilehandle%ptrlogfile
 		sd err
 		setcall err writefile_errversion(ptrfilehandle#,"p",1)
@@ -264,10 +263,6 @@ function logincludes_decision(ss str)
 		endif
 		if err!=(noerror);call Message(err);endif
 	endif
-endfunction
-function logincludes_bool()
-	data bool#1
-	return #bool
 endfunction
 
 function inplace_reloc(sd p_addend)
