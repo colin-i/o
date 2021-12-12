@@ -29,9 +29,6 @@ endfunction
 Function include(Str path)
 	Data zero=0
 	Data one=1
-	data negative=-1
-
-	data ptrlogfile%ptrlogfile
 
 	Str contentoffl#1
 	Data sizeoffl#1
@@ -67,10 +64,8 @@ Function include(Str path)
 			return getcwderr
 		endif
 
-		if ptrlogfile#!=negative
-			call logincludes_decision(pcontentoffl#,(pathfolder_ascii))
-		endif
-
+		setcall err addtolog_withchar(pcontentoffl#,(pathfolder_ascii))
+		If err!=noerr;Return err;EndIf
 
 		chars storechar#1
 		set storechar folders#
@@ -88,9 +83,8 @@ Function include(Str path)
 		set folders# storechar
 	endif
 
-	if ptrlogfile#!=negative
-		call logincludes_decision(path,0x6E)
-	endif
+	setcall err addtolog_withchar(path,0x6E)
+	If err!=noerr;Return err;EndIf
 
 	Data strsz#1
 	SetCall strsz strlen(path)

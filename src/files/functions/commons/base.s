@@ -102,14 +102,6 @@ Function congruentmoduloatsegments(data virtual,data offset,data modulo,data new
 EndFunction
 
 #err
-function addtolog(str content)
-	data sizetowrite#1
-	setcall sizetowrite strlen(content)
-	sd err
-	setcall err addtolog_ex(content,sizetowrite)
-	return err
-endfunction
-#err
 function addtolog_ex(ss content,sd sizetowrite)
 	data ptrfilehandle%ptrlogfile
 	data filehandle#1
@@ -123,6 +115,38 @@ function addtolog_ex(ss content,sd sizetowrite)
 	data sz=2
 	setcall err writefile_errversion(filehandle,text,sz)
 	return err
+endfunction
+#err
+function addtolog_withchar_ex(ss content,sd size,sd type)
+	data ptrfilehandle%ptrlogfile
+	if ptrfilehandle#!=-1
+	#this compare only at first chdir is extra
+		sd err
+		setcall err writefile_errversion(ptrfilehandle#,#type,1)
+		if err==(noerror)
+			setcall err addtolog_ex(content,size)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction
+#err
+function addtolog_withchar(ss content,sd type)
+	sd len
+	setcall len strlen(content)
+	sd err
+	setcall err addtolog_withchar_ex(content,len,type)
+	return err
+endfunction
+#err
+function addtolog_withchar_ex_atunused(ss content,sd size,sd type)
+	data ptrobject%ptrobject
+	if ptrobject#==(TRUE)
+		sd err
+		setcall err addtolog_withchar_ex(content,size,type)
+		return err
+	endif
+	return (noerror)
 endfunction
 
 function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data1,sd data2)

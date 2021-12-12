@@ -38,17 +38,13 @@ Data safecurrentdirloc#1
 Set safecurrentdirloc safecurrentdirtopath
 Add safecurrentdirloc wordsize
 Call memtomem(safecurrentdirloc,filenameloc,movesize)
+
 if logbool==true
 	chars logfileextension=".log"
 	str logextension^logfileextension
 
-	data logfilecannotinit#1
-	set logfilecannotinit false
-
 	setcall errormsg maxpathverif(safecurrentdirtopath,logextension)
-	if errormsg!=noerr
-		set logfilecannotinit true
-	else
+	if errormsg==noerr
 		str appendextension#1
 
 		set appendextension safecurrentdirloc
@@ -61,18 +57,15 @@ if logbool==true
 		call memtomem(appendextension,logextension,sizelogext)
 
 		setcall errormsg openfile(ptrlogfile,safecurrentdirtopath,_open_write)
-		if errormsg!=noerr
-			set logfilecannotinit true
-		else
+		if errormsg==noerr
 			Set storeachar filenameloc#
 			Set filenameloc# null
-			call logincludes_decision(path_nofree,(pathfolder_ascii))
+			setcall errormsg addtolog_withchar(path_nofree,(pathfolder_ascii))
 			Set filenameloc# storeachar
-		endelse
+		endif
 		set appendextension# null
-	endelse
-	if logfilecannotinit==true
-		set logbool false
-		call Message(errormsg)
+	endif
+	if errormsg!=noerr
+		Call msgerrexit(errormsg)
 	endif
 endif

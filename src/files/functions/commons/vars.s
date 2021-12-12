@@ -1,25 +1,16 @@
 
 
 #same or zero
-function warn_or_log(ss str1,sd return_value,ss symbolname,sd log_option,sd p_err)
+function warn_or_log(sd type,sd return_value,ss symbolname,sd log_option,sd p_err)
 	data ptrobject%ptrobject
 	if ptrobject#==(TRUE)
 		if log_option==(log_warn)
-			data ptrlogfile%ptrlogfile
-			if ptrlogfile#!=-1
-				sd len
-				setcall len strlen(str1)
-				setcall p_err# writefile_errversion(ptrlogfile#,str1,len)
-				if p_err#!=(noerror)
-					return return_value
-				endif
-				add symbolname (dwsz)
-				setcall p_err# addtolog(symbolname)
-				if p_err#!=(noerror)
-					return return_value
-				endif
-				return 0
+			add symbolname (dwsz)
+			setcall p_err# addtolog_withchar(symbolname,type) #is not calling atunused version, that will return noerror at object false
+			if p_err#!=(noerror)
+				return return_value
 			endif
+			return 0
 		endif
 	endif
 	return return_value
@@ -60,18 +51,18 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 					And checkvalue idatabitfunction
 					if checkvalue==zero
 						data ptrcodeFnObj%ptrcodeFnObj
-						setcall returnvalue warn_or_log("f",returnvalue,container,ptrcodeFnObj#,warningssearch)
+						setcall returnvalue warn_or_log(0x66,returnvalue,container,ptrcodeFnObj#,warningssearch)
 					endif
 				elseif ptrconstants==ptrstructure
 					setcall cb constants_bool((const_warn_get))
-					setcall returnvalue warn_or_log("c",returnvalue,container,cb,warningssearch)
+					setcall returnvalue warn_or_log(0x63,returnvalue,container,cb,warningssearch)
 				endelseif
 				if returnvalue!=zero
 					Return returnvalue
 				endif
 			elseIf ptrconstants==ptrstructure
 				setcall cb constants_bool((const_warn_get))
-				call warn_or_log("r",entrypoint,container,cb,warningssearch)
+				call warn_or_log(0x72,entrypoint,container,cb,warningssearch)
 			EndelseIf
 		EndIf
 		Add container dwlen

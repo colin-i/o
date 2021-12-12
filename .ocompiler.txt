@@ -17,7 +17,7 @@ hidden_pref=1
 0 if False; 1 is True
 w_as_e=1
 
-5. Log file. This option creates a file with string lines.
+5. Log file. This option creates a file with string lines. The files tree is logged.
 0 is No; 1 is Yes
 logfile=1
 
@@ -26,7 +26,7 @@ logfile=1
 0 is Ignore them; 1 is Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
 codeFnObj=2
 
-7. CONST to unreferenced warnings, same as with FUNCTION. This will also log used constants and the files tree.
+7. CONST to unreferenced warnings, same as with FUNCTION. This will also log declared/used constants.
 [if warnings is 1]
 0 is Ignore them; 1 is Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
 const_warn=2

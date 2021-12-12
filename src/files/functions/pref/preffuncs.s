@@ -253,20 +253,6 @@ function constants_bool(sd direction)
 	return #bool
 endfunction
 
-function logincludes_decision(ss str,sd type)
-#when logfile is opened
-	sd bl;setcall bl constants_bool((const_warn_get))
-	if bl==(log_warn)
-		data ptrfilehandle%ptrlogfile
-		sd err
-		setcall err writefile_errversion(ptrfilehandle#,#type,1)
-		if err==(noerror)
-			setcall err addtolog(str)
-		endif
-		if err!=(noerror);call Message(err);endif
-	endif
-endfunction
-
 function inplace_reloc(sd p_addend)
 	sd p_inplace_reloc_pref%p_inplace_reloc_pref
 	if p_inplace_reloc_pref#==(zero_reloc)

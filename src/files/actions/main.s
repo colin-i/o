@@ -65,6 +65,8 @@ While includesReg!=null
 				Set content last
 			EndIf
 		EndWhile
+		setcall errormsg addtolog_withchar_ex("",0,0x65)
+		if errormsg!=(noerror);Call Message(errormsg);endif
 	EndIf
 
 	if includedir==true

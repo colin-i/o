@@ -63,15 +63,10 @@ If errormsg==noerr
 				Else
 					SetCall errormsg entryvarsfns(content,imp_size)
 					If errormsg==noerr
-						if logbool==(TRUE)
-							if codeFnObj==(log_warn)
-								if subtype==(cIMPORT)
-									setcall errormsg writefile_errversion(logfile,"i",1)
-									If errormsg==noerr
-										sub impquotsz impescapes
-										setcall errormsg addtolog_ex(imp_mark,impquotsz)
-									endIf
-								endif
+						if codeFnObj==(log_warn)
+							if subtype==(cIMPORT)
+								sub impquotsz impescapes
+								setcall errormsg addtolog_withchar_ex_atunused(imp_mark,impquotsz,0x69)
 							endif
 						endif
 						If errormsg==noerr
