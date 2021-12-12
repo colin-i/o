@@ -107,7 +107,7 @@ setcall prefix prefix_bool()
 set prefix# 0
 
 set dummyEntryReg 0
-call add_ref_to_sec(ptrdummyEntry,0,(dummy_mask),"",0)
+call add_ref_to_sec(ptrdummyEntry,0,(dummy_mask),(NULL),0)
 
 sd var
 setcall var function_in_code()
