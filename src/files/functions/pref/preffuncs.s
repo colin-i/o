@@ -253,13 +253,13 @@ function constants_bool(sd direction)
 	return #bool
 endfunction
 
-function logincludes_decision(ss str)
+function logincludes_decision(ss str,sd type)
 #when logfile is opened
 	sd bl;setcall bl constants_bool((const_warn_get))
 	if bl==(log_warn)
 		data ptrfilehandle%ptrlogfile
 		sd err
-		setcall err writefile_errversion(ptrfilehandle#,"p",1)
+		setcall err writefile_errversion(ptrfilehandle#,#type,1)
 		if err==(noerror)
 			setcall err addtolog(str)
 		endif

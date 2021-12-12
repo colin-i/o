@@ -32,9 +32,6 @@ Function include(Str path)
 	data negative=-1
 
 	data ptrlogfile%ptrlogfile
-	if ptrlogfile#!=negative
-		call logincludes_decision(path)
-	endif
 
 	Str contentoffl#1
 	Data sizeoffl#1
@@ -71,7 +68,7 @@ Function include(Str path)
 		endif
 
 		if ptrlogfile#!=negative
-			call logincludes_decision(pcontentoffl#)
+			call logincludes_decision(pcontentoffl#,(pathfolder_ascii))
 		endif
 
 
@@ -91,6 +88,9 @@ Function include(Str path)
 		set folders# storechar
 	endif
 
+	if ptrlogfile#!=negative
+		call logincludes_decision(path,0x6E)
+	endif
 
 	Data strsz#1
 	SetCall strsz strlen(path)

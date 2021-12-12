@@ -66,7 +66,7 @@ if logbool==true
 		else
 			Set storeachar filenameloc#
 			Set filenameloc# null
-			call logincludes_decision(path_nofree)
+			call logincludes_decision(path_nofree,(pathfolder_ascii))
 			Set filenameloc# storeachar
 		endelse
 		set appendextension# null
