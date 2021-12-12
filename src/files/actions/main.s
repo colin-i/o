@@ -65,8 +65,12 @@ While includesReg!=null
 				Set content last
 			EndIf
 		EndWhile
-		setcall errormsg addtolog_withchar_ex("",0,0x65)
-		if errormsg!=(noerror);Call Message(errormsg);endif
+		sd log_err
+		setcall log_err addtolog_withchar_ex("",0,0x65)
+		if log_err!=(noerror)
+			set errormsg log_err
+			Call Message(errormsg)
+		endif
 	EndIf
 
 	if includedir==true
