@@ -13,9 +13,9 @@ if argc>1
 	incst argv
 	while argv!=argc
 	#i tot, f tot; la sfarsit la fiecare f daca nu e in I gata
-	#nm d mai intai;  la  c   nm dc
-	#alt nm skip d ;  la  c   nm dc2
-	#la sfarsit se ia cea mai mica, daca una este in toate gata
+	#nm d mai intai;daca e primul   c  la  nm dc
+	#alt nm skip d ;daca una 6 una 4, ceva de 6 cu nr, while la alea 4
+	#               nr ar fi 2, raman 2
 		incst argv
 	endwhile
 endif
