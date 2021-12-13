@@ -18,7 +18,7 @@ Sub minpath unit
 Sub cursorpath unit
 
 While minpath!=cursorpath
-	Chars teststr=""
+	Chars teststr#1
 	Set teststr cursorpath#
 	If teststr==dot
 		Set pointofpathout cursorpath

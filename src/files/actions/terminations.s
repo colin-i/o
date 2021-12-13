@@ -17,7 +17,11 @@ If fileformat==pe_exec
 EndIf
 
 #verify preferences
-Call warnings(true,includes,nameofstoffile,#errormsg)
+sd err_bool
+setCall err_bool warnings(true,includes,nameofstoffile,#errormsg)
 If errormsg!=noerr
-	Call msgerrexit(errormsg)
+	if err_bool==(TRUE)
+		Call msgerrexit(errormsg)
+	endif
+	call errexit()
 EndIf

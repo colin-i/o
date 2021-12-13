@@ -7,59 +7,58 @@ const p_inplace_reloc_pref^inplace_reloc_pref
 const zero_reloc=0
 const addend_reloc=1
 
-#void
+#bool for err2
 Function warnings(sd searchInAll,sd includes,sd nameoffset,sd p_err)
 	Data warningsboolptr%ptrwarningsbool
 	Data warningsbool#1
 	Data null=NULL
 	Data true=TRUE
-	Data false=FALSE
 
 	Set warningsbool warningsboolptr#
-	If warningsbool==false
-		Return null
-	EndIf
+	If warningsbool==true
+		Data var#1
+		SetCall var searchinvars(null,null,null,p_err)
+		If var==null
+			If searchInAll==true
+				data ptrcodeFnObj%ptrcodeFnObj
+				if ptrcodeFnObj#!=(ignore_warn)
+					Data functionsptr%ptrfunctions
+					SetCall var varscore(null,null,functionsptr,p_err)
+				endif
+				if var==null
+					sd cb;setcall cb constants_bool((const_warn_get))
+					if cb!=(ignore_warn)
+						data constantsptr%ptrconstants
+						SetCall var varscore(null,null,constantsptr,p_err)
+					endif
+				endif
+			EndIf
+		EndIf
+		If var!=null
+			if p_err#==(noerror)
+				Chars unrefformat="Unreferenced variable/function/constant: %s. Scope Termination File: %s. To disable this warning see '.ocompiler.txt'"
+				Str ptrunrefformat^unrefformat
 
-	Data var#1
+				Data printbuffer#1
 
-	SetCall var searchinvars(null,null,null,p_err)
-	If var==null
-		If searchInAll==true
-			data ptrcodeFnObj%ptrcodeFnObj
-			if ptrcodeFnObj#!=(ignore_warn)
-				Data functionsptr%ptrfunctions
-				SetCall var varscore(null,null,functionsptr,p_err)
-			endif
-			if var==null
-				sd cb;setcall cb constants_bool((const_warn_get))
-				if cb!=(ignore_warn)
-					data constantsptr%ptrconstants
-					SetCall var varscore(null,null,constantsptr,p_err)
+				Data fileoff=nameoffset
+				Add var fileoff
+				Add includes nameoffset
+				SetCall printbuffer printbuf(ptrunrefformat,var,includes,0)
+				If printbuffer!=null
+					sd pallocerrormsg%ptrallocerrormsg
+					set pallocerrormsg# printbuffer
+				EndIf
+				Call safeMessage(printbuffer)
+				sd w%p_w_as_e
+				if w#==(TRUE)
+					set p_err# ""
+					return (FALSE)
 				endif
 			endif
 		EndIf
 	EndIf
-	If var!=null
-		Chars unrefformat="Unreferenced variable/function/constant: %s. Scope Termination File: %s. To disable this warning see '.ocompiler.txt'"
-		Str ptrunrefformat^unrefformat
-
-		Data printbuffer#1
-
-		Data fileoff=nameoffset
-		Add var fileoff
-		Add includes nameoffset
-		SetCall printbuffer printbuf(ptrunrefformat,var,includes,0)
-		If printbuffer!=null
-			sd pallocerrormsg%ptrallocerrormsg
-			set pallocerrormsg# printbuffer
-		EndIf
-		Call safeMessage(printbuffer)
-		sd w%p_w_as_e
-		if w#==(TRUE)
-			set p_err# ""
-			#else it will be the same allocerror
-		endif
-	EndIf
+	return (TRUE)
 EndFunction
 
 #void
