@@ -12,10 +12,10 @@ if argc>1
 	add argc argv
 	incst argv
 	while argv!=argc
-	#i tot, f tot; la sfarsit la fiecare f daca nu e in I gata
-	#nm d mai intai;daca e primul   c  la  nm dc
-	#alt nm skip d ;daca una 6 una 4, ceva de 6 cu nr, while la alea 4
-	#               nr ar fi 2, raman 2
+	#i all, f all; at end every f not i I, failure
+	#nm d;first c inside
+	#another log; files same; one c has some point in previous files same
+	#             decisions there
 		incst argv
 	endwhile
 endif
