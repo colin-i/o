@@ -60,10 +60,8 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 				if returnvalue!=zero
 					Return returnvalue
 				endif
-			elseIf ptrconstants==ptrstructure
-				setcall cb constants_bool((const_warn_get))
-				call warn_or_log(0x72,entrypoint,container,cb,warningssearch)
-			EndelseIf
+			endIf
+			#elseIf ptrconstants==ptrstructure 0x72
 		EndIf
 		Add container dwlen
 		Sub containerReg dwlen

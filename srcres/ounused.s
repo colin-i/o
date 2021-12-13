@@ -12,7 +12,10 @@ if argc>1
 	add argc argv
 	incst argv
 	while argv!=argc
-	#get f i, get c+d r+d
+	#i tot, f tot; la sfarsit la fiecare f daca nu e in I gata
+	#nm d mai intai;  la  c   nm dc
+	#alt nm skip d ;  la  c   nm dc2
+	#la sfarsit se ia cea mai mica, daca una este in toate gata
 		incst argv
 	endwhile
 endif
