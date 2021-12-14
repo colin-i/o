@@ -3,8 +3,8 @@ all: ounused
 OB = ounused
 OBJ = ${OB}.o
 FULLOBJ = ./${OB}
-FULLOBJS = $(FULLOBJ).s
-FULLOBJO = $(FULLOBJ).o
+FULLOBJS = ${FULLOBJ}.s
+FULLOBJO = ${FULLOBJ}.o
 
 %.o: ${FULLOBJS}
 	../src/o $<
@@ -13,7 +13,7 @@ syms =-s
 ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
 
 ounused: ${OBJ}
-	$(ATLDCOM) ${FULLOBJO}
+	${ATLDCOM} ${FULLOBJO}
 
 install: ounused
 	install -D ounused \

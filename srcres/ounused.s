@@ -1,8 +1,21 @@
 
+#every time this first file has timestamp greater than Makefile, Makefile is deleted
+#or make -B
+
 format elfobj
 
 #EXIT_SUCCESS 0
 const EXIT_FAILURE=1
+
+Importx "stderr" stderr
+Importx "fprintf" fprintf
+
+Function Message(ss text)
+	Chars visiblemessage={0x0a,0}
+	sd st^stderr
+	Call fprintf(st#,text)
+	Call fprintf(st#,#visiblemessage)
+EndFunction
 
 entrylinux main(sd argc,ss argv0)
 
@@ -12,10 +25,7 @@ if argc>1
 	add argc argv
 	incst argv
 	while argv!=argc
-	#i all, f all; at end every f not i I, failure
-	#nm d;first c inside
-	#another log; files same; one c has some point in previous files same
-	#             decisions there
+		include "./loop.s"
 		incst argv
 	endwhile
 endif
