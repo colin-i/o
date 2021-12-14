@@ -17,6 +17,8 @@ Function Message(ss text)
 	Call fprintf(st#,#visiblemessage)
 EndFunction
 
+include "./loop.s"
+
 entrylinux main(sd argc,ss argv0)
 
 if argc>1
@@ -25,7 +27,7 @@ if argc>1
 	add argc argv
 	incst argv
 	while argv!=argc
-		include "./loop.s"
+		call log_file(argv#)
 		incst argv
 	endwhile
 endif
