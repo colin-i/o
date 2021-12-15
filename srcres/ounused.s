@@ -4,7 +4,7 @@
 
 format elfobj
 
-#EXIT_SUCCESS 0
+const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
 
 Importx "stderr" stderr
@@ -30,6 +30,7 @@ if argc>1
 		call log_file(argv#)
 		incst argv
 	endwhile
+	return (EXIT_SUCCESS)
 endif
 
 return (EXIT_FAILURE)
