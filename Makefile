@@ -10,3 +10,5 @@ $(SUBDIRS):
 all:
 	./srcres/ounused ./srcres/ounused.s.log
 	./srcres/ounused ./src/linux/obj.s.log
+
+.NOTPARALLEL:
