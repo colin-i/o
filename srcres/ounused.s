@@ -16,6 +16,12 @@ Function Message(ss text)
 	Call fprintf(st#,text)
 	Call fprintf(st#,#visiblemessage)
 EndFunction
+function erMessage(ss text)
+	call Message(text)
+	aftercall er
+	set er (~0)
+	return (EXIT_FAILURE)
+endfunction
 
 include "./loop.s"
 
