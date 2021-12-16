@@ -12,7 +12,7 @@ Importx "fprintf" fprintf
 
 Function Message(ss text)
 	Chars visiblemessage={0x0a,0}
-	sd st^stderr
+	sv st^stderr
 	Call fprintf(st#,text)
 	Call fprintf(st#,#visiblemessage)
 EndFunction
@@ -32,6 +32,8 @@ include "./loop.s"
 entrylinux main(sd argc,ss argv0)
 
 if argc>1
+	call inits()
+	call allocs()
 	mult argc :
 	sv argv;set argv #argv0
 	add argc argv
@@ -40,6 +42,7 @@ if argc>1
 		call log_file(argv#)
 		incst argv
 	endwhile
+	call freeall()
 	return (EXIT_SUCCESS)
 endif
 

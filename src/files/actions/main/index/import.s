@@ -66,7 +66,7 @@ If errormsg==noerr
 						if codeFnObj==(log_warn)
 							if subtype==(cIMPORT)
 								sub impquotsz impescapes
-								setcall errormsg addtolog_withchar_ex_atunused(imp_mark,impquotsz,0x69)
+								setcall errormsg addtolog_withchar_ex_atunused(imp_mark,impquotsz,(log_import))
 							endif
 						endif
 						If errormsg==noerr

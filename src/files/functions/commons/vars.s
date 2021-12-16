@@ -51,11 +51,11 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 					And checkvalue idatabitfunction
 					if checkvalue==zero
 						data ptrcodeFnObj%ptrcodeFnObj
-						setcall returnvalue warn_or_log(0x66,returnvalue,container,ptrcodeFnObj#,warningssearch)
+						setcall returnvalue warn_or_log((log_function),returnvalue,container,ptrcodeFnObj#,warningssearch)
 					endif
 				elseif ptrconstants==ptrstructure
 					setcall cb constants_bool((const_warn_get))
-					setcall returnvalue warn_or_log(0x63,returnvalue,container,cb,warningssearch)
+					setcall returnvalue warn_or_log((log_constant),returnvalue,container,cb,warningssearch)
 				endelseif
 				if returnvalue!=zero
 					Return returnvalue

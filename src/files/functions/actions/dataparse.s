@@ -92,7 +92,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 			Str pconstdup^constdup
 			Return pconstdup
 		EndIf
-		setcall errnr addtolog_withchar_ex_atunused(content,valsize,0x64)
+		setcall errnr addtolog_withchar_ex_atunused(content,valsize,(log_declare))
 		If errnr!=noerr;Return errnr;EndIf
 		Set value zero
 	EndElse

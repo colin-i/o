@@ -66,7 +66,7 @@ While includesReg!=null
 			EndIf
 		EndWhile
 		sd log_err
-		setcall log_err addtolog_withchar_ex((NULL),0,0x65) #also ok on win
+		setcall log_err addtolog_withchar_ex((NULL),0,(log_fileend)) #also ok on win
 		if log_err!=(noerror)
 			set errormsg log_err
 			Call Message(errormsg)

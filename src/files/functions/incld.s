@@ -64,7 +64,7 @@ Function include(Str path)
 			return getcwderr
 		endif
 
-		setcall err addtolog_withchar(pcontentoffl#,(pathfolder_ascii))
+		setcall err addtolog_withchar(pcontentoffl#,(log_pathfolder))
 		If err!=noerr;Return err;EndIf
 
 		chars storechar#1
@@ -83,7 +83,7 @@ Function include(Str path)
 		set folders# storechar
 	endif
 
-	setcall err addtolog_withchar(path,0x6E)
+	setcall err addtolog_withchar(path,(log_pathname))
 	If err!=noerr;Return err;EndIf
 
 	Data strsz#1

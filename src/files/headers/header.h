@@ -273,7 +273,6 @@ const ptrlogbool^logbool
 data logfile#1
 data ptrlogfile^logfile
 const ptrlogfile^logfile
-const pathfolder_ascii=0x70
 
 
 data includedir#1

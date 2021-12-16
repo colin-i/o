@@ -60,7 +60,7 @@ if logbool==true
 		if errormsg==noerr
 			Set storeachar filenameloc#
 			Set filenameloc# null
-			setcall errormsg addtolog_withchar(path_nofree,(pathfolder_ascii))
+			setcall errormsg addtolog_withchar(path_nofree,(log_pathfolder))
 			Set filenameloc# storeachar
 		endif
 		set appendextension# null

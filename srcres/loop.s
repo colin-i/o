@@ -8,16 +8,9 @@ importx "getline" getline
 importx "feof" feof
 importx "free" free
 
-function freeall()
-	value logf#1
-	const logf_p^logf
-	call fclose(logf)
-	value logf_mem#1
-	const logf_mem_p^logf_mem
-	if logf_mem!=(NULL)
-		call free(logf_mem)
-	endif
-endfunction
+include "../src/files/headers/log.h"
+
+include "inits.s"
 
 function log_file(ss file)
 	call Message(file)
@@ -27,7 +20,6 @@ function log_file(ss file)
 		sv fp%logf_p
 		set fp# f
 		sv p%logf_mem_p
-		set p# 0
 		sd sz=0
 		while sz!=-1
 			sd bsz
@@ -44,18 +36,25 @@ function log_file(ss file)
 				endif
 			endelse
 		endwhile
-		call freeall()
+		call logclose()
 		return (void)
 	endif
-	call erMessage("fopen error")
+	call erExit("fopen error")
 endfunction
 
-function log_line(ss s,ss sz)
+function log_line(ss s,sd sz)
 #i all, f all; at end every f not i I, failure
 #nm d;first c inside
 #another log; files same; one c has some point in previous files same
 #             decisions there
-	add sz s
-	set sz# 0
-	call Message(s)
+	sd type
+	set type s#
+	inc s;dec sz
+	if type==(log_import)
+		sv imps%imp_mem_p
+		call addtocont(imps,s,sz)
+	elseif type==(log_function)
+		sv fns%fn_mem_p
+		call addtocont(fns,s,sz)
+	endelseif
 endfunction
