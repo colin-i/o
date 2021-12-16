@@ -22,6 +22,10 @@ function erMessage(ss text)
 	set er (~0)
 	return (EXIT_FAILURE)
 endfunction
+function erExit(ss text)
+	call freeall()
+	call erMessage(text)
+endfunction
 
 include "./loop.s"
 
