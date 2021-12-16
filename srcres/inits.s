@@ -40,10 +40,10 @@ function logclose()
 	if fp#!=(NULL)
 		call fclose(fp#)
 		set fp# (NULL)
-	endif
-	sv p%logf_mem_p
-	if p#!=(NULL)
-		call free(p#)
-		set p# (NULL)
+		sv p%logf_mem_p
+		if p#!=(NULL)
+			call free(p#)
+			set p# (NULL)
+		endif
 	endif
 endfunction
