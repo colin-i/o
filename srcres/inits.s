@@ -8,10 +8,10 @@ function inits()
 	value logf_mem#1
 	const logf_mem_p^logf_mem
 	set logf_mem (NULL)
-	value imp_mem#1
+	value imp_mem#1;data *#1
 	const imp_mem_p^imp_mem
 	set imp_mem (NULL)
-	value fn_mem#1
+	value fn_mem#1;data *#1
 	const fn_mem_p^fn_mem
 	set fn_mem (NULL)
 endfunction
