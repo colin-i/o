@@ -10,11 +10,15 @@ const EXIT_FAILURE=1
 Importx "stderr" stderr
 Importx "fprintf" fprintf
 
-Function Message(ss text)
+function messagedelim()
+	sv st^stderr
 	Chars visiblemessage={0x0a,0}
+	Call fprintf(st#,#visiblemessage)
+endfunction
+Function Message(ss text)
 	sv st^stderr
 	Call fprintf(st#,text)
-	Call fprintf(st#,#visiblemessage)
+	call messagedelim()
 EndFunction
 function erMessage(ss text)
 	call Message(text)
@@ -28,20 +32,24 @@ function erExit(ss text)
 endfunction
 
 include "./loop.s"
+include "./resolve.s"
 
-entrylinux main(sd argc,ss argv0)
+entrylinux main(sd argc,ss *argv0,ss argv1)
 
 if argc>1
 	call inits()
 	call allocs()
+	dec argc
+	sd i
+	set i argc
 	mult argc :
-	sv argv;set argv #argv0
+	sv argv;set argv #argv1
 	add argc argv
-	incst argv
 	while argv!=argc
 		call log_file(argv#)
 		incst argv
 	endwhile
+	call resolve(i)
 	call freeall()
 	return (EXIT_SUCCESS)
 endif

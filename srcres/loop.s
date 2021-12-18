@@ -13,7 +13,6 @@ include "../src/files/headers/log.h"
 include "inits.s"
 
 function log_file(ss file)
-	call Message(file)
 	sd f
 	setcall f fopen(file,"r")
 	if f!=(NULL)
