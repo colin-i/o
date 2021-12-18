@@ -1,4 +1,7 @@
 
+importx "get_current_dir_name" get_current_dir_name
+importx "strlen" strlen
+
 include "./mem.s"
 
 function inits()
@@ -14,6 +17,9 @@ function inits()
 	value fn_mem#1;data *#1
 	const fn_mem_p^fn_mem
 	set fn_mem (NULL)
+	value cwd#1;data *#1
+	const cwd_p^cwd
+	set cwd (NULL)
 endfunction
 
 function allocs()
@@ -21,17 +27,35 @@ function allocs()
 	call alloc(ip)
 	sv fp%fn_mem_p
 	call alloc(fp)
+	#
+	sv cwd%cwd_p
+	setcall cwd# get_current_dir_name()
+	if cwd#==(NULL)
+		call erExit("get_current_dir_name error")
+	endif
+	sd sz=:
+	add sz cwd
+	setcall sz# strlen(cwd#)
+	inc sz#
+	set sz sz#
+	call ralloc(cwd,(dword))
+	sd p;set p cwd#;add p sz;set p# sz
+	#
 endfunction
 
 function freeall()
-	call logclose()
 	sv ip%imp_mem_p
 	if ip#!=(NULL)
 		call free(ip#)
-	endif
-	sv fp%fn_mem_p
-	if fp#!=(NULL)
-		call free(fp#)
+		sv fp%fn_mem_p
+		if fp#!=(NULL)
+			call free(fp#)
+			sv cwd%cwd_p
+			if cwd#!=(NULL)
+				call free(cwd#)
+				call logclose()
+			endif
+		endif
 	endif
 endfunction
 

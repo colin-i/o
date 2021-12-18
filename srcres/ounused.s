@@ -47,6 +47,7 @@ if argc>1
 	add argc argv
 	while argv!=argc
 		call log_file(argv#)
+		call decrementdir()
 		incst argv
 	endwhile
 	call resolve(i)

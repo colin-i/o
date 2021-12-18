@@ -277,6 +277,7 @@ const ptrlogfile^logfile
 
 data includedir#1
 const ptrincludedir^includedir
+chars fileendchar#1
 
 const ignore_warn=0
 #const show_warn=1

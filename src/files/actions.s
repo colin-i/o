@@ -1,8 +1,12 @@
 
-
-
 #allocs can stand with inits that need on top then some allocs at openfilename then frees needing inits
 Include "./inits/alloc.s"
+
+if includedir==(TRUE)
+	set fileendchar (log_fileend)
+else
+	set fileendchar (log_fileend_old)
+endelse
 
 Include "./actions/setdefdir.s"
 

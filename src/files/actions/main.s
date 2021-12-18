@@ -66,7 +66,7 @@ While includesReg!=null
 			EndIf
 		EndWhile
 		sd log_err
-		setcall log_err addtolog_withchar_ex((NULL),0,(log_fileend)) #also ok on win
+		setcall log_err addtolog_withchar_ex((NULL),0,fileendchar) #also ok on win
 		if log_err!=(noerror)
 			set errormsg log_err
 			Call Message(errormsg)
@@ -77,7 +77,7 @@ While includesReg!=null
 		data int#1
 		setcall int chdir(contentoffile)
 		#0 success
-		if int!=null
+		if int!=chdirok
 			str restoredirerr="Restore folder error."
 			set errormsg restoredirerr
 			Call Message(errormsg)

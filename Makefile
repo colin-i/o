@@ -8,7 +8,7 @@ $(SUBDIRS):
 .PHONY: $(TOPTARGETS) $(SUBDIRS)
 
 all:
-	./srcres/ounused ./srcres/ounused.s.log
-	./srcres/ounused ./src/linux/obj.s.log
+	cd ./srcres; ./ounused ./ounused.s.log
+	cd ./src; ../srcres/ounused ./linux/obj.s.log
 
 .NOTPARALLEL:

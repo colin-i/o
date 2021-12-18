@@ -35,9 +35,8 @@ endfunction
 
 function addtocont(sv cont,ss s,sd sz)
 	#old size
-	sd oldsize
-	set oldsize cont
-	add oldsize :
+	sd oldsize=:
+	add oldsize cont
 	set oldsize oldsize#
 	#
 	#knowing ocompiler maxvaluecheck
@@ -49,6 +48,22 @@ function addtocont(sv cont,ss s,sd sz)
 	set oldsize# sz
 	add oldsize (dword)
 	call memcpy(oldsize,s,sz)
+endfunction
+function addtocont_rev(sv cont,ss s,sd sz)
+	#old size
+	sd oldsize=:
+	add oldsize cont
+	set oldsize oldsize#
+	#
+	#knowing ocompiler maxvaluecheck
+	sd size=dword
+	add size sz
+	call ralloc(cont,size)
+	#
+	add oldsize cont#
+	call memcpy(oldsize,s,sz)
+	add oldsize sz
+	set oldsize# sz
 endfunction
 
 #-1/p

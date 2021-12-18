@@ -7,6 +7,7 @@ importx "fclose" fclose
 importx "getline" getline
 importx "feof" feof
 importx "free" free
+importx "chdir" chdir
 
 include "../src/files/headers/log.h"
 
@@ -56,8 +57,46 @@ function log_line(ss s,sd sz)
 		if p==-1
 			call addtocont(imps,s,sz)
 		endif
+	elseif type==(log_pathfolder)
+		call incrementdir(s,sz)
+	elseif type==(log_fileend)
+		call decrementdir()
 	elseif type==(log_function)
 		sv fns%fn_mem_p
 		call addtocont(fns,s,sz)
 	endelseif
+endfunction
+
+function changedir(ss s)
+	if s#!=0 #it's extern chdir error
+		sd d
+		setcall d chdir(s)
+		if d!=0
+			Call erExit("chdir error")
+		endif
+	endif
+endfunction
+function incrementdir(ss s,sd sz)
+	ss p;set p s;add p sz;set p# 0 #this is on carriage return
+	inc sz
+	sv cwd%cwd_p
+	call addtocont_rev(cwd,s,sz)
+	call changedir(s)
+endfunction
+function decrementdir()
+	sv cwd%cwd_p
+	sd mem=:
+	add mem cwd
+	set mem mem#
+	add mem cwd#
+	sub mem (dword)
+	#
+	sd sz=dword
+	add sz mem#
+	#
+	sub mem sz
+	sub mem mem#
+	call changedir(mem)
+	neg sz
+	call ralloc(cwd,sz)
 endfunction
