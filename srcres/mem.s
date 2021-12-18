@@ -1,7 +1,10 @@
 
+const dword=4
+
 importx "malloc" malloc
 importx "realloc" realloc
 importx "memcpy" memcpy
+importx "memcmp" memcmp
 
 function alloc(sv p)
 	sd mem=0
@@ -38,12 +41,39 @@ function addtocont(sv cont,ss s,sd sz)
 	set oldsize oldsize#
 	#
 	#knowing ocompiler maxvaluecheck
-	sd size=4
+	sd size=dword
 	add size sz
 	call ralloc(cont,size)
 	#
 	add oldsize cont#
 	set oldsize# sz
-	add oldsize 4
+	add oldsize (dword)
 	call memcpy(oldsize,s,sz)
+endfunction
+
+#-1/p
+function pos_in_cont(sv cont,ss s,sd sz)
+	sd mem=:
+	add mem cont
+	set mem mem#
+	sd p
+	set p cont#
+	add mem p
+	#sd i=0
+	while p!=mem
+		sd len
+		set len p#
+		add p (dword)
+		if len==sz
+			sd c
+			setcall c memcmp(s,p,sz)
+			if c==0
+				#return i
+				return 0
+			endif
+		endif
+		add p len
+		#inc i
+	endwhile
+	return -1
 endfunction

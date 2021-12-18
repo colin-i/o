@@ -52,7 +52,11 @@ function log_line(ss s,sd sz)
 	inc s;dec sz
 	if type==(log_import)
 		sv imps%imp_mem_p
-		call addtocont(imps,s,sz)
+		sd p
+		setcall p pos_in_cont(imps,s,sz)
+		if p==-1
+			call addtocont(imps,s,sz)
+		endif
 	elseif type==(log_function)
 		sv fns%fn_mem_p
 		call addtocont(fns,s,sz)
