@@ -20,6 +20,9 @@ function inits()
 	value cwd#1;data *#1
 	const cwd_p^cwd
 	set cwd (NULL)
+	value files#1;data *#1
+	const files_p^files
+	set files (NULL)
 endfunction
 
 function allocs()
@@ -41,6 +44,8 @@ function allocs()
 	call ralloc(cwd,(dword))
 	sd p;set p cwd#;add p sz;set p# sz
 	#
+	sv fls%files_p
+	call alloc(fls)
 endfunction
 
 function freeall()
@@ -53,7 +58,11 @@ function freeall()
 			sv cwd%cwd_p
 			if cwd#!=(NULL)
 				call free(cwd#)
-				call logclose()
+				sv fls%files_p
+				if fls#!=(NULL)
+					call free(fls)
+					call logclose()
+				endif
 			endif
 		endif
 	endif

@@ -6,16 +6,22 @@ importx "realloc" realloc
 importx "memcpy" memcpy
 importx "memcmp" memcmp
 
-function alloc(sv p)
-	sd mem=0
-	setcall p# malloc(mem)
-	if p#!=(NULL)
-		sd m=:
-		add m p
-		set m# mem
-		return (void)
+#data
+function m_alloc(sd sz)
+	sd m
+	setcall m malloc(sz)
+	if m!=(NULL)
+		return m
 	endif
 	call erExit("malloc error")
+endfunction
+
+function alloc(sv p)
+	sd mem=0
+	setcall p# m_alloc(mem)
+	sd m=:
+	add m p
+	set m# mem
 endfunction
 
 function ralloc(sv p,sd sz)
@@ -64,6 +70,14 @@ function addtocont_rev(sv cont,ss s,sd sz)
 	call memcpy(oldsize,s,sz)
 	add oldsize sz
 	set oldsize# sz
+endfunction
+function addtocont_value(sv cont,sd value)
+	sd oldsize=:
+	add oldsize cont
+	call ralloc(cont,(dword))
+	set cont cont#
+	add cont oldsize#
+	set cont# value
 endfunction
 
 #-1/p

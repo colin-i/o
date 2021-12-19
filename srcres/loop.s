@@ -12,6 +12,7 @@ importx "chdir" chdir
 include "../src/files/headers/log.h"
 
 include "inits.s"
+include "files.s"
 
 function log_file(ss file)
 	sd f
@@ -50,6 +51,7 @@ function log_line(ss s,sd sz)
 	sd type
 	set type s#
 	inc s;dec sz
+	#d
 	if type==(log_import)
 		sv imps%imp_mem_p
 		sd p
@@ -57,14 +59,25 @@ function log_line(ss s,sd sz)
 		if p==-1
 			call addtocont(imps,s,sz)
 		endif
+	elseif type==(log_pathname)
+		call fileentry(s,sz)
 	elseif type==(log_pathfolder)
+		setcall sz nullend(s,sz)
 		call incrementdir(s,sz)
 	elseif type==(log_fileend)
 		call decrementdir()
+	# !q
+	#c
 	elseif type==(log_function)
 		sv fns%fn_mem_p
 		call addtocont(fns,s,sz)
 	endelseif
+endfunction
+
+function nullend(ss s,sd sz)
+	add s sz;set s# 0 #this is on carriage return
+	inc sz
+	return sz
 endfunction
 
 function changedir(ss s)
@@ -77,8 +90,6 @@ function changedir(ss s)
 	endif
 endfunction
 function incrementdir(ss s,sd sz)
-	ss p;set p s;add p sz;set p# 0 #this is on carriage return
-	inc sz
 	sv cwd%cwd_p
 	call addtocont_rev(cwd,s,sz)
 	call changedir(s)
