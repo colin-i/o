@@ -58,10 +58,15 @@ if logbool==true
 
 		setcall errormsg openfile(ptrlogfile,safecurrentdirtopath,_open_write)
 		if errormsg==noerr
-			Set storeachar filenameloc#
-			Set filenameloc# null
-			setcall errormsg addtolog_withchar(path_nofree,(log_pathfolder))
-			Set filenameloc# storeachar
+			sd log_main_folder
+			setcall log_main_folder getcwd((NULL),0)
+			if log_main_folder==(NULL)
+				chars getcwd_first="first getcwd error"
+				set errormsg #getcwd_first
+			else
+				setcall errormsg addtolog_withchar(log_main_folder,(log_pathfolder))
+				call free(log_main_folder)
+			endelse
 		endif
 		set appendextension# null
 	endif
