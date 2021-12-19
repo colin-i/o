@@ -85,13 +85,12 @@ function freefiles(sv cont)
 	sd mem=:
 	add mem cont
 	set cont cont#
-	set mem mem#
-	add mem cont
 	sv init
 	set init cont
-	while cont!=mem
+	add cont mem#
+	while init!=cont
+		decst cont
 		call free(cont#)
-		incst cont
 	endwhile
-	call free(init)
+	call free(cont)
 endfunction

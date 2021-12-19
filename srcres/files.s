@@ -37,6 +37,7 @@ function fileentry(sd s,sd sz)
 				setcall temp realloc(fls#,newsize)
 				if temp!=(NULL)
 					set fls# temp
+					set mem# newsize
 					add temp oldsize
 					set temp# init
 					return (void)
