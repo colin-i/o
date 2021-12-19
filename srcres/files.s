@@ -6,7 +6,7 @@ importx "realpath" realpath
 
 function fileentry(sd s,sd sz)
 	call nullend(s,sz)
-	sd temp
+	sv temp
 	setcall temp realpath(s,(NULL))
 	if temp!=(NULL)
 		sd len
@@ -17,16 +17,40 @@ function fileentry(sd s,sd sz)
 			sd size=dword
 			add size len
 			sd ent
-			setcall ent m_alloc(size)
-			set ent# len
-			sv fls%files_p
-			call addtocont_value(fls,ent)
-			add ent (dword)
-			call memcpy(ent,temp,len)
-			return (void)
+			setcall ent malloc(size)
+			if ent!=(NULL)
+				sd init
+				set init ent
+				#
+				set ent# len
+				add ent (dword)
+				call memcpy(ent,temp,len)
+				call free(temp)
+				#
+				sv fls%files_p
+				sd mem=:
+				add mem fls
+				sd oldsize
+				set oldsize mem#
+				sd newsize=dword
+				add newsize oldsize
+				setcall temp realloc(fls#,newsize)
+				if temp!=(NULL)
+					set fls# temp
+					add temp oldsize
+					set temp# init
+					return (void)
+				endif
+				call free(init)
+				call erExit("realloc error at files")
+			endif
+			call free(temp)
+			call erExit("malloc error at files")
 		endif
-		call erExit("realpath error")
+		call free(temp)
+		return (void)
 	endif
+	call erExit("realpath error")
 endfunction
 
 function fileentry_exists(sd s,sd sz)
