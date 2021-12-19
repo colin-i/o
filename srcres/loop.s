@@ -62,7 +62,7 @@ function log_line(ss s,sd sz)
 	elseif type==(log_pathname)
 		call fileentry(s,sz)
 	elseif type==(log_pathfolder)
-		setcall sz nullend(s,sz)
+		call nullend(s,sz);inc sz
 		call incrementdir(s,sz)
 	elseif type==(log_fileend)
 		call decrementdir()
@@ -76,8 +76,6 @@ endfunction
 
 function nullend(ss s,sd sz)
 	add s sz;set s# 0 #this is on carriage return
-	inc sz
-	return sz
 endfunction
 
 function changedir(ss s)

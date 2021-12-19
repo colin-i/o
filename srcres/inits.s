@@ -60,7 +60,7 @@ function freeall()
 				call free(cwd#)
 				sv fls%files_p
 				if fls#!=(NULL)
-					call free(fls)
+					call freefiles(fls)
 					call logclose()
 				endif
 			endif
@@ -79,4 +79,19 @@ function logclose()
 			set p# (NULL)
 		endif
 	endif
+endfunction
+
+function freefiles(sv cont)
+	sd mem=:
+	add mem cont
+	set cont cont#
+	set mem mem#
+	add mem cont
+	sv init
+	set init cont
+	while cont!=mem
+		call free(cont#)
+		incst cont
+	endwhile
+	call free(init)
 endfunction

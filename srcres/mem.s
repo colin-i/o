@@ -74,9 +74,10 @@ endfunction
 function addtocont_value(sv cont,sd value)
 	sd oldsize=:
 	add oldsize cont
+	set oldsize oldsize#
 	call ralloc(cont,(dword))
 	set cont cont#
-	add cont oldsize#
+	add cont oldsize
 	set cont# value
 endfunction
 

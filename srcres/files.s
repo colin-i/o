@@ -5,21 +5,24 @@ const TRUE=1
 importx "realpath" realpath
 
 function fileentry(sd s,sd sz)
-	sd b
-	setcall b fileentry_exists(s,sz)
-	if b==(FALSE)
-		setcall sz nullend(s,sz)
-		add sz (dword)
-		sd ent
-		setcall ent m_alloc(sz)
-		sd p;set p ent;add p (dword)
-		sd temp
-		setcall temp realpath(s,p)
-		if temp!=(NULL)
-			dec sz #ignoring null end
-			set ent# sz
+	call nullend(s,sz)
+	sd temp
+	setcall temp realpath(s,(NULL))
+	if temp!=(NULL)
+		sd len
+		setcall len strlen(temp)
+		sd b
+		setcall b fileentry_exists(temp,len)
+		if b==(FALSE)
+			sd size=dword
+			add size len
+			sd ent
+			setcall ent m_alloc(size)
+			set ent# len
 			sv fls%files_p
 			call addtocont_value(fls,ent)
+			add ent (dword)
+			call memcpy(ent,temp,len)
 			return (void)
 		endif
 		call erExit("realpath error")
