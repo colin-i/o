@@ -9,6 +9,6 @@ $(SUBDIRS):
 
 all:
 	cd ./srcres; ./ounused ./ounused.s.log
-	cd ./src; ../srcres/ounused ./linux/obj.s.log
+	if ! [ -f ./src/obj.o ];then cd ./src; ../srcres/ounused ./linux/obj.s.log; fi
 
 .NOTPARALLEL:
