@@ -30,15 +30,12 @@ function fileentry(sd s,sd sz)
 				#
 				sv fls%files_p
 				sd mem=:
-				sd oldsize
-				sd newsize=dword
 				add mem fls
-				set oldsize mem#
-				add newsize oldsize
-				setcall er ralloc_throwless(fls,newsize)
+				set mem mem#
+				setcall er ralloc_throwless(fls,(dword))
 				if er==(NULL)
-					set fls# temp
-					add temp oldsize
+					set temp fls#
+					add temp mem
 					set temp# init
 					return (void)
 				endif
