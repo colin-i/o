@@ -6,25 +6,27 @@ importx "realloc" realloc
 importx "memcpy" memcpy
 importx "memcmp" memcmp
 
-#data
-function m_alloc(sd sz)
-	sd m
-	setcall m malloc(sz)
-	if m!=(NULL)
-		return m
+function malloc_throwless(sv p,sd sz)
+	setcall p# malloc(sz)
+	if p#!=(NULL)
+		return (void)
 	endif
-	call erExit("malloc error")
+	return "malloc error"
 endfunction
-
 function alloc(sv p)
 	sd mem=0
-	setcall p# m_alloc(mem)
-	sd m=:
-	add m p
-	set m# mem
+	sd er
+	setcall er malloc_throwless(p,mem)
+	if er==(NULL)
+		sd m=:
+		add m p
+		set m# mem
+		return (void)
+	endif
+	call erExit(er)
 endfunction
 
-function ralloc(sv p,sd sz)
+function ralloc_throwless(sv p,sd sz)
 	sd mem;set mem p
 	add mem :
 	add sz mem#
@@ -32,11 +34,19 @@ function ralloc(sv p,sd sz)
 		setcall p# realloc(p#,sz)
 		if p#!=(NULL)
 			set mem# sz
-			return (void)
+			return (NULL)
 		endif
-		call erExit("realloc error")
+		return "realloc error"
 	endif
-	call erExit("realloc must stay in 31 bits")
+	return "realloc must stay in 31 bits"
+endfunction
+function ralloc(sv p,sd sz)
+	sd er
+	setcall er ralloc_throwless(p,sz)
+	if er==(NULL)
+		return (void)
+	endif
+	call erExit(er)
 endfunction
 
 function addtocont(sv cont,ss s,sd sz)

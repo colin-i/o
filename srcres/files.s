@@ -14,11 +14,12 @@ function fileentry(sd s,sd sz)
 		sd b
 		setcall b fileentry_exists(temp,len)
 		if b==(FALSE)
+			sd er
 			sd size=dword
-			add size len
 			sd ent
-			setcall ent malloc(size)
-			if ent!=(NULL)
+			add size len
+			setcall er malloc_throwless(#ent,size)
+			if er==(NULL)
 				sd init
 				set init ent
 				#
@@ -29,24 +30,23 @@ function fileentry(sd s,sd sz)
 				#
 				sv fls%files_p
 				sd mem=:
-				add mem fls
 				sd oldsize
-				set oldsize mem#
 				sd newsize=dword
+				add mem fls
+				set oldsize mem#
 				add newsize oldsize
-				setcall temp realloc(fls#,newsize)
-				if temp!=(NULL)
+				setcall er ralloc_throwless(fls,newsize)
+				if er==(NULL)
 					set fls# temp
-					set mem# newsize
 					add temp oldsize
 					set temp# init
 					return (void)
 				endif
 				call free(init)
-				call erExit("realloc error at files")
+				call erExit(er)
 			endif
 			call free(temp)
-			call erExit("malloc error at files")
+			call erExit(er)
 		endif
 		call free(temp)
 		return (void)
