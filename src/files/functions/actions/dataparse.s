@@ -148,7 +148,7 @@ function getsign(str content,data size,data typenumber,str assigntype,data reloc
 		return noerr
 	endif
 
-	Chars reservesign="#"
+	Chars reservesign=reserveascii
 	SetCall valsize valinmem_pipes(content,size,reservesign,ptrsz)
 	If valsize!=size
 		Data constnr=constantsnumber

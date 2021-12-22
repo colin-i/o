@@ -165,8 +165,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 			Call stepcursors(ptrcontent,ptrsize)
 			Return noerr
 		EndElse
-	Chars reserve="#"
-	ElseIf sign==reserve
+	ElseIf sign==(reserveascii)
 		SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 		If err!=noerr
 			Return err

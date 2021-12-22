@@ -56,7 +56,7 @@ while loop==2
 			else
 				add totalnewlines newlines
 			endelse
-		elseif pointer#==(asciiSemicolon)
+		elseif pointer#==(asciisemicolon)
 			set loop 1
 			set dot_comma_end 1
 		else

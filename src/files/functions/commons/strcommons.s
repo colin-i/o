@@ -80,8 +80,8 @@ Function stratmem(data pcontent,data psize,str match)
 	While sizetorun!=zero
 		Chars a_from_az={a_from_az}
 		Chars z_from_az={z_from_az}
-		Chars b={0}
-		Chars c={0}
+		Chars b#1
+		Chars c#1
 
 		Set b content#
 		If b>=a_from_az

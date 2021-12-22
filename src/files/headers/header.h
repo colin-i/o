@@ -122,7 +122,7 @@ Const totalmemvariables=charsnumber+1
 	Const stackdatanumber=totalmemvariables+integersnumber
 	Const stackstringnumber=totalmemvariables+stringsnumber
 	Const stackvaluenumber=totalmemvariables+charsnumber
-	#that was +charsnumber because it is compared once against charsnumber, to remember
+	#that was +charsnumber because it is compared against 2
 Const numberofvars=stackvaluenumber+1
 #from numberofvars to afterscopes comes inner function local scopes
 Const afterscopes=numberofvars*2
@@ -353,7 +353,9 @@ const i386_obj_default_reloc_rah=0
 const sd_as_sv_bool=0
 const sd_as_sv_get=1
 
-const commentascii=asciiNumber
+const commentascii=asciinumber
+const reserveascii=asciinumber
+const pointerascii=asciinumber
 
 const max_uint64=20
 chars uint64c#max_uint64+1

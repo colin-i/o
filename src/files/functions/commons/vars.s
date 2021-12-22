@@ -169,18 +169,27 @@ Function undefinedvariable()
 	Return _undefinedvar
 EndFunction
 
+const no_cast=-3
+const cast_value=asciiV
+const cast_data=asciiD
+const cast_string=asciiS
+
 #bool
-function is_string(sd number)
-	Data stringsnumber=stringsnumber
-	Data stackstringnumber=stackstringnumber
-	data true=1
-	data false=0
-	if number==stringsnumber
-		return true
-	elseif number==stackstringnumber
-		return true
-	endelseif
-	return false
+function is_string(sd number,sd cast)
+	if cast==(no_cast)
+		Data stringsnumber=stringsnumber
+		Data stackstringnumber=stackstringnumber
+		if number==stringsnumber
+			return (TRUE)
+		elseif number==stackstringnumber
+			return (TRUE)
+		endelseif
+		return (FALSE)
+	endif
+	if cast!=(cast_string)
+		return (FALSE)
+	endif
+	return (TRUE)
 endfunction
 
 #err
@@ -189,45 +198,28 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	Data ptrtype^type
 	Data false=FALSE
 	Data true=TRUE
+	sd err
+	sd cast
 
 	#size is expecting to be greater than zero
-	Str viewsfx#1
-	Set viewsfx content
-	Add viewsfx size
-	Dec viewsfx
-	Chars nrsgn="#"
-	Chars test#1
-	Set test viewsfx#
-	Data sufix#1
-	If test==nrsgn
-		Dec size
-		Set sufix true
-		#and, allow prefix and sufix same time, for fun
-	Else
-		Set sufix false
-	EndElse
+	setcall ptrsufix# sufix_test(content,#size,#cast)
 
 	Data null=NULL
 	Data data#1
 
 	SetCall data strinvars(content,size,ptrtype)
-
 	If data==null
-		Data err#1
 		SetCall err undefinedvariable()
 		Return err
 	EndIf
-
 	Set ptrdata# data
 
 	Data charsnumber=charsnumber
-	sd is_str
-	setcall is_str is_string(type)
-
 	sd prefix
 	setcall prefix prefix_bool()
+
 	If type==charsnumber
-		If sufix==true
+		If ptrsufix#==true
 			Chars ptrsfxerr="CHARS statement cannot have the pointer sufix."
 			Str _ptrsfxerr^ptrsfxerr
 			Return _ptrsfxerr
@@ -238,11 +230,17 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 			#need all chars address at prefix
 			set ptrlow# false
 		endelse
-	ElseIf is_str==false
+		return (noerror)
+	endIf
+
+	sd is_str
+	setcall is_str is_string(type,cast)
+
+	If is_str==false
 		Set ptrlow# false
 	Else
 	#str ss
-		If sufix==true
+		If ptrsufix#==true
 			if prefix#==0
 				Set ptrlow# true
 			else
@@ -252,9 +250,49 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 			Set ptrlow# false
 		EndElse
 	EndElse
-
-	Set ptrsufix# sufix
-
-	Data noerr=noerror
-	Return noerr
+	return (noerror)
 EndFunction
+
+#sufix
+function sufix_test(ss content,sd p_size,sd p_cast)
+	add content p_size#
+	dec content
+	if content#!=(pointerascii)
+		if content#==(asciicirc)
+			setcall p_cast# cast_test(content,p_size)
+			return (TRUE)
+		endif
+		set p_cast# (no_cast)
+		return (FALSE)
+	endif
+	dec p_size#
+	set p_cast# (no_cast)
+	#and, allow prefix and sufix same time, for fun
+	return (TRUE)
+endfunction
+
+#cast
+function cast_test(ss content,sd p_size)
+	if p_size#>=3 #test only the cast
+		dec content
+		sd c
+		set c content#
+		if c>=(a_from_az)
+			sub c (az_to_AZ)
+		endif
+		if c==(cast_value)
+		elseif c==(cast_data)
+		elseif c==(cast_string)
+		else
+			set c (no_cast)
+		endelse
+		if c!=(no_cast)
+			dec content
+			if content#==(pointerascii)
+				sub p_size# 3
+				return c
+			endif
+		endif
+	endif
+	return (no_cast)
+endfunction

@@ -126,8 +126,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			set possible_err undvar_err
 			set ptrdata# 0
 
-			chars arg_pointer="#"
-			if content#==arg_pointer
+			if content#==(pointerascii)
 				#prefix
 				setcall prefix prefix_bool()
 				set prefix# 1
@@ -181,7 +180,7 @@ endfunction
 
 function is_constant_related_ascii(sd in_byte)
 #! data cursor
-	if in_byte==(asciiExclamationmark)
+	if in_byte==(asciiexclamationmark)
 		return (TRUE)
 	elseif in_byte==(asciiparenthesisstart)
 		return (TRUE)
@@ -193,7 +192,7 @@ function is_constant_related_ascii(sd in_byte)
 	elseif in_byte<=(asciinine)
 		return (TRUE)
 #: size of integer
-	elseif in_byte==(asciiColon)
+	elseif in_byte==(asciicolon)
 		return (TRUE)
 #not,~
 	elseif in_byte==(asciiequiv)

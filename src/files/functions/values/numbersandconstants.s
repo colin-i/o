@@ -164,7 +164,7 @@ EndFunction
 function numbertoint(str content,data size,data outval,data minusbool)
 	Data bool#1
 	#test to see if the ! sign is present that means the current data cursor
-	chars data_cursor=asciiExclamationmark
+	chars data_cursor=asciiexclamationmark
 	if content#==data_cursor
 		setcall outval# get_img_vdata_dataReg()
 		if size!=1
@@ -173,7 +173,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		endif
 		return (noerror)
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
-	chars int_size=asciiColon
+	chars int_size=asciicolon
 	elseif content#==int_size
 		if size!=1;return "The text after the size of an integer sign isn't recognized.";endif
 		sd b;setcall b is_for_64()
