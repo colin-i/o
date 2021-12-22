@@ -22,24 +22,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Data eaxreg=eaxregnumber
 	Data ecxreg=ecxregnumber
 
-	Data intchar#1
-	Set intchar noreg
-
-	Data sameimportant#1
-	Set sameimportant true
-
 	Chars opprim#1
 	Chars opsec#1
 	Chars atprocthemem={moveatprocthemem}
 	Chars atmemtheproc={moveatmemtheproc}
-	Set opsec atprocthemem
-
-	Data divmul#1
-	Set divmul false
-	Data regprep#1
-	Set regprep eaxreg
-	Data regopcode#1
-	Set regopcode eaxreg
 
 	sd imm
 	call unsetimm()
@@ -49,6 +35,16 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	If errnr!=noerr
 		Return errnr
 	EndIf
+
+	Data sameimportant#1
+	Set sameimportant true
+	Data divmul#1
+	Set divmul false
+	Data regprep#1
+	Set regprep eaxreg
+	Data regopcode#1
+	Set regopcode eaxreg
+
 	#need to remind first prefix: p1 p2 need_p2 need_p1
 	sd remind_first_prefix
 	sd p_prefix
@@ -143,6 +139,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		EndIf
 	EndElse
 
+	Data intchar#1
+	Set intchar noreg
+	Set opsec atprocthemem
+
 	If ptrcondition==false
 		If lowprim==true
 			Dec opprim
@@ -219,6 +219,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
 				#pprefix is reset in the road at remind
 			endelse
+			call restore_argmask_two()
 		endelse
 		If errnr!=noerr
 			Return errnr
@@ -398,6 +399,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 
 		SetCall errnr addtosec(jumpcond,conddatasz,codeptr)
 	EndElseIf
+	call restore_argmask_one() #this must be after primwrite and divmul
 	Return errnr
 EndFunction
 
@@ -414,4 +416,10 @@ function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameim
 	endif
 	SetCall err writeop(dataargprim,opprim,(noregnumber),sufixprim,(eaxregnumber),lowprim)
 	return err
+endfunction
+
+function restore_argmask_one()
+endfunction
+
+function restore_argmask_two()
 endfunction

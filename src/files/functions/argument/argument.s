@@ -196,6 +196,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		setcall err write_imm(dataarg,op)
 	else
 		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
+		call restore_argmask_one()
 	endelse
 	If err!=noerr
 		Return err
