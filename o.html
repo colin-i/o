@@ -563,7 +563,7 @@
 	Example:
     <br>
 	<a class="code">
-    <p>
+	<p>
         Data valueA=1<br>
         Data valueB=2<br>
         Data pointerA^valueA<br>
@@ -594,7 +594,19 @@
         sd a<br>
         setcall a test()<br>
         set a# 8</p>
-    </a>
+	</a>
+
+	More can be done with the cast notations:
+
+	<table class="code">
+	<tr><td>format elfobj64</td></tr>
+	<tr><td>sd a</td></tr>
+	<tr><td>ss b</td></tr>
+	<tr><td>hex 144;set a a#s^</td><td>#cast data to string</td></tr>
+	<tr><td>Hex 144;set a a#v^</td><td>#cast data to value</td></tr>
+	<tr><td>hEx 144;set b b#D^</td><td>#cast string to data</td></tr>
+	<tr><td>heX 144;inc b#V^</td><td>#and a one arg cast</td></tr>
+	</table>
 </p>
 <h3><a name="usingfunctions">VII. Using functions</a></h3>
 <p>
