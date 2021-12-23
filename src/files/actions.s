@@ -1,5 +1,5 @@
 
-#allocs can stand with inits that need on top then some allocs at openfilename then frees needing inits
+#inits needed on top then some allocs at openfilename then frees needing inits, then these allocs
 Include "./inits/alloc.s"
 
 if includedir==(TRUE)

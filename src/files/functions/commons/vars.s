@@ -174,24 +174,6 @@ const cast_value=asciiV
 const cast_data=asciiD
 const cast_string=asciiS
 
-#bool
-function is_string(sd number,sd cast)
-	if cast==(no_cast)
-		Data stringsnumber=stringsnumber
-		Data stackstringnumber=stackstringnumber
-		if number==stringsnumber
-			return (TRUE)
-		elseif number==stackstringnumber
-			return (TRUE)
-		endelseif
-		return (FALSE)
-	endif
-	if cast!=(cast_string)
-		return (FALSE)
-	endif
-	return (TRUE)
-endfunction
-
 #err
 Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	Data type#1
@@ -234,7 +216,7 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	endIf
 
 	sd is_str
-	setcall is_str is_string(type,cast)
+	setcall is_str cast_resolve(type,cast,data)
 
 	If is_str==false
 		Set ptrlow# false
@@ -295,4 +277,30 @@ function cast_test(ss content,sd p_size)
 		endif
 	endif
 	return (no_cast)
+endfunction
+
+#bool is_string
+function cast_resolve(sd number,sd cast,sd data)
+	if cast==(no_cast)
+		Data stringsnumber=stringsnumber
+		Data stackstringnumber=stackstringnumber
+		if number==stringsnumber
+			return (TRUE)
+		elseif number==stackstringnumber
+			return (TRUE)
+		endelseif
+		return (FALSE)
+	endif
+	if cast!=(cast_string)
+		call store_argmask(data)
+		add data (maskoffset)
+		if cast==(cast_data)
+			and data# (~pointbit)
+		else
+		#cast==(cast_value)
+			or data# (pointbit)
+		endelse
+		return (FALSE)
+	endif
+	return (TRUE)
 endfunction

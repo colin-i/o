@@ -219,7 +219,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
 				#pprefix is reset in the road at remind
 			endelse
-			call restore_argmask_two()
+			call restore_argmask()
 		endelse
 		If errnr!=noerr
 			Return errnr
@@ -399,7 +399,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 
 		SetCall errnr addtosec(jumpcond,conddatasz,codeptr)
 	EndElseIf
-	call restore_argmask_one() #this must be after primwrite and divmul
+	call restore_argmask() #this must be after primwrite and/or divmul
 	Return errnr
 EndFunction
 
@@ -418,8 +418,36 @@ function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameim
 	return err
 endfunction
 
-function restore_argmask_one()
+function argmasks()
+	value a#5 #aligned(no casts at the time of write)
+	return #a
 endfunction
-
-function restore_argmask_two()
+function store_argmask(sd data)
+	sv a
+	setcall a argmasks()
+	inc a#
+	if a#==2
+		add a (2*:)
+	endif
+	incst a
+	set a# data
+	incst a
+	add data (maskoffset)
+	set a# data#
+endfunction
+function restore_argmask()
+	sv a
+	setcall a argmasks()
+	if a#>0
+		dec a#
+		if a#==1
+			add a (2*:)
+		endif
+		incst a
+		sd data
+		set data a#
+		incst a
+		add data (maskoffset)
+		set data# a#
+	endif
 endfunction
