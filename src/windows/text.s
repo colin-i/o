@@ -2,7 +2,7 @@
 
 #main
 
-Include "../files/inits.s"
+Include "../files/inits_top.s"
 
 set argv (NULL)
 Data openfilenamemethod#1
