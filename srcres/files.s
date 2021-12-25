@@ -52,9 +52,13 @@ function fileentry(sd s,sd sz)
 endfunction
 
 function fileentry_exists(sd s,sd sz)
-	sv fls%files_p
-	sd p=:;add p fls
-	set fls fls#;set p p#;add p fls
+	sv cont%files_p
+	sv fls
+	set fls cont#
+	sd p
+	add cont :
+	set p cont#d^
+	add p fls
 	while fls!=p
 		sd b
 		setcall b fileentry_compare(fls#,s,sz)

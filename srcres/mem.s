@@ -18,17 +18,15 @@ function alloc(sv p)
 	sd er
 	setcall er malloc_throwless(p,mem)
 	if er==(NULL)
-		sd m=:
-		add m p
-		set m# mem
+		add p :
+		set p#d^ mem
 		return (void)
 	endif
 	call erExit(er)
 endfunction
 
 function ralloc_throwless(sv p,sd sz)
-	sd mem;set mem p
-	add mem :
+	sd mem=:;add mem p
 	add sz mem#
 	if sz>0
 		setcall p# realloc(p#,sz)
@@ -84,12 +82,12 @@ endfunction
 
 #-1/p
 function pos_in_cont(sv cont,ss s,sd sz)
-	sd mem=:
-	add mem cont
-	set mem mem#
 	sd p
 	set p cont#
-	add mem p
+	sd mem
+	set mem p
+	add cont :
+	add mem cont#d^
 	#sd i=0
 	while p!=mem
 		sd len

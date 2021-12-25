@@ -36,13 +36,14 @@ function allocs()
 	if cwd#==(NULL)
 		call erExit("get_current_dir_name error")
 	endif
+	sd size
+	setcall size strlen(cwd#)
+	inc size
 	sd sz=:
 	add sz cwd
-	setcall sz# strlen(cwd#)
-	inc sz#
-	set sz sz#
+	set sz# size
 	call ralloc(cwd,(dword))
-	sd p;set p cwd#;add p sz;set p# sz
+	sd p;set p cwd#;add p size;set p# size
 	#
 	sv fls%files_p
 	call alloc(fls)
@@ -81,13 +82,13 @@ function logclose()
 	endif
 endfunction
 
-function freefiles(sv cont)
-	sd mem=:
-	add mem cont
-	set cont cont#
+function freefiles(sv container)
+	sv cont
+	set cont container#
 	sv init
 	set init cont
-	add cont mem#
+	add container :
+	add cont container#d^
 	while init!=cont
 		decst cont
 		call free(cont#)

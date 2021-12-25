@@ -2,12 +2,12 @@
 importx "fwrite" fwrite
 
 function resolve(sd j)
-	sv fns%fn_mem_p
-	sd mem=:
-	add mem fns
-	set mem mem#
+	sv cont%fn_mem_p
 	sd p
-	set p fns#
+	sd mem
+	set p cont#
+	add cont :
+	set mem cont#d^
 	add mem p
 	sv imps%imp_mem_p
 	sd i=0
