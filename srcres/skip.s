@@ -8,7 +8,7 @@ endfunction
 function skip_reset()
 	data s#1
 	const skip_nr_p^s
-	set s 0x7fFFffFF #not reaching here files pointer array
+	set s 0x7fFFffFF #files pointer array not reaching here
 endfunction
 
 function filesplus()
@@ -18,11 +18,11 @@ endfunction
 
 function filesminus()
 	sd f%files_nr_p
-	dec f#
 	sd s%skip_nr_p
 	if f#==s#
 		call skip_reset()
 	endif
+	dec f#
 endfunction
 
 function skip_test()
