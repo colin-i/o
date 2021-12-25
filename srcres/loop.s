@@ -13,6 +13,7 @@ include "../src/files/headers/log.h"
 
 include "inits.s"
 include "files.s"
+include "skip.s"
 
 function log_file(ss file)
 	sd f
@@ -44,34 +45,51 @@ function log_file(ss file)
 endfunction
 
 function log_line(ss s,sd sz)
-#i all, f all; at end every f not i I, failure
-#nm d;first c inside
-#another log; files same; one c has some point in previous files same
-#             decisions there
+#i all, f all; at end every f not i, failure
+#nm d; another log; files same; one c has some point in previous files same; decisions there
 	sd type
 	set type s#
 	inc s;dec sz
+	sd skip
 	#d
 	if type==(log_import)
-		sv imps%imp_mem_p
-		sd p
-		setcall p pos_in_cont(imps,s,sz)
-		if p==-1
-			call addtocont(imps,s,sz)
+		setcall skip skip_test()
+		if skip==(FALSE)
+			call import_add(s,sz)
 		endif
 	elseif type==(log_pathname)
-		call fileentry(s,sz)
+		call filesplus()
+		setcall skip skip_test()
+		if skip==(FALSE)
+			call fileentry(s,sz)
+		endif
 	elseif type==(log_pathfolder)
-		call nullend(s,sz);inc sz
-		call incrementdir(s,sz)
+		setcall skip skip_test()
+		if skip==(FALSE)
+			call incrementdir(s,sz)
+		endif
 	elseif type==(log_fileend)
-		call decrementdir()
-	# !q
+		call filesminus()
+		setcall skip skip_test()
+		if skip==(FALSE)
+			call decrementdir()
+		endif
+	elseif type==(log_fileend_old)
+		call filesminus()
 	#c
 	elseif type==(log_function)
 		sv fns%fn_mem_p
 		call addtocont(fns,s,sz)
 	endelseif
+endfunction
+
+function import_add(sd s,sd sz)
+	sv imps%imp_mem_p
+	sd p
+	setcall p pos_in_cont(imps,s,sz)
+	if p==-1
+		call addtocont(imps,s,sz)
+	endif
 endfunction
 
 function nullend(ss s,sd sz)
@@ -88,6 +106,7 @@ function changedir(ss s)
 	endif
 endfunction
 function incrementdir(ss s,sd sz)
+	call nullend(s,sz);inc sz
 	sv cwd%cwd_p
 	call addtocont_rev(cwd,s,sz)
 	call changedir(s)

@@ -39,6 +39,7 @@ entrylinux main(sd argc,ss *argv0,ss argv1)
 if argc>1
 	call inits()
 	call allocs()
+	call filesreset()
 	dec argc
 	sd i
 	set i argc
