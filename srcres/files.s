@@ -22,7 +22,8 @@ function fileentry_add(sd full,sd len)
 		sd mem=:
 		add mem fls
 		set mem mem#
-		setcall er ralloc_throwless(fls,(dword))
+		call incrementfiles()
+		setcall er ralloc_throwless(fls,:)
 		if er==(NULL)
 			sv cursor
 			set cursor fls#

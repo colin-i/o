@@ -25,10 +25,8 @@ function resolve(sd j)
 		inc i
 	endwhile
 	sv st^stderr
-	sd fls%files_p
-	add fls :
-	set fls fls#
-	div fls :
+	sd fls
+	setcall fls filessize()
 	Call fprintf(st#,"%u logs, %u files, %u %s resolved.",j,fls,i,f)
 	call messagedelim()
 endfunction

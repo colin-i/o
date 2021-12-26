@@ -14,6 +14,7 @@ include "../src/files/headers/log.h"
 include "inits.s"
 include "files.s"
 include "skip.s"
+include "const.s"
 
 function log_file(ss file)
 	sd f
@@ -51,8 +52,12 @@ function log_line(ss s,sd sz)
 	set type s#
 	inc s;dec sz
 	sd skip
-	#d
-	if type==(log_import)
+	if type==(log_declare)
+		setcall skip skip_test()
+		if skip==(FALSE)
+			call constant_add(s,sz)
+		endif
+	elseif type==(log_import)
 		setcall skip skip_test()
 		if skip==(FALSE)
 			call import_add(s,sz)
@@ -73,9 +78,14 @@ function log_line(ss s,sd sz)
 		setcall skip skip_test()
 		if skip==(FALSE)
 			call decrementdir()
+			call decrementfiles()
 		endif
 	elseif type==(log_fileend_old)
 		call filesminus()
+		setcall skip skip_test()
+		if skip==(FALSE)
+			call decrementfiles()
+		endif
 	#c
 	elseif type==(log_function)
 		sv fns%fn_mem_p
@@ -113,10 +123,17 @@ function incrementdir(ss s,sd sz)
 endfunction
 function decrementdir()
 	sv cwd%cwd_p
+
+#	sv mem=dword
+#	add mem cwd
+#	set mem mem#
+#	add mem cwd#d^
+
 	sd mem=:
 	add mem cwd
 	set mem mem#
 	add mem cwd#
+
 	sub mem (dword)
 	#
 	sd sz=dword

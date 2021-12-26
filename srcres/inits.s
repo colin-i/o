@@ -22,6 +22,8 @@ function inits()
 	set cwd (NULL)
 	value files#1;data *#1
 	const files_p^files
+	value levels#1;data *#1
+	const levels_p^levels
 	set files (NULL)
 endfunction
 
@@ -32,21 +34,40 @@ function allocs()
 	call alloc(fp)
 	#
 	sv cwd%cwd_p
+
+#	sv cursor=dword
+#	add cursor cwd
+#	setcall cursor# get_current_dir_name()
+
 	setcall cwd# get_current_dir_name()
+
+#	if cursor#==(NULL)
+
 	if cwd#==(NULL)
 		call erExit("get_current_dir_name error")
 	endif
 	sd size
 	setcall size strlen(cwd#)
 	inc size
+
+#	set cwd#d^ size
+
 	sd sz=:
 	add sz cwd
 	set sz# size
+
 	call ralloc(cwd,(dword))
-	sd p;set p cwd#;add p size;set p# size
+
+#	set cursor cursor#;add cursor size
+
+	sd cursor;set cursor cwd#;add cursor size
+
+	set cursor# size
 	#
 	sv fls%files_p
 	call alloc(fls)
+	sv lvs%levels_p
+	call alloc(lvs)
 endfunction
 
 function freeall()
@@ -62,7 +83,11 @@ function freeall()
 				sv fls%files_p
 				if fls#!=(NULL)
 					call freefiles(fls)
-					call logclose()
+					sv lvs%levels_p
+					if lvs#!=(NULL)
+						call free(lvs#)
+						call logclose()
+					endif
 				endif
 			endif
 		endif
@@ -83,15 +108,21 @@ function logclose()
 endfunction
 
 function freefiles(sv container)
-	sv cont
-	set cont container#
-	sv init
-	set init cont
+#	sv cursor
+#	set cursor container#d^
+#	add container (dword)
+#	set container container#
+#	add cursor container
+
+	sv cursor
+	set cursor container#
 	add container :
-	add cont container#d^
-	while init!=cont
-		decst cont
-		call free(cont#)
+	set container container#d^
+	add container cursor
+
+	while cursor!=container
+		decst container
+		call free(container#)
 	endwhile
-	call free(cont)
+	call free(container)
 endfunction
