@@ -113,6 +113,11 @@ function freefiles(sv container)
 #	add container (dword)
 #	set container container#
 #	add cursor container
+#	while container!=cursor
+#		decst cursor
+#		call free(cursor#)
+#	endwhile
+#	call free(cursor)
 
 	sv cursor
 	set cursor container#
