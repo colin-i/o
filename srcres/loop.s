@@ -74,16 +74,16 @@ function log_line(ss s,sd sz)
 			call incrementdir(s,sz)
 		endif
 	elseif type==(log_fileend)
-		call filesminus()
-		setcall skip skip_test()
-		if skip==(FALSE)
+		setcall skip filesminus()
+		if skip<=0
 			call decrementdir()
-			call decrementfiles()
+			if skip<0
+				call decrementfiles()
+			endif
 		endif
 	elseif type==(log_fileend_old)
-		call filesminus()
-		setcall skip skip_test()
-		if skip==(FALSE)
+		setcall skip filesminus()
+		if skip<0
 			call decrementfiles()
 		endif
 	#c

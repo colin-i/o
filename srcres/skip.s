@@ -16,13 +16,20 @@ function filesplus()
 	inc f#
 endfunction
 
+#cmp
 function filesminus()
 	sd f%files_nr_p
 	sd s%skip_nr_p
-	if f#==s#
-		call skip_reset()
-	endif
+	sd nr
+	set nr f#
 	dec f#
+	if nr==s#
+		call skip_reset()
+		return 0
+	elseif nr<s#
+		return -1
+	endelseif
+	return 1
 endfunction
 
 function skip_test()
