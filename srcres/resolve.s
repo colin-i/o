@@ -27,7 +27,9 @@ function resolve(sd j)
 	sv st^stderr
 	sd fls
 	setcall fls filessize()
-	Call fprintf(st#,"%u logs, %u files, %u %s resolved.",j,fls,i,f)
+	sd imps_sz
+	setcall imps_sz importssize()
+	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s resolved.",j,fls,imps_sz,i,f)
 	call messagedelim()
 endfunction
 
@@ -37,4 +39,21 @@ function wrongExit(ss x,ss n,sd len)
 	Call fprintf(st,"Unused %s: ",x)
 	call fwrite(n,len,1,st)
 	call erExit("")
+endfunction
+
+function importssize()
+	sv cont%imp_mem_p
+	sd p
+	sd mem
+	set mem cont#d^
+	add cont (dword)
+	set p cont#
+	add mem p
+	sd i=0
+	while p!=mem
+		add p p#
+		add p (dword)
+		inc i
+	endwhile
+	return i
 endfunction

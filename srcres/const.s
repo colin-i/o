@@ -15,7 +15,8 @@ function incrementfiles()
 endfunction
 
 function decrementfiles()
-	sv *lvs%levels_p
+	sd lvs%levels_p
+	call ralloc(lvs,(-dword))
 endfunction
 
 #sz

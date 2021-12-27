@@ -14,11 +14,10 @@ function malloc_throwless(sv p,sd sz)
 	return "malloc error"
 endfunction
 function alloc(sd p)
-	sd mem=0
-	set p# mem
+	set p# 0
 	add p (dword)
 	sd er
-	setcall er malloc_throwless(p,mem)
+	setcall er malloc_throwless(p,0)
 	if er==(NULL)
 		return (void)
 	endif
@@ -36,7 +35,10 @@ function ralloc_throwless(sd p,sd sz)
 			return (NULL)
 		endif
 		return "realloc error"
-	endif
+	elseif sz==0  #equal 0 discovered at decrementfiles, since C23 the behaviour is undefined
+		set p# 0
+		return (NULL)
+	endelseif
 	return "realloc must stay in 31 bits"
 endfunction
 function ralloc(sv p,sd sz)
