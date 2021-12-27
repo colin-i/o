@@ -19,13 +19,21 @@ function fileentry_add(sd full,sd len)
 		call memcpy(ent,full,len)
 		#
 		sv fls%files_p
+
+#		sd mem
+#		set mem fls#d^
+
 		sd mem=:
 		add mem fls
 		set mem mem#
+
 		call incrementfiles()
 		setcall er ralloc_throwless(fls,:)
 		if er==(NULL)
 			sv cursor
+
+#			add fls (dword)
+
 			set cursor fls#
 			add cursor mem
 			set cursor# init
@@ -54,6 +62,14 @@ endfunction
 function fileentry_exists(sd s)
 	sd sz
 	setcall sz strlen(s)
+
+#	sv fls%files_p
+#	sv p
+#	set p fls#d^
+#	add fls (dword)
+#	set fls fls#
+#	add p fls
+
 	sv cont%files_p
 	sv fls
 	set fls cont#
