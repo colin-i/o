@@ -11,20 +11,26 @@ function inits()
 	value logf_mem#1
 	const logf_mem_p^logf_mem
 	set logf_mem (NULL)
-	value imp_mem#1;data *#1
-	const imp_mem_p^imp_mem
+	data imp_mem_d#1;value imp_mem#1
+	const imp_mem_p^imp_mem_d
+	const imp_mem_vp^imp_mem
 	set imp_mem (NULL)
-	value fn_mem#1;data *#1
-	const fn_mem_p^fn_mem
+	data fn_mem_d#1;value fn_mem#1
+	const fn_mem_p^fn_mem_d
+	const fn_mem_vp^fn_mem
 	set fn_mem (NULL)
-	value cwd#1;data *#1
-	const cwd_p^cwd
+	data cwd_d#1;value cwd#1
+	const cwd_p^cwd_d
+	const cwd_vp^cwd
 	set cwd (NULL)
-	value files#1;data *#1
-	const files_p^files
-	value levels#1;data *#1
-	const levels_p^levels
+	data files_d#1;value files#1
+	const files_p^files_d
+	const files_vp^files
 	set files (NULL)
+	data levels_d#1;value levels#1
+	const levels_p^levels_d
+	const levels_vp^levels
+	set levels (NULL)
 endfunction
 
 function allocs()
@@ -34,34 +40,18 @@ function allocs()
 	call alloc(fp)
 	#
 	sv cwd%cwd_p
-
-#	sv cursor=dword
-#	add cursor cwd
-#	setcall cursor# get_current_dir_name()
-
-	setcall cwd# get_current_dir_name()
-
-#	if cursor#==(NULL)
-
-	if cwd#==(NULL)
+	sv cursor=dword
+	add cursor cwd
+	setcall cursor# get_current_dir_name()
+	if cursor#==(NULL)
 		call erExit("get_current_dir_name error")
 	endif
 	sd size
-	setcall size strlen(cwd#)
+	setcall size strlen(cursor#)
 	inc size
-
-#	set cwd#d^ size
-
-	sd sz=:
-	add sz cwd
-	set sz# size
-
+	set cwd#d^ size
 	call ralloc(cwd,(dword))
-
-#	set cursor cursor#;add cursor size
-
-	sd cursor;set cursor cwd#;add cursor size
-
+	set cursor cursor#;add cursor size
 	set cursor# size
 	#
 	sv fls%files_p
@@ -71,19 +61,19 @@ function allocs()
 endfunction
 
 function freeall()
-	sv ip%imp_mem_p
+	sv ip%imp_mem_vp
 	if ip#!=(NULL)
 		call free(ip#)
-		sv fp%fn_mem_p
+		sv fp%fn_mem_vp
 		if fp#!=(NULL)
 			call free(fp#)
-			sv cwd%cwd_p
+			sv cwd%cwd_vp
 			if cwd#!=(NULL)
 				call free(cwd#)
-				sv fls%files_p
+				sv fls%files_vp
 				if fls#!=(NULL)
-					call freefiles(fls)
-					sv lvs%levels_p
+					call freefiles()
+					sv lvs%levels_vp
 					if lvs#!=(NULL)
 						call free(lvs#)
 						call logclose()
@@ -107,27 +97,16 @@ function logclose()
 	endif
 endfunction
 
-function freefiles(sv container)
-#	sv cursor
-#	set cursor container#d^
-#	add container (dword)
-#	set container container#
-#	add cursor container
-#	while container!=cursor
-#		decst cursor
-#		call free(cursor#)
-#	endwhile
-#	call free(cursor)
-
+function freefiles()
+	sv container%files_p
 	sv cursor
-	set cursor container#
-	add container :
-	set container container#d^
-	add container cursor
-
-	while cursor!=container
-		decst container
-		call free(container#)
+	set cursor container#d^
+	add container (dword)
+	set container container#
+	add cursor container
+	while container!=cursor
+		decst cursor
+		call free(cursor#)
 	endwhile
-	call free(container)
+	call free(cursor)
 endfunction

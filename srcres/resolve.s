@@ -5,17 +5,10 @@ function resolve(sd j)
 	sv cont%fn_mem_p
 	sd p
 	sd mem
-
-#	set mem cont#d^
-#	add cont (dword)
-#	set p cont#
-
-	set p cont#
-	add cont :
 	set mem cont#d^
-
+	add cont (dword)
+	set p cont#
 	add mem p
-
 	sv imps%imp_mem_p
 	sd i=0
 	str f="function"
