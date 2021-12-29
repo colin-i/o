@@ -14,14 +14,19 @@ function malloc_throwless(sv p,sd sz)
 	return "malloc error"
 endfunction
 function alloc(sd p)
-	set p# 0
-	add p (dword)
 	sd er
-	setcall er malloc_throwless(p,0)
+	setcall er alloc_throwless(p)
 	if er==(NULL)
 		return (void)
 	endif
 	call erExit(er)
+endfunction
+function alloc_throwless(sd p)
+	set p# 0
+	add p (dword)
+	sd er
+	setcall er malloc_throwless(p,0)
+	return er
 endfunction
 
 function ralloc_throwless(sd p,sd sz)

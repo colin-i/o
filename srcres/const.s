@@ -1,7 +1,17 @@
 
 
-
-function constant_add(sd *s,sd *sz)
+function constant_add(sd s,sd sz)
+	sv lvs%levels_p
+	sv p=-dword
+	add p lvs#d^
+	add lvs (dword)
+	add p lvs#
+	set p p#d^
+	mult p :
+	sv fls%files_vp
+	add p fls#
+	set p p#
+	call addtocont(p,s,sz)
 endfunction
 
 function incrementfiles()
@@ -25,4 +35,35 @@ function filessize()
 	set fls fls#
 	div fls :
 	return fls
+endfunction
+
+#sz
+function constssize()
+	sv cursor%files_p
+	sd end
+	set end cursor#d^
+	add cursor (dword)
+	set cursor cursor#
+	add end cursor
+	sd sz=0
+	while cursor!=end
+		addcall sz constssize_file(cursor#)
+		incst cursor
+	endwhile
+	return sz
+endfunction
+#sz
+function constssize_file(sd cursor)
+	sd end
+	set end cursor#
+	add cursor (dword)
+	set cursor cursor#v^
+	add end cursor
+	sd sz=0
+	while cursor!=end
+		add cursor cursor#
+		add cursor (dword)
+		inc sz
+	endwhile
+	return sz
 endfunction

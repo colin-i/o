@@ -106,6 +106,9 @@ function freefiles()
 	add cursor container
 	while container!=cursor
 		decst cursor
+		sv consts=dword
+		add consts cursor#
+		call free(consts#)
 		call free(cursor#)
 	endwhile
 	call free(cursor)

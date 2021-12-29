@@ -24,12 +24,15 @@ function resolve(sd j)
 		add p len
 		inc i
 	endwhile
+	str c="constant"
 	sv st^stderr
 	sd fls
 	setcall fls filessize()
 	sd imps_sz
 	setcall imps_sz importssize()
-	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s resolved.",j,fls,imps_sz,i,f)
+	sd const_sz
+	setcall const_sz constssize()
+	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s, %u %s resolved.",j,fls,imps_sz,const_sz,c,i,f)
 	call messagedelim()
 endfunction
 

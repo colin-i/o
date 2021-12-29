@@ -4,9 +4,11 @@ const TRUE=1
 
 importx "realpath" realpath
 
+const size_cont_top=dword+:
+
 function fileentry_add(sd full,sd len)
 	sd er
-	sd size=dword
+	sd size=size_cont_top+dword
 	sd ent
 	add size len
 	setcall er malloc_throwless(#ent,size)
@@ -14,25 +16,36 @@ function fileentry_add(sd full,sd len)
 		sd init
 		set init ent
 		#
-		set ent# len
-		add ent (dword)
-		call memcpy(ent,full,len)
-		#
-		sv fls%files_p
-		sd mem
-		set mem fls#d^
-		call incrementfiles()
-		setcall er ralloc_throwless(fls,:)
+		setcall er alloc_throwless(ent)
 		if er==(NULL)
-			sv cursor
-			add fls (dword)
-			set cursor fls#
-			add cursor mem
-			set cursor# init
-			return (void)
+			sd const_cont
+			set const_cont ent#v^
+			add ent (size_cont_top)
+			#
+			set ent# len
+			add ent (dword)
+			call memcpy(ent,full,len)
+			#
+			sv fls%files_p
+			sd mem
+			set mem fls#d^
+			call incrementfiles()
+			setcall er ralloc_throwless(fls,:)
+			if er==(NULL)
+				sv cursor
+				add fls (dword)
+				set cursor fls#
+				add cursor mem
+				set cursor# init
+				return (void)
+			endif
+			call free(const_cont)
+			call free(init)
+			call free(full)
+			call erExit(er)
 		endif
-		call free(full)
 		call free(init)
+		call free(full)
 		call erExit(er)
 	endif
 	call free(full)
@@ -74,6 +87,7 @@ endfunction
 
 #cmp
 function fileentry_compare(sd existent,sd new,sd sz)
+	add existent (size_cont_top)
 	if existent#!=sz
 		return (~0)
 	endif
