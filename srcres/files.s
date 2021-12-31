@@ -18,10 +18,7 @@ function fileentry_add(sd full,sd len)
 		#
 		setcall er alloc_throwless(ent)
 		if er==(NULL)
-			sd const_cont
-			set const_cont ent#v^
 			add ent (size_cont_top)
-			#
 			set ent# len
 			add ent (dword)
 			call memcpy(ent,full,len)
@@ -39,7 +36,9 @@ function fileentry_add(sd full,sd len)
 				set cursor# init
 				return (void)
 			endif
-			call free(const_cont)
+			sv pointer=dword
+			add pointer init
+			call free(pointer#)
 			call free(init)
 			call free(full)
 			call erExit(er)

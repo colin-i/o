@@ -46,8 +46,7 @@ function log_file(ss file)
 endfunction
 
 function log_line(ss s,sd sz)
-#i all, f all; at end every f not i, failure
-#nm d; another log; files same; one c has some point in previous files same; decisions there
+#i all, f all; at end every f not i, failure. constants are with all includes two types of children declared/already and at every log unused/still unused
 	sd type
 	set type s#
 	inc s;dec sz
