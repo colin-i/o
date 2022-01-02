@@ -15,6 +15,7 @@ include "inits.s"
 include "files.s"
 include "skip.s"
 include "const.s"
+include "uconst.s"
 
 function log_file(ss file)
 	sd f
@@ -85,7 +86,8 @@ function log_line(ss s,sd sz)
 		if skip<0
 			call decrementfiles()
 		endif
-	#c
+	elseif type==(log_constant)
+		call uconst_add(s,sz)
 	elseif type==(log_function)
 		sv fns%fn_mem_p
 		call addtocont(fns,s,sz)
