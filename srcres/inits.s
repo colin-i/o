@@ -40,6 +40,20 @@ function allocs()
 	call alloc(fp)
 	#
 	sv cwd%cwd_p
+#setcall cwd# get_current_dir_name()
+#if cwd#==(NULL)
+#	call erExit("get_current_dir_name error")
+#endif
+#sd size=:
+#add size cwd
+#sd sz
+#setcall sz strlen(cwd#)
+#inc sz
+#set size# sz
+#call ralloc(cwd,(dword))
+#set cwd cwd#
+#add cwd sz
+#set cwd#d^ sz
 	sv cursor=dword
 	add cursor cwd
 	setcall cursor# get_current_dir_name()
@@ -52,7 +66,8 @@ function allocs()
 	set cwd#d^ size
 	call ralloc(cwd,(dword))
 	set cursor cursor#;add cursor size
-	set cursor# size
+	set cursor#d^ size
+#
 	#
 	sv fls%files_p
 	call alloc(fls)
@@ -112,4 +127,18 @@ function freefiles()
 		call free(cursor#)
 	endwhile
 	call free(cursor)
+#sv container%files_p
+#sv start
+#set start container#
+#add container :
+#set container container#d^
+#add container start
+#while start!=container
+#	decst container
+#	sv consts
+#	set consts container#
+#	call free(consts#)
+#	call free(consts)
+#endwhile
+#call free(container)
 endfunction
