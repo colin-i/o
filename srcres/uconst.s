@@ -1,10 +1,10 @@
 
 
 function uconst_add(sd s,sd sz)
-	sd lvs%levels_vp
+	sd lvs%levels_p
 	set lvs lvs#v^
 	set lvs lvs#
-	sv fls%files_vp
+	sv fls%files_p
 	set fls fls#
 	add fls lvs
 	call uconst_spin(fls#,s,sz,(TRUE))

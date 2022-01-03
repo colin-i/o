@@ -11,25 +11,22 @@ function inits()
 	value logf_mem#1
 	const logf_mem_p^logf_mem
 	set logf_mem (NULL)
-	data imp_mem_d#1;value imp_mem#1
-	const imp_mem_p^imp_mem_d
-	const imp_mem_vp^imp_mem
+	value imp_mem#1;data *#1
+	const imp_mem_p^imp_mem
 	set imp_mem (NULL)
-	data fn_mem_d#1;value fn_mem#1
-	const fn_mem_p^fn_mem_d
-	const fn_mem_vp^fn_mem
+	value fn_mem#1;data *#1
+	const fn_mem_p^fn_mem
 	set fn_mem (NULL)
-	data cwd_d#1;value cwd#1
-	const cwd_p^cwd_d
-	const cwd_vp^cwd
+	value cwd#1;data *#1
+	const cwd_p^cwd
 	set cwd (NULL)
-	data files_d#1;value files#1
-	const files_p^files_d
-	const files_vp^files
+	value files#1;data files_d#1
+	const files_p^files
+	const files_dp^files_d
 	set files (NULL)
-	data levels_d#1;value levels#1
-	const levels_p^levels_d
-	const levels_vp^levels
+	value levels#1;data levels_d#1
+	const levels_p^levels
+	const levels_dp^levels_d
 	set levels (NULL)
 endfunction
 
@@ -40,35 +37,21 @@ function allocs()
 	call alloc(fp)
 	#
 	sv cwd%cwd_p
-#setcall cwd# get_current_dir_name()
-#if cwd#==(NULL)
-#	call erExit("get_current_dir_name error")
-#endif
-#sd size=:
-#add size cwd
-#sd sz
-#setcall sz strlen(cwd#)
-#inc sz
-#set size# sz
-#call ralloc(cwd,(dword))
-#set cwd cwd#
-#add cwd sz
-#set cwd#d^ sz
-	sv cursor=dword
-	add cursor cwd
-	setcall cursor# get_current_dir_name()
-	if cursor#==(NULL)
+	setcall cwd# get_current_dir_name()
+	if cwd#==(NULL)
 		call erExit("get_current_dir_name error")
 	endif
-	sd size
-	setcall size strlen(cursor#)
-	inc size
-	set cwd#d^ size
+	sd size=:
+	add size cwd
+	sd sz
+	setcall sz strlen(cwd#)
+	inc sz
+	set size# sz
 	call ralloc(cwd,(dword))
-	set cursor cursor#;add cursor size
-	set cursor#d^ size
-#
-	#
+	set cwd cwd#
+	add cwd sz
+	set cwd#d^ sz
+	#sv cursor=dword;add cursor cwd;setcall cursor# get_current_dir_name();if cursor#==(NULL);call erExit("get_current_dir_name error");endif;sd size;setcall size strlen(cursor#);inc size;set cwd#d^ size;call ralloc(cwd,(dword));set cursor cursor#;add cursor size;set cursor#d^ size
 	sv fls%files_p
 	call alloc(fls)
 	sv lvs%levels_p
@@ -76,19 +59,19 @@ function allocs()
 endfunction
 
 function freeall()
-	sv ip%imp_mem_vp
+	sv ip%imp_mem_p
 	if ip#!=(NULL)
 		call free(ip#)
-		sv fp%fn_mem_vp
+		sv fp%fn_mem_p
 		if fp#!=(NULL)
 			call free(fp#)
-			sv cwd%cwd_vp
+			sv cwd%cwd_p
 			if cwd#!=(NULL)
 				call free(cwd#)
-				sv fls%files_vp
+				sv fls%files_p
 				if fls#!=(NULL)
 					call freefiles()
-					sv lvs%levels_vp
+					sv lvs%levels_p
 					if lvs#!=(NULL)
 						call free(lvs#)
 						call logclose()
@@ -113,32 +96,19 @@ function logclose()
 endfunction
 
 function freefiles()
+	#sv container%files_p;sv cursor;set cursor container#d^;add container (dword);set container container#;add cursor container;while container!=cursor;decst cursor;sv consts=dword;add consts cursor#;call free(consts#);call free(cursor#);endwhile;call free(cursor)
 	sv container%files_p
-	sv cursor
-	set cursor container#d^
-	add container (dword)
-	set container container#
-	add cursor container
-	while container!=cursor
-		decst cursor
-		sv consts=dword
-		add consts cursor#
+	sv start
+	set start container#
+	add container :
+	set container container#d^
+	add container start
+	while start!=container
+		decst container
+		sv consts
+		set consts container#
 		call free(consts#)
-		call free(cursor#)
+		call free(consts)
 	endwhile
-	call free(cursor)
-#sv container%files_p
-#sv start
-#set start container#
-#add container :
-#set container container#d^
-#add container start
-#while start!=container
-#	decst container
-#	sv consts
-#	set consts container#
-#	call free(consts#)
-#	call free(consts)
-#endwhile
-#call free(container)
+	call free(container)
 endfunction

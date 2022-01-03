@@ -4,8 +4,8 @@ const TRUE=1
 
 importx "realpath" realpath
 
-const size_cont_top=dword+:
-#const size_cont_top=:+dword
+#const size_cont_top=dword+:
+const size_cont_top=:+dword
 
 function fileentry_add(sd full,sd len)
 	sd er
@@ -14,9 +14,8 @@ function fileentry_add(sd full,sd len)
 	add size len
 	setcall er malloc_throwless(#ent,size)
 	if er==(NULL)
-#sv init
-		sd init
-#
+		sv init
+		#sd init
 		set init ent
 		#
 		setcall er alloc_throwless(ent)
@@ -27,29 +26,19 @@ function fileentry_add(sd full,sd len)
 			call memcpy(ent,full,len)
 			#
 			sv fls%files_p
-#call incrementfiles()
-#setcall er ralloc_throwless(fls,:)
-#if er==(NULL)
-#	sv cursor=-:
-#	add cursor fls#
-			sd mem
-			set mem fls#d^
 			call incrementfiles()
 			setcall er ralloc_throwless(fls,:)
 			if er==(NULL)
-				sv cursor
-				add fls (dword)
-				set cursor fls#
-				add cursor mem
-#
+				sv cursor=-:
+				sd mem%files_dp
+				add cursor mem#
+				add cursor fls#
+				#sd mem;set mem fls#d^;call incrementfiles();setcall er ralloc_throwless(fls,:);if er==(NULL);sv cursor;add fls (dword);set cursor fls#;add cursor mem
 				set cursor# init
 				return (void)
 			endif
-#call free(init#)
-			sv pointer=dword
-			add pointer init
-			call free(pointer#)
-#
+			call free(init#)
+			#sv pointer=dword;add pointer init;call free(pointer#)
 			call free(init)
 			call free(full)
 			call erExit(er)
@@ -79,31 +68,19 @@ function fileentry_exists(sd s)
 	setcall sz strlen(s)
 	sv fls%files_p
 	sv p
-#set p fls#
-#add fls :
-#set fls fls#d^
-#add fls p
-#while p!=fls
-#	sd b
-#	setcall b fileentry_compare(p#,s,sz)
-#	if b==0
-#		call skip_set()
-#		return (void)
-#	endif
-#	incst p
-	set p fls#d^
-	add fls (dword)
-	set fls fls#
-	add p fls
-	while fls!=p
+	set p fls#
+	add fls :
+	set fls fls#d^
+	add fls p
+	while p!=fls
 		sd b
-		setcall b fileentry_compare(fls#,s,sz)
+		setcall b fileentry_compare(p#,s,sz)
 		if b==0
 			call skip_set()
 			return (void)
 		endif
-		incst fls
-#
+		incst p
+	#set p fls#d^;add fls (dword);set fls fls#;add p fls;while fls!=p;sd b;setcall b fileentry_compare(fls#,s,sz);if b==0;call skip_set();return (void);endif;incst fls
 	endwhile
 	call fileentry_add(s,sz)
 endfunction

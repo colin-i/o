@@ -22,45 +22,33 @@ function alloc(sd p)
 	call erExit(er)
 endfunction
 function alloc_throwless(sd p)
-#sd er
-#setcall er malloc_throwless(p,0)
-#if er==(NULL)
-#	add p :
-#	set p# 0
-#	return (NULL)
-#endif
-#return er
-	set p# 0
-	add p (dword)
 	sd er
 	setcall er malloc_throwless(p,0)
+	if er==(NULL)
+		add p :
+		set p# 0
+		return (NULL)
+	endif
 	return er
+	#set p# 0;add p (dword);sd er;setcall er malloc_throwless(p,0);return er
 endfunction
 
-function ralloc_throwless(sd p,sd sz)
-#function ralloc_throwless(sv p,sd sz)
-#sd cursor=:
-#add cursor p
-#add sz cursor#
-#if sz>0
-#	setcall p# realloc(p#,sz)
-#	if p#!=(NULL)
-#		set cursor# sz
-	add sz p#
+#function ralloc_throwless(sd p,sd sz);add sz p#;if sz>0;sv cursor=dword;add cursor p;setcall cursor# realloc(cursor#,sz);if cursor#!=(NULL);set p# sz
+function ralloc_throwless(sv p,sd sz)
+	sd cursor=:
+	add cursor p
+	add sz cursor#
 	if sz>0
-		sv cursor=dword
-		add cursor p
-		setcall cursor# realloc(cursor#,sz)
-		if cursor#!=(NULL)
-			set p# sz
-#
+		setcall p# realloc(p#,sz)
+		if p#!=(NULL)
+			set cursor# sz
 			return (NULL)
 		endif
 		return "realloc error"
 	elseif sz==0  #equal 0 discovered at decrementfiles, since C23 the behaviour is undefined
 	#using this quirk, lvs[0] will be used at constants at end, when size is 0
-		set p# 0
-#set cursor# 0
+		#set p# 0
+		set cursor# 0
 		return (NULL)
 	endelseif
 	return "realloc must stay in 31 bits"
@@ -75,71 +63,44 @@ function ralloc(sv p,sd sz)
 endfunction
 
 function addtocont(sv cont,ss s,sd sz)
-#sd size=dword
-#add size sz
-#call ralloc(cont,size)
-#sd mem
-#set mem cont#
-#add cont :
-#add mem cont#d^
-#sub mem sz
-#call memcpy(mem,s,sz)
-#sub mem (dword)
-#set mem# size
-	sd oldsize
-	set oldsize cont#d^
-	#
 	#knowing ocompiler maxvaluecheck
 	sd size=dword
 	add size sz
 	call ralloc(cont,size)
-	#
-	add cont (dword)
-	add oldsize cont#
-	set oldsize# sz
-	add oldsize (dword)
-	call memcpy(oldsize,s,sz)
+	sd mem
+	set mem cont#
+	add cont :
+	add mem cont#d^
+	sub mem sz
+	call memcpy(mem,s,sz)
+	sub mem (dword)
+	set mem# sz
+	#sd oldsize;set oldsize cont#d^;sd size=dword;add size sz;call ralloc(cont,size);add cont (dword);add oldsize cont#;set oldsize# sz;add oldsize (dword);call memcpy(oldsize,s,sz)
 endfunction
 function addtocont_rev(sv cont,ss s,sd sz)
-#sd size=dword
-#add size sz
-#call ralloc(cont,size)
-#sd mem
-#set mem cont#
-#add cont :
-#add mem cont#d^
-#sub mem (dword)
-#set mem# size
-#sub mem sz
-#call memcpy(mem,s,sz)
-	sd oldsize
-	set oldsize cont#d^
-	#
-	#knowing ocompiler maxvaluecheck
 	sd size=dword
 	add size sz
 	call ralloc(cont,size)
-	#
-	add cont (dword)
-	add oldsize cont#
-	call memcpy(oldsize,s,sz)
-	add oldsize sz
-	set oldsize# sz
+	sd mem
+	set mem cont#
+	add cont :
+	add mem cont#d^
+	sub mem (dword)
+	set mem# sz
+	sub mem sz
+	call memcpy(mem,s,sz)
+	#sd oldsize;set oldsize cont#d^;sd size=dword;add size sz;call ralloc(cont,size);add cont (dword);add oldsize cont#;call memcpy(oldsize,s,sz);add oldsize sz;set oldsize# sz
 endfunction
 
 #-1/p
 function pos_in_cont(sv cont,ss s,sd sz)
 	sd p
 	sd mem
-#set p cont#
-#add cont :
-#set mem cont#d^
-#add mem p
-	set mem cont#d^
-	add cont (dword)
 	set p cont#
+	add cont :
+	set mem cont#d^
 	add mem p
-#
+	#set mem cont#d^;add cont (dword);set p cont#;add mem p
 	#sd i=0
 	while p!=mem
 		sd len

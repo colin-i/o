@@ -123,17 +123,12 @@ function incrementdir(ss s,sd sz)
 	call changedir(s)
 endfunction
 function decrementdir()
-	sd cwd%cwd_p
-#sv cwd%cwd_p
-#sd mem=:
-#add mem cwd
-#set mem mem#v^
-#add mem cwd#
-	sd mem=dword
+	sv cwd%cwd_p
+	sd mem=:
 	add mem cwd
 	set mem mem#v^
 	add mem cwd#
-#
+	#sd cwd%cwd_p;sd mem=dword;add mem cwd;set mem mem#v^;add mem cwd#
 	sub mem (dword)
 	#
 	sd sz=dword
