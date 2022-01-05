@@ -123,7 +123,7 @@ endfunction
 
 #cmp
 function fileentry_compare(sd existent,sd new,sd sz)
-	add existent (size_cont)
+	add existent (size_conts)
 	if existent#!=sz
 		return (~0)
 	endif
