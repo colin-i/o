@@ -4,23 +4,23 @@ const TRUE=1
 
 importx "realpath" realpath
 
-#const size_cont_top=dword+:
-const size_cont_top=:+dword
+#const size_cont=dword+:
+const size_cont=:+dword
+const size_conts=3*size_cont
 
 function fileentry_add(sd full,sd len)
 	sd er
-	sd size=size_cont_top+dword
+	sd size=size_conts+dword
 	sd ent
 	add size len
 	setcall er malloc_throwless(#ent,size)
 	if er==(NULL)
-		sv init
-		#sd init
+		sd init
 		set init ent
 		#
-		setcall er alloc_throwless(ent)
+		setcall er fileentry_init(ent)
 		if er==(NULL)
-			add ent (size_cont_top)
+			add ent (size_conts)
 			set ent# len
 			add ent (dword)
 			call memcpy(ent,full,len)
@@ -37,8 +37,7 @@ function fileentry_add(sd full,sd len)
 				set cursor# init
 				return (void)
 			endif
-			call free(init#)
-			#sv pointer=dword;add pointer init;call free(pointer#)
+			call fileentry_uninit(init)
 			call free(init)
 			call free(full)
 			call erExit(er)
@@ -49,6 +48,43 @@ function fileentry_add(sd full,sd len)
 	endif
 	call free(full)
 	call erExit(er)
+endfunction
+
+#er
+function fileentry_init(sd cont)
+	sd er
+	sd end
+	setcall er alloc_throwless(cont)
+	if er==(NULL)
+		add cont (size_cont)
+		setcall er alloc_throwless(cont)
+		if er==(NULL)
+			add cont (size_cont)
+			setcall er alloc_throwless(cont)
+			if er==(NULL)
+				return (NULL)
+			endif
+			set end cont
+			sub cont (2*size_cont)
+			call fileentry_uninit_base(cont,end)
+			return er
+		endif
+		set end cont
+		sub cont (size_cont)
+		call fileentry_uninit_base(cont,end)
+		return er
+	endif
+	return er
+endfunction
+function fileentry_uninit(sd cont)
+	sd b;set b cont;add b (size_conts)
+	call fileentry_uninit_base(cont,b)
+endfunction
+function fileentry_uninit_base(sd cont,sv cursor)
+	while cont!=cursor
+		sub cursor (size_cont)
+		call free(cursor#)
+	endwhile
 endfunction
 
 function fileentry(sd s,sd sz)
@@ -87,7 +123,7 @@ endfunction
 
 #cmp
 function fileentry_compare(sd existent,sd new,sd sz)
-	add existent (size_cont_top)
+	add existent (size_cont)
 	if existent#!=sz
 		return (~0)
 	endif

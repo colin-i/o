@@ -105,10 +105,8 @@ function freefiles()
 	add container start
 	while start!=container
 		decst container
-		sv consts
-		set consts container#
-		call free(consts#)
-		call free(consts)
+		call fileentry_uninit(container#)
+		call free(container#)
 	endwhile
 	call free(container)
 endfunction
