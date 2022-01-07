@@ -3,13 +3,41 @@ function uconst_miniresolve()
 	sd f
 	setcall f root_file()
 	#spin through old declared
-	call uconstres_spin(f)
+	call uconstres_spin(f,(TRUE))
 endfunction
 
-function uconstres_spin(sv f)
+function uconstres_spin(sd f,sd is_new)
 	sd cont
 	set cont f
 	add f (size_cont)
+	call uconstres_search(f,(FALSE))
+	add f (size_cont)
+	call uconstres_search(f,is_new)
+	#
+	#resolve doubleunuseds
+	add f (size_cont)
+	sd double
+	set double f
+	add double (size_cont+:)
+	if double#!=0
+		sub double :
+		value aux#1;data *#1
+		call memcpy(#aux,f,(size_cont))
+		call memcpy(cont,double,(size_cont))
+		call memcpy(double,#aux,(size_cont))
+		set f double
+	endif
+	add f :
+	sd size
+	set size f#
+	if size!=0
+		sub f :
+		neg size
+		call ralloc(f,size)
+	endif
+endfunction
+
+function uconstres_search(sv f,sd is_new)
 	sd cursor
 	set cursor f#
 	add f :
@@ -19,28 +47,7 @@ function uconstres_spin(sv f)
 	while cursor!=f
 		sv pointer;set pointer fls
 		add pointer cursor#
-		call uconstres_spin(pointer#)
+		call uconstres_spin(pointer#,is_new)
 		add cursor (dword)
 	endwhile
-	#resolve doubleunuseds
-	add cont (3*size_cont)
-	sd double
-	set double cont
-	add double (size_cont+:)
-	if double#!=0
-		sub double :
-		value aux#1;data *#1
-		call memcpy(#aux,cont,(size_cont))
-		call memcpy(cont,double,(size_cont))
-		call memcpy(double,#aux,(size_cont))
-		set cont double
-	endif
-	add cont :
-	sd size
-	set size cont#
-	if size!=0
-		sub cont :
-		neg size
-		call ralloc(cont,size)
-	endif
 endfunction
