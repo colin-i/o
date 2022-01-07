@@ -14,26 +14,28 @@ function uconstres_spin(sd f,sd is_new)
 	add f (size_cont)
 	call uconstres_search(f,is_new)
 	#
-	#resolve doubleunuseds
-	add f (size_cont)
-	sd double
-	set double f
-	add double (size_cont+:)
-	if double#!=0
-		sub double :
-		value aux#1;data *#1
-		call memcpy(#aux,f,(size_cont))
-		call memcpy(cont,double,(size_cont))
-		call memcpy(double,#aux,(size_cont))
-		set f double
-	endif
-	add f :
-	sd size
-	set size f#
-	if size!=0
-		sub f :
-		neg size
-		call ralloc(f,size)
+	if is_new==(FALSE)
+		#resolve doubleunuseds
+		add f (size_cont)
+		sd double
+		set double f
+		add double (size_cont+:)
+		if double#!=0
+			sub double :
+			value aux#1;data *#1
+			call memcpy(#aux,f,(size_cont))
+			call memcpy(cont,double,(size_cont))
+			call memcpy(double,#aux,(size_cont))
+			set f double
+		endif
+		add f :
+		sd size
+		set size f#
+		if size!=0
+			sub f :
+			neg size
+			call ralloc(f,size)
+		endif
 	endif
 endfunction
 
