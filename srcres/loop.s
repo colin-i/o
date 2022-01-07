@@ -40,6 +40,7 @@ function log_file(ss file)
 				endif
 			endelse
 		endwhile
+		call uconst_miniresolve()
 		call logclose()
 		return (void)
 	endif

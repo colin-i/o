@@ -1,13 +1,20 @@
 
+include "uconstres.s"
 
-function uconst_add(sd s,sd sz)
+function root_file()
 	sd lvs%levels_p
 	set lvs lvs#v^
 	set lvs lvs#
 	sv fls%files_p
 	set fls fls#
 	add fls lvs
-	call uconst_spin(fls#,s,sz,(TRUE))
+	return fls#
+endfunction
+
+function uconst_add(sd s,sd sz)
+	sd f
+	setcall f root_file()
+	call uconst_spin(f,s,sz,(TRUE))
 endfunction
 
 #b
@@ -63,17 +70,31 @@ function uconst_search(sv fs,sd s,sd sz,sd is_new)
 endfunction
 
 function uconst_unused(sv cont,sd ofs)
+	sd uns
+	set uns cont
 	sd cursor
 	set cursor cont#
 	add cont :
-	set cont cont#d^
-	add cont cursor
-	while cursor!=cont
+	sd end
+	set end cont#d^
+	add end cursor
+	add cont (dword)
+	while cursor!=end
 		sd offset
 		set offset cursor#
 		if offset<=ofs
 			if offset==ofs
 				#move to doubleunused
+				call adddwordtocont(cont,offset)
+				sub end (dword)
+				sd pointer;set pointer cursor
+				while cursor!=end
+					add cursor (dword)
+					set pointer# cursor#
+					add pointer (dword)
+				endwhile
+				call ralloc(uns,(-dword))
+				return (void)
 			endif
 			add cursor (dword)
 		else

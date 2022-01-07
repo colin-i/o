@@ -6,7 +6,7 @@ importx "realpath" realpath
 
 #const size_cont=dword+:
 const size_cont=:+dword
-const size_conts=4*size_cont
+const size_conts=5*size_cont
 
 function fileentry_add(sd full,sd len)
 	sd er
@@ -52,37 +52,18 @@ endfunction
 
 #er
 function fileentry_init(sd cont)
-	sd er
-	sd end
-	setcall er alloc_throwless(cont)
-	if er==(NULL)
-		add cont (size_cont)
+	sd a;set a cont
+	sd b;set b cont;add b (size_conts)
+	while cont!=b
+		sd er
 		setcall er alloc_throwless(cont)
-		if er==(NULL)
-			add cont (size_cont)
-			setcall er alloc_throwless(cont)
-			if er==(NULL)
-				add cont (size_cont)
-				setcall er alloc_throwless(cont)
-				if er==(NULL)
-					return (NULL)
-				endif
-				set end cont
-				sub cont (3*size_cont)
-				call fileentry_uninit_base(cont,end)
-				return er
-			endif
-			set end cont
-			sub cont (2*size_cont)
-			call fileentry_uninit_base(cont,end)
+		if er!=(NULL)
+			call fileentry_uninit_base(a,cont)
 			return er
 		endif
-		set end cont
-		sub cont (size_cont)
-		call fileentry_uninit_base(cont,end)
-		return er
-	endif
-	return er
+		add cont (size_cont)
+	endwhile
+	return (NULL)
 endfunction
 function fileentry_uninit(sd cont)
 	sd b;set b cont;add b (size_conts)
