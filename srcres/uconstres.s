@@ -46,7 +46,8 @@ function uconstres_search(sv f,sd is_new)
 	add f :
 	set f f#d^
 	add f cursor
-	sd fls%files_p
+	sv fls%files_p
+	set fls fls#
 	while cursor!=f
 		sv pointer;set pointer fls
 		add pointer cursor#
@@ -68,6 +69,7 @@ function uconst_resolve(ss const_str)
 		if pointer#!=0
 			sub pointer :
 			set pointer pointer#v^
+			set cursor cursor#
 			set cursor cursor#
 			add cursor pointer#
 			sd offset

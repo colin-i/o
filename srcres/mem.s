@@ -91,13 +91,13 @@ function addtocont_rev(sv cont,ss s,sd sz)
 	call memcpy(mem,s,sz)
 	#sd oldsize;set oldsize cont#d^;sd size=dword;add size sz;call ralloc(cont,size);add cont (dword);add oldsize cont#;call memcpy(oldsize,s,sz);add oldsize sz;set oldsize# sz
 endfunction
-function adddwordtocont(sv cont,sd dword)
-	call ralloc(cont,dword)
+function adddwordtocont(sv cont,sd the_dword)
+	call ralloc(cont,(dword))
 	sd pos=-dword
 	add pos cont#
 	add cont :
 	add pos cont#d^
-	set pos# dword
+	set pos# the_dword
 endfunction
 
 #-1/offset
@@ -118,6 +118,7 @@ function pos_in_cont(sv cont,ss s,sd sz)
 			setcall c memcmp(s,p,sz)
 			if c==0
 				sub p cont#
+				sub p (dword)
 				return p
 			endif
 		endif

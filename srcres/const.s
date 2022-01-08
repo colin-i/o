@@ -3,20 +3,20 @@
 function working_file()
 	sv lvs%levels_p
 	sd lvsd%levels_dp
-	sd p=-dword
+	sv p=-dword
 	add p lvsd#
 	add p lvs#
-	set p p#
+	set p p#d^
 	sv fls%files_p
 	add p fls#
 	#sv lvs%levels_p;sv p=-dword;add p lvs#d^;add lvs (dword);add p lvs#;set p p#d^;sv fls%files_vp;add p fls#
-	return p
+	return p#
 endfunction
 
 function constant_add(sd s,sd sz)
 	sv p
 	setcall p working_file()
-	call addtocont(p#,s,sz)
+	call addtocont(p,s,sz)
 endfunction
 
 #previous file

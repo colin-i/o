@@ -55,7 +55,8 @@ function uconst_search(sv fs,sd s,sd sz,sd is_new)
 	add fs :
 	set fs fs#d^
 	add fs cursor
-	sd fls%files_p
+	sv fls%files_p
+	set fls fls#
 	while cursor!=fs
 		sv pointer;set pointer fls
 		add pointer cursor#
