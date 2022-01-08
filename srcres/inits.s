@@ -28,6 +28,7 @@ function inits()
 	const levels_p^levels
 	const levels_dp^levels_d
 	set levels (NULL)
+	call uconst_resolved(0)
 endfunction
 
 function allocs()

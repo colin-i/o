@@ -33,6 +33,7 @@ function uconstres_spin(sd f,sd is_new)
 		set size f#
 		if size!=0
 			sub f :
+			call uconst_resolved(1,f#v^,size)
 			neg size
 			call ralloc(f,size)
 		endif
@@ -52,4 +53,44 @@ function uconstres_search(sv f,sd is_new)
 		call uconstres_spin(pointer#,is_new)
 		add cursor (dword)
 	endwhile
+endfunction
+
+function uconst_resolve(ss const_str)
+	sv fls%files_p
+	sv cursor
+	set cursor fls#
+	add fls :
+	set fls fls#d^
+	add fls cursor
+	while cursor!=fls
+		sd pointer=3*size_cont+:
+		add pointer cursor#
+		if pointer#!=0
+			sub pointer :
+			set pointer pointer#v^
+			set cursor cursor#
+			add cursor pointer#
+			sd offset
+			set offset cursor#d^
+			add cursor (dword)
+			call wrongExit(const_str,cursor,offset)
+		endif
+		add cursor :
+	endwhile
+endfunction
+
+function uconst_resolved(sd t,sd mem,sd size)
+	data nr#1
+	if t==0
+		set nr 0
+	elseif t==1
+		add size mem
+		while mem!=size
+			add mem mem#
+			add mem (dword)
+			inc nr
+		endwhile
+	else
+		return nr
+	endelse
 endfunction

@@ -26,15 +26,21 @@ function fileentry_add(sd full,sd len)
 			call memcpy(ent,full,len)
 			#
 			sv fls%files_p
-			call incrementfiles()
+			sd previous_file
+			setcall previous_file incrementfiles()
 			setcall er ralloc_throwless(fls,:)
 			if er==(NULL)
-				sv cursor=-:
+				sd offset=-:
 				sd mem%files_dp
-				add cursor mem#
-				add cursor fls#
+				add offset mem#
+				set fls fls#
+				add fls offset
 				#sd mem;set mem fls#d^;call incrementfiles();setcall er ralloc_throwless(fls,:);if er==(NULL);sv cursor;add fls (dword);set cursor fls#;add cursor mem
-				set cursor# init
+				set fls# init
+				if previous_file!=(NULL)
+					add previous_file (2*size_cont)
+					call adddwordtocont(previous_file,offset)
+				endif
 				return (void)
 			endif
 			call fileentry_uninit(init)

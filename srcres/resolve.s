@@ -26,6 +26,10 @@ function resolve(sd j)
 		inc i
 	endwhile
 	str c="constant"
+	call uconst_resolve(c)
+	sd k
+	setcall k uconst_resolved(2)
+	#
 	sv st^stderr
 	sd fls
 	setcall fls filessize()
@@ -34,7 +38,7 @@ function resolve(sd j)
 	setcall imps_sz importssize()
 	sd const_sz
 	setcall const_sz constssize()
-	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s, %u %s resolved.",j,fls,imps_sz,const_sz,c,i,f)
+	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s, %u %s resolved, %u %s resolved.",j,fls,imps_sz,const_sz,c,i,f,k,c)
 	call messagedelim()
 endfunction
 
