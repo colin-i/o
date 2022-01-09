@@ -24,7 +24,7 @@ function uconstres_spin(sd f,sd is_new)
 			sub double :
 			value aux#1;data *#1
 			call memcpy(#aux,f,(size_cont))
-			call memcpy(cont,double,(size_cont))
+			call memcpy(f,double,(size_cont))
 			call memcpy(double,#aux,(size_cont))
 			set f double
 		endif

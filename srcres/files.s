@@ -98,8 +98,9 @@ function fileentry_exists(sd s)
 	sd sz
 	setcall sz strlen(s)
 	sv fls%files_p
+	sd init;set init fls#
 	sv p
-	set p fls#
+	set p init
 	add fls :
 	set fls fls#d^
 	add fls p
@@ -108,6 +109,11 @@ function fileentry_exists(sd s)
 		setcall b fileentry_compare(p#,s,sz)
 		if b==0
 			call skip_set()
+			#add to previous declared
+			sd wf;setcall wf working_file()
+			sub p init
+			add wf (size_cont)
+			call adddwordtocont(wf,p)
 			return (void)
 		endif
 		incst p
