@@ -7,10 +7,9 @@ function warn_or_log(sd type,sd return_value,ss symbolname,sd log_option,sd p_er
 		if log_option==(log_warn)
 			add symbolname (dwsz)
 			setcall p_err# addtolog_withchar(symbolname,type) #is not calling atunused version, that will return noerror at object false
-			if p_err#!=(noerror)
-				return return_value
+			if p_err#==(noerror)
+				return 0
 			endif
-			return 0
 		endif
 	endif
 	return return_value
@@ -47,11 +46,17 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 				data ptrfunctions%ptrfunctions
 				if ptrfunctions==ptrstructure
 					Set checkvalue container#
-					data idatabitfunction=idatabitfunction|x86_64bit
-					And checkvalue idatabitfunction
-					if checkvalue==zero
-						data ptrcodeFnObj%ptrcodeFnObj
-						setcall returnvalue warn_or_log((log_function),returnvalue,container,ptrcodeFnObj#,warningssearch)
+					sd against_idata=idatabitfunction
+					and against_idata checkvalue
+					if against_idata==0
+						and checkvalue (x86_64bit)
+						if checkvalue==0
+							data ptrcodeFnObj%ptrcodeFnObj
+							setcall returnvalue warn_or_log((log_function),returnvalue,container,ptrcodeFnObj#,warningssearch)
+						else
+							#functionx are extern
+							set returnvalue 0
+						endelse
 					endif
 				elseif ptrconstants==ptrstructure
 					setcall cb constants_bool((const_warn_get))
