@@ -49,7 +49,6 @@ If formatresponse==false
 					Data codeind=codeind
 					Set codestrtab namesReg
 					SetCall errormsg elfaddstrsym(ptrelftext,null,null,STT_SECTION,STB_LOCAL,codeind,ptrtable)
-Const oneGreaterThanLastSTB_LOCAL=3
 				EndIf
 			EndIf
 			Set imagebaseoffset null

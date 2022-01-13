@@ -121,10 +121,10 @@ EndFunction
 
 #err
 Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,data index,data struct)
-	Chars tohibyte={16}
 	sd st_info
 	Set st_info type
-	Mult bind tohibyte
+const elf_sym_st_info_tohibyte=16
+	Mult bind (elf_sym_st_info_tohibyte)
 	Or st_info bind
 
 	Data ptrndxsrc^index
@@ -134,6 +134,7 @@ Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,dat
 	sd x;setcall x is_for_64()
 	if x==(TRUE)
 		Data elf64_sym_st_name#1
+	const elf64_sym_st_info_offset=dwsz
 		Chars elf64_sym_st_info#1
 		Chars *elf64_sym_st_other={0}
 		Chars elf64_sym_st_shndx#2
@@ -162,6 +163,7 @@ Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,dat
 		Const STT_NOTYPE=0
 		Const STT_FUNC=2
 		Const STT_SECTION=3
+	const elf32_sym_st_info_offset=3*dwsz
 		Chars elf32_sym_st_info#1
 		#Symbol visibility
 		Chars *elf32_sym_st_other={0}

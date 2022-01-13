@@ -136,10 +136,14 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			Data ptrobject%ptrobject
 			If ptrobject#==true
 				Data STT_FUNC=STT_FUNC
-				Data STB_GLOBAL=STB_GLOBAL
 				Data codeind=codeind
 				Data ptrtable%ptrtable
-				SetCall err elfaddstrszsym(content,sz,value,zero,STT_FUNC,STB_GLOBAL,codeind,ptrtable)
+				if subtype!=(cFUNCTION)
+				#entries are also not local
+					SetCall err elfaddstrszsym(content,sz,value,zero,STT_FUNC,(STB_GLOBAL),codeind,ptrtable)
+				else
+					SetCall err elfaddstrszsym(content,sz,value,zero,STT_FUNC,(STB_LOCAL),codeind,ptrtable)
+				endelse
 				If err!=noerr
 					Return err
 				EndIf

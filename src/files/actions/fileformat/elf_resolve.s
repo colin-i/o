@@ -307,9 +307,13 @@ Else
 	Str ptrelfsymtab^elfsymtab
 	Data SHT_SYMTAB=2
 	Add elf_sec_fileoff codesecReg
-	Data oneGreaterThanLastSTB_LOCAL=oneGreaterThanLastSTB_LOCAL
+	sd localsyms
+	setcall errormsg elfobj_resolve(#localsyms,table,tableReg,syment)
+	If errormsg!=noerr
+		Call msgerrexit(errormsg)
+	EndIf
 
-	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,oneGreaterThanLastSTB_LOCAL,dwordsize,syment)
+	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,localsyms,dwordsize,syment)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf

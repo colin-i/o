@@ -47,7 +47,11 @@ If errormsg==noerr
 		If errormsg==noerr
 			If object==true
 				#the sym entry
-				SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,STB_GLOBAL,null,ptrtable)
+				if subtype==(cIMPORT)
+					SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,STB_LOCAL,null,ptrtable)
+				else
+					SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,STB_GLOBAL,null,ptrtable)
+				endelse
 			EndIf
 			sd imp_mark;set imp_mark names;add imp_mark namesReg
 			SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames,true)
