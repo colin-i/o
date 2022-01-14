@@ -243,7 +243,9 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	if x==(TRUE)
 		Data elf64_r_offset#1;data *=0
 		data *elf64_r_info_type=R_X86_64_32
+	const elf64_r_info_symbolindex_offset=2*dwsz
 		data elf64_r_info_symbolindex#1
+	const elf64_r_info_symbolindex_size=dwsz
 		data elf64_r_addend#1;data *=0
 
 		#it is not enough
@@ -259,7 +261,9 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 		Data elf_r_offset#1
 		#Relocation type and symbol index
 		Chars elf_r_info_type#1
+	const elf_r_info_symbolindex_offset=dwsz+bsz
 		chars elf_r_info_symbolindex#3
+	const elf_r_info_symbolindex_size=3
 		data elf_r_addend#1
 
 		Set elf_r_offset offset

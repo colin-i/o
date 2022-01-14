@@ -308,7 +308,7 @@ Else
 	Data SHT_SYMTAB=2
 	Add elf_sec_fileoff codesecReg
 	sd localsyms
-	setcall errormsg elfobj_resolve(#localsyms,table,tableReg,syment)
+	setcall errormsg elfobj_resolve(#localsyms,table,tableReg,syment,addresses,addressesReg,extra,extraReg,relent)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
