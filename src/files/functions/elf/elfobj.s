@@ -1,7 +1,7 @@
 
 
 #err
-function elfobj_resolve(sd p_localsyms,sd cont,sd end,sd entsize,sd datacont,sd dataend,sd textcont,sd textend,sd relsize)
+function elfobj_resolve(sd p_localsyms,sd cont,sd end,sd entsize,sd datacont,sd datasize,sd textcont,sd textsize,sd relsize)
 	add end cont
 	#
 	sd st_info_offset
@@ -33,45 +33,63 @@ function elfobj_resolve(sd p_localsyms,sd cont,sd end,sd entsize,sd datacont,sd 
 		mult sz alloc
 		sd err
 		setcall err memoryalloc(sz,#alloc)
-		if err!=(noerror)
-			return err
+		if err==(noerror)
+			#alloc new rellocs for modifs
+			sd reldata;sd reltext
+			setcall err memoryalloc(datasize,#reldata)
+			if err==(noerror)
+				setcall err memoryalloc(textsize,#reltext)
+				if err==(noerror)
+					call memtomem(reldata,datacont,datasize)
+					call memtomem(reltext,textcont,textsize)
+					#iterate inside
+					sd pos
+					sd localpos
+					set pos alloc
+					set localpos first_global
+					sd globalindex
+					sd index
+					set globalindex p_localsyms#
+					set index localindex
+					#
+					sd dataend
+					set dataend datasize
+					add dataend datacont
+					sd textend
+					set textend textsize
+					add textend textcont
+					while first_global!=last_local_margin
+						sd comp
+						setcall comp elfobj_resolve_stbcomp(first_global,st_info_offset,(STB_GLOBAL))
+						if comp==(TRUE)
+							#if global put on aux
+							call memtomem(pos,first_global,entsize)
+							add pos entsize
+							#with the entry, modify index in rel data/text
+							call elffobj_resolve_relmodif(index,globalindex,datacont,dataend,textcont,textend,relsize,info_symbolindex_offset,info_symbolindex_size,reldata,reltext)
+							inc globalindex
+						else
+							#if local put on position
+							call memtomem(localpos,first_global,entsize)
+							add localpos entsize
+							#
+							call elffobj_resolve_relmodif(index,localindex,datacont,dataend,textcont,textend,relsize,info_symbolindex_offset,info_symbolindex_size,reldata,reltext)
+							inc localindex
+						endelse
+						add first_global entsize
+						inc index
+					endwhile
+					#at end, put globals
+					call memtomem(localpos,alloc,sz)
+					call memtomem(datacont,reldata,datasize)
+					call memtomem(textcont,reltext,textsize)
+					call free(reltext)
+				endif
+				call free(reldata)
+			endif
+			call free(alloc)
 		endif
-		#iterate inside
-		sd pos
-		sd localpos
-		set pos alloc
-		set localpos first_global
-		sd globalindex
-		sd index
-		set globalindex p_localsyms#
-		set index localindex
-		#
-		add dataend datacont
-		add textend textcont
-		while first_global!=last_local_margin
-			sd comp
-			setcall comp elfobj_resolve_stbcomp(first_global,st_info_offset,(STB_GLOBAL))
-			if comp==(TRUE)
-				#if global put on aux
-				call memtomem(pos,first_global,entsize)
-				add pos entsize
-				#with the entry, modify index in rel data/text
-				call elffobj_resolve_relmodif(index,globalindex,datacont,dataend,textcont,textend,relsize,info_symbolindex_offset,info_symbolindex_size)
-				inc globalindex
-			else
-				#if local put on position
-				call memtomem(localpos,first_global,entsize)
-				add localpos entsize
-				#
-				call elffobj_resolve_relmodif(index,localindex,datacont,dataend,textcont,textend,relsize,info_symbolindex_offset,info_symbolindex_size)
-				inc localindex
-			endelse
-			add first_global entsize
-			inc index
-		endwhile
-		#at end, put globals
-		call memtomem(localpos,alloc,sz)
-		call free(alloc)
+		return err
 	endif
 	return (noerror)
 endfunction
@@ -136,19 +154,23 @@ function elfobj_resolve_count(sd a,sd b,sd sz,sd of,sd origin,sd p_alloc,sd old_
 	return origin
 endfunction
 
-function elffobj_resolve_relmodif(sd oldindex,sd newindex,sd datacont,sd dataend,sd textcont,sd textend,sd relsize,sd offset,sd infsize)
-	call elfobj_resolve_relmodif_section(oldindex,newindex,datacont,dataend,relsize,offset,infsize)
-	call elfobj_resolve_relmodif_section(oldindex,newindex,textcont,textend,relsize,offset,infsize)
+function elffobj_resolve_relmodif(sd oldindex,sd newindex,sd datacont,sd dataend,sd textcont,sd textend,sd relsize,sd offset,sd infsize,sd reldata,sd reltext)
+	call elfobj_resolve_relmodif_section(oldindex,newindex,datacont,dataend,relsize,offset,infsize,reldata)
+	call elfobj_resolve_relmodif_section(oldindex,newindex,textcont,textend,relsize,offset,infsize,reltext)
 endfunction
-function elfobj_resolve_relmodif_section(sd oldindex,sd newindex,sd cont,sd end,sd size,sd offset,sd infsize)
+function elfobj_resolve_relmodif_section(sd oldindex,sd newindex,sd cont,sd end,sd size,sd offset,sd infsize,sd newcont)
+	sd start
+	set start cont
 	while cont!=end
 		sd a
 		set a cont
 		add a offset
 		sd c
-		setcall c memtomem(a,oldindex,infsize)
+		setcall c memcmp(a,#oldindex,infsize)
 		if c==0
-			call memtomem(a,newindex,infsize)
+			sub a start
+			add a newcont
+			call memtomem(a,#newindex,infsize)
 		endif
 		add cont size
 	endwhile
