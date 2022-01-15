@@ -134,7 +134,7 @@ const elf_sym_st_info_tohibyte=16
 	sd x;setcall x is_for_64()
 	if x==(TRUE)
 		Data elf64_sym_st_name#1
-	const elf64_sym_st_info_offset=dwsz
+	#const elf64_sym_st_info_offset=dwsz
 		Chars elf64_sym_st_info#1
 		Chars *elf64_sym_st_other={0}
 		Chars elf64_sym_st_shndx#2
@@ -164,7 +164,7 @@ const elf_sym_st_info_tohibyte=16
 		Const STT_NOTYPE=0
 		Const STT_FUNC=2
 		Const STT_SECTION=3
-	const elf32_sym_st_info_offset=3*dwsz
+	#const elf32_sym_st_info_offset=3*dwsz
 		Chars elf32_sym_st_info#1
 		#Symbol visibility
 		Chars *elf32_sym_st_other={0}
@@ -242,9 +242,9 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	if x==(TRUE)
 		Data elf64_r_offset#1;data *=0
 		data *elf64_r_info_type=R_X86_64_32
-	const elf64_r_info_symbolindex_offset=2*dwsz
+	#const elf64_r_info_symbolindex_offset=2*dwsz
 		data elf64_r_info_symbolindex#1
-	const elf64_r_info_symbolindex_size=dwsz
+	#const elf64_r_info_symbolindex_size=dwsz
 		data elf64_r_addend#1;data *=0
 
 		#it is not enough
@@ -260,9 +260,9 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 		Data elf_r_offset#1
 		#Relocation type and symbol index
 		Chars elf_r_info_type#1
-	const elf_r_info_symbolindex_offset=dwsz+bsz
+	#const elf_r_info_symbolindex_offset=dwsz+bsz
 		chars elf_r_info_symbolindex#3
-	const elf_r_info_symbolindex_size=3
+	#const elf_r_info_symbolindex_size=3
 		data elf_r_addend#1
 
 		Set elf_r_offset offset
