@@ -22,11 +22,17 @@ function elfobj_resolve(sd p_localsyms,sd cont,sd end,sd entsize,sd datacont,sd 
 	#iterate right left stop on local
 	sd last_local_margin
 	setcall last_local_margin elfobj_resolve_rl(cont,end,entsize,st_info_offset)
+	#in case there are no globals
+	set p_localsyms# first_global
+	sub p_localsyms# cont
+	div p_localsyms# entsize
+	#
 	if first_global!=last_local_margin
 		sd alloc
 		sd localindex
+		set localindex p_localsyms#
 		#count local/global
-		setcall p_localsyms# elfobj_resolve_count(first_global,last_local_margin,entsize,st_info_offset,cont,#alloc,#localindex)
+		setcall p_localsyms# elfobj_resolve_count(first_global,last_local_margin,entsize,st_info_offset,localindex,#alloc)
 		#alloc global aux
 		sd sz
 		set sz entsize
@@ -133,25 +139,21 @@ function elfobj_resolve_stbcomp(ss ent,sd offset,sd against)
 endfunction
 
 #n
-function elfobj_resolve_count(sd a,sd b,sd sz,sd of,sd origin,sd p_alloc,sd old_index)
-	sub origin a
-	neg origin
-	div origin sz
-	set old_index# origin
+function elfobj_resolve_count(sd a,sd b,sd sz,sd of,sd locals,sd p_alloc)
 	add a sz #a is first global
 	sd g=1
 	while a!=b
 		sd comp
 		setcall comp elfobj_resolve_stbcomp(a,of,(STB_LOCAL))
 		if comp==(TRUE)
-			inc origin
+			inc locals
 		else
 			inc g
 		endelse
 		add a sz
 	endwhile
 	set p_alloc# g
-	return origin
+	return locals
 endfunction
 
 function elffobj_resolve_relmodif(sd oldindex,sd newindex,sd datacont,sd dataend,sd textcont,sd textend,sd relsize,sd offset,sd infsize,sd reldata,sd reltext)
