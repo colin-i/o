@@ -307,14 +307,8 @@ Else
 	Str ptrelfsymtab^elfsymtab
 	Data SHT_SYMTAB=2
 	Add elf_sec_fileoff codesecReg
-	sd localsyms
-	setcall errormsg elfobj_resolve(#localsyms,table,tableReg,syment,addresses,addressesReg,extra,extraReg,relent)
-	If errormsg!=noerr
-		Call msgerrexit(errormsg)
-	EndIf
 
-	#(totallocalsymsaddedatstart)
-	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,localsyms,dwordsize,syment)
+	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,(totallocalsymsaddedatstart),dwordsize,syment)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf

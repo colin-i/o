@@ -16,7 +16,6 @@ Include "./functions/values/numbersandconstants.s"
 Include "./functions/values/operations.s"
 
 Include "./functions/elf/elf.s"
-Include "./functions/elf/elfobj.s"
 
 Include "./functions/stack/stack_inits.s"
 
