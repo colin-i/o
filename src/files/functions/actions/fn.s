@@ -142,7 +142,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 				#entries are also not local
 					SetCall err elfaddstrszsym(content,sz,value,zero,STT_FUNC,(STB_GLOBAL),codeind,ptrtable)
 				else
-					SetCall err elfaddstrszsym(content,sz,value,zero,STT_FUNC,(STB_LOCAL),codeind,ptrtable)
+					SetCall err elfaddstrszsym(content,sz,value,zero,STT_FUNC,(STB_WEAK),codeind,ptrtable)
 				endelse
 				If err!=noerr
 					Return err

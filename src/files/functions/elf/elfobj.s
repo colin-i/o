@@ -66,21 +66,21 @@ function elfobj_resolve(sd p_localsyms,sd cont,sd end,sd entsize,sd datacont,sd 
 					add textend textcont
 					while first_global!=last_local_margin
 						sd comp
-						setcall comp elfobj_resolve_stbcomp(first_global,st_info_offset,(STB_GLOBAL))
+						setcall comp elfobj_resolve_stbcomp(first_global,st_info_offset,(STB_LOCAL))
 						if comp==(TRUE)
-							#if global put on aux
-							call memtomem(pos,first_global,entsize)
-							add pos entsize
-							#with the entry, modify index in rel data/text
-							call elffobj_resolve_relmodif(index,globalindex,datacont,dataend,textcont,textend,relsize,info_symbolindex_offset,info_symbolindex_size,reldata,reltext)
-							inc globalindex
-						else
 							#if local put on position
 							call memtomem(localpos,first_global,entsize)
 							add localpos entsize
 							#
 							call elffobj_resolve_relmodif(index,localindex,datacont,dataend,textcont,textend,relsize,info_symbolindex_offset,info_symbolindex_size,reldata,reltext)
 							inc localindex
+						else
+							#if global/weak put on aux
+							call memtomem(pos,first_global,entsize)
+							add pos entsize
+							#with the entry, modify index in rel data/text
+							call elffobj_resolve_relmodif(index,globalindex,datacont,dataend,textcont,textend,relsize,info_symbolindex_offset,info_symbolindex_size,reldata,reltext)
+							inc globalindex
 						endelse
 						add first_global entsize
 						inc index
@@ -104,11 +104,11 @@ function elfobj_resolve_lr(sd cont,sd end,sd entsize,sd st_info_offset)
 	while cont!=end
 		#compare st_info
 		sd comp
-		setcall comp elfobj_resolve_stbcomp(cont,st_info_offset,(STB_GLOBAL))
+		setcall comp elfobj_resolve_stbcomp(cont,st_info_offset,(STB_LOCAL))
 		if comp==(TRUE)
-			set end cont
-		else
 			add cont entsize
+		else
+			set end cont
 		endelse
 	endwhile
 	return cont

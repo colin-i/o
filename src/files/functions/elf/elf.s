@@ -160,6 +160,7 @@ const elf_sym_st_info_tohibyte=16
 		#Symbol type and binding
 		Const STB_LOCAL=0
 		Const STB_GLOBAL=1
+		Const STB_WEAK=2
 		Const STT_NOTYPE=0
 		Const STT_FUNC=2
 		Const STT_SECTION=3
@@ -203,8 +204,6 @@ Function elfaddstrsym(data stringstroff,data value,data size,chars type,chars bi
 	Return err
 EndFunction
 
-Data STB_LOCAL=STB_LOCAL
-Data STB_GLOBAL=STB_GLOBAL
 Data STT_NOTYPE=STT_NOTYPE
 Data STT_FUNC=STT_FUNC
 Data STT_SECTION=STT_SECTION

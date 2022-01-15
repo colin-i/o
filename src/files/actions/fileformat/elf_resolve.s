@@ -289,7 +289,7 @@ Else
 		Call msgerrexit(errormsg)
 	EndIf
 
-	Data elf_sec_flags_data=SHF_ALLOC
+	Data elf_sec_flags_data=SHF_WRITE|SHF_ALLOC
 	Set elf_sec_fileoff elf32_phdr_p_offset_data
 	SetCall errormsg elfaddsec(datastrtab,SHT_PROGBITS,elf_sec_flags_data,elf_sec_fileoff,ptrdatasec,null,null,dwordsize,null)
 	If errormsg!=noerr
@@ -313,6 +313,7 @@ Else
 		Call msgerrexit(errormsg)
 	EndIf
 
+	#(totallocalsymsaddedatstart)
 	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,localsyms,dwordsize,syment)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)

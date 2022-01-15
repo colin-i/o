@@ -42,13 +42,14 @@ If formatresponse==false
 				Str ptrelfdata^elfdata
 				Data dataind=dataind
 				Set datastrtab namesReg
-				SetCall errormsg elfaddstrsym(ptrelfdata,null,null,STT_SECTION,STB_LOCAL,dataind,ptrtable)
+				SetCall errormsg elfaddstrsym(ptrelfdata,null,null,STT_SECTION,(STB_LOCAL),dataind,ptrtable)
 				If errormsg==noerr
 					Chars elftext=".text"
 					Str ptrelftext^elftext
 					Data codeind=codeind
 					Set codestrtab namesReg
-					SetCall errormsg elfaddstrsym(ptrelftext,null,null,STT_SECTION,STB_LOCAL,codeind,ptrtable)
+					SetCall errormsg elfaddstrsym(ptrelftext,null,null,STT_SECTION,(STB_LOCAL),codeind,ptrtable)
+			#const totallocalsymsaddedatstart=3
 				EndIf
 			EndIf
 			Set imagebaseoffset null

@@ -35,7 +35,7 @@ If errormsg==noerr
 			Div functionoffset elf32_dyn_d_val_syment
 			#get the dword offset to call at, index*dword
 			Mult functionoffset dwordsize
-			SetCall errormsg elfaddsym(namesReg,null,null,STT_FUNC,STB_GLOBAL,null,ptraddresses)
+			SetCall errormsg elfaddsym(namesReg,null,null,STT_FUNC,(STB_GLOBAL),null,ptraddresses)
 		ElseIf p_is_for_64_resp#==(TRUE)
 			div functionoffset (elf64_dyn_d_val_syment)
 		Else
@@ -48,9 +48,9 @@ If errormsg==noerr
 			If object==true
 				#the sym entry
 				if subtype==(cIMPORT)
-					SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,STB_LOCAL,null,ptrtable)
+					SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,(STB_WEAK),null,ptrtable)
 				else
-					SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,STB_GLOBAL,null,ptrtable)
+					SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,(STB_GLOBAL),null,ptrtable)
 				endelse
 			EndIf
 			sd imp_mark;set imp_mark names;add imp_mark namesReg
