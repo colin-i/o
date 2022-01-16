@@ -270,8 +270,8 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	Set fnmask ptrfnmask#
 	And fnmask idatafn
 
-	If fnmask==idatafn
-		If ptrobject#==(FALSE)
+	If ptrobject#==(FALSE)
+		If fnmask==idatafn
 			Set boolindirect (TRUE)
 		EndIf
 	EndIf
