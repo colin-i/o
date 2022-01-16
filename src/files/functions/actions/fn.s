@@ -279,7 +279,6 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	If boolindirect==(FALSE)
 		Chars directcall#1
 		Data directcalloff#1
-		chars *={0xff,0xd0}
 
 		Data ptrdirectcall^directcall
 		const directcallsize=1+dwsz
@@ -294,11 +293,17 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			#was: reloc when linking;0-dwsz(appears to be dwsz from Data directcallsize=1+dwsz), no truncation, so direct better
 			set directcall 0xb8
 			Set directcalloff 0
-			SetCall err unresolvedcallsfn(code,1,ptrdata#,directcalloff)
-			If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(ptrdirectcall,(directcallsize+2),code)
+			sd relocoff
+			setcall relocoff reloc64_offset(1)
+			SetCall err unresolvedcallsfn(code,relocoff,ptrdata#,directcalloff);If err!=(noerror);Return err;EndIf
+			setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(ptrdirectcall,(directcallsize),code);If err!=(noerror);Return err;EndIf
+			setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+			chars callcode={0xff,0xd0}
+			setcall err addtosec(#callcode,2,code)
 		EndElse
 	Else
+		#this at object is call data() but the reloc is outside of this function
 		if fnmask==idatafn
 			data ptrvirtualimportsoffset%ptrvirtualimportsoffset
 			SetCall err unresolvedcallsfn(code,1,ptrdata#,ptrvirtualimportsoffset)
