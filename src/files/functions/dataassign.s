@@ -282,8 +282,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 					data stackoff=rampadd_value_off
 					set section_offset stackoff
 				endelse
-				#third value is not used at object==false
-				setcall err unresolvedcallsfn(section,section_offset,0,addatend)
+				setcall err unresolvedcallsfn(section,section_offset,addatend) #this is intentionaly without last arg
 				If err!=noerr
 					Return err
 				EndIf

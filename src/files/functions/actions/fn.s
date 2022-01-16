@@ -1,6 +1,6 @@
 
 #err
-Function unresolvedcallsfn(data struct,data inneroffset,data valuedata,data atend)
+Function unresolvedcallsfn(data struct,data inneroffset,data atend,data valuedata)
 	data structure#1
 	Data offset#1
 	data addatend#1
@@ -295,7 +295,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			Set directcalloff 0
 			sd relocoff
 			setcall relocoff reloc64_offset(1)
-			SetCall err unresolvedcallsfn(code,relocoff,ptrdata#,directcalloff);If err!=(noerror);Return err;EndIf
+			SetCall err unresolvedcallsfn(code,relocoff,directcalloff,ptrdata#);If err!=(noerror);Return err;EndIf
 			setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
 			SetCall err addtosec(ptrdirectcall,(directcallsize),code);If err!=(noerror);Return err;EndIf
 			setcall err reloc64_post();If err!=(noerror);Return err;EndIf
@@ -306,7 +306,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		#this at object is call data() but the reloc is outside of this function
 		if fnmask==idatafn
 			data ptrvirtualimportsoffset%ptrvirtualimportsoffset
-			SetCall err unresolvedcallsfn(code,1,ptrdata#,ptrvirtualimportsoffset)
+			SetCall err unresolvedcallsfn(code,1,ptrvirtualimportsoffset,ptrdata#)
 			If err!=(noerror);Return err;EndIf
 		endif
 		Chars callaction={0xff}

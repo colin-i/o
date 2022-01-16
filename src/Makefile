@@ -7,8 +7,10 @@ FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 OBT = ${OB}.txt
 
+OFLAGS=
+
 %.o: ${FULLOBJS}
-	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else o $<;fi
+	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else o $< ${OFLAGS};fi
 
 syms =-s
 ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
