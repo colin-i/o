@@ -211,7 +211,6 @@ endfunction
 
 #err
 function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect)
-	set p_bool_indirect# (FALSE)
 	Data fns%ptrfunctions
 
 	SetCall p_data# vars(pcontent#,sz,fns)
@@ -232,6 +231,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 	Else
 		#at functions
 		call is_for_64_is_impX_or_fnX_set(p_data#)
+		set p_bool_indirect# (FALSE)
 	EndElse
 	Call advancecursors(pcontent,psize,sz)
 
