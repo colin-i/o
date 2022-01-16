@@ -14,10 +14,8 @@ Function unresolvedcallsfn(data struct,data inneroffset,data valuedata,data aten
 	Data ptrobject%ptrobject
 
 	If ptrobject#==true
-		#Chars elf_rel_info_type={R_386_PC32}
-		Chars elf_rel_info_type={R_386_32}
 		Data ptrextra%ptrextra
-		SetCall err addrel_base(offset,elf_rel_info_type,valuedata,atend,ptrextra)
+		SetCall err addrel_base(offset,valuedata,atend,ptrextra)
 	Else
 		#add to resolve at end
 		Data unressz=3*dwsz
@@ -292,7 +290,6 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			setcall err unresolvedLocal(1,code,ptrdata,ptrdirectcalloff)
 			If err!=(noerror);Return err;EndIf
 			SetCall err addtosec(ptrdirectcall,(directcallsize),code)
-			If err!=(noerror);Return err;EndIf
 		Else
 			#was: reloc when linking;0-dwsz(appears to be dwsz from Data directcallsize=1+dwsz), no truncation, so direct better
 			set directcall 0xb8
@@ -300,7 +297,6 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			SetCall err unresolvedcallsfn(code,1,ptrdata#,directcalloff)
 			If err!=(noerror);Return err;EndIf
 			SetCall err addtosec(ptrdirectcall,(directcallsize+2),code)
-			If err!=(noerror);Return err;EndIf
 		EndElse
 	Else
 		if fnmask==idatafn
@@ -314,10 +310,10 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		Data eaxregnumber=eaxregnumber
 		call stack64_op_set()
 		SetCall err writeoperation(ptrdata,callaction,noreg,(FALSE),callactionopcode,eaxregnumber)#last missing param is at sufix and at declare is not
-		If err!=(noerror)
-			Return err
-		EndIf
 	EndElse
+	If err!=(noerror)
+		Return err
+	EndIf
 
 	sd global_err_pB;setcall global_err_pB global_err_pBool()
 	if global_err_pB#!=(FALSE)

@@ -66,7 +66,8 @@ function writetake(sd takeindex,sd entry)
 	if stack==0
 		if p_is_object#==(TRUE)
 			Data ptrextra%ptrextra
-			data relocoff=1
+			data relocoff#1
+			setcall relocoff reloc64_offset(1)
 			sd var
 			setcall var function_in_code()
 			if var#==0
@@ -98,7 +99,9 @@ function writetake(sd takeindex,sd entry)
 				endif
 			endelse
 		endif
-		setcall errnr takewithimm(takeindex,take_loc)
+		setcall errnr reloc64_ante();If errnr!=(noerror);Return errnr;EndIf
+		setcall errnr takewithimm(takeindex,take_loc);If errnr!=(noerror);Return errnr;EndIf
+		setcall errnr reloc64_post()
 	else
 		chars stack_relative#1
 		chars regreg=RegReg

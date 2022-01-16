@@ -47,10 +47,14 @@ conv_64=0
 0 is No; 1 is Yes
 nul_res_pref=0
 
-12. sd as sv (old programs don't have sv and may be with 64 logic)
+12. SD as SV (old programs don't have sv and may be with 64 logic)
 0 is No; 1 is Yes
 sd_as_sv=0
 
-13. inplace reloc 0 or the addend for objects? (standard ld wants addend, i686-w64-mingw32-ld wants 0)
+13. Inplace reloc 0 or the addend for objects? (standard ld wants addend, i686-w64-mingw32-ld wants 0)
 0 is Zero; 1 is Addend
 inplace_reloc=1
+
+14. At objects, when on 64 format, relocs are R_X86_64_64.
+0 is No; 1 is Yes
+reloc_64=1

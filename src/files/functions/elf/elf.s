@@ -217,17 +217,19 @@ Data codestrtab#1
 Data objfnmask#1
 Const ptrobjfnmask^objfnmask
 
-#not changing inplace
-#from addrel        before writes
-#from addrel_base   at call
-#from adddirect     writetake,function   importaftercall
-#changing inplace
-#from adddirect     fndecargs   writevar(examples there)   writevar(sd^arg,will use from writetake)   writetake,data (take_locat),argInCall
+#inplace	direct: at writetake: sd^data
+#			   writevar:  data a^dataB    here is also notinplace data^import
+#			   fndecarg:  (data a)
+#no inplace:  rel: at writes resolves imports at non-object, this is not occuring at 64
+#		 rel_base: call import()
+#		 direct: the other writevar sd^data
+#			   the other writetake (import)
+#			   aftercall
 #err
-Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
+Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 	#Direct 32 bit
 	Const R_386_32=1
-	#const R_X86_64_64=1
+	const R_X86_64_64=1
 	const R_X86_64_32=10
 	#PC relative 32 bit
 	#const R_386_PC32=2
@@ -241,7 +243,8 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 	sd x;setcall x is_for_64()
 	if x==(TRUE)
 		Data elf64_r_offset#1;data *=0
-		data *elf64_r_info_type=R_X86_64_32
+		data elf64_r_info_type#1
+	const p_elf64_r_info_type^elf64_r_info_type
 	#const elf64_r_info_symbolindex_offset=2*dwsz
 		data elf64_r_info_symbolindex#1
 	#const elf64_r_info_symbolindex_size=dwsz
@@ -259,14 +262,13 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 		#offset
 		Data elf_r_offset#1
 		#Relocation type and symbol index
-		Chars elf_r_info_type#1
+		Chars *elf_r_info_type=R_386_32
 	#const elf_r_info_symbolindex_offset=dwsz+bsz
 		chars elf_r_info_symbolindex#3
 	#const elf_r_info_symbolindex_size=3
 		data elf_r_addend#1
 
 		Set elf_r_offset offset
-		Set elf_r_info_type type
 		Call memtomem(#elf_r_info_symbolindex,#symbolindex,3)
 		set elf_r_addend addend
 
@@ -279,9 +281,9 @@ Function addrel_base(sd offset,sd type,sd symbolindex,sd addend,sd struct)
 EndFunction
 
 #err
-Function addrel(sd offset,sd type,sd symbolindex,sd struct)
+Function addrel(sd offset,sd symbolindex,sd struct)
 	sd err
-	setcall err addrel_base(offset,type,symbolindex,0,struct)
+	setcall err addrel_base(offset,symbolindex,0,struct)
 	return err
 endfunction
 
@@ -301,7 +303,6 @@ Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
 	EndElse
 	Call getcontReg(struct,ptroff)
 	Add off extraoff
-	Chars elf_rel_info_type={R_386_32}
-	SetCall err addrel_base(off,elf_rel_info_type,index,addend,relsec)
+	SetCall err addrel_base(off,index,addend,relsec)
 	Return err
 EndFunction

@@ -79,3 +79,7 @@ if includedir==(TRUE)
 else
 	set fileendchar (log_fileend_old)
 endelse
+
+#this is init at start because we don't want to compare if 64 every time
+sd rel64_blankinit%p_elf64_r_info_type
+set rel64_blankinit# (R_X86_64_32)

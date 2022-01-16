@@ -185,7 +185,6 @@ If object==false
 
 		##
 		Data elf_rel_offset#1
-		Chars elf_rel_info_type={R_386_32}
 		Data elf_rel_info_symbolindex#1
 
 		Set elf_rel_offset elf32_dyn_d_ptr_rel
@@ -193,7 +192,7 @@ If object==false
 		Set elf_rel_info_symbolindex zero
 
 		While elf_rel_info_symbolindex<sizeofchain
-			SetCall errormsg addrel(elf_rel_offset,elf_rel_info_type,elf_rel_info_symbolindex,ptrmiscbag)
+			SetCall errormsg addrel(elf_rel_offset,elf_rel_info_symbolindex,ptrmiscbag)
 			If errormsg!=noerr
 				Call msgerrexit(errormsg)
 			EndIf
