@@ -369,7 +369,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		SetCall err addtosec(ret_end_p,ret_end_sz,code);If err!=(noerror);Return err;EndIf
 	endif
 
-	return (noerror)
+	return err
 endfunction
 
 #p
