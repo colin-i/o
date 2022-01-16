@@ -306,7 +306,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		#this at object is call data() but the reloc is outside of this function
 		if fnmask==idatafn
 			data ptrvirtualimportsoffset%ptrvirtualimportsoffset
-			SetCall err unresolvedcallsfn(code,1,ptrvirtualimportsoffset,ptrdata#)
+			SetCall err unresolvedcallsfn(code,1,ptrvirtualimportsoffset) #,ptrdata#
 			If err!=(noerror);Return err;EndIf
 		endif
 		Chars callaction={0xff}
