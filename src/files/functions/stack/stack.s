@@ -149,7 +149,7 @@ function addtocodefordata(sd value,sd for_64)
 	data val#1
 
 	sd err
-	setcall err reloc64_ante();If err!=(noerror);Return err;EndIf	
+	setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
 	data ptrcodesec%ptrcodesec
 	set val value
 	setcall err addtosec(#code,5,ptrcodesec);If err!=(noerror);Return err;EndIf
