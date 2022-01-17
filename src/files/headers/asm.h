@@ -16,6 +16,7 @@ const REX_R8_15=REX_default|REX_W|REX_R
 
 Const retcom=0xc3
 const intimm8=0xCD
+const ateaximm=0xb8
 #Const atedximm=0xba
 
 Const moveatmemtheproc=0x89
@@ -46,9 +47,8 @@ Const esiregnumber=6
 Const ediregnumber=7
 Const ahregnumber=4
 Const regopcode_mask=0x7
+
 #mixt
 Const Notregopcode=2
 #
 const bt_reg_imm8=espregnumber*toregopcode|regregmod
-
-#rms

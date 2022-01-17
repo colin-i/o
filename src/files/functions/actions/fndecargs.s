@@ -62,8 +62,8 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		return noerr
 	endif
 
-	Chars stackt1ini={moveatprocthemem}
-	Chars stackt2ini={0xA3}
+	Chars stackt1ini=moveatprocthemem
+	Chars stackt2ini=0xA3
 
 	Set stacktransfer1 stackt1ini
 	Set stacktransfer2 stackt2ini

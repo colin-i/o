@@ -338,14 +338,17 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			SetCall err addtosec(#g_err_mov,(global_err_ex_sz),code)
 		Else
 			#mov to ecx is reseting the high part of the rcx
-			const global_err_obj_start=!
 			chars g_err=0xb9
 			data *rel=0
-			chars *g_cmp={0x80,7*toregopcode|ecxregnumber,0}
-			const global_err_obj_sz=!-global_err_obj_start
 			#
-			setcall err adddirectrel_base(ptrextra,(bsz),global_err_ptr#,0);If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(#g_err,(global_err_obj_sz),code)
+			sd af_relof
+			setcall af_relof reloc64_offset((bsz))
+			setcall err adddirectrel_base(ptrextra,af_relof,global_err_ptr#,0);If err!=(noerror);Return err;EndIf
+			setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(#g_err,5,code);If err!=(noerror);Return err;EndIf
+			setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+			chars g_cmp={0x80,7*toregopcode|ecxregnumber,0}
+			SetCall err addtosec(#g_cmp,3,code)
 		EndElse
 		If err!=(noerror);Return err;EndIf
 		#jz

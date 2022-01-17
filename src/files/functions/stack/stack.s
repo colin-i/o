@@ -109,47 +109,52 @@ function entryscope_verify_code()
 endfunction
 
 
-
 #er
-function addtocodeforstack(sd value,sd rightstackpointer,sd for_64)
-	data eax=eaxregnumber
-
-	data null=0
-	chars movtostack#1
+function addtocode_decstack(sd for_64)
+	chars movtostack=moveatmemtheproc
 	chars *modrm=disp32mod|ebxregnumber
 	data rampindex#1
-	data rampvalue#1
 
 	data stack^movtostack
-	data size#1
+	data size=2+4
 	data ptrcodesec%ptrcodesec
-	data noerr=noerror
+
 	sd err
-
-	if rightstackpointer==null
-		chars movimm=0xc7
-		set movtostack movimm
-		data sizeimm=2+4+4
-		set size sizeimm
-	else
-		setcall err writetake(eax,rightstackpointer)
-		if err!=noerr
-			return err
-		endif
-		chars movreg=moveatmemtheproc
-		set movtostack movreg
-		data sizereg=2+4
-		set size sizereg
-	endelse
-
 	if for_64==(TRUE)
 		call rex_w(#err);if err!=(noerror);return err;endif
 	endif
 
 	setcall rampindex addramp()
-	setcall rampindex neg(rampindex)
-	set rampvalue value
+	neg rampindex
 
 	setcall err addtosec(stack,size,ptrcodesec)
+	return err
+endfunction
+#er
+function addtocodeforstack(sd rightstackpointer,sd for_64)
+	data noerr=noerror
+
+	sd err
+	setcall err writetake((eaxregnumber),rightstackpointer)
+	if err!=noerr
+		return err
+	endif
+
+	setcall err addtocode_decstack(for_64)
+	return err
+endfunction
+#er
+function addtocodefordata(sd value,sd for_64)
+	chars code=ateaximm
+	data val#1
+
+	sd err
+	setcall err reloc64_ante();If err!=(noerror);Return err;EndIf	
+	data ptrcodesec%ptrcodesec
+	set val value
+	setcall err addtosec(#code,5,ptrcodesec);If err!=(noerror);Return err;EndIf
+	setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+
+	setcall err addtocode_decstack(for_64)
 	return err
 endfunction

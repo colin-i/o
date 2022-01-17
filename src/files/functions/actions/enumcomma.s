@@ -26,7 +26,8 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 				#data a^dataB
 					call inplace_reloc(#inplacevalue)
 				endif
-				SetCall err addtosec(#inplacevalue,(dwsz),ptrdatasec)
+				SetCall err addtosec(#inplacevalue,(dwsz),ptrdatasec);If err!=(noerror);Return err;EndIf
+				setcall err reloc64_post_base(ptrdatasec)
 				return err
 			endif
 		endif
@@ -38,10 +39,8 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 	if ptrobject#==1
 		If ptrrelocbool#==true
 			#code
-			sd stackoff=rampadd_value_off
-			if for_64==(TRUE)
-				inc stackoff
-			endif
+			sd stackoff
+			setcall stackoff reloc64_offset((rampadd_value_off))
 			data ptrextra%ptrextra
 			setcall err adddirectrel_base(ptrextra,stackoff,relindex,ptrvalue#)
 			If err!=noerr
@@ -49,7 +48,11 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 			EndIf
 		EndIf
 	endif
-	setcall err addtocodeforstack(ptrvalue#,rightstackpointer,for_64)
+	if rightstackpointer!=(NULL)
+		setcall err addtocodeforstack(rightstackpointer,for_64)
+	else
+		setcall err addtocodefordata(ptrvalue#,for_64)
+	endelse
 	return err
 endfunction
 

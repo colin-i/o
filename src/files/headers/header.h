@@ -315,7 +315,7 @@ Data ptrsubtype^subtype
 #chars movtostack={0xc7,0x85}
 #data rampindex#1
 #data rampvalue#1
-const rampadd_value_off=wsz+dwsz
+const rampadd_value_off=bsz
 
 
 
