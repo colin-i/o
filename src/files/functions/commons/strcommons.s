@@ -215,9 +215,9 @@ Function stringsatmemspc(data pcontent,data psize,str match,data spacereq,str ex
 		SetCall extbool# stratmem(tocontent,tosize,extstr)
 	EndIf
 
-	SetCall bool spaces(tocontent,tosize)
-	IF bool==zero
-		If spacereq==nonzero
+	If spacereq==nonzero
+		SetCall bool spaces(tocontent,tosize)
+		IF bool==zero
 			Return zero
 		EndIf
 	EndIf

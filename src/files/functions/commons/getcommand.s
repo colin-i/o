@@ -208,18 +208,18 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		data *^cLIBRARY_c
 		Data *=cLIBRARY
 		Data *#1
-		Data *=spacenotreq
+		Data *=spacereq
 	Const cIMPORTLINK=!-coms_start;Const cIMPORTLINK_top=!
 		const cIMPORT=!-cIMPORTLINK_top
 			data *^cIMPORT_c
 			Data *=cIMPORTLINK
 			Data *=cIMPORT
-			Data *=spacenotreq
+			Data *=spacereq
 		const cIMPORTX=!-cIMPORTLINK_top
 			data *^cIMPORTX_c
 			Data *=cIMPORTLINK
 			Data *=cIMPORTX
-			Data *=spacenotreq
+			Data *=spacereq
 	Const cSTARTFUNCTION=!-coms_start
 	Const cSTARTFUNCTION_top=!
 		Const cFUNCTION=!-cSTARTFUNCTION_top
@@ -303,7 +303,7 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		data *^cINCLUDE_c
 		Data *=cINCLUDE
 		Data *#1
-		Data *=spacenotreq
+		Data *=spacereq
 	Const cI3=!-coms_start
 		data *^cI3_c
 		Data *=cI3
