@@ -45,7 +45,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 		endelse
 		Call getcontReg(pointer_structure,ptroffset)
 	EndIf
-	SetCall err dataparse(ptrcontent,ptrsize,typenumber,assignsign,ptrrelocbool,stack)
+	SetCall err dataparse(ptrcontent,ptrsize,typenumber,assignsign,ptrrelocbool,stack,long_mask)
 	If err!=noerr
 		Return err
 	EndIf
@@ -158,7 +158,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
-			SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,stack,(not_hexenum))
+			SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,stack,(not_hexenum),long_mask)
 			If err!=noerr
 				Return err
 			EndIf
@@ -183,7 +183,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 					Return err
 				EndIf
 				Mult value dsz
-				call enlarge_value(#value,long_mask,pointer_structure,offset)
+				if long_mask!=0
+					mult value 2
+				endif
 			EndIf
 			If value<zero
 				return ptrnegreserve
@@ -299,7 +301,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 	if skipNumberValue==false
 		If typenumber!=constantsnr
 			#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
-			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer)
+			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask)
 			If err!=noerr
 				Return err
 			EndIf
@@ -381,19 +383,4 @@ function add_string_to_data(sd ptrcontent,sd ptrsize)
 		return err
 	endif
 	return (noerror)
-endfunction
-
-#v
-function enlarge_value(sd p_value,sd mask,sd structure,sd oldoffset)
-	if mask!=0
-		sd is64;setcall is64 is_for_64()
-		if is64==(TRUE)
-			mult p_value# (qwsz/dwsz)
-			sd c
-			Call getcont(structure,#c)
-			Add c oldoffset
-			add c (maskoffset)
-			or c# mask
-		endif
-	endif
 endfunction

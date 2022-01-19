@@ -23,8 +23,26 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	If err!=noerr
 		Return err
 	EndIf
-	Data vartype#1
+	sd vartype
 	setcall vartype commandSubtypeDeclare_to_typenumber(subtype)
+	sd datasize=dwsz
+	sd long_mask=0
+	sd b;setcall b is_for_64()
+	if vartype>=(vnumbers)
+		sub vartype (vnumbers)
+		if vartype==(valuesinnernumber)
+			set vartype (integersnumber)
+			if b==(TRUE)
+				set long_mask (valueslongmask)
+				set datasize (qwsz)
+			endif
+		elseif b==(TRUE)
+			set long_mask (datapointbit)
+			set datasize (qwsz)
+		endelseif
+	elseif vartype==(charsnumber)
+		set datasize (bsz)
+	endelseif
 
 	#substract from the big size the parsed size
 	Sub len sz
@@ -33,12 +51,10 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	Sub length len
 	Set ptrsize# length
 
-
-	Chars stacktransfer1={0,0x84,0x24}
+	Chars stacktransfer1#1;chars *={0x84,0x24}
 	Data stackoff#1
 	Chars stacktransfer2#1
 	Data memoff#1
-	Data sizeoftransfer=3*bsz+dwsz+bsz+dwsz
 
 	Data dwrdsz=dwsz
 	Set stackoff ptr_stackoffset#
@@ -49,7 +65,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	set stackindex stackoff
 	addcall stackindex stack64_add((stackinitpush))
 
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackindex)
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackindex,long_mask)
 	If err!=noerr
 		Return err
 	EndIf
@@ -70,18 +86,12 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 
 	setcall memoff get_img_vdata_dataReg()
 
-	Data datasize#1
-	Data btsz=bsz
-	Data charsnr=charsnumber
-	If vartype==charsnr
-		Set datasize btsz
+	If datasize==(bsz)
 		Dec stacktransfer1
 		Dec stacktransfer2
-	Else
-		Set datasize dwrdsz
-	EndElse
+	endIf
 
-	Data null=NULL
+	Data null={NULL,NULL}
 	Data ptrnull^null
 	Data _datasec%ptrdatasec
 	SetCall err addtosec(ptrnull,datasize,_datasec)
@@ -89,32 +99,44 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		Return err
 	EndIf
 
+	if long_mask!=0
+		call rex_w(#err)
+		If err!=noerr;Return err;EndIf
+	endif
+
 	data p_is_object%ptrobject
 	if p_is_object#==(TRUE)
-		Const offend^memoff
-		Const offstart^stacktransfer1
+		Const fndecargs_offend^memoff
+		Const fndecargs_offstart^stacktransfer1
 		Data ptrextra%ptrextra
-		Data reloff=offend-offstart
 		Data dataind=dataind
+		sd reloff=fndecargs_offend-fndecargs_offstart
+		if long_mask!=0
+			inc reloff
+		endif
 		SetCall err adddirectrel_base(ptrextra,reloff,dataind,memoff)
 		If err!=noerr
 			Return err
 		EndIf
 		call inplace_reloc(#memoff)
 	endif
-	Str codeops^stacktransfer1
-	Data _codesec%ptrcodesec
-	SetCall err addtosec(codeops,sizeoftransfer,_codesec)
-	If err!=noerr;Return err;EndIf
 
-	sd b;setcall b is_for_64()
+	Data _codesec%ptrcodesec
+
+	SetCall err addtosec(#stacktransfer1,(3*bsz+dwsz),_codesec);If err!=noerr;Return err;EndIf
+	if long_mask!=0
+		call rex_w(#err)
+		If err!=noerr;Return err;EndIf
+	endif
+	SetCall err addtosec(#stacktransfer2,(bsz+dwsz),_codesec);If err!=noerr;Return err;EndIf
+
 	if b==(TRUE)
 		#at 64 code:
 		#A3 XX.XX.XX.XX_XX.XX.XX.XX
 		sd z=i386_obj_default_reloc_rah
 		SetCall err addtosec(#z,(dwsz),_codesec)
-		If err!=noerr;Return err;EndIf
+		return err
 	endif
 
-	Return err
+	Return (noerror)
 EndFunction

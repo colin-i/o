@@ -19,7 +19,9 @@ Const stackbit=0x04
 const x86_64bit=0x40
 #bit offset 7; pointer bit (sv# with rex, sd# without rex)
 const pointbit=0x80
+
 const dummy_mask=0
+const valueslongmask=datapointbit|pointbit
 
 Const maskoffset=dwsz
 Const nameoffset=maskoffset+dwsz
@@ -118,12 +120,14 @@ Const memvariablesnumber=0
 	Const integersnumber=memvariablesnumber+0
 	Const stringsnumber=memvariablesnumber+1
 	Const charsnumber=memvariablesnumber+2
+	const valuesinnernumber=charsnumber
 Const totalmemvariables=charsnumber+1
 	Const stackdatanumber=totalmemvariables+integersnumber
 	Const stackstringnumber=totalmemvariables+stringsnumber
-	Const stackvaluenumber=totalmemvariables+charsnumber
-	#that was +charsnumber because it is compared against 2
+	Const stackvaluenumber=totalmemvariables+valuesinnernumber
+	#that was +charsnumber because it is compared against 2. and more reasons
 Const numberofvars=stackvaluenumber+1
+const vnumbers=numberofvars
 #from numberofvars to afterscopes comes inner function local scopes
 Const afterscopes=numberofvars*2
 	Const constantsnumber=afterscopes+0

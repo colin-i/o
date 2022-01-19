@@ -60,13 +60,6 @@ Const com_size=cSTR-cDATA
 			Data *=cDECLARE
 			Data *=cSV
 			Data *=spacereq
-#numberofcommandsvars to set these commands to search for them at function parameter declare
-Const numberofcommandsvars=(!-commandsvars_start)/com_size
-		Const cCONST=!-cDECLARE_top
-			data *^cCONST_c
-			Data *=cDECLARE
-			Data *=cCONST
-			Data *=spacereq
 		Const cVDATA=!-cDECLARE_top
 			data *^cVDATA_c
 			Data *=cDECLARE
@@ -81,6 +74,13 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			data *^cVALUE_c
 			Data *=cDECLARE
 			Data *=cVALUE
+			Data *=spacereq
+#numberofcommandsvars to set these commands to search for them at function parameter declare
+Const numberofcommandsvars=(!-commandsvars_start)/com_size
+		Const cCONST=!-cDECLARE_top
+			data *^cCONST_c
+			Data *=cDECLARE
+			Data *=cCONST
 			Data *=spacereq
 #aftercall can be at function parameters but the get_img_vdata_dataReg() is set inside and codding must be done for not a big deal
 	Const cDECLAREAFTERCALL=!-coms_start

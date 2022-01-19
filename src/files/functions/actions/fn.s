@@ -186,7 +186,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 
 	If sz!=zero
 		#declare is bool
-		SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,fnnr,(not_used),(not_used))
+		SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,fnnr) #there are 3 more arguments but are not used
 		If err!=noerr
 			Return err
 		EndIf

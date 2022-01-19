@@ -40,7 +40,7 @@ function get_img_vdata_dataReg()
 endfunction
 
 #err
-Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset)
+Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset,sd mask)
 	#duplications
 	Data content#1
 	Set content ptrcontent#
@@ -50,8 +50,6 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 	Data errnr#1
 	Data noerr=noerror
 	data false=0
-	data mask#1
-	set mask zero
 
 	If typenumber!=constantsnr
 		SetCall errnr entryvarsfns(content,valsize)
@@ -102,7 +100,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 EndFunction
 
 #err
-function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset)
+function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset,sd mask)
 	data err#1
 	data noerr=noerror
 
@@ -120,7 +118,7 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 	Chars unrefsign="*"
 
 	If unrefoption!=unrefsign
-		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,stackoffset)
+		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,stackoffset,mask)
 		If err!=noerr
 			Return err
 		EndIf
@@ -211,7 +209,7 @@ const nosign=0
 endfunction
 
 #err
-Function dataparse(data ptrcontent,data ptrsize,data typenumber,str assigntype,data relocbool,data stack)
+Function dataparse(data ptrcontent,data ptrsize,data typenumber,str assigntype,data relocbool,data stack,sd mask)
 	Str content#1
 	Data size#1
 	Data noerr=noerror
@@ -233,7 +231,7 @@ Function dataparse(data ptrcontent,data ptrsize,data typenumber,str assigntype,d
 		data totalmemvariables=totalmemvariables
 		add typenumber totalmemvariables
 	endif
-	SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,false)
+	SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,false,mask)
 	If err!=noerr
 		Return err
 	EndIf

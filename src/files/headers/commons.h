@@ -45,7 +45,6 @@ Const noerror=0
 #this is win specific Const error=-1
 Const FORWARD=1
 Const BACKWARD=-1
-Const not_used=0
 Const void=0
 
 Data bytesize=bsz

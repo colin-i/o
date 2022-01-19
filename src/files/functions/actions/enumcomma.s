@@ -1,6 +1,6 @@
 
 #e
-function writevar(data ptrvalue,data unitsize,data relindex,data stack,data rightstackpointer)
+function writevar(data ptrvalue,data unitsize,data relindex,data stack,data rightstackpointer,sd long_mask)
 	data err#1
 	data noerr=noerror
 	Data ptrrelocbool%ptrrelocbool
@@ -31,8 +31,13 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 				return err
 			endif
 		endif
-		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec)
-		return err
+		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec);If err!=noerr;Return err;EndIf
+		if long_mask!=0
+			data null=0
+			SetCall err addtosec(#null,(dwsz),ptrdatasec)
+			return err
+		endif
+		return (noerror)
 	endif
 
 	sd for_64;setcall for_64 is_for_64()
@@ -58,7 +63,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpush,data typenumber,data stack,sd hex)
+Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpush,data typenumber,data stack,sd hex,sd long_mask)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -129,7 +134,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 				EndIf
 				if hex==(not_hexenum)
 					data dataind=dataind
-					setcall err writevar(ptrvalue,unitsize,dataind,stack,zero)
+					setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask)
 					If err!=noerr
 						Return err
 					EndIf
