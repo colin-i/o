@@ -45,40 +45,44 @@ If errormsg==noerr
 	If errormsg==noerr
 		SetCall errormsg quotinmem(pcontent,pcomsize,ptrimpquotsz,ptrimpescapes)
 		If errormsg==noerr
+			Call import_leading_underscore(pcontent,pcomsize,ptrimpquotsz)
 			If object==true
 				#the sym entry
 				SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,(STB_GLOBAL),null,ptrtable)
 			EndIf
-			sd imp_mark;set imp_mark names;add imp_mark namesReg
-			SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames,true)
 			If errormsg==noerr
-				Call stepcursors(pcontent,pcomsize)
-				Call spaces(pcontent,pcomsize)
-				#after this will find var in vars/fns and if not add a new
-				sd imp_size;setcall imp_size find_whitespaceORcomment(content,comsize)
-				If imp_size==zero
-					Chars missimportref="Import name for compiler must be specified after the name for output."
-					Str ptrimpref^missimportref
-					Set errormsg ptrimpref
-				Else
-					SetCall errormsg entryvarsfns(content,imp_size)
-					If errormsg==noerr
-						if codeFnObj==(log_warn)
-							if subtype==(cIMPORT)
-								sub impquotsz impescapes
-								setcall errormsg addtolog_withchar_ex_atunused(imp_mark,impquotsz,(log_import))
-							endif
-						endif
+				sd imp_mark;set imp_mark namesReg #this is because the null at end makes code harder
+				SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames,true)
+				If errormsg==noerr
+					Call stepcursors(pcontent,pcomsize)
+					Call spaces(pcontent,pcomsize)
+					#after this will find var in vars/fns and if not add a new
+					sd imp_size;setcall imp_size find_whitespaceORcomment(content,comsize)
+					If imp_size==zero
+						Chars missimportref="Import name for compiler must be specified after the name for output."
+						Str ptrimpref^missimportref
+						Set errormsg ptrimpref
+					Else
+						SetCall errormsg entryvarsfns(content,imp_size)
 						If errormsg==noerr
-							sd import_ref_mask=idatabitfunction
-							if subtype==(cIMPORTX)
-								or import_ref_mask (x86_64bit)
+							if codeFnObj==(log_warn)
+								if subtype==(cIMPORT)
+									sub impquotsz impescapes
+									add imp_mark names
+									setcall errormsg addtolog_withchar_ex_atunused(imp_mark,impquotsz,(log_import))
+								endif
 							endif
-							Data functionsnr=functionsnumber
-							SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
-						endIf
-					EndIf
-				EndElse
+							If errormsg==noerr
+								sd import_ref_mask=idatabitfunction
+								if subtype==(cIMPORTX)
+									or import_ref_mask (x86_64bit)
+								endif
+								Data functionsnr=functionsnumber
+								SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
+							endIf
+						EndIf
+					EndElse
+				EndIf
 			EndIf
 		EndIf
 	EndIf

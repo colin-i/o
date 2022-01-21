@@ -58,3 +58,7 @@ inplace_reloc=1
 14. At objects, when on 64 format, relocs are R_X86_64_64.
 0 is No; 1 is Yes
 reloc_64=1
+
+15. Remove leading underscore at IMPORT?
+0 is No; 1 is Yes
+underscore_pref=0

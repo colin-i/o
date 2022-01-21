@@ -154,6 +154,7 @@ function initpreferences()
 	sd sdsv_p;setcall sdsv_p sd_as_sv((sd_as_sv_get))
 	sd p_inplace_reloc_pref%p_inplace_reloc_pref
 	sd p_pref_reloc_64%p_pref_reloc_64
+	sd p_underscore_pref%p_underscore_pref
 
 	data true=TRUE
 	data false=FALSE
@@ -172,13 +173,14 @@ function initpreferences()
 	set sdsv_p# false
 	set p_inplace_reloc_pref# (addend_reloc)
 	set p_pref_reloc_64# true
+	set p_underscore_pref# false
 
 	#this is used also at arguments
 
 	sv q%nr_of_prefs_pointers_p
-	set q# ptrwarningsbool;incst q; set q# p_over_pref;incst q; set q# p_hidden_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref;incst q; set q# p_pref_reloc_64
+	set q# ptrwarningsbool;incst q; set q# p_over_pref;incst q; set q# p_hidden_pref;incst q; set q# p_w_as_e;incst q; set q# ptrlogbool;incst q; set q# ptrcodeFnObj;incst q; set q# cb;incst q;           set q# ptrincludedir;incst q; set q# text_fn_info;incst q;    set q# conv_64;incst q;   set q# p_nul_res_pref;incst q; set q# sdsv_p;incst q;     set q# p_inplace_reloc_pref;incst q; set q# p_pref_reloc_64;incst q; set q# p_underscore_pref
 	sv t%nr_of_prefs_strings_p
-	set t# "warnings";incst t;      set t# "over_pref";incst t; set t# "hidden_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc";incst t;      set t# "reloc_64"
+	set t# "warnings";incst t;      set t# "over_pref";incst t; set t# "hidden_pref";incst t; set t# "w_as_e";incst t; set t# "logfile";incst t;  set t# "codeFnObj";incst t;  set t# "const_warn";incst t; set t# "includedir";incst t;  set t# "function_name";incst t; set t# "conv_64";incst t; set t# "nul_res_pref";incst t; set t# "sd_as_sv";incst t; set t# "inplace_reloc";incst t;      set t# "reloc_64";incst t;      set t# "underscore_pref"
 endfunction
 
 #void
