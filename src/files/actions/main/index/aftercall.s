@@ -41,7 +41,8 @@ else
 				div g_e_p# elf32_dyn_d_val_syment
 			endelse
 			#adding at current names reg the content lenghting comsize
-			SetCall errormsg elfaddstrszsym(ac_store_content,ac_store_size,acsym_value,acsym_size,(STT_NOTYPE),(STB_WEAK),acsym_shndx,ptrtable)
+			SetCall errormsg elfaddstrszsym(ac_store_content,ac_store_size,acsym_value,acsym_size,(STT_NOTYPE),(STB_GLOBAL),acsym_shndx,ptrtable)
+			#can be weak at linux but windows needs global and we agreed imports are global
 		endif
 	endif
 endelse
