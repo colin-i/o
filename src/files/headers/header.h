@@ -392,3 +392,5 @@ const p_underscore_pref^underscore_pref
 #exit end preference
 data exit_end#1
 const p_exit_end^exit_end
+data real_exit_end#1
+const p_real_exit_end^real_exit_end

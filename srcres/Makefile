@@ -7,7 +7,7 @@ FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 
 %.o: ${FULLOBJS}
-	../src/o $<
+	../src/o $< exit_end 1
 
 syms =-s
 ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main

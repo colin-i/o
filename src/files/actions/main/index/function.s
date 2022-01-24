@@ -20,6 +20,9 @@ Else
 		Set objfnmask referencebit
 		if twoparse==1
 			set fnavailable two
+			if exit_end==(TRUE)
+				set real_exit_end (TRUE)
+			endif
 		endif
 	Else
 		Set objfnmask null
