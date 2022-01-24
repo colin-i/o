@@ -387,14 +387,10 @@ function global_err_pBool()
 	return #bool
 endfunction
 
-#p
-function entrylinux_bool_p()
-	data entrylinux_bool#1;return #entrylinux_bool
-endfunction
 #bool
 function is_linux_end()
-	sd entrylinux_bool_ptr;setcall entrylinux_bool_ptr entrylinux_bool_p()
-	return entrylinux_bool_ptr#
+	sd p_exit_end%p_exit_end
+	return p_exit_end#
 endfunction
 #er
 function entrylinux_top()

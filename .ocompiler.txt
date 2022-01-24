@@ -43,11 +43,11 @@ function_name=0
 0 is No,use linux convention if ocompiler was compiled for linux,else use microsoft; 1 is Yes; 2 is No,and cross-compile
 conv_64=0
 
-11. Zeroset reserved data section declarations
+11. Zeroset reserved data section declarations.
 0 is No; 1 is Yes
 nul_res_pref=0
 
-12. SD as SV (old programs don't have sv and may be with 64 logic)
+12. SD as SV (old programs don't have sv and may be with 64 logic).
 0 is No; 1 is Yes
 sd_as_sv=0
 
@@ -62,3 +62,7 @@ reloc_64=1
 15. Remove leading underscore at IMPORT?
 0 is No; 1 is Yes
 underscore_pref=0
+
+16. RETURNs at main scope like EXIT.
+0 is No; 1 is Yes
+exit_end=0

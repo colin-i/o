@@ -62,9 +62,6 @@ call val64_init()
 #afterCall
 data g_e_b_p#1;setcall g_e_b_p global_err_pBool();set g_e_b_p# (FALSE)
 
-#entrylinux bool
-data el_b_p#1;setcall el_b_p entrylinux_bool_p();set el_b_p# (FALSE)
-
 set warn_hidden_whitespaces_times 0
 
 sd convention_64

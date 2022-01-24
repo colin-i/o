@@ -20,9 +20,6 @@ Else
 		Set objfnmask referencebit
 		if twoparse==1
 			set fnavailable two
-			If subtype==(cENTRYLINUX)
-				set el_b_p# (TRUE)
-			endif
 		endif
 	Else
 		Set objfnmask null

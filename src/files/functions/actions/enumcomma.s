@@ -40,7 +40,6 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 		return (noerror)
 	endif
 
-	sd for_64;setcall for_64 is_for_64()
 	if ptrobject#==1
 		If ptrrelocbool#==true
 			#code
@@ -53,9 +52,12 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 			EndIf
 		EndIf
 	endif
+	sd for_64;setcall for_64 is_for_64()
 	if rightstackpointer!=(NULL)
 		setcall err addtocodeforstack(rightstackpointer,for_64)
 	else
+		#sd^data
+		call inplace_reloc(ptrvalue)
 		setcall err addtocodefordata(ptrvalue#,for_64)
 	endelse
 	return err

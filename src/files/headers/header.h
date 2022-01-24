@@ -377,7 +377,7 @@ const p_hidden_pref^hidden_pref
 Data safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=15
+const nr_of_prefs=16
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
@@ -388,3 +388,7 @@ const p_pref_reloc_64^pref_reloc_64
 
 data underscore_pref#1
 const p_underscore_pref^underscore_pref
+
+#exit end preference
+data exit_end#1
+const p_exit_end^exit_end
