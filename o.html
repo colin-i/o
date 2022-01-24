@@ -346,7 +346,8 @@
 	<br>
 	The return command is used to terminate the program or a function.
 	<br>
-	It returns the value. The asm value termination is <i>ret</i> (0xc3). To return <i>int 0x80</i>(0xcd,0x80;linux sys_exit;eax=1,ebx=return value) use <b>Exit</b> or set exit_end preference to 1.
+	It returns the value. The asm value termination is <i>ret</i> (0xc3). To return <i>int 0x80</i>(0xcd,0x80;linux sys_exit;eax=1,ebx=return value) use <b>Exit</b>.
+	To return like <b>Exit</b> at main scope but usign <b>Return</b> set exit_end preference to 1.
 	<br>
 	Example:
 	<br>
