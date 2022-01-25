@@ -722,12 +722,14 @@
 <h3><a name="includingfiles">X. Including files</a></h3>
 <p>
 	The program can be formed with multiple files using the <b>Include</b> command.
+	If compiling for multiple oses add a second path at <b>INCLUDE</b>;
+		the preference include_sec 0 will take the first path, 1 will take the second path.
 	<p>
 	Example:
 	<br>
 	<a class="code">
         Include "files\\headers.h"<br>
-        Include "files\\main.o"</a>
+        Include "files\\headers_win.h" "files\\headers_lin.h"</a>
 	</p>
 </p>
 <h3><a name="exec">XI. Creating executable files</a></h3>
