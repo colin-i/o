@@ -35,11 +35,11 @@ make.bat
 
 - Windows bat file to compile the source for executable; the output file will be in the './build/' folder
 
-make_win32_fromLin_gnu
+makewin32
 
 - Linux shell file to compile the source and to link it with mingw-w64-i686 for linux; the output file will be 'ocompiler.zip'
 
-make_win64_fromLin_gnu
+makewin64
 
 - Linux shell file to compile the source and to link it with mingw-w64-x86-64 for linux; the output file will be in the './buildg/' folder
 

@@ -1,5 +1,5 @@
 
-::use make_win32_fromLin_gnu
+::use makewin32
 exit
 
 md build
