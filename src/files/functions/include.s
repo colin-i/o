@@ -149,3 +149,24 @@ Function include(Str path)
 
 	Return noerr
 EndFunction
+
+#er
+function include_sec_skip(sv pcontent,sd pcomsize)
+	ss content;set content pcontent#
+	sd size;set size pcomsize#
+	call spaces(#content,#size)
+	if content#==(asciidoublequote)
+		sd err
+		sd s;sd e
+		SetCall err quotinmem(#content,#size,#s,#e)
+		if err==(noerror)
+			add s e
+			add content s;sub size s
+			call stepcursors(#content,#size)
+			set pcontent# content;set pcomsize# size
+			return (noerror)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction

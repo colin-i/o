@@ -66,3 +66,7 @@ underscore_pref=0
 16. RETURNs at main scope like EXIT.
 0 is No; 1 is Yes
 exit_end=0
+
+17. Take second file path at INCLUDE statement.
+0 is No; 1 is Yes
+include_sec=0

@@ -377,7 +377,7 @@ const p_hidden_pref^hidden_pref
 Data safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=16
+const nr_of_prefs=17
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
@@ -394,3 +394,6 @@ data exit_end#1
 const p_exit_end^exit_end
 data real_exit_end#1
 const p_real_exit_end^real_exit_end
+
+data include_sec#1
+const p_include_sec^include_sec
