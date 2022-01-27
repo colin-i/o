@@ -12,7 +12,7 @@ Update and install:
 sudo apt-get update
 sudo apt-get install ocompiler
 ```
-Documentation is at <i>o.html</i>
+Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html).
 
 ## Donations
 The *donations* section is here
