@@ -56,14 +56,12 @@ function takewithimm(sd ind,sd addr)
 	return err
 endfunction
 function writetake(sd takeindex,sd entry)
-	data p_is_object%ptrobject
-	Data ptrcodesec%ptrcodesec
 	Data errnr#1
-
 	sd take_loc;set take_loc entry#
 	sd stack
 	setcall stack stackbit(entry)
 	if stack==0
+		data p_is_object%ptrobject
 		if p_is_object#==(TRUE)
 			Data ptrextra%ptrextra
 			data relocoff#1
@@ -92,10 +90,16 @@ function writetake(sd takeindex,sd entry)
 					Return errnr
 				EndIf
 				if importbit==0
-					setcall errnr unresLc(1,ptrcodesec,0)
-					If errnr!=(noerror)
-						Return errnr
-					EndIf
+					sd for_64
+					setcall for_64 is_for_64()
+					if for_64==(TRUE)
+						setcall errnr unresLc((-qwsz),ptrextra,0)
+					else
+						setcall errnr unresLc((-dwsz),ptrextra,0)
+					endelse
+					If errnr!=(noerror);Return errnr;EndIf
+					setcall errnr inplace_reloc_unres(#take_loc)
+					If errnr!=(noerror);Return errnr;EndIf
 				endif
 			endelse
 		endif
@@ -116,6 +120,7 @@ function writetake(sd takeindex,sd entry)
 			set getfromstack 0x03
 		else;set getfromstack (moveatprocthemem);endelse
 		setcall errnr rex_w_if64();if errnr!=(noerror);return errnr;endif
+		Data ptrcodesec%ptrcodesec
 		SetCall errnr addtosec(ptrgetfromstack,sizegetfromstack,ptrcodesec)
 	endelse
 	Return errnr
