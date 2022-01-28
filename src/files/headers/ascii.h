@@ -23,6 +23,7 @@ Const asciinine=0x39
 Const asciicolon=0x3A
 Const asciisemicolon=0x3B
 Const asciiless=0x3C
+Const asciiequal=0x3D
 Const asciigreater=0x3E
 Const asciiaround=0x40
 Const asciiA=0x41

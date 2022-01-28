@@ -397,3 +397,6 @@ const p_real_exit_end^real_exit_end
 
 data include_sec#1
 const p_include_sec^include_sec
+
+const pointersigndeclare=asciicirc
+const assignsign=asciiequal

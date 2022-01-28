@@ -86,3 +86,16 @@ function unresolvedLocal(sd addition,sd structure,sd currentfnpointer,sd ptr_out
 	call get_fn_pos(currentfnpointer,ptr_out)
 	return (noerror)
 endfunction
+
+#e
+function unresReloc(sd section)
+	sd for_64
+	sd err
+	setcall for_64 is_for_64()
+	if for_64==(TRUE)
+		setcall err unresLc((-qwsz),section,0)
+	else
+		setcall err unresLc((-dwsz),section,0)
+	endelse
+	return err
+endfunction

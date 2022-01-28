@@ -139,7 +139,7 @@ function getsign(str content,data size,data typenumber,str assigntype,data reloc
 	data true=TRUE
 	data noerr=noerror
 	Data valsize#1
-	Chars equalsign="="
+	Chars equalsign=assignsign
 	SetCall valsize valinmem_pipes(content,size,equalsign,ptrsz)
 	If valsize!=size
 		Set assigntype# equalsign
@@ -160,7 +160,7 @@ function getsign(str content,data size,data typenumber,str assigntype,data reloc
 	endif
 
 	Data charsnr=charsnumber
-	Chars pointersign="^"
+	Chars pointersign=pointersigndeclare
 	SetCall valsize valinmem_pipes(content,size,pointersign,ptrsz)
 	If valsize!=size
 		If typenumber==charsnr

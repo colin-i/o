@@ -16,17 +16,16 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 				Data ptraddresses%ptraddresses
 				Data relocoff=0
 				SetCall err adddirectrel_base(ptraddresses,relocoff,relindex,ptrvalue#)
-				If err!=noerr
-					Return err
-				EndIf
-				sd inplacevalue
-				#data^functionReloc
-				set inplacevalue ptrvalue#
-				if relindex==(dataind)
+				If err!=noerr;Return err;EndIf
 				#data a^dataB
-					call inplace_reloc(#inplacevalue)
+				if relindex==(codeind)
+					#data^functionReloc
+					setcall err unresReloc(ptraddresses)
+					If err!=noerr;Return err;EndIf
 				endif
-				SetCall err addtosec(#inplacevalue,(dwsz),ptrdatasec);If err!=(noerror);Return err;EndIf
+				call inplace_reloc(ptrvalue)
+				#endif
+				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec);If err!=(noerror);Return err;EndIf
 				setcall err reloc64_post_base(ptrdatasec)
 				return err
 			endif
@@ -48,10 +47,13 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 			setcall stackoff reloc64_offset((rampadd_value_off))
 			data ptrextra%ptrextra
 			setcall err adddirectrel_base(ptrextra,stackoff,relindex,ptrvalue#)
-			If err!=noerr
-				Return err
-			EndIf
+			If err!=noerr;Return err;EndIf
 			#s^dat
+			if relindex==(codeind)
+				#s^fn
+				setcall err unresReloc(ptrextra)
+				If err!=noerr;Return err;EndIf
+			endif
 			call inplace_reloc(ptrvalue)
 			setcall err addtocodefordata(ptrvalue#,for_64)
 			return err

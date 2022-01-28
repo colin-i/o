@@ -90,13 +90,7 @@ function writetake(sd takeindex,sd entry)
 					Return errnr
 				EndIf
 				if importbit==0
-					sd for_64
-					setcall for_64 is_for_64()
-					if for_64==(TRUE)
-						setcall errnr unresLc((-qwsz),ptrextra,0)
-					else
-						setcall errnr unresLc((-dwsz),ptrextra,0)
-					endelse
+					setcall errnr unresReloc(ptrextra)
 					If errnr!=(noerror);Return errnr;EndIf
 					setcall errnr inplace_reloc_unres(#take_loc)
 					If errnr!=(noerror);Return errnr;EndIf

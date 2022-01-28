@@ -94,8 +94,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 	set skipNumberValue false
 	set importbittest -1
 
-	Chars equal="="
-	If sign==equal
+	If sign==(assignsign)
 		Chars byte#1
 		Set content ptrcontent#
 		Set byte content#
@@ -209,8 +208,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 		Set content ptrcontent#
 		data doublepointer#1
 		set doublepointer zero
-		Chars pointersign="^"
-		if content#==pointersign
+		if content#==(pointersigndeclare)
 			inc doublepointer
 			call stepcursors(ptrcontent,ptrsize)
 			Set content ptrcontent#
@@ -300,22 +298,23 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 	EndElse
 	if skipNumberValue==false
 		If typenumber!=constantsnr
-			#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
-			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask)
-			If err!=noerr
-				Return err
-			EndIf
 			#init -1, 0 is local function in the right
 			if importbittest==0
+			#and no problems if inplace_reloc is 0 there
 				if stack==false
-					setcall err unresLc(-4,ptrdatasec,0)
+					setcall err unresLc(0,ptrdatasec,0)
 				else
-					setcall err unresLc(-4,ptrcodesec,0)
+					setcall err unresLc(1,ptrcodesec,0)
 				endelse
 				if err!=(noerror)
 					return err
 				endif
 			endif
+			#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
+			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask)
+			If err!=noerr
+				Return err
+			EndIf
 		Else
 			Call getcont(constantsstruct,ptrcontainer)
 			Add container offset
