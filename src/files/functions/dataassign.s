@@ -304,7 +304,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 				if stack==false
 					setcall err unresLc(0,ptrdatasec,0)
 				else
-					setcall err unresLc(1,ptrcodesec,0)
+					setcall err unresLc((rampadd_value_off),ptrcodesec,0)
 				endelse
 				if err!=(noerror)
 					return err
