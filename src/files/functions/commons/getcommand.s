@@ -3,25 +3,27 @@
 Const spacereq=1
 Const spacenotreq=0
 
+#with caution like elseif before else for getcommand comparations
+
 Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHARS_c="CHARS";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
 	Chars cCONST_c="CONST"
 	Chars cVDATA_c="VDATA";Chars cVSTR_c="VSTR";Chars cVALUE_c="VALUE"
 Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
-Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINC_c="INC";Chars cDEC_c="DEC";Chars cINCST_c="INCST";Chars cDECST_c="DECST";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
+Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINCST_c="INCST";Chars cINC_c="INC";Chars cDECST_c="DECST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
-Chars cLIBRARY_c="LIBRARY";
-Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX";
-Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRY_c="ENTRY";Chars cENTRYLINUX_c="ENTRYLINUX"
+Chars cLIBRARY_c="LIBRARY"
+Chars cIMPORTX_c="IMPORTX";Chars cIMPORT_c="IMPORT"
+Chars cFUNCTIONX_c="FUNCTIONX";Chars cFUNCTION_c="FUNCTION";Chars cENTRYLINUX_c="ENTRYLINUX";Chars cENTRY_c="ENTRY"
 Chars cENDFUNCTION_c="ENDFUNCTION"
 Chars cCALL_c="CALL"
 Chars cCALLEX_c="CALLEX"
-Chars cIF_c="IF";Chars cELSE_c="ELSE";Chars cWHILE_c="WHILE";Chars cELSEIF_c="ELSEIF";Chars cENDIF_c="ENDIF";Chars cENDELSE_c="ENDELSE";Chars cENDWHILE_c="ENDWHILE";Chars cENDELSEIF_c="ENDELSEIF"
+Chars cIF_c="IF";Chars cELSEIF_c="ELSEIF";Chars cELSE_c="ELSE";Chars cWHILE_c="WHILE";Chars cENDIF_c="ENDIF";Chars cENDELSEIF_c="ENDELSEIF";Chars cENDELSE_c="ENDELSE";Chars cENDWHILE_c="ENDWHILE"
+Chars cCOMMENT_c={commentascii,0}
 Chars cINCLUDE_c="INCLUDE"
 Chars cWARNING_c="WARNING"
 Chars cHEX_c="HEX"
 Chars cI3_c="I3"
-Chars cCOMMENT_c={commentascii,0}
 
 const not_a_subtype=-1
 
@@ -112,25 +114,25 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cONEARG
 			Data *=cNOT
 			Data *=spacereq
-		Const cINC=!-cONEARG_top
-			data *^cINC_c
-			Data *=cONEARG
-			Data *=cINC
-			Data *=spacereq
-		Const cDEC=!-cONEARG_top
-			data *^cDEC_c
-			Data *=cONEARG
-			Data *=cDEC
-			Data *=spacereq
 		Const cINCST=!-cONEARG_top
 			data *^cINCST_c
 			Data *=cONEARG
 			Data *=cINCST
 			Data *=spacereq
+		Const cINC=!-cONEARG_top
+			data *^cINC_c
+			Data *=cONEARG
+			Data *=cINC
+			Data *=spacereq
 		Const cDECST=!-cONEARG_top
 			data *^cDECST_c
 			Data *=cONEARG
 			Data *=cDECST
+			Data *=spacereq
+		Const cDEC=!-cONEARG_top
+			data *^cDEC_c
+			Data *=cONEARG
+			Data *=cDEC
 			Data *=spacereq
 		Const cEXIT=!-cONEARG_top
 			data *^cEXIT_c
@@ -209,38 +211,39 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *=cLIBRARY
 		Data *#1
 		Data *=spacereq
-	Const cIMPORTLINK=!-coms_start;Const cIMPORTLINK_top=!
-		const cIMPORT=!-cIMPORTLINK_top
-			data *^cIMPORT_c
-			Data *=cIMPORTLINK
-			Data *=cIMPORT
-			Data *=spacereq
+	Const cIMPORTLINK=!-coms_start
+	Const cIMPORTLINK_top=!
 		const cIMPORTX=!-cIMPORTLINK_top
 			data *^cIMPORTX_c
 			Data *=cIMPORTLINK
 			Data *=cIMPORTX
 			Data *=spacereq
+		const cIMPORT=!-cIMPORTLINK_top
+			data *^cIMPORT_c
+			Data *=cIMPORTLINK
+			Data *=cIMPORT
+			Data *=spacereq
 	Const cSTARTFUNCTION=!-coms_start
 	Const cSTARTFUNCTION_top=!
-		Const cFUNCTION=!-cSTARTFUNCTION_top
-			data *^cFUNCTION_c
-			Data *=cSTARTFUNCTION
-			Data *=cFUNCTION
-			Data *=spacereq
 		Const cFUNCTIONX=!-cSTARTFUNCTION_top
 			data *^cFUNCTIONX_c
 			Data *=cSTARTFUNCTION
 			Data *=cFUNCTIONX
 			Data *=spacereq
-		Const cENTRY=!-cSTARTFUNCTION_top
-			data *^cENTRY_c
+		Const cFUNCTION=!-cSTARTFUNCTION_top
+			data *^cFUNCTION_c
 			Data *=cSTARTFUNCTION
-			Data *=cENTRY
+			Data *=cFUNCTION
 			Data *=spacereq
 		Const cENTRYLINUX=!-cSTARTFUNCTION_top
 			data *^cENTRYLINUX_c
 			Data *=cSTARTFUNCTION
 			Data *=cENTRYLINUX
+			Data *=spacereq
+		Const cENTRY=!-cSTARTFUNCTION_top
+			data *^cENTRY_c
+			Data *=cSTARTFUNCTION
+			Data *=cENTRY
 			Data *=spacereq
 	Const cENDFUNCTION=!-coms_start
 		data *^cENDFUNCTION_c
@@ -264,6 +267,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cCONDITIONS
 			Data *=cIF
 			Data *=spacereq
+		Const cELSEIF=!-cCONDITIONS_top
+			data *^cELSEIF_c
+			Data *=cCONDITIONS
+			Data *=cELSEIF
+			Data *=spacereq
 		Const cELSE=!-cCONDITIONS_top
 			data *^cELSE_c
 			Data *=cCONDITIONS
@@ -274,15 +282,15 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cCONDITIONS
 			Data *=cWHILE
 			Data *=spacereq
-		Const cELSEIF=!-cCONDITIONS_top
-			data *^cELSEIF_c
-			Data *=cCONDITIONS
-			Data *=cELSEIF
-			Data *=spacereq
 		Const cENDIF=!-cCONDITIONS_top
 			data *^cENDIF_c
 			Data *=cCONDITIONS
 			Data *=cENDIF
+			Data *=spacenotreq
+		Const cENDELSEIF=!-cCONDITIONS_top
+			data *^cENDELSEIF_c
+			Data *=cCONDITIONS
+			Data *=cENDELSEIF
 			Data *=spacenotreq
 		Const cENDELSE=!-cCONDITIONS_top
 			data *^cENDELSE_c
@@ -294,11 +302,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cCONDITIONS
 			Data *=cENDWHILE
 			Data *=spacenotreq
-		Const cENDELSEIF=!-cCONDITIONS_top
-			data *^cENDELSEIF_c
-			Data *=cCONDITIONS
-			Data *=cENDELSEIF
-			Data *=spacenotreq
+	Const cCOMMENT=!-coms_start
+		data *^cCOMMENT_c
+		Data *=cCOMMENT
+		Data *#1
+		Data *=spacenotreq
 	Const cINCLUDE=!-coms_start
 		data *^cINCLUDE_c
 		Data *=cINCLUDE
@@ -317,11 +325,6 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 	Const cI3=!-coms_start
 		data *^cI3_c
 		Data *=cI3
-		Data *#1
-		Data *=spacenotreq
-	Const cCOMMENT=!-coms_start
-		data *^cCOMMENT_c
-		Data *=cCOMMENT
 		Data *#1
 		Data *=spacenotreq
 Const numberofcommands=(!-coms_start)/com_size
@@ -408,35 +411,35 @@ Function sortcommands(data pointerscursor,data nrofcomms)
 	Data datacursorini%cdataloc
 	Data i#1
 	Data zero=0
-	Data sz#1
-	Data j#1
+#	Data sz#1
+#	Data j#1
 	Data dsize=dwsz
-	Data szval#1
-	Data ptrval#1
-	Data ptrvalstand#1
-	Data dataval#1
+#	Data szval#1
+#	Data ptrval#1
+#	Data ptrvalstand#1
+#	Data dataval#1
 
 	Set datacursor datacursorini
 	Set i zero
 	While i<nrofcomms
-		SetCall sz strlen(datacursor#)
-		Set j i
-		Set ptrval pointerscursor
-		Set ptrvalstand pointerscursor
-		While zero<j
-			Sub ptrval dsize
-			Set dataval ptrval#
-			SetCall szval strlen(dataval#)
-			If szval>=sz
-				Set j zero
-			Else
-				Set ptrvalstand# dataval
-				Sub ptrvalstand dsize
-				Dec j
-			EndElse
-		EndWhile
-		Set ptrvalstand# datacursor
-
+#		SetCall sz strlen(datacursor#)
+#		Set j i
+#		Set ptrval pointerscursor
+#		Set ptrvalstand pointerscursor
+#		While zero<j
+#			Sub ptrval dsize
+#			Set dataval ptrval#
+#			SetCall szval strlen(dataval#)
+#			If szval>=sz
+#				Set j zero
+#			Else
+#				Set ptrvalstand# dataval
+#				Sub ptrvalstand dsize
+#				Dec j
+#			EndElse
+#		EndWhile
+#		Set ptrvalstand# datacursor
+		set pointerscursor# datacursor
 		Add pointerscursor dsize
 		Add datacursor dsize
 		Add datacursor dsize
