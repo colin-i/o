@@ -18,10 +18,10 @@ Chars cCALL_c="CALL"
 Chars cCALLEX_c="CALLEX"
 Chars cIF_c="IF";Chars cELSE_c="ELSE";Chars cWHILE_c="WHILE";Chars cELSEIF_c="ELSEIF";Chars cENDIF_c="ENDIF";Chars cENDELSE_c="ENDELSE";Chars cENDWHILE_c="ENDWHILE";Chars cENDELSEIF_c="ENDELSEIF"
 Chars cINCLUDE_c="INCLUDE"
+Chars cCOMMENT_c={commentascii,0}
 Chars cI3_c="I3"
 Chars cHEX_c="HEX"
 Chars cWARNING_c="WARNING"
-Chars cCOMMENT_c={commentascii,0}
 
 const not_a_subtype=-1
 
@@ -299,6 +299,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cCONDITIONS
 			Data *=cENDELSEIF
 			Data *=spacenotreq
+	Const cCOMMENT=!-coms_start
+		data *^cCOMMENT_c
+		Data *=cCOMMENT
+		Data *#1
+		Data *=spacenotreq
 	Const cINCLUDE=!-coms_start
 		data *^cINCLUDE_c
 		Data *=cINCLUDE
@@ -319,11 +324,6 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *=cWARNING
 		Data *#1
 		Data *=spacereq
-	Const cCOMMENT=!-coms_start
-		data *^cCOMMENT_c
-		Data *=cCOMMENT
-		Data *#1
-		Data *=spacenotreq
 Const numberofcommands=(!-coms_start)/com_size
 
 Data pointers#numberofcommands+1
@@ -403,7 +403,7 @@ EndFunction
 
 
 Function sortcommands(data pointerscursor,data nrofcomms)
-#used for endelseif (first search),endelse (second search);the reverse order will not get endelseif
+#it's that old strategy elseif will be only else if let unsorted, endelseif/endelse, maybe more
 	Data datacursor#1
 	Data datacursorini%cdataloc
 	Data i#1

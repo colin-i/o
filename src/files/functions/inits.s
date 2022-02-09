@@ -1,3 +1,16 @@
+
+
+#err
+function prefs_set(ss name,ss value)
+	sd err
+	sd p
+	setcall err comline_pointer(name,#p)
+	if err!=(noerror)
+		return err
+	endif
+	setcall err comline_value(value,p)
+	return err
+endfunction
 #err
 function comline_parse(sd argc,sv argv)
 	if argc>2
@@ -6,20 +19,15 @@ function comline_parse(sd argc,sv argv)
 		add argv (2*:)
 		while argv!=argc
 			sd err
-			#
-			sd p
-			setcall err comline_pointer(argv#,#p)
-			if err!=(noerror)
-				return err
-			endif
-			#
+			sd name
+			set name argv#
 			incst argv
 			if argv==argc
 				return "missing value for command line argument"
 			endif
-			ss v
-			set v argv#
-			setcall err comline_value(v,p)
+			sd value
+			set value argv#
+			setcall err prefs_set(name,value)
 			if err!=(noerror)
 				return err
 			endif
