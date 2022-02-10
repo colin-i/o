@@ -816,6 +816,10 @@
 	4. Warning
 	<br>
 	Turn on or off the warnings.
+	<br>
+	5. Override
+	<br>
+	Override preference. Note that preference order is default > preference_file > command_line_argument > override.
 	<p>
 	Example:
 	<br>
@@ -827,8 +831,12 @@
         #this will write 3 bytes in the code section<br>
         warning off<br>
         import "common_function" common<br>
+        warning on<br>
         #useful when having a header in multiple objects<br>
-        warning on</a>
+	  override underscore_pref 0<br>
+	  importx "__errno_location" errno<br>
+	  #if uderscore_pref is 1 the symbol is _errno_location, that can be wrong
+	</a>
 	</p>
 	<p>
 	When the option function_name from the .ocompiler.txt file is set to Yes(1), the name is wrote in the code section above the function, for debugging asm code.<br>
