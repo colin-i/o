@@ -22,6 +22,7 @@ Chars cIF_c="IF";Chars cELSEIF_c="ELSEIF";Chars cELSE_c="ELSE";Chars cWHILE_c="W
 Chars cCOMMENT_c={commentascii,0}
 Chars cINCLUDE_c="INCLUDE"
 Chars cWARNING_c="WARNING"
+Chars cOVERRIDE_c="OVERRIDE"
 Chars cHEX_c="HEX"
 Chars cI3_c="I3"
 
@@ -315,6 +316,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 	Const cWARNING=!-coms_start
 		data *^cWARNING_c
 		Data *=cWARNING
+		Data *#1
+		Data *=spacereq
+	Const cOVERRIDE=!-coms_start
+		data *^cOVERRIDE_c
+		Data *=cOVERRIDE
 		Data *#1
 		Data *=spacereq
 	Const cHEX=!-coms_start

@@ -127,6 +127,8 @@ if loop==1
 				Include "./index/hex.s"
 			ElseIf commandset==(cWARNING)
 				Include "./index/warning.s"
+			ElseIf commandset==(cOVERRIDE)
+				Include "./index/override.s"
 			Else
 	#comments command
 				Call advancecursors(pcontent,pcomsize,comsize)
