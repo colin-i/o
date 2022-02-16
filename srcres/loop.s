@@ -60,17 +60,29 @@ function log_line(ss s,sd sz,sd plink)
 	set type s#
 	inc s;dec sz
 	sd skip
-	if type==(log_declare)
-		setcall skip skip_test()
-		if skip==(FALSE)
-			call constant_add(s,sz)
-		endif
-	elseif type==(log_import)
-		setcall skip skip_test()
-		if skip==(FALSE)
-			call import_add(s,sz)
-		endif
-	elseif type==(log_pathname)
+	if plink#==(TRUE)
+		if type==(log_declare)
+			setcall skip skip_test()
+			if skip==(FALSE)
+				call constant_add(s,sz)
+			endif
+			return (void)
+		elseif type==(log_import)
+			setcall skip skip_test()
+			if skip==(FALSE)
+				call import_add(s,sz)
+			endif
+			return (void)
+		elseif type==(log_constant)
+			call uconst_add(s,sz)
+			return (void)
+		elseif type==(log_function)
+			sv fns%fn_mem_p
+			call addtocont(fns,s,sz)
+			return (void)
+		endelseif
+	endif
+	if type==(log_pathname)
 		call filesplus()
 		setcall skip skip_test()
 		if skip==(FALSE)
@@ -94,11 +106,6 @@ function log_line(ss s,sd sz,sd plink)
 		if skip<0
 			call decrementfiles()
 		endif
-	elseif type==(log_constant)
-		call uconst_add(s,sz)
-	elseif type==(log_function)
-		sv fns%fn_mem_p
-		call addtocont(fns,s,sz)
 	elseif type==(log_reusable)
 		set plink# (FALSE)
 	endelseif
