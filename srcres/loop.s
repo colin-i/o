@@ -1,6 +1,8 @@
 
 const NULL=0
 const void=0
+const asciiperiod=0x2E
+const asciio=0x6F
 
 importx "fopen" fopen
 importx "fclose" fclose
@@ -8,6 +10,7 @@ importx "getline" getline
 importx "feof" feof
 importx "free" free
 importx "chdir" chdir
+importx "stdout" stdout
 
 include "../src/files/headers/log.h"
 
@@ -25,13 +28,14 @@ function log_file(ss file)
 		set fp# f
 		sv p%logf_mem_p
 		sd sz=0
+		sd link=TRUE
 		while sz!=-1
 			sd bsz
 			setcall sz getline(p,#bsz,f)
 			if sz!=-1
 				#knowing line\r\n from ocompiler
 				sub sz 2
-				call log_line(p#,sz)
+				call log_line(p#,sz,#link)
 			else
 				sd e
 				setcall e feof(f)
@@ -42,12 +46,15 @@ function log_file(ss file)
 		endwhile
 		call uconst_miniresolve()
 		call logclose()
+		if link==(TRUE)
+			call printlink(file)
+		endif
 		return (void)
 	endif
 	call erExit("fopen error")
 endfunction
 
-function log_line(ss s,sd sz)
+function log_line(ss s,sd sz,sd plink)
 #i all, f all; at end every f not i, failure. constants are with all includes two types of children declared/already and at every log unused/still unused
 	sd type
 	set type s#
@@ -92,6 +99,8 @@ function log_line(ss s,sd sz)
 	elseif type==(log_function)
 		sv fns%fn_mem_p
 		call addtocont(fns,s,sz)
+	elseif type==(log_reusable)
+		set plink# (FALSE)
 	endelseif
 endfunction
 
@@ -140,4 +149,35 @@ function decrementdir()
 	call changedir(mem)
 	neg sz
 	call ralloc(cwd,sz)
+endfunction
+
+function printlink(sd file)
+	ss back
+	set back file
+	addcall back strlen(file)
+	vstr ers="printlink problems with log file name extension."
+	while back!=file
+		dec back
+		if back#==(asciiperiod)
+			inc back
+			if back#!=(NULL)
+				set back# (asciio)
+				inc back
+				set back# (NULL)
+				sv st^stdout
+				sd len
+				setCall len fprintf(st#," ")
+				if len==1
+					setCall len fprintf(st#,file)
+					sub back file
+					if len==back
+						return (void)
+					endif
+				endif
+				call erExit("fprintf error.")
+			endif
+			call erExit(ers)
+		endif
+	endwhile
+	call erExit(ers)
 endfunction

@@ -1,5 +1,6 @@
 
 importx "fwrite" fwrite
+importx "fflush" fflush
 
 function resolve(sd j)
 	sv cont%fn_mem_p
@@ -40,6 +41,9 @@ function resolve(sd j)
 	setcall const_sz constssize()
 	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s, %u %s resolved, %u %s resolved.",j,fls,imps_sz,const_sz,c,i,f,k,c)
 	call messagedelim()
+
+	sv so^stdout
+	call fflush(so#) #there is no line end at stdout, then flush is required
 endfunction
 
 function wrongExit(ss x,ss n,sd len)

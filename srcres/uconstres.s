@@ -41,6 +41,7 @@ function uconstres_spin(sd f,sd is_new)
 endfunction
 
 function uconstres_search(sv f,sd is_new)
+#there is a segmentation if from a random (not log) file like "format elfobjso", TO DO when wanted
 	sd cursor
 	set cursor f#
 	add f :

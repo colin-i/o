@@ -117,18 +117,30 @@ function addtolog_ex(ss content,sd sizetowrite)
 	return err
 endfunction
 #err
-function addtolog_withchar_ex(ss content,sd size,sd type)
-	data ptrfilehandle%ptrlogfile
-	if ptrfilehandle#!=-1
+function addtolog_char(sd type,sd handle)
+	sd err
+	setcall err addtolog_withchar_handle((NULL),0,type,handle)
+	return err
+endfunction
+#err
+function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
+	if handle!=-1
 	#this compare only at first chdir is extra
 		sd err
-		setcall err writefile_errversion(ptrfilehandle#,#type,1)
+		setcall err writefile_errversion(handle,#type,1)
 		if err==(noerror)
 			setcall err addtolog_ex(content,size)
 		endif
 		return err
 	endif
 	return (noerror)
+endfunction
+#err
+function addtolog_withchar_ex(ss content,sd size,sd type)
+	value ptrfilehandle%ptrlogfile
+	sd err
+	setcall err addtolog_withchar_handle(content,size,type,ptrfilehandle#)
+	return err
 endfunction
 #err
 function addtolog_withchar(ss content,sd type)
