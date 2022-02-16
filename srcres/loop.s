@@ -159,24 +159,29 @@ function printlink(sd file)
 	while back!=file
 		dec back
 		if back#==(asciiperiod)
-			inc back
-			if back#!=(NULL)
-				set back# (asciio)
-				inc back
-				set back# (NULL)
-				sv st^stdout
-				sd len
-				setCall len fprintf(st#," ")
-				if len==1
-					setCall len fprintf(st#,file)
-					sub back file
-					if len==back
-						return (void)
+			while back!=file
+				dec back
+				if back#==(asciiperiod)
+					inc back
+					if back#!=(NULL)
+						set back# (asciio)
+						inc back
+						set back# (NULL)
+						sv st^stdout
+						sd len
+						setCall len fprintf(st#," ")
+						if len==1
+							setCall len fprintf(st#,file)
+							sub back file
+							if len==back
+								return (void)
+							endif
+						endif
+						call erExit("fprintf error.")
 					endif
+					call erExit(ers)
 				endif
-				call erExit("fprintf error.")
-			endif
-			call erExit(ers)
+			endwhile
 		endif
 	endwhile
 	call erExit(ers)

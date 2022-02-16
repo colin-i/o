@@ -102,10 +102,7 @@ Function congruentmoduloatsegments(data virtual,data offset,data modulo,data new
 EndFunction
 
 #err
-function addtolog_ex(ss content,sd sizetowrite)
-	data ptrfilehandle%ptrlogfile
-	data filehandle#1
-	set filehandle ptrfilehandle#
+function addtolog_handle(ss content,sd sizetowrite,sd filehandle)
 	sd err
 	setcall err writefile_errversion(filehandle,content,sizetowrite)
 	if err!=(noerror);return err;endif
@@ -129,7 +126,7 @@ function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
 		sd err
 		setcall err writefile_errversion(handle,#type,1)
 		if err==(noerror)
-			setcall err addtolog_ex(content,size)
+			setcall err addtolog_handle(content,size,handle)
 		endif
 		return err
 	endif
