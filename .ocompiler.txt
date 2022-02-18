@@ -70,3 +70,7 @@ exit_end=0
 17. Take second file path at INCLUDE statement.
 0 is No; 1 is Yes
 include_sec=0
+
+18. Ignore FORMAT ...SO .
+0 is No; 1 is Yes
+ignore_format_so=0
