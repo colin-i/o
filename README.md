@@ -2,7 +2,8 @@
 
 ## Install
 On Windows here https://github.com/colin-i/o/releases .\
-On Ubuntu, but other distros may have the same tree and dependencies.
+\
+On Ubuntu from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
@@ -11,6 +12,7 @@ Install:
 ```sh
 sudo apt-get install ocompiler
 ```
+\
 Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html).
 
 ## Donations
