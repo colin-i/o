@@ -1,0 +1,252 @@
+ocompiler (1-4.35) bionic; urgency=medium
+
+  * format ..so
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 18 Feb 2022 07:19:53 +0200
+
+ocompiler (1-4.31) bionic; urgency=medium
+
+  * overrides
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 10 Feb 2022 08:04:33 +0200
+
+ocompiler (1-4.30) bionic; urgency=medium
+
+  * fix relocs
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 28 Jan 2022 07:46:35 +0200
+
+ocompiler (1-4.29) bionic; urgency=medium
+
+  * fix stderr
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 27 Jan 2022 10:48:05 +0200
+
+ocompiler (1-4.28) bionic; urgency=medium
+
+  * function in code fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 27 Jan 2022 09:28:17 +0200
+
+ocompiler (1-4.27) bionic; urgency=medium
+
+  * fix inplace
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 26 Jan 2022 08:50:23 +0200
+
+ocompiler (1-4.26) bionic; urgency=medium
+
+  * fix include sec
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 25 Jan 2022 12:22:58 +0200
+
+ocompiler (1-4.25) bionic; urgency=medium
+
+  * include sec
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 25 Jan 2022 09:52:32 +0200
+
+ocompiler (1-4.24) bionic; urgency=medium
+
+  * exit end
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Mon, 24 Jan 2022 12:52:43 +0200
+
+ocompiler (1-4.23) bionic; urgency=medium
+
+  * fix and pref
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Mon, 24 Jan 2022 12:28:05 +0200
+
+ocompiler (1-4.22) bionic; urgency=medium
+
+  * aftercall win fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sun, 23 Jan 2022 10:19:36 +0200
+
+ocompiler (1-4.21) bionic; urgency=medium
+
+  * leading underscore
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 21 Jan 2022 09:01:54 +0200
+
+ocompiler (1-4.20) bionic; urgency=medium
+
+  * fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 20 Jan 2022 09:56:03 +0200
+
+ocompiler (1-4.19) bionic; urgency=medium
+
+  * reloc64 and values full, mainly
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 20 Jan 2022 08:20:22 +0200
+
+ocompiler (1-4.18) bionic; urgency=medium
+
+  * can not with import weak
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sun, 16 Jan 2022 05:53:29 +0200
+
+ocompiler (1-4.17) bionic; urgency=medium
+
+  * data section with write flag and some troubles with local/weak syms
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 15 Jan 2022 13:05:02 +0200
+
+ocompiler (1-4.16) bionic; urgency=medium
+
+  * syms separator
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 15 Jan 2022 07:07:44 +0200
+
+ocompiler (1-4.15) bionic; urgency=medium
+
+  * fix const counter
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 11 Jan 2022 08:33:22 +0200
+
+ocompiler (1-4.14) bionic; urgency=medium
+
+  * small fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Mon, 10 Jan 2022 14:43:51 +0200
+
+ocompiler (1-4.13) bionic; urgency=medium
+
+  * ounused
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sun, 09 Jan 2022 13:40:05 +0200
+
+ocompiler (1-4.12) bionic; urgency=medium
+
+  * casts
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 25 Dec 2021 08:08:00 +0200
+
+ocompiler (1-4.11) bionic; urgency=medium
+
+  * notparallel
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 15 Dec 2021 09:59:10 +0200
+
+ocompiler (1-4.10) bionic; urgency=medium
+
+  * syncs
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 15 Dec 2021 09:36:00 +0200
+
+ocompiler (1-4.9) bionic; urgency=medium
+
+  * value
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 11 Dec 2021 09:14:55 +0200
+
+ocompiler (1-4.8) bionic; urgency=medium
+
+  * info
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 09 Dec 2021 13:22:19 +0200
+
+ocompiler (1-4.7) bionic; urgency=medium
+
+  * com line
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 09 Dec 2021 13:10:01 +0200
+
+ocompiler (1-4.6) bionic; urgency=medium
+
+  * fix rel
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 08 Dec 2021 08:52:04 +0200
+
+ocompiler (1-4.5) bionic; urgency=medium
+
+  * rel fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 08 Dec 2021 08:31:06 +0200
+
+ocompiler (1-4.4) bionic; urgency=medium
+
+  * vdata,decst,argv
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Mon, 06 Dec 2021 14:15:58 +0200
+
+ocompiler (1-4.3) bionic; urgency=medium
+
+  * features
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 04 Dec 2021 15:04:34 +0200
+
+ocompiler (1-4.2) bionic; urgency=medium
+
+  * fixes
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 20 Nov 2021 15:40:20 +0200
+
+ocompiler (1-4.1) bionic; urgency=medium
+
+  * linux calling convention and rex.w were was not
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 20 Nov 2021 07:14:29 +0200
+
+ocompiler (1-3.26) bionic; urgency=medium
+
+  * removals
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 09 Nov 2021 17:15:20 +0200
+
+ocompiler (1-3.25) bionic; urgency=medium
+
+  * only for lin win same version
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 09 Nov 2021 16:45:22 +0200
+
+ocompiler (1-3.24) bionic; urgency=medium
+
+  * callex on data
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 09 Nov 2021 12:56:09 +0200
+
+ocompiler (1-3.23) bionic; urgency=medium
+
+  * for 64 obj64
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 09 Nov 2021 11:16:26 +0200
+
+ocompiler (1-3.22) bionic; urgency=medium
+
+  * no test
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 28 Oct 2021 16:11:34 +0300
+
+ocompiler (1-3.21) bionic; urgency=medium
+
+  * no empty file
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 28 Oct 2021 15:58:36 +0300
+
+ocompiler (1-3.20) bionic; urgency=medium
+
+  * 64ignore, return
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 28 Oct 2021 15:34:40 +0300
+
+ocompiler (1-3.19) bionic; urgency=medium
+
+  * make fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 28 Oct 2021 09:12:51 +0300
+
+ocompiler (1-3.18) bionic; urgency=medium
+
+  * fun names
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 28 Oct 2021 09:02:30 +0300
+
+ocompiler (1-1) bionic; urgency=low
+
+  * Initial release. Closes: #nnnn
+    <nnnn is the bug number of your ITP>
+
+ -- Costin Botescu <costin.botescu@gmail.com>  Tue, 26 Oct 2021 18:03:49 +0300

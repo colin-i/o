@@ -1,0 +1,15 @@
+Source: ocompiler
+Section: utils
+Priority: optional
+Maintainer: Costin Botescu <costin.botescu@gmail.com>
+Build-Depends: debhelper-compat (= 11), ocompiler
+# (>= 9)
+Standards-Version: 4.5.0
+Homepage: https://github.com/colin-i/o
+Rules-Requires-Root: no
+
+Package: ocompiler
+Architecture: i386
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: O Compiler
