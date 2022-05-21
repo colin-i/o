@@ -100,9 +100,6 @@ if loop==1
 			ElseIf commandset==(cPRIMSEC)
 		call entryscope_verify_code()
 				Include "./index/primsec.s"
-			ElseIf commandset==(cRET)
-		call entryscope_verify_code()
-				Include "./index/ret.s"
 			ElseIf commandset==(cLIBRARY)
 				Include "./index/library.s"
 			ElseIf commandset==(cIMPORTLINK)

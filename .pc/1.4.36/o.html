@@ -342,15 +342,12 @@
 	<p>
 	1. Return
 	<br>
-	Language command: <b>Return</b> <b>Ret</b> <b>Exit</b>
+	Language command: <b>Return</b>
 	<br>
 	The return command is used to terminate the program or a function.
 	<br>
-	The asm value termination is <i>ret</i> (0xc3). To return <i>int 0x80</i>(0xcd,0x80;linux sys_exit;eax=1,ebx=return value) use <b>Exit</b>.
-	<br>
-	To return without a value use <b>Ret</b>.
-	<br>
-	To return like <b>Exit</b> at main scope but using returns set exit_end preference to 1.
+	It returns the value. The asm value termination is <i>ret</i> (0xc3). To return <i>int 0x80</i>(0xcd,0x80;linux sys_exit;eax=1,ebx=return value) use <b>Exit</b>.
+	To return like <b>Exit</b> at main scope but usign <b>Return</b> set exit_end preference to 1.
 	<br>
 	Example:
 	<br>
@@ -798,13 +795,6 @@
         Return 0</a>
 	</p>
 	64-bit can be ignored from preferences. Cross-compiles can be made at the same option from preferences.
-  </div>
-  <div>
-	<p>
-	Append <b>SO</b> at format to inform the log parser (ounused) to skip input/output functions and constants.
-	This can be used when building a project as executable and as shared object and wanting to initialize data only at shared object recalls.
-	<br>Example: Format elfobj64so
-	</p>
   </div>
 </p>
 <h3><a name="otheroperations">XIII. Other operations</a></h3>

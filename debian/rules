@@ -6,7 +6,14 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 #export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
 %:
-	dh $@ --with autoreconf
+	dh $@
+# --with autoreconf
+
+#dist is xenial to go back to bionic:
+#	unique name append a letter at version
+#	in control          debhelper-compat (= 11)
+#      here                --with autoreconf
+#      remove compat file
 
 override_dh_auto_install:
 	dh_auto_install -- prefix=/usr

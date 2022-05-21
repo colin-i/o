@@ -1,5 +1,4 @@
 
-#sz
 function getreturn(data ptrptrcontinuation)
 	sd b;setcall b scope64_get()
 	if b==(TRUE)
@@ -18,47 +17,6 @@ function getreturn(data ptrptrcontinuation)
 	data sizeretcontinuation=3
 	set ptrptrcontinuation# ptrreturncontinuation
 	return sizeretcontinuation
-endfunction
-#err
-function getexit(sv ptrptrcontinuation,sd psizeofcontinuation)
-	#if to keep rsp can be leave pop sub rsp,:
-
-	#int 0x80, sys_exit, eax 1,ebx the return number
-	chars sys_exit={0xb8,1,0,0,0}
-	data exinit^sys_exit
-	data exitsize=5
-	Data codeptr%ptrcodesec
-	sd err
-	SetCall err addtosec(exinit,exitsize,codeptr)
-	If err!=(noerror)
-		Return err
-	EndIf
-
-	Chars unixcontinuation={intimm8,0x80}
-	set ptrptrcontinuation# #unixcontinuation
-	set psizeofcontinuation# 2
-	return (noerror)
-endfunction
-
-#err
-function argument_return(sd termswitch,ss pop,ss pimmop,sd pintegerreminder,sv pptrcontinuation,sd psizeofcontinuation,sd pregopcode)
-	call setimm()
-	Set pop# (moveatprocthemem)
-	chars immtake=0xB8
-	set pimmop# immtake
-	Set pintegerreminder# (TRUE)
-
-	if termswitch==(TRUE)
-		data ebxregnumber=ebxregnumber
-		set pregopcode# ebxregnumber
-		add pimmop# ebxregnumber
-		sd err
-		setcall err getexit(pptrcontinuation,psizeofcontinuation)
-		return err
-	endif
-	set pregopcode# (eaxregnumber)
-	setcall psizeofcontinuation# getreturn(pptrcontinuation)
-	return (noerror)
 endfunction
 
 #err
@@ -79,6 +37,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 
 	Str ptrcontinuation#1
 	Data sizeofcontinuation#1
+	data ptrptrcontinuation^ptrcontinuation
 
 	Set sizeofcontinuation zero
 
@@ -88,17 +47,56 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data err#1
 	Data noerr=noerror
 	chars immop#1
+	chars immtake=0xB8
 
 	call unsetimm()
 	Data forward=FORWARD
 	If forwardORcallsens==forward
+		sd termswitch=FALSE
+		if subtype==(cEXIT)
+			set subtype (cRETURN)
+			set termswitch (TRUE)
+		endif
 		If subtype==(cRETURN)
-			sd termswitch
-			setcall termswitch is_linux_end() #exit from linux term
-			setcall err argument_return(termswitch,#op,#immop,#integerreminder,#ptrcontinuation,#sizeofcontinuation,#regopcode)
-			If err!=noerr
-				Return err
-			EndIf
+			call setimm()
+			set immop immtake
+			Set integerreminder true
+			Set op (moveatprocthemem)
+
+			if termswitch==(FALSE)
+				#exit from linux term
+				setcall termswitch is_linux_end()
+			endif
+
+			if termswitch==true
+				#if to keep rsp can be leave pop sub rsp,:
+
+				#int 0x80, sys_exit, eax 1,ebx the return number
+				chars sys_exit={0xb8,1,0,0,0}
+				data exinit^sys_exit
+				data exitsize=5
+				SetCall err addtosec(exinit,exitsize,codeptr)
+				If err!=noerr
+					Return err
+				EndIf
+
+				#
+				data ebxregnumber=ebxregnumber
+				set regopcode ebxregnumber
+
+				add immop ebxregnumber
+
+				#
+				Chars unixcontinuation={intimm8,0x80}
+				data ptrunixcontinuation^unixcontinuation
+				Data two=2
+				Set ptrcontinuation ptrunixcontinuation
+				set sizeofcontinuation two
+			else
+				set regopcode (eaxregnumber)
+				setcall sizeofcontinuation getreturn(ptrptrcontinuation)
+			endelse
+			#fileformat#
 		ElseIf subtype==(cNOT)
 			Chars not={0xF7}
 			Chars notregopcode={Notregopcode}
@@ -126,11 +124,6 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			else;set incs_sz (qwsz);endelse
 			set ptrcontinuation #incs_sz
 			set sizeofcontinuation (bsz)
-		ElseIf subtype==(cEXIT)
-			setcall err argument_return((TRUE),#op,#immop,#integerreminder,#ptrcontinuation,#sizeofcontinuation,#regopcode)
-			If err!=noerr
-				Return err
-			EndIf
 		ElseIf subtype==(cNEG)
 			set op (0xf7)
 			set regopcode 3

@@ -12,7 +12,6 @@ Chars cAFTERCALL_c="AFTERCALL";Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL"
 Chars cFORMAT_c="FORMAT"
 Chars cRETURN_c="RETURN";Chars cNOT_c="NOT";Chars cINCST_c="INCST";Chars cINC_c="INC";Chars cDECST_c="DECST";Chars cDEC_c="DEC";Chars cEXIT_c="EXIT";Chars cNEG_c="NEG";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
-Chars cRET_c="RET"
 Chars cLIBRARY_c="LIBRARY"
 Chars cIMPORTX_c="IMPORTX";Chars cIMPORT_c="IMPORT"
 Chars cFUNCTIONX_c="FUNCTIONX";Chars cFUNCTION_c="FUNCTION";Chars cENTRYLINUX_c="ENTRYLINUX";Chars cENTRY_c="ENTRY"
@@ -208,11 +207,6 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cPRIMSEC
 			Data *=cXOR
 			Data *=spacereq
-	Const cRET=!-coms_start
-		data *^cRET_c
-		Data *=cRET
-		Data *#1
-		Data *=spacenotreq
 	Const cLIBRARY=!-coms_start
 		data *^cLIBRARY_c
 		Data *=cLIBRARY
