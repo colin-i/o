@@ -10,5 +10,5 @@ Rules-Requires-Root: no
 Package: ocompiler
 Architecture: i386
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends} | libc6-i386:amd64
 Description: O Compiler
