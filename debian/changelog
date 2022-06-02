@@ -1,3 +1,9 @@
+ocompiler (1-4.36c) xenial; urgency=medium
+
+  * with compiler
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 02 Jun 2022 14:39:13 +0300
+
 ocompiler (1-4.36b) xenial; urgency=medium
 
   * libc6-i386
