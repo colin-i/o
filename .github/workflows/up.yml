@@ -1,0 +1,30 @@
+
+on:
+ workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+ # This workflow contains a single job called "build"
+ ubuild:
+  # The type of runner that the job will run on
+  runs-on: ubuntu-latest
+  # Steps represent a sequence of tasks that will be executed as part of the job
+  steps:
+   #token or opts.auth is required (maybe at remote)
+   - name: Run a multi-line script
+     run: |
+      if [ -n "${{ env.init }}" ]; then
+       exit 1
+      fi
+      #get up_url
+      wget https://github.com/colin-i/test/releases/download/1.5/${{ env.proj }} -O 1.txt
+      echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
+   - name: Upload Release Asset
+     uses: actions/upload-release-asset@v1
+     env:
+      GITHUB_TOKEN: ${{ secrets.PAT }}
+     with:
+      upload_url: ${{ env.up_url }}
+      asset_path: ./${{ env.proj }}.zip
+      asset_name: ${{ env.proj }}.windows.zip
+      asset_content_type: application/zip
