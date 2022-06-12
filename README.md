@@ -1,8 +1,6 @@
 # O Compiler
 
 ## Install
-On Windows here https://github.com/colin-i/o/releases .\
-\
 On Ubuntu from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
@@ -12,8 +10,14 @@ Install:
 ```sh
 sudo apt-get install ocompiler
 ```
-\
 Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html).
+\
+On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/o/releases).
+```sh
+yum install *.rpm
+```
+\
+On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).\
 
 ## Donations
 The *donations* section is here
