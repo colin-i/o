@@ -37,6 +37,8 @@ jobs:
       #make rpm
       mkdir out
       cd out
+      apt update
+      apt install alien
       alien -rk ../${name}.deb
       fname=`ls`
       mv ${fname} ../
