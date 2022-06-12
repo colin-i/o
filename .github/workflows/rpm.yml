@@ -27,7 +27,7 @@ jobs:
        src=ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}
        wget http://${src}/ubuntu/dists/${dist}/main/binary-i386/Packages.xz
        xz -d Packages.xz
-       debfilename=`grep "^Filename.*/${name}_" Packages`
+       debfilename=`grep "^Filename.*/${name}_" Packages | tail -1 | cut -d ' ' -f 2`
        wget http://${src}/ubuntu/${debfilename} -O ${name}.deb
       else
        echo unpublished
