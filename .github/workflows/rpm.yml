@@ -39,7 +39,7 @@ jobs:
       cd out
       sudo apt update
       sudo apt install alien
-      alien -rk ../${name}.deb
+      sudo alien -rk ../${name}.deb
       fname=`ls`
       mv ${fname} ../
       echo "file=${fname}" >> $GITHUB_ENV
