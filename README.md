@@ -13,7 +13,7 @@ sudo apt-get install ocompiler
 \
 On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/o/releases).
 ```sh
-yum install *.rpm
+yum install ocompiler-*.rpm
 ```
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).
