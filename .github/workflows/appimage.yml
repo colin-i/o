@@ -144,12 +144,6 @@ jobs:
          <li>Linux/Windows x86_64/i386</li>
         </ul>
        </description>
-       <screenshots>
-        <screenshot type="default">
-         <caption>${name2} image</caption>
-         <image>https://raw.github.com/colin-i/o/master/arh/${name}.png</image>
-        </screenshot>
-       </screenshots>
        <url type="homepage">${page}</url>
        <content_rating/>
       </component>
