@@ -12,10 +12,6 @@ on:
   inputs:
    ppa:
     description: "ppa sufix"
-   artifact:
-    description: "result is artifact"
-   unpublished:
-    description: "don't wait to publish, take from build page"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,13 +27,13 @@ jobs:
      run: |
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
       name2=OCompiler
-      page=`cat debian/control | grep "^Homepage" | cut -d ' ' -f2`
       #
       mkdir -p AppDir
       file=runtime
       arch_ai=-x86_64
       archfile=${file}${arch_ai}
       kitpart () {
+       #https://github.com/AppImage/pkg2appimage
        urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/latest -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
       }
       if [ ! -e "${file}" ]; then
@@ -47,34 +43,30 @@ jobs:
        mv ${archfile} ${file}
        chmod a+x ${file}
       fi
-      downdeb () {
-       src=${1}
-       arch=${2}
-       pkg=${3}
-       inter=Packages${arch}
+      if [ ! -e "${name}.deb" ]; then
+       arh=i386
+       version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
+       if [ ! -e "lp.py" ]; then
+        wget -q https://raw.githubusercontent.com/colin-i/test/master/lp.py
+       fi
+       OUTPUT=$(python lp.py ppa${{ github.event.inputs.ppa }} ${dist} ${arh} ${name} ${version})
+       wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
+       dpkg -x ${name}.deb AppDir
+      fi
+      pkg=libc6-i386
+      maindeb=${pkg}.deb
+      if [ ! -e "${maindeb" ]; then
+       src=ro.archive.ubuntu.com
+       inter=Packages
        if [ ! -e "${inter}" ]; then
-        wget http://${src}/ubuntu/dists/bionic/main/binary-${arch}/Packages.xz -O ${inter}.xz
+        wget http://${src}/ubuntu/dists/bionic/main/binary-amd64/${inter}.xz
         xz -d ${inter}.xz
        fi
        debfilename=`grep "^Filename.*/${pkg}_" ${inter} | tail -1 | cut -d ' ' -f 2`
        wget_url=http://${src}/ubuntu/${debfilename}
-       maindeb=${pkg}.deb
        wget ${wget_url} -O ${maindeb}
        dpkg -x ${maindeb} AppDir
-      }
-      if [ ! -e "${name}.deb" ]; then
-       if [ "${{ github.event.inputs.unpublished }}" = "" ]; then
-        echo published
-        downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 ${name}
-       else
-        echo unpublished
-        f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -Poe "[^\"]*(?=\.deb\")"`
-        wget ${f}.deb -O ocompiler.deb
-        dpkg -x ocompiler.deb AppDir
-       fi
       fi
-      downdeb "ro.archive.ubuntu.com" amd64 libc6-i386
-      #exit
       cd AppDir
       file2=AppRun
       if [ ! -e "${file2}" ]; then
@@ -128,6 +120,7 @@ jobs:
       mi=usr/share/metainfo
       mif=${mi}/com.colin.${name}.appdata.xml
       if [ ! -e "${mif}" ]; then
+       page=`cat ../debian/control | grep "^Homepage" | cut -d ' ' -f2`
        mkdir -p ${mi}
        cat > ${mif} <<EOF
       <?xml version="1.0" encoding="UTF-8"?>
@@ -159,7 +152,6 @@ jobs:
        chmod a+x ${name}.AppImage
       fi
    - name: artifact
-     if: ${{ github.event.inputs.artifact != '' }}
      uses: actions/upload-artifact@v3
      with:
       name: appimage
