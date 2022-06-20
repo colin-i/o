@@ -48,6 +48,7 @@ jobs:
        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
        if [ ! -e "lp.py" ]; then
         wget -q https://raw.githubusercontent.com/colin-i/test/master/lp.py
+        sudo apt install python3-launchpadlib
        fi
        OUTPUT=$(python lp.py ppa${{ github.event.inputs.ppa }} ${dist} ${arh} ${name} ${version})
        wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
