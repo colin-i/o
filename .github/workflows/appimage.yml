@@ -43,6 +43,7 @@ jobs:
        mv ${archfile} ${file}
        chmod a+x ${file}
       fi
+      dist=`cat debian/changelog | head -1 | grep -Poe "[^ ]*(?=;)"`
       if [ ! -e "${name}.deb" ]; then
        arh=i386
        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
@@ -56,11 +57,11 @@ jobs:
       fi
       pkg=libc6-i386
       maindeb=${pkg}.deb
-      if [ ! -e "${maindeb" ]; then
+      if [ ! -e "${maindeb}" ]; then
        src=ro.archive.ubuntu.com
        inter=Packages
        if [ ! -e "${inter}" ]; then
-        wget http://${src}/ubuntu/dists/bionic/main/binary-amd64/${inter}.xz
+        wget http://${src}/ubuntu/dists/${dist}/main/binary-amd64/${inter}.xz
         xz -d ${inter}.xz
        fi
        debfilename=`grep "^Filename.*/${pkg}_" ${inter} | tail -1 | cut -d ' ' -f 2`
