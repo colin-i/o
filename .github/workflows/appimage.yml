@@ -113,7 +113,7 @@ jobs:
       cd "\$(dirname "\$0")"
       cd ../../
       LD_LIBRARY_PATH="\$(pwd)/lib32" \
-       ./lib32/ld-linux.so.2 ./usr/bin/${cmd} "\$@"
+       ./lib32/ld-linux.so.2 ./usr/bin/\${cmd} "\$@"
       EOF
        chmod 755 ${name}
        cd ../../
