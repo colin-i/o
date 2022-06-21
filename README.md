@@ -11,6 +11,8 @@ Install:
 sudo apt-get install ocompiler
 ```
 \
+On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/o/releases).\
+\
 On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/o/releases).
 ```sh
 yum install ocompiler-*.rpm
