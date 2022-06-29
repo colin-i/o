@@ -40,9 +40,11 @@ jobs:
       sudo apt update
       sudo apt install alien
       sudo alien -rk ../${name}.deb
+      #fname first - to .
       fname=`ls`
-      mv ${fname} ../
-      echo "file=${fname}" >> $GITHUB_ENV
+      fnamefinal=`echo ${fname} | sed "s/-/./"`
+      mv ${fname} ../${fnamefinal}
+      echo "file=${fnamefinal}" >> $GITHUB_ENV
       #get up_url
       wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
       echo "up_url=`cat 1.txt`" >> $GITHUB_ENV

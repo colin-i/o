@@ -15,7 +15,7 @@ On linux distributions, <i>.AppImage</i> file from [releases](https://github.com
 \
 On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/o/releases).
 ```sh
-yum install ocompiler-*.rpm
+yum install ocompiler.*.*.rpm
 ```
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).
