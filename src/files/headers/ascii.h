@@ -17,6 +17,7 @@ Const asciiast=0x2A
 Const asciiplus=0x2B
 #2c comma
 Const asciiminus=0x2D
+Const asciidot=0x2E
 Const asciislash=0x2F
 Const asciizero=0x30
 Const asciinine=0x39

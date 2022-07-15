@@ -134,9 +134,21 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 				dec argsize_filter
 			else
 				data ptrobject%ptrobject
-				if ptrobject#==1
+				data ptrfunctions%ptrfunctions
+				sd container_sz
+				setcall container_sz valinmem(content,argsize,(asciidot))
+				if container_sz!=argsize
+					#if is a dot
+					sd inter
+					setcall inter vars(content,container_sz,ptrfunctions)
+					if inter==(NULL)
+						setcall errnr undefinedvar_fn()
+						return errnr
+					endif
+					inc container_sz
+					call advancecursors(#content,#argsize_filter,container_sz)
+				elseif ptrobject#==1
 					#verify for function
-					data ptrfunctions%ptrfunctions
 					setcall ptrdata# vars(content,argsize,ptrfunctions)
 					if ptrdata#==0
 						setcall possible_err undefinedvar_fn()
@@ -150,7 +162,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 						setcall prefix prefix_bool()
 						set prefix# 1
 					endelse
-				endif
+				endelseif
 			endelse
 			if ptrdata#==0
 				SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
