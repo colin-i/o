@@ -141,8 +141,7 @@ Function searchinvars(str content,data size,data ptrtype,data warningssearch)
 	Data null=NULL
 	Data nrofvars=numberofvars
 
-	Set i null
-
+	Set i 0
 	While i<nrofvars
 		SetCall ptrcontainer getstructcont(i)
 		SetCall data varscore(content,size,ptrcontainer,warningssearch)
@@ -153,11 +152,27 @@ Function searchinvars(str content,data size,data ptrtype,data warningssearch)
 				EndIf
 			EndIf
 			Return data
-		Else
-			Inc i
-		EndElse
+		endIf
+		Inc i
 	EndWhile
 	Return null
+EndFunction
+
+#null or a pointer to the variable
+Function searchinvars_scope(ss content,sd size,sd ptrtype,sd scope)
+	sd data
+	sd ptrcontainer
+	sd i=0
+	While i<(numberofvars)
+		SetCall ptrcontainer getstructcont_scope(i,scope)
+		SetCall data varscore(content,size,ptrcontainer,(NULL))
+		If data!=(NULL)
+			Set ptrtype# i
+			Return data
+		endIf
+		Inc i
+	EndWhile
+	Return (NULL)
 EndFunction
 
 #searchinvars
@@ -180,7 +195,14 @@ const cast_data=asciiD
 const cast_string=asciiS
 
 #err
-Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
+Function varsufix(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
+	sd err
+	setcall err varsufix_ex(content,size,ptrdata,ptrlow,ptrsufix,(NULL))
+	return err
+endfunction
+
+#err
+function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scope)
 	Data type#1
 	Data ptrtype^type
 	Data false=FALSE
@@ -194,7 +216,11 @@ Function varsufix(str content,data size,data ptrdata,data ptrlow,data ptrsufix)
 	Data null=NULL
 	Data data#1
 
-	SetCall data strinvars(content,size,ptrtype)
+	if scope==(NULL)
+		SetCall data strinvars(content,size,ptrtype)
+	else
+		setcall data searchinvars_scope(content,size,ptrtype,scope)
+	endelse
 	If data==null
 		SetCall err undefinedvariable()
 		Return err

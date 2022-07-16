@@ -63,6 +63,14 @@ Function getstructcont(data typenumber)
 	Add dest offset
 	Return dest
 EndFunction
+#pdata
+Function getstructcont_scope(sd typenumber,sd scope)
+	sd offset
+	set offset (sizeofcontainer)
+	mult offset typenumber
+	add offset scope
+	return offset
+EndFunction
 
 #return virtual value
 Function congruentmoduloatsegments(data virtual,data offset,data modulo,data newbytes)

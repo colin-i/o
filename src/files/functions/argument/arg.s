@@ -143,7 +143,15 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 					inc container_sz
 					set argsize_filter argsize
 					call advancecursors(#content,#argsize_filter,container_sz)
-					SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+					#
+					vdata fnboolptr%globalinnerfunction
+					if fnboolptr#==(FALSE)
+						value ptrscopes%ptrscopes
+						SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,ptrscopes)
+					else
+						value ptrfnscopes%ptrfnscopes
+						SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,ptrfnscopes)
+					endelse
 					if errnr!=(noerror)
 						return errnr
 					endif

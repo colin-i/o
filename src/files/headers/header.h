@@ -146,6 +146,7 @@ Data *functionsReg#1
 Const ptrfunctions^functionsMax
 
 Const ptrscopes^integerMax
+Const ptrfnscopes^integerfnscopeMax
 
 #file containers
 Const sizeofsecdata=0x1000
