@@ -115,23 +115,18 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			setcall prefix prefix_bool()
 			set prefix# 1
 		else
-			#lower than argsize in case of a prefix
 			sd argsize_filter
-			set argsize_filter argsize
-
-			#at object var/fn,non-object var
-			sd undvar_err
-			sd possible_err
-			setcall undvar_err undefinedvariable()
-			set possible_err undvar_err
-			set ptrdata# 0
-
 			if content#==(pointerascii)
 				#prefix
 				setcall prefix prefix_bool()
 				set prefix# 1
 				inc content
+				set argsize_filter argsize
 				dec argsize_filter
+				SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+				if errnr!=(noerror)
+					return errnr
+				endif
 			else
 				data ptrobject%ptrobject
 				data ptrfunctions%ptrfunctions
@@ -146,12 +141,25 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 						return errnr
 					endif
 					inc container_sz
+					set argsize_filter argsize
 					call advancecursors(#content,#argsize_filter,container_sz)
+					SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+					if errnr!=(noerror)
+						return errnr
+					endif
 				elseif ptrobject#==1
 					#verify for function
 					setcall ptrdata# vars(content,argsize,ptrfunctions)
 					if ptrdata#==0
-						setcall possible_err undefinedvar_fn()
+						SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+						if errnr!=(noerror)
+							sd undvar_err
+							setcall undvar_err undefinedvariable()
+							if errnr==undvar_err
+								setcall errnr undefinedvar_fn()
+							endif
+							return errnr
+						endif
 					else
 						set ptrlow# (FALSE)
 						set ptrsufix# (FALSE)
@@ -162,17 +170,13 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 						setcall prefix prefix_bool()
 						set prefix# 1
 					endelse
-				endelseif
-			endelse
-			if ptrdata#==0
-				SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
-				if errnr!=(noerror)
-					if errnr==undvar_err
-						set errnr possible_err
+				else
+					SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+					if errnr!=(noerror)
+						return errnr
 					endif
-					return errnr
-				EndIf
-			endif
+				endelse
+			endelse
 		endelse
 	endelse
 	#

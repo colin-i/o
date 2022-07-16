@@ -221,7 +221,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 			If p_data#==0
 				setcall p_data# vars_number(pcontent#,sz,(stackvaluenumber))
 				If p_data#==0
-					Chars unfndeferr="Undefined function/data name."
+					Chars unfndeferr="Undefined function/data call."
 					Str ptrunfndef^unfndeferr
 					Return ptrunfndef
 				EndIf
