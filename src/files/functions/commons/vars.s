@@ -15,8 +15,14 @@ function warn_or_log(sd type,sd return_value,ss symbolname,sd log_option,sd p_er
 	return return_value
 endfunction
 
+function vars_core_ref(ss content,sd size,sv ptrstructure,sv warningssearch,sd setref)
+	sd data
+	setcall data vars_core_ref_scope(content,size,ptrstructure,warningssearch,setref,(NULL))
+	return data
+endfunction
+
 #null or a pointer to the constant/variable/function
-function vars_core_ref(str content,data size,data ptrstructure,data warningssearch,sd setref)
+function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssearch,sd setref,sd position_pointer)
 	Data zero=0
 	Data varsize#1
 	Data dwlen=dwsz
@@ -92,6 +98,9 @@ function vars_core_ref(str content,data size,data ptrstructure,data warningssear
 					Return entrypoint
 				EndIf
 			EndIf
+			if position_pointer!=(NULL)
+				inc position_pointer#
+			endif
 		EndIf
 		Add varsize blen
 		Add container varsize

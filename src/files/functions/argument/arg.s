@@ -136,6 +136,8 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 					#if is a dot
 					sd inter
 					setcall inter vars(content,container_sz,ptrfunctions)
+					#sd pos
+					#setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
 					if inter==(NULL)
 						setcall errnr undefinedvar_fn()
 						return errnr
