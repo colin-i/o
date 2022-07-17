@@ -135,9 +135,9 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 				if container_sz!=argsize
 					#if is a dot
 					sd inter
-					setcall inter vars(content,container_sz,ptrfunctions)
-					#sd pos
-					#setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
+					#setcall inter vars(content,container_sz,ptrfunctions)
+					sd pos=0
+					setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
 					if inter==(NULL)
 						setcall errnr undefinedvar_fn()
 						return errnr
@@ -146,14 +146,9 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 					set argsize_filter argsize
 					call advancecursors(#content,#argsize_filter,container_sz)
 					#
-					vdata fnboolptr%globalinnerfunction
-					if fnboolptr#==(FALSE)
-						value ptrscopes%ptrscopes
-						SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,ptrscopes)
-					else
-						value ptrfnscopes%ptrfnscopes
-						SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,ptrfnscopes)
-					endelse
+					sd scope
+					setcall scope scopes_get_scope(pos)
+					SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,scope)
 					if errnr!=(noerror)
 						return errnr
 					endif

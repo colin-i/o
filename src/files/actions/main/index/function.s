@@ -14,7 +14,9 @@ ElseIf programentrypoint!=codesecReg
 	EndIf
 	Set errormsg allocerrormsg
 Else
-	sd el_or_e=FALSE;if subtype==(cENTRY);set el_or_e (TRUE);elseif subtype==(cENTRYLINUX);set el_or_e (TRUE);endelseif
+	if subtype==(cENTRY);set el_or_e (TRUE)
+	elseif subtype==(cENTRYLINUX);set el_or_e (TRUE)
+	else;set el_or_e (FALSE);endelse
 	If el_or_e==(TRUE)
 		Data referencebit=referencebit
 		Set objfnmask referencebit

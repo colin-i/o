@@ -82,3 +82,5 @@ sd rel64_blankinit%p_elf64_r_info_type
 set rel64_blankinit# (R_X86_64_32)
 
 set real_exit_end (FALSE)
+
+sd el_or_e=FALSE
