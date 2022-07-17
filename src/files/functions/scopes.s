@@ -8,6 +8,7 @@ function scopes_free()
 	endif
 endfunction
 
+#err
 function scopes_alloc(sd has_named_entry)
 	sv ptrfunctions%ptrfunctions
 	sd i=0
@@ -23,19 +24,19 @@ function scopes_alloc(sd has_named_entry)
 	endwhile
 	mult i :
 	sv s%scopesbag_ptr
-	sd err
-	setcall err memrealloc(s,i)
-	if err==(noerror)
+	setcall s# memalloc(i)
+	set s s#
+	if s!=(NULL)
 		if has_named_entry==(TRUE)
 			#entry tag is, and is last, entry. can be used in functions
-			set s s#
 			add s i
 			sub s :
 			sd scps%ptrscopes
 			set s# scps
 		endif
+		return (noerror)
 	endif
-	return err
+	return (error)
 endfunction
 
 function scopes_get_scope(sd i)

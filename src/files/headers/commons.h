@@ -43,7 +43,7 @@ Data flag_max_path=flag_MAX_PATH
 
 #more values
 Const noerror=0
-#this is win specific Const error=-1
+Const error=-1 #is also for some windows
 Const FORWARD=1
 Const BACKWARD=-1
 Const void=0
