@@ -113,6 +113,8 @@ While includesReg!=null
 				set skipfortwoparse 1
 				add includesReg sizeofincludeset
 				set twoparse 1
+
+				setcall errormsg scopes_alloc()
 			EndElse
 		endif
 	endif

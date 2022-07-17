@@ -15,3 +15,5 @@ Set allocerrormsg null
 set safecurrentdirtopath (NULL)
 
 call initpreferences()
+
+set scopesbag (NULL)

@@ -72,6 +72,8 @@ Function freeclose()
 	endif
 
 	call platform_free()
+
+	call scopes_free()
 EndFunction
 
 Function msgerrexit(data msg)
