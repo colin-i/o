@@ -1,10 +1,27 @@
 
 value scopesbag#1
+data *scopesbag_size#1
 const scopesbag_ptr^scopesbag
 function scopes_free()
 	sv s%scopesbag_ptr
 	if s#!=(NULL)
-		call free(s#)
+		sv start;set start s#
+		add s :
+		sv pointer;set pointer s#d^
+		add pointer start
+		if start!=pointer
+			sub pointer :
+			sd scps%ptrscopes
+			if pointer#!=scps
+				add pointer :
+			endif
+			#else let named entry like it was
+			while start!=pointer
+				sub pointer :
+				call free(pointer#)
+			endwhile
+		endif
+		call free(start)
 	endif
 endfunction
 
@@ -24,16 +41,24 @@ function scopes_alloc(sd has_named_entry)
 	endwhile
 	mult i :
 	sv s%scopesbag_ptr
-	setcall s# memalloc(i)
-	set s s#
-	if s!=(NULL)
+	setcall s# memcalloc(i)
+	sv start;set start s#
+	if start!=(NULL)
+		add s :
+		set s# i
+		sv pointer;set pointer start
+		add pointer i
 		if has_named_entry==(TRUE)
 			#entry tag is, and is last, entry. can be used in functions
-			add s i
-			sub s :
+			sub pointer :
 			sd scps%ptrscopes
-			set s# scps
+			set pointer# scps
 		endif
+		#alloc some dummy values
+		while start!=pointer
+			sub pointer :
+			setcall pointer# memcalloc((sizeofscope)) #is calloc, needing reg 0
+		endwhile
 		return (noerror)
 	endif
 	return (error)

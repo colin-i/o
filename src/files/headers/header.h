@@ -132,6 +132,7 @@ const vnumbers=numberofvars
 Const afterscopes=numberofvars*2
 	Const constantsnumber=afterscopes+0
 	Const functionsnumber=afterscopes+1
+const sizeofscope=sizeofcontainer*numberofvars
 
 Const constantssize=10*mainscope
 #constantssize
