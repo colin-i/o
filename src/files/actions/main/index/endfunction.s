@@ -18,6 +18,8 @@ Else
 			If errormsg==noerr
 				Call warnings(false,includes,nameofstoffile,#errormsg)
 				If errormsg==noerr
+					call scopes_store(functionTagIndex)
+					inc functionTagIndex
 					Set i zero
 					While i!=numberofvariables
 						Data containertoclear#1

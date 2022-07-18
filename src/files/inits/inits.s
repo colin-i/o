@@ -84,3 +84,5 @@ set rel64_blankinit# (R_X86_64_32)
 set real_exit_end (FALSE)
 
 sd el_or_e=FALSE
+
+sd functionTagIndex=0

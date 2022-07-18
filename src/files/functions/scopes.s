@@ -71,3 +71,14 @@ function scopes_get_scope(sd i)
 	add s i
 	return s#
 endfunction
+
+function scopes_store(sv scope)
+	sv s%scopesbag_ptr
+	mult scope :
+	add scope s#
+	set scope scope#
+	sd j=0
+	while j<(numberofvars)
+		inc j
+	endwhile
+endfunction
