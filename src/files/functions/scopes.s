@@ -18,6 +18,13 @@ function scopes_free()
 			#else let named entry like it was
 			while start!=pointer
 				sub pointer :
+				sv cursor;set cursor pointer#
+				sv cursor_last=numberofvars
+				mult cursor_last :
+				add cursor_last cursor
+				while cursor!=cursor_last
+					add cursor :
+				endwhile
 				call free(pointer#)
 			endwhile
 		endif
@@ -57,7 +64,7 @@ function scopes_alloc(sd has_named_entry)
 		#alloc some dummy values
 		while start!=pointer
 			sub pointer :
-			setcall pointer# memcalloc((sizeofscope)) #is calloc, needing reg 0
+			setcall pointer# memcalloc((sizeofscope)) #is calloc, needing reg 0, in case it is searched
 		endwhile
 		return (noerror)
 	endif
