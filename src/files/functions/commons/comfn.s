@@ -16,6 +16,16 @@ Function memrealloc(data ptrpointer,data size)
 	Data noerr=noerror
 	Return noerr
 EndFunction
+#err
+Function mem_alloc(sd size,sv p)
+	sd mem
+	setcall mem malloc(size)
+	if mem!=(NULL)
+		set p# mem
+		return (noerror)
+	endif
+	return "malloc error"
+EndFunction
 
 #err
 Function memoryalloc(data pathsize,data memptr)

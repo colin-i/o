@@ -2,6 +2,7 @@
 #msvcrt
 
 Import "_realloc" realloc
+Import "_malloc" malloc
 Import "_free" free
 Import "_sprintf" sprintf
 Import "_memcpy" memtomem

@@ -2,45 +2,36 @@
 
 #err
 Function enumbags(data declare)
-	Data true=TRUE
-
-	Data containersbegin%containersbegin
-	Data containerssize=containerssize
-	Data pointer#1
-	Data size#1
-	Data dsz=dwsz
-	Data maxalloc#1
-	Data noerr=noerror
-
-	Data value#1
-	Data zero=0
-
-	Set pointer containersbegin
-	Set size containerssize
-	While size>zero
-		Set maxalloc pointer#
-		Add pointer dsz
-		Sub size dsz
-		If declare==true
-			Data err#1
-			SetCall err memoryalloc(maxalloc,pointer)
-			If err!=noerr
+	sd pointer%containersbegin
+	sd cursor=containerssize
+	add cursor pointer
+	While pointer!=cursor
+		If declare==(TRUE)
+			sd err;setcall err enumbags_alloc(pointer)
+			If err!=(noerror)
 				Return err
 			EndIf
 		Else
-			Set value pointer#
-			If value!=zero
-				Call free(value)
-			EndIf
+			call enumbags_free(pointer)
 		EndElse
-		Add pointer dsz
-		Sub size dsz
-		#Reg is set at containerssize set 0
-		Add pointer dsz
-		Sub size dsz
+		add pointer (sizeofcontainer)
 	EndWhile
-	Return noerr
+	Return (noerror)
 EndFunction
+
+#err
+function enumbags_alloc(sd container)
+	sd max;call getcontMax(container,#max)
+	sd pcont;call getptrcont(container,#pcont)
+	sd err;setcall err mem_alloc(max,pcont)
+	return err
+endfunction
+function enumbags_free(sd container)
+	sd cont;call getcont(container,#cont)
+	If cont!=(NULL)
+		Call free(cont)
+	EndIf
+endfunction
 
 #no return
 Function freeclose()

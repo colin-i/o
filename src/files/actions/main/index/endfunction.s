@@ -18,18 +18,20 @@ Else
 			If errormsg==noerr
 				Call warnings(false,includes,nameofstoffile,#errormsg)
 				If errormsg==noerr
-					call scopes_store(functionTagIndex)
-					inc functionTagIndex
-					Set i zero
-					While i!=numberofvariables
-						Data containertoclear#1
-						SetCall containertoclear getstructcont(i)
-						Data indexptr#1
-						Data ptrindexptr^indexptr
-						Call getptrcontReg(containertoclear,ptrindexptr)
-						Set indexptr# zero
-						Inc i
-					EndWhile
+					setcall errormsg scopes_store(functionTagIndex)
+					If errormsg==noerr
+						Set i zero
+						While i!=numberofvariables
+							Data containertoclear#1
+							SetCall containertoclear getstructcont(i)
+							Data indexptr#1
+							Data ptrindexptr^indexptr
+							Call getptrcontReg(containertoclear,ptrindexptr)
+							Set indexptr# zero
+							Inc i
+						EndWhile
+						inc functionTagIndex
+					endif
 				endIf
 			EndIf
 		EndIf

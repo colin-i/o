@@ -18,14 +18,15 @@ function scopes_free()
 			#else let named entry like it was
 			while start!=pointer
 				sub pointer :
-				sv cursor;set cursor pointer#
-				sv cursor_last=numberofvars
-				mult cursor_last :
-				add cursor_last cursor
-				while cursor!=cursor_last
-					add cursor :
+				sv cursor_first;set cursor_first pointer#
+				sv cursor=numberofvars*sizeofcontainer
+				add cursor cursor_first
+				while cursor_first!=cursor
+				#the order is reversed but it is not a work more if all mallocs are ok
+					sub cursor (sizeofcontainer)
+					call enumbags_free(cursor)
 				endwhile
-				call free(pointer#)
+				call free(cursor_first)
 			endwhile
 		endif
 		call free(start)
@@ -64,7 +65,7 @@ function scopes_alloc(sd has_named_entry)
 		#alloc some dummy values
 		while start!=pointer
 			sub pointer :
-			setcall pointer# memcalloc((sizeofscope)) #is calloc, needing reg 0, in case it is searched
+			setcall pointer# memcalloc((sizeofscope)) #is calloc, needing reg 0, in case it is searched , and at freeings
 		endwhile
 		return (noerror)
 	endif
@@ -84,13 +85,25 @@ function scopes_store(sv scope)
 	mult scope :
 	add scope s#
 	set scope scope#
-	sd j=0
+	sd last=sizeofcontainer*numberofvars
 	sv pointer=ptrfnscopes
-	while j<(numberofvars)
-		#getcontandcontReg
-		#to pointer
-		#subscope,alloc,reg is zero outside
+	add last pointer
+	while pointer!=last
+		sd cont;sd contReg;call getcontandcontReg(pointer,#cont,#contReg)
+		#add new cont at fns
+		call setcontMax(pointer,(subscope))
+		sd err;setcall err enumbags_alloc(pointer)
+		if err!=(noerror)
+			return err
+		endif
+		# reg is zero outside (was from when there was only one scope)
+		#transfer cont to store
+		# max is not used
+		call setcont(scope,cont)
+		call setcontReg(scope,contReg)
+		#next
+		add scope (sizeofcontainer)
 		add pointer (sizeofcontainer)
-		inc j
 	endwhile
+	return (noerror)
 endfunction

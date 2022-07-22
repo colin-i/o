@@ -48,6 +48,7 @@ Const _open_write=_O_WRONLY|flag_O_BINARY|flag_O_CREAT|_O_TRUNC
 Const shortstrsize=16
 Const includesetSz=4*dwsz+shortstrsize
 
+#Const containersdataMaxoffset=0
 Const containersdataoffset=4
 Const containersdataRegoffset=8
 Const sizeofcontainer=3*dwsz

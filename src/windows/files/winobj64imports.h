@@ -2,6 +2,7 @@
 
 
 Importx "realloc" realloc
+Importx "malloc" malloc
 Importx "free" free
 Importx "sprintf" sprintf
 Importx "memcpy" memtomem
