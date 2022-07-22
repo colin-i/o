@@ -35,6 +35,7 @@ Function enumbags(data declare)
 		EndElse
 		Add pointer dsz
 		Sub size dsz
+		#Reg is set at containerssize set 0
 		Add pointer dsz
 		Sub size dsz
 	EndWhile

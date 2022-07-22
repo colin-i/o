@@ -85,7 +85,12 @@ function scopes_store(sv scope)
 	add scope s#
 	set scope scope#
 	sd j=0
+	sv pointer=ptrfnscopes
 	while j<(numberofvars)
+		#getcontandcontReg
+		#to pointer
+		#subscope,alloc,reg is zero outside
+		add pointer (sizeofcontainer)
 		inc j
 	endwhile
 endfunction
