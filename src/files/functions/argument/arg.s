@@ -152,6 +152,10 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 					if errnr!=(noerror)
 						return errnr
 					endif
+					sd test;setcall test stackbit(ptrdata#)
+					if test!=0
+						return "Stack variables are not relevant for scope.variable."
+					endif
 				elseif ptrobject#==1
 					#verify for function
 					setcall ptrdata# vars(content,argsize,ptrfunctions)
