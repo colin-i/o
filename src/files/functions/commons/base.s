@@ -1,6 +1,4 @@
 
-#more situations: getmax getptrmax getptrcont
-
 Function getcont(data ptrstructure,data ptrcontainer)
 	Data offset=containersdataoffset
 	Add ptrstructure offset
@@ -10,6 +8,11 @@ function setcont(sv ptrstructure,sd value)
 	add ptrstructure (containersdataoffset)
 	set ptrstructure# value
 endfunction
+Function getptrcont(sv ptrstructure,sv ptrptrcontainer)
+	add ptrstructure (containersdataoffset)
+	set ptrptrcontainer# ptrstructure
+EndFunction
+
 Function getcontReg(data ptrstructure,data ptrcontainerReg)
 	Data ptrcReg#1
 	Data ptrptrcReg^ptrcReg
@@ -20,6 +23,12 @@ function setcontReg(sd ptrstructure,sd value)
 	add ptrstructure (containersdataRegoffset)
 	set ptrstructure# value
 endfunction
+Function getptrcontReg(data ptrstructure,data ptrptrcontainerReg)
+	Data offset=containersdataRegoffset
+	Add ptrstructure offset
+	Set ptrptrcontainerReg# ptrstructure
+EndFunction
+
 Function getcontMax(sd ptrstructure,sd ptrcontainerMax)
 	set ptrcontainerMax# ptrstructure#
 EndFunction
@@ -27,22 +36,10 @@ function setcontMax(sd ptrstructure,sd value)
 	set ptrstructure# value
 endfunction
 
-Function getptrcont(sv ptrstructure,sv ptrptrcontainer)
-	add ptrstructure (containersdataRegoffset)
-	set ptrptrcontainer# ptrstructure
-EndFunction
-Function getptrcontReg(data ptrstructure,data ptrptrcontainerReg)
-	Data offset=containersdataRegoffset
-	Add ptrstructure offset
-	Set ptrptrcontainerReg# ptrstructure
-EndFunction
-
-
 Function getcontandcontReg(data ptrstrucutre,data ptrcontainer,data ptrcontainerReg)
 	Call getcontReg(ptrstrucutre,ptrcontainerReg)
 	Call getcont(ptrstrucutre,ptrcontainer)
 EndFunction
-
 Function getcontplusReg(data ptrstrucutre,data ptrcontainer)
 	Call getcont(ptrstrucutre,ptrcontainer)
 	sd r

@@ -19,7 +19,7 @@ function scopes_free()
 			while start!=pointer
 				sub pointer :
 				sv cursor_first;set cursor_first pointer#
-				sv cursor=numberofvars*sizeofcontainer
+				sv cursor=sizeofscope
 				add cursor cursor_first
 				while cursor_first!=cursor
 				#the order is reversed but it is not a work more if all mallocs are ok
@@ -85,8 +85,8 @@ function scopes_store(sv scope)
 	mult scope :
 	add scope s#
 	set scope scope#
-	sd last=sizeofcontainer*numberofvars
-	sv pointer=ptrfnscopes
+	sd last=sizeofscope
+	sv pointer%ptrfnscopes
 	add last pointer
 	while pointer!=last
 		sd cont;sd contReg;call getcontandcontReg(pointer,#cont,#contReg)
