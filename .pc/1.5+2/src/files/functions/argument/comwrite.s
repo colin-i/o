@@ -80,16 +80,16 @@ function writetake(sd takeindex,sd entry)
 				#function in code is only at objects at the moment, is set only once at arg.s
 				#var# 0? is static bool
 				set var# 0
-				sd impbit
-				setcall impbit importbit(entry)
-				setcall take_loc get_function_value(impbit,entry)
+				sd importbit
+				setcall importbit get_importbit(entry)
+				setcall take_loc get_function_value(importbit,entry)
 				sd index
-				setcall index get_function_values(impbit,#take_loc,entry)
+				setcall index get_function_values(importbit,#take_loc,entry)
 				SetCall errnr adddirectrel_base(ptrextra,relocoff,index,take_loc)
 				If errnr!=(noerror)
 					Return errnr
 				EndIf
-				if impbit==0
+				if importbit==0
 					setcall errnr unresReloc(ptrextra)
 					If errnr!=(noerror);Return errnr;EndIf
 					setcall errnr inplace_reloc_unres(#take_loc)

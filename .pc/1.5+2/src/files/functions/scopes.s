@@ -1,8 +1,7 @@
 
 value scopesbag#1
-data scopesbag_size#1
+data *scopesbag_size#1
 const scopesbag_ptr^scopesbag
-const scopesbag_size_ptr^scopesbag_size
 function scopes_free()
 	sv s%scopesbag_ptr
 	if s#!=(NULL)
@@ -110,16 +109,13 @@ function scopes_store(sv scope)
 endfunction
 
 function scopes_searchinvars(sd p_err,sv p_name)
-	sd psz%scopesbag_size_ptr
-	#there are imports after fns with the two pass, and now can get number of local fns, but importbit can be rethinked for something else
-	sd sz;set sz psz#
-	div sz :
-	sd i=0
-
 	sv ptrfunctions%ptrfunctions
+	sd i=0
 	sd fns
-	call getcont(ptrfunctions,#fns)
-	while i!=sz
+	sv last
+	call getcontandcontReg(ptrfunctions,#fns,#last)
+	add last fns
+	while fns!=last
 		add fns (nameoffset)
 		sd data
 		sd scope

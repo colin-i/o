@@ -253,7 +253,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 				return err
 			EndIf
 
-			setcall importbittest importbit(pointer)
+			setcall importbittest get_importbit(pointer)
 			setcall value get_function_value(importbittest,pointer)
 
 			Data ptrobject%ptrobject
@@ -336,7 +336,7 @@ function undefinedvar_fn()
 endfunction
 
 #import bit
-function importbit(sd pointer)
+function get_importbit(sd pointer)
 	Add pointer (maskoffset)
 	sd value
 	set value pointer#
@@ -344,8 +344,8 @@ function importbit(sd pointer)
 	return value
 endfunction
 #value
-function get_function_value(sd impbit,sd pointer)
-	if impbit!=0
+function get_function_value(sd importbit,sd pointer)
+	if importbit!=0
 		#imports
 		return pointer#
 	endif
@@ -355,8 +355,8 @@ function get_function_value(sd impbit,sd pointer)
 	return value
 endfunction
 #relocindex
-function get_function_values(sd impbit,sd p_value,sd pointer)
-	If impbit==0
+function get_function_values(sd importbit,sd p_value,sd pointer)
+	If importbit==0
 		#code
 		return (codeind)
 	endif
