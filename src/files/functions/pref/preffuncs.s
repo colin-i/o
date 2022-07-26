@@ -11,44 +11,53 @@ data ignore_format_so#1
 const p_ignore_format_so^ignore_format_so
 
 #bool for err2
-Function warnings(sd searchInAll,sd includes,sd nameoffset,sd p_err)
+Function warnings(sd p_err,sd has_named_entry)
 	Data warningsboolptr%ptrwarningsbool
 	Data warningsbool#1
-	Data null=NULL
-	Data true=TRUE
-
 	Set warningsbool warningsboolptr#
-	If warningsbool==true
-		Data var#1
-		SetCall var searchinvars(null,null,null,p_err)
-		If var==null
-			If searchInAll==true
+	If warningsbool==(TRUE)
+		sd fn_name
+		sd var
+		setcall var scopes_searchinvars(p_err,#fn_name)
+		If var==(NULL)
+			if has_named_entry==(FALSE)
+				SetCall var searchinvars((NULL),0,(NULL),p_err)
+				if var!=(NULL)
+					set fn_name "(entry)"
+				endif
+			endif
+			if var==(NULL)
 				data ptrcodeFnObj%ptrcodeFnObj
 				if ptrcodeFnObj#!=(ignore_warn)
 					Data functionsptr%ptrfunctions
-					SetCall var varscore(null,null,functionsptr,p_err)
+					SetCall var varscore((NULL),0,functionsptr,p_err)
+					if var!=(NULL)
+						set fn_name "(function)"
+					endif
 				endif
-				if var==null
+				if var==(NULL)
 					sd cb;setcall cb constants_bool((const_warn_get))
 					if cb!=(ignore_warn)
 						data constantsptr%ptrconstants
-						SetCall var varscore(null,null,constantsptr,p_err)
+						SetCall var varscore((NULL),0,constantsptr,p_err)
+						if var!=(NULL)
+							set fn_name "(constant)"
+						endif
 					endif
 				endif
 			EndIf
 		EndIf
-		If var!=null
+		If var!=(NULL)
 			if p_err#==(noerror)
-				Chars unrefformat="Unreferenced variable/function/constant: %s. Scope Termination File: %s. To disable this warning see '.ocompiler.txt'"
+				Chars unrefformat="Unreferenced variable/function/constant: %s. Parent: %s."
 				Str ptrunrefformat^unrefformat
 
 				Data printbuffer#1
 
 				Data fileoff=nameoffset
 				Add var fileoff
-				Add includes nameoffset
-				SetCall printbuffer printbuf(ptrunrefformat,var,includes,0)
-				If printbuffer!=null
+				SetCall printbuffer printbuf(ptrunrefformat,var,fn_name,0)
+				If printbuffer!=(NULL)
 					sd pallocerrormsg%ptrallocerrormsg
 					set pallocerrormsg# printbuffer
 				EndIf

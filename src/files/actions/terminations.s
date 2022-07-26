@@ -18,7 +18,7 @@ EndIf
 
 #verify preferences
 sd err_bool
-setCall err_bool warnings(true,includes,nameofstoffile,#errormsg)
+setCall err_bool warnings(#errormsg,el_or_e)
 If errormsg!=noerr
 	if err_bool==(TRUE)
 		Call msgerrexit(errormsg)

@@ -183,6 +183,21 @@ Function searchinvars_scope(ss content,sd size,sd ptrtype,sd scope)
 	EndWhile
 	Return (NULL)
 EndFunction
+#null or a pointer to the variable
+Function searchinvars_scope_warn(sd warningssearch,sd scope)
+	sd data
+	sd ptrcontainer
+	sd i=0
+	While i<(numberofvars)
+		SetCall ptrcontainer getstructcont_scope(i,scope)
+		SetCall data varscore((NULL),0,ptrcontainer,warningssearch)
+		If data!=(NULL)
+			Return data
+		endIf
+		Inc i
+	EndWhile
+	Return (NULL)
+EndFunction
 
 #searchinvars
 Function strinvars(str content,data size,data ptrtype)

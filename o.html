@@ -611,6 +611,20 @@
 	<tr><td>hEx 144;set b b#D^</td><td>#cast string to data</td></tr>
 	<tr><td>heX 144;inc b#V^</td><td>#and a one arg cast</td></tr>
 	</table>
+
+	Static variables can be used in all scopes:
+
+	<a class="code">
+        Format Elf<br>
+        Data a=3<br>
+        Function test()<br>
+&emsp;	Data b=3<br>
+&emsp;	Add b main.a<br>
+        EndFunction<br>
+        Entry main()<br>
+&emsp;	Call test()<br>
+&emsp;	Add a test.b<br>
+&emsp;	Exit a #9<br></a>
 </p>
 <h3><a name="usingfunctions">VII. Using functions</a></h3>
 <p>

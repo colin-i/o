@@ -107,3 +107,27 @@ function scopes_store(sv scope)
 	endwhile
 	return (noerror)
 endfunction
+
+function scopes_searchinvars(sd p_err,sv p_name)
+	sv ptrfunctions%ptrfunctions
+	sd i=0
+	sd fns
+	sv last
+	call getcontandcontReg(ptrfunctions,#fns,#last)
+	add last fns
+	while fns!=last
+		add fns (nameoffset)
+		sd data
+		sd scope
+		setcall scope scopes_get_scope(i)
+		setcall data searchinvars_scope_warn(p_err,scope)
+		if data!=(NULL)
+			set p_name# fns
+			return data
+		endif
+		addcall fns strlen(fns)
+		inc fns
+		inc i
+	endwhile
+	return (NULL)
+endfunction

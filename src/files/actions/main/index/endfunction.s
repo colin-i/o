@@ -16,23 +16,20 @@ Else
 
 			SetCall errormsg addtoCode_set_programentrypoint(ptrreturn,sizereturn)
 			If errormsg==noerr
-				Call warnings(false,includes,nameofstoffile,#errormsg)
+				setcall errormsg scopes_store(functionTagIndex)
 				If errormsg==noerr
-					setcall errormsg scopes_store(functionTagIndex)
-					If errormsg==noerr
-						Set i zero
-						While i!=numberofvariables
-							Data containertoclear#1
-							SetCall containertoclear getstructcont(i)
-							Data indexptr#1
-							Data ptrindexptr^indexptr
-							Call getptrcontReg(containertoclear,ptrindexptr)
-							Set indexptr# zero
-							Inc i
-						EndWhile
-						inc functionTagIndex
-					endif
-				endIf
+					Set i zero
+					While i!=numberofvariables
+						Data containertoclear#1
+						SetCall containertoclear getstructcont(i)
+						Data indexptr#1
+						Data ptrindexptr^indexptr
+						Call getptrcontReg(containertoclear,ptrindexptr)
+						Set indexptr# zero
+						Inc i
+					EndWhile
+					inc functionTagIndex
+				endif
 			EndIf
 		EndIf
 	endif
