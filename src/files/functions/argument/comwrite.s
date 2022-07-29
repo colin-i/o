@@ -133,11 +133,12 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	EndIf
 
 
+	sd for_64;setcall for_64 is_for_64()
 	sd take64=FALSE;sd v_64=val64_no
+	sd prefix
 	sd bittest;setcall bittest bigbits(location)
 	if bittest!=0
 		#p test
-		sd for_64;setcall for_64 is_for_64()
 		if for_64==(TRUE)
 			set take64 (TRUE)
 			set v_64 (val64_willbe)
@@ -145,8 +146,7 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 		endif
 		#take on takeindex
 	endif
-	Data true=TRUE
-	If sufix==true
+	If sufix==(TRUE)
 		if take64==(TRUE)
 			call rex_w(#errnr);If errnr!=noerr
 				set p_errnr# errnr;return (void);EndIf
@@ -157,7 +157,6 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 				sd pbit;setcall pbit pointbit(location)
 				if pbit==0
 					#not needed at sd#
-					sd prefix
 					setcall prefix prefix_bool()
 					if prefix#==0
 					#but keep at prefix, this is a #a# case,the logic is fragile
@@ -173,7 +172,16 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 		setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
 		SetCall errnr addtosec(ptrnewtake,sz2,ptrcodesec)
 		set p_errnr# errnr
-	Else;set p_errnr# (noerror);EndElse
+	Else
+		if for_64==(TRUE)
+			setcall prefix prefix_bool()
+			if prefix#!=0
+			#set here (example: return #data), this can be thinked to be wrote at writeoperation_op
+				set v_64 (val64_willbe)
+			endif
+		endif
+		set p_errnr# (noerror)
+	EndElse
 	Return v_64
 EndFunction
 #er
