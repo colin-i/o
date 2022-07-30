@@ -8,10 +8,12 @@
 ./makewin32 && \
 ~/test/del && \
 ~/test/rel && \
+~/test/pub rel && \
 ~/test/rpm && \
 ~/test/upapp && \
 ~/test/up && \
 ~/test/pub upapp rpm && \
 ~/test/pub2 && \
+~/test/publp2 && \
 ~/test/lp && \
-echo wait lp2
+~/test/lp x
