@@ -209,7 +209,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		Return err
 	EndIf
 	If sizeofcontinuation!=zero
-		#return / exit / incst(only at noimm)
+		#return / exit / (only at noimm):incst/push
 		SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
 		return err
 	EndIf
