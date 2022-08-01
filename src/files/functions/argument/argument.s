@@ -66,10 +66,6 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data false=FALSE
 	Data true=TRUE
 
-	Data noreg=noregnumber
-	Data eaxreg=eaxregnumber
-	Data intchar#1
-
 	Data integerreminder#1
 
 	Chars op#1
@@ -166,6 +162,9 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	sd imm
 	setcall imm getisimm()
 	if imm==false
+		Data noreg=noregnumber
+		Data eaxreg=eaxregnumber
+		Data intchar#1
 		Set intchar noreg
 		If forwardORcallsens!=forward
 		#push
