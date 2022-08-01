@@ -199,21 +199,20 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			EndIf
 		EndIf
 		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
-		If err!=noerr
-			Return err
-		EndIf
-		call restore_argmask()
-		If sizeofcontinuation!=zero
-		#imm continuation is not
-			SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
-			return err
-		EndIf
-		return noerr
+		call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
 	Else
 	#imm
 		set op immop
 		setcall err write_imm(dataarg,op)
 	EndElse
-	Return err
+	If err!=noerr
+		Return err
+	EndIf
+	If sizeofcontinuation!=zero
+		#return / exit / incst(only at noimm)
+		SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
+		return err
+	EndIf
+	Return noerr
 endfunction
 
