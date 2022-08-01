@@ -201,7 +201,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
 		call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
 	Else
-	#imm
+	#imm push/return/exit
 		set op immop
 		setcall err write_imm(dataarg,op)
 	EndElse
@@ -215,4 +215,3 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	EndIf
 	Return noerr
 endfunction
-
