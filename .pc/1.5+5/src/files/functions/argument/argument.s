@@ -41,12 +41,12 @@ function getexit(sv ptrptrcontinuation,sd psizeofcontinuation)
 endfunction
 
 #err
-function argument_return(sd termswitch,ss pop,ss pimmop,sd pregprepare_bool,sv pptrcontinuation,sd psizeofcontinuation,sd pregopcode)
+function argument_return(sd termswitch,ss pop,ss pimmop,sd pintegerreminder,sv pptrcontinuation,sd psizeofcontinuation,sd pregopcode)
 	call setimm()
 	Set pop# (moveatprocthemem)
 	chars immtake=0xB8
 	set pimmop# immtake
-	Set pregprepare_bool# (TRUE)
+	Set pintegerreminder# (TRUE)
 
 	if termswitch==(TRUE)
 		data ebxregnumber=ebxregnumber
