@@ -69,10 +69,8 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data noreg=noregnumber
 	Data eaxreg=eaxregnumber
 	Data intchar#1
-	Set intchar noreg
 
 	Data integerreminder#1
-	Set integerreminder false
 
 	Chars op#1
 	Data zero=0
@@ -80,14 +78,15 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Str ptrcontinuation#1
 	Data sizeofcontinuation#1
 
-	Set sizeofcontinuation zero
-
 	Data codeptr%ptrcodesec
 	Data regopcode#1
 
 	Data err#1
 	Data noerr=noerror
 	chars immop#1
+
+	Set integerreminder false
+	Set sizeofcontinuation zero
 
 	call unsetimm()
 	Data forward=FORWARD
@@ -167,6 +166,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	sd imm
 	setcall imm getisimm()
 	if imm==false
+		Set intchar noreg
 		If forwardORcallsens!=forward
 		#push
 			#If lowbyte==false
@@ -200,22 +200,21 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			EndIf
 		EndIf
 		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
+		If err!=noerr
+			Return err
+		EndIf
 		call restore_argmask()
+		If sizeofcontinuation!=zero
+		#imm continuation is not
+			SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
+			return err
+		EndIf
+		return noerr
 	Else
 	#imm
 		set op immop
 		setcall err write_imm(dataarg,op)
 	EndElse
-	If err!=noerr
-		Return err
-	EndIf
-
-	If sizeofcontinuation!=zero
-		SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
-		return err
-	EndIf
-
-	return noerr
-
+	Return err
 endfunction
 
