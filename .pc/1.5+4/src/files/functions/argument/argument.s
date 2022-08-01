@@ -66,13 +66,21 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data false=FALSE
 	Data true=TRUE
 
-	Data regprepare_bool#1
+	Data noreg=noregnumber
+	Data eaxreg=eaxregnumber
+	Data intchar#1
+	Set intchar noreg
+
+	Data integerreminder#1
+	Set integerreminder false
 
 	Chars op#1
 	Data zero=0
 
 	Str ptrcontinuation#1
 	Data sizeofcontinuation#1
+
+	Set sizeofcontinuation zero
 
 	Data codeptr%ptrcodesec
 	Data regopcode#1
@@ -81,16 +89,13 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data noerr=noerror
 	chars immop#1
 
-	Set regprepare_bool false
-	Set sizeofcontinuation zero
-
 	call unsetimm()
 	Data forward=FORWARD
 	If forwardORcallsens==forward
 		If subtype==(cRETURN)
 			sd termswitch
 			setcall termswitch is_linux_end() #exit from linux term
-			setcall err argument_return(termswitch,#op,#immop,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
+			setcall err argument_return(termswitch,#op,#immop,#integerreminder,#ptrcontinuation,#sizeofcontinuation,#regopcode)
 			If err!=noerr
 				Return err
 			EndIf
@@ -122,7 +127,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			set ptrcontinuation #incs_sz
 			set sizeofcontinuation (bsz)
 		ElseIf subtype==(cEXIT)
-			setcall err argument_return((TRUE),#op,#immop,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
+			setcall err argument_return((TRUE),#op,#immop,#integerreminder,#ptrcontinuation,#sizeofcontinuation,#regopcode)
 			If err!=noerr
 				Return err
 			EndIf
@@ -153,7 +158,6 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data ptrdataarg^dataarg
 	Data sufix#1
 	Data ptrsufix^sufix
-
 	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens)
 	If err!=noerr
 		Return err
@@ -162,56 +166,55 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	sd imm
 	setcall imm getisimm()
 	if imm==false
-		Data noreg=noregnumber
-		Data eaxreg=eaxregnumber
-		Data intchar#1
-		Set intchar noreg
 		If forwardORcallsens!=forward
 		#push
-			#If lowbyte==false
-			#since with 64 push data will push quad even without rex
-			#	Chars push={0xff}
-			#	Chars pushopcode={6}
-			#	Set op push
-			#	Set regopcode pushopcode
-			#	call stack64_op_set()
-			#Else
-			If lowbyte==true
-				#prepare for eax for al
+			If lowbyte==false
+				Chars push={0xff}
+				Chars pushopcode={6}
+				Set op push
+				Set regopcode pushopcode
+				call stack64_op_set()
+			Else
 				Set intchar eaxreg
-			EndIf
-			Chars pushaction={moveatprocthemem}
-			Set op pushaction
-			set regopcode (eaxregnumber)
+				Chars pushaction={moveatprocthemem}
+				Set op pushaction
+				set regopcode (eaxregnumber)
 
-			chars pushadvance={0x50}
-			data pushcontinuationsize=1
-			data ptrpushcontinuation^pushadvance
-			Set ptrcontinuation ptrpushcontinuation
-			set sizeofcontinuation pushcontinuationsize
-			#EndElse
+				chars pushadvance={0x50}
+				data pushcontinuationsize=1
+				data ptrpushcontinuation^pushadvance
+				Set ptrcontinuation ptrpushcontinuation
+				set sizeofcontinuation pushcontinuationsize
+			EndElse
 		EndIf
-		If lowbyte==true
-		#imm don't use one byte at the moment
-			Dec op
-			If regprepare_bool==true
-				Set intchar regopcode
-			EndIf
-		EndIf
-		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
-		call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
 	Else
-	#imm push/return/exit
+	#imm
 		set op immop
-		setcall err write_imm(dataarg,op)
 	EndElse
+
+	If lowbyte==true
+		Dec op
+		If integerreminder==true
+			Set intchar regopcode
+		EndIf
+	EndIf
+
+	if imm==true
+		setcall err write_imm(dataarg,op)
+	else
+		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
+		call restore_argmask()
+	endelse
 	If err!=noerr
 		Return err
 	EndIf
+
 	If sizeofcontinuation!=zero
-		#return / exit / (only at noimm):incst/push
 		SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
 		return err
 	EndIf
-	Return noerr
+
+	return noerr
+
 endfunction
+
