@@ -6,11 +6,12 @@ FULLOBJ = ./linux/${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 OBT = ${OB}.txt
+OCOMP=o
 
 OFLAGS=
 
 %.o: ${FULLOBJS}
-	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else o $< ${OFLAGS};fi
+	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else ${OCOMP} $< ${OFLAGS};fi
 
 syms =-s
 ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main

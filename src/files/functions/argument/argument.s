@@ -158,6 +158,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data ptrdataarg^dataarg
 	Data sufix#1
 	Data ptrsufix^sufix
+
 	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens)
 	If err!=noerr
 		Return err
@@ -168,43 +169,43 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	if imm==false
 		If forwardORcallsens!=forward
 		#push
-			If lowbyte==false
-				Chars push={0xff}
-				Chars pushopcode={6}
-				Set op push
-				Set regopcode pushopcode
-				call stack64_op_set()
-			Else
+			#If lowbyte==false
+			#since with 64 push data will push quad even without rex
+			#	Chars push={0xff}
+			#	Chars pushopcode={6}
+			#	Set op push
+			#	Set regopcode pushopcode
+			#	call stack64_op_set()
+			#Else
+			If lowbyte==true
+				#prepare for eax for al
 				Set intchar eaxreg
-				Chars pushaction={moveatprocthemem}
-				Set op pushaction
-				set regopcode (eaxregnumber)
+			EndIf
+			Chars pushaction={moveatprocthemem}
+			Set op pushaction
+			set regopcode (eaxregnumber)
 
-				chars pushadvance={0x50}
-				data pushcontinuationsize=1
-				data ptrpushcontinuation^pushadvance
-				Set ptrcontinuation ptrpushcontinuation
-				set sizeofcontinuation pushcontinuationsize
-			EndElse
+			chars pushadvance={0x50}
+			data pushcontinuationsize=1
+			data ptrpushcontinuation^pushadvance
+			Set ptrcontinuation ptrpushcontinuation
+			set sizeofcontinuation pushcontinuationsize
+			#EndElse
 		EndIf
+		If lowbyte==true
+		#imm don't use one byte at the moment
+			Dec op
+			If integerreminder==true
+				Set intchar regopcode
+			EndIf
+		EndIf
+		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
+		call restore_argmask()
 	Else
 	#imm
 		set op immop
-	EndElse
-
-	If lowbyte==true
-		Dec op
-		If integerreminder==true
-			Set intchar regopcode
-		EndIf
-	EndIf
-
-	if imm==true
 		setcall err write_imm(dataarg,op)
-	else
-		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
-		call restore_argmask()
-	endelse
+	EndElse
 	If err!=noerr
 		Return err
 	EndIf
