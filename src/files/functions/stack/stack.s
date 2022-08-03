@@ -144,7 +144,7 @@ function addtocodeforstack(sd rightstackpointer,sd for_64)
 	return err
 endfunction
 #er
-function addtocodefordata(sd value,sd for_64)
+function addtocodefordata(sd value,sd for_64,sd ext)
 	chars code=ateaximm
 	data val#1
 
@@ -153,7 +153,7 @@ function addtocodefordata(sd value,sd for_64)
 	data ptrcodesec%ptrcodesec
 	set val value
 	setcall err addtosec(#code,5,ptrcodesec);If err!=(noerror);Return err;EndIf
-	setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+	setcall err reloc64_post_base_extension(ptrcodesec,ext);If err!=(noerror);Return err;EndIf
 
 	setcall err addtocode_decstack(for_64)
 	return err

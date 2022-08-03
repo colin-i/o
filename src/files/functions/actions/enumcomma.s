@@ -55,7 +55,7 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 				If err!=noerr;Return err;EndIf
 			endif
 			call inplace_reloc(ptrvalue)
-			setcall err addtocodefordata(ptrvalue#,for_64)
+			setcall err addtocodefordata(ptrvalue#,for_64,(NULL))
 			return err
 		EndIf
 	endif
@@ -64,7 +64,14 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 		setcall err addtocodeforstack(rightstackpointer,for_64)
 	else
 		#s=consts
-		setcall err addtocodefordata(ptrvalue#,for_64)
+		sd test=~0x7fFFffFF
+		and test ptrvalue#
+		if test==0
+			setcall err addtocodefordata(ptrvalue#,for_64,0)
+		else
+			#keep sign, for comparations
+			setcall err addtocodefordata(ptrvalue#,for_64,-1)
+		endelse
 	endelse
 	return err
 endfunction

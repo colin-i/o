@@ -123,7 +123,6 @@ endfunction
 #val64. is one call at this that will break val64 if not a return value
 Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_low)
 #last parameter is optional
-	Data ptrcodesec%ptrcodesec
 	Data errnr#1
 	Data noerr=noerror
 
@@ -165,13 +164,7 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 				endif
 			endelse
 		endif
-		Chars newtake=moveatprocthemem
-		Chars newtakemodrm#1
-		Str ptrnewtake^newtake
-		Data sz2=bsz+bsz
-		setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
-		SetCall errnr addtosec(ptrnewtake,sz2,ptrcodesec)
-		set p_errnr# errnr
+		setcall p_errnr# sufix_take(takeindex)
 	Else
 		if for_64==(TRUE)
 			setcall prefix prefix_bool()
@@ -184,6 +177,18 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	EndElse
 	Return v_64
 EndFunction
+#er
+function sufix_take(sd takeindex)
+	Data ptrcodesec%ptrcodesec
+	sd err
+	Chars newtake=moveatprocthemem
+	Chars newtakemodrm#1
+	Str ptrnewtake^newtake
+	Data sz2=bsz+bsz
+	setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
+	SetCall err addtosec(ptrnewtake,sz2,ptrcodesec)
+	return err
+endfunction
 #er
 Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd takeindex)
 	Data ptrcodesec%ptrcodesec

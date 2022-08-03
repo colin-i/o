@@ -27,15 +27,21 @@ function reloc64_ante()
 	return (noerror)
 endfunction
 #er
-function reloc64_post_base(sd struct)
+function reloc64_post_base_extension(sd struct,sd fill)
 	sd a%p_elf64_r_info_type
 	if a#==(R_X86_64_64)
 		sd err
-		sd null=0
-		SetCall err addtosec(#null,(dwsz),struct)
+		#extension is for example -1 at sd=const, mostly are 0
+		SetCall err addtosec(#fill,(dwsz),struct)
 		return err
 	endif
 	return (noerror)
+endfunction
+#er
+function reloc64_post_base(sd struct)
+	sd err
+	setcall err reloc64_post_base_extension(struct,(NULL))
+	return err
 endfunction
 #er
 function reloc64_post()

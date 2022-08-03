@@ -213,7 +213,21 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			SetCall errnr write_imm(dataargsec,opsec)
 		else
 			if p_prefix#==(FALSE)
-				SetCall errnr writeop(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec)
+				sd comp_at_bigs
+				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant)
+				if comp_at_bigs==-1
+					SetCall errnr writeop(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec)
+				else #0 or 1
+					setcall errnr writeoper((edxregnumber),dataargsec,sufixsec) #no val64 recordings
+					if errnr==(noerror)
+						if comp_at_bigs==1
+							# sd    data    must take signextended data at 64
+							set opsec 0x63
+							call val64_if()
+						endif
+						setcall errnr writeoperation_op(opsec,(noregnumber),regopcode,(edxregnumber))
+					endif
+				endelse
 			else
 			#only take at prefix on regcode
 				call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
@@ -403,12 +417,41 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Return errnr
 EndFunction
 
+#-1 normal, 0 unpromote, 1 sign extend
+function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant)
+	if lowsec==(FALSE)
+		sd prim;setcall prim is_big(dataargprim,sufixprim)
+		sd sec;setcall sec is_big(dataargsec,sufixsec)
+		if prim!=sec
+			if sec==(TRUE)
+				#first is low/medium, don't promote the big second
+				return 0
+			elseif sameimportant==(TRUE)
+				#first is big, second is medium, keep sign for second
+				return 1
+			endelseif
+		endif
+	endif
+	return -1
+endfunction
+
+function writeoper(sd takeindex,sd location,sd sufix)
+	sd err
+	setcall err writetake(takeindex,location)
+	If err==(noerror)
+		if sufix==(TRUE)
+			setcall err sufix_take(takeindex)
+		endif
+	endif
+	return err
+endfunction
+
 function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameimportant,sd lowsec)
 	sd err
 	if sameimportant==(FALSE)
 		if lowsec==(TRUE)
 			#this is and/or... at sd low not needing to write rex
-			call writeoperation_take(#err,dataargprim,sufixprim,(edxregnumber),lowprim)
+			setcall err writeoper((edxregnumber),dataargprim,sufixprim)
 			if err!=(noerror);return err;endif
 			setcall err writeoperation_op(opprim,(noregnumber),(eaxregnumber),(edxregnumber))
 			return err
