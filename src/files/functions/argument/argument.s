@@ -41,17 +41,14 @@ function getexit(sv ptrptrcontinuation,sd psizeofcontinuation)
 endfunction
 
 #err
-function argument_return(sd termswitch,ss pop,ss pimmop,sd pregprepare_bool,sv pptrcontinuation,sd psizeofcontinuation,sd pregopcode)
+function argument_return(sd termswitch,ss pop,sd pregprepare_bool,sv pptrcontinuation,sd psizeofcontinuation,sd pregopcode)
 	call setimm()
 	Set pop# (moveatprocthemem)
-	chars immtake=0xB8
-	set pimmop# immtake
 	Set pregprepare_bool# (TRUE)
 
 	if termswitch==(TRUE)
 		data ebxregnumber=ebxregnumber
 		set pregopcode# ebxregnumber
-		add pimmop# ebxregnumber
 		sd err
 		setcall err getexit(pptrcontinuation,psizeofcontinuation)
 		return err
@@ -78,8 +75,6 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data regopcode#1
 
 	Data err#1
-	Data noerr=noerror
-	chars immop#1
 
 	Set regprepare_bool false
 	Set sizeofcontinuation zero
@@ -90,8 +85,8 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		If subtype==(cRETURN)
 			sd termswitch
 			setcall termswitch is_linux_end() #exit from linux term
-			setcall err argument_return(termswitch,#op,#immop,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
-			If err!=noerr
+			setcall err argument_return(termswitch,#op,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
+			If err!=(noerror)
 				Return err
 			EndIf
 		ElseIf subtype==(cNOT)
@@ -122,8 +117,8 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			set ptrcontinuation #incs_sz
 			set sizeofcontinuation (bsz)
 		ElseIf subtype==(cEXIT)
-			setcall err argument_return((TRUE),#op,#immop,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
-			If err!=noerr
+			setcall err argument_return((TRUE),#op,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
+			If err!=(noerror)
 				Return err
 			EndIf
 		ElseIf subtype==(cNEG)
@@ -143,8 +138,6 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Else
 	#push imm prepare test
 		call setimm()
-		chars immpush=0x68
-		set immop immpush
 	EndElse
 
 	Data lowbyte#1
@@ -155,7 +148,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data ptrsufix^sufix
 
 	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens)
-	If err!=noerr
+	If err!=(noerror)
 		Return err
 	EndIf
 
@@ -202,11 +195,24 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		setcall err writeop_promotes(dataarg,op,intchar,sufix,regopcode,lowbyte,comp_at_bigs)
 		call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
 	Else
-	#imm push/return/exit
-		set op immop
+	#imm
+		If forwardORcallsens!=forward
+		#push
+			set op 0x68
+		else
+		#return/exit
+			setcall err rex_w_if64()
+			if err==(noerror)
+				chars movs_imm=0xc7
+				SetCall err addtosec(#movs_imm,1,codeptr)
+				SetCall op formmodrm((RegReg),0,regopcode)
+			endif
+			if err!=(noerror);
+				return err;endif
+		endelse
 		setcall err write_imm(dataarg,op)
 	EndElse
-	If err!=noerr
+	If err!=(noerror)
 		Return err
 	EndIf
 	If sizeofcontinuation!=zero
@@ -214,7 +220,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
 		return err
 	EndIf
-	Return noerr
+	Return (noerror)
 endfunction
 
 #same as comp_sec
