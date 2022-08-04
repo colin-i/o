@@ -198,7 +198,8 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 				Set intchar regopcode
 			EndIf
 		EndIf
-		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,lowbyte)
+		sd comp_at_bigs;setcall comp_at_bigs comp_one(lowbyte,dataarg,sufix,op)
+		setcall err writeop_promotes(dataarg,op,intchar,sufix,regopcode,lowbyte,comp_at_bigs)
 		call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
 	Else
 	#imm push/return/exit
@@ -214,4 +215,21 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 		return err
 	EndIf
 	Return noerr
+endfunction
+
+#same as comp_sec
+function comp_one(sd low,sd dataarg,sd sufix,sd op)
+	if op==(moveatprocthemem)
+		if low==(FALSE)
+			sd p;setcall p prefix_bool() #can't touch functions
+			if p#==0
+				sd big;setcall big is_big(dataarg,sufix)
+				if big==(FALSE)
+					#is medium but with sign
+					return 1
+				endif
+			endif
+		endif
+	endif
+	return -1
 endfunction

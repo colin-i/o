@@ -22,6 +22,7 @@ const ateaximm=0xb8
 Const moveatmemtheproc=0x89
 Const moveatprocthemem=0x8b
 Const moveatregthemodrm=moveatprocthemem
+const moveatprocthemem_sign=0x63
 
 #mod,reg/opcode,r/m
 

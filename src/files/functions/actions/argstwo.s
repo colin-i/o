@@ -215,19 +215,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			if p_prefix#==(FALSE)
 				sd comp_at_bigs
 				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant)
-				if comp_at_bigs==-1
-					SetCall errnr writeop(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec)
-				else #0 or 1
-					setcall errnr writeoper((edxregnumber),dataargsec,sufixsec) #no val64 recordings
-					if errnr==(noerror)
-						if comp_at_bigs==1
-							# sd    data    must take signextended data at 64
-							set opsec 0x63
-							call val64_if()
-						endif
-						setcall errnr writeoperation_op(opsec,(noregnumber),regopcode,(edxregnumber))
-					endif
-				endelse
+				setcall errnr writeop_promotes(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec,comp_at_bigs)
 			else
 			#only take at prefix on regcode
 				call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
@@ -458,6 +446,25 @@ function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameim
 		endif
 	endif
 	SetCall err writeop(dataargprim,opprim,(noregnumber),sufixprim,(eaxregnumber),lowprim)
+	return err
+endfunction
+
+#err
+function writeop_promotes(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd low,sd comp_at_bigs)
+	sd err
+	if comp_at_bigs==-1
+		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,low)
+	else #0 or 1
+		setcall err writeoper((edxregnumber),dataarg,sufix) #no val64 recordings
+		if err==(noerror)
+			if comp_at_bigs==1
+				# sd    data    must take signextended data at 64
+				set op (moveatprocthemem_sign)
+				call val64_if()
+			endif
+			setcall err writeoperation_op(op,(noregnumber),regopcode,(edxregnumber))
+		endif
+	endelse
 	return err
 endfunction
 
