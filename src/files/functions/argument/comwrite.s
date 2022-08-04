@@ -92,7 +92,7 @@ function writetake(sd takeindex,sd entry)
 				if impbit==0
 					setcall errnr unresReloc(ptrextra)
 					If errnr!=(noerror);Return errnr;EndIf
-					setcall errnr inplace_reloc_unres(#take_loc)
+					setcall errnr inplace_reloc_unres(#take_loc,relocoff)
 					If errnr!=(noerror);Return errnr;EndIf
 				endif
 			endelse

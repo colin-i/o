@@ -281,12 +281,12 @@ function inplace_reloc(sd p_addend)
 	endif
 endfunction
 #er
-function inplace_reloc_unres(sd p)
+function inplace_reloc_unres(sd p,sd add)
 	sd p_inplace_reloc_pref%p_inplace_reloc_pref
 	if p_inplace_reloc_pref#!=(zero_reloc)
 		sd err
 		sd ptrcodesec%ptrcodesec
-		setcall err unresLc(1,ptrcodesec,0)
+		setcall err unresLc(add,ptrcodesec,0)
 		return err
 	endif
 	set p# (i386_obj_default_reloc)
