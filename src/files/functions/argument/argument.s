@@ -223,8 +223,11 @@ function comp_one(sd low,sd dataarg,sd sufix,sd op)
 			if p#==0
 				sd big;setcall big is_big(dataarg,sufix)
 				if big==(FALSE)
-					#is medium but with sign
-					return 1
+					sd for64;setcall for64 is_for_64()
+					if for64==(TRUE)
+						#is medium but with sign
+						return 1
+					endif
 				endif
 			endif
 		endif

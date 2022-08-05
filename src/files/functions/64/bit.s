@@ -164,13 +164,6 @@ endfunction
 function val64_p_get()
 	data x#1;return #x
 endfunction
-function val64_if()
-	sd b;setcall b is_for_64()
-	if b==(TRUE)
-		sd p;setcall p val64_p_get()
-		set p# (val64_willbe)
-	endif
-endfunction
 
 function convdata(sd type,sd dest)
 	if type==(convdata_total)

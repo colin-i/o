@@ -457,10 +457,11 @@ function writeop_promotes(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd l
 	else #0 or 1
 		setcall err writeoper((edxregnumber),dataarg,sufix) #no val64 recordings
 		if err==(noerror)
-			if comp_at_bigs==1
+			if comp_at_bigs==1 #these are all 64
 				# sd    data    must take signextended data at 64
 				set op (moveatprocthemem_sign)
-				call val64_if()
+				sd p;setcall p val64_p_get()
+				set p# (val64_willbe)
 			endif
 			setcall err writeoperation_op(op,(noregnumber),regopcode,(edxregnumber))
 		endif
