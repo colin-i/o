@@ -71,7 +71,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Str ptrcontinuation#1
 	Data sizeofcontinuation#1
 
-	Data codeptr%ptrcodesec
+	vData codeptr%ptrcodesec
 	Data regopcode#1
 
 	Data err#1
@@ -198,19 +198,11 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	#imm
 		If forwardORcallsens!=forward
 		#push
-			set op 0x68
+			setcall err write_imm(dataarg,(0x68))
 		else
 		#return/exit
-			setcall err rex_w_if64()
-			if err==(noerror)
-				chars movs_imm=0xc7
-				SetCall err addtosec(#movs_imm,1,codeptr)
-				SetCall op formmodrm((RegReg),0,regopcode)
-			endif
-			if err!=(noerror);
-				return err;endif
+			setcall err write_imm_sign(dataarg,regopcode)
 		endelse
-		setcall err write_imm(dataarg,op)
 	EndElse
 	If err!=(noerror)
 		Return err
@@ -238,4 +230,21 @@ function comp_one(sd low,sd dataarg,sd sufix,sd op)
 		endif
 	endif
 	return -1
+endfunction
+
+#er
+function write_imm_sign(sd dataarg,sd regopcode)
+	vData codeptr%ptrcodesec
+	sd err
+	setcall err rex_w_if64()
+	if err==(noerror)
+		chars movs_imm=0xc7
+		SetCall err addtosec(#movs_imm,1,codeptr)
+		if err==(noerror)
+			sd op
+			SetCall op formmodrm((RegReg),0,regopcode)
+			setcall err write_imm(dataarg,op)
+		endif
+	endif
+	return err
 endfunction

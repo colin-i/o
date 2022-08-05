@@ -203,14 +203,14 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	If primcalltype==false
 		setcall imm getisimm()
 		if imm==true
-			chars immtake=0xB8
-			set opsec immtake
-			if divmul==(TRUE)
-				add opsec 1
-			elseif subtype==(cCALLEX)
-				add opsec 1
-			endelseif
-			SetCall errnr write_imm(dataargsec,opsec)
+			#chars immtake=0xB8
+			#set opsec immtake
+			#if divmul==(TRUE)
+			#	add opsec 1
+			#elseif subtype==(cCALLEX)
+			#	add opsec 1
+			#endelseif
+			SetCall errnr write_imm_sign(dataargsec,regopcode)
 		else
 			if p_prefix#==(FALSE)
 				sd comp_at_bigs
@@ -248,7 +248,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	if imm==true
 		#first argument imm are comparations
 		#first value is imm, or second value is imm (switched)
-		SetCall errnr write_imm(dataargprim,(0xb8+ecxregnumber))
+		SetCall errnr write_imm_sign(dataargprim,(ecxregnumber)) #0xb8+
 	else
 		SetCall errnr writeop_prim(dataargprim,opprim,sufixprim,lowprim,sameimportant,lowsec)
 	endelse
