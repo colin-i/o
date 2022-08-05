@@ -169,7 +169,7 @@ EndFunction
 #er
 function sufix_take(sd takeindex,sd take64)
 	sd err
-	if take64==(TRUE)
+	if take64==(val64_willbe)
 		call rex_w(#err)
 		if err!=(noerror)
 			return err;endif
