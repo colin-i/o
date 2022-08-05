@@ -131,24 +131,12 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 		set p_errnr# errnr;return (void)
 	EndIf
 
-
-	sd for_64;setcall for_64 is_for_64()
-	sd take64=FALSE;sd v_64=val64_no
+	sd v_64
 	sd prefix
-	sd bittest;setcall bittest bigbits(location)
-	if bittest!=0
-		#p test
-		if for_64==(TRUE)
-			set take64 (TRUE)
-			set v_64 (val64_willbe)
-			#rex if p
-		endif
-		#take on takeindex
-	endif
+	setcall v_64 sufix64(location)
 	If sufix==(TRUE)
-		if take64==(TRUE)
-			call rex_w(#errnr);If errnr!=noerr
-				set p_errnr# errnr;return (void);EndIf
+		sd take64;set take64 v_64
+		if v_64==(val64_willbe)
 			if is_low==(TRUE)
 			#not ss, rex.w op r/m8 is ok but is useless
 				set v_64 (val64_no)
@@ -164,8 +152,9 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 				endif
 			endelse
 		endif
-		setcall p_errnr# sufix_take(takeindex)
+		setcall p_errnr# sufix_take(takeindex,take64)
 	Else
+		sd for_64;setcall for_64 is_for_64()
 		if for_64==(TRUE)
 			setcall prefix prefix_bool()
 			if prefix#!=0
@@ -178,9 +167,14 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	Return v_64
 EndFunction
 #er
-function sufix_take(sd takeindex)
-	Data ptrcodesec%ptrcodesec
+function sufix_take(sd takeindex,sd take64)
 	sd err
+	if take64==(TRUE)
+		call rex_w(#err)
+		if err!=(noerror)
+			return err;endif
+	endif
+	Data ptrcodesec%ptrcodesec
 	Chars newtake=moveatprocthemem
 	Chars newtakemodrm#1
 	Str ptrnewtake^newtake
@@ -189,6 +183,21 @@ function sufix_take(sd takeindex)
 	SetCall err addtosec(ptrnewtake,sz2,ptrcodesec)
 	return err
 endfunction
+#v64
+function sufix64(sd location)
+	sd bittest;setcall bittest bigbits(location)
+	if bittest!=0
+		sd for_64;setcall for_64 is_for_64()
+		#p test
+		if for_64==(TRUE)
+			return (val64_willbe)
+			#rex if p
+		endif
+		#take on takeindex
+	endif
+	return (val64_no)
+endfunction
+
 #er
 Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd takeindex)
 	Data ptrcodesec%ptrcodesec

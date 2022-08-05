@@ -428,7 +428,8 @@ function writeoper(sd takeindex,sd location,sd sufix)
 	setcall err writetake(takeindex,location)
 	If err==(noerror)
 		if sufix==(TRUE)
-			setcall err sufix_take(takeindex)
+			sd t;setcall t sufix64(location)
+			setcall err sufix_take(takeindex,t)
 		endif
 	endif
 	return err
