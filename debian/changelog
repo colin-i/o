@@ -1,3 +1,9 @@
+ocompiler (1-5+6) xenial; urgency=medium
+
+  * 64 sign extensions
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 05 Aug 2022 07:55:19 +0300
+
 ocompiler (1-5+5) xenial; urgency=medium
 
   * fix
