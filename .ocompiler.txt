@@ -74,3 +74,7 @@ include_sec=0
 18. Ignore FORMAT ...SO .
 0 is No; 1 is Yes
 ignore_format_so=0
+
+19. At 64, before a call, align stack shadow(windows only) and arguments.
+0 is No; 1 is Yes
+call_align=1
