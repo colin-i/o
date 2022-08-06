@@ -45,42 +45,62 @@ endfunction
 
 #get
 function nr_of_args_64need_p_get();data n#1;return #n;endfunction
-#er
-function nr_of_args_64need_set()
-	sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
-	if p_b#==(TRUE)
-		sd p;setcall p nr_of_args_64need_p_get();set p# 0
-		#Stack aligned on 16 bytes. Later set, depending on the number of arguments, jumpCarry or jumpNotCarry
-		sd err
-		data code%ptrcodesec
-		#bt rsp,3 (offset 3)
-		chars hex_x={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
-		SetCall err addtosec(#hex_x,5,code);If err!=(noerror);Return err;EndIf
-		#
-		sd stack_align_p;setcall stack_align_p stack_align_off_p_get()
-		call getcontReg(code,stack_align_p)
-		#j(c|nc);sub rsp,8
-		chars jump#1;chars *=4;chars *={REX_Operand_64,0x83,0xEC,8}
-		SetCall err addtosec(#jump,6,code);If err!=(noerror);Return err;EndIf
-	endif
-	Return (noerror)
-endfunction
 function nr_of_args_64need_count()
 	sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
 	if p_b#==(TRUE)
 		sd p;setcall p nr_of_args_64need_p_get();inc p#
 	endif
 endfunction
-#nr_of_args
-function nr_of_args_64need()
-	sd n;setcall n nr_of_args_64need_p_get();return n#
-endfunction
-#p
-function stack_align_off_p_get()
-	data o#1;return #o
-endfunction
+#er
+function stack_align(sd nr)
+	sd final_nr
+	setcall final_nr pref_call_align(nr)
+	if final_nr!=0
+		#Stack aligned on 16 bytes. Depending on the number of arguments, jumpCarry or jumpNotCarry
+		sd err
+		vdata code%ptrcodesec
+		#bt rsp,3 (offset 3)
+		chars hex_x={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
+		#j(c|nc);sub rsp,8
+		chars jump#1;chars *=4;chars *={REX_Operand_64,0x83,0xEC,8}
 
+		and final_nr 1
+		#Jump short if not carry
+		if final_nr==0
+			set jump (0x73)
+		#Jump short if carry
+		else;set jump (0x72)
+		endelse
 
+		SetCall err addtosec(#hex_x,(5+6),code)
+		return err
+	endif
+	return (noerror)
+endfunction
+data call_align#1
+const ptr_call_align^call_align
+#nr
+function pref_call_align(sd nr)
+	data ptr_call_align%ptr_call_align
+	sd type;set type ptr_call_align#
+	if type==(call_align_yes)
+		sd conv;setcall conv convdata((convdata_total))
+		if nr<=conv
+			if conv==(lin_convention)
+				return 0
+			endif
+			return conv
+		endif
+		return nr
+	elseif type==(call_align_no)
+		return 0
+	endelseif
+	#call_align_yes_no
+	if nr<=conv
+		return 0
+	endif
+	return nr
+endfunction
 
 ##REX_W
 function rex_w(sd p_err)
@@ -168,7 +188,7 @@ endfunction
 function convdata(sd type,sd dest)
 	if type==(convdata_total)
 		data nr_of_args#1
-		return nr_of_args
+		return nr_of_args   #ms_convention or lin
 	elseif type==(convdata_call)
 		#rdi
 		chars hex_1={REX_Operand_64,moveatprocthemem,ediregnumber*toregopcode|espregnumber,0x24,0}
@@ -263,37 +283,29 @@ function function_call_64fm(sd nr_of_args,sd hex_n,sd conv,sd code)
 endfunction
 function function_call_64f(sd hex_n,sd conv,sd code)
 	sd err
-	sd nr_of_args;setcall nr_of_args nr_of_args_64need()
+	sd nr_of_args;setcall nr_of_args nr_of_args_64need_p_get()
+	set nr_of_args nr_of_args#
 	#
-	setcall err function_call_64fm(nr_of_args,hex_n,conv,code);If err!=(noerror);Return err;EndIf
-	#
-	if conv==(ms_convention)
-		if nr_of_args<conv
-			#shadow space
-			#sub esp,x;default 4 args stack space convention
-			chars hex_w={REX_Operand_64,0x83,0xEC};chars argspush#1
-			set argspush nr_of_args;sub argspush conv;mult argspush (-1*qwsz)
-			SetCall err addtosec(#hex_w,4,code);If err!=(noerror);Return err;EndIf
-		endif
-	elseif nr_of_args>0
-		#lin_convention
-		#add esp,x
-		chars hex_x={REX_Operand_64,0x83,regregmod|espregnumber};chars adjuster#1
-		if nr_of_args>conv;set adjuster conv;else;set adjuster nr_of_args;endelse
-		mult adjuster (qwsz)
-		SetCall err addtosec(#hex_x,4,code);If err!=(noerror);Return err;EndIf
-	endelseif
-	#
-	#stack align,more to see when the offset was taken
-	sd stack_align_p;setcall stack_align_p stack_align_off_p_get()
-	ss code_pointer;call getcont(code,#code_pointer)
-	add code_pointer stack_align_p#
-	sd against_one;if nr_of_args>conv;set against_one nr_of_args;else;set against_one conv;endelse;and against_one 1
-	#Jump short if not carry
-	if against_one==0;set code_pointer# (0x73)
-	#Jump short if carry
-	else;set code_pointer# (0x72);endelse
-	return (noerror)
+	setcall err function_call_64fm(nr_of_args,hex_n,conv,code)
+	If err==(noerror)
+		if conv==(ms_convention)
+			if nr_of_args<conv
+				#shadow space
+				#sub esp,x;default 4 args stack space convention
+				chars hex_w={REX_Operand_64,0x83,0xEC};chars argspush#1
+				set argspush nr_of_args;sub argspush conv;mult argspush (-1*qwsz)
+				SetCall err addtosec(#hex_w,4,code)
+			endif
+		elseif nr_of_args>0
+			#lin_convention
+			#add esp,x
+			chars hex_x={REX_Operand_64,0x83,regregmod|espregnumber};chars adjuster#1
+			if nr_of_args>conv;set adjuster conv;else;set adjuster nr_of_args;endelse
+			mult adjuster (qwsz)
+			SetCall err addtosec(#hex_x,4,code)
+		endelseif
+	endIf
+	return err
 endfunction
 function function_call_64(sd is_callex)
 	sd conv;setcall conv convdata((convdata_total))

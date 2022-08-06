@@ -403,3 +403,7 @@ const p_include_sec^include_sec
 
 const pointersigndeclare=asciicirc
 const assignsign=asciiequal
+
+const call_align_no=0
+const call_align_yes=1
+const call_align_yes_no=2

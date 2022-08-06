@@ -174,7 +174,6 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		if err!=(noerror)
 			return err
 		endif
-		setcall err nr_of_args_64need_set();if err!=(noerror);return err;endif
 	EndElse
 
 	Call stepcursors(ptrcontent,ptrsize)
@@ -186,7 +185,27 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 
 	If sz!=zero
 		#declare is bool
-		SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,fnnr) #there are 3 more arguments but are not used
+		if declare==true
+			SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,fnnr) #there are 3 more arguments but are not used
+		else
+			sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
+			if p_b#==(FALSE)
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
+			else
+				sd p;setcall p nr_of_args_64need_p_get();set p# 0
+				set content ptrcontent#
+				set size ptrsize#
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
+				if err==noerr
+					setcall err stack_align(p#)
+					if err==noerr
+						set ptrcontent# content
+						set ptrsize# size
+						SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
+					endif
+				endif
+			endelse
+		endelse
 		If err!=noerr
 			Return err
 		EndIf

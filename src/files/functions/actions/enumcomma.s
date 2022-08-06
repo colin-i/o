@@ -78,7 +78,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpush,data typenumber,data stack,sd hex,sd long_mask)
+Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpush,data typenumberOrwrite,data stack,sd hex,sd long_mask)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -99,7 +99,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 
 	Data fnnr=functionsnumber
 	If fndecandgroupOrpush==true
-		If typenumber==fnnr
+		If typenumberOrwrite==fnnr
 			Data stackoffset#1
 			Set stackoffset zero
 			Data ptrstackoffset^stackoffset
@@ -108,7 +108,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 			Data dwSz=dwsz
 			Data unitsize#1
 			Data charsnr=charsnumber
-			If typenumber==charsnr
+			If typenumberOrwrite==charsnr
 			#ignored at stack value   grep stackfilter2  1
 				Set unitsize bSz
 			Else
@@ -135,7 +135,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 			set argumentsize argsize
 			sub argumentsize sizeaux
 			#
-			If typenumber==fnnr
+			If typenumberOrwrite==fnnr
 				SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset)
 				If err!=noerr
 					Return err
@@ -163,7 +163,9 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 			EndElse
 		Else
 			#push
-			call nr_of_args_64need_count()
+			if typenumberOrwrite==(FALSE) #for regs at call   and shadow space
+				call nr_of_args_64need_count()
+			endif
 			sd delim
 			set delim comma
 			if sz!=0
@@ -212,10 +214,12 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 			Sub negvalue argsize
 			Call advancecursors(ptrcontent,ptrsize,negvalue)
 			Data ptrargsize^argsize
-			SetCall err argument(ptrcontent,ptrargsize,zero,backward)
-			If err!=noerr
-				Return err
-			EndIf
+			if typenumberOrwrite==(TRUE)
+				SetCall err argument(ptrcontent,ptrargsize,zero,backward)
+				If err!=noerr
+					Return err
+				EndIf
+			endif
 		EndElse
 		Sub sz argsize
 		If sz!=zero
