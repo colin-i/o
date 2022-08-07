@@ -19,4 +19,4 @@
 ~/test/lp && \
 ~/test/lp x && \
 ~/test/keyring && \
-~/test/del x
+~/test/del x ${2}
