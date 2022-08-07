@@ -340,7 +340,7 @@ const val64_willbe=1
 
 const direct_convention_input=0
 const ignore_convention_input=1
-#const cross_convention_input=2
+const cross_convention_input=2
 #
 const ms_convention=4
 const lin_convention=6
