@@ -16,7 +16,6 @@
 ~/test/pub upapp rpm && \
 ~/test/pub2 && \
 ~/test/publp2 && \
-~/test/keyring2 && \
+~/test/keyring && \
 ~/test/lp && \
-~/test/lp x && \
-~/test/del x
+~/test/lp x
