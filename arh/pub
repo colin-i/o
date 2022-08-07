@@ -6,7 +6,7 @@
 ~/test/ai && \
 ~/test/pub appimage && \
 ./makewin32 && \
-~/test/keyring && \
+~/test/keyring2 && \
 ~/test/del && \
 ~/test/rel && \
 ~/test/pub rel && \
@@ -16,7 +16,7 @@
 ~/test/pub upapp rpm && \
 ~/test/pub2 && \
 ~/test/publp2 && \
-~/test/keyring2 && \
 ~/test/lp && \
 ~/test/lp x && \
+~/test/keyring && \
 ~/test/del x
