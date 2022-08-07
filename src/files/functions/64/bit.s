@@ -77,8 +77,6 @@ function stack_align(sd nr)
 	endif
 	return (noerror)
 endfunction
-data call_align#1
-const ptr_call_align^call_align
 #nr
 function pref_call_align(sd nr)
 	data ptr_call_align%ptr_call_align

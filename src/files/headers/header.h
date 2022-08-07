@@ -380,7 +380,7 @@ const p_hidden_pref^hidden_pref
 Data safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=18
+const nr_of_prefs=19
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
@@ -406,4 +406,6 @@ const assignsign=asciiequal
 
 const call_align_no=0
 const call_align_yes=1
-const call_align_yes_no=2
+#const call_align_yes_no=2
+data call_align#1
+const ptr_call_align^call_align
