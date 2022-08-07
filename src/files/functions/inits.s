@@ -45,11 +45,11 @@ function comline_value(ss v,sd p)
 			inc v
 			if v#==0
 				sub input (asciizero)
-				if input<=(last_convention_input)
+				if input<=(last_call_align_input)
 					set p# input
 					return (noerror)
 				endif
-				return "a command line value can have only 0,1 or 2"
+				return "a command line value can have only 0,1,2 or 3"
 			endif
 			return "command line value must have only one digit"
 		endif

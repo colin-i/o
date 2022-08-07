@@ -193,7 +193,7 @@ function initpreferences()
 	set p_exit_end# false
 	set p_include_sec# false
 	set p_ignore_format_so# (No)
-	set ptr_call_align# (call_align_yes)
+	set ptr_call_align# (call_align_yes_all)
 
 	#this is used also at arguments
 

@@ -75,6 +75,6 @@ include_sec=0
 0 is No; 1 is Yes
 ignore_format_so=0
 
-19. At 64, before a call, align stack shadow(windows only) and arguments.
-0 is No; 1 is Yes; 2 is Yes at arguments and No at shadow
+19. At 64, before a call, align stack. Cases for arguments and shadow(windows only).
+0 is No; 1 is Yes; 2 is Yes for arguments and shadow; 3 is Yes for arguments
 call_align=1

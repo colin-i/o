@@ -81,17 +81,21 @@ endfunction
 function pref_call_align(sd nr)
 	data ptr_call_align%ptr_call_align
 	sd type;set type ptr_call_align#
-	sd conv;setcall conv convdata((convdata_total))
-	if nr<=conv
-		if conv==(ms_convention)
-			if type==(call_align_yes)
-				return conv
-			endif
-		endif
-		return 0
-	endif
 	if type!=(call_align_no)
-		return nr
+		sd conv;setcall conv convdata((convdata_total))
+		if nr<=conv
+			if conv==(lin_convention)
+				if type==(call_align_yes_all)
+					return 2 #to align at no args
+				endif
+			else
+				if type!=(call_align_yes_arg)
+					return conv
+				endif
+			endelse
+		else
+			return nr
+		endelse
 	endif
 	return 0
 endfunction

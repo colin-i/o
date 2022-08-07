@@ -341,7 +341,6 @@ const val64_willbe=1
 const direct_convention_input=0
 const ignore_convention_input=1
 const cross_convention_input=2
-const last_convention_input=cross_convention_input
 #
 const ms_convention=4
 const lin_convention=6
@@ -405,7 +404,9 @@ const pointersigndeclare=asciicirc
 const assignsign=asciiequal
 
 const call_align_no=0
-const call_align_yes=1
-#const call_align_yes_no=2
+const call_align_yes_all=1
+#const call_align_yes_arg_sha=2
+const call_align_yes_arg=3
+const last_call_align_input=call_align_yes_arg
 data call_align#1
 const ptr_call_align^call_align
