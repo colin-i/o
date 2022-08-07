@@ -81,23 +81,19 @@ endfunction
 function pref_call_align(sd nr)
 	data ptr_call_align%ptr_call_align
 	sd type;set type ptr_call_align#
-	if type==(call_align_yes)
-		sd conv;setcall conv convdata((convdata_total))
-		if nr<=conv
-			if conv==(lin_convention)
-				return 0
-			endif
-			return conv
-		endif
-		return nr
-	elseif type==(call_align_no)
-		return 0
-	endelseif
-	#call_align_yes_no
+	sd conv;setcall conv convdata((convdata_total))
 	if nr<=conv
+		if conv==(ms_convention)
+			if type==(call_align_yes)
+				return conv
+			endif
+		endif
 		return 0
 	endif
-	return nr
+	if type!=(call_align_no)
+		return nr
+	endif
+	return 0
 endfunction
 
 ##REX_W
