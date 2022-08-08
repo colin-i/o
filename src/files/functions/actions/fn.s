@@ -201,9 +201,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		call entryscope()
 	Else
 		sd p
-		sd bool;setcall bool is_for_64_is_impX_or_fnX_get()
+		sd pbool;setcall pbool is_for_64_is_impX_or_fnX_get()
 		if p_two_parse#==2
-			if bool==(FALSE)
+			if pbool#==(FALSE)
 				call advancecursors(ptrcontent,ptrsize,sz)
 			else
 				if sz!=zero
@@ -216,9 +216,10 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 				else
 					#call for 0
 				endelse
+				set pbool# (FALSE)
 			endelse
 		else
-			if bool==(FALSE)
+			if pbool#==(FALSE)
 				if sz!=zero
 					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
 				endif
