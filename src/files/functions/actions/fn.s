@@ -168,6 +168,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			endelse
 		endelse
 	Else
+		Data ptrdata#1
 		if p_two_parse#==2
 			SetCall ptrdata vars(content,sz,fns)
 			if ptrdata!=0
@@ -176,7 +177,6 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			call advancecursors(ptrcontent,ptrsize,sz)
 		else
 			data boolindirect#1
-			Data ptrdata#1
 			setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect)
 			if err!=(noerror)
 				return err
@@ -206,7 +206,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			if p_b#==(FALSE)
 				call advancecursors(ptrcontent,ptrsize,sz)
 			else
-				is sz!=zero
+				if sz!=zero
 					setcall p nr_of_args_64need_p_get();set p# 0
 					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
 					if err!=noerr

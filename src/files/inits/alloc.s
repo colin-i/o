@@ -48,7 +48,7 @@ Set extraMax subscope
 
 Set unresLocalMax mainscope
 
-set stackAlignMax 100*dwsz
+set stackAlignMax (100*dwsz)
 
 
 

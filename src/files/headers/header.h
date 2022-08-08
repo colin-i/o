@@ -196,14 +196,9 @@ Data unresLocal#1
 Data unresLocalReg#1
 Const ptrunresLocal^unresLocalMax
 
-Data unresLocalMax#1
-Data unresLocal#1
-Data unresLocalReg#1
-Const ptrunresLocal^unresLocalMax
-
 data stackAlignMax#1
-data stackAlign#1
-data stackAlignReg#1
+data *stackAlign#1
+data *stackAlignReg#1
 
 Const containersbegin^includesMax
 Const containerssize=!-containersbegin
