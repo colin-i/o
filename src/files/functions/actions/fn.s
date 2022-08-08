@@ -192,8 +192,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		EndIf
 		call entryscope()
 	Else
-		sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
-		if p_b#==(FALSE)
+		sd bool;setcall bool is_for_64_is_impX_or_fnX_get()
+		if bool==(FALSE)
 			if sz!=zero
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
 			endif
@@ -276,10 +276,11 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	sd err
 	Data code%ptrcodesec
 
-	sd b;setcall b is_for_64_is_impX_or_fnX_get()
-	if b==(TRUE)
+	sd pb;setcall pb is_for_64_is_impX_or_fnX_p_get()
+	if pb#==(TRUE)
 		setcall err function_call_64(is_callex)
 		If err!=(noerror);Return err;EndIf
+		set pb# (FALSE) #can be at start but intern function are more popular and there is also a test in addition
 	endif
 
 	Data ptrfnmask#1
