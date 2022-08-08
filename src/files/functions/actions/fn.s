@@ -183,16 +183,23 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		return err
 	endif
 
-	If sz!=zero
-		#declare is bool
-		if declare==true
+	If declare==true
+		If sz!=zero
 			SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,fnnr) #there are 3 more arguments but are not used
-		else
-			sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
-			if p_b#==(FALSE)
+			if err!=noerr
+				return err
+			endif
+		EndIf
+		call entryscope()
+	Else
+		sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
+		if p_b#==(FALSE)
+			if sz!=zero
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
-			else
-				sd p;setcall p nr_of_args_64need_p_get();set p# 0
+			endif
+		else
+			sd p;setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
+			if sz!=zero
 				set content ptrcontent#
 				set size ptrsize#
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
@@ -204,21 +211,17 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 						SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
 					endif
 				endif
+			else
+				setcall err stack_align(0)
 			endelse
 		endelse
-		If err!=noerr
-			Return err
+		If err==noerr
+			setcall err write_function_call(ptrdata,boolindirect,(FALSE))
+			if err!=noerr
+				return err
+			endif
 		EndIf
-	EndIf
-
-	If declare==true
-		call entryscope()
-	else
-		setcall err write_function_call(ptrdata,boolindirect,(FALSE))
-		If err!=noerr
-			Return err
-		EndIf
-	endelse
+	EndElse
 	Call stepcursors(ptrcontent,ptrsize)
 	Return noerr
 EndFunction
