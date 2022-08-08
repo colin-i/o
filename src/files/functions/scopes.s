@@ -111,7 +111,7 @@ endfunction
 
 function scopes_searchinvars(sd p_err,sv p_name)
 	sd psz%scopesbag_size_ptr
-	#there are imports after fns with the two pass, and now can get number of local fns, but importbit can be rethinked for something else
+	#now at three pass the fns are mixed with imports
 	sd sz;set sz psz#
 	div sz :
 	sd i=0
@@ -120,18 +120,21 @@ function scopes_searchinvars(sd p_err,sv p_name)
 	sd fns
 	call getcont(ptrfunctions,#fns)
 	while i!=sz
+		sd ibit;setcall ibit importbit(fns)
 		add fns (nameoffset)
-		sd data
-		sd scope
-		setcall scope scopes_get_scope(i)
-		setcall data searchinvars_scope_warn(p_err,scope)
-		if data!=(NULL)
-			set p_name# fns
-			return data
+		if ibit==0
+			sd data
+			sd scope
+			setcall scope scopes_get_scope(i)
+			setcall data searchinvars_scope_warn(p_err,scope)
+			if data!=(NULL)
+				set p_name# fns
+				return data
+			endif
+			inc i
 		endif
 		addcall fns strlen(fns)
 		inc fns
-		inc i
 	endwhile
 	return (NULL)
 endfunction

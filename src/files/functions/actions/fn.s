@@ -201,7 +201,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		call entryscope()
 	Else
 		sd p
-		sd pbool;setcall pbool is_for_64_is_impX_or_fnX_get()
+		sd pbool;setcall pbool is_for_64_is_impX_or_fnX_p_get()
 		if p_two_parse#==2
 			if pbool#==(FALSE)
 				call advancecursors(ptrcontent,ptrsize,sz)
