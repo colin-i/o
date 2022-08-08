@@ -48,7 +48,7 @@ function growramp(data value)
 	data ptrramp#1
 	setcall ptrramp getptrramp()
 	sd ret;set ret ptrramp#
-	subcall ptrramp# stack64_add(value)
+	addcall ptrramp# stack64_add(value)
 	return ret
 endfunction
 #ind(before)
@@ -62,9 +62,7 @@ endfunction
 function getramp_ebxrel()
 	data ptrramp#1
 	setcall ptrramp getptrramp()
-	data ramp#1
-	setcall ramp neg(ptrramp#)
-	return ramp
+	return ptrramp#
 endfunction
 
 #er
@@ -79,7 +77,7 @@ function entryscope()
 	#mov e(r)bx e(r)sp
 	const scope3_start=!;chars scope3={moveatregthemodrm,0xdc};const scope3_sz=!-scope3_start
 	#sub e(r)bx dword
-	const scope4_start=!;chars scope4={0x81,0xc3}
+	const scope4_start=!;chars scope4={0x81,0xeb}
 	data *scopestack=0;const scope4_sz=!-scope4_start
 
 	setcall err addtosec(#scope1,(scope1_sz),container);if err!=(noerror);return err;endif
