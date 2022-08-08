@@ -168,12 +168,20 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			endelse
 		endelse
 	Else
-		data boolindirect#1
-		Data ptrdata#1
-		setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect)
-		if err!=(noerror)
-			return err
-		endif
+		if p_two_parse#==2
+			SetCall ptrdata vars(content,sz,fns)
+			if ptrdata!=0
+				call is_for_64_is_impX_or_fnX_set(ptrdata)
+			endif
+			call advancecursors(ptrcontent,ptrsize,sz)
+		else
+			data boolindirect#1
+			Data ptrdata#1
+			setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect)
+			if err!=(noerror)
+				return err
+			endif
+		endelse
 	EndElse
 
 	Call stepcursors(ptrcontent,ptrsize)
@@ -193,34 +201,52 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		call entryscope()
 	Else
 		sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
-		if p_b#==(FALSE)
-			if sz!=zero
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
-			endif
-		else
-			sd p;setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
-			if sz!=zero
-				set content ptrcontent#
-				set size ptrsize#
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
-				if err==noerr
-					setcall err stack_align(p#)
-					if err==noerr
-						set ptrcontent# content
-						set ptrsize# size
-						SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
+		sd p
+		if p_two_parse#==2
+			if p_b#==(FALSE)
+				call advancecursors(ptrcontent,ptrsize,sz)
+			else
+				is sz!=zero
+					setcall p nr_of_args_64need_p_get();set p# 0
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
+					if err!=noerr
+						return err
 					endif
+					#call for p#
+				else
+					#call for 0
+				endelse
+			endelse
+		else
+			if p_b#==(FALSE)
+				if sz!=zero
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
 				endif
 			else
-				setcall err stack_align(0)
+				setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
+				if sz!=zero
+					set content ptrcontent#
+					set size ptrsize#
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
+					if err==noerr
+						setcall err stack_align(p#)
+						if err==noerr
+							set ptrcontent# content
+							set ptrsize# size
+							SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
+						endif
+					endif
+				else
+					setcall err stack_align(0)
+				endelse
 			endelse
+			If err==noerr
+				setcall err write_function_call(ptrdata,boolindirect,(FALSE))
+				if err!=noerr
+					return err
+				endif
+			EndIf
 		endelse
-		If err==noerr
-			setcall err write_function_call(ptrdata,boolindirect,(FALSE))
-			if err!=noerr
-				return err
-			endif
-		EndIf
 	EndElse
 	Call stepcursors(ptrcontent,ptrsize)
 	Return noerr

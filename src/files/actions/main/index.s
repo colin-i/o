@@ -83,7 +83,9 @@ if loop==1
 				#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 				if commandset!=(cCOMMENT)
 					if formatdefined==0;Set formatdefined 1;endif
-					If commandset==(cFORMAT);elseif commandset==(cINCLUDE);elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
+					if commandset==(cFORMAT);elseif commandset==(cINCLUDE)
+					elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
+					elseif commandset==(cCALL);ElseIf commandset==(cLIBRARY);ElseIf commandset==(cIMPORTLINK) #needing importx here
 					else;set commandset (cCOMMENT);endelse
 				endif
 			endif
@@ -104,15 +106,19 @@ if loop==1
 		call entryscope_verify_code()
 				Include "./index/ret.s"
 			ElseIf commandset==(cLIBRARY)
-				Include "./index/library.s"
+				if twoparse==2;Include "./index/library.s"
+				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cIMPORTLINK)
-				Include "./index/import.s"
+				if twoparse==2;Include "./index/import.s"
+				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cSTARTFUNCTION)
 				Include "./index/function.s"
 			ElseIf commandset==(cENDFUNCTION)
 				Include "./index/endfunction.s"
 			ElseIf commandset==(cCALL)
+				if twoparse==1
 		call entryscope_verify_code()
+				endif
 				Include "./index/call.s"
 			ElseIf commandset==(cCALLEX)
 		call entryscope_verify_code()

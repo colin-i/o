@@ -196,10 +196,17 @@ Data unresLocal#1
 Data unresLocalReg#1
 Const ptrunresLocal^unresLocalMax
 
+Data unresLocalMax#1
+Data unresLocal#1
+Data unresLocalReg#1
+Const ptrunresLocal^unresLocalMax
+
+data stackAlignMax#1
+data stackAlign#1
+data stackAlignReg#1
+
 Const containersbegin^includesMax
-Const containersalmostend^unresLocalReg
-Const containersend=containersalmostend+dwsz
-Const containerssize=containersend-containersbegin
+Const containerssize=!-containersbegin
 
 chars dummyEntry_data#sizeof_minimumentry
 
