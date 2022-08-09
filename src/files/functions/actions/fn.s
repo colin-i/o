@@ -96,6 +96,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 				Set mask (referencebit)
 			else
 				set mask 0
+				#add at align
+				sd stackalignptr%ptrstackAlign
+				setcall err addtosec(#zero,(dwsz),stackalignptr)
+				If err!=noerr
+					Return err
+				EndIf
 			endelse
 
 			setcall scope64 is_funcx_subtype(subtype)
@@ -108,11 +114,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 			EndIf
 			#skip the rest of the command at recon
 			Call advancecursors(ptrcontent,ptrsize,ptrsize#)
-			#add at align
-			sd stackalignptr%ptrstackAlign
-			setcall err addtosec(#zero,(dwsz),stackalignptr)
 			#
-			return err
+			return noerr
 		else
 			sd pointer
 			setcall pointer vars_ignoreref(content,sz,fns)

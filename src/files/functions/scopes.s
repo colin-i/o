@@ -36,6 +36,7 @@ endfunction
 
 #err
 function scopes_alloc(sd has_named_entry)
+	sd i
 	#now at three pass the fns are mixed with imports
 	#sv ptrfunctions%ptrfunctions
 	#sd i=0
@@ -51,7 +52,7 @@ function scopes_alloc(sd has_named_entry)
 	#endwhile
 	#mult i :
 	sd almost_same_size_container%ptrstackAlign
-	sd i;call getcontReg(almost_same_size_container,#i)
+	call getcontReg(almost_same_size_container,#i)
 	if has_named_entry==(FALSE)
 		sub i :
 	endif

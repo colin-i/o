@@ -123,6 +123,7 @@ function align_ptype()
 	sd cont;call getcont(container,#cont)
 	sd index=dwsz;mult index ptrfunctionTagIndex#
 	add cont index
+	return cont
 endfunction
 
 #type
