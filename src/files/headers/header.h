@@ -199,6 +199,7 @@ Const ptrunresLocal^unresLocalMax
 data stackAlignMax#1
 data *stackAlign#1
 data *stackAlignReg#1
+Const ptrstackAlign^stackAlignMax
 
 Const containersbegin^includesMax
 Const containerssize=!-containersbegin
@@ -412,3 +413,7 @@ const call_align_yes_arg=3
 const last_call_align_input=call_align_yes_arg
 data call_align#1
 const ptr_call_align^call_align
+
+const even_align=-1
+#const no_align=0
+const odd_align=1

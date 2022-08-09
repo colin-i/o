@@ -42,6 +42,7 @@ Include "./functions/pref/sdsv.s"
 
 Include "./functions/64/bit.s"
 Include "./functions/64/reloc.s"
+Include "./functions/64/align.s"
 
 Include "./functions/include.s"
 Include "./functions/dataassign.s"

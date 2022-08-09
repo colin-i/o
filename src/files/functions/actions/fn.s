@@ -105,7 +105,11 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			EndIf
 			#skip the rest of the command at recon
 			Call advancecursors(ptrcontent,ptrsize,ptrsize#)
-			return noerr
+			#add at align
+			sd stackalignptr%ptrstackAlign
+			setcall err addtosec(#zero,(dwsz),stackalignptr)
+			#
+			return err
 		else
 			sd pointer
 			setcall pointer vars_ignoreref(content,sz,fns)
@@ -209,13 +213,15 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 				if sz!=zero
 					setcall p nr_of_args_64need_p_get();set p# 0
 					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
-					if err!=noerr
-						return err
+					if err==noerr
+						setcall err align_ante(p#)
 					endif
-					#call for p#
 				else
-					#call for 0
+					setcall err align_ante(0)
 				endelse
+				if err!=noerr
+					return err
+				endif
 				set pbool# (FALSE)
 			endelse
 		else
@@ -243,10 +249,10 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			endelse
 			If err==noerr
 				setcall err write_function_call(ptrdata,boolindirect,(FALSE))
-				if err!=noerr
-					return err
-				endif
 			EndIf
+			if err!=noerr
+				return err
+			endif
 		endelse
 	EndElse
 	Call stepcursors(ptrcontent,ptrsize)

@@ -114,6 +114,8 @@ While includesReg!=null
 				add includesReg sizeofincludeset
 				set twoparse 1
 
+				call align_resolve()
+
 				setcall errormsg scopes_alloc(el_or_e)
 			EndElse
 		endif
