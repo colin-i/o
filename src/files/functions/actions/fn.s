@@ -33,7 +33,7 @@ EndFunction
 #err
 function fnimp_exists(sd content,sd size)
 	sd fns%ptrfunctions
-	sd d;setcall d vars_ignoreref(content,sz,fns)
+	sd d;setcall d vars_ignoreref(content,size,fns)
 	if d==0
 		return (noerror)
 	endif
