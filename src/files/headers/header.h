@@ -418,5 +418,5 @@ const even_align=-1
 #const no_align=0
 const odd_align=1
 
-data functionTagIndex#1
+data functionTagIndex#1  #need to be at call pass and last pass(scopes) and scopes alloc
 const ptrfunctionTagIndex^functionTagIndex

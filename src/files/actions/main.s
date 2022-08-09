@@ -116,7 +116,8 @@ While includesReg!=null
 
 				call align_resolve()
 
-				setcall errormsg scopes_alloc(el_or_e) #functionTagIndex is at last pass available
+				setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
+				set functionTagIndex 0
 			EndElse
 		endif
 	endif

@@ -28,12 +28,12 @@ Else
 						Set indexptr# zero
 						Inc i
 					EndWhile
-					inc functionTagIndex
 				endif
 			EndIf
 		EndIf
 	endif
 	If errormsg==noerr
 		Set innerfunction false
+		inc functionTagIndex
 	endif
 EndElse

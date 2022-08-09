@@ -35,8 +35,7 @@ function scopes_free()
 endfunction
 
 #err
-function scopes_alloc(sd has_named_entry)
-	sd i
+function scopes_alloc(sd has_named_entry,sd i)
 	#now at three pass the fns are mixed with imports
 	#sv ptrfunctions%ptrfunctions
 	#sd i=0
@@ -51,11 +50,16 @@ function scopes_alloc(sd has_named_entry)
 	#	inc i
 	#endwhile
 	#mult i :
-	sd almost_same_size_container%ptrstackAlign
-	call getcontReg(almost_same_size_container,#i)
-	if has_named_entry==(FALSE)
-		sub i :
+	#
+	#sd almost_same_size_container%ptrstackAlign
+	#call getcontReg(almost_same_size_container,#i)
+	#if has_named_entry==(FALSE)
+	#	sub i :
+	#endif
+	if has_named_entry==(TRUE)
+		inc i
 	endif
+	mult i :
 	#
 	sv s%scopesbag_ptr
 	setcall s# memcalloc(i)
