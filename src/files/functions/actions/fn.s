@@ -41,7 +41,7 @@ function is_funcx_subtype(sd subtype)
 endfunction
 #subtype is only when declarefn(not callfn)
 #err
-Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
+Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd el_or_e)
 	Data true=TRUE
 	Data false=FALSE
 
@@ -90,10 +90,13 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			EndIf
 			Set globalinnerfunction# aux
 
-			#is objfnmask related to the introduction of entry tag at objects, is interacting there
 			Data mask#1
-			Data ptrobjfnmask%ptrobjfnmask
-			Set mask ptrobjfnmask#
+			#Data ptrobjfnmask%ptrobjfnmask
+			if el_or_e==(TRUE)
+				Set mask (referencebit)
+			else
+				set mask 0
+			endelse
 
 			setcall scope64 is_funcx_subtype(subtype)
 			if scope64==(TRUE)

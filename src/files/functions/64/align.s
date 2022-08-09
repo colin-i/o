@@ -50,14 +50,16 @@ endfunction
 function align_ante(sd arguments)
 	setcall arguments pref_call_align(arguments)
 	if arguments!=0
-		sd container%ptrstackAlign
-		sd pointer;call getcontplusReg(container,#pointer)
-		sub pointer (dwsz)
+		sd pointer
+		#sd container%ptrstackAlign
+		#wanting with three pass, the impXorfnX is not ready at first pass: call getcontplusReg(container,#pointer)
+		#sub pointer (dwsz)
 		#test if in a function
-		sd fnboolptr%globalinnerfunction
-		if fnboolptr#==(TRUE)
-			sub pointer (dwsz)
-		endif
+		#sd fnboolptr%globalinnerfunction
+		#if fnboolptr#==(TRUE)
+		#	sub pointer (dwsz)
+		#endif
+		setcall pointer align_ptype()
 		sd test=1;and test arguments
 		sd test2=0xffFF
 		if test==0
@@ -114,14 +116,19 @@ function align_resolve()
 	endwhile
 endfunction
 
-#type
-function align_type()
+#ptype
+function align_ptype()
 	sd ptrfunctionTagIndex%ptrfunctionTagIndex
 	sd container%ptrstackAlign
 	sd cont;call getcont(container,#cont)
 	sd index=dwsz;mult index ptrfunctionTagIndex#
 	add cont index
-	return #cont
+endfunction
+
+#type
+function align_type()
+	sd cont;setcall cont align_ptype()
+	return cont#
 endfunction
 
 #err

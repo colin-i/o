@@ -214,8 +214,8 @@ Const symind=3
 Data datastrtab#1
 Data codestrtab#1
 
-Data objfnmask#1
-Const ptrobjfnmask^objfnmask
+#Data objfnmask#1
+#Const ptrobjfnmask^objfnmask
 
 #inplace	direct: at writetake: sd^data
 #			   writevar:  data a^dataB    here is also notinplace data^import
