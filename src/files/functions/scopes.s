@@ -36,19 +36,26 @@ endfunction
 
 #err
 function scopes_alloc(sd has_named_entry)
-	sv ptrfunctions%ptrfunctions
-	sd i=0
-	sd fns
-	sv last
-	call getcontandcontReg(ptrfunctions,#fns,#last)
-	add last fns
-	while fns!=last
-		add fns (nameoffset)
-		addcall fns strlen(fns)
-		inc fns
-		inc i
-	endwhile
-	mult i :
+	#now at three pass the fns are mixed with imports
+	#sv ptrfunctions%ptrfunctions
+	#sd i=0
+	#sd fns
+	#sv last
+	#call getcontandcontReg(ptrfunctions,#fns,#last)
+	#add last fns
+	#while fns!=last
+	#	add fns (nameoffset)
+	#	addcall fns strlen(fns)
+	#	inc fns
+	#	inc i
+	#endwhile
+	#mult i :
+	sd almost_same_size_container%ptrstackAlign
+	sd i;call getcontReg(almost_same_size_container,#i)
+	if has_named_entry==(FALSE)
+		sub i :
+	endif
+	#
 	sv s%scopesbag_ptr
 	setcall s# memcalloc(i)
 	sv start;set start s#

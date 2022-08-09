@@ -4,23 +4,20 @@ function stack_align(sd nr)
 	sd final_nr
 	setcall final_nr pref_call_align(nr)
 	if final_nr!=0
-		#Stack aligned on 16 bytes. Depending on the number of arguments, jumpCarry or jumpNotCarry
-		sd err
-		vdata code%ptrcodesec
-		#bt rsp,3 (offset 3)
-		chars hex_x={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
-		#j(c|nc);sub rsp,8
-		chars jump#1;chars *=4;chars *={REX_Operand_64,0x83,0xEC,8}
-
 		and final_nr 1
-		#Jump short if not carry
-		if final_nr==0
-			set jump (0x73)
-		#Jump short if carry
-		else;set jump (0x72)
-		endelse
-
-		SetCall err addtosec(#hex_x,(5+6),code)
+		sd type;setcall type align_type()
+		if type==(even_align)
+			if final_nr!=0
+				return (noerror)
+			endif
+		elseif   final_nr==0
+				return (noerror)
+		endelseif
+		#Stack aligned on 16 bytes. Depending on the number of arguments
+		vdata code%ptrcodesec
+		chars align={REX_Operand_64,0x83,0xEC,8}
+		sd err
+		SetCall err addtosec(#align,(4),code)
 		return err
 	endif
 	return (noerror)
@@ -115,4 +112,39 @@ function align_resolve()
 		endif
 		add pointer (dwsz)
 	endwhile
+endfunction
+
+#type
+function align_type()
+	sd ptrfunctionTagIndex%ptrfunctionTagIndex
+	sd container%ptrstackAlign
+	sd cont;call getcont(container,#cont)
+	sd index=dwsz;mult index ptrfunctionTagIndex#
+	add cont index
+	return #cont
+endfunction
+
+#err
+function align_entryscope()
+	sd type;setcall type align_type()
+	if type!=0
+		#bt rbx,3 (offset 3) x8 or x0
+		chars bt={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|ebxregnumber,3}
+		#j(c|nc);sub rbx,8
+		chars jump#1;chars *=4;chars *={REX_Operand_64,0x83,RegReg*tomod|(5*toregopcode)|ebxregnumber,8}
+		if type==(even_align)
+			#there are more even calls to align
+			#Jump short if not carry
+			set jump (0x73)
+		else
+			#odd
+			#Jump short if carry
+			set jump (0x72)
+		endelse
+		vdata code%ptrcodesec
+		sd err
+		SetCall err addtosec(#bt,(5+6),code)
+		return err
+	endif
+	return (noerror)
 endfunction

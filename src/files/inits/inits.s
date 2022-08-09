@@ -85,6 +85,7 @@ set real_exit_end (FALSE)
 
 sd el_or_e=FALSE
 
-sd functionTagIndex=0
+#needing also at align sd functionTagIndex=0
+set functionTagIndex 0
 
 call addtosec(#zero,(dwsz),#stackAlignMax) #this is the entry scope if no function tags

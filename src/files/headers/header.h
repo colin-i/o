@@ -417,3 +417,6 @@ const ptr_call_align^call_align
 const even_align=-1
 #const no_align=0
 const odd_align=1
+
+data functionTagIndex#1
+const ptrfunctionTagIndex^functionTagIndex
