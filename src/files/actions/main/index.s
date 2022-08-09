@@ -91,7 +91,7 @@ if loop==1
 					endif
 				else
 				#pass_calls
-					if commandset==(cCALL);elseif commandset==(cENDFUNCTION)
+					if commandset==(cCALL);elseif commandset==(cENDFUNCTION);elseif commandset==(cINCLUDE)
 					else;set commandset (cCOMMENT);endelse
 				endelse
 			endif
