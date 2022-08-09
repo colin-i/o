@@ -63,7 +63,7 @@ If errormsg==noerr
 						Str ptrimpref^missimportref
 						Set errormsg ptrimpref
 					Else
-						SetCall errormsg entryvarsfns(content,imp_size)
+						SetCall errormsg fnimp_exists(content,imp_size) #it is at first pass when only fns and imports are
 						If errormsg==noerr
 							if codeFnObj==(log_warn)
 								if subtype==(cIMPORT)
