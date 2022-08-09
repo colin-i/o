@@ -7,7 +7,7 @@ data contentlineinclude=lineoffile_offset
 
 data dot_comma_end#1;set dot_comma_end 0
 
-set twoparse 2
+set parses (pass_fns_imps)
 data logaux#1
 set logaux logfile
 set logfile negative
@@ -86,10 +86,10 @@ While includesReg!=null
 
 	Sub includesReg sizeofincludeset
 
-	data skipfortwoparse#1
-	set skipfortwoparse 0
+	data skipfree#1
+	set skipfree 0
 	if includesReg==0
-		if twoparse==2
+		if parses!=(pass_write)
 			If innerfunction==true
 				if errormsg==(noerror)
 					Str endfnexp="ENDFUNCTION command expected to close the opened FUNCTION."
@@ -108,20 +108,22 @@ While includesReg!=null
 				set includescursor# 0
 				#
 
-				set logfile logaux
-
-				set skipfortwoparse 1
 				add includesReg sizeofincludeset
-				set twoparse 1
 
-				call align_resolve()
+				set skipfree 1
 
-				setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
-				set functionTagIndex 0
+				if parses==(pass_fns_imps)
+					set parses (pass_calls)
+				else
+					set logfile logaux
+					call align_resolve()
+					setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
+					set functionTagIndex 0
+				endelse
 			EndElse
 		endif
 	endif
-	if skipfortwoparse==0
+	if skipfree==0
 		Call free(contentoffile)
 	endif
 EndWhile

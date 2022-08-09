@@ -43,7 +43,7 @@ endfunction
 #err
 Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd el_or_e)
 	Data true=TRUE
-	Data false=FALSE
+	#Data false=FALSE
 
 	Data zero=0
 	Data fns%ptrfunctions
@@ -71,24 +71,19 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 		Return starterr
 	EndIf
 
+	Data ptrdata#1
+
 	If declare==true
 		Data fnnr=functionsnumber
 		Data value#1
 		Data ptrvalue^value
-
 		sd scope64
-		data p_two_parse%cptr_twoparse
-		if p_two_parse#==2
-			Data globalinnerfunction%globalinnerfunction
-			#set for searching in the main scope for unique value
-			Data aux#1
-			Set aux globalinnerfunction#
-			Set globalinnerfunction# false
-			SetCall err entryvarsfns(content,sz)
-			If err!=noerr
-				Return err
-			EndIf
-			Set globalinnerfunction# aux
+		data p_parses%ptr_parses
+		if p_parses#==(pass_fns_imps)
+			SetCall ptrdata vars(content,sz,fns)
+			if ptrdata!=0
+				return "Function/Import name is already defined."
+			endif
 
 			Data mask#1
 			#Data ptrobjfnmask%ptrobjfnmask
@@ -117,6 +112,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 			#
 			return noerr
 		else
+			#pass_write
 			sd pointer
 			setcall pointer vars_ignoreref(content,sz,fns)
 			Call advancecursors(ptrcontent,ptrsize,sz)
@@ -178,14 +174,14 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 			endelse
 		endelse
 	Else
-		Data ptrdata#1
-		if p_two_parse#==2
+		if p_parses#==(pass_calls)
 			SetCall ptrdata vars(content,sz,fns)
 			if ptrdata!=0
 				call is_for_64_is_impX_or_fnX_set(ptrdata)
 			endif
 			call advancecursors(ptrcontent,ptrsize,sz)
 		else
+			#pass_write
 			data boolindirect#1
 			setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect)
 			if err!=(noerror)
@@ -212,7 +208,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 	Else
 		sd p
 		sd pbool;setcall pbool is_for_64_is_impX_or_fnX_p_get()
-		if p_two_parse#==2
+		if p_parses#==(pass_calls)
 			if pbool#==(FALSE)
 				call advancecursors(ptrcontent,ptrsize,sz)
 			else
@@ -231,6 +227,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 				set pbool# (FALSE)
 			endelse
 		else
+			#pass_write
 			if pbool#==(FALSE)
 				if sz!=zero
 					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used

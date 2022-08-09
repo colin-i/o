@@ -20,7 +20,7 @@ Else
 	If el_or_e==(TRUE)
 		#Data referencebit=referencebit
 		#Set objfnmask referencebit
-		if twoparse==1
+		if parses==(pass_write)
 			set fnavailable two
 			if exit_end==(TRUE)
 				set real_exit_end (TRUE)

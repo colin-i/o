@@ -79,7 +79,7 @@ if loop==1
 		Data pointtosearchat%compointersloc
 		SetCall commandset getcommand(pcontent,pcomsize,ptrsubtype,_errormsg,pointtosearchat)
 		If errormsg==noerr
-			if twoparse==2
+			if parses==(pass_fns_imps)
 				#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 				if commandset!=(cCOMMENT)
 					if formatdefined==0;Set formatdefined 1;endif
@@ -90,7 +90,7 @@ if loop==1
 				endif
 			endif
 			If commandset==(cFORMAT)
-				if twoparse==2;Include "./index/format.s"
+				if parses==(pass_fns_imps);Include "./index/format.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cDECLARE)
 				Include "./index/declare.s"
@@ -106,17 +106,19 @@ if loop==1
 		call entryscope_verify_code()
 				Include "./index/ret.s"
 			ElseIf commandset==(cLIBRARY)
-				if twoparse==2;Include "./index/library.s"
+				if parses==(pass_fns_imps);Include "./index/library.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cIMPORTLINK)
-				if twoparse==2;Include "./index/import.s"
+				if parses==(pass_fns_imps);Include "./index/import.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cSTARTFUNCTION)
+				if parses!=(pass_calls)
 				Include "./index/function.s"
+				endif
 			ElseIf commandset==(cENDFUNCTION)
 				Include "./index/endfunction.s"
 			ElseIf commandset==(cCALL)
-				if twoparse==1
+				if parses==(pass_write)
 		call entryscope_verify_code()
 				endif
 				Include "./index/call.s"
@@ -142,7 +144,7 @@ if loop==1
 	#comments command
 				Call advancecursors(pcontent,pcomsize,comsize)
 				#1 is last
-				if twoparse==1
+				if parses==(pass_write)
 					set was_whitespaces content;dec was_whitespaces;setcall was_whitespaces is_whitespace(was_whitespaces#)
 					if was_whitespaces==(TRUE)
 						setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
@@ -162,7 +164,7 @@ if loop==1
 							Call advancecursors(pcontent,pcomsize,comsize)
 						endelse
 					elseIf was_whitespaces==(TRUE)
-						if twoparse==1
+						if parses==(pass_write)
 							setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 						endif
 					endelseIf
@@ -187,7 +189,7 @@ if loop==1
 			EndIf
 		EndIf
 	Elseif cursor_start!=content
-		if twoparse==1
+		if parses==(pass_write)
 			setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 		endif
 	Endelseif
