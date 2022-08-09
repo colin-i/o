@@ -80,7 +80,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 		sd scope64
 		data p_parses%ptr_parses
 		if p_parses#==(pass_fns_imps)
-			SetCall ptrdata vars(content,sz,fns)
+			SetCall ptrdata vars_ignoreref(content,sz,fns)
 			if ptrdata!=0
 				return "Function/Import name is already defined."
 			endif
@@ -175,7 +175,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 		endelse
 	Else
 		if p_parses#==(pass_calls)
-			SetCall ptrdata vars(content,sz,fns)
+			SetCall ptrdata vars_ignoreref(content,sz,fns)
 			if ptrdata!=0
 				call is_for_64_is_impX_or_fnX_set(ptrdata)
 			endif

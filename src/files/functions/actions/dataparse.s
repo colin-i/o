@@ -4,12 +4,12 @@
 Function entryvarsfns(data content,data size)
 	Data notype=notype
 	Data pointer#1
-	SetCall pointer strinvars(content,size,notype)
+	SetCall pointer strinvars_ignoreref(content,size,notype)
 	Data noerr=noerror
 	Data zero=0
 	If pointer==zero
 		Data fns%ptrfunctions
-		SetCall pointer vars(content,size,fns)
+		SetCall pointer vars_ignoreref(content,size,fns)
 		If pointer==zero
 			Return noerr
 		EndIf

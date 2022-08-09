@@ -142,7 +142,7 @@ endfunction
 Const notype=0
 
 #null or a pointer to the variable
-Function searchinvars(str content,data size,data ptrtype,data warningssearch)
+Function searchinvars(str content,data size,data ptrtype,data warningssearch,sd setref)
 	Data data#1
 	Data ptrcontainer#1
 
@@ -153,7 +153,7 @@ Function searchinvars(str content,data size,data ptrtype,data warningssearch)
 	Set i 0
 	While i<nrofvars
 		SetCall ptrcontainer getstructcont(i)
-		SetCall data varscore(content,size,ptrcontainer,warningssearch)
+		SetCall data vars_core_ref(content,size,ptrcontainer,warningssearch,setref)
 		If data!=null
 			If warningssearch==null
 				If ptrtype!=null
@@ -202,7 +202,13 @@ EndFunction
 #searchinvars
 Function strinvars(str content,data size,data ptrtype)
 	Data pointer#1
-	SetCall pointer searchinvars(content,size,ptrtype,(NULL))
+	SetCall pointer searchinvars(content,size,ptrtype,(NULL),1)
+	Return pointer
+EndFunction
+#searchinvars
+Function strinvars_ignoreref(str content,data size,data ptrtype)
+	Data pointer#1
+	SetCall pointer searchinvars(content,size,ptrtype,(NULL),0)
 	Return pointer
 EndFunction
 
