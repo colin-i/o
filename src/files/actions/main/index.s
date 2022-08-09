@@ -79,15 +79,21 @@ if loop==1
 		Data pointtosearchat%compointersloc
 		SetCall commandset getcommand(pcontent,pcomsize,ptrsubtype,_errormsg,pointtosearchat)
 		If errormsg==noerr
-			if parses==(pass_fns_imps)
-				#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
-				if commandset!=(cCOMMENT)
-					if formatdefined==0;Set formatdefined 1;endif
-					if commandset==(cFORMAT);elseif commandset==(cINCLUDE)
-					elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
-					elseif commandset==(cCALL);ElseIf commandset==(cLIBRARY);ElseIf commandset==(cIMPORTLINK) #needing importx here
+			if parses!=(pass_write)
+				if parses==(pass_fns_imps)
+					#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
+					if commandset!=(cCOMMENT)
+						if formatdefined==0;Set formatdefined 1;endif
+						if commandset==(cFORMAT);elseif commandset==(cINCLUDE)
+						elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
+						ElseIf commandset==(cLIBRARY);ElseIf commandset==(cIMPORTLINK) #needing importx here
+						else;set commandset (cCOMMENT);endelse
+					endif
+				else
+				#pass_calls
+					if commandset==(cCALL);elseif commandset==(cENDFUNCTION)
 					else;set commandset (cCOMMENT);endelse
-				endif
+				endelse
 			endif
 			If commandset==(cFORMAT)
 				if parses==(pass_fns_imps);Include "./index/format.s"
@@ -112,9 +118,7 @@ if loop==1
 				if parses==(pass_fns_imps);Include "./index/import.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cSTARTFUNCTION)
-				if parses!=(pass_calls)
 				Include "./index/function.s"
-				endif
 			ElseIf commandset==(cENDFUNCTION)
 				Include "./index/endfunction.s"
 			ElseIf commandset==(cCALL)
