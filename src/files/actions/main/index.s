@@ -87,6 +87,7 @@ if loop==1
 							if commandset==(cFORMAT);elseif commandset==(cINCLUDE)
 							elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
 							ElseIf commandset==(cLIBRARY);ElseIf commandset==(cIMPORTLINK) #needing importx here
+							elseif commandset==(cWARNING)    #for addaref
 							else;set commandset (cCOMMENT);endelse
 					else
 					#pass_calls
