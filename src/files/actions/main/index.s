@@ -80,20 +80,20 @@ if loop==1
 		SetCall commandset getcommand(pcontent,pcomsize,ptrsubtype,_errormsg,pointtosearchat)
 		If errormsg==noerr
 			if parses!=(pass_write)
-				if parses==(pass_fns_imps)
-					#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
-					if commandset!=(cCOMMENT)
-						if formatdefined==0;Set formatdefined 1;endif
-						if commandset==(cFORMAT);elseif commandset==(cINCLUDE)
-						elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
-						ElseIf commandset==(cLIBRARY);ElseIf commandset==(cIMPORTLINK) #needing importx here
+				if commandset!=(cCOMMENT)
+					if parses==(pass_fns_imps)
+						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
+							if formatdefined==0;Set formatdefined 1;endif
+							if commandset==(cFORMAT);elseif commandset==(cINCLUDE)
+							elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
+							ElseIf commandset==(cLIBRARY);ElseIf commandset==(cIMPORTLINK) #needing importx here
+							else;set commandset (cCOMMENT);endelse
+					else
+					#pass_calls
+						if commandset==(cCALL);elseif commandset==(cENDFUNCTION);elseif commandset==(cINCLUDE)
 						else;set commandset (cCOMMENT);endelse
-					endif
-				else
-				#pass_calls
-					if commandset==(cCALL);elseif commandset==(cENDFUNCTION);elseif commandset==(cINCLUDE)
-					else;set commandset (cCOMMENT);endelse
-				endelse
+					endelse
+				endif
 			endif
 			If commandset==(cFORMAT)
 				if parses==(pass_fns_imps);Include "./index/format.s"

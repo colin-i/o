@@ -90,40 +90,40 @@ While includesReg!=null
 	set skipfree 0
 	if includesReg==0
 		if parses!=(pass_write)
-			If innerfunction==true
-				if errormsg==(noerror)
+			if errormsg==(noerror)
+				If innerfunction==true
 					Str endfnexp="ENDFUNCTION command expected to close the opened FUNCTION."
 					set errormsg endfnexp
 					Call Message(errormsg)
-				endif
-			Else
-				if parses==(pass_fns_imps)
-					set parses (pass_calls)
-					setcall errormsg align_alloc(functionTagIndex)
-				else
-					set parses (pass_write)
-					set logfile logaux
-					call align_resolve()
-					setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
-				endelse
-				if errormsg==(noerror)
-					#used when having multiple includes
-					data includescursor#1
-					set includescursor includes
-					add includescursor contentoffsetinclude
-					setcall includescursor# offsetoffile_value()
-					#
-					set includescursor includes
-					add includescursor contentlineinclude
-					set includescursor# 0
-					#
-					add includesReg sizeofincludeset
+				Else
+					if parses==(pass_fns_imps)
+						set parses (pass_calls)
+						setcall errormsg align_alloc(functionTagIndex)
+					else
+						set parses (pass_write)
+						set logfile logaux
+						call align_resolve()
+						setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
+					endelse
+					if errormsg==(noerror)
+						#used when having multiple includes
+						data includescursor#1
+						set includescursor includes
+						add includescursor contentoffsetinclude
+						setcall includescursor# offsetoffile_value()
+						#
+						set includescursor includes
+						add includescursor contentlineinclude
+						set includescursor# 0
+						#
+						add includesReg sizeofincludeset
 
-					set skipfree 1
+						set skipfree 1
 
-					set functionTagIndex 0
-				endif
-			EndElse
+						set functionTagIndex 0
+					endif
+				EndElse
+			endif
 		endif
 	endif
 	if skipfree==0
