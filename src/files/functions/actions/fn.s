@@ -30,6 +30,15 @@ Function unresolvedcallsfn(data struct,data inneroffset,data atend,data valuedat
 	Return err
 EndFunction
 
+#err
+function fnimp_exists(sd content,sd size)
+	sd fns%ptrfunctions
+	sd d;setcall d vars_ignoreref(content,size,fns)
+	if d==0
+		return (noerror)
+	endif
+	return "Function/Import name is already defined."
+endfunction
 #b
 function is_funcx_subtype(sd subtype)
 	if subtype==(cFUNCTIONX)
@@ -41,9 +50,9 @@ function is_funcx_subtype(sd subtype)
 endfunction
 #subtype is only when declarefn(not callfn)
 #err
-Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
+Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd el_or_e)
 	Data true=TRUE
-	Data false=FALSE
+	#Data false=FALSE
 
 	Data zero=0
 	Data fns%ptrfunctions
@@ -75,25 +84,21 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		Data fnnr=functionsnumber
 		Data value#1
 		Data ptrvalue^value
-
 		sd scope64
-		data p_two_parse%cptr_twoparse
-		if p_two_parse#==2
-			Data globalinnerfunction%globalinnerfunction
-			#set for searching in the main scope for unique value
-			Data aux#1
-			Set aux globalinnerfunction#
-			Set globalinnerfunction# false
-			SetCall err entryvarsfns(content,sz)
-			If err!=noerr
-				Return err
-			EndIf
-			Set globalinnerfunction# aux
+		data p_parses%ptr_parses
+		if p_parses#==(pass_fns_imps)
+			setcall err fnimp_exists(content,sz) #it is at first pass when only fns and imports are
+			if err!=(noerror)
+				return err
+			endif
 
-			#is objfnmask related to the introduction of entry tag at objects, is interacting there
 			Data mask#1
-			Data ptrobjfnmask%ptrobjfnmask
-			Set mask ptrobjfnmask#
+			#Data ptrobjfnmask%ptrobjfnmask
+			if el_or_e==(TRUE)
+				Set mask (referencebit)
+			else
+				set mask 0
+			endelse
 
 			setcall scope64 is_funcx_subtype(subtype)
 			if scope64==(TRUE)
@@ -105,8 +110,10 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			EndIf
 			#skip the rest of the command at recon
 			Call advancecursors(ptrcontent,ptrsize,ptrsize#)
+			#
 			return noerr
 		else
+			#pass_write
 			sd pointer
 			setcall pointer vars_ignoreref(content,sz,fns)
 			Call advancecursors(ptrcontent,ptrsize,sz)
@@ -168,12 +175,21 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 			endelse
 		endelse
 	Else
-		data boolindirect#1
 		Data ptrdata#1
-		setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect)
-		if err!=(noerror)
-			return err
-		endif
+		if p_parses#==(pass_calls)
+			SetCall ptrdata vars_ignoreref(content,sz,fns)
+			if ptrdata!=0
+				call is_for_64_is_impX_or_fnX_set(ptrdata)
+			endif
+			call advancecursors(ptrcontent,ptrsize,sz)
+		else
+			#pass_write
+			data boolindirect#1
+			setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect)
+			if err!=(noerror)
+				return err
+			endif
+		endelse
 	EndElse
 
 	Call stepcursors(ptrcontent,ptrsize)
@@ -192,35 +208,57 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype)
 		EndIf
 		call entryscope()
 	Else
-		sd bool;setcall bool is_for_64_is_impX_or_fnX_get()
-		if bool==(FALSE)
-			if sz!=zero
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
-			endif
-		else
-			sd p;setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
-			if sz!=zero
-				set content ptrcontent#
-				set size ptrsize#
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
-				if err==noerr
-					setcall err stack_align(p#)
+		sd p
+		sd pbool;setcall pbool is_for_64_is_impX_or_fnX_p_get()
+		if p_parses#==(pass_calls)
+			if pbool#==(FALSE)
+				call advancecursors(ptrcontent,ptrsize,sz)
+			else
+				if sz!=zero
+					setcall p nr_of_args_64need_p_get();set p# 0
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
 					if err==noerr
-						set ptrcontent# content
-						set ptrsize# size
-						SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
+						setcall err align_ante(p#)
 					endif
+				else
+					setcall err align_ante(0)
+				endelse
+				if err!=noerr
+					return err
+				endif
+				set pbool# (FALSE)
+			endelse
+		else
+			#pass_write
+			if pbool#==(FALSE)
+				if sz!=zero
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
 				endif
 			else
-				setcall err stack_align(0)
+				setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
+				if sz!=zero
+					set content ptrcontent#
+					set size ptrsize#
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(FALSE)) #there are 3 more arguments but are not used
+					if err==noerr
+						setcall err stack_align(p#)
+						if err==noerr
+							set ptrcontent# content
+							set ptrsize# size
+							SetCall err enumcommas(ptrcontent,ptrsize,sz,declare,(TRUE)) #there are 3 more arguments but are not used
+						endif
+					endif
+				else
+					setcall err stack_align(0)
+				endelse
 			endelse
-		endelse
-		If err==noerr
-			setcall err write_function_call(ptrdata,boolindirect,(FALSE))
+			If err==noerr
+				setcall err write_function_call(ptrdata,boolindirect,(FALSE))
+			EndIf
 			if err!=noerr
 				return err
 			endif
-		EndIf
+		endelse
 	EndElse
 	Call stepcursors(ptrcontent,ptrsize)
 	Return noerr
