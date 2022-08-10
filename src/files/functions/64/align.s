@@ -1,4 +1,28 @@
 
+value stackalign#1
+data *stackalign_size#1
+const ptrstackalign^stackalign
+#er
+function align_alloc(sd sz)
+	inc sz   #for entry
+	mult sz (dwsz)
+	sv s%ptrstackalign
+	setcall s# memcalloc(sz) #need 0 by default
+	sv start;set start s#
+	if s#!=(NULL)
+		add s :
+		set s#d^ sz
+		return (noerror)
+	endif
+	return (error)
+endfunction
+function align_free()
+	sv s%ptrstackalign
+	if s#!=(NULL)
+		call free(s#)
+	endif
+endfunction
+
 #er
 function stack_align(sd nr)
 	sd final_nr
@@ -7,10 +31,10 @@ function stack_align(sd nr)
 		and final_nr 1
 		sd type;setcall type align_type()
 		if type==(even_align)
-			if final_nr!=0
+			if final_nr==0
 				return (noerror)
 			endif
-		elseif   final_nr==0
+		elseif   final_nr!=0
 				return (noerror)
 		endelseif
 		#Stack aligned on 16 bytes. Depending on the number of arguments
@@ -98,8 +122,10 @@ function align_ante(sd arguments)
 endfunction
 
 function align_resolve()
-	sd container%ptrstackAlign
-	sd pointer;sd end;call getcontandcontReg(container,#pointer,#end)
+	sv end%ptrstackalign
+	sd pointer;set pointer end#
+	add end :
+	set end end#d^
 	add end pointer
 	while pointer!=end
 		sd bag;set bag pointer#
@@ -119,8 +145,8 @@ endfunction
 #ptype
 function align_ptype()
 	sd ptrfunctionTagIndex%ptrfunctionTagIndex
-	sd container%ptrstackAlign
-	sd cont;call getcont(container,#cont)
+	sv container%ptrstackalign
+	sd cont;set cont container#
 	sd index=dwsz;mult index ptrfunctionTagIndex#
 	add cont index
 	return cont

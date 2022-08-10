@@ -98,12 +98,6 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 				Set mask (referencebit)
 			else
 				set mask 0
-				#add at align
-				sd stackalignptr%ptrstackAlign
-				setcall err addtosec(#zero,(dwsz),stackalignptr)
-				If err!=noerr
-					Return err
-				EndIf
 			endelse
 
 			setcall scope64 is_funcx_subtype(subtype)

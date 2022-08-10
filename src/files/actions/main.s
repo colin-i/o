@@ -97,29 +97,32 @@ While includesReg!=null
 					Call Message(errormsg)
 				endif
 			Else
-				#used when having multiple includes
-				data includescursor#1
-				set includescursor includes
-				add includescursor contentoffsetinclude
-				setcall includescursor# offsetoffile_value()
-
-				set includescursor includes
-				add includescursor contentlineinclude
-				set includescursor# 0
-				#
-
-				add includesReg sizeofincludeset
-
-				set skipfree 1
-
 				if parses==(pass_fns_imps)
 					set parses (pass_calls)
+					setcall errormsg align_alloc(functionTagIndex)
 				else
+					set parses (pass_write)
 					set logfile logaux
 					call align_resolve()
 					setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
-					set functionTagIndex 0
 				endelse
+				if errormsg==(noerror)
+					#used when having multiple includes
+					data includescursor#1
+					set includescursor includes
+					add includescursor contentoffsetinclude
+					setcall includescursor# offsetoffile_value()
+					#
+					set includescursor includes
+					add includescursor contentlineinclude
+					set includescursor# 0
+					#
+					add includesReg sizeofincludeset
+
+					set skipfree 1
+
+					set functionTagIndex 0
+				endif
 			EndElse
 		endif
 	endif

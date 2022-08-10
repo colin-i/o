@@ -48,8 +48,6 @@ Set extraMax subscope
 
 Set unresLocalMax mainscope
 
-set stackAlignMax (100*dwsz)
-
 
 
 SetCall errormsg enumbags(true)

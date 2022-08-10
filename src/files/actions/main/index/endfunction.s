@@ -36,5 +36,5 @@ else
 		EndIf
 		Set innerfunction false
 	endif
-	inc functionTagIndex
 endelse
+inc functionTagIndex

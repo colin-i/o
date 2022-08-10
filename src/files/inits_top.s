@@ -17,4 +17,5 @@ set safecurrentdirtopath (NULL)
 
 call initpreferences()
 
+set stackalign (NULL)
 set scopesbag (NULL)
