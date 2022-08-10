@@ -127,7 +127,7 @@ function addtocode_decstack(sd for_64)
 	endif
 
 	setcall rampindex addramp()
-	neg rampindex
+	#is with sub now     neg rampindex
 
 	setcall err addtosec(stack,size,ptrcodesec)
 	return err
