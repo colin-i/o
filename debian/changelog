@@ -1,3 +1,9 @@
+ocompiler (1-5+17) xenial; urgency=medium
+
+  * fix warning command at first pass
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 10 Aug 2022 15:16:39 +0300
+
 ocompiler (1-5+16) xenial; urgency=medium
 
   * import log fix

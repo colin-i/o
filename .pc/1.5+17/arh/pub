@@ -18,5 +18,4 @@
 ~/test/publp2 && \
 ~/test/lp && \
 ~/test/lp x && \
-~/test/keyring && \
 ~/test/del x ${2}
