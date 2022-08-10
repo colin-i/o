@@ -335,14 +335,6 @@ function undefinedvar_fn()
 	return "Undefined variable/function name."
 endfunction
 
-#import bit
-function importbit(sd pointer)
-	Add pointer (maskoffset)
-	sd value
-	set value pointer#
-	And value (idatabitfunction)
-	return value
-endfunction
 #value
 function get_function_value(sd impbit,sd pointer)
 	if impbit!=0

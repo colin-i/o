@@ -197,9 +197,7 @@ Data unresLocalReg#1
 Const ptrunresLocal^unresLocalMax
 
 Const containersbegin^includesMax
-Const containersalmostend^unresLocalReg
-Const containersend=containersalmostend+dwsz
-Const containerssize=containersend-containersbegin
+Const containerssize=!-containersbegin
 
 chars dummyEntry_data#sizeof_minimumentry
 
@@ -326,8 +324,8 @@ const rampadd_value_off=bsz
 
 
 
-data twoparse#1
-const cptr_twoparse^twoparse
+data parses#1
+const ptr_parses^parses
 
 
 
@@ -410,3 +408,14 @@ const call_align_yes_arg=3
 const last_call_align_input=call_align_yes_arg
 data call_align#1
 const ptr_call_align^call_align
+
+const even_align=-1
+#const no_align=0
+const odd_align=1
+
+data functionTagIndex#1  #need to be at call pass and last pass(scopes) and scopes alloc
+const ptrfunctionTagIndex^functionTagIndex
+
+const pass_fns_imps=3
+const pass_calls=2
+const pass_write=1

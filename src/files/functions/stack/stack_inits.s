@@ -7,6 +7,12 @@ function data_get_maskbit(ss pointer,sd bit)
 	return bit
 endfunction
 
+#import bit
+function importbit(sd pointer)
+	sd bit
+	setcall bit data_get_maskbit(pointer,(idatabitfunction))
+	return bit
+endfunction
 function stackbit(sd pointer)
 	sd bit
 	setcall bit data_get_maskbit(pointer,(stackbit))

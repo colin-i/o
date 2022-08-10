@@ -85,4 +85,5 @@ set real_exit_end (FALSE)
 
 sd el_or_e=FALSE
 
-sd functionTagIndex=0
+#needing also at pass call and pass write
+set functionTagIndex 0

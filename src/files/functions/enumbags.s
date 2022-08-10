@@ -65,6 +65,7 @@ Function freeclose()
 
 	call platform_free()
 
+	call align_free()
 	call scopes_free()
 EndFunction
 

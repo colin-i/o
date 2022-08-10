@@ -51,54 +51,6 @@ function nr_of_args_64need_count()
 		sd p;setcall p nr_of_args_64need_p_get();inc p#
 	endif
 endfunction
-#er
-function stack_align(sd nr)
-	sd final_nr
-	setcall final_nr pref_call_align(nr)
-	if final_nr!=0
-		#Stack aligned on 16 bytes. Depending on the number of arguments, jumpCarry or jumpNotCarry
-		sd err
-		vdata code%ptrcodesec
-		#bt rsp,3 (offset 3)
-		chars hex_x={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
-		#j(c|nc);sub rsp,8
-		chars jump#1;chars *=4;chars *={REX_Operand_64,0x83,0xEC,8}
-
-		and final_nr 1
-		#Jump short if not carry
-		if final_nr==0
-			set jump (0x73)
-		#Jump short if carry
-		else;set jump (0x72)
-		endelse
-
-		SetCall err addtosec(#hex_x,(5+6),code)
-		return err
-	endif
-	return (noerror)
-endfunction
-#nr
-function pref_call_align(sd nr)
-	data ptr_call_align%ptr_call_align
-	sd type;set type ptr_call_align#
-	if type!=(call_align_no)
-		sd conv;setcall conv convdata((convdata_total))
-		if nr<=conv
-			if conv==(lin_convention)
-				if type==(call_align_yes_all)
-					return 2 #to align at no args
-				endif
-			else
-				if type!=(call_align_yes_arg)
-					return conv
-				endif
-			endelse
-		else
-			return nr
-		endelse
-	endif
-	return 0
-endfunction
 
 ##REX_W
 function rex_w(sd p_err)

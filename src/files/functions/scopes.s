@@ -35,20 +35,32 @@ function scopes_free()
 endfunction
 
 #err
-function scopes_alloc(sd has_named_entry)
-	sv ptrfunctions%ptrfunctions
-	sd i=0
-	sd fns
-	sv last
-	call getcontandcontReg(ptrfunctions,#fns,#last)
-	add last fns
-	while fns!=last
-		add fns (nameoffset)
-		addcall fns strlen(fns)
-		inc fns
+function scopes_alloc(sd has_named_entry,sd i)
+	#now at three pass the fns are mixed with imports
+	#sv ptrfunctions%ptrfunctions
+	#sd i=0
+	#sd fns
+	#sv last
+	#call getcontandcontReg(ptrfunctions,#fns,#last)
+	#add last fns
+	#while fns!=last
+	#	add fns (nameoffset)
+	#	addcall fns strlen(fns)
+	#	inc fns
+	#	inc i
+	#endwhile
+	#mult i :
+	#
+	#sd almost_same_size_container%ptrstackAlign
+	#call getcontReg(almost_same_size_container,#i)
+	#if has_named_entry==(FALSE)
+	#	sub i :
+	#endif
+	if has_named_entry==(TRUE)
 		inc i
-	endwhile
+	endif
 	mult i :
+	#
 	sv s%scopesbag_ptr
 	setcall s# memcalloc(i)
 	sv start;set start s#
@@ -111,7 +123,7 @@ endfunction
 
 function scopes_searchinvars(sd p_err,sv p_name)
 	sd psz%scopesbag_size_ptr
-	#there are imports after fns with the two pass, and now can get number of local fns, but importbit can be rethinked for something else
+	#now at three pass the fns are mixed with imports
 	sd sz;set sz psz#
 	div sz :
 	sd i=0
@@ -120,18 +132,21 @@ function scopes_searchinvars(sd p_err,sv p_name)
 	sd fns
 	call getcont(ptrfunctions,#fns)
 	while i!=sz
+		sd ibit;setcall ibit importbit(fns)
 		add fns (nameoffset)
-		sd data
-		sd scope
-		setcall scope scopes_get_scope(i)
-		setcall data searchinvars_scope_warn(p_err,scope)
-		if data!=(NULL)
-			set p_name# fns
-			return data
+		if ibit==0
+			sd data
+			sd scope
+			setcall scope scopes_get_scope(i)
+			setcall data searchinvars_scope_warn(p_err,scope)
+			if data!=(NULL)
+				set p_name# fns
+				return data
+			endif
+			inc i
 		endif
 		addcall fns strlen(fns)
 		inc fns
-		inc i
 	endwhile
 	return (NULL)
 endfunction
