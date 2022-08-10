@@ -157,7 +157,7 @@ function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
 endfunction
 #err
 function addtolog_withchar_ex(ss content,sd size,sd type)
-	value ptrfilehandle%ptrlogfile
+	vdata ptrfilehandle%ptrlogfile
 	sd err
 	setcall err addtolog_withchar_handle(content,size,type,ptrfilehandle#)
 	return err
@@ -176,6 +176,16 @@ function addtolog_withchar_ex_atunused(ss content,sd size,sd type)
 	if ptrobject#==(TRUE)
 		sd err
 		setcall err addtolog_withchar_ex(content,size,type)
+		return err
+	endif
+	return (noerror)
+endfunction
+#err
+function addtolog_withchar_ex_atunused_handle(ss content,sd size,sd type,sd filehandle)
+	data ptrobject%ptrobject
+	if ptrobject#==(TRUE)
+		sd err
+		setcall err addtolog_withchar_handle(content,size,type,filehandle)
 		return err
 	endif
 	return (noerror)
