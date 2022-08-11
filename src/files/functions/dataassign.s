@@ -78,8 +78,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 
 	Data zero=0
 
-	Data dwSz=dwsz
-	data bsz=bsz
 	data valuewritesize#1
 	#is for chars name="value" or str name="value"
 	data stringtodata#1
@@ -89,7 +87,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 
 	set rightstackpointer false
 	Set relocindx dataind
-	set valuewritesize dwSz
+	set valuewritesize (dwsz)
 	set stringtodata false
 	set skipNumberValue false
 	set importbittest -1
@@ -113,7 +111,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 					set stringtodata true
 					setcall value get_img_vdata_dataReg()
 					if stack==false
-						add value dwSz
+						if long_mask!=0
+							add value (qwsz)
+						else
+							add value (dwsz)
+						endelse
 					endif
 					if ptrrelocbool#==true
 						str badrelocstr="Relocation sign and string surrounded by quotations is not allowed."
@@ -135,7 +137,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 				If typenumber==charsnr
 					if stack==false
 					#else is at stack value   grep stackfilter2   3
-						set valuewritesize bsz
+						set valuewritesize (bsz)
 					endif
 				EndIf
 			EndElse
