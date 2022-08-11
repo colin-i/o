@@ -84,9 +84,11 @@ if loop==1
 					if parses==(pass_fns_imps)
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 							if formatdefined==0;Set formatdefined 1;endif
-							if commandset==(cFORMAT);elseif commandset==(cINCLUDE)
+							If commandset==(cIMPORTLINK) #needing importx here
 							elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
-							ElseIf commandset==(cLIBRARY);ElseIf commandset==(cIMPORTLINK) #needing importx here
+							ElseIf commandset==(cLIBRARY)
+							elseif commandset==(cINCLUDE)
+							Elseif commandset==(cFORMAT)
 							elseif commandset==(cWARNING)    #for addaref
 							else;set commandset (cCOMMENT);endelse
 					else
@@ -96,57 +98,7 @@ if loop==1
 					endelse
 				endif
 			endif
-			If commandset==(cFORMAT)
-				if parses==(pass_fns_imps);Include "./index/format.s"
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
-			ElseIf commandset==(cDECLARE)
-				Include "./index/declare.s"
-			ElseIf commandset==(cDECLAREAFTERCALL)
-				Include "./index/aftercall.s"
-			ElseIf commandset==(cONEARG)
-		call entryscope_verify_code()
-				Include "./index/onearg.s"
-			ElseIf commandset==(cPRIMSEC)
-		call entryscope_verify_code()
-				Include "./index/primsec.s"
-			ElseIf commandset==(cRET)
-		call entryscope_verify_code()
-				Include "./index/ret.s"
-			ElseIf commandset==(cLIBRARY)
-				if parses==(pass_fns_imps);Include "./index/library.s"
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
-			ElseIf commandset==(cIMPORTLINK)
-				if parses==(pass_fns_imps);Include "./index/import.s"
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
-			ElseIf commandset==(cSTARTFUNCTION)
-				Include "./index/function.s"
-			ElseIf commandset==(cENDFUNCTION)
-				Include "./index/endfunction.s"
-			ElseIf commandset==(cCALL)
-				if parses==(pass_write)
-		call entryscope_verify_code()
-				endif
-				Include "./index/call.s"
-			ElseIf commandset==(cCALLEX)
-		call entryscope_verify_code()
-				Include "./index/callex.s"
-			ElseIf commandset==(cCONDITIONS)
-		call entryscope_verify_code()
-				Include "./index/conditions.s"
-			ElseIf commandset==(cINCLUDE)
-				Include "./index/include.s"
-			ElseIf commandset==(cI3)
-		call entryscope_verify_code()
-				Include "./index/i3.s"
-			ElseIf commandset==(cHEX)
-		call entryscope_verify_code()
-				Include "./index/hex.s"
-			ElseIf commandset==(cWARNING)
-				Include "./index/warning.s"
-			ElseIf commandset==(cOVERRIDE)
-				Include "./index/override.s"
-			Else
-	#comments command
+			if commandset==(cCOMMENT)
 				Call advancecursors(pcontent,pcomsize,comsize)
 				#1 is last
 				if parses==(pass_write)
@@ -155,6 +107,56 @@ if loop==1
 						setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 					endif
 				endif
+			ElseIf commandset==(cDECLARE)
+				Include "./index/declare.s"
+			ElseIf commandset==(cPRIMSEC)
+		call entryscope_verify_code()
+				Include "./index/primsec.s"
+			ElseIf commandset==(cONEARG)
+		call entryscope_verify_code()
+				Include "./index/onearg.s"
+			ElseIf commandset==(cCALL)
+				if parses==(pass_write)
+		call entryscope_verify_code()
+				endif
+				Include "./index/call.s"
+			ElseIf commandset==(cCONDITIONS)
+		call entryscope_verify_code()
+				Include "./index/conditions.s"
+			ElseIf commandset==(cIMPORTLINK)
+				if parses==(pass_fns_imps);Include "./index/import.s"
+				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+			ElseIf commandset==(cSTARTFUNCTION)
+				Include "./index/function.s"
+			ElseIf commandset==(cENDFUNCTION)
+				Include "./index/endfunction.s"
+			ElseIf commandset==(cRET)
+		call entryscope_verify_code()
+				Include "./index/ret.s"
+			ElseIf commandset==(cINCLUDE)
+				Include "./index/include.s"
+			ElseIf commandset==(cFORMAT)
+				if parses==(pass_fns_imps);Include "./index/format.s"
+				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+			ElseIf commandset==(cDECLAREAFTERCALL)
+				Include "./index/aftercall.s"
+			ElseIf commandset==(cWARNING)
+				Include "./index/warning.s"
+			ElseIf commandset==(cCALLEX)
+		call entryscope_verify_code()
+				Include "./index/callex.s"
+			ElseIf commandset==(cOVERRIDE)
+				Include "./index/override.s"
+			ElseIf commandset==(cLIBRARY)
+				if parses==(pass_fns_imps);Include "./index/library.s"
+				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+			ElseIf commandset==(cHEX)
+		call entryscope_verify_code()
+				Include "./index/hex.s"
+			Else
+			#If commandset==(cI3)
+		call entryscope_verify_code()
+				Include "./index/i3.s"
 			EndElse
 			If errormsg==(noerror)
 				If comsize!=zero

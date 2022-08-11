@@ -264,7 +264,7 @@ Else
 	#######
 
 	sd syment;sd relent
-	if p_is_for_64_resp#==(TRUE)
+	if p_is_for_64_value#==(TRUE)
 		Set elf64_ehd_e_shoff (elf64_fileheaders_size)
 		call memtomem(#elf64_ehd_e_shnum,ptrelf_sec_nr,wordsize)
 		call memtomem(#elf64_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)

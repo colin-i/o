@@ -7,7 +7,14 @@ else
 	set ac_store_content pcontent#;set ac_store_size comsize
 	data acsym_value#1;data acsym_size#1;data acsym_shndx#1
 	sd g_e_p;setcall g_e_p global_err_p()
-	if subtype==(cAFTERCALL)
+	if subtype==(cIMPORTAFTERCALL)
+		If object==(FALSE);set errormsg "ImportAfterCall is used at objects."
+		else
+			set acsym_value 0;set acsym_size (sym_with_size);set acsym_shndx (NULL)
+			call advancecursors(pcontent,pcomsize,comsize)
+		endelse
+	else
+	#(cAFTERCALL)
 		SetCall errormsg entryvarsfns(pcontent#,pcomsize#)
 		if errormsg==(noerror)
 			sd ac_current_data;setcall ac_current_data get_img_vdata_dataReg()
@@ -23,19 +30,12 @@ else
 				endif
 			endif
 		endif
-	else
-	#(cIMPORTAFTERCALL)
-		If object==(FALSE);set errormsg "ImportAfterCall is used at objects."
-		else
-			set acsym_value 0;set acsym_size (sym_with_size);set acsym_shndx (NULL)
-			call advancecursors(pcontent,pcomsize,comsize)
-		endelse
 	endelse
 	if errormsg==(noerror)
 		set g_e_b_p# (TRUE)
 		if object==(TRUE)
 			set g_e_p# tableReg
-			if p_is_for_64_resp#==(TRUE)
+			if p_is_for_64_value#==(TRUE)
 				div g_e_p# (elf64_dyn_d_val_syment)
 			else
 				div g_e_p# elf32_dyn_d_val_syment

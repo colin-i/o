@@ -18,9 +18,7 @@ If formatresponse==false
 		Str ptrelfobjformat^elfobjformat
 		Data elfobjformresp#1
 
-		sd p_is_for_64_resp;setcall p_is_for_64_resp p_is_for_64()
-
-		SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_resp)
+		SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_value)
 		If elfobjformresp==true
 			sd is_so
 			setcall is_so stratmemspc(pcontent,pcomsize,"SO",false)
@@ -30,10 +28,10 @@ If formatresponse==false
 				endif
 			endif
 			If errormsg==noerr
-				if p_is_for_64_resp#==(TRUE)
+				if p_is_for_64_value#==(TRUE)
 					set convention_64 convention_64#
 					if convention_64==(ignore_convention_input)
-						set p_is_for_64_resp# (FALSE)
+						set p_is_for_64_value# (FALSE)
 					else
 						call reloc64_init()
 						if convention_64==(direct_convention_input)

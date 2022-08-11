@@ -1,18 +1,18 @@
 
 if subtype==(cVDATA)
-	if p_is_for_64_resp#==(TRUE)
+	if p_is_for_64_value#==(TRUE)
 		SetCall errormsg dataassign(pcontent,pcomsize,(integersnumber),(datapointbit))
 	else
 		SetCall errormsg dataassign(pcontent,pcomsize,(integersnumber),0)
 	endelse
 elseif subtype==(cVSTR)
-	if p_is_for_64_resp#==(TRUE)
+	if p_is_for_64_value#==(TRUE)
 		SetCall errormsg dataassign(pcontent,pcomsize,(stringsnumber),(datapointbit))
 	else
 		SetCall errormsg dataassign(pcontent,pcomsize,(stringsnumber),0)
 	endelse
 elseif subtype==(cVALUE)
-	if p_is_for_64_resp#==(TRUE)
+	if p_is_for_64_value#==(TRUE)
 		SetCall errormsg dataassign(pcontent,pcomsize,(integersnumber),(valueslongmask))
 	else
 		SetCall errormsg dataassign(pcontent,pcomsize,(integersnumber),0)

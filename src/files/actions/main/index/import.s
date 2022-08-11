@@ -36,7 +36,7 @@ If errormsg==noerr
 			#get the dword offset to call at, index*dword
 			Mult functionoffset dwordsize
 			SetCall errormsg elfaddsym(namesReg,null,null,STT_FUNC,(STB_GLOBAL),null,ptraddresses)
-		ElseIf p_is_for_64_resp#==(TRUE)
+		ElseIf p_is_for_64_value#==(TRUE)
 			div functionoffset (elf64_dyn_d_val_syment)
 		Else
 			Div functionoffset elf32_dyn_d_val_syment

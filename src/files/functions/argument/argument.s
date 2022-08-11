@@ -89,11 +89,6 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			If err!=(noerror)
 				Return err
 			EndIf
-		ElseIf subtype==(cNOT)
-			Chars not={0xF7}
-			Chars notregopcode={Notregopcode}
-			Set op not
-			Set regopcode notregopcode
 		ElseIf subtype==(cINC)
 			Chars inc={0xFF}
 			Set op inc
@@ -116,15 +111,15 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			else;set incs_sz (qwsz);endelse
 			set ptrcontinuation #incs_sz
 			set sizeofcontinuation (bsz)
-		ElseIf subtype==(cEXIT)
-			setcall err argument_return((TRUE),#op,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
-			If err!=(noerror)
-				Return err
-			EndIf
 		ElseIf subtype==(cNEG)
 			set op (0xf7)
 			set regopcode 3
-		Else
+		ElseIf subtype==(cNOT)
+			Chars not={0xF7}
+			Chars notregopcode={Notregopcode}
+			Set op not
+			Set regopcode notregopcode
+		ElseIf subtype<=(cSAR)
 			set op (0xD1)
 			If subtype==(cSHL)
 				set regopcode 4
@@ -134,6 +129,12 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			#cSAR
 				set regopcode 7
 			EndElse
+		Else
+		#If subtype==(cEXIT)
+			setcall err argument_return((TRUE),#op,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
+			If err!=(noerror)
+				Return err
+			EndIf
 		EndElse
 	Else
 	#push imm prepare test
