@@ -154,24 +154,26 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 				EndIf
 			EndIf
 
-			setcall scope64 is_funcx_subtype(subtype)
-			#functionx,entry in 64 conventions
-			#entrylinux has no return but has argc,aexec,a1...an
-			if scope64==(TRUE)
-				setcall scope64 is_for_64()
-				if scope64==(TRUE)
-					setcall err function_start_64()
-					If err!=noerr
-						Return err
-					EndIf
-				endif
-				call scope64_set(scope64)
-			elseif subtype==(cENTRYLINUX)
-				#scope64 not using, never get into getreturn here
-				setcall err entrylinux_top();if err!=noerr;Return err;EndIf
-			else
-				#cFUNCTION
+			if subtype==(cFUNCTION)
 				call scope64_set((FALSE))
+			else
+				setcall scope64 is_funcx_subtype(subtype)
+				#functionx,entry in 64 conventions
+				#entrylinux has no return but has argc,aexec,a1...an
+				if scope64==(TRUE)
+					setcall scope64 is_for_64()
+					if scope64==(TRUE)
+						setcall err function_start_64()
+						If err!=noerr
+							Return err
+						EndIf
+					endif
+					call scope64_set(scope64)
+				else
+				#if subtype==(cENTRYLINUX)
+					#scope64 not using, never get into getreturn here
+					setcall err entrylinux_top();if err!=noerr;Return err;EndIf
+				endelse
 			endelse
 		endelse
 	Else
