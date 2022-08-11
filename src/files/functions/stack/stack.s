@@ -87,11 +87,9 @@ function entryscope()
 	setcall err addtosec(#scope3,(scope3_sz),container);if err!=(noerror);return err;endif
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
 	setcall err addtosec(#scope4,(scope4_sz),container);if err!=(noerror);return err;endif
-	#
-	setcall err align_entryscope()
 	if err==(noerror)
 		data set=0;call ramp_index(set,container)
-		return (noerror)
+		setcall err align_entryscope()
 	endif
 	return err
 endfunction
