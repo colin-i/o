@@ -156,10 +156,10 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	sd imm
 	setcall imm getisimm()
 	if imm==false
-		Data noreg=noregnumber
-		Data eaxreg=eaxregnumber
-		Data intchar#1
-		Set intchar noreg
+		#Data noreg=noregnumber
+		#Data eaxreg=eaxregnumber
+		#Data intchar#1
+		#Set intchar noreg
 		If forwardORcallsens!=forward
 		#push
 			#If lowbyte==false
@@ -170,10 +170,10 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			#	Set regopcode pushopcode
 			#	call stack64_op_set()
 			#Else
-			If lowbyte==true
-				#prepare for eax for al
-				Set intchar eaxreg
-			EndIf
+			#If lowbyte==true
+			#	#prepare for eax for al
+			#	Set intchar eaxreg
+			#EndIf
 			Chars pushaction={moveatprocthemem}
 			Set op pushaction
 			set regopcode (eaxregnumber)
@@ -184,16 +184,15 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 			Set ptrcontinuation ptrpushcontinuation
 			set sizeofcontinuation pushcontinuationsize
 			#EndElse
-		EndIf
-		If lowbyte==true
+		ElseIf lowbyte==true
 		#imm don't use one byte at the moment
-			Dec op
-			If regprepare_bool==true
-				Set intchar regopcode
-			EndIf
-		EndIf
+			if regprepare_bool==false
+				Dec op
+			endif
+		#Else;Set intchar regopcode
+		EndElseIf
 		sd comp_at_bigs;setcall comp_at_bigs comp_one(lowbyte,dataarg,sufix,op)
-		setcall err writeop_promotes(dataarg,op,intchar,sufix,regopcode,lowbyte,comp_at_bigs)
+		setcall err writeop_promotes(dataarg,op,sufix,regopcode,lowbyte,comp_at_bigs)
 		call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
 	Else
 	#imm
@@ -219,8 +218,9 @@ endfunction
 #same as comp_sec
 function comp_one(sd low,sd dataarg,sd sufix,sd op)
 	if op==(moveatprocthemem)
+		sd p
 		if low==(FALSE)
-			sd p;setcall p prefix_bool() #can't touch functions
+			setcall p prefix_bool() #can't touch functions
 			if p#==0
 				sd big;setcall big is_big(dataarg,sufix)
 				if big==(FALSE)
@@ -231,7 +231,15 @@ function comp_one(sd low,sd dataarg,sd sufix,sd op)
 					endif
 				endif
 			endif
-		endif
+		else
+			sd b;setcall b is_for_64()
+			if b==(TRUE)
+			#return all r64; take all;is is from the time when was set that data, waiting outside, can have a char extended with zeros
+				setcall p val64_p_get()
+				set p# (val64_willbe)
+			endif
+			return 2
+		endelse
 	endif
 	return -1
 endfunction

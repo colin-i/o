@@ -333,8 +333,8 @@ Const not_hexenum=0
 Const hexenum=1
 
 
-const val64_no=0
-const val64_willbe=1
+const val64_no=FALSE
+const val64_willbe=TRUE
 
 const direct_convention_input=0
 const ignore_convention_input=1

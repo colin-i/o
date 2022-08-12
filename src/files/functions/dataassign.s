@@ -25,25 +25,23 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 	Data charsnr=charsnumber
 	Data stringsnr=stringsnumber
 
-	data offset#1
-	Data ptroffset^offset
+	data offset_const#1
+	Data ptroffset_const^offset_const
 	Data constantsstruct%ptrconstants
-	Data container#1
-	Data pointer_structure#1
-	Data ptrcontainer^container
+	#Data pointer_structure#1
 	#at constants and at data^sd,str^ss
 
 	Data ptrrelocbool%ptrrelocbool
 
-	If typenumber!=charsnr
+	#If typenumber!=charsnr
 	#for const and at pointer with stack false
 	#this can't go after dataparse, addvarref will increase the offset
-		if typenumber==constantsnr
-			set pointer_structure constantsstruct
-		else
-			setcall pointer_structure getstructcont(typenumber)
-		endelse
-		Call getcontReg(pointer_structure,ptroffset)
+	if typenumber==constantsnr
+		#	set pointer_structure constantsstruct
+		#else
+		#	setcall pointer_structure getstructcont(typenumber)
+		#endelse
+		Call getcontReg(constantsstruct,ptroffset_const)
 	EndIf
 	SetCall err dataparse(ptrcontent,ptrsize,typenumber,assignsign,ptrrelocbool,stack,long_mask)
 	If err!=noerr
@@ -227,16 +225,22 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 			else
 				set ptrrelocbool# false
 				if stack==false
-					data eax=eaxregnumber
-					setcall err writetake(eax,pointer)
+					setcall err writetake((eaxregnumber),pointer)
 					If err!=noerr
 						Return err
 					EndIf
-					data op=moveatmemtheproc
-					Data noreg=noregnumber
-					Call getcont(pointer_structure,ptrcontainer)
-					Add container offset
-					SetCall err writeop(container,op,noreg,false,eax)#last missing param is at sufix and at declare is not
+					setcall value get_img_vdata_dataReg()
+					setcall err datatake_reloc((edxregnumber),value)
+					If err!=noerr
+						Return err
+					EndIf
+					sd v64;setcall v64 val64_p_get()
+					if long_mask!=0
+						setcall v64# is_for_64()
+					else
+						set v64# (val64_no)
+					endelse
+					setcall err writeoperation_op((moveatmemtheproc),(FALSE),(eaxregnumber),(edxregnumber))
 					If err!=noerr
 						Return err
 					EndIf
@@ -318,8 +322,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
 				Return err
 			EndIf
 		Else
+			Data container#1
+			Data ptrcontainer^container
 			Call getcont(constantsstruct,ptrcontainer)
-			Add container offset
+			Add container offset_const
 			Set container# value
 		EndElse
 	endif

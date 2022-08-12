@@ -18,7 +18,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Data false=FALSE
 	Data true=TRUE
 
-	Data noreg=noregnumber
+	#Data noreg=noregnumber
 	Data eaxreg=eaxregnumber
 	Data ecxreg=ecxregnumber
 
@@ -40,8 +40,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Set sameimportant true
 	Data divmul#1
 	Set divmul false
-	Data regprep#1
-	Set regprep eaxreg
+	#Data regprep#1
+	#Set regprep eaxreg
 	Data regopcode#1
 	Set regopcode eaxreg
 
@@ -75,9 +75,9 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		ElseIf subtype==(cSUB)
 			Chars subprim={0x29}
 			Set opprim subprim
-		ElseIf subtype<(cAND)
+		ElseIf subtype<=(cREM)
 			Set opprim atprocthemem
-			Set regprep ecxreg
+			#Set regprep ecxreg
 			Set regopcode ecxreg
 			Set divmul true
 			if lowprim==(FALSE);setcall big is_big(dataargprim,sufixprim)
@@ -100,7 +100,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		Else
 		#(cCALLEX)
 			Set opprim atprocthemem
-			Set regprep ecxreg
+			#Set regprep ecxreg
 			Set regopcode ecxreg
 		EndElse
 	Else
@@ -139,8 +139,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		EndIf
 	EndElse
 
-	Data intchar#1
-	Set intchar noreg
+	#Data intchar#1
+	data is_prepare#1
+	set is_prepare (FALSE)
+	#Set intchar noreg
 	Set opsec atprocthemem
 
 	If ptrcondition==false
@@ -153,11 +155,13 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				dec opsec
 			endelseif
 		ElseIf lowsec==true
-			Dec opsec
+			#Dec opsec
 			If sameimportant==true
-				Set intchar regprep
+				#Set intchar regprep
+				set is_prepare (TRUE)
 			Else
 				Dec opprim
+				Dec opsec
 			EndElse
 		EndElseIf
 	Else
@@ -175,19 +179,16 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				endif
 			endelse
 		Else
-			Dec opsec
-			Set intchar eaxreg
+			#Dec opsec
+			#Set intchar eaxreg
+			set is_prepare (TRUE)
 			If lowprim==true
 				#case compare low vs high, then: get low on all eax compare with high but op from mem vs proc becomes proc vs mem
 				#note that xor eax,eax will zero rax (not needing xor rax,rax)
 				Add opprim two
 				Data aux#1
-				Set aux dataargprim
-				Set dataargprim dataargsec
-				Set dataargsec aux
-				Set aux sufixprim
-				Set sufixprim sufixsec
-				Set sufixsec aux
+				Set aux dataargprim;Set dataargprim dataargsec;Set dataargsec aux
+				Set aux sufixprim;Set sufixprim sufixsec;Set sufixsec aux
 				call switchimm()
 				add compimmop two
 				#and for ss#
@@ -214,8 +215,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		else
 			if p_prefix#==(FALSE)
 				sd comp_at_bigs
-				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant)
-				setcall errnr writeop_promotes(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec,comp_at_bigs)
+				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant,is_prepare)
+				setcall errnr writeop_promotes(dataargsec,opsec,sufixsec,regopcode,lowsec,comp_at_bigs)
 			else
 			#only take at prefix on regcode
 				setcall errnr writetake(regopcode,dataargsec)
@@ -366,9 +367,9 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			setcall errnr addtosec(#storeex,2,codeptr)
 		else
 			if rem==(FALSE)
-				SetCall errnr writeop(dataargprim,storeex,noreg,sufixprim,eaxreg,lowprim)
+				SetCall errnr writeop(dataargprim,storeex,sufixprim,eaxreg,lowprim)
 			else
-				SetCall errnr writeoperation(dataargprim,storeex,noreg,sufixprim,(edxregnumber),ecxreg,lowprim)
+				SetCall errnr writeoperation(dataargprim,storeex,sufixprim,(edxregnumber),ecxreg,lowprim)
 			endelse
 		endelse
 	ElseIf ptrcondition!=false
@@ -406,10 +407,11 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Return errnr
 EndFunction
 
-#-1 normal, 0 unpromote, 1 sign extend
-function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant)
+#-1 normal, 0 unpromote, 1 sign extend, 2 zero extend
+function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant,sd is_prepare)
+	sd prim
 	if lowsec==(FALSE)
-		sd prim;setcall prim is_big(dataargprim,sufixprim)
+		setcall prim is_big(dataargprim,sufixprim)
 		sd sec;setcall sec is_big(dataargsec,sufixsec)
 		if prim!=sec
 			if sec==(TRUE)
@@ -420,7 +422,15 @@ function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixse
 				return 1
 			endelseif
 		endif
-	endif
+	elseif is_prepare==(TRUE)
+		setcall prim is_big(dataargprim,sufixprim)
+		if prim==(TRUE)
+			#zero extend all r64
+			sd p;setcall p val64_p_get()
+			set p# (val64_willbe)
+		endif
+		return 2
+	endelseif
 	return -1
 endfunction
 
@@ -443,20 +453,20 @@ function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameim
 			#this is and/or... at sd low not needing to write rex
 			setcall err writeoper((edxregnumber),dataargprim,sufixprim)
 			if err!=(noerror);return err;endif
-			setcall err writeoperation_op(opprim,(noregnumber),(eaxregnumber),(edxregnumber))
+			setcall err writeoperation_op(opprim,(FALSE),(eaxregnumber),(edxregnumber))
 			return err
 		endif
 	endif
-	SetCall err writeop(dataargprim,opprim,(noregnumber),sufixprim,(eaxregnumber),lowprim)
+	SetCall err writeop(dataargprim,opprim,sufixprim,(eaxregnumber),lowprim)
 	return err
 endfunction
 
 #err
-function writeop_promotes(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd low,sd comp_at_bigs)
+function writeop_promotes(sd dataarg,sd op,sd sufix,sd regopcode,sd low,sd comp_at_bigs)
 	sd err
 	if comp_at_bigs==-1
-		SetCall err writeop(dataarg,op,intchar,sufix,regopcode,low)
-	else #0 or 1
+		SetCall err writeop(dataarg,op,sufix,regopcode,low)
+	else #0-2
 		setcall err writeoper((edxregnumber),dataarg,sufix) #no val64 recordings
 		if err==(noerror)
 			if comp_at_bigs==1 #these are all 64
@@ -464,9 +474,11 @@ function writeop_promotes(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd l
 				set op (moveatprocthemem_sign)
 				sd p;setcall p val64_p_get()
 				set p# (val64_willbe)
-			endif
-			#2 for zero extend, even 3 for reg64, can pass 0x80...regprepare at 3
-			setcall err writeoperation_op(op,(noregnumber),regopcode,(edxregnumber))
+			else
+				#2 for zero extend; these are all low
+				set op 0xb6
+			endelse
+			setcall err writeoperation_op(op,low,regopcode,(edxregnumber))
 		endif
 	endelse
 	return err
