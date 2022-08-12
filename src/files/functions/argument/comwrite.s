@@ -205,12 +205,7 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 	Data noerr=noerror
 	Data sz2=bsz+bsz
 
-
-	sd prefix
-	setcall prefix prefix_bool()
 	sd mod=mod_0
-	#this will reset call,push and set v64
-	Call stack64_op()
 
 	#if is low
 	If regprepare!=(noregnumber)
@@ -222,11 +217,18 @@ Function writeoperation_op(sd operationopcode,sd regprepare,sd regopcode,sd take
 			Return errnr
 		EndIf
 	Else
-	#there is no prefix at low, and no val64
+		#at calls there is no low
+		#there is no prefix at low, and no val64
+		sd prefix
+		setcall prefix prefix_bool()
 		If prefix#!=0
 			set mod (RegReg)
 			set prefix# 0
-		EndIf
+		endIf
+		#Else
+			#this will reset calls and set v64
+		#	Call stack64_op()
+		#endElse
 		sd v64;setcall v64 val64_p_get()
 		if v64#==(val64_willbe)
 			call rex_w(#errnr);if errnr!=(noerror);return errnr;endif
@@ -259,3 +261,13 @@ Function writeop(sd location,sd operationopcode,sd regprepare,sd sufix,sd regopc
 	SetCall err writeoperation(location,operationopcode,regprepare,sufix,regopcode,edxregnumber,is_low)
 	Return err
 EndFunction
+
+#er
+function writeopera(sd location,sd operationopcode,sd regopcode,sd takeindex)
+	sd err
+	setcall err writetake(takeindex,location)
+	if err==(noerror)
+		setcall err writeoperation_op(operationopcode,(noregnumber),regopcode,takeindex)
+	endif
+	return err
+endfunction

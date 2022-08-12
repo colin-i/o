@@ -95,28 +95,28 @@ function bigbits(sd data)
 	return test
 endfunction
 
-function stack64_op_set()
-	sd b;setcall b is_for_64()
-	if b==(TRUE);call stack64_op_set_get((TRUE),(TRUE));endif
-endfunction
+#function stack64_op_set()
+#	sd b;setcall b is_for_64()
+#	if b==(TRUE);call stack64_op_set_get((TRUE),(TRUE));endif
+#endfunction
 #(false)get
-function stack64_op_set_get(sd b,sd val)
-	data x#1
-	if b==(TRUE);set x val
-	else;return x
-	endelse
-endfunction
+#function stack64_op_set_get(sd b,sd val)
+#	data x#1
+#	if b==(TRUE);set x val
+#	else;return x
+#	endelse
+#endfunction
 #err
-function stack64_op()
-	sd b;setcall b stack64_op_set_get((FALSE))
-	if b!=(FALSE)
-		#reset
-		call stack64_op_set_get((TRUE),(FALSE))
-		#at push 64 and call 64, without rex is ok
-		sd p;setcall p val64_p_get()
-		set p# (val64_no)
-	endif
-endfunction
+#function stack64_op()
+#	sd b;setcall b stack64_op_set_get((FALSE))
+#	if b!=(FALSE)
+#		#reset
+#		call stack64_op_set_get((TRUE),(FALSE))
+#		#at push 64 and call 64, without rex is ok
+#		sd p;setcall p val64_p_get()
+#		set p# (val64_no)
+#	endif
+#endfunction
 
 function stack64_add(sd val)
 	sd b;setcall b is_for_64()

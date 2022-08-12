@@ -56,7 +56,7 @@ set var# 0
 #64bit
 #is init , is tested at any import and is set TRUE/FALSE only at elfobj... syntax
 sd p_is_for_64_value;setcall p_is_for_64_value p_is_for_64();set p_is_for_64_value# (FALSE)
-call stack64_op_set_get((TRUE),(FALSE))
+#call stack64_op_set_get((TRUE),(FALSE))
 call val64_init()
 
 #afterCall

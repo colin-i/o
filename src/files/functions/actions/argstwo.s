@@ -218,7 +218,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				setcall errnr writeop_promotes(dataargsec,opsec,intchar,sufixsec,regopcode,lowsec,comp_at_bigs)
 			else
 			#only take at prefix on regcode
-				call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
+				setcall errnr writetake(regopcode,dataargsec)
+				#call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
 				#pprefix is reset in the road at remind
 			endelse
 			call restore_argmask()
@@ -464,6 +465,7 @@ function writeop_promotes(sd dataarg,sd op,sd intchar,sd sufix,sd regopcode,sd l
 				sd p;setcall p val64_p_get()
 				set p# (val64_willbe)
 			endif
+			#2 for zero extend, even 3 for reg64, can pass 0x80...regprepare at 3
 			setcall err writeoperation_op(op,(noregnumber),regopcode,(edxregnumber))
 		endif
 	endelse
