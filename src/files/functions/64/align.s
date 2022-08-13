@@ -170,7 +170,7 @@ function align_entryscope()
 		if type==(even_align)
 			#there are more even calls to align
 			#Jump short if not carry
-			set jump (0x73)
+			set jump (jnc_instruction)
 		else
 			#odd
 			#Jump short if carry

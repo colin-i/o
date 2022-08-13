@@ -17,6 +17,7 @@ const REX_R8_15=REX_default|REX_W|REX_R
 Const retcom=0xc3
 const intimm8=0xCD
 const jmp_rel8=0xeb
+const jnc_instruction=0x73
 
 const ateaximm=0xb8
 Const atedximm=0xba
