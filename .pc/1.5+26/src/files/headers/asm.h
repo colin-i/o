@@ -43,7 +43,7 @@ const disp32mod=disp32*tomod
 const regregmod=RegReg*tomod
 
 #regopcodes
-#Const noregnumber=-1
+Const noregnumber=-1
 Const eaxregnumber=0
 Const ecxregnumber=1
 Const edxregnumber=2
