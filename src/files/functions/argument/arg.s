@@ -188,7 +188,6 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			endelse
 		endelse
 	endelse
-	call unsetimm()
 	If sens==(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
 		Return noerr
@@ -253,6 +252,7 @@ function argfilters_helper(data ptrcondition,data ptrcontent,data ptrsize,data p
 	Data forward=FORWARD
 
 	If ptrcondition==null
+		call unsetimm()
 		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward)
 		Return err
 	EndIf

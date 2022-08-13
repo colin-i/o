@@ -28,7 +28,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	Chars atmemtheproc={moveatmemtheproc}
 
 	sd imm
-	#call unsetimm()
 	Data errnr#1
 	Data noerr=noerror
 	SetCall errnr argfilters(ptrcondition,ptrcontent,ptrsize,ptrdataargprim,ptrlowprim,ptrsufixprim)
@@ -58,11 +57,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 
 	Set primcalltype false
 
-	#imm second arg can be
-	call setimm()
-
 	sd big;sd rem
 	If ptrcondition==false
+		#imm second arg can be, at conditions was already called
+		call setimm()
 		sd subtype_test;set subtype_test subtype;and subtype_test (x_call_flag)
 		if subtype_test!=0
 			xor subtype (x_call_flag)

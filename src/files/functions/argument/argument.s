@@ -79,9 +79,9 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Set regprepare_bool false
 	Set sizeofcontinuation zero
 
-	#call unsetimm()
 	Data forward=FORWARD
 	If forwardORcallsens==forward
+		call unsetimm() #set is at returns/and at push
 		If subtype==(cRETURN)
 			sd termswitch
 			setcall termswitch is_linux_end() #exit from linux term
