@@ -59,7 +59,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 	Data noerr=noerror
 	data false=0
 
-	call resetisimm()
+	#call resetisimm()
 	sd bool
 	setcall bool is_constant_related_ascii(content#)
 	if bool==(TRUE)
@@ -188,7 +188,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			endelse
 		endelse
 	endelse
-	#
+	call unsetimm()
 	If sens==(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
 		Return noerr

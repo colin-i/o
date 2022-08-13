@@ -86,6 +86,7 @@ function write_imm(sd dataarg,sd op)
 	data code%ptrcodesec
 	sd err
 	setcall err addtosec(immadd,sz,code)
+	call resetisimm()
 	return err
 endfunction
 
@@ -96,11 +97,11 @@ function storefirst_isimm()
 	data ptr%ptr_isimm
 	set firstimm ptr#
 endfunction
-#function restorefirst_isimm()
-#	data first%ptr_first_isimm
-#	data ptr%ptr_isimm
-#	set ptr# first#
-#endfunction
+function restorefirst_isimm()
+	data first%ptr_first_isimm
+	data ptr%ptr_isimm
+	set ptr# first#
+endfunction
 function getfirst_isimm()
 	data first%ptr_first_isimm
 	return first#

@@ -79,7 +79,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Set regprepare_bool false
 	Set sizeofcontinuation zero
 
-	call unsetimm()
+	#call unsetimm()
 	Data forward=FORWARD
 	If forwardORcallsens==forward
 		If subtype==(cRETURN)

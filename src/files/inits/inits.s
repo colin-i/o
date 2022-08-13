@@ -87,3 +87,6 @@ sd el_or_e=FALSE
 
 #needing also at pass call and pass write
 set functionTagIndex 0
+
+call unsetimm()
+call resetisimm()
