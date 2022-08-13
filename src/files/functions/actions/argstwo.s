@@ -151,9 +151,11 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			if subtype!=(cCALLEX)
 				#at callex they can be different
 				Dec opsec
-			elseif lowsec==true
-				dec opsec
-			endelseif
+			else
+			#if lowsec==true;dec opsec
+				#it is not possible to push from ff...al and scalar push using full rcx*8 at normal (therefor same for ff...cl)
+				return "Second argument at CALLEX must not be one byte."
+			endelse
 		ElseIf lowsec==true
 			#Dec opsec
 			If sameimportant==true
@@ -184,13 +186,14 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			set is_prepare (TRUE)
 			If lowprim==true
 				#case compare low vs high, then: get low on all eax compare with high but op from mem vs proc becomes proc vs mem
-				#note that xor eax,eax will zero rax (not needing xor rax,rax)
 				Add opprim two
+				add compimmop two
+
+				#note that xor eax,eax will zero rax (not needing xor rax,rax)
 				Data aux#1
 				Set aux dataargprim;Set dataargprim dataargsec;Set dataargsec aux
 				Set aux sufixprim;Set sufixprim sufixsec;Set sufixsec aux
 				call switchimm()
-				add compimmop two
 				#and for ss#
 				set aux lowprim;set lowprim lowsec;set lowsec aux
 				#and char==#sd
@@ -269,63 +272,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			Set regopcodeex regopcodemult
 		Else
 			Set regopcodeex regopcodediv
-			#33D2 85c0 7902 f7d2
-			#32E4 84c0 7902 f6d4
-			Chars d1_0#1
-			Chars d1_1#1
-			Chars d2_0#1
-			Chars *d2_1={0xc0}
-			Chars d3_0=0x79;chars d3_1#1
-			Chars d4_0#1
-			Chars d4_1#1
-
-			Const bitsedxregop=edxregnumber*8
-			Const bitsahregop=ahregnumber*8
-			Const bitsnotop=Notregopcode*8
-
-			Const pre1_1_h=regregmod|bitsedxregop|edxregnumber
-			Chars predef1_1_high={pre1_1_h}
-			Const pre4_1_h=regregmod|bitsnotop|edxregnumber
-			Chars predef4_1_high={pre4_1_h}
-			Const pre1_1_l=regregmod|bitsahregop|ahregnumber
-			Chars predef1_1_low={pre1_1_l}
-			Const pre4_1_l=regregmod|bitsnotop|ahregnumber
-			Chars predef4_1_low={pre4_1_l}
-
-			Chars d1_0ini={0x33}
-			Chars d2_0ini={0x85}
-			Chars d4_0ini={0xf7}
-
-			Set d1_0 d1_0ini
-			Set d2_0 d2_0ini
-			Set d4_0 d4_0ini
-
-			If lowprim==false
-				Set	d1_1 predef1_1_high
-				Set	d4_1 predef4_1_high
-			Else
-				Dec d1_0
-				Dec d2_0
-				Dec d4_0
-				Set d1_1 predef1_1_low
-				Set d4_1 predef4_1_low
-			EndElse
-			SetCall errnr addtosec(#d1_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
-			if big==(TRUE)
-				call rex_w(#errnr)
-				If errnr!=noerr;Return errnr;EndIf
-			endif
-			SetCall errnr addtosec(#d2_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
-			if big==(TRUE)
-				set d3_1 3
-				SetCall errnr addtosec(#d3_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
-				call rex_w(#errnr)
-				If errnr!=noerr;Return errnr;EndIf
-			else
-				set d3_1 2
-				SetCall errnr addtosec(#d3_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
-			endelse
-			SetCall errnr addtosec(#d4_0,2,codeptr);If errnr!=noerr;Return errnr;EndIf
+			setcall errnr div_prepare(lowprim,big)
 		EndElse
 
 		Chars opcodexini={0xF7}
@@ -516,4 +463,35 @@ function restore_argmask()
 		add data (maskoffset)
 		set data# a#
 	endif
+endfunction
+
+
+#err
+function div_prepare(sd low,sd big)
+	const bt_atdiv=bt_reg_imm8|eaxregnumber
+	vData codeptr%ptrcodesec
+	sd errnr
+	if big==(TRUE)
+	#bt rax,63;jc,;mov 0,edx;jmp,;mov -1,rdx
+	#In x64, any operation on a 32-bit register clears the top 32 bits of the corresponding 64-bit register too, so there's no need to use mov 0,rax (and xor rax, rax)
+		const div_prepare_high=!
+		chars high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,0x72,7,atedximm,0,0,0,0,jmp_rel8,7,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1}
+		SetCall errnr addtosec(#high,(!-div_prepare_high),codeptr)
+	elseif low==(TRUE)
+	#bt eax,15;jc,;mov ah,0;jmp,;mov ah,-1
+		const div_prepare_low=!
+		chars small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,0x72,5,0xc6,regregmod|ahregnumber,0,jmp_rel8,3,0xc6,regregmod|ahregnumber,-1}
+		SetCall errnr addtosec(#small,(!-div_prepare_low),codeptr)
+	else
+	#bt eax,31;jc,;mov 0,edx;jmp,;mov -1,edx
+		const div_prepare_mediu=!
+		chars mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,0x72,7,atedximm,0,0,0,0,jmp_rel8,5,atedximm,-1,-1,-1,-1}
+		SetCall errnr addtosec(#mediu,(!-div_prepare_mediu),codeptr)
+	endelse
+	return errnr
+	#before
+	#xor  test   jns  not
+	#33D2 4885c0 7903 48f7d2
+	#32E4 84c0   7902 f6d4
+	#33D2 85c0   7902 f7d2
 endfunction

@@ -254,7 +254,7 @@ Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd take
 		#SetCall errnr addtosec(#comprepare1,sz2,ptrcodesec)
 
 		#zero extend
-		chars extend_byte=0xf
+		chars extend_byte=twobytesinstruction_byte1
 		SetCall errnr addtosec(#extend_byte,1,ptrcodesec)
 		If errnr!=noerr
 			Return errnr

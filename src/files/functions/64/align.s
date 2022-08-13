@@ -162,8 +162,9 @@ endfunction
 function align_entryscope()
 	sd type;setcall type align_type()
 	if type!=0
-		#bt rbx,3 (offset 3) x8 or x0
-		chars bt={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|ebxregnumber,3}
+		#bt ebx,3 (offset 3) x8 or x0
+		#rex to bt the first byte it is useless
+		chars bt={twobytesinstruction_byte1,bt_instruction,bt_reg_imm8|ebxregnumber,3}
 		#j(c|nc);sub rbx,8
 		chars jump#1;chars *=4;chars *={REX_Operand_64,0x83,RegReg*tomod|(5*toregopcode)|ebxregnumber,8}
 		if type==(even_align)
@@ -177,7 +178,7 @@ function align_entryscope()
 		endelse
 		vdata code%ptrcodesec
 		sd err
-		SetCall err addtosec(#bt,(5+6),code)
+		SetCall err addtosec(#bt,(4+6),code)
 		return err
 	endif
 	return (noerror)

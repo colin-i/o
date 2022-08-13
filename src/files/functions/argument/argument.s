@@ -250,7 +250,7 @@ function write_imm_sign(sd dataarg,sd regopcode)
 	sd err
 	setcall err rex_w_if64()
 	if err==(noerror)
-		chars movs_imm=0xc7
+		chars movs_imm=mov_imm_to_rm
 		SetCall err addtosec(#movs_imm,1,codeptr)
 		if err==(noerror)
 			sd op

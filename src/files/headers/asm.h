@@ -16,13 +16,18 @@ const REX_R8_15=REX_default|REX_W|REX_R
 
 Const retcom=0xc3
 const intimm8=0xCD
-const ateaximm=0xb8
-#Const atedximm=0xba
+const jmp_rel8=0xeb
 
+const ateaximm=0xb8
+Const atedximm=0xba
 Const moveatmemtheproc=0x89
 Const moveatprocthemem=0x8b
 Const moveatregthemodrm=moveatprocthemem
 const moveatprocthemem_sign=0x63
+const mov_imm_to_rm=0xc7
+
+const twobytesinstruction_byte1=0x0F
+const bt_instruction=0xBA
 
 #mod,reg/opcode,r/m
 
@@ -52,4 +57,4 @@ Const regopcode_mask=0x7
 #mixt
 Const Notregopcode=2
 #
-const bt_reg_imm8=espregnumber*toregopcode|regregmod
+const bt_reg_imm8=4*toregopcode|regregmod
