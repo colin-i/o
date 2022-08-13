@@ -96,16 +96,20 @@ function storefirst_isimm()
 	data ptr%ptr_isimm
 	set firstimm ptr#
 endfunction
-
-function restorefirst_isimm()
+#function restorefirst_isimm()
+#	data first%ptr_first_isimm
+#	data ptr%ptr_isimm
+#	set ptr# first#
+#endfunction
+function getfirst_isimm()
 	data first%ptr_first_isimm
-	data ptr%ptr_isimm
-	set ptr# first#
+	return first#
 endfunction
 
 function switchimm()
 	data ptr%ptr_isimm
 	data true=1
+	#first was false was low at comparations low vs high
 	if ptr#==true
 		data first%ptr_first_isimm
 		set first# true

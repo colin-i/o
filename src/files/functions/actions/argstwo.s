@@ -49,8 +49,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	sd remind_first_prefix
 	sd p_prefix
 	setcall p_prefix prefix_bool()
-	set remind_first_prefix p_prefix#
-	set p_prefix# 0
+
+	set remind_first_prefix p_prefix#;set p_prefix# 0
 	call storefirst_isimm()
 
 	Data primcalltype#1
@@ -218,7 +218,8 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		else
 			if p_prefix#==(FALSE)
 				sd comp_at_bigs
-				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant,is_prepare)
+				setcall imm getfirst_isimm()
+				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant,is_prepare,imm)
 				setcall errnr writeop_promotes(dataargsec,opsec,sufixsec,regopcode,lowsec,comp_at_bigs)
 			else
 			#only take at prefix on regcode
@@ -248,8 +249,9 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 
 	#write first arg, the second already was
 	set p_prefix# remind_first_prefix
-	call restorefirst_isimm()
-	setcall imm getisimm()
+	#call restorefirst_isimm()
+
+	setcall imm getfirst_isimm()
 	if imm==true
 		#first argument imm are comparations
 		#first value is imm, or second value is imm (switched)
@@ -355,10 +357,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 EndFunction
 
 #-1 normal, 0 unpromote, 1 sign extend, 2 zero extend
-function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant,sd is_prepare)
+function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant,sd is_prepare,sd immprim)
 	sd prim
 	if lowsec==(FALSE)
-		setcall prim is_big(dataargprim,sufixprim)
+		setcall prim is_big_imm(immprim,dataargprim,sufixprim)
 		sd sec;setcall sec is_big(dataargsec,sufixsec)
 		if prim!=sec
 			if sec==(TRUE)
@@ -370,7 +372,7 @@ function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixse
 			endelseif
 		endif
 	elseif is_prepare==(TRUE)
-		setcall prim is_big(dataargprim,sufixprim)
+		setcall prim is_big_imm(immprim,dataargprim,sufixprim)
 		if prim==(TRUE)
 			#zero extend all r64
 			sd p;setcall p val64_p_get()
@@ -379,6 +381,16 @@ function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixse
 		return 2
 	endelseif
 	return -1
+endfunction
+
+#bool
+function is_big_imm(sd imm,sd data,sd sufix)
+	if imm==(FALSE)
+		sd b
+		setcall b is_big(data,sufix)
+		return b
+	endif
+	return (FALSE)
 endfunction
 
 function writeoper(sd takeindex,sd location,sd sufix)
