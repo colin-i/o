@@ -216,7 +216,6 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			#	add opsec 1
 			#endelseif
 			SetCall errnr write_imm_sign(dataargsec,regopcode)
-			call resetisimm()
 		else
 			if p_prefix#==(FALSE)
 				sd comp_at_bigs
