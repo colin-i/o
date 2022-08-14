@@ -432,10 +432,10 @@ function writeop_promotes(sd dataarg,sd op,sd sufix,sd regopcode,sd low,sd comp_
 				set op (moveatprocthemem_sign)
 				sd p;setcall p val64_p_get()
 				set p# (val64_willbe)
-			else
+			elseif comp_at_bigs==2
 				#2 for zero extend; these are all low
 				set op 0xb6
-			endelse
+			endelseif
 			setcall err writeoperation_op(op,low,regopcode,(edxregnumber))
 		endif
 	endelse
