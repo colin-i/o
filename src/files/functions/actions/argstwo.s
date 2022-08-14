@@ -267,14 +267,13 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 		Data regreg=RegReg
 
 		Chars regopcodemult={5}
-		Chars regopcodediv={7}
+		#If you don't care about the upper half, you can use either mul or imul
 		Chars regopcodeex#1
 
 		If subtype==(cMULT)
 			Set regopcodeex regopcodemult
 		Else
-			Set regopcodeex regopcodediv
-			setcall errnr div_prepare(lowprim,big)
+			setcall errnr div_prepare(lowprim,big,#regopcodeex)
 		EndElse
 
 		Chars opcodexini={0xF7}
@@ -479,9 +478,10 @@ endfunction
 
 
 #err
-function div_prepare(sd low,sd big)
+function div_prepare(sd low,sd big,ss p_regopcode)
 	const bt_atdiv=bt_reg_imm8|eaxregnumber
 	vData codeptr%ptrcodesec
+	Chars regopcodeidiv={7}
 	sd errnr
 	if big==(TRUE)
 	#bt rax,63;jc,;mov 0,edx;jmp,;mov -1,rdx
@@ -489,16 +489,21 @@ function div_prepare(sd low,sd big)
 		const div_prepare_high=!
 		chars high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,jnc_instruction,9,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
 		SetCall errnr addtosec(#high,(!-div_prepare_high),codeptr)
-	elseif low==(TRUE)
-	#bt eax,15;jc,;mov ah,0;jmp,;mov ah,-1
-		const div_prepare_low=!
-		chars small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,jnc_instruction,5,0xc6,regregmod|ahregnumber,-1,jmp_rel8,3,0xc6,regregmod|ahregnumber,0}
-		SetCall errnr addtosec(#small,(!-div_prepare_low),codeptr)
-	else
+		set p_regopcode# regopcodeidiv
+	elseif low==(FALSE)
 	#bt eax,31;jc,;mov 0,edx;jmp,;mov -1,edx
 		const div_prepare_mediu=!
 		chars mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,jnc_instruction,7,atedximm,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
 		SetCall errnr addtosec(#mediu,(!-div_prepare_mediu),codeptr)
+		set p_regopcode# regopcodeidiv
+	else
+	#like the zero extension, this remains zero
+		const div_prepare_low=!
+	#bt eax,15;jc,;mov ah,0;jmp,;mov ah,-1
+	#	chars small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,jnc_instruction,5,0xc6,regregmod|ahregnumber,-1,jmp_rel8,3,0xc6,regregmod|ahregnumber,0}
+		chars small={0xc6,regregmod|ahregnumber,0}
+		SetCall errnr addtosec(#small,(!-div_prepare_low),codeptr)
+		set p_regopcode# 6    #otherwise, 255/-1 idiv -255 exception (-128 to 127 allowed)
 	endelse
 	return errnr
 	#before

@@ -73,6 +73,8 @@
 	There are 2 scopes: the global scope and the function scope.
 	<br>
 	The commands are from i386 with extension for x86-64 (but with the HEX macro anything can be wrote to code section).
+	<br>
+	All 4/8 bytes variables are sign extended. 1 byte variables are zero extended.
 </p>
 
 <h3><a name="declaringdata">II. Declaring data</a></h3>
@@ -411,7 +413,7 @@
         #the valueA will be -10</a>
 	</p>
 	<p>
-	3. Multiplication (signed)
+	3. Multiplication
 	<br>
 	Language command: <b>Mult</b>
 	<br>
@@ -424,7 +426,7 @@
         #the valueA will be 600</a>
 	</p>
 	<p>
-	4. Division (signed)
+	4. Division (signed 4/8, unsigned 1)
 	<br>
 	Language command: <b>Div</b> <b>Rem</b>
 	<br>
