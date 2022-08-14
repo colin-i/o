@@ -1,3 +1,9 @@
+ocompiler (1-5+28) xenial; urgency=medium
+
+  * Fix operations at promotes
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sun, 14 Aug 2022 12:11:05 +0300
+
 ocompiler (1-5+27) xenial; urgency=medium
 
   * Idiv/div
