@@ -213,12 +213,15 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 			#elseif subtype==(cCALLEX)
 			#	add opsec 1
 			#endelseif
-			SetCall errnr write_imm_sign(dataargsec,regopcode)
+			if subtype!=(cCALLEX)
+				SetCall errnr write_imm_trunc(dataargsec,regopcode,lowprim,dataargprim,sufixprim)
+			else
+				SetCall errnr write_imm_sign(dataargsec,regopcode)
+			endelse
 		else
 			if p_prefix#==(FALSE)
 				sd comp_at_bigs
-				setcall imm getfirst_isimm()
-				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant,is_prepare,imm)
+				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant,is_prepare)
 				setcall errnr writeop_promotes(dataargsec,opsec,sufixsec,regopcode,lowsec,comp_at_bigs)
 			else
 			#only take at prefix on regcode
@@ -226,7 +229,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 				#call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
 				#pprefix is reset in the road at remind
 			endelse
-			call restore_argmask()
+			call restore_argmask_ex(dataargsec)
 		endelse
 		If errnr!=noerr
 			Return errnr
@@ -356,10 +359,10 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 EndFunction
 
 #-1 normal, 0 unpromote, 1 sign extend, 2 zero extend
-function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant,sd is_prepare,sd immprim)
+function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant,sd is_prepare)
 	sd prim
 	if lowsec==(FALSE)
-		setcall prim is_big_imm(immprim,dataargprim,sufixprim)
+		setcall prim is_big_imm(dataargprim,sufixprim)
 		sd sec;setcall sec is_big(dataargsec,sufixsec)
 		if prim!=sec
 			if sec==(TRUE)
@@ -371,7 +374,7 @@ function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixse
 			endelseif
 		endif
 	elseif is_prepare==(TRUE)
-		setcall prim is_big_imm(immprim,dataargprim,sufixprim)
+		setcall prim is_big_imm(dataargprim,sufixprim)
 		if prim==(TRUE)
 			#zero extend all r64
 			sd p;setcall p val64_p_get()
@@ -383,8 +386,10 @@ function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixse
 endfunction
 
 #bool
-function is_big_imm(sd imm,sd data,sd sufix)
-	if imm==(FALSE)
+function is_big_imm(sd data,sd sufix)
+	sd immprim
+	setcall immprim getfirst_isimm()
+	if immprim==(FALSE)
 		sd b
 		setcall b is_big(data,sufix)
 		return b
@@ -460,19 +465,26 @@ function store_argmask(sd data)
 	set a# data#
 endfunction
 function restore_argmask()
+	call restore_argmask_ex((NULL))
+endfunction
+function restore_argmask_ex(sd original)
 	sv a
 	setcall a argmasks()
 	if a#>0
-		dec a#
-		if a#==1
+		sv copy;set copy a
+		if a#==2
 			add a (2*:)
 		endif
 		incst a
 		sd data
 		set data a#
+		if data!=original
+			ret  #this is the case when catsfirst secondnothing and try to restore second onfirst
+		endif
 		incst a
 		add data (maskoffset)
 		set data# a#
+		dec copy
 	endif
 endfunction
 

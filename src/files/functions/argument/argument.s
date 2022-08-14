@@ -243,20 +243,3 @@ function comp_one(sd low,sd dataarg,sd sufix,sd op)
 	endif
 	return -1
 endfunction
-
-#er
-function write_imm_sign(sd dataarg,sd regopcode)
-	vData codeptr%ptrcodesec
-	sd err
-	setcall err rex_w_if64()
-	if err==(noerror)
-		chars movs_imm=mov_imm_to_rm
-		SetCall err addtosec(#movs_imm,1,codeptr)
-		if err==(noerror)
-			sd op
-			SetCall op formmodrm((RegReg),0,regopcode)
-			setcall err write_imm(dataarg,op)
-		endif
-	endif
-	return err
-endfunction

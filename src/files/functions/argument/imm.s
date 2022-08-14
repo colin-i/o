@@ -74,23 +74,6 @@ function getisimm()
 endfunction
 
 
-
-#er
-function write_imm(sd dataarg,sd op)
-	chars immop#1
-	data value#1
-	data immadd^immop
-	set immop op
-	set value dataarg
-	data sz=5
-	data code%ptrcodesec
-	sd err
-	setcall err addtosec(immadd,sz,code)
-	call resetisimm()
-	return err
-endfunction
-
-
 function storefirst_isimm()
 	data firstimm#1
 	const ptr_first_isimm^firstimm
@@ -117,4 +100,62 @@ function switchimm()
 		data false=0
 		set ptr# false
 	endif
+endfunction
+
+
+#er
+function write_imm(sd dataarg,sd op)
+	chars immop#1
+	data value#1
+	data immadd^immop
+	set immop op
+	set value dataarg
+	data sz=5
+	data code%ptrcodesec
+	sd err
+	setcall err addtosec(immadd,sz,code)
+	call resetisimm()
+	return err
+endfunction
+#er
+function write_imm_sign(sd dataarg,sd regopcode)
+	vData codeptr%ptrcodesec
+	sd err
+	setcall err rex_w_if64()
+	if err==(noerror)
+		chars movs_imm=mov_imm_to_rm
+		SetCall err addtosec(#movs_imm,1,codeptr)
+		if err==(noerror)
+			sd op
+			SetCall op formmodrm((RegReg),0,regopcode)
+			setcall err write_imm(dataarg,op)
+		endif
+	endif
+	return err
+endfunction
+#err
+function write_imm_trunc(sd value,sd reg,sd low,sd data,sd sufix)
+	sd err
+	if low==(FALSE)
+		sd bool;setcall bool is_big_imm(data,sufix)
+		if bool==(FALSE)
+			#mediu
+			add reg (ateaximm)
+			setcall err write_imm(value,reg)
+			return err
+		endif
+		#big
+		setcall err write_imm_sign(value,reg)  #there is one if64 useless inside
+		return err
+	endif
+	#low
+	chars a#2
+	ss b^a;set b# (atalimm)
+	add b# reg
+	inc b
+	set b# value
+	dec b
+	vData codeptr%ptrcodesec
+	setcall err addtosec(b,2,codeptr)
+	return err
 endfunction

@@ -19,6 +19,7 @@ const intimm8=0xCD
 const jmp_rel8=0xeb
 const jnc_instruction=0x73
 
+const atalimm=0xb0
 const ateaximm=0xb8
 Const atedximm=0xba
 Const moveatmemtheproc=0x89
