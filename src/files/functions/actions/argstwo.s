@@ -452,39 +452,39 @@ function argmasks()
 	return #a
 endfunction
 function store_argmask(sd data)
-	sv a
+	ss a
 	setcall a argmasks()
 	inc a#
 	if a#==2
 		add a (2*:)
 	endif
 	incst a
-	set a# data
+	set a#v^ data
 	incst a
 	add data (maskoffset)
-	set a# data#
+	set a#d^ data#
 endfunction
 function restore_argmask()
 	call restore_argmask_ex((NULL))
 endfunction
 function restore_argmask_ex(sd original)
-	sv a
+	ss a
 	setcall a argmasks()
 	if a#>0
 		sv copy;set copy a
 		if a#==2
-			add a (2*:)
+			add copy (2*:)
 		endif
-		incst a
+		incst copy
 		sd data
-		set data a#
+		set data copy#
 		if data!=original
 			ret  #this is the case when catsfirst secondnothing and try to restore second onfirst
 		endif
-		incst a
+		incst copy
 		add data (maskoffset)
-		set data# a#
-		dec copy
+		set data# copy#d^
+		dec a#
 	endif
 endfunction
 
