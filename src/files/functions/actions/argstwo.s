@@ -478,8 +478,10 @@ function restore_argmask_ex(sd original)
 		incst copy
 		sd data
 		set data copy#
-		if data!=original
-			ret  #this is the case when catsfirst secondnothing and try to restore second onfirst
+		if original!=(NULL)
+			if data!=original
+				ret  #this is the case when catsfirst secondnothing and try to restore second onfirst
+			endif
 		endif
 		incst copy
 		add data (maskoffset)
