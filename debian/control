@@ -2,13 +2,13 @@ Source: ocompiler
 Section: utils
 Priority: optional
 Maintainer: Costin Botescu <costin.botescu@gmail.com>
-Build-Depends: debhelper (>= 9), ocompiler
+Build-Depends: debhelper (>= 9), binutils-multiarch
 Standards-Version: 4.5.0
 Homepage: https://github.com/colin-i/o
 Rules-Requires-Root: no
 
 Package: ocompiler
-Architecture: i386
+Architecture: i386 amd64
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends} | libc6-i386:amd64
+Depends: libc6 [i386] | libc6-i386:amd64
 Description: O Compiler
