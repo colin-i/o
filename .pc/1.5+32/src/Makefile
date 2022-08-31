@@ -39,6 +39,5 @@ uninstall:
 
 test:
 	echo "Nothing"
-#this at launchpad when asking there
 
 .PHONY: all install clean distclean uninstall test

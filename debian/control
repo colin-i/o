@@ -8,7 +8,9 @@ Homepage: https://github.com/colin-i/o
 Rules-Requires-Root: no
 
 Package: ocompiler
-Architecture: i386
+Architecture: i386 amd64
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends} | libc6-i386:amd64
+Depends: libc6 [i386] | libc6-i386:amd64
+#${misc:Depends}, ${shlibs:Depends} | libc6-i386:amd64
+#this nothing   , this libc6
 Description: O Compiler

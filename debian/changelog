@@ -1,3 +1,9 @@
+ocompiler (1-5+32) xenial; urgency=medium
+
+  * needing dummy amd64 build for actionswf
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 31 Aug 2022 10:01:02 +0300
+
 ocompiler (1-5+31) xenial; urgency=medium
 
   * Cast fix
