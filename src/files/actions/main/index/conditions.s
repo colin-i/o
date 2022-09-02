@@ -16,6 +16,13 @@ ElseIf subtype==(cELSE)
 	SetCall errormsg closeifopenelse()
 ElseIf subtype==(cENDELSE)
 	SetCall errormsg conditionscondend((elsenumber),nocond)
+ElseIf subtype==(cELSEIF)
+	SetCall errormsg closeifopenelse()
+	If errormsg==noerr
+		SetCall errormsg condbegin(pcontent,pcomsize,(ifnumber))
+	EndIf
+ElseIf subtype==(cENDELSEIF)
+	SetCall errormsg conditionscondend((ifnumber),(elsenumber))
 ElseIf subtype==(cWHILE)
 	SetCall errormsg coderegtocondloop()
 	If errormsg==noerr
@@ -23,14 +30,8 @@ ElseIf subtype==(cWHILE)
 	EndIf
 ElseIf subtype==(cENDWHILE)
 	SetCall errormsg condend((whilenumber))
-ElseIf subtype==(cELSEIF)
-	SetCall errormsg closeifopenelse()
-	If errormsg==noerr
-		SetCall errormsg condbegin(pcontent,pcomsize,(ifnumber))
-	EndIf
+#ElseIf subtype==(cBREAK)
 Else
-#cENDELSEIF
-	SetCall errormsg conditionscondend((ifnumber),(elsenumber))
-EndElse
-#cBREAK
 #cCONTINUE
+	setcall errormsg continue()
+EndElse

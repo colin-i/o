@@ -133,32 +133,13 @@ Function condend(data number)
 
 	Data whilenr=whilenumber
 	If number==whilenr
-		Data bjsz=backjumpsize
-		Add codeoffset bjsz
-
-		Data whileloopstart#1
-		Data whileloopsize#1
-
-		Sub regnr dsz
-		Sub structure dsz
-
-		Set whileloopstart structure#
-		Set whileloopsize codeoffset
-
-		Sub whileloopsize whileloopstart
-
-		Data inter#1
-
-		Set inter whileloopsize
-		Sub whileloopsize inter
-		Sub whileloopsize inter
-
-		Data err#1
-
-		SetCall err condjump(whileloopsize)
+		sd err
+		Add codeoffset (backjumpsize)
+		setcall err jumpback(codeoffset,structure)
 		If err!=noerr
 			Return err
 		EndIf
+		Sub regnr dsz
 	EndIf
 
 	Data writeloc#1
@@ -177,6 +158,16 @@ Function condend(data number)
 EndFunction
 
 #err
+function jumpback(sd codeoffset,sd condstruct)
+	sub condstruct (dwsz)
+	sub codeoffset condstruct#
+	neg codeoffset
+	sd err
+	SetCall err condjump(codeoffset)
+	return err
+endfunction
+
+#err
 Function conditionscondend(data close1,data close2)
 	Data err#1
 	Data noerr=noerror
@@ -193,35 +184,29 @@ Function conditionscondend(data close1,data close2)
 	Data elsenr=elsenumber
 	Data structure%ptrconditionsloops
 	Data dsz=dwsz
-	sd guardian=0
 
 	While loop==loopini
 		SetCall err condend(number)
 		If err!=noerr
 			Return err
 		EndIf
+		sd c
 		If number==ifnr
 			If close2==elsenr
 				Set number elsenr
-				set guardian 1
+				setcall c prevcond()
+				if c==(ifinscribe)
+					call Message("Warning: ENDELSEIF not matching IF")
+				endif
 			Else
 				Set loop loopstop
 			EndElse
 		EndIf
 		If number==elsenr
-			Data cl#1
-			Call getcontplusReg(structure,#cl)
-			Sub cl dsz
-			Data conditionsterminator#1
-			Set conditionsterminator cl#
-			Data term=ifinscribe
-			If conditionsterminator==term
-				if guardian==1
-					call Message("Warning: ENDELSEIF not matching IF")
-				endif
+			setcall c prevcond()
+			if c==(ifinscribe)
 				Set loop loopstop
-			EndIf
-			set guardian 2
+			endif
 		EndIf
 	EndWhile
 
@@ -234,6 +219,13 @@ Function conditionscondend(data close1,data close2)
 	Set ptrReg# Reg
 	Return err
 EndFunction
+function prevcond()
+	vData cl#1
+	vData structure%ptrconditionsloops
+	Call getcontplusReg(structure,#cl)
+	Sub cl (dwsz)
+	return cl#
+endfunction
 
 Function closeifopenelse()
 	Data err#1
@@ -253,3 +245,34 @@ Function closeifopenelse()
 	SetCall err condbeginwrite(elsenr)
 	Return err
 EndFunction
+
+#err
+function continue()
+	sd regnr
+	sd structure
+	vData condloop%ptrconditionsloops
+	call getcontandcontReg(condloop,#structure,#regnr)
+	if regnr!=0
+		sd start;set start structure
+		add structure regnr
+		while start!=structure
+			sd type
+			sub structure (dwsz)
+			set type structure#
+			if type==(ifinscribe)
+				sub structure (dwsz)
+				set type structure#
+			endif
+			sub structure (dwsz)
+			if type==(whilenumber)
+				vdata ptrcodesec%ptrcodesec
+				sd codeoffset
+				call getcontReg(ptrcodesec,#codeoffset)
+				Add codeoffset (backjumpsize)
+				sd err;setcall err jumpback(codeoffset,structure)
+				return err
+			endif
+		endwhile
+	endif
+	return "There is no loop to continue."
+endfunction
