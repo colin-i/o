@@ -32,3 +32,5 @@ Else
 #cENDELSEIF
 	SetCall errormsg conditionscondend((ifnumber),(elsenumber))
 EndElse
+#cBREAK
+#cCONTINUE
