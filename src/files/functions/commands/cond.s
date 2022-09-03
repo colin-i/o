@@ -259,18 +259,16 @@ function continue()
 			sd type
 			sub structure (dwsz)
 			set type structure#
-			if type==(ifinscribe)
+			if type!=(ifinscribe)
 				sub structure (dwsz)
-				set type structure#
-			endif
-			sub structure (dwsz)
-			if type==(whilenumber)
-				vdata ptrcodesec%ptrcodesec
-				sd codeoffset
-				call getcontReg(ptrcodesec,#codeoffset)
-				Add codeoffset (backjumpsize)
-				sd err;setcall err jumpback(codeoffset,structure)
-				return err
+				if type==(whilenumber)
+					vdata ptrcodesec%ptrcodesec
+					sd codeoffset
+					call getcontReg(ptrcodesec,#codeoffset)
+					Add codeoffset (backjumpsize)
+					sd err;setcall err jumpback(codeoffset,structure)
+					return err
+				endif
 			endif
 		endwhile
 	endif
