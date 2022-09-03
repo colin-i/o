@@ -110,14 +110,14 @@ Function condend(data number)
 		Add codeoffset (backjumpsize)
 	EndIf
 	Call getcont(condloop,ptrstructure)
-	Add structure regnr
+	Add structure ptrcReg#
 	sd end;set end structure
 
 	sd err;setcall err condendtest(#structure,number,codeoffset)
 	if err==(noerror)
 		If number==whilenr
 			setcall err jumpback(codeoffset,structure)
-			If err!=noerr
+			If err!=(noerror)
 				Return err
 			EndIf
 		EndIf
@@ -161,6 +161,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 					#move it to last to match the reg set outside
 					#and move ifinscribe if it is the case
 					#ignore type, it will only be removed outside
+					#don't increase size to align ifinscribe and just swap
 					sub conds (dwsz)
 					sd size
 					if conds#==(ifinscribe)
