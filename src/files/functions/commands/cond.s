@@ -136,7 +136,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 	sd conds;set conds p_conds#
 
 	#for breaks inside conditions
-	sd end;set end conds
+	sd last;set last conds
 
 	while 1==1
 		Data lastcondition#1
@@ -155,31 +155,30 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 			Return _difcloseerr
 		else
 			if number!=(whilenumber)
-				sd cursor;set cursor conds
-				add cursor (2*dwsz)
-				if cursor!=end
+				sub last (2*dwsz)
+				if conds!=last
 					#move it to last to match the reg set outside
 					#and move ifinscribe if it is the case
 					#ignore type, it will only be removed outside
 					#don't increase size to align ifinscribe and just swap
-					sub conds (dwsz)
+
+					sd cursor;set cursor conds
+					sub cursor (dwsz)
 					sd size
-					if conds#==(ifinscribe)
+					if cursor#==(ifinscribe)
 						set size (2*dwsz)
 					else
 						set size (dwsz)
-						add conds (dwsz)
+						add cursor (dwsz)
 					endelse
 					sd aux#2
-					call memtomem(aux,conds,size)
-					while cursor!=end
-						call memtomem(conds,cursor,(2*dwsz))
+					call memtomem(aux,cursor,size)
+					while conds!=last
 						add conds (2*dwsz)
+						call memtomem(cursor,conds,(2*dwsz))
 						add cursor (2*dwsz)
 					endwhile
-					call memtomem(conds,aux,size)
-					sub cursor (2*dwsz)
-					set conds cursor
+					call memtomem(cursor,aux,size)
 				endif
 			endif
 			set p_conds# conds
