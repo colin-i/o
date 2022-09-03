@@ -4,6 +4,7 @@ Const ifinscribe=-1
 Const ifnumber=0
 Const elsenumber=1
 Const whilenumber=2
+Const breaknumber=3
 
 #Const condmiscs=whilenumber+1
 

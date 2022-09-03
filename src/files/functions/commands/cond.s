@@ -87,79 +87,124 @@ EndFunction
 
 #err
 Function condend(data number)
-	Data regnr#1
-	Data structure#1
-	Data ptrstructure^structure
 	Data condloop%ptrconditionsloops
-	Call getcont(condloop,ptrstructure)
 	Data ptrcReg#1
 	Data ptrptrcReg^ptrcReg
-	Call getptrcontReg(condloop,ptrptrcReg)
-	Set regnr ptrcReg#
 
-	Data zero=0
-	If regnr==zero
+	Call getptrcontReg(condloop,ptrptrcReg)
+	If ptrcReg#==0
 		Chars uncloseerr="Unexpected condition/loop close command."
 		Str _uncloseerr^uncloseerr
 		Return _uncloseerr
 	EndIf
 
-	Data dsz=dwsz
-	Sub regnr dsz
-	Add structure regnr
-
-	Data lastcondition#1
-	Set lastcondition structure#
-
-	If lastcondition!=number
-		Chars difcloseerr="The previous condition/loop is from a different type."
-		Str _difcloseerr^difcloseerr
-		Return _difcloseerr
-	EndIf
-
-	Sub regnr dsz
-	Sub structure dsz
-
-	Data jumploc#1
-	Set jumploc structure#
-
 	Data codeoffset#1
 	Data ptrcodeoff^codeoffset
 	Data codesec%ptrcodesec
+	Data whilenr=whilenumber
+	Data structure#1
+	Data ptrstructure^structure
 
 	Call getcontReg(codesec,ptrcodeoff)
-
-	Data noerr=noerror
-
-	Data whilenr=whilenumber
 	If number==whilenr
-		sd err
 		Add codeoffset (backjumpsize)
-		setcall err jumpback(codeoffset,structure)
-		If err!=noerr
-			Return err
-		EndIf
-		Sub regnr dsz
 	EndIf
+	Call getcont(condloop,ptrstructure)
+	Add structure regnr
+	sd end;set end structure
 
-	Data writeloc#1
-	Data ptrwriteloc^writeloc
-	Call getcont(codesec,ptrwriteloc)
+	sd err;setcall err condendtest(#structure,number,codeoffset)
+	if err==(noerror)
+		If number==whilenr
+			setcall err jumpback(codeoffset,structure)
+			If err!=noerr
+				Return err
+			EndIf
+		EndIf
 
-	Add writeloc jumploc
-	Sub writeloc dsz
-	Sub codeoffset jumploc
+		call condendwrite(structure,codeoffset)
 
-	Set writeloc# codeoffset
-
-	Set ptrcReg# regnr
-
-	Return noerr
+		sub end structure
+		sub end (dwsz)
+		Set ptrcReg# end
+	endif
+	return err
 EndFunction
 
 #err
+function condendtest(sv p_conds,sd number,sd codeoffset)
+	sd conds;set conds p_conds#
+
+	#for breaks inside conditions
+	sd end;set end conds
+
+	while 1==1
+		Data lastcondition#1
+
+		sub conds (dwsz)
+		Set lastcondition conds#
+		sub conds (dwsz)
+
+		if lastcondition==(breaknumber)
+			if number==(whilenumber)
+				call condendwrite(conds,codeoffset)
+			endif
+		elseIf lastcondition!=number
+			Chars difcloseerr="The previous condition/loop is from a different type."
+			vStr _difcloseerr^difcloseerr
+			Return _difcloseerr
+		else
+			if number!=(whilenumber)
+				sd cursor;set cursor conds
+				add cursor (2*dwsz)
+				if cursor!=end
+					#move it to last to match the reg set outside
+					#and move ifinscribe if it is the case
+					#ignore type, it will only be removed outside
+					sub conds (dwsz)
+					sd size
+					if conds#==(ifinscribe)
+						set size (2*dwsz)
+					else
+						set size (dwsz)
+						add conds (dwsz)
+					endelse
+					sd aux#2
+					call memtomem(aux,conds,size)
+					while cursor!=end
+						call memtomem(conds,cursor,(2*dwsz))
+						add conds (2*dwsz)
+						add cursor (2*dwsz)
+					endwhile
+					call memtomem(conds,aux,size)
+					sub cursor (2*dwsz)
+					set conds cursor
+				endif
+			endif
+			set p_conds# conds
+			return (noerror)
+		Endelse
+	endwhile
+endfunction
+
+function condendwrite(sd structure,sd codeoffset)
+	Data jumploc#1
+	Data codesec%ptrcodesec
+	vData writeloc#1
+	Data ptrwriteloc^writeloc
+
+	Call getcont(codesec,ptrwriteloc)
+
+	Set jumploc structure#
+	Sub codeoffset jumploc
+	Add writeloc jumploc
+	Sub writeloc (dwsz)
+
+	Set writeloc# codeoffset
+endfunction
+
+#err
 function jumpback(sd codeoffset,sd condstruct)
-	sub condstruct (dwsz)
 	sub codeoffset condstruct#
 	neg codeoffset
 	sd err
