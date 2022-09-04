@@ -8,7 +8,7 @@ FULLOBJO = ${FULLOBJ}.o
 OBT = ${OB}.txt
 OCOMP=o
 
-OFLAGS=
+#OFLAGS=
 
 %.o: ${FULLOBJS}
 	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else ${OCOMP} $< ${OFLAGS};fi

@@ -740,13 +740,17 @@
         EndElseIf</a>
 	</p>
 </p>
-<h3><a name="looping">XI. Looping</a></h3>
+<h3><a name="looping">X. Looping</a></h3>
 <p>
 	<a class="code">
-	sd a=3<br>
+	sd a=5<br>
 	sd b=0<br>
 	while b&lt;a<br>
 &emsp;	inc b<br>
+&emsp;	if b==1<br>
+&emsp;&emsp;	continue<br>
+&emsp;	endif<br>
+&emsp;	break<br>
 	endwhile</a>
 </p>
 <h3><a name="includingfiles">XI. Including files</a></h3>

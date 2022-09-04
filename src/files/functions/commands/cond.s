@@ -1,5 +1,4 @@
 
-
 #err
 Function coderegtocondloop()
 	Data codesec%ptrcodesec
@@ -111,7 +110,7 @@ Function condend(data number)
 	EndIf
 	Call getcont(condloop,ptrstructure)
 	Add structure ptrcReg#
-	sd end;set end structure
+	sd reg;set reg structure
 
 	sd err;setcall err condendtest(#structure,number,codeoffset)
 	if err==(noerror)
@@ -120,13 +119,13 @@ Function condend(data number)
 			If err!=(noerror)
 				Return err
 			EndIf
+			add reg (dwsz)   #to match for ptrcReg
 		EndIf
 
 		call condendwrite(structure,codeoffset)
 
-		sub end structure
-		sub end (dwsz)
-		Set ptrcReg# end
+		sub reg structure
+		Sub ptrcReg# reg
 	endif
 	return err
 EndFunction
@@ -172,13 +171,13 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 						add cursor (dwsz)
 					endelse
 					sd aux#2
-					call memtomem(aux,cursor,size)
+					call memtomem(#aux,cursor,size)
 					while conds!=last
 						add conds (2*dwsz)
 						call memtomem(cursor,conds,(2*dwsz))
 						add cursor (2*dwsz)
 					endwhile
-					call memtomem(cursor,aux,size)
+					call memtomem(cursor,#aux,size)
 				endif
 			endif
 			set p_conds# conds
@@ -205,6 +204,7 @@ endfunction
 
 #err
 function jumpback(sd codeoffset,sd condstruct)
+	sub condstruct (dwsz)
 	sub codeoffset condstruct#
 	neg codeoffset
 	sd err
@@ -318,4 +318,33 @@ function continue()
 		endwhile
 	endif
 	return "There is no loop to continue."
+endfunction
+
+#err
+function break()
+	sd regnr
+	sd structure
+	vData condloop%ptrconditionsloops
+	call getcontandcontReg(condloop,#structure,#regnr)
+	if regnr!=0
+		sd start;set start structure
+		add structure regnr
+		while start!=structure
+			sd type
+			sub structure (dwsz)
+			set type structure#
+			if type!=(ifinscribe)
+				sub structure (dwsz)
+				if type==(whilenumber)
+					sd err
+					SetCall err condjump(0)
+					if err==(noerror)
+						SetCall err condbeginwrite((breaknumber))
+					endif
+					Return err
+				endif
+			endif
+		endwhile
+	endif
+	return "There is no loop to break."
 endfunction

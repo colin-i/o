@@ -12,7 +12,7 @@ Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHARS_c="CHARS";Chars cSD_c="SD";
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
 Chars cRETURN_c="RETURN";Chars cINCST_c="INCST";Chars cINC_c="INC";Chars cDECST_c="DECST";Chars cDEC_c="DEC";Chars cNEG_c="NEG";Chars cNOT_c="NOT";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR";Chars cEXIT_c="EXIT"
 Chars cCALL_c="CALL"
-Chars cIF_c="IF";Chars cENDIF_c="ENDIF";Chars cELSEIF_c="ELSEIF";Chars cELSE_c="ELSE";Chars cENDELSEIF_c="ENDELSEIF";Chars cENDELSE_c="ENDELSE";Chars cWHILE_c="WHILE";Chars cENDWHILE_c="ENDWHILE";Chars cCONTINUE_c="CONTINUE"
+Chars cIF_c="IF";Chars cENDIF_c="ENDIF";Chars cELSEIF_c="ELSEIF";Chars cELSE_c="ELSE";Chars cENDELSEIF_c="ENDELSEIF";Chars cENDELSE_c="ENDELSE";Chars cWHILE_c="WHILE";Chars cENDWHILE_c="ENDWHILE";Chars cBREAK_c="BREAK";Chars cCONTINUE_c="CONTINUE"
 Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX"
 Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRYLINUX_c="ENTRYLINUX";Chars cENTRY_c="ENTRY"
 Chars cENDFUNCTION_c="ENDFUNCTION"
@@ -243,6 +243,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			data *^cENDWHILE_c
 			Data *=cCONDITIONS
 			Data *=cENDWHILE
+			Data *=spacenotreq
+		Const cBREAK=!-cCONDITIONS_top
+			data *^cBREAK_c
+			Data *=cCONDITIONS
+			Data *=cBREAK
 			Data *=spacenotreq
 		Const cCONTINUE=!-cCONDITIONS_top
 			data *^cCONTINUE_c

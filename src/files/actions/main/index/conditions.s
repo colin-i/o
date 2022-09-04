@@ -30,7 +30,8 @@ ElseIf subtype==(cWHILE)
 	EndIf
 ElseIf subtype==(cENDWHILE)
 	SetCall errormsg condend((whilenumber))
-#ElseIf subtype==(cBREAK)
+ElseIf subtype==(cBREAK)
+	setcall errormsg break()
 Else
 #cCONTINUE
 	setcall errormsg continue()
