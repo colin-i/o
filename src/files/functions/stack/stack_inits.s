@@ -31,14 +31,12 @@ endfunction
 
 function stack_get_relative(sd location)
 	sd mask
-	data maskoffset=maskoffset
-	data to_relative=tostack_relative
-
 	set mask location
-	add mask maskoffset
+	add mask (maskoffset)
 	set mask mask#
-	div mask to_relative
-	data regopcode_mask=regopcode_mask
-	and mask regopcode_mask
-	return mask
+	and mask (stack_relative)
+	if mask==0
+		return (ebxregnumber)
+	endif
+	return (ebpregnumber)
 endfunction

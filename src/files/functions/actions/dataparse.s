@@ -64,14 +64,14 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 		else
 			if stackoffset==zero
 				#stack free declared
-				data ebx_relative=ebxregnumber*tostack_relative
 				setcall value getramp_ebxrel()
-				or mask ebx_relative
+				#data ebx_relative=ebxregnumber*tostack_relative
+				#or mask ebx_relative
 			else
 				#stack function argument
-				data ebp_relative=ebpregnumber*tostack_relative
 				set value stackoffset
-				or mask ebp_relative
+				#data ebp_relative=ebpregnumber*tostack_relative
+				or mask (stack_relative)
 			endelse
 			or mask (stackbit)
 			sd vbool

@@ -54,7 +54,7 @@ Const ebpregnumber=5
 Const esiregnumber=6
 Const ediregnumber=7
 Const ahregnumber=4
-Const regopcode_mask=0x7
+#Const regopcode_mask=0x7
 
 #mixt
 Const Notregopcode=2
