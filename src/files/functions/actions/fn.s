@@ -104,8 +104,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 				or mask (x86_64bit)
 			endif
 			sd err_pb;setcall err_pb global_err_pBool()
-			if err_pb#==(TRUE)
-				or mask (aftercallbit)
+			if err_pb#==(FALSE)
+				or mask (aftercallthrowlessbit)
 			endif
 
 			SetCall err addaref(value,ptrcontent,ptrsize,sz,fnnr,mask)
@@ -331,14 +331,17 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	Set ptrfnmask ptrdata
 	Add ptrfnmask (maskoffset)
 
-	Data fnmask#1
+	data mask#1
+	Data idatamask#1
 	Data idatafn=idatabitfunction
 	Data ptrobject%ptrobject
-	Set fnmask ptrfnmask#
-	And fnmask idatafn
+	Set mask ptrfnmask#
+	set idatamask mask
+	And idatamask idatafn
 
+	#set is_valuedata_call boolindirect
 	If ptrobject#==(FALSE)
-		If fnmask==idatafn
+		If idatamask==idatafn
 			Set boolindirect (TRUE)
 		EndIf
 	EndIf
@@ -351,7 +354,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		const directcallsize=1+dwsz
 		data ptrdirectcalloff^directcalloff
 
-		If fnmask!=idatafn
+		If idatamask!=idatafn
 			set directcall 0xe8
 			setcall err unresolvedLocal(1,code,ptrdata,ptrdirectcalloff)
 			If err!=(noerror);Return err;EndIf
@@ -371,7 +374,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		EndElse
 	Else
 		#this at object is call data() but the reloc is outside of this function
-		if fnmask==idatafn
+		if idatamask==idatafn
 			data ptrvirtualimportsoffset%ptrvirtualimportsoffset
 			SetCall err unresolvedcallsfn(code,1,ptrvirtualimportsoffset) #,ptrdata#
 			If err!=(noerror);Return err;EndIf
@@ -387,8 +390,10 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		Return err
 	EndIf
 
-	sd global_err_pB;setcall global_err_pB global_err_pBool()
-	if global_err_pB#!=(FALSE)
+	#afterbit throwless is at fns imps if before aftercall; at values is throwless after aftercall if sign set
+	sd tless=aftercallthrowlessbit
+	and tless mask
+	if tless==0
 		sd global_err_ptr;setcall global_err_ptr global_err_p()
 		Data ptrextra%ptrextra
 		If ptrobject#==(FALSE)

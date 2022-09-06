@@ -140,7 +140,8 @@ if loop==1
 				if parses==(pass_fns_imps);Include "./index/format.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cDECLAREAFTERCALL)
-				if parses==(pass_write);Include "./index/aftercall.s";endif
+				if parses==(pass_write);Include "./index/aftercall.s";
+				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 				set g_e_b_p# (TRUE)
 			ElseIf commandset==(cWARNING)
 				Include "./index/warning.s"

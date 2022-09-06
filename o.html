@@ -326,18 +326,26 @@
 	<br>
 	<b>ImportAfterCall</b> is used in objects to import an extern defined AfterCall.
 	<br>
+	<b>^</b> sign will create throwless variables.
+	<br>
 	<a class="code">
-	aftercall qwer<br>
-	const z^qwer<br>
+	function pre_test()<br>
+		return 3<br>
+	endfunction<br>
+	aftercall interrupt<br>
 	function test()<br>
-	str x%z<br>
-	set x# 1<br>
-	return 3<br>
+		return 3<br>
 	endfunction<br>
 	entry main()<br>
+	set interrupt 1<br>
+	call pre_test()<br>
+	#it is still going on<br>
+	value ^throwless^test<br>
+	call throwless()<br>
+	#it is still going on<br>
 	call test()<br>
-	return 5<br>
-	#this return will not be executed and the last EAX(RAX) will be 3</a>
+	#here is the end, the program last return was 3<br>
+	return 5</a>
 	</p>
 </p>
 

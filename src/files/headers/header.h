@@ -13,8 +13,8 @@ Const stack_relative=0x08
 	#nostackbit: datapointbit
 Const datapointbit=0x08
 #bit offset 4:
-#bit offset 5: 1 means apply aftercall
-const aftercallbit=0x20
+#bit offset 5: 1 means ignore aftercall
+const aftercallthrowlessbit=0x20
 #bit offset 6: is functionX/importX
 const x86_64bit=0x40
 #bit offset 7; pointer bit (sv# with rex, sd# without rex)

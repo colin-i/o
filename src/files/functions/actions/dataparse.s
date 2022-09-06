@@ -107,26 +107,41 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 	Data zero=0
 	If valsize==zero
 		Chars _namecverr="Name for variable/constant expected."
-		Str namecverr^_namecverr
+		vStr namecverr^_namecverr
 		Return namecverr
 	EndIf
 
 	data content#1
 	set content ptrcontent#
-	Chars unrefoption#1
-	Set unrefoption content#
+	Chars firstchar#1
+	Set firstchar content#
 	Chars unrefsign="*"
 
-	If unrefoption!=unrefsign
+	If firstchar!=unrefsign
+		if firstchar==(asciicirc)   #throwless if on a throwing area
+			If typenumber==(constantsnumber)
+				Return "Unexpected throwless sign ('^') at constant declaration."
+			EndIf
+			dec valsize
+			If valsize==zero
+				Return namecverr
+			endif
+			or mask (aftercallthrowlessbit)
+			call stepcursors(ptrcontent,ptrsize)
+		elseIf typenumber!=(constantsnumber)
+			sd global_err_pB;setcall global_err_pB global_err_pBool()
+			if global_err_pB#==(FALSE)
+				or mask (aftercallthrowlessbit)
+			endif
+		endelseif
 		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,stackoffset,mask)
 		If err!=noerr
 			Return err
 		EndIf
 	Else
-		Data constnr=constantsnumber
-		If typenumber==constnr
+		If typenumber==(constantsnumber)
 			Chars unrefconstant="Unexpected unreference sign ('*') at constant declaration."
-			Str ptrunrefconstant^unrefconstant
+			vStr ptrunrefconstant^unrefconstant
 			Return ptrunrefconstant
 		EndIf
 		Call advancecursors(ptrcontent,ptrsize,valsize)
