@@ -339,7 +339,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	set idatamask mask
 	And idatamask idatafn
 
-	#set is_valuedata_call boolindirect
+	sd is_valuedata_call;set is_valuedata_call boolindirect
 	If ptrobject#==(FALSE)
 		If idatamask==idatafn
 			Set boolindirect (TRUE)
@@ -393,6 +393,14 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	#afterbit throwless is at fns imps if before aftercall; at values is throwless after aftercall if sign set
 	sd tless=aftercallthrowlessbit
 	and tless mask
+	if tless==0
+		if is_valuedata_call==(FALSE)
+			sd global_err_pB;setcall global_err_pB global_err_pBool()
+			if global_err_pB#==(FALSE)
+				set tless -1    #don't want to throw before aftercall
+			endif
+		endif
+	endif
 	if tless==0
 		sd global_err_ptr;setcall global_err_ptr global_err_p()
 		Data ptrextra%ptrextra
