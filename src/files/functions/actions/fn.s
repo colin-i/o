@@ -99,11 +99,15 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 			else
 				set mask 0
 			endelse
-
 			setcall scope64 is_funcx_subtype(subtype)
 			if scope64==(TRUE)
 				or mask (x86_64bit)
 			endif
+			sd err_pb;setcall err_pb global_err_pBool()
+			if err_pb#==(TRUE)
+				or mask (aftercallbit)
+			endif
+
 			SetCall err addaref(value,ptrcontent,ptrsize,sz,fnnr,mask)
 			If err!=noerr
 				Return err

@@ -32,7 +32,7 @@ else
 		endif
 	endelse
 	if errormsg==(noerror)
-		set g_e_b_p# (TRUE)
+		#set g_e_b_p# (TRUE)
 		if object==(TRUE)
 			set g_e_p# tableReg
 			if p_is_for_64_value#==(TRUE)

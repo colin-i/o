@@ -60,7 +60,7 @@ sd p_is_for_64_value;setcall p_is_for_64_value p_is_for_64();set p_is_for_64_val
 call val64_init()
 
 #afterCall
-data g_e_b_p#1;setcall g_e_b_p global_err_pBool();set g_e_b_p# (FALSE)
+vdata g_e_b_p#1;setcall g_e_b_p global_err_pBool();set g_e_b_p# (FALSE)
 
 set warn_hidden_whitespaces_times 0
 

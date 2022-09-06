@@ -89,6 +89,7 @@ if loop==1
 							ElseIf commandset==(cLIBRARY)
 							elseif commandset==(cINCLUDE)
 							Elseif commandset==(cFORMAT)
+							Elseif commandset==(cDECLAREAFTERCALL)  #and import
 							elseif commandset==(cWARNING)    #for addaref
 							else;set commandset (cCOMMENT);endelse
 					else
@@ -139,7 +140,8 @@ if loop==1
 				if parses==(pass_fns_imps);Include "./index/format.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cDECLAREAFTERCALL)
-				Include "./index/aftercall.s"
+				if parses==(pass_write);Include "./index/aftercall.s";endif
+				set g_e_b_p# (TRUE)
 			ElseIf commandset==(cWARNING)
 				Include "./index/warning.s"
 			ElseIf commandset==(cCALLEX)

@@ -77,6 +77,10 @@ If errormsg==noerr
 								if subtype==(cIMPORTX)
 									or import_ref_mask (x86_64bit)
 								endif
+								if g_e_b_p#==(TRUE)
+									or import_ref_mask (aftercallbit)
+								endif
+
 								Data functionsnr=functionsnumber
 								SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
 							endIf

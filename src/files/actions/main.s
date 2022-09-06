@@ -99,6 +99,7 @@ While includesReg!=null
 					if parses==(pass_fns_imps)
 						set parses (pass_calls)
 						setcall errormsg align_alloc(functionTagIndex)
+						set g_e_b_p# (FALSE)  #in case was set, for writes
 					else
 						set parses (pass_write)
 						set logfile logaux
