@@ -20,5 +20,15 @@ elseif subtype==(cVALUE)
 else
 	sd declare_typenumber
 	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype)
-	SetCall errormsg dataassign(pcontent,pcomsize,declare_typenumber,0)
+	sd is_stack
+	sd typenumber
+	setcall typenumber stackfilter(declare_typenumber,#is_stack)
+	if is_stack==true
+		#must be at the start
+		call entryscope_verify_code()
+	endif
+	#	SetCall errormsg dataassign_ex(pcontent,pcomsize,typenumber,0,(TRUE))
+	#else
+		SetCall errormsg dataassign_ex(pcontent,pcomsize,typenumber,0,is_stack)
+	#endelse
 endelse

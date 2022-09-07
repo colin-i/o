@@ -416,6 +416,6 @@ const odd_align=1
 data functionTagIndex#1  #need to be at call pass and last pass(scopes) and scopes alloc
 const ptrfunctionTagIndex^functionTagIndex
 
-const pass_fns_imps=3
+const pass_init=3
 const pass_calls=2
 const pass_write=1

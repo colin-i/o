@@ -7,7 +7,7 @@ data contentlineinclude=lineoffile_offset
 
 data dot_comma_end#1;set dot_comma_end 0
 
-set parses (pass_fns_imps)
+set parses (pass_init)
 data logaux#1
 set logaux logfile
 set logfile negative
@@ -96,7 +96,7 @@ While includesReg!=null
 					set errormsg endfnexp
 					Call Message(errormsg)
 				Else
-					if parses==(pass_fns_imps)
+					if parses==(pass_init)
 						set parses (pass_calls)
 						setcall errormsg align_alloc(functionTagIndex)
 						set g_e_b_p# (FALSE)  #in case was set, for writes

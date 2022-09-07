@@ -1,6 +1,6 @@
 
 
-if parses==(pass_fns_imps)
+if parses==(pass_init)
 	if innerfunction==false
 		Chars unexef="Unexpected ENDFUNCTION command."
 		Str unexeferr^unexef

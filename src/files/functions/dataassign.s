@@ -1,20 +1,17 @@
 
 
 
-
 #err
 Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
+	sd err
+	setcall err dataassign_ex(ptrcontent,ptrsize,typenumber,long_mask,(FALSE))
+	return err
+endfunction
+
+#err
+Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd stack)
 	Data false=FALSE
 	Data true=TRUE
-	data stack#1
-	data ptrS^stack
-
-	setcall typenumber stackfilter(typenumber,ptrS)
-	if stack==true
-		#######must be at the start
-		call entryscope_verify_code()
-	endif
-
 	Str err#1
 	Data noerr=noerror
 	Chars sign#1

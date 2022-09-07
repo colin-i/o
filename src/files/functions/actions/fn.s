@@ -86,7 +86,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data declare,sd subtype,sd e
 		Data ptrvalue^value
 		sd scope64
 		data p_parses%ptr_parses
-		if p_parses#==(pass_fns_imps)
+		if p_parses#==(pass_init)
 			setcall err fnimp_exists(content,sz) #it is at first pass when only fns and imports are
 			if err!=(noerror)
 				return err
