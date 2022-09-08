@@ -84,7 +84,7 @@ if loop==1
 					if parses==(pass_init)
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 						if formatdefined==0;Set formatdefined 1;endif
-						if commandset==(cDECLARE)        #needing to find virtual start
+						if commandset==(cDECLARE)        #needing to find virtual start, at object is difficult, there is no virtual, ostrip will use: ld...-Tdata calculated, objcopy --update-section, write memsize, ounused will include virtual point
 						elseIf commandset==(cIMPORTLINK) #needing importx here
 						elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
 						ElseIf commandset==(cLIBRARY)
