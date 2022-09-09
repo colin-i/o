@@ -162,44 +162,23 @@ Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd st
 			Return noerr
 		EndElse
 	ElseIf sign==(reserveascii)
-		SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
-		If err!=noerr
-			Return err
-		EndIf
-		Chars negreserve="Unexpected negative value at reserve declaration."
-		Str ptrnegreserve^negreserve
-		If value<zero
-			Return ptrnegreserve
-		EndIf
-		Data dsz=dwsz
-		if stack==false
-			If typenumber!=charsnr
-				SetCall err maxvaluecheck(value)
-				If err!=noerr
-					Return err
-				EndIf
-				Mult value dsz
-				if long_mask!=0
-					mult value 2
+		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask)
+		if err==(noerror)
+			if stack==false
+				sd p_nul_res_pref%p_nul_res_pref
+				if p_nul_res_pref#==(TRUE)
+					sd datacont;call getcontplusReg(ptrdatasec,#datacont)
 				endif
-			EndIf
-			If value<zero
-				return ptrnegreserve
-			endIf
-			sd p_nul_res_pref%p_nul_res_pref
-			if p_nul_res_pref#==(TRUE)
-				sd datacont;call getcontplusReg(ptrdatasec,#datacont)
-			endif
-			SetCall err addtosec(0,value,ptrdatasec)
-			If err!=noerr;Return err;EndIf
-			if p_nul_res_pref#==(TRUE)
-				call memset(datacont,0,value)
-			endif
-		else
-			Mult value dsz
-			call growramp(value)
-		endelse
-		Return (noerror)
+				SetCall err addtosec(0,value,ptrdatasec)
+				If err!=noerr;Return err;EndIf
+				if p_nul_res_pref#==(TRUE)
+					call memset(datacont,0,value)
+				endif
+			else
+				call growramp(value)
+			endelse
+		endif
+		Return err
 	Else
 	#^ pointer
 		Set content ptrcontent#
@@ -378,5 +357,37 @@ function add_string_to_data(sd ptrcontent,sd ptrsize)
 	If err!=(noerror)
 		return err
 	endif
+	return (noerror)
+endfunction
+
+#err
+function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask)
+	sd err
+	SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
+	If err!=(noerror)
+		Return err
+	EndIf
+	Chars negreserve="Unexpected negative value at reserve declaration."
+	vStr ptrnegreserve^negreserve
+	If ptrvalue#<0
+		Return ptrnegreserve
+	EndIf
+	if is_stack==(FALSE)
+		If typenumber!=(charsnumber)
+			SetCall err maxvaluecheck(ptrvalue#)
+			If err!=(noerror)
+				Return err
+			EndIf
+			Mult ptrvalue# (dwsz)
+			if long_mask!=0
+				mult ptrvalue# 2
+			endif
+		EndIf
+		If ptrvalue#<0
+			return ptrnegreserve
+		endIf
+	else
+		Mult ptrvalue# :
+	endelse
 	return (noerror)
 endfunction
