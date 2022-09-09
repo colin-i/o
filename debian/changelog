@@ -1,3 +1,9 @@
+ocompiler (1-5+42) xenial; urgency=medium
+
+  * fix stack reserve
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 09 Sep 2022 10:01:55 +0300
+
 ocompiler (1-5+41) xenial; urgency=medium
 
   * throw management
