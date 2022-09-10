@@ -87,6 +87,35 @@ If object==false
 		Set elf32_phdr_p_vaddr_dyn elf32_phdr_p_vaddr_interp
 		Add elf32_phdr_p_vaddr_dyn interpretersize
 
+
+
+
+
+		#the entry is not taken without this
+		data test1#1
+		data test2#1
+		set test1 elf32_phdr_p_vaddr_interp
+		div test1 page_sectionalignment
+		set test2 elf32_phdr_p_vaddr_dyn
+		div test2 page_sectionalignment
+		if test2==test1
+			add elf32_phdr_p_vaddr_dyn page_sectionalignment
+		endif
+		#recent tests (after some years have passed):
+		#	dynamic section must be in a load segment by gdb warning
+		#	segment=program header
+		#	readelf,gdb,objdump are not error/warning but the executable can only run with /lib/ld-linux.so.2 ./prog
+		#		for printf or something else, here at libs
+
+		#"ELF load command address/offset not page-aligned"
+		#but the fact was to align
+		#and elf32_phdr_p_vaddr_dyn (~page_sectionalignment^(page_sectionalignment-1)|page_sectionalignment)
+		#~(page_sectionalignment-1)
+
+
+
+
+
 		Set elf32_phdr_p_paddr_dyn elf32_phdr_p_vaddr_dyn
 
 		Set elf32_phdr_p_filesz_dyn tableReg
@@ -98,26 +127,20 @@ If object==false
 		Inc elf32_ehd_e_phnum
 
 		Set elf32_phdr_p_offset_lib elf32_phdr_p_offset_dyn
-		Add elf32_phdr_p_offset_lib elf32_phdr_p_filesz_dyn
+		#Add elf32_phdr_p_offset_lib elf32_phdr_p_filesz_dyn
+		data elf_str_offset#1
+		set elf_str_offset elf32_phdr_p_offset_lib
+		Add elf_str_offset elf32_phdr_p_filesz_dyn
 
 		set elf32_phdr_p_vaddr_lib elf32_phdr_p_vaddr_dyn
-		Add elf32_phdr_p_vaddr_lib elf32_phdr_p_filesz_dyn
-
-		data test1#1
-		data test2#1
-		set test1 elf32_phdr_p_vaddr_interp
-		div test1 page_sectionalignment
-		set test2 elf32_phdr_p_vaddr_lib
-		div test2 page_sectionalignment
-		if test2==test1
-			add elf32_phdr_p_vaddr_lib page_sectionalignment
-		endif
+		#Add elf32_phdr_p_vaddr_lib elf32_phdr_p_filesz_dyn
 
 		Set elf32_phdr_p_paddr_lib elf32_phdr_p_vaddr_lib
 
 		##resolve libraries
 		###hash
 		Set elf32_dyn_d_ptr_hash elf32_phdr_p_vaddr_lib
+		Add elf32_dyn_d_ptr_hash elf32_phdr_p_filesz_dyn
 
 		#
 		Set elf32_phdr_p_filesz_lib elf_hash_minsize
@@ -161,8 +184,6 @@ If object==false
 		Set elf32_dyn_d_val_strsz namesReg
 
 		#stroff
-		data elf_str_offset#1
-		set elf_str_offset elf32_phdr_p_offset_lib
 		add elf_str_offset elf32_phdr_p_filesz_lib
 
 		#
@@ -226,12 +247,13 @@ If object==false
 		Set importfileheaders elf_importfileheaders
 		Set sizeimportfileheaders elf_importfileheaders_size
 
-		Set virtualimportsoffset elf32_phdr_p_vaddr_lib
+		Set virtualimportsoffset elf32_dyn_d_ptr_hash
 		Add virtualimportsoffset elf32_phdr_p_filesz_lib
 		#commons#
 
 		#
 		Add elf32_phdr_p_filesz_lib elf_rel_entries_size
+		add elf32_phdr_p_filesz_lib elf32_phdr_p_filesz_dyn
 		#
 
 		Set elf32_phdr_p_memsz_lib elf32_phdr_p_filesz_lib
