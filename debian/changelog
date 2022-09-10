@@ -1,3 +1,9 @@
+ocompiler (1-5+43) xenial; urgency=medium
+
+  * old elf format with new rules,but crawling
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 10 Sep 2022 13:09:35 +0300
+
 ocompiler (1-5+42) xenial; urgency=medium
 
   * fix stack reserve
