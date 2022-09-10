@@ -150,7 +150,7 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 endfunction
 
 #er
-function getsign(str content,data size,data typenumber,str assigntype,data relocbool,data ptrsz,data stack)
+function getsign(str content,data size,str assigntype,data typenumber,data stack,data ptrsz,data relocbool)
 	data true=TRUE
 	data noerr=noerror
 	Data valsize#1
@@ -238,7 +238,7 @@ Function dataparse(data ptrcontent,data ptrsize,data typenumber,str assigntype,d
 
 	Data valsize#1
 	data ptrvalsize^valsize
-	setcall err getsign(content,size,typenumber,assigntype,relocbool,ptrvalsize,stack)
+	setcall err getsign(content,size,assigntype,typenumber,stack,ptrvalsize,relocbool)
 	If err!=noerr
 		Return err
 	EndIf
