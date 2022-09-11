@@ -88,7 +88,7 @@ if loop==1
 						#at object is difficult, there is no virtual, ostrip will use: ld...-Tdata calculated, objcopy --update-section, write memsize, ounused will include virtual point
 						#const at virtual start find
 						#	use offset on dataReg for !
-						#	const^ is not ok, use a mempbrk against ^ in declare.s at passes, init without ^,write only ^
+						#	const^ is not ok, init without ^,write only ^
 						#virtual.s,virtual_parse
 						#else
 						If commandset==(cIMPORTLINK) #needing importx here

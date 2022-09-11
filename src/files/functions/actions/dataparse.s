@@ -150,11 +150,14 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 endfunction
 
 #er
-function getsign(str content,data size,str assigntype,data typenumber,data stack,data ptrsz,data relocbool)
+function getsign(str content,data size,str assigntype,data typenumber,data stack,data ptrsz,data ptrrelocbool)
 	data true=TRUE
 	data noerr=noerror
 	Data valsize#1
 	Chars equalsign=assignsign
+
+	Set ptrrelocbool# (FALSE)
+
 	SetCall valsize valinmem_pipes(content,size,equalsign,ptrsz)
 	If valsize!=size
 		Set assigntype# equalsign
@@ -188,7 +191,7 @@ function getsign(str content,data size,str assigntype,data typenumber,data stack
 		EndIf
 		Set assigntype# pointersign
 		If typenumber!=constnr
-			Set relocbool# true
+			Set ptrrelocbool# true
 		EndIf
 		return noerr
 	endif
@@ -207,12 +210,11 @@ function getsign(str content,data size,str assigntype,data typenumber,data stack
 			Return ptrptrrelchar
 		EndElseIf
 		Set assigntype# equalsign
-		Set relocbool# true
+		Set ptrrelocbool# true
 		return noerr
 	endif
 
 	if stack==true
-const nosign=0
 		chars nosign=nosign
 		Set assigntype# nosign
 		return noerr
@@ -224,36 +226,14 @@ const nosign=0
 endfunction
 
 #err
-Function dataparse(data ptrcontent,data ptrsize,data typenumber,str assigntype,data relocbool,data stack,sd mask)
-	Str content#1
-	Data size#1
-	Data noerr=noerror
+Function dataparse(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd stack,sd mask)
 	Data false=FALSE
 	Data err#1
 
-	Set content ptrcontent#
-	Set size ptrsize#
-
-	Set relocbool# false
-
-	Data valsize#1
-	data ptrvalsize^valsize
-	setcall err getsign(content,size,assigntype,typenumber,stack,ptrvalsize,relocbool)
-	If err!=noerr
-		Return err
-	EndIf
 	if stack!=false
 		data totalmemvariables=totalmemvariables
 		add typenumber totalmemvariables
 	endif
 	SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,false,mask)
-	If err!=noerr
-		Return err
-	EndIf
-
-	chars nosign=nosign
-	if assigntype#!=nosign
-		Call stepcursors(ptrcontent,ptrsize)
-	endif
-	Return noerr
+	Return err
 EndFunction

@@ -419,3 +419,5 @@ const ptrfunctionTagIndex^functionTagIndex
 const pass_init=3
 const pass_calls=2
 const pass_write=1
+
+const nosign=0

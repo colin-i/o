@@ -2,21 +2,19 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask)
+Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd sign,sd valsize)
 	sd err
-	setcall err dataassign_ex(ptrcontent,ptrsize,typenumber,long_mask,(FALSE))
+	setcall err dataassign_ex(ptrcontent,ptrsize,typenumber,long_mask,(FALSE),sign,valsize)
 	return err
 endfunction
 
 #err
-Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd stack)
+Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd stack,sd sign,sd valsize)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
 	Data noerr=noerror
-	Chars sign#1
-	Str assignsign^sign
-	chars nosign=0
+	chars nosign=nosign
 
 	Data constantsnr=constantsnumber
 	Data charsnr=charsnumber
@@ -40,15 +38,16 @@ Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd st
 		#endelse
 		Call getcontReg(constantsstruct,ptroffset_const)
 	EndIf
-	SetCall err dataparse(ptrcontent,ptrsize,typenumber,assignsign,ptrrelocbool,stack,long_mask)
+	SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
 	If err!=noerr
 		Return err
 	EndIf
-	if assignsign#==nosign
+	if sign==nosign
 		#stack variable declared without assignation, only increment stack variables
 		call addramp()
 		Return noerr
 	endif
+	Call stepcursors(ptrcontent,ptrsize)
 
 	Data size#1
 	Set size ptrsize#
