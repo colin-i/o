@@ -1,15 +1,7 @@
 
 
-
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd sign,sd valsize)
-	sd err
-	setcall err dataassign_ex(ptrcontent,ptrsize,typenumber,long_mask,(FALSE),sign,valsize)
-	return err
-endfunction
-
-#err
-Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd stack,sd sign,sd valsize)
+Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd stack,sd sign,sd valsize)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -28,6 +20,7 @@ Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd st
 
 	Data ptrrelocbool%ptrrelocbool
 
+#parses will enter here and skip this
 	#If typenumber!=charsnr
 	#for const and at pointer with stack false
 	#this can't go after dataparse, addvarref will increase the offset
@@ -47,6 +40,7 @@ Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd st
 		call addramp()
 		Return noerr
 	endif
+#
 	Call stepcursors(ptrcontent,ptrsize)
 
 	Data size#1
@@ -56,7 +50,7 @@ Function dataassign_ex(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd st
 		Str ptrrightsideerr^rightsideerr
 		Return ptrrightsideerr
 	endIf
-
+#and return 1/number of reserves here
 	data rightstackpointer#1
 
 	Data relocindx#1

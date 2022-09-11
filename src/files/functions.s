@@ -33,6 +33,7 @@ Include "./functions/actions/fndecargs.s"
 Include "./functions/actions/enumcomma.s"
 Include "./functions/actions/fn.s"
 Include "./functions/actions/argstwo.s"
+Include "./functions/actions/declare.s"
 
 Include "./functions/commands/cond.s"
 Include "./functions/commands/lib.s"

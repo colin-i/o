@@ -1,12 +1,12 @@
 
 
 #err
-Function enumbags(data declare)
+Function enumbags(data is_declare)
 	sd pointer%containersbegin
 	sd cursor=containerssize
 	add cursor pointer
 	While pointer!=cursor
-		If declare==(TRUE)
+		If is_declare==(TRUE)
 			sd err;setcall err enumbags_alloc(pointer)
 			If err!=(noerror)
 				Return err
