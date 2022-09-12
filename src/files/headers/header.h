@@ -156,6 +156,7 @@ Data datasecMax#1
 Data datasec#1
 Data datasecReg#1
 Const ptrdatasec^datasecMax
+Const ptrdataReg^datasecReg
 
 Data codesecMax=sizeofsecdata
 Data codesec#1

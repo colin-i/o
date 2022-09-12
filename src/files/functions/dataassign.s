@@ -1,7 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd stack,sd long_mask)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd stack,sd long_mask,sd punitsize)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -20,37 +20,49 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 
 	Data ptrrelocbool%ptrrelocbool
 
-#parses will enter here and skip this
-	#If typenumber!=charsnr
-	#for const and at pointer with stack false
-	#this can't go after dataparse, addvarref will increase the offset
-	if typenumber==constantsnr
-		#	set pointer_structure constantsstruct
-		#else
-		#	setcall pointer_structure getstructcont(typenumber)
-		#endelse
-		Call getcontReg(constantsstruct,ptroffset_const)
-	EndIf
-	SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
-	If err!=noerr
-		Return err
-	EndIf
-	if sign==nosign
-		#stack variable declared without assignation, only increment stack variables
-		call addramp()
-		Return noerr
-	endif
-#
+	if punitsize==(NULL)
+		#If typenumber!=charsnr
+		#for const and at pointer with stack false
+		#this can't go after dataparse, addvarref will increase the offset
+		if typenumber==constantsnr
+			#	set pointer_structure constantsstruct
+			#else
+			#	setcall pointer_structure getstructcont(typenumber)
+			#endelse
+			Call getcontReg(constantsstruct,ptroffset_const)
+		EndIf
+		SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
+		If err!=noerr
+			Return err
+		EndIf
+		if sign==nosign
+			#stack variable declared without assignation, only increment stack variables
+			call addramp()
+			Return noerr
+		endif
+	else
+		call advancecursors(ptrcontent,ptrsize,valsize)
+	endelse
+
 	Call stepcursors(ptrcontent,ptrsize)
 
 	Data size#1
 	Set size ptrsize#
 	If size==0
+		#not at unitsize: constants,stacks
 		Chars rightsideerr="Right side of the assignment expected."
 		Str ptrrightsideerr^rightsideerr
 		Return ptrrightsideerr
 	endIf
-#and return unitsize/reserve size  here
+
+	if punitsize!=(NULL)
+		if sign!=(reserveascii)
+			return (noerror)
+		endif
+		setcall err get_reserve_size(ptrcontent,ptrsize,size,punitsize,stack,typenumber,long_mask)
+		return err
+	endif
+
 	data rightstackpointer#1
 
 	Data relocindx#1
