@@ -1,7 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd stack,sd sign,sd valsize)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd stack,sd long_mask)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -50,7 +50,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd typenumber,sd long_mask,sd stack
 		Str ptrrightsideerr^rightsideerr
 		Return ptrrightsideerr
 	endIf
-#and return 1/number of reserves here
+#and return unitsize/reserve size  here
 	data rightstackpointer#1
 
 	Data relocindx#1
@@ -380,7 +380,7 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 			return ptrnegreserve
 		endIf
 	else
-		Mult ptrvalue# :
+		Mult ptrvalue# (dwsz)    #at format 64 will be a *2 at stack64_add
 	endelse
 	return (noerror)
 endfunction

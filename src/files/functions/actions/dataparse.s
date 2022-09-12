@@ -150,7 +150,7 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 endfunction
 
 #er
-function getsign(str content,data size,str assigntype,data typenumber,data stack,data ptrsz,data ptrrelocbool)
+function getsign(str content,data size,str assigntype,data ptrsz,data typenumber,data stack,data ptrrelocbool)
 	data true=TRUE
 	data noerr=noerror
 	Data valsize#1

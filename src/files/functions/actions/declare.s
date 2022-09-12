@@ -3,6 +3,7 @@
 function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool)
 	Data valsize#1
 	Chars sign#1
+	#below also at virtual at get_reserve (with mask there)
 	sd is_stack
 	sd typenumber
 	sd mask
@@ -31,9 +32,9 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool)
 	endelse
 
 	sd err
-	setcall err getsign(pcontent#,pcomsize#,#sign,typenumber,is_stack,#valsize,prelocbool)
+	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,prelocbool)
 	if err==(noerror)
-		SetCall err dataassign(pcontent,pcomsize,typenumber,mask,is_stack,sign,valsize)
+		SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask)
 	endif
 	return err
 endfunction
