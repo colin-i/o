@@ -57,6 +57,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 
 	if punitsize!=(NULL)
 		if sign!=(reserveascii)
+			call advancecursors(ptrcontent,ptrsize,size)
 			return (noerror)
 		endif
 		setcall err get_reserve_size(ptrcontent,ptrsize,size,punitsize,stack,typenumber,long_mask)
