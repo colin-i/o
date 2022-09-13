@@ -90,7 +90,7 @@ EndFunction
 #sizeof the string
 Function strlen(str str)
 	Chars term={0}
-	Chars byte={0}
+	Chars byte#1
 	Data sz#1
 	Data zero=0
 	Set sz zero
