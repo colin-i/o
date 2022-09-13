@@ -118,7 +118,7 @@ endfunction
 #	endif
 #endfunction
 
-function stack64_add(sd val)
+function stack64_enlarge(sd val)
 	sd b;setcall b is_for_64()
 	if b==(TRUE)
 		mult val 2

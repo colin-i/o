@@ -44,18 +44,19 @@ function getptrramp()
 	return code
 endfunction
 #ind(before)
-function growramp(data value)
-	data ptrramp#1
+function growramp(sd value,sv perr)
+	vdata ptrramp#1
 	setcall ptrramp getptrramp()
 	sd ret;set ret ptrramp#
-	addcall ptrramp# stack64_add(value)
+	setcall perr# maxsectioncheck(value,ptrramp)
 	return ret
 endfunction
 #ind(before)
-function addramp()
-	data dword=4
+function addramp(sv perr)
+	sd index
+	setcall index stack64_enlarge((dwsz))
 	data ramp#1
-	setcall ramp growramp(dword)
+	setcall ramp growramp(index,perr)
 	return ramp
 endfunction
 #ind
@@ -124,10 +125,11 @@ function addtocode_decstack(sd for_64)
 		call rex_w(#err);if err!=(noerror);return err;endif
 	endif
 
-	setcall rampindex addramp()
+	setcall rampindex addramp(#err)
 	#is with sub now     neg rampindex
-
-	setcall err addtosec(stack,size,ptrcodesec)
+	if err==(noerror)
+		setcall err addtosec(stack,size,ptrcodesec)
+	endif
 	return err
 endfunction
 #er
