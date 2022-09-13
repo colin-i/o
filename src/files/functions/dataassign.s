@@ -37,8 +37,8 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	EndIf
 	if sign==nosign
 		#stack variable declared without assignation, only increment stack variables
-		call addramp()
-		Return noerr
+		call addramp(#err)
+		Return err
 	endif
 #
 	Call stepcursors(ptrcontent,ptrsize)
@@ -168,7 +168,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					call memset(datacont,0,value)
 				endif
 			else
-				call growramp(value)
+				call growramp(value,#err)
 			endelse
 		endif
 		Return err
@@ -367,20 +367,28 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 	EndIf
 	if is_stack==(FALSE)
 		If typenumber!=(charsnumber)
-			SetCall err maxvaluecheck(ptrvalue#)
-			If err!=(noerror)
-				Return err
+			SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+			If err==(noerror)
+				SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+				If err==(noerror)
+					if long_mask!=0
+						SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+					endif
+				endIf
 			EndIf
-			Mult ptrvalue# (dwsz)
-			if long_mask!=0
-				mult ptrvalue# 2
-			endif
 		EndIf
-		If ptrvalue#<0
-			return ptrnegreserve
-		endIf
 	else
-		Mult ptrvalue# (dwsz)    #at format 64 will be a *2 at stack64_add
+		SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+		If err==(noerror)
+			SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+			If err==(noerror)
+				#at format 64 can be a *2 at growramp
+				sd b;setcall b is_for_64()
+				if b==(TRUE)
+					SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+				endIf
+			endIf
+		endIf
 	endelse
-	return (noerror)
+	Return err
 endfunction

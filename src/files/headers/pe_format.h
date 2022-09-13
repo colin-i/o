@@ -57,7 +57,7 @@ Data *CheckSum=0
 Const IMAGE_SUBSYSTEM_WINDOWS_CUI=3
 Chars *Subsystem={IMAGE_SUBSYSTEM_WINDOWS_CUI,0}
 Chars DllCharacteristics#2
-Data *SizeOfStackReserve=0x1000
+Data *SizeOfStackReserve=0x10000
 Data *SizeOfStackCommit=0x1000
 Data *SizeOfHeapReserve=0x10000
 Data *SizeOfHeapCommit=0x1000

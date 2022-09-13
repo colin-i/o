@@ -2,24 +2,19 @@
 
 
 
-#40...h*2 and can't compare signed<>unsigned and will loose control at alloc
-#this is also used at reserve *4 will be negative there
-#Const maxsectionvalue=0x40000000-1
-#                       aaBBccDD
-Const maxsectionvalue=0x20000000-1
-#knowing that enlarge value will qwsz them
+#80...h and can't compare signed<>unsigned and will loose control at alloc
+#this *4 is still positive, this still positive *2 is there a shame check against negative
+#                        aaBBccDD
+#Const maxreservevalue=0x20000000-1
+#1 073 741 823
 
 #err
-Function maxvaluecheck(data value)
-	Data secmax=maxsectionvalue
-	If value>secmax
-		#Chars secsizeerr="Section size cannot be greater than 1 073 741 823."
-		Chars secsizeerr="Section size cannot be greater than 536 870 911."
-		Str ptrsecsizeerr^secsizeerr
-		Return ptrsecsizeerr
+Function maxsectioncheck(sd a,sd pb)
+	add pb# a
+	if pb#<0
+		return "Section size cannot be greater than 2 147 483 647 (0x7fFFffFF)."
 	EndIf
-	Data noerr=noerror
-	Return noerr
+	Return (noerror)
 EndFunction
 
 #errnr
@@ -64,17 +59,19 @@ Function addtosec(str content,data size,data dst)
 			Return memerr
 		Else
 			Data value#1
+			sd err
+
 			Set value destData
-			Add value size
+			setcall err maxsectioncheck(size,#value)
+			If err!=noerr
+				Return err
+			EndIf
 			Data pad#1
 			Data ptrsecalign%ptrpage_sectionalignment
 			Data secalign#1
 			Set secalign ptrsecalign#
 			SetCall pad requiredpad(value,secalign)
-			Add value pad
-
-			Data err#1
-			SetCall err maxvaluecheck(value)
+			setcall err maxsectioncheck(pad,#value)
 			If err!=noerr
 				Return err
 			EndIf

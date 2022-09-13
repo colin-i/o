@@ -56,16 +56,21 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	Chars stacktransfer2#1
 	Data memoff#1
 
-	Data dwrdsz=dwsz
+	sd stackindex
+	setcall stackindex stack64_enlarge((dwsz))
+	#file size 0x7ff... ,sd * is 5 at 64 is 8
+	setcall err maxsectioncheck(stackindex,ptr_stackoffset)
+	If err!=noerr
+		Return err
+	EndIf
+
 	Set stackoff ptr_stackoffset#
-	AddCall stackoff stack64_add(dwrdsz)
-	Set ptr_stackoffset# stackoff
-
-	data stackindex#1
-	set stackindex stackoff
-	addcall stackindex stack64_add((stackinitpush))
-
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackindex,long_mask)
+	setcall stackindex stack64_enlarge((stackinitpush))
+	setcall err maxsectioncheck(stackindex,#stackoff)
+	If err!=noerr
+		Return err
+	EndIf
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackoff,long_mask)
 	If err!=noerr
 		Return err
 	EndIf
