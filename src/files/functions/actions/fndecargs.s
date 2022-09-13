@@ -51,6 +51,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	Sub length len
 	Set ptrsize# length
 
+	#this is a write to sec for old data args, careful with stackoff
 	Chars stacktransfer1#1;chars *={0x84,0x24}
 	Data stackoff#1
 	Chars stacktransfer2#1
@@ -63,14 +64,15 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	If err!=noerr
 		Return err
 	EndIf
-
 	Set stackoff ptr_stackoffset#
+
 	setcall stackindex stack64_enlarge((stackinitpush))
-	setcall err maxsectioncheck(stackindex,#stackoff)
+	#stackoff is a write to sec for old data args
+	setcall err maxsectioncheck(stackoff,#stackindex)
 	If err!=noerr
 		Return err
 	EndIf
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackoff,long_mask)
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackindex,long_mask)
 	If err!=noerr
 		Return err
 	EndIf

@@ -6,7 +6,10 @@ FULLOBJ = ./linux/${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 OBT = ${OB}.txt
+
+ifndef OCOMP
 OCOMP=o
+endif
 
 #OFLAGS=
 
