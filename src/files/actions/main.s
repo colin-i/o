@@ -65,25 +65,24 @@ While includesReg!=null
 				Set content last
 			EndIf
 		EndWhile
-		sd log_err
-		setcall log_err addtolog_char(fileendchar,logfile) #also ok on win
-		if log_err!=(noerror)
-			set errormsg log_err
-			Call Message(errormsg)
-		endif
+		If errormsg==noerr
+			setcall errormsg addtolog_char(fileendchar,logfile) #also ok on win
+			if errormsg!=(noerror)
+				Call Message(errormsg)
+			elseif includedir==true
+				data int#1
+				setcall int chdir(contentoffile)
+				#0 success
+				if int!=chdirok
+					str restoredirerr="Restore folder error."
+					set errormsg restoredirerr
+					Call Message(errormsg)
+				endif
+			endelseif
+		endIf
 	EndIf
 
-	if includedir==true
-		data int#1
-		setcall int chdir(contentoffile)
-		#0 success
-		if int!=chdirok
-			str restoredirerr="Restore folder error."
-			set errormsg restoredirerr
-			Call Message(errormsg)
-		endif
-	endif
-
+	#this is used also inside index.s
 	Sub includesReg sizeofincludeset
 
 	data skipfree#1
