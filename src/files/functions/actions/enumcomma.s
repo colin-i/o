@@ -1,9 +1,8 @@
 
 #e
-function writevar(data ptrvalue,data unitsize,data relindex,data stack,data rightstackpointer,sd long_mask)
+function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpointer,sd long_mask,sd relocbool)
 	data err#1
 	data noerr=noerror
-	Data ptrrelocbool%ptrrelocbool
 	data true=TRUE
 	data false=FALSE
 	data ptrobject%ptrobject
@@ -11,7 +10,7 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 	if stack==false
 		data ptrdatasec%ptrdatasec
 		if ptrobject#==1
-			If ptrrelocbool#==true
+			If relocbool==true
 				#data
 				Data ptraddresses%ptraddresses
 				Data relocoff=0
@@ -41,7 +40,7 @@ function writevar(data ptrvalue,data unitsize,data relindex,data stack,data righ
 
 	sd for_64;setcall for_64 is_for_64()
 	if ptrobject#==1
-		If ptrrelocbool#==true
+		If relocbool==true
 			#code
 			sd stackoff
 			setcall stackoff reloc64_offset((rampadd_value_off))
@@ -78,7 +77,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpush,data typenumberOrwrite,data stack,sd hex,sd long_mask)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd stack,sd hex,sd long_mask,sd relocbool)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -106,11 +105,11 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 		Else
 			Data bSz=bsz
 			Data dwSz=dwsz
-			Data unitsize#1
+			Data unitsize#1   #ignored at stack
 			Data charsnr=charsnumber
 			If typenumberOrwrite==charsnr
 			#ignored at stack value   grep stackfilter2  1
-				Set unitsize bSz
+				Set unitsize bSz    #used also at hex
 			Else
 				Set unitsize dwSz
 			EndElse
@@ -149,7 +148,7 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 				EndIf
 				if hex==(not_hexenum)
 					data dataind=dataind
-					setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask)
+					setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask,relocbool)
 					If err!=noerr
 						Return err
 					EndIf
@@ -235,3 +234,13 @@ Function enumcommas(data ptrcontent,data ptrsize,data sz,data fndecandgroupOrpus
 	EndIf
 	Return noerr
 EndFunction
+
+#bool
+function reloc_unset()
+	vdata ptrrelocbool%ptrrelocbool
+	if ptrrelocbool#!=(FALSE)
+		set ptrrelocbool# (FALSE)
+		return (TRUE)
+	endif
+	return (FALSE)
+endfunction
