@@ -121,6 +121,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 						endif
 						set ptrrelocbool# true
 					else
+					#let relocation, mess with dataReg, possible error will be catched at pass_write
 						set skipNumberValue true
 					endelse
 				EndElseIf
@@ -134,7 +135,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				if punitsize!=(NULL)
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
-				endif
+				elseif stack==true
+				#ss =% x
+					call advancecursors(ptrcontent,ptrsize,size)
+					return (noerror)
+				endelseif
 				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
 					return err
@@ -148,6 +153,13 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			EndElse
 		Else
 		#{} group
+			if punitsize!=(NULL)
+				if stack==true
+				#ss =% {}
+					call advancecursors(ptrcontent,ptrsize,size)
+					return (noerror)
+				endif
+			endif
 			If typenumber==constantsnr
 				Chars constgroup="Group begin sign ('{') is not expected to declare a constant."
 				Str ptrconstgroup^constgroup

@@ -49,15 +49,20 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 		setcall typenumber stackfilter(declare_typenumber,#is_stack)
 		if parses==(pass_init)
 			if is_stack==(TRUE)
-				call advancecursors(pcontent,pcomsize,pcomsize#)
-				return (noerror)
-			endif
-			if typenumber!=(charsnumber)
-				if typenumber!=(constantsnumber)
-					set unitsize (dwsz)
-				endif
+				if typenumber==(stringsnumber)
+					set unitsize 0
+				else
+					call advancecursors(pcontent,pcomsize,pcomsize#)
+					return (noerror)
+				endelse
 			else
-				set unitsize (bsz)
+				if typenumber!=(charsnumber)
+					if typenumber!=(constantsnumber)
+						set unitsize (dwsz)
+					endif
+				else
+					set unitsize (bsz)
+				endelse
 			endelse
 		else
 			if is_stack==(TRUE)
@@ -79,6 +84,13 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 				endif
 				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,(NULL))
 			else
+				if unitsize==0
+				#ss?
+					if sign!=(assignsign)
+						return (noerror)
+					endif
+					#ss =% ""/x/{}
+				endif
 				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,#unitsize)
 				sd pdataReg%ptrdataReg
 				add pdataReg# unitsize    #this is init by 0
