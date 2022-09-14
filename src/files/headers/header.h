@@ -55,6 +55,7 @@ Const sizeofcontainer=3*dwsz
 #base containers
 Const includesSize=50*includesetSz
 #includesSize
+Const containersbegin=!
 Data includesMax#1
 Data includes#1
 Data includesReg#1
@@ -197,7 +198,6 @@ Data unresLocal#1
 Data unresLocalReg#1
 Const ptrunresLocal^unresLocalMax
 
-Const containersbegin^includesMax
 Const containerssize=!-containersbegin
 
 chars dummyEntry_data#sizeof_minimumentry

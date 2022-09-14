@@ -55,15 +55,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		Return ptrrightsideerr
 	endIf
 
-	if punitsize!=(NULL)
-		if sign!=(reserveascii)
-			call advancecursors(ptrcontent,ptrsize,size)
-			return (noerror)
-		endif
-		setcall err get_reserve_size(ptrcontent,ptrsize,size,punitsize,stack,typenumber,long_mask)
-		return err
-	endif
-
 	data rightstackpointer#1
 
 	Data relocindx#1
@@ -109,22 +100,29 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					#else is at stack value   grep stackfilter2   2
 						set stringtodata true
 						set skipNumberValue true
+						if punitsize!=(NULL)
+							set punitsize# 0    #was 1
+						endif
 					endif
 				ElseIf typenumber==stringsnr
 					set stringtodata true
-					setcall value get_img_vdata_dataReg()
-					if stack==false
-						if long_mask!=0
-							add value (qwsz)
-						else
-							add value (dwsz)
-						endelse
-					endif
-					if ptrrelocbool#==true
-						str badrelocstr="Relocation sign and string surrounded by quotations is not allowed."
-						return badrelocstr
-					endif
-					set ptrrelocbool# true
+					if punitsize==(NULL)
+						setcall value get_img_vdata_dataReg()
+						if stack==false
+							if long_mask!=0
+								add value (qwsz)
+							else
+								add value (dwsz)
+							endelse
+						endif
+						if ptrrelocbool#==true
+							str badrelocstr="Relocation sign and string surrounded by quotations is not allowed."
+							return badrelocstr
+						endif
+						set ptrrelocbool# true
+					else
+						set skipNumberValue true
+					endelse
 				EndElseIf
 				if stringtodata==false
 					chars bytesatintegers="The string assignment (\"\") can be used at CHARS, STR or SS."
@@ -133,6 +131,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				endif
 			Else
 			#=value+constant-/&...
+				if punitsize!=(NULL)
+					call advancecursors(ptrcontent,ptrsize,size)
+					return (noerror)
+				endif
 				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
 					return err
@@ -162,8 +164,12 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
-			setcall relocbool reloc_unset()
-			SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,stack,(not_hexenum),long_mask,relocbool)
+			if punitsize==(NULL)
+				setcall relocbool reloc_unset()
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool)
+			else
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize) #there are 4 more arguments but are not used
+			endelse
 			If err!=noerr
 				Return err
 			EndIf
@@ -173,6 +179,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	ElseIf sign==(reserveascii)
 		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask)
 		if err==(noerror)
+			if punitsize!=(NULL)
+				set punitsize# value
+				return (noerror)
+			endif
 			if stack==false
 				sd p_nul_res_pref%p_nul_res_pref
 				if p_nul_res_pref#==(TRUE)
@@ -190,6 +200,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		Return err
 	Else
 	#^ pointer
+		if punitsize!=(NULL)
+			call advancecursors(ptrcontent,ptrsize,size)
+			return (noerror)
+		endif
 		Set content ptrcontent#
 		data doublepointer#1
 		set doublepointer zero
@@ -320,11 +334,20 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		EndElse
 	endif
 	if stringtodata==true
-		setcall err add_string_to_data(ptrcontent,ptrsize)
-		if err!=(noerror)
-			return err
-		endif
-		Call stepcursors(ptrcontent,ptrsize)
+		if punitsize==(NULL)
+			setcall err add_string_to_data(ptrcontent,ptrsize)
+			if err!=(noerror)
+				return err
+			endif
+			Call stepcursors(ptrcontent,ptrsize)
+		else
+			sd dummy
+			SetCall err quotinmem(ptrcontent,ptrsize,ptrvalue,#dummy)
+			if err!=(noerror)
+				return err
+			endif
+			add punitsize# ptrvalue#
+		endelse
 	endif
 	Return noerr
 EndFunction

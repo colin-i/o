@@ -207,7 +207,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 	If is_declare==true
 		If sz!=zero
-			SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,fnnr) #there are 4 more arguments but are not used
+			SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,fnnr) #there are 5 more arguments but are not used
 			if err!=noerr
 				return err
 			endif
@@ -222,7 +222,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			else
 				if sz!=zero
 					setcall p nr_of_args_64need_p_get();set p# 0
-					SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(FALSE)) #there are 4 more arguments but are not used
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(FALSE)) #there are 5 more arguments but are not used
 					if err==noerr
 						setcall err align_ante(p#)
 					endif
@@ -238,20 +238,20 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			#pass_write
 			if pbool#==(FALSE)
 				if sz!=zero
-					SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(TRUE)) #there are 4 more arguments but are not used
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(TRUE)) #there are 5 more arguments but are not used
 				endif
 			else
 				setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
 				if sz!=zero
 					set content ptrcontent#
 					set size ptrsize#
-					SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(FALSE)) #there are 4 more arguments but are not used
+					SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(FALSE)) #there are 5 more arguments but are not used
 					if err==noerr
 						setcall err stack_align(p#)
 						if err==noerr
 							set ptrcontent# content
 							set ptrsize# size
-							SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(TRUE)) #there are 4 more arguments but are not used
+							SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(TRUE)) #there are 5 more arguments but are not used
 						endif
 					endif
 				else

@@ -77,7 +77,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd stack,sd hex,sd long_mask,sd relocbool)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsize,sd hex,sd stack,sd long_mask,sd relocbool)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -140,24 +140,29 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					Return err
 				EndIf
 			Else
-				Data value#1
-				Data ptrvalue^value
-				SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue,(FALSE))
-				If err!=noerr
-					Return err
-				EndIf
-				if hex==(not_hexenum)
-					data dataind=dataind
-					setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask,relocbool)
+				if punitsize==(NULL)
+					Data value#1
+					Data ptrvalue^value
+					SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue,(FALSE))
 					If err!=noerr
 						Return err
 					EndIf
+					if hex==(not_hexenum)
+						data dataind=dataind
+						setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask,relocbool)
+						If err!=noerr
+							Return err
+						EndIf
+					else
+						sd ptrcodesec%ptrcodesec
+						setcall err addtosec(ptrvalue,unitsize,ptrcodesec)
+						If err!=noerr
+							Return err
+						EndIf
+					endelse
 				else
-					sd ptrcodesec%ptrcodesec
-					setcall err addtosec(ptrvalue,unitsize,ptrcodesec)
-					If err!=noerr
-						Return err
-					EndIf
+					add punitsize# unitsize
+					call advancecursors(ptrcontent,ptrsize,argumentsize)
 				endelse
 			EndElse
 		Else

@@ -38,9 +38,9 @@ Set cSizeOfRawData SizeOfCode
 #######################
 Add SizeOfImage cSizeOfRawData
 #######################
-Const pe_fileheadersstart^dos_header
-Const codesectionCharacteristicsoff^codesectionCharacteristics
-Const sizefileheadercodedata=codesectionCharacteristicsoff+dwsz
+#Const pe_fileheadersstart^dos_header
+#Const codesectionCharacteristicsoff^codesectionCharacteristics
+#Const sizefileheadercodedata=codesectionCharacteristicsoff+dwsz
 Const codedatasizefileheaders=sizefileheadercodedata-pe_fileheadersstart
 Data codedatasizefileheaders=codedatasizefileheaders
 
@@ -94,9 +94,9 @@ If implibsstarted==true
 	#######################
 	Inc ptrNumberOfSections#
 	#######################
-	Const idatasectionCharacteristicsoff^idatasectionCharacteristics
-	Const idatasectionstart^idatasection
-	Const idatasectionsize=idatasectionCharacteristicsoff+dwsz-idatasectionstart
+	#Const idatasectionCharacteristicsoff^idatasectionCharacteristics
+	#Const idatasectionstart^idatasection
+	Const idatasectionsize=idatasectionend-idatasectionstart
 	Data idatasectionstart%idatasectionstart
 	Data idatasectionsize=idatasectionsize
 
