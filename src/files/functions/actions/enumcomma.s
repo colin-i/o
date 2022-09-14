@@ -77,7 +77,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsize,sd hex,sd stack,sd long_mask,sd relocbool)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsize,sd hexOrmask,sd stack,sd long_mask,sd relocbool)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -147,7 +147,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					If err!=noerr
 						Return err
 					EndIf
-					if hex==(not_hexenum)
+					if hexOrmask==(not_hexenum)
 						data dataind=dataind
 						setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask,relocbool)
 						If err!=noerr
@@ -162,6 +162,10 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					endelse
 				else
 					add punitsize# unitsize
+					if hexOrmask!=0
+						#to 8
+						add punitsize# unitsize
+					endif
 					call advancecursors(ptrcontent,ptrsize,argumentsize)
 				endelse
 			EndElse
