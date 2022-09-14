@@ -335,19 +335,17 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		EndElse
 	endif
 	if stringtodata==true
+		sd escapes
+		SetCall err quotinmem(ptrcontent,ptrsize,ptrvalue,#escapes)
 		if punitsize==(NULL)
-			setcall err add_string_to_data(ptrcontent,ptrsize)
+			SetCall err addtosecstresc(ptrcontent,ptrsize,value,escapes,ptrdatasec,(FALSE))
 			if err!=(noerror)
 				return err
 			endif
 			Call stepcursors(ptrcontent,ptrsize)
 		else
-			sd dummy
-			SetCall err quotinmem(ptrcontent,ptrsize,ptrvalue,#dummy)
-			if err!=(noerror)
-				return err
-			endif
-			add punitsize# ptrvalue#
+			add punitsize# value
+			call advancecursors(ptrcontent,ptrsize,ptrsize#)
 		endelse
 	endif
 	Return noerr
@@ -377,25 +375,6 @@ function get_function_values(sd impbit,sd p_value,sd pointer)
 	#import
 	set p_value# 0
 	return pointer#
-endfunction
-
-#err
-function add_string_to_data(sd ptrcontent,sd ptrsize)
-	sd err
-	Data ptrdatasec%ptrdatasec
-	Data quotsz#1
-	Data ptrquotsz^quotsz
-	Data escapes#1
-	Data ptrescapes^escapes
-	SetCall err quotinmem(ptrcontent,ptrsize,ptrquotsz,ptrescapes)
-	If err!=(noerror)
-		return err
-	endif
-	SetCall err addtosecstresc(ptrcontent,ptrsize,quotsz,escapes,ptrdatasec,(FALSE))
-	If err!=(noerror)
-		return err
-	endif
-	return (noerror)
 endfunction
 
 #err
