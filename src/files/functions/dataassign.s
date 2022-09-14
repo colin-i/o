@@ -133,7 +133,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Else
 			#=value+constant-/&...
 				if punitsize!=(NULL)
-				#dwsz or bsz
+				#dwsz or bsz  or qwsz
 				#ss =% x is 0
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
