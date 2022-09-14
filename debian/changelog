@@ -1,3 +1,9 @@
+ocompiler (1-5+46) xenial; urgency=medium
+
+  * const^stack and a var set less
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 14 Sep 2022 09:40:02 +0300
+
 ocompiler (1-5+45) xenial; urgency=medium
 
   * fix
