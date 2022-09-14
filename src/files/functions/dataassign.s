@@ -133,13 +133,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Else
 			#=value+constant-/&...
 				if punitsize!=(NULL)
+				#dwsz or bsz
+				#ss =% x is 0
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
-				elseif stack==true
-				#ss =% x
-					call advancecursors(ptrcontent,ptrsize,size)
-					return (noerror)
-				endelseif
+				endif
 				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
 					return err
@@ -155,7 +153,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		#{} group
 			if punitsize!=(NULL)
 				if stack==true
-				#ss =% {}
+				#ss =% {}      is 0
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
 				endif
