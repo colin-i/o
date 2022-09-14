@@ -168,6 +168,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				setcall relocbool reloc_unset()
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool)
 			else
+				set punitsize# 0   #will add unit sizes inside
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize) #there are 4 more arguments but are not used
 			endelse
 			If err!=noerr
