@@ -86,6 +86,8 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	data skipNumberValue#1
 	Data importbittest#1
 
+	sd relocbool
+
 	set rightstackpointer false
 	Set relocindx dataind
 	set valuewritesize (dwsz)
@@ -160,7 +162,8 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
-			SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,stack,(not_hexenum),long_mask)
+			setcall relocbool reloc_unset()
+			SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,stack,(not_hexenum),long_mask,relocbool)
 			If err!=noerr
 				Return err
 			EndIf
@@ -207,25 +210,29 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			else
 				set ptrrelocbool# false
 				if stack==false
-					setcall err writetake((eaxregnumber),pointer)
-					If err!=noerr
-						Return err
-					EndIf
-					setcall value get_img_vdata_dataReg()
-					setcall err datatake_reloc((edxregnumber),value)
-					If err!=noerr
-						Return err
-					EndIf
-					sd v64;setcall v64 val64_p_get()
-					if long_mask!=0
-						setcall v64# is_for_64()
-					else
-						set v64# (val64_no)
-					endelse
-					setcall err writeoperation_op((moveatmemtheproc),(FALSE),(eaxregnumber),(edxregnumber))
-					If err!=noerr
-						Return err
-					EndIf
+					If typenumber!=constantsnr
+						setcall err writetake((eaxregnumber),pointer)
+						If err!=noerr
+							Return err
+						EndIf
+						setcall value get_img_vdata_dataReg()
+						setcall err datatake_reloc((edxregnumber),value)
+						If err!=noerr
+							Return err
+						EndIf
+						sd v64;setcall v64 val64_p_get()
+						if long_mask!=0
+							setcall v64# is_for_64()
+						else
+							set v64# (val64_no)
+						endelse
+						setcall err writeoperation_op((moveatmemtheproc),(FALSE),(eaxregnumber),(edxregnumber))
+						If err!=noerr
+							Return err
+						EndIf
+					Else
+						set value pointer#
+					endElse
 				else
 					set rightstackpointer pointer
 				endelse
@@ -299,7 +306,8 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				endif
 			endif
 			#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
-			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask)
+			setcall relocbool reloc_unset()
+			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask,relocbool)
 			If err!=noerr
 				Return err
 			EndIf

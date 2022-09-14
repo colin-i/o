@@ -156,7 +156,7 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	Data valsize#1
 	Chars equalsign=assignsign
 
-	Set ptrrelocbool# (FALSE)
+	#Set ptrrelocbool# (FALSE)
 
 	SetCall valsize valinmem_pipes(content,size,equalsign,ptrsz)
 	If valsize!=size

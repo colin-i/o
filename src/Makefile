@@ -41,6 +41,7 @@ uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
 
 test:
-	echo "Nothing"
+	echo "test"
+	cd linux; ../o o.s nul_res_pref 1; mv o z; /lib/ld-linux.so.2 ./z o.s nul_res_pref 1; diff o z
 
 .PHONY: all install clean distclean uninstall test
