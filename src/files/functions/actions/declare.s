@@ -49,6 +49,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 		setcall typenumber stackfilter(declare_typenumber,#is_stack)
 		if parses==(pass_init)
 			if is_stack==(TRUE)
+				call advancecursors(pcontent,pcomsize,pcomsize#)
 				return (noerror)
 			endif
 			if typenumber!=(charsnumber)
@@ -73,6 +74,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 		if parses==(pass_init)
 			if typenumber==(constantsnumber)
 				if sign==(pointersigndeclare)
+					call advancecursors(pcontent,pcomsize,pcomsize#)
 					return (noerror)
 				endif
 				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,(NULL))
@@ -84,6 +86,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 		else
 			if typenumber==(constantsnumber)
 				if sign!=(pointersigndeclare)
+					call advancecursors(pcontent,pcomsize,pcomsize#)
 					return (noerror)
 				endif
 			endif
