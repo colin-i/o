@@ -101,7 +101,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 						set stringtodata true
 						set skipNumberValue true
 						if punitsize!=(NULL)
-							set punitsize# 0    #was 1
+							set punitsize# 1    #was 1 from bsz is 1 from null end
 						endif
 					endif
 				ElseIf typenumber==stringsnr
@@ -121,8 +121,8 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 						endif
 						set ptrrelocbool# true
 					else
-					#let relocation, mess with dataReg, possible error will be catched at pass_write
-						set skipNumberValue true
+						#let relocationsign, mess with dataReg, possible error will be catched at pass_write
+						inc punitsize#   #null end
 					endelse
 				EndElseIf
 				if stringtodata==false
@@ -174,12 +174,13 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
+			setcall relocbool reloc_unset()   #more below is explained
 			if punitsize==(NULL)
-				setcall relocbool reloc_unset()
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool)
 			else
+				sd aux;set aux punitsize#
 				set punitsize# 0   #will add unit sizes inside
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,long_mask) #there are 3 more arguments but are not used
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 3 more arguments but are not used
 			endelse
 			If err!=noerr
 				Return err
@@ -318,24 +319,27 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	EndElse
 	if skipNumberValue==false
 		If typenumber!=constantsnr
-			#init -1, 0 is local function in the right
-			if importbittest==0
-			#and no problems if inplace_reloc is 0 there
-				if stack==false
-					setcall err unresLc(0,ptrdatasec,0)
-				else
-					setcall err unresLc((rampadd_value_off),ptrcodesec,0)
-				endelse
-				if err!=(noerror)
-					return err
-				endif
-			endif
-			#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
 			setcall relocbool reloc_unset()
-			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask,relocbool)
-			If err!=noerr
-				Return err
-			EndIf
+			#it can be data% but with R_X86_64_64 at prefs and that will force 8 bytes
+			if punitsize==(NULL)
+				#init -1, 0 is local function in the right
+				if importbittest==0
+				#and no problems if inplace_reloc is 0 there
+					if stack==false
+						setcall err unresLc(0,ptrdatasec,0)
+					else
+						setcall err unresLc((rampadd_value_off),ptrcodesec,0)
+					endelse
+					if err!=(noerror)
+						return err
+					endif
+				endif
+				#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
+				setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask,relocbool)
+				If err!=noerr
+					Return err
+				EndIf
+			endif
 		Else
 			Data container#1
 			Data ptrcontainer^container

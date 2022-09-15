@@ -87,10 +87,26 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 				if unitsize==0
 				#ss?
 					if sign!=(assignsign)
+						call advancecursors(pcontent,pcomsize,pcomsize#)
 						return (noerror)
 					endif
 					#ss =% ""/x/{}
-				endif
+				else
+				#search for data%  with R_X86_64_64
+					vData ptrrelocbool%ptrrelocbool
+					if ptrrelocbool#==(TRUE)
+						if mask==0
+						#data chars str
+							if typenumber==(integersnumber)
+							#data
+								vdata is_64_and_pref_is_rx866464%p_elf64_r_info_type
+								if is_64_and_pref_is_rx866464#==(R_X86_64_64)
+									set unitsize (qwsz)
+								endif
+							endif
+						endif
+					endif
+				endelse
 				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,#unitsize)
 				sd pdataReg%ptrdataReg
 				add pdataReg# unitsize    #this is init by 0

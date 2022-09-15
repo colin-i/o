@@ -100,7 +100,6 @@ While includesReg!=null
 						setcall errormsg align_alloc(functionTagIndex)
 						set g_e_b_p# (FALSE)  #in case was set, for writes
 						set datasecReg 0   #this was non-virtual size
-						call reloc_unset()  #in case was set
 					else
 						set parses (pass_write)
 						set logfile logaux

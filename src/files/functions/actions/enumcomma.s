@@ -7,6 +7,8 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	data false=FALSE
 	data ptrobject%ptrobject
 
+	sd for_64
+
 	if stack==false
 		data ptrdatasec%ptrdatasec
 		if ptrobject#==1
@@ -24,8 +26,10 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 				endif
 				call inplace_reloc(ptrvalue)
 				#endif
-				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec);If err!=(noerror);Return err;EndIf
-				setcall err reloc64_post_base(ptrdatasec)
+				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec)
+				If err==(noerror)
+					setcall err reloc64_post_base(ptrdatasec)
+				EndIf
 				return err
 			endif
 		endif
@@ -38,7 +42,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 		return (noerror)
 	endif
 
-	sd for_64;setcall for_64 is_for_64()
+	setcall for_64 is_for_64()
 	if ptrobject#==1
 		If relocbool==true
 			#code
@@ -77,7 +81,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsize,sd hexOrlongmask,sd stack,sd long_mask,sd relocbool)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsize,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -114,18 +118,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 				Else
 					Set unitsize dwSz
 				EndElse
-			else
-				if hexOrlongmask!=0
-					set unitsize (qwsz)
-				else
-					#same as above
-					If typenumberOrwrite==charsnr
-						Set unitsize bSz
-					Else
-						Set unitsize dwSz
-					EndElse
-				endelse
-			endelse
+			endif
 		EndElse
 		Set sens forward
 	Else
@@ -160,7 +153,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					If err!=noerr
 						Return err
 					EndIf
-					if hexOrlongmask==(not_hexenum)
+					if hexOrunitsize==(not_hexenum)
 						data dataind=dataind
 						setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask,relocbool)
 						If err!=noerr
@@ -174,7 +167,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 						EndIf
 					endelse
 				else
-					add punitsize# unitsize
+					add punitsize# hexOrunitsize
 					call advancecursors(ptrcontent,ptrsize,argumentsize)
 				endelse
 			EndElse
