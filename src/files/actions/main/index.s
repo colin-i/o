@@ -146,7 +146,8 @@ if loop==1
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cDECLAREAFTERCALL)
 				if parses==(pass_write);Include "./index/aftercall.s";
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+				else;if subtype==(cAFTERCALL);add datasecReg (aftercalldeclaresize);endif
+					Call advancecursors(pcontent,pcomsize,comsize);endelse
 				set g_e_b_p# (TRUE)
 			ElseIf commandset==(cWARNING)
 				Include "./index/warning.s"

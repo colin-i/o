@@ -422,3 +422,7 @@ const pass_calls=2
 const pass_write=1
 
 const nosign=0
+
+const allow_no=-1
+#const allow_later=0
+const allow_yes=1

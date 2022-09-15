@@ -33,7 +33,7 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 endfunction
 
 #err
-Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data ptrlow,data ptrsufix,data sens)
+Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data ptrlow,data ptrsufix,data sens,data allowdata)
 	ss content
 	sd size
 	sd errnr
@@ -99,6 +99,15 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			SetCall errnr quotinmem(#content,#size,#q_size,#escapes)
 			If errnr!=(noerror)
 				return errnr
+			endif
+			if allowdata!=(allow_yes)
+				#if allowdata==(allow_later)
+				#	vdata ptrdataReg%ptrdataReg
+				#	add ptrdataReg# q_size
+				#	return (noerror)
+				#endif
+				#allow_no
+				return "String here is useless at the moment."  #the real problem: is disturbing virtual calculation at pass_init
 			endif
 			data ptrdatasec%ptrdatasec
 			SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
@@ -226,12 +235,12 @@ function is_constant_related_ascii(sd in_byte)
 endfunction
 
 #err
-Function arg(data ptrcontent,data ptrsize,data ptrdata,data ptrlow,data ptrsufix,data sens)
+Function arg(sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd sens,sd allowdata)
 	sd szarg
 	set szarg ptrsize#
 
 	Data errnr#1
-	SetCall errnr getarg(ptrcontent,ptrsize,szarg,ptrdata,ptrlow,ptrsufix,sens)
+	SetCall errnr getarg(ptrcontent,ptrsize,szarg,ptrdata,ptrlow,ptrsufix,sens,allowdata)
 	Return errnr
 EndFunction
 
@@ -253,7 +262,7 @@ function argfilters_helper(data ptrcondition,data ptrcontent,data ptrsize,data p
 
 	If ptrcondition==null
 		call unsetimm()
-		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward)
+		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward,(allow_no))
 		Return err
 	EndIf
 	call setimm()
@@ -305,7 +314,7 @@ Const enterifGREATER=0x8E
 			sd verifyafter
 			set verifyafter content
 			add verifyafter argsz
-			SetCall errnr getarg(ptrcontent,ptrsize,argsz,ptrdata,ptrlow,ptrsufix,forward)
+			SetCall errnr getarg(ptrcontent,ptrsize,argsz,ptrdata,ptrlow,ptrsufix,forward,(allow_no))
 			data noerrnr=noerror
 			if errnr!=noerrnr
 				Return errnr

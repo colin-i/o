@@ -148,7 +148,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data sufix#1
 	Data ptrsufix^sufix
 
-	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens)
+	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens,(allow_yes))
 	If err!=(noerror)
 		Return err
 	EndIf

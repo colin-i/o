@@ -126,7 +126,15 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	EndElse
 
 	If primcalltype==false
-		SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true)
+		if ptrcondition==false
+			if subtype!=(cCALLEX)
+				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_yes))
+			else
+				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
+			endelse
+		else
+			SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
+		endelse
 		If errnr!=noerr
 			Return errnr
 		EndIf
