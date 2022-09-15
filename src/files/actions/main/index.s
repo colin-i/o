@@ -84,10 +84,10 @@ if loop==1
 					if parses==(pass_init)
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 						if formatdefined==0;Set formatdefined 1;endif
-						if commandset==(cDECLARE)        #needing to find virtual start
+						#needing to find virtual start
+						if commandset==(cDECLARE)
+						ElseIf commandset==(cONEARG)
 						#at object is difficult, there is no virtual, ostrip will use: ld...-Tdata calculated, objcopy --update-section, write memsize
-						#	log file will include virtual point
-						#virtual.s,virtual_parse
 						#else
 						elseIf commandset==(cIMPORTLINK) #needing importx here
 						elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
@@ -119,7 +119,6 @@ if loop==1
 		call entryscope_verify_code()
 				Include "./index/primsec.s"
 			ElseIf commandset==(cONEARG)
-		call entryscope_verify_code()
 				Include "./index/onearg.s"
 			ElseIf commandset==(cCALL)
 				if parses==(pass_write)

@@ -33,96 +33,94 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 endfunction
 
 #err
-Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data ptrlow,data ptrsufix,data sens,data allowdata)
+Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data allowdata,data ptrdata,data ptrlow,data ptrsufix,data sens)
 	ss content
 	sd size
 	sd errnr
 
-	Set content ptrcontent#
-	set size ptrsize#
+	chars d_q=getarg_str
 
-	chars d_q=asciidoublequote
-
-	Str argnameerr="Argument name expected."
 	if sizetoverify==0
-		Return argnameerr
+		return "Argument name expected."
 	endif
 
 	sd argsize
-	if content#!=d_q
-		setcall errnr arg_size(content,sizetoverify,#argsize)
-		If errnr!=(noerror)
-			Return errnr
-		EndIf
-	endif
 
 	Data noerr=noerror
 	data false=0
 
-	#call resetisimm()
-	sd bool
-	setcall bool is_constant_related_ascii(content#)
-	if bool==(TRUE)
-		#verify if imm is ok
-		sd canhaveimm
-		setcall canhaveimm getimm()
-		if canhaveimm==false
-			str immnothere="Unexpected numbers/constants, expecting a variable."
-			return immnothere
+	Set content ptrcontent#
+	set size ptrsize#
+
+	sd prefix
+	if content#==d_q
+		sd q_size
+		sd escapes
+		SetCall errnr quotinmem(#content,#size,#q_size,#escapes)
+		If errnr!=(noerror)
+			return errnr
 		endif
-		#extend to parenthesis if found
-		sd ptr_sz^argsize
-		setcall errnr parenthesis_all_size(content,size,ptr_sz)
-		If errnr!=noerr
+		if allowdata!=(allow_yes)
+			if allowdata==(allow_later)
+				vdata ptrdataReg%ptrdataReg
+				add ptrdataReg# q_size
+				inc ptrdataReg#   #null end
+				call advancecursors(ptrcontent,ptrsize,sizetoverify)
+				return (noerror)
+			endif
+			#allow_no
+			return "String here is useless at the moment."  #the real problem: is disturbing virtual calculation at pass_init
+		endif
+		#get entry
+		sd sec%ptrdummyEntry
+		call getcont(sec,ptrdata)
+		sd location
+		set location ptrdata#
+		setcall location# get_img_vdata_dataReg()
+		#set string to data
+		data ptrdatasec%ptrdatasec
+		SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
+		If errnr!=(noerror)
+			return errnr
+		endif
+		#argsize for advancing
+		set argsize 2
+		add argsize q_size
+		#set low and sufix
+		set ptrlow# (FALSE)
+		set ptrsufix# (FALSE)
+		#the code operation is a "prefix" like
+		setcall prefix prefix_bool()
+		set prefix# 1
+	elseif allowdata!=(allow_later)  #exclude pass_init
+		setcall errnr arg_size(content,sizetoverify,#argsize)
+		If errnr!=(noerror)
 			Return errnr
 		EndIf
-		#find the imm
-		setcall errnr findimm(ptrcontent,ptrsize,argsize,ptrdata)
-		If errnr!=noerr
-			Return errnr
-		EndIf
-		#
-		set ptrlow# false
-		#sufix is not used at imm value
-	else
-		sd prefix
-		if content#==d_q
-			#get entry
-			sd sec%ptrdummyEntry
-			call getcont(sec,ptrdata)
-			sd location
-			set location ptrdata#
-			setcall location# get_img_vdata_dataReg()
-			#set string to data
-			sd q_size
-			sd escapes
-			SetCall errnr quotinmem(#content,#size,#q_size,#escapes)
-			If errnr!=(noerror)
-				return errnr
+		sd bool
+		setcall bool is_constant_related_ascii(content#)
+		if bool==(TRUE)
+			#verify if imm is ok
+			sd canhaveimm
+			setcall canhaveimm getimm()
+			if canhaveimm==false
+				str immnothere="Unexpected numbers/constants, expecting a variable."
+				return immnothere
 			endif
-			if allowdata!=(allow_yes)
-				#if allowdata==(allow_later)
-				#	vdata ptrdataReg%ptrdataReg
-				#	add ptrdataReg# q_size
-				#	return (noerror)
-				#endif
-				#allow_no
-				return "String here is useless at the moment."  #the real problem: is disturbing virtual calculation at pass_init
-			endif
-			data ptrdatasec%ptrdatasec
-			SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
-			If errnr!=(noerror)
-				return errnr
-			endif
-			#argsize for advancing
-			set argsize 2
-			add argsize q_size
-			#set low and sufix
-			set ptrlow# (FALSE)
-			set ptrsufix# (FALSE)
-			#the code operation is a "prefix" like
-			setcall prefix prefix_bool()
-			set prefix# 1
+			#extend to parenthesis if found
+			sd ptr_sz^argsize
+			setcall errnr parenthesis_all_size(content,size,ptr_sz)
+			If errnr!=noerr
+				Return errnr
+			EndIf
+			#find the imm
+			setcall errnr findimm(ptrcontent,ptrsize,argsize,ptrdata)
+			If errnr!=noerr
+				Return errnr
+			EndIf
+			#
+			set ptrlow# false
+			#sufix is not used at imm value
 		else
 			sd argsize_filter
 			if content#==(pointerascii)
@@ -196,6 +194,9 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 				endelse
 			endelse
 		endelse
+	else
+		call advancecursors(ptrcontent,ptrsize,sizetoverify)
+		return (noerror)
 	endelse
 	If sens==(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
@@ -240,7 +241,7 @@ Function arg(sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd sens,s
 	set szarg ptrsize#
 
 	Data errnr#1
-	SetCall errnr getarg(ptrcontent,ptrsize,szarg,ptrdata,ptrlow,ptrsufix,sens,allowdata)
+	SetCall errnr getarg(ptrcontent,ptrsize,szarg,allowdata,ptrdata,ptrlow,ptrsufix,sens)
 	Return errnr
 EndFunction
 
@@ -314,7 +315,7 @@ Const enterifGREATER=0x8E
 			sd verifyafter
 			set verifyafter content
 			add verifyafter argsz
-			SetCall errnr getarg(ptrcontent,ptrsize,argsz,ptrdata,ptrlow,ptrsufix,forward,(allow_no))
+			SetCall errnr getarg(ptrcontent,ptrsize,argsz,(allow_no),ptrdata,ptrlow,ptrsufix,forward)
 			data noerrnr=noerror
 			if errnr!=noerrnr
 				Return errnr

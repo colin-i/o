@@ -225,7 +225,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Call advancecursors(ptrcontent,ptrsize,negvalue)
 			Data ptrargsize^argsize
 			if typenumberOrwrite==(TRUE)
-				SetCall err argument(ptrcontent,ptrargsize,zero,backward)
+				SetCall err argument(ptrcontent,ptrargsize,backward) #there is 1 more argument but is not used
 				If err!=noerr
 					Return err
 				EndIf
