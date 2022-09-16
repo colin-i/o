@@ -317,14 +317,14 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	Data size#1
 	Data seek_set=SEEK_SET
 	Data seek_end=SEEK_END
-	SetCall size lseek(file,0,seek_end)
+	SetCall size lseek(file,0,seek_end)   #off_t is signed, mention lseek64
 	If size==-1
 		return "File length function error."
 	Else
 		Call lseek(file,0,seek_set)
 
 		#offset here
-		setcall err maxsectioncheck(offset,#size)
+		setcall err addfull(offset,#size)
 		if err==noerr
 			SetCall err memoryalloc(size,ptrmem)
 			If err==noerr
@@ -349,6 +349,21 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	Call close(file)
 	Return err
 EndFunction
+
+data numberofbits#1
+const ptrnumberofbits^numberofbits
+
+#err
+function addfull(sd u,sv ps)
+	add ps# u
+	if u>=0
+		return (noerror)
+	endif
+	if ps#<0
+		return (noerror)
+	endif
+	return "Overflow at two numbers."
+endfunction
 
 #return remainder
 Function remainder(data quotient,data dividend)
