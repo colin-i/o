@@ -328,7 +328,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 		if err==noerr
 			SetCall err memoryalloc(size,ptrmem)
 			If err==noerr
-				Data mem#1
+				value mem#1
 				Set mem ptrmem#
 
 				#and offset here
@@ -340,7 +340,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 				#a simple test is showing that gedit can write, rm can delete, this is not exclusive
 				sd sz;setcall sz read(file,mem,size)
 				if sz!=size
-					call free(mem)
+					call free(ptrmem#)
 					return "File read error."
 				endif
 			EndIf
