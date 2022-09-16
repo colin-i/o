@@ -319,7 +319,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	Data seek_set=SEEK_SET
 	Data seek_end=SEEK_END
 	SetCall size lseek(file,zero,seek_end)
-	If size<zero
+	If size==-1
 		Chars filesizeerr="File length function error."
 		Str ptrfilesizeerr^filesizeerr
 		Set err ptrfilesizeerr

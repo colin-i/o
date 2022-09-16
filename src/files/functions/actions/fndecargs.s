@@ -59,7 +59,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 
 	sd stackindex
 	setcall stackindex stack64_enlarge((dwsz))
-	#file size 0x7ff... ,sd * is 5 at 64 is 8
+	#file size somehow 0xffFF..., sd * is 5 at 64 is 8, below common stopper is a brother of ebx and section reserves
 	setcall err maxsectioncheck(stackindex,ptr_stackoffset)
 	If err!=noerr
 		Return err
