@@ -350,9 +350,6 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	Return err
 EndFunction
 
-data numberofbits#1
-const ptrnumberofbits^numberofbits
-
 #err
 function addfull(sd u,sv ps)
 	add ps# u
