@@ -86,6 +86,7 @@ if loop==1
 						if formatdefined==0;Set formatdefined 1;endif
 						#needing to find virtual start
 						if commandset==(cDECLARE)
+						ElseIf commandset==(cPRIMSEC)
 						ElseIf commandset==(cONEARG)
 						#at object is difficult, there is no virtual, ostrip will use: ld...-Tdata calculated, objcopy --update-section, write memsize
 						#else
@@ -116,7 +117,6 @@ if loop==1
 			ElseIf commandset==(cDECLARE)
 				Include "./index/declare.s"
 			ElseIf commandset==(cPRIMSEC)
-		call entryscope_verify_code()
 				Include "./index/primsec.s"
 			ElseIf commandset==(cONEARG)
 				Include "./index/onearg.s"

@@ -423,6 +423,7 @@ const pass_write=1
 
 const nosign=0
 
+const allow_later_sec=-2
 const allow_later=-1
 const allow_no=0
 const allow_yes=1

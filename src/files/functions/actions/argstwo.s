@@ -1,6 +1,12 @@
 
 #err
-Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
+Function twoargs(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition)
+	sd err;setcall err twoargs_ex(ptrcontent,ptrsize,subtype,ptrcondition,(allow_no))
+	return err
+endfunction
+
+#err
+Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allowdata)
 	Data lowprim#1
 	Data ptrlowprim^lowprim
 	Data lowsec#1
@@ -30,10 +36,21 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	sd imm
 	Data errnr#1
 	Data noerr=noerror
-	SetCall errnr argfilters(ptrcondition,ptrcontent,ptrsize,ptrdataargprim,ptrlowprim,ptrsufixprim)
+	SetCall errnr argfilters(ptrcondition,ptrcontent,ptrsize,ptrdataargprim,ptrlowprim,ptrsufixprim,allowdata)
 	If errnr!=noerr
 		Return errnr
 	EndIf
+
+	sd subtype_test
+
+	if allowdata==(allow_later_sec)
+		set subtype_test subtype;and subtype_test (x_call_flag)
+		if subtype_test==0
+			setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later)) #there are 4 more arguments but are not used
+			return errnr
+		endif
+		return (noerror)
+	endif
 
 	Data sameimportant#1
 	Set sameimportant true
@@ -61,7 +78,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	If ptrcondition==false
 		#imm second arg can be, at conditions was already called
 		call setimm()
-		sd subtype_test;set subtype_test subtype;and subtype_test (x_call_flag)
+		set subtype_test subtype;and subtype_test (x_call_flag)
 		if subtype_test!=0
 			xor subtype (x_call_flag)
 			Set primcalltype true
