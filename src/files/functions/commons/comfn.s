@@ -318,14 +318,13 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	Data seek_set=SEEK_SET
 	Data seek_end=SEEK_END
 	SetCall size lseek(file,0,seek_end)   #off_t is signed, mention lseek64
-	If size==-1
-		return "File length function error."
-	Else
-		Call lseek(file,0,seek_set)
-
-		#offset here
-		setcall err addfull(offset,#size)
-		if err==noerr
+	If size!=-1
+		sd can_rm_outside_and_lseek_can_say_the_file_is_not
+		setcall can_rm_outside_and_lseek_can_say_the_file_is_not lseek(file,0,seek_set)
+		if can_rm_outside_and_lseek_can_say_the_file_is_not!=-1
+			#offset here
+			add size offset       #this is only with MAX_PATH more on a int file size
+			#setcall err addfull(offset,#size)
 			SetCall err memoryalloc(size,ptrmem)
 			If err==noerr
 				value mem#1
@@ -344,23 +343,25 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 					return "File read error."
 				endif
 			EndIf
+			Call close(file)
+			return err
 		endif
-	EndElse
+	endif
 	Call close(file)
-	Return err
+	return "File length function error."
 EndFunction
 
 #err
-function addfull(sd u,sv ps)
-	add ps# u
-	if u>=0
-		return (noerror)
-	endif
-	if ps#<0
-		return (noerror)
-	endif
-	return "Overflow at two numbers."
-endfunction
+#function addfull(sd u,sv ps)
+#	add ps# u
+#	if u>=0
+#		return (noerror)
+#	endif
+#	if ps#<0
+#		return (noerror)
+#	endif
+#	return "Overflow at two numbers."
+#endfunction
 
 #return remainder
 Function remainder(data quotient,data dividend)
