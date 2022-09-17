@@ -319,36 +319,34 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	Data seek_end=SEEK_END
 	SetCall size lseek(file,0,seek_end)   #off_t is signed on elf32(ff... on c is only -1 at if, not 4billions...)
 	If size!=-1
-		sd can_rm_outside_and_lseek_can_say_the_file_is_not
-		setcall can_rm_outside_and_lseek_can_say_the_file_is_not lseek(file,0,seek_set)
-		if can_rm_outside_and_lseek_can_say_the_file_is_not!=-1
-			#offset here
-			add size offset       #this is only with MAX_PATH more on a int file size
-			#setcall err addfull(offset,#size)
-			SetCall err memoryalloc(size,ptrmem)
-			If err==noerr
-				value mem#1
-				Set mem ptrmem#
+		#a simple test is showing that gedit can write, rm can delete, this is not exclusive
+		#The disk space won't be released until the last process with an open file descriptor for the file finally closes the file.
+		call lseek(file,0,seek_set)
+		#offset here
+		add size offset       #this is only with MAX_PATH more on a int file size
+		#setcall err addfull(offset,#size)
+		SetCall err memoryalloc(size,ptrmem)
+		If err==noerr
+			value mem#1
+			Set mem ptrmem#
 
-				#and offset here
-				add mem offset
-				Set ptrsize# size
-				sub size offset
-				#
+			#and offset here
+			add mem offset
+			Set ptrsize# size
+			sub size offset
+			#
 
-				#a simple test is showing that gedit can write, rm can delete, this is not exclusive
-				sd sz;setcall sz read(file,mem,size)
-				if sz!=size
-					call free(ptrmem#)
-					return "File read error."
-				endif
-			EndIf
-			Call close(file)
-			return err
-		endif
-	endif
+			sd sz;setcall sz read(file,mem,size)
+			if sz!=size
+				call free(ptrmem#)
+				set err "File read error."
+			endif
+		EndIf
+	else
+		set err "File length function error."
+	endelse
 	Call close(file)
-	return "File length function error."
+	return err
 EndFunction
 
 #err
