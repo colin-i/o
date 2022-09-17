@@ -317,7 +317,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	Data size#1
 	Data seek_set=SEEK_SET
 	Data seek_end=SEEK_END
-	SetCall size lseek(file,0,seek_end)   #off_t is signed, mention lseek64
+	SetCall size lseek(file,0,seek_end)   #off_t is signed on elf32(ff... on c is only -1 at if, not 4billions...)
 	If size!=-1
 		sd can_rm_outside_and_lseek_can_say_the_file_is_not
 		setcall can_rm_outside_and_lseek_can_say_the_file_is_not lseek(file,0,seek_set)

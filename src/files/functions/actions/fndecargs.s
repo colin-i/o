@@ -59,19 +59,17 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 
 	sd stackindex
 	setcall stackindex stack64_enlarge((dwsz))
-	#file size somehow 0xffFF..., sd * is 5 at 64 is 8, below common stopper is a brother of ebx and section reserves
-	setcall err maxsectioncheck(stackindex,ptr_stackoffset)
-	If err!=noerr
-		Return err
-	EndIf
+	#(,sd *) is 5 at 64 is 8 but off_t on 32 ocompiler is signed(more at lseek), so no more than 32bits
+	#setcall err maxsectioncheck(stackindex,ptr_stackoffset)
+
+	add ptr_stackoffset# stackindex
 	Set stackoff ptr_stackoffset#
+	#stackoff is a write to sec for old data args
 
 	setcall stackindex stack64_enlarge((stackinitpush))
-	#stackoff is a write to sec for old data args
-	setcall err maxsectioncheck(stackoff,#stackindex)
-	If err!=noerr
-		Return err
-	EndIf
+	#setcall err maxsectioncheck(stackoff,#stackindex)
+	add stackindex stackoff
+
 	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackindex,long_mask)
 	If err!=noerr
 		Return err
