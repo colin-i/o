@@ -157,7 +157,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		EndIf
 	Else
 		Data callfn=callfunction
-		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn)
+		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
 		If errnr!=noerr
 			Return errnr
 		EndIf

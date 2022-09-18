@@ -1,8 +1,7 @@
 
 
-Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
-	Data zero=0
-	If sz==zero
+Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
+	If sz==0
 		Chars szexp="Variable declaration expected."
 		Str szexpptr^szexp
 		Return szexpptr
@@ -23,8 +22,20 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	If err!=noerr
 		Return err
 	EndIf
+
 	sd vartype
 	setcall vartype commandSubtypeDeclare_to_typenumber(subtype)
+	data is_stack#1
+	data ptrstack^is_stack
+	call stackfilter(vartype,ptrstack)
+
+	#substract from the big size the parsed size
+	Sub len sz
+	Data length#1
+	Set length ptrsize#
+	Sub length len
+	Set ptrsize# length
+
 	sd datasize=dwsz
 	sd long_mask=0
 	sd b;setcall b is_for_64()
@@ -44,12 +55,14 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		set datasize (bsz)
 	endelseif
 
-	#substract from the big size the parsed size
-	Sub len sz
-	Data length#1
-	Set length ptrsize#
-	Sub length len
-	Set ptrsize# length
+	if parses==(pass_init)
+		if is_stack==(FALSE)
+			vdata ptrdataReg%ptrdataReg
+			add ptrdataReg# datasize
+		endif
+		call advancecursors(ptrcontent,ptrsize,sz)
+		return (noerror)
+	endif
 
 	#this is a write to sec for old data args, careful with stackoff
 	Chars stacktransfer1#1;chars *={0x84,0x24}
@@ -75,11 +88,7 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		Return err
 	EndIf
 
-	data stack#1
-	data ptrstack^stack
-	call stackfilter(vartype,ptrstack)
-
-	if stack!=zero
+	if is_stack==(TRUE)
 		return noerr
 	endif
 

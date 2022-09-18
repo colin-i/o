@@ -81,7 +81,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsize,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -111,7 +111,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Data dwSz=dwsz
 			Data unitsize#1   #ignored at stack
 			Data charsnr=charsnumber
-			if punitsize==(NULL)
+			if punitsizeOrparses==(NULL)
 				If typenumberOrwrite==charsnr
 				#ignored at stack value   grep stackfilter2  1
 					Set unitsize bSz    #used also at hex
@@ -141,12 +141,12 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			sub argumentsize sizeaux
 			#
 			If typenumberOrwrite==fnnr
-				SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset)
+				SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset,punitsizeOrparses)
 				If err!=noerr
 					Return err
 				EndIf
 			Else
-				if punitsize==(NULL)
+				if punitsizeOrparses==(NULL)
 					Data value#1
 					Data ptrvalue^value
 					SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue,(FALSE))
@@ -167,7 +167,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 						EndIf
 					endelse
 				else
-					add punitsize# hexOrunitsize
+					add punitsizeOrparses# hexOrunitsize
 					call advancecursors(ptrcontent,ptrsize,argumentsize)
 				endelse
 			EndElse

@@ -80,13 +80,15 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		Return starterr
 	EndIf
 
+	vdata p_parses%ptr_parses
+	sd parses;set parses p_parses#
+
 	If is_declare==true
 		Data fnnr=functionsnumber
 		Data value#1
 		Data ptrvalue^value
 		sd scope64
-		data p_parses%ptr_parses
-		if p_parses#==(pass_init)
+		if parses==(pass_init)
 			setcall err fnimp_exists(content,sz) #it is at first pass when only fns and imports are
 			if err!=(noerror)
 				return err
@@ -112,10 +114,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			If err!=noerr
 				Return err
 			EndIf
+
+			#before virtuals
 			#skip the rest of the command at recon
-			Call advancecursors(ptrcontent,ptrsize,ptrsize#)
+			#Call advancecursors(ptrcontent,ptrsize,ptrsize#)
 			#
-			return noerr
+			#return noerr
 		else
 			#pass_write
 			sd pointer
@@ -182,7 +186,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		endelse
 	Else
 		Data ptrdata#1
-		if p_parses#==(pass_calls)
+		if parses==(pass_calls)
 			SetCall ptrdata vars_ignoreref(content,sz,fns)
 			if ptrdata!=0
 				call is_for_64_is_impX_or_fnX_set(ptrdata)
@@ -207,16 +211,18 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 	If is_declare==true
 		If sz!=zero
-			SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,fnnr) #there are 5 more arguments but are not used
+			SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,fnnr,parses) #there are 4 more arguments but are not used
 			if err!=noerr
 				return err
 			endif
 		EndIf
-		call entryscope()
+		if parses==(pass_write)
+			call entryscope()
+		endif
 	Else
 		sd p
 		sd pbool;setcall pbool is_for_64_is_impX_or_fnX_p_get()
-		if p_parses#==(pass_calls)
+		if parses==(pass_calls)
 			if pbool#==(FALSE)
 				call advancecursors(ptrcontent,ptrsize,sz)
 			else
