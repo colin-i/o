@@ -41,15 +41,18 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		Return errnr
 	EndIf
 
+	Data callfn=callfunction
+
 	sd subtype_test
 
 	if allowdata==(allow_later_sec)
 		set subtype_test subtype;and subtype_test (x_call_flag)
 		if subtype_test==0
-			setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later)) #there are 4 more arguments but are not used
+			setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
 			return errnr
 		else
-			call advancecursors(ptrcontent,ptrsize,ptrsize#)  #test later
+			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
+			return errnr
 		endelse
 		return (noerror)
 	endif
@@ -158,7 +161,6 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			Return errnr
 		EndIf
 	Else
-		Data callfn=callfunction
 		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
 		If errnr!=noerr
 			Return errnr

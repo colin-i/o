@@ -224,12 +224,17 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Sub negvalue argsize
 			Call advancecursors(ptrcontent,ptrsize,negvalue)
 			Data ptrargsize^argsize
-			if typenumberOrparses==(pass_write)
+			if typenumberOrparses==(pass_init)
+				setcall err getarg(ptrcontent,ptrargsize,ptrargsize#,(allow_later),sens) #there are 4 more arguments but are not used
+				If err!=noerr
+					Return err
+				EndIf
+			elseif typenumberOrparses==(pass_write)
 				SetCall err argument(ptrcontent,ptrargsize,backward) #there is 1 more argument but is not used
 				If err!=noerr
 					Return err
 				EndIf
-			endif
+			endelseif
 		EndElse
 		Sub sz argsize
 		If sz!=zero

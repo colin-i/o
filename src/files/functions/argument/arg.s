@@ -33,18 +33,16 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 endfunction
 
 #err
-Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data allowdata,data ptrdata,data ptrlow,data ptrsufix,data sens)
+Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrdata,sd ptrlow,sd ptrsufix)
 	ss content
 	sd size
 	sd errnr
 
 	chars d_q=getarg_str
 
-	if sizetoverify==0
+	if argsize==0
 		return "Argument name expected."
 	endif
-
-	sd argsize
 
 	Data noerr=noerror
 	data false=0
@@ -65,35 +63,35 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data allowdata,da
 				vdata ptrdataReg%ptrdataReg
 				add ptrdataReg# q_size
 				inc ptrdataReg#   #null end
-				call advancecursors(ptrcontent,ptrsize,sizetoverify)
-				return (noerror)
+			else
+				#allow_no later_sec
+				return "String here is useless at the moment."  #the real problem: is disturbing virtual calculation at pass_init
+			endelse
+		else
+			#get entry
+			sd sec%ptrdummyEntry
+			call getcont(sec,ptrdata)
+			sd location
+			set location ptrdata#
+			setcall location# get_img_vdata_dataReg()
+			#set string to data
+			data ptrdatasec%ptrdatasec
+			SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
+			If errnr!=(noerror)
+				return errnr
 			endif
-			#allow_no later_sec
-			return "String here is useless at the moment."  #the real problem: is disturbing virtual calculation at pass_init
-		endif
-		#get entry
-		sd sec%ptrdummyEntry
-		call getcont(sec,ptrdata)
-		sd location
-		set location ptrdata#
-		setcall location# get_img_vdata_dataReg()
-		#set string to data
-		data ptrdatasec%ptrdatasec
-		SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
-		If errnr!=(noerror)
-			return errnr
-		endif
-		#argsize for advancing
-		set argsize 2
-		add argsize q_size
-		#set low and sufix
-		set ptrlow# (FALSE)
-		set ptrsufix# (FALSE)
-		#the code operation is a "prefix" like
-		setcall prefix prefix_bool()
-		set prefix# 1
+			#argsize for advancing
+			set argsize 2
+			add argsize q_size
+			#set low and sufix
+			set ptrlow# (FALSE)
+			set ptrsufix# (FALSE)
+			#the code operation is a "prefix" like
+			setcall prefix prefix_bool()
+			set prefix# 1
+		endelse
 	elseif allowdata!=(allow_later)  #exclude pass_init
-		setcall errnr arg_size(content,sizetoverify,#argsize)
+		setcall errnr arg_size(content,argsize,#argsize)
 		If errnr!=(noerror)
 			Return errnr
 		EndIf
@@ -196,10 +194,7 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data allowdata,da
 				endelse
 			endelse
 		endif
-	else
-		call advancecursors(ptrcontent,ptrsize,sizetoverify)
-		return (noerror)
-	endelse
+	endelseif
 	If sens==(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
 		Return noerr
@@ -243,7 +238,7 @@ Function arg(sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd sens,s
 	set szarg ptrsize#
 
 	Data errnr#1
-	SetCall errnr getarg(ptrcontent,ptrsize,szarg,allowdata,ptrdata,ptrlow,ptrsufix,sens)
+	SetCall errnr getarg(ptrcontent,ptrsize,szarg,allowdata,sens,ptrdata,ptrlow,ptrsufix)
 	Return errnr
 EndFunction
 
@@ -317,7 +312,7 @@ Const enterifGREATER=0x8E
 			sd verifyafter
 			set verifyafter content
 			add verifyafter argsz
-			SetCall errnr getarg(ptrcontent,ptrsize,argsz,allowdata,ptrdata,ptrlow,ptrsufix,forward)
+			SetCall errnr getarg(ptrcontent,ptrsize,argsz,allowdata,forward,ptrdata,ptrlow,ptrsufix)
 			data noerrnr=noerror
 			if errnr!=noerrnr
 				Return errnr
