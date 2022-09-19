@@ -81,7 +81,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrparses,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -102,7 +102,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 
 	Data fnnr=functionsnumber
 	If fndecandgroupOrpush==true
-		If typenumberOrwrite==fnnr
+		If typenumberOrparses==fnnr
 			Data stackoffset#1
 			Set stackoffset zero
 			Data ptrstackoffset^stackoffset
@@ -112,7 +112,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Data unitsize#1   #ignored at stack
 			Data charsnr=charsnumber
 			if punitsizeOrparses==(NULL)
-				If typenumberOrwrite==charsnr
+				If typenumberOrparses==charsnr
 				#ignored at stack value   grep stackfilter2  1
 					Set unitsize bSz    #used also at hex
 				Else
@@ -140,7 +140,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			set argumentsize argsize
 			sub argumentsize sizeaux
 			#
-			If typenumberOrwrite==fnnr
+			If typenumberOrparses==fnnr
 				SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset,punitsizeOrparses)
 				If err!=noerr
 					Return err
@@ -173,7 +173,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			EndElse
 		Else
 			#push
-			if typenumberOrwrite==(FALSE) #for regs at call   and shadow space
+			if typenumberOrparses==(pass_calls) #for regs at call   and shadow space
 				call nr_of_args_64need_count()
 			endif
 			sd delim
@@ -224,7 +224,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Sub negvalue argsize
 			Call advancecursors(ptrcontent,ptrsize,negvalue)
 			Data ptrargsize^argsize
-			if typenumberOrwrite==(TRUE)
+			if typenumberOrparses==(pass_write)
 				SetCall err argument(ptrcontent,ptrargsize,backward) #there is 1 more argument but is not used
 				If err!=noerr
 					Return err

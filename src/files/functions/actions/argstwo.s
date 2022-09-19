@@ -48,7 +48,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		if subtype_test==0
 			setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later)) #there are 4 more arguments but are not used
 			return errnr
-		endif
+		else
+			call advancecursors(ptrcontent,ptrsize,ptrsize#)  #test later
+		endelse
 		return (noerror)
 	endif
 
