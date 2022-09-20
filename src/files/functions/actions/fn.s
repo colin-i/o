@@ -223,9 +223,11 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		endif
 	Else
 		if parses==(pass_init)
-			SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 5 more arguments but are not used
-			if err!=noerr
-				return err
+			if sz!=zero
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 5 more arguments but are not used
+				if err!=noerr
+					return err
+				endif
 			endif
 		else
 			sd p

@@ -61,6 +61,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 		if allowdata!=(allow_yes)
 			if allowdata==(allow_later)
 				vdata ptrdataReg%ptrdataReg
+				sub q_size escapes
 				add ptrdataReg# q_size
 				inc ptrdataReg#   #null end
 			else

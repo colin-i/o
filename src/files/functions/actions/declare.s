@@ -10,7 +10,10 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 
 	sd unitsize
 
-	if subtype==(cVDATA)
+	sd declare_typenumber
+	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype)
+
+	if declare_typenumber==(vintegersnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
 		if bool_64==(TRUE);set mask (datapointbit)
 			if parses==(pass_init)
@@ -21,7 +24,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 				set unitsize (dwsz)
 			endif
 		endelse
-	elseif subtype==(cVSTR)
+	elseif declare_typenumber==(vstringsnumber)
 		set is_stack (FALSE);set typenumber (stringsnumber)
 		if bool_64==(TRUE);set mask (datapointbit)
 			if parses==(pass_init)
@@ -32,7 +35,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 				set unitsize (dwsz)
 			endif
 		endelse
-	elseif subtype==(cVALUE)
+	elseif declare_typenumber==(valuesnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
 		if bool_64==(TRUE);set mask (valueslongmask)
 			if parses==(pass_init)
@@ -44,8 +47,6 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 			endif
 		endelse
 	else
-		sd declare_typenumber
-		setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype)
 		setcall typenumber stackfilter(declare_typenumber,#is_stack)
 		if parses==(pass_init)
 			if is_stack==(TRUE)

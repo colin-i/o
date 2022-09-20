@@ -130,6 +130,9 @@ Const totalmemvariables=charsnumber+1
 	#that was +charsnumber because it is compared against 2. and more reasons
 Const numberofvars=stackvaluenumber+1
 const vnumbers=numberofvars
+	const vintegersnumber=vnumbers+integersnumber
+	const vstringsnumber=vnumbers+stringsnumber
+	const valuesnumber=vnumbers+valuesinnernumber
 #from numberofvars to afterscopes comes inner function local scopes
 Const afterscopes=numberofvars*2
 	Const constantsnumber=afterscopes+0

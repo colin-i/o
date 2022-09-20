@@ -358,6 +358,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			endif
 			Call stepcursors(ptrcontent,ptrsize)
 		else
+			sub value escapes
 			add punitsize# value
 			call advancecursors(ptrcontent,ptrsize,ptrsize#)
 		endelse
