@@ -88,6 +88,7 @@ if loop==1
 						if commandset==(cDECLARE)
 						ElseIf commandset==(cPRIMSEC)
 						ElseIf commandset==(cONEARG)
+						Elseif commandset==(cCALL)
 						#at object is difficult, there is no virtual, ostrip will use: ld...-Tdata calculated, objcopy --update-section, write memsize
 						#else
 						elseIf commandset==(cIMPORTLINK) #needing importx here
