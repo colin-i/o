@@ -92,7 +92,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 		EndIf
 		setcall errnr addtolog_withchar_ex_atunused(content,valsize,(log_declare))
 		If errnr!=noerr;Return errnr;EndIf
-		Set value zero
+		#this will be set outside Set value 0
 	EndElse
 
 	SetCall errnr addaref(value,ptrcontent,ptrsize,valsize,typenumber,mask)

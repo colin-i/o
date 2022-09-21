@@ -8,9 +8,7 @@ data contentlineinclude=lineoffile_offset
 data dot_comma_end#1;set dot_comma_end 0
 
 set parses (pass_init)
-data logaux#1
-set logaux logfile
-set logfile negative
+data logbackup#1
 While includesReg!=null
 	Data cursorforincludes#1
 	Set cursorforincludes includes
@@ -100,9 +98,10 @@ While includesReg!=null
 						setcall errormsg align_alloc(functionTagIndex)
 						set g_e_b_p# (FALSE)  #in case was set, for writes
 						set datasecReg 0   #this was non-virtual size
+						set logbackup logfile
+						set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
 					else
 						set parses (pass_write)
-						set logfile logaux
 						call align_resolve()
 						setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
 					endelse
@@ -135,3 +134,5 @@ EndWhile
 If errormsg!=noerr
 	Call errexit()
 EndIf
+
+set logfile logbackup
