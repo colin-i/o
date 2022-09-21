@@ -81,6 +81,13 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 			endif
 		endelse
 	Else
+		setcall errnr addtolog_withchar_ex_atunused(content,valsize,(log_declare))
+		If errnr!=noerr;Return errnr;EndIf
+		vdata ptrconstantflag%ptrconstantflag
+		if ptrconstantflag#==(TRUE)   #need to add all constants to log at least at first pass
+			#advance valsize is too short Call advancecursors(ptrcontent,ptrsize,valsize)
+			return (noerror) #errors later
+		endif
 		Data structure#1
 		SetCall structure getstructcont(constantsnr)
 		Data pointer#1
@@ -90,8 +97,6 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 			Str pconstdup^constdup
 			Return pconstdup
 		EndIf
-		setcall errnr addtolog_withchar_ex_atunused(content,valsize,(log_declare))
-		If errnr!=noerr;Return errnr;EndIf
 		#this will be set outside Set value 0
 	EndElse
 

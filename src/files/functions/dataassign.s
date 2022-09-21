@@ -30,16 +30,22 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			#	setcall pointer_structure getstructcont(typenumber)
 			#endelse
 			Call getcontReg(constantsstruct,ptroffset_const)
-		EndIf
-		SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
-		If err!=noerr
-			Return err
-		EndIf
-		if sign==nosign
-			#stack variable declared without assignation, only increment stack variables
-			call addramp(#err)
-			Return err
-		endif
+			SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
+			If err!=noerr;Return err;EndIf
+			vdata ptrconstantflag%ptrconstantflag
+			if ptrconstantflag#==(TRUE)   #need to add all constants to log at least at first pass
+				set ptrconstantflag# (FALSE)
+				return (noerror)
+			endif
+		else
+			SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
+			If err!=noerr;Return err;EndIf
+			if sign==nosign
+				#stack variable declared without assignation, only increment stack variables
+				call addramp(#err)
+				Return err
+			endif
+		endelse
 	else
 		call advancecursors(ptrcontent,ptrsize,valsize)
 	endelse

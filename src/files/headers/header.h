@@ -432,3 +432,6 @@ const allow_no=0
 const allow_yes=1
 
 const getarg_str=asciidoublequote
+
+data constantflag#1
+const ptrconstantflag^constantflag

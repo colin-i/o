@@ -80,10 +80,14 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 		if parses==(pass_init)
 			if typenumber==(constantsnumber)
 				if sign==(pointersigndeclare)
-					call advancecursors(pcontent,pcomsize,pcomsize#)
-					return (noerror)
-				endif
-				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,(NULL))
+					vdata ptrconstantflag%ptrconstantflag
+					set ptrconstantflag# (TRUE)   #this constant can remain orphan without this intervention
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,(NULL))
+					call advancecursors(pcontent,pcomsize,pcomsize#) #at this rule these are not moving inside (no err check required)
+					#return (noerror)
+				else
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,(NULL))
+				endelse
 			else
 				if unitsize==0
 				#ss?
