@@ -21,22 +21,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	Data ptrrelocbool%ptrrelocbool
 
 	if punitsize==(NULL)
-		#If typenumber!=charsnr
-		#for const and at pointer with stack false
-		#this can't go after dataparse, addvarref will increase the offset
 		if typenumber==constantsnr
-			#	set pointer_structure constantsstruct
-			#else
-			#	setcall pointer_structure getstructcont(typenumber)
-			#endelse
+			#this can't go after dataparse, addvarref will increase the offset
 			Call getcontReg(constantsstruct,ptroffset_const)
 			SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
 			If err!=noerr;Return err;EndIf
-			vdata ptrconstantflag%ptrconstantflag
-			if ptrconstantflag#==(TRUE)   #need to add all constants to log at least at first pass
-				set ptrconstantflag# (FALSE)
-				return (noerror)
-			endif
 		else
 			SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
 			If err!=noerr;Return err;EndIf
