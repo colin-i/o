@@ -83,7 +83,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	#setcall err maxsectioncheck(stackoff,#stackindex)
 	add stackindex stackoff
 
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackindex,long_mask)
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex)
 	If err!=noerr
 		Return err
 	EndIf

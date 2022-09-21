@@ -24,7 +24,8 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		if typenumber==constantsnr
 			#this can't go after dataparse, addvarref will increase the offset
 			Call getcontReg(constantsstruct,ptroffset_const)
-			SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
+			SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask) #there is 1 more argument but is not used
+			#it is not a mistake to go with 0 mask in variable from here to addaref
 			If err!=noerr;Return err;EndIf
 		else
 			SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)

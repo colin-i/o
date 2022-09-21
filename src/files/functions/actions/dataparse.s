@@ -40,7 +40,7 @@ function get_img_vdata_dataReg()
 endfunction
 
 #err
-Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset,sd mask)
+Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,sd mask,data stackoffset)
 	#duplications
 	Data content#1
 	Set content ptrcontent#
@@ -98,7 +98,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 EndFunction
 
 #err
-function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset,sd mask)
+function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data typenumber,sd mask,data stackoffset)
 	data err#1
 	data noerr=noerror
 
@@ -132,7 +132,7 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif
-		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,stackoffset,mask)
+		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset)
 		If err!=noerr
 			Return err
 		EndIf
@@ -232,6 +232,6 @@ Function dataparse(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd stack,sd
 		data totalmemvariables=totalmemvariables
 		add typenumber totalmemvariables
 	endif
-	SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,false,mask)
+	SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,mask,false)
 	Return err
 EndFunction
