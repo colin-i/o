@@ -1,7 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd stack,sd long_mask,sd punitsize)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -17,8 +17,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	Data constantsstruct%ptrconstants
 	#Data pointer_structure#1
 	#at constants and at data^sd,str^ss
-
-	Data ptrrelocbool%ptrrelocbool
 
 	if punitsize==(NULL)
 		if typenumber==constantsnr
@@ -73,8 +71,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	data skipNumberValue#1
 	Data importbittest#1
 
-	sd relocbool
-
 	set rightstackpointer false
 	Set relocindx dataind
 	set valuewritesize (dwsz)
@@ -111,11 +107,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 								add value (dwsz)
 							endelse
 						endif
-						if ptrrelocbool#==true
+						if relocbool==true
 							str badrelocstr="Relocation sign and string surrounded by quotations is not allowed."
 							return badrelocstr
 						endif
-						set ptrrelocbool# true
+						set relocbool true
 					else
 						#let relocationsign, mess with dataReg, possible error will be catched at pass_write
 						inc punitsize#   #null end
@@ -170,7 +166,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
-			setcall relocbool reloc_unset()   #more below is explained
 			if punitsize==(NULL)
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool)
 			else
@@ -230,7 +225,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if rightstackbit==0
 				Set value pointer#
 			else
-				set ptrrelocbool# false
+				set relocbool false
 				if stack==false
 					If typenumber!=constantsnr
 						setcall err writetake((eaxregnumber),pointer)
@@ -315,7 +310,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	EndElse
 	if skipNumberValue==false
 		If typenumber!=constantsnr
-			setcall relocbool reloc_unset()
 			#it can be data% but with R_X86_64_64 at prefs and that will force 8 bytes
 			if punitsize==(NULL)
 				#init -1, 0 is local function in the right

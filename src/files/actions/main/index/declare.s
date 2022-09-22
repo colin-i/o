@@ -1,2 +1,2 @@
 
-setcall errormsg declare(pcontent,pcomsize,p_is_for_64_value#,subtype,#relocbool,parses)
+setcall errormsg declare(pcontent,pcomsize,p_is_for_64_value#,subtype,parses)

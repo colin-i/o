@@ -250,13 +250,3 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 	EndIf
 	Return noerr
 EndFunction
-
-#bool
-function reloc_unset()
-	vdata ptrrelocbool%ptrrelocbool
-	if ptrrelocbool#!=(FALSE)
-		set ptrrelocbool# (FALSE)
-		return (TRUE)
-	endif
-	return (FALSE)
-endfunction

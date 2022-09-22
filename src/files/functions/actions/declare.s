@@ -1,6 +1,6 @@
 
 #err
-function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd parses)
+function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	Data valsize#1
 	Chars sign#1
 	#below also at virtual at get_reserve (with mask there)
@@ -75,7 +75,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 	endelse
 
 	sd err
-	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,prelocbool)
+	sd relocbool
+	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool)
 	if err==(noerror)
 		if parses==(pass_init)
 			if typenumber==(constantsnumber)
@@ -85,7 +86,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 						call advancecursors(pcontent,pcomsize,pcomsize#)
 						return (noerror)
 					endif
-					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,(NULL))
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask) #there are 2 more argument but are not used
 				endif
 			else
 				if unitsize==0
@@ -97,21 +98,18 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 					#ss =% ""/x/{}
 				else
 				#search for data%  with R_X86_64_64
-					vData ptrrelocbool%ptrrelocbool
-					if ptrrelocbool#==(TRUE)
+					if relocbool==(TRUE)
 						if mask==0
-						#data chars str
-							if typenumber==(integersnumber)
-							#data
-								vdata is_64_and_pref_is_rx866464%p_elf64_r_info_type
-								if is_64_and_pref_is_rx866464#==(R_X86_64_64)
-									set unitsize (qwsz)
-								endif
+						#data str
+						#strs are without ""
+							vdata is_64_and_pref_is_rx866464%p_elf64_r_info_type
+							if is_64_and_pref_is_rx866464#==(R_X86_64_64)
+								set unitsize (qwsz)
 							endif
 						endif
 					endif
 				endelse
-				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,#unitsize)
+				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,is_stack) #there is 1 more argument but is not used
 				sd pdataReg%ptrdataReg
 				add pdataReg# unitsize    #this is init by 0
 			endelse
@@ -122,7 +120,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd prelocbool,sd 
 					return (noerror)
 				endif
 			endif
-			SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,is_stack,mask,(NULL))
+			SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,is_stack,relocbool)
 		endelse
 	endif
 	return err

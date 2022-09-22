@@ -265,9 +265,6 @@ Data ptrextra%ptrextra
 Data ptrconditionsloops%ptrconditionsloops
 Data ptrnull^null
 
-Data relocbool#1
-Const ptrrelocbool^relocbool
-
 Data allocerrormsg#1
 const ptrallocerrormsg^allocerrormsg
 

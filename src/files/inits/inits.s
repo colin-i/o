@@ -89,5 +89,3 @@ sd el_or_e=FALSE
 set functionTagIndex 0
 
 call resetisimm()
-
-call reloc_unset()
