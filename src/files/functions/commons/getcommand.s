@@ -394,7 +394,7 @@ Const compointersvarsloc^pointersvars
 const x_call_flag=0x80000000
 
 #declare coresp
-function commandSubtypeDeclare_to_typenumber(sd subtype)
+function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
 #these numbers will be used at getstruct directly
 	if subtype==(cCONST)
 		return (constantsnumber)
@@ -406,7 +406,10 @@ function commandSubtypeDeclare_to_typenumber(sd subtype)
 		else
 			sub subtype (xnumbers)
 		endelse
-	endif
+		set p_is_expand# (TRUE)
+	else
+		set p_is_expand# (FALSE)   #this, if typenumber is constant, atm is not used
+	endelse
 	return subtype
 endfunction
 #set errormsg to pointer error or return the find
