@@ -24,7 +24,8 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	EndIf
 
 	sd vartype
-	setcall vartype commandSubtypeDeclare_to_typenumber(subtype)
+	sd is_expand
+	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
 	data is_stack#1
 	data ptrstack^is_stack
 	call stackfilter(vartype,ptrstack)
@@ -83,7 +84,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	#setcall err maxsectioncheck(stackoff,#stackindex)
 	add stackindex stackoff
 
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex)
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex) #there is 1 more argument but is not used
 	If err!=noerr
 		Return err
 	EndIf

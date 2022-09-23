@@ -2,6 +2,7 @@
 
 #err
 Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool)
+#Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool,sd is_expand)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -22,11 +23,18 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		if typenumber==constantsnr
 			#this can't go after dataparse, addvarref will increase the offset
 			Call getcontReg(constantsstruct,ptroffset_const)
-			SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask) #there is 1 more argument but is not used
+			SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask) #there are 2 more argument but are not used
 			#it is not a mistake to go with 0 mask in variable from here to addaref
 			If err!=noerr;Return err;EndIf
 		else
-			SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
+			if stack==(TRUE)
+				sd sectiontypenumber=totalmemvariables
+				add sectiontypenumber typenumber
+				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,sectiontypenumber,long_mask,0) #there is 1 more argument but is not used
+			else
+				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0)
+				#SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand)
+			endelse
 			If err!=noerr;Return err;EndIf
 			if sign==nosign
 				#stack variable declared without assignation, only increment stack variables
@@ -187,15 +195,19 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				return (noerror)
 			endif
 			if stack==false
-				sd p_nul_res_pref%p_nul_res_pref
-				if p_nul_res_pref#==(TRUE)
-					sd datacont;call getcontplusReg(ptrdatasec,#datacont)
-				endif
-				SetCall err addtosec(0,value,ptrdatasec)
-				If err!=noerr;Return err;EndIf
-				if p_nul_res_pref#==(TRUE)
-					call memset(datacont,0,value)
-				endif
+				#if is_expand==(TRUE)
+				#	add dataSize value
+				#else
+					sd p_nul_res_pref%p_nul_res_pref
+					if p_nul_res_pref#==(TRUE)
+						sd datacont;call getcontplusReg(ptrdatasec,#datacont)
+					endif
+					SetCall err addtosec(0,value,ptrdatasec)
+					If err!=noerr;Return err;EndIf
+					if p_nul_res_pref#==(TRUE)
+						call memset(datacont,0,value)
+					endif
+				#endelse
 			else
 				call growramp(value,#err)
 			endelse

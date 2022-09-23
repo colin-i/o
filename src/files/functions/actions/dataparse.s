@@ -41,6 +41,7 @@ endfunction
 
 #err
 Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,sd mask,data stackoffset)
+#Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	#duplications
 	Data content#1
 	Set content ptrcontent#
@@ -61,6 +62,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 		call stackfilter(typenumber,ptrS)
 		if stack==false
 			setcall value get_img_vdata_dataReg()
+			#setcall value get_img_vdata_dataSize()
 		else
 			if stackoffset==zero
 				#stack free declared
@@ -99,6 +101,7 @@ EndFunction
 
 #err
 function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data typenumber,sd mask,data stackoffset)
+#function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	data err#1
 	data noerr=noerror
 
@@ -222,16 +225,3 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	Str assignoperatorerr^_assignoperatorerr
 	Return assignoperatorerr
 endfunction
-
-#err
-Function dataparse(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd stack,sd mask)
-	Data false=FALSE
-	Data err#1
-
-	if stack!=false
-		data totalmemvariables=totalmemvariables
-		add typenumber totalmemvariables
-	endif
-	SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,mask,false)
-	Return err
-EndFunction
