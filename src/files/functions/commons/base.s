@@ -192,8 +192,8 @@ function addtolog_withchar_ex_atunused_handle(ss content,sd size,sd type,sd file
 endfunction
 #err
 function addtolog_natural(sd number)
-	chars buf#unsigned32null
-	call sprintf(#buf,"%u",number)
+	chars buf#8+1
+	call sprintf(#buf,"%08x",number)  #for file seek at position
 	sd err;setcall err addtolog_withchar(#buf,(log_expand))
 	return err
 endfunction

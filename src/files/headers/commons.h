@@ -40,7 +40,6 @@ Data null=NULL
 Data true=TRUE
 Data false=FALSE
 Data flag_max_path=flag_MAX_PATH
-const unsigned32null=10+1
 
 #more values
 Const noerror=0

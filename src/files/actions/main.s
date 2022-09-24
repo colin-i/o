@@ -95,16 +95,15 @@ While includesReg!=null
 				Else
 					if parses==(pass_init)
 						setcall errormsg align_alloc(functionTagIndex)
-						if errormsg==(noerror)
-							set parses (pass_calls)
-							set g_e_b_p# (FALSE)  #in case was set, for writes
 
-							set datasecSize datasecReg
-							set datasecReg 0
-							set logbackup logfile
-							setcall errormsg addtolog_natural(datasecSize)
-							set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
-						endif
+						set parses (pass_calls)
+						set g_e_b_p# (FALSE)  #in case was set, for writes
+
+						set datasecSize datasecReg
+						set datasecReg 0
+
+						set logbackup logfile
+						set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
 					else
 						set parses (pass_write)
 						call align_resolve()
@@ -136,7 +135,7 @@ While includesReg!=null
 	endif
 EndWhile
 
-set logfile logbackup       #set for errexit  and for func/const at object    and finally for normal exit
+set logfile logbackup       #set for errexit, func/const at object, virtual, exit
 
 If errormsg!=noerr
 	Call errexit()
