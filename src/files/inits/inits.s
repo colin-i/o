@@ -90,4 +90,4 @@ set functionTagIndex 0
 
 call resetisimm()
 
-set datasecSize 0
+#this is init at main.s and used after that    set datasecSize 0
