@@ -22,22 +22,29 @@ EndFunction
 
 #relocated offset or offset at objects
 function get_img_vdata_dataReg()
-		Data value#1
-		Data inter#1
+	Data value#1
+	Data inter#1
 
-		Data ptrimageoff%ptrimagebaseoffset
-		Data ptrdataoff%ptrstartofdata
-		Data ptrdataSec%ptrdatasec
-		Data ptrinter^inter
+	Data ptrimageoff%ptrimagebaseoffset
+	Data ptrdataoff%ptrstartofdata
+	Data ptrdataSec%ptrdatasec
+	Data ptrinter^inter
 
-		Set value ptrimageoff#
-		Set inter ptrdataoff#
-		Add value inter
+	Set value ptrimageoff#
+	Set inter ptrdataoff#
+	Add value inter
 
-		Call getcontReg(ptrdataSec,ptrinter)
-		Add value inter
-		return value
+	Call getcontReg(ptrdataSec,ptrinter)
+	Add value inter
+	return value
 endfunction
+#same
+#function get_img_vdata_dataSize()
+#	sd reg;setcall reg get_img_vdata_dataReg()
+#	vdata ptrdataSize%ptrdatasecSize
+#	add reg dataSize#
+#	return reg
+#endfunction
 
 #err
 Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,sd mask,data stackoffset)
@@ -61,8 +68,11 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 		data ptrS^stack
 		call stackfilter(typenumber,ptrS)
 		if stack==false
-			setcall value get_img_vdata_dataReg()
-			#setcall value get_img_vdata_dataSize()
+			#if is_expand==(TRUE)
+			#	setcall value get_img_vdata_dataSize()
+			#else
+				setcall value get_img_vdata_dataReg()
+			#endelse
 		else
 			if stackoffset==zero
 				#stack free declared

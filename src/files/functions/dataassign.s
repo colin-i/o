@@ -196,17 +196,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			endif
 			if stack==false
 				#if is_expand==(TRUE)
-				#	add dataSize value
+				#	vdata ptrdataSize%ptrdatasecSize
+				#	add ptrdataSize# value
 				#else
-					sd p_nul_res_pref%p_nul_res_pref
-					if p_nul_res_pref#==(TRUE)
-						sd datacont;call getcontplusReg(ptrdatasec,#datacont)
-					endif
-					SetCall err addtosec(0,value,ptrdatasec)
-					If err!=noerr;Return err;EndIf
-					if p_nul_res_pref#==(TRUE)
-						call memset(datacont,0,value)
-					endif
+					setcall err set_reserve(value)
 				#endelse
 			else
 				call growramp(value,#err)
@@ -431,5 +424,24 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 			endIf
 		endIf
 	endelse
+	Return err
+endfunction
+
+#err
+function set_reserve(sd value)
+	vData ptrdatasec%ptrdatasec
+	sd p_nul_res_pref%p_nul_res_pref
+	if p_nul_res_pref#==(TRUE)
+		sd reg;call getcontReg(ptrdatasec,#reg)
+	endif
+	sd err
+	SetCall err addtosec(0,value,ptrdatasec)
+	If err==(noerror)
+		if p_nul_res_pref#==(TRUE)
+			sd cont;call getcont(ptrdatasec,#cont)
+			add cont reg
+			call memset(cont,0,value)
+		endif
+	EndIf
 	Return err
 endfunction

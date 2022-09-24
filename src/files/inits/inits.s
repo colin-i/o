@@ -89,3 +89,5 @@ sd el_or_e=FALSE
 set functionTagIndex 0
 
 call resetisimm()
+
+#set datasecSize 0
