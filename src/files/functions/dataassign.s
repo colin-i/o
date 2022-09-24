@@ -1,7 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd stack,sd long_mask)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool,sd is_expand)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -18,39 +18,43 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	#Data pointer_structure#1
 	#at constants and at data^sd,str^ss
 
-	Data ptrrelocbool%ptrrelocbool
+	if punitsize==(NULL)
+		if typenumber==constantsnr
+			#this can't go after dataparse, addvarref will increase the offset
+			Call getcontReg(constantsstruct,ptroffset_const)
+			SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask) #there are 2 more argument but are not used
+			#it is not a mistake to go with 0 mask in variable from here to addaref
+			If err!=noerr;Return err;EndIf
+		else
+			if stack==(TRUE)
+				sd sectiontypenumber=totalmemvariables
+				add sectiontypenumber typenumber
+				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,sectiontypenumber,long_mask,0) #there is 1 more argument but is not used
+			else
+				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand)
+			endelse
+			If err!=noerr;Return err;EndIf
+			if sign==nosign
+				#stack variable declared without assignation, only increment stack variables
+				call addramp(#err)
+				Return err
+			endif
+		endelse
+	else
+		call advancecursors(ptrcontent,ptrsize,valsize)
+	endelse
 
-#parses will enter here and skip this
-	#If typenumber!=charsnr
-	#for const and at pointer with stack false
-	#this can't go after dataparse, addvarref will increase the offset
-	if typenumber==constantsnr
-		#	set pointer_structure constantsstruct
-		#else
-		#	setcall pointer_structure getstructcont(typenumber)
-		#endelse
-		Call getcontReg(constantsstruct,ptroffset_const)
-	EndIf
-	SetCall err dataparse(ptrcontent,ptrsize,valsize,typenumber,stack,long_mask)
-	If err!=noerr
-		Return err
-	EndIf
-	if sign==nosign
-		#stack variable declared without assignation, only increment stack variables
-		call addramp(#err)
-		Return err
-	endif
-#
 	Call stepcursors(ptrcontent,ptrsize)
 
 	Data size#1
 	Set size ptrsize#
 	If size==0
+		#not at unitsize: constants,stacks
 		Chars rightsideerr="Right side of the assignment expected."
 		Str ptrrightsideerr^rightsideerr
 		Return ptrrightsideerr
 	endIf
-#and return unitsize/reserve size  here
+
 	data rightstackpointer#1
 
 	Data relocindx#1
@@ -73,8 +77,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	data skipNumberValue#1
 	Data importbittest#1
 
-	sd relocbool
-
 	set rightstackpointer false
 	Set relocindx dataind
 	set valuewritesize (dwsz)
@@ -96,22 +98,30 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					#else is at stack value   grep stackfilter2   2
 						set stringtodata true
 						set skipNumberValue true
+						if punitsize!=(NULL)
+							set punitsize# 1    #was 1 from bsz is 1 from null end
+						endif
 					endif
 				ElseIf typenumber==stringsnr
 					set stringtodata true
-					setcall value get_img_vdata_dataReg()
-					if stack==false
-						if long_mask!=0
-							add value (qwsz)
-						else
-							add value (dwsz)
-						endelse
-					endif
-					if ptrrelocbool#==true
-						str badrelocstr="Relocation sign and string surrounded by quotations is not allowed."
-						return badrelocstr
-					endif
-					set ptrrelocbool# true
+					if punitsize==(NULL)
+						setcall value get_img_vdata_dataReg()
+						if stack==false
+							if long_mask!=0
+								add value (qwsz)
+							else
+								add value (dwsz)
+							endelse
+						endif
+						if relocbool==true
+							str badrelocstr="Relocation sign and string surrounded by quotations is not allowed."
+							return badrelocstr
+						endif
+						set relocbool true
+					else
+						#let relocationsign, mess with dataReg, possible error will be catched at pass_write
+						inc punitsize#   #null end
+					endelse
 				EndElseIf
 				if stringtodata==false
 					chars bytesatintegers="The string assignment (\"\") can be used at CHARS, STR or SS."
@@ -120,6 +130,12 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				endif
 			Else
 			#=value+constant-/&...
+				if punitsize!=(NULL)
+				#dwsz or bsz  or qwsz
+				#ss =% x is 0
+					call advancecursors(ptrcontent,ptrsize,size)
+					return (noerror)
+				endif
 				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
 					return err
@@ -133,6 +149,13 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			EndElse
 		Else
 		#{} group
+			if punitsize!=(NULL)
+				if stack==true
+				#ss =% {}      is 0
+					call advancecursors(ptrcontent,ptrsize,size)
+					return (noerror)
+				endif
+			endif
 			If typenumber==constantsnr
 				Chars constgroup="Group begin sign ('{') is not expected to declare a constant."
 				Str ptrconstgroup^constgroup
@@ -149,8 +172,13 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
-			setcall relocbool reloc_unset()
-			SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,stack,(not_hexenum),long_mask,relocbool)
+			if punitsize==(NULL)
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool)
+			else
+				sd aux;set aux punitsize#
+				set punitsize# 0   #will add unit sizes inside
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 3 more arguments but are not used
+			endelse
 			If err!=noerr
 				Return err
 			EndIf
@@ -160,16 +188,17 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	ElseIf sign==(reserveascii)
 		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask)
 		if err==(noerror)
+			if punitsize!=(NULL)
+				set punitsize# value
+				return (noerror)
+			endif
 			if stack==false
-				sd p_nul_res_pref%p_nul_res_pref
-				if p_nul_res_pref#==(TRUE)
-					sd datacont;call getcontplusReg(ptrdatasec,#datacont)
-				endif
-				SetCall err addtosec(0,value,ptrdatasec)
-				If err!=noerr;Return err;EndIf
-				if p_nul_res_pref#==(TRUE)
-					call memset(datacont,0,value)
-				endif
+				if is_expand==(TRUE)
+					vdata ptrdataSize%ptrdataSize
+					add ptrdataSize# value
+				else
+					setcall err set_reserve(value)
+				endelse
 			else
 				call growramp(value,#err)
 			endelse
@@ -177,6 +206,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		Return err
 	Else
 	#^ pointer
+		if punitsize!=(NULL)
+			call advancecursors(ptrcontent,ptrsize,size)
+			return (noerror)
+		endif
 		Set content ptrcontent#
 		data doublepointer#1
 		set doublepointer zero
@@ -195,7 +228,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if rightstackbit==0
 				Set value pointer#
 			else
-				set ptrrelocbool# false
+				set relocbool false
 				if stack==false
 					If typenumber!=constantsnr
 						setcall err writetake((eaxregnumber),pointer)
@@ -280,24 +313,26 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	EndElse
 	if skipNumberValue==false
 		If typenumber!=constantsnr
-			#init -1, 0 is local function in the right
-			if importbittest==0
-			#and no problems if inplace_reloc is 0 there
-				if stack==false
-					setcall err unresLc(0,ptrdatasec,0)
-				else
-					setcall err unresLc((rampadd_value_off),ptrcodesec,0)
-				endelse
-				if err!=(noerror)
-					return err
+			#it can be data% but with R_X86_64_64 at prefs and that will force 8 bytes
+			if punitsize==(NULL)
+				#init -1, 0 is local function in the right
+				if importbittest==0
+				#and no problems if inplace_reloc is 0 there
+					if stack==false
+						setcall err unresLc(0,ptrdatasec,0)
+					else
+						setcall err unresLc((rampadd_value_off),ptrcodesec,0)
+					endelse
+					if err!=(noerror)
+						return err
+					endif
 				endif
+				#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
+				setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask,relocbool)
+				If err!=noerr
+					Return err
+				EndIf
 			endif
-			#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
-			setcall relocbool reloc_unset()
-			setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask,relocbool)
-			If err!=noerr
-				Return err
-			EndIf
 		Else
 			Data container#1
 			Data ptrcontainer^container
@@ -307,11 +342,19 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		EndElse
 	endif
 	if stringtodata==true
-		setcall err add_string_to_data(ptrcontent,ptrsize)
-		if err!=(noerror)
-			return err
-		endif
-		Call stepcursors(ptrcontent,ptrsize)
+		sd escapes
+		SetCall err quotinmem(ptrcontent,ptrsize,ptrvalue,#escapes)
+		if punitsize==(NULL)
+			SetCall err addtosecstresc(ptrcontent,ptrsize,value,escapes,ptrdatasec,(FALSE))
+			if err!=(noerror)
+				return err
+			endif
+			Call stepcursors(ptrcontent,ptrsize)
+		else
+			sub value escapes
+			add punitsize# value
+			call advancecursors(ptrcontent,ptrsize,ptrsize#)
+		endelse
 	endif
 	Return noerr
 EndFunction
@@ -340,25 +383,6 @@ function get_function_values(sd impbit,sd p_value,sd pointer)
 	#import
 	set p_value# 0
 	return pointer#
-endfunction
-
-#err
-function add_string_to_data(sd ptrcontent,sd ptrsize)
-	sd err
-	Data ptrdatasec%ptrdatasec
-	Data quotsz#1
-	Data ptrquotsz^quotsz
-	Data escapes#1
-	Data ptrescapes^escapes
-	SetCall err quotinmem(ptrcontent,ptrsize,ptrquotsz,ptrescapes)
-	If err!=(noerror)
-		return err
-	endif
-	SetCall err addtosecstresc(ptrcontent,ptrsize,quotsz,escapes,ptrdatasec,(FALSE))
-	If err!=(noerror)
-		return err
-	endif
-	return (noerror)
 endfunction
 
 #err
@@ -398,5 +422,24 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 			endIf
 		endIf
 	endelse
+	Return err
+endfunction
+
+#err
+function set_reserve(sd value)
+	vData ptrdatasec%ptrdatasec
+	sd p_nul_res_pref%p_nul_res_pref
+	if p_nul_res_pref#==(TRUE)
+		sd reg;call getcontReg(ptrdatasec,#reg)
+	endif
+	sd err
+	SetCall err addtosec(0,value,ptrdatasec)
+	If err==(noerror)
+		if p_nul_res_pref#==(TRUE)
+			sd cont;call getcont(ptrdatasec,#cont)
+			add cont reg
+			call memset(cont,0,value)
+		endif
+	EndIf
 	Return err
 endfunction

@@ -90,4 +90,4 @@ set functionTagIndex 0
 
 call resetisimm()
 
-call reloc_unset()
+set datasecSize 0

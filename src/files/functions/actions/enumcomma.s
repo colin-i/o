@@ -7,6 +7,8 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	data false=FALSE
 	data ptrobject%ptrobject
 
+	sd for_64
+
 	if stack==false
 		data ptrdatasec%ptrdatasec
 		if ptrobject#==1
@@ -24,8 +26,10 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 				endif
 				call inplace_reloc(ptrvalue)
 				#endif
-				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec);If err!=(noerror);Return err;EndIf
-				setcall err reloc64_post_base(ptrdatasec)
+				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec)
+				If err==(noerror)
+					setcall err reloc64_post_base(ptrdatasec)
+				EndIf
 				return err
 			endif
 		endif
@@ -38,7 +42,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 		return (noerror)
 	endif
 
-	sd for_64;setcall for_64 is_for_64()
+	setcall for_64 is_for_64()
 	if ptrobject#==1
 		If relocbool==true
 			#code
@@ -77,7 +81,7 @@ endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrwrite,sd stack,sd hex,sd long_mask,sd relocbool)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrparses,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool)
 	Data zero=0
 	Data argsize#1
 	Chars comma=","
@@ -98,7 +102,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 
 	Data fnnr=functionsnumber
 	If fndecandgroupOrpush==true
-		If typenumberOrwrite==fnnr
+		If typenumberOrparses==fnnr
 			Data stackoffset#1
 			Set stackoffset zero
 			Data ptrstackoffset^stackoffset
@@ -107,12 +111,14 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Data dwSz=dwsz
 			Data unitsize#1   #ignored at stack
 			Data charsnr=charsnumber
-			If typenumberOrwrite==charsnr
-			#ignored at stack value   grep stackfilter2  1
-				Set unitsize bSz    #used also at hex
-			Else
-				Set unitsize dwSz
-			EndElse
+			if punitsizeOrparses==(NULL)
+				If typenumberOrparses==charsnr
+				#ignored at stack value   grep stackfilter2  1
+					Set unitsize bSz    #used also at hex
+				Else
+					Set unitsize dwSz
+				EndElse
+			endif
 		EndElse
 		Set sens forward
 	Else
@@ -134,35 +140,40 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			set argumentsize argsize
 			sub argumentsize sizeaux
 			#
-			If typenumberOrwrite==fnnr
-				SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset)
+			If typenumberOrparses==fnnr
+				SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset,punitsizeOrparses)
 				If err!=noerr
 					Return err
 				EndIf
 			Else
-				Data value#1
-				Data ptrvalue^value
-				SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue,(FALSE))
-				If err!=noerr
-					Return err
-				EndIf
-				if hex==(not_hexenum)
-					data dataind=dataind
-					setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask,relocbool)
+				if punitsizeOrparses==(NULL)
+					Data value#1
+					Data ptrvalue^value
+					SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue,(FALSE))
 					If err!=noerr
 						Return err
 					EndIf
+					if hexOrunitsize==(not_hexenum)
+						data dataind=dataind
+						setcall err writevar(ptrvalue,unitsize,dataind,stack,zero,long_mask,relocbool)
+						If err!=noerr
+							Return err
+						EndIf
+					else
+						sd ptrcodesec%ptrcodesec
+						setcall err addtosec(ptrvalue,unitsize,ptrcodesec)
+						If err!=noerr
+							Return err
+						EndIf
+					endelse
 				else
-					sd ptrcodesec%ptrcodesec
-					setcall err addtosec(ptrvalue,unitsize,ptrcodesec)
-					If err!=noerr
-						Return err
-					EndIf
+					add punitsizeOrparses# hexOrunitsize
+					call advancecursors(ptrcontent,ptrsize,argumentsize)
 				endelse
 			EndElse
 		Else
 			#push
-			if typenumberOrwrite==(FALSE) #for regs at call   and shadow space
+			if typenumberOrparses==(pass_calls) #for regs at call   and shadow space
 				call nr_of_args_64need_count()
 			endif
 			sd delim
@@ -213,12 +224,17 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Sub negvalue argsize
 			Call advancecursors(ptrcontent,ptrsize,negvalue)
 			Data ptrargsize^argsize
-			if typenumberOrwrite==(TRUE)
-				SetCall err argument(ptrcontent,ptrargsize,zero,backward)
+			if typenumberOrparses==(pass_init)
+				setcall err getarg(ptrcontent,ptrargsize,ptrargsize#,(allow_later),sens) #there are 4 more arguments but are not used
 				If err!=noerr
 					Return err
 				EndIf
-			endif
+			elseif typenumberOrparses==(pass_write)
+				SetCall err argument(ptrcontent,ptrargsize,backward) #there is 1 more argument but is not used
+				If err!=noerr
+					Return err
+				EndIf
+			endelseif
 		EndElse
 		Sub sz argsize
 		If sz!=zero
@@ -234,13 +250,3 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 	EndIf
 	Return noerr
 EndFunction
-
-#bool
-function reloc_unset()
-	vdata ptrrelocbool%ptrrelocbool
-	if ptrrelocbool#!=(FALSE)
-		set ptrrelocbool# (FALSE)
-		return (TRUE)
-	endif
-	return (FALSE)
-endfunction

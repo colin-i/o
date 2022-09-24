@@ -1,8 +1,7 @@
 
 
-Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
-	Data zero=0
-	If sz==zero
+Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
+	If sz==0
 		Chars szexp="Variable declaration expected."
 		Str szexpptr^szexp
 		Return szexpptr
@@ -23,8 +22,22 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	If err!=noerr
 		Return err
 	EndIf
+
+	#substract from the big size the declaration+spc size, the ptrcontent is already there, outside are comma values
+	Sub len sz
+	Data length#1
+	Set length ptrsize#
+	Sub length len
+	Set ptrsize# length
+
 	sd vartype
-	setcall vartype commandSubtypeDeclare_to_typenumber(subtype)
+	sd is_expand
+	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
+
+	data is_stack#1
+	data ptrstack^is_stack
+	call stackfilter(vartype,ptrstack)
+
 	sd datasize=dwsz
 	sd long_mask=0
 	sd b;setcall b is_for_64()
@@ -44,12 +57,16 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 		set datasize (bsz)
 	endelseif
 
-	#substract from the big size the parsed size
-	Sub len sz
-	Data length#1
-	Set length ptrsize#
-	Sub length len
-	Set ptrsize# length
+	if parses==(pass_init)
+		if is_stack==(FALSE)
+			if is_expand==(FALSE)
+				vdata ptrdataReg%ptrdataReg
+				add ptrdataReg# datasize
+			endif
+		endif
+		call advancecursors(ptrcontent,ptrsize,sz)
+		return (noerror)
+	endif
 
 	#this is a write to sec for old data args, careful with stackoff
 	Chars stacktransfer1#1;chars *={0x84,0x24}
@@ -59,31 +76,40 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 
 	sd stackindex
 	setcall stackindex stack64_enlarge((dwsz))
-	#file size 0x7ff... ,sd * is 5 at 64 is 8
-	setcall err maxsectioncheck(stackindex,ptr_stackoffset)
-	If err!=noerr
-		Return err
-	EndIf
+	#(,sd *) is 5 at 64 is 8 but off_t on 32 ocompiler is signed(more at lseek), so no more than 32bits
+	#setcall err maxsectioncheck(stackindex,ptr_stackoffset)
+
+	add ptr_stackoffset# stackindex
 	Set stackoff ptr_stackoffset#
+	#stackoff is a write to sec for old data args
 
 	setcall stackindex stack64_enlarge((stackinitpush))
-	#stackoff is a write to sec for old data args
-	setcall err maxsectioncheck(stackoff,#stackindex)
-	If err!=noerr
-		Return err
-	EndIf
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,stackindex,long_mask)
+	#setcall err maxsectioncheck(stackoff,#stackindex)
+	add stackindex stackoff
+
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex,is_expand)
 	If err!=noerr
 		Return err
 	EndIf
 
-	data stack#1
-	data ptrstack^stack
-	call stackfilter(vartype,ptrstack)
-
-	if stack!=zero
+	if is_stack==(TRUE)
 		return noerr
 	endif
+
+	if is_expand==(TRUE)
+		setcall memoff get_img_vdata_dataSize()
+		vdata ptrdataSize%ptrdataSize
+		add ptrdataSize# datasize
+	else
+		setcall memoff get_img_vdata_dataReg()
+		Data null={NULL,NULL}
+		Data ptrnull^null
+		Data _datasec%ptrdatasec
+		SetCall err addtosec(ptrnull,datasize,_datasec)
+		If err!=noerr
+			Return err
+		EndIf
+	endelse
 
 	Chars stackt1ini=moveatprocthemem
 	Chars stackt2ini=0xA3
@@ -91,25 +117,15 @@ Function fndecargs(data ptrcontent,data ptrsize,data sz,data ptr_stackoffset)
 	Set stacktransfer1 stackt1ini
 	Set stacktransfer2 stackt2ini
 
-	setcall memoff get_img_vdata_dataReg()
-
 	If datasize==(bsz)
+	#chars
 		Dec stacktransfer1
 		Dec stacktransfer2
-	endIf
-
-	Data null={NULL,NULL}
-	Data ptrnull^null
-	Data _datasec%ptrdatasec
-	SetCall err addtosec(ptrnull,datasize,_datasec)
-	If err!=noerr
-		Return err
-	EndIf
-
-	if long_mask!=0
+	elseif long_mask!=0
+	#values
 		call rex_w(#err)
 		If err!=noerr;Return err;EndIf
-	endif
+	endelseif
 
 	data p_is_object%ptrobject
 	if p_is_object#==(TRUE)
