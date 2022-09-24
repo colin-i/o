@@ -434,5 +434,5 @@ const allow_yes=1
 
 const getarg_str=asciidoublequote
 
-#Data datasecSize#1
-#const ptrdatasecSize^datasecSize
+Data datasecSize#1
+const ptrdataSize^datasecSize

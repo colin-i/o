@@ -99,10 +99,10 @@ While includesReg!=null
 							set parses (pass_calls)
 							set g_e_b_p# (FALSE)  #in case was set, for writes
 
-							#set datasecSize datasecReg
+							set datasecSize datasecReg
 							set datasecReg 0
 							set logbackup logfile
-							#setcall errormsg addtolog_natural(datasecSize)
+							setcall errormsg addtolog_natural(datasecSize)
 							set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
 						endif
 					else

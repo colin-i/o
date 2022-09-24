@@ -20,35 +20,36 @@ Function entryvarsfns(data content,data size)
 	Return ptrvarfndup
 EndFunction
 
-#relocated offset or offset at objects
-function get_img_vdata_dataReg()
+#relocated offset or for objects
+function get_img_vdata()
 	Data value#1
 	Data inter#1
 
 	Data ptrimageoff%ptrimagebaseoffset
 	Data ptrdataoff%ptrstartofdata
-	Data ptrdataSec%ptrdatasec
-	Data ptrinter^inter
 
 	Set value ptrimageoff#
 	Set inter ptrdataoff#
 	Add value inter
-
-	Call getcontReg(ptrdataSec,ptrinter)
-	Add value inter
 	return value
 endfunction
 #same
-#function get_img_vdata_dataSize()
-#	sd reg;setcall reg get_img_vdata_dataReg()
-#	vdata ptrdataSize%ptrdatasecSize
-#	add reg dataSize#
-#	return reg
-#endfunction
+function get_img_vdata_dataReg()
+	sd reg;setcall reg get_img_vdata()
+	vdata ptrdataReg%ptrdataReg
+	add reg ptrdataReg#
+	return reg
+endfunction
+#same
+function get_img_vdata_dataSize()
+	sd reg;setcall reg get_img_vdata()
+	vdata ptrdataSize%ptrdataSize
+	add reg ptrdataSize#
+	return reg
+endfunction
 
 #err
-Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,sd mask,data stackoffset)
-#Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
+Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	#duplications
 	Data content#1
 	Set content ptrcontent#
@@ -68,11 +69,11 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 		data ptrS^stack
 		call stackfilter(typenumber,ptrS)
 		if stack==false
-			#if is_expand==(TRUE)
-			#	setcall value get_img_vdata_dataSize()
-			#else
+			if is_expand==(TRUE)
+				setcall value get_img_vdata_dataSize()
+			else
 				setcall value get_img_vdata_dataReg()
-			#endelse
+			endelse
 		else
 			if stackoffset==zero
 				#stack free declared
@@ -110,8 +111,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 EndFunction
 
 #err
-function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data typenumber,sd mask,data stackoffset)
-#function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
+function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	data err#1
 	data noerr=noerror
 
@@ -145,7 +145,7 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif
-		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset)
+		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
 		If err!=noerr
 			Return err
 		EndIf

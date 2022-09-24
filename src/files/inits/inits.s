@@ -90,4 +90,4 @@ set functionTagIndex 0
 
 call resetisimm()
 
-#set datasecSize 0
+set datasecSize 0

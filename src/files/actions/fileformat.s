@@ -1,9 +1,9 @@
 
 #this is temporary
-#setcall errormsg set_reserve(datasecSize)
-#if errormsg!=(noerror)
-#	Call msgerrexit(errormsg)
-#endif
+setcall errormsg set_reserve(datasecSize)
+if errormsg!=(noerror)
+	Call msgerrexit(errormsg)
+endif
 #
 
 If fileformat==pe_exec

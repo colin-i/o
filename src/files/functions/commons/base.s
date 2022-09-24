@@ -191,12 +191,12 @@ function addtolog_withchar_ex_atunused_handle(ss content,sd size,sd type,sd file
 	return (noerror)
 endfunction
 #err
-#function addtolog_natural(sd number)
-#	chars buf#unsigned32null
-#	call sprintf(#buf,"%u",number)
-#	sd err;setcall err addtolog_withchar(#buf,(log_expand))
-#	return err
-#endfunction
+function addtolog_natural(sd number)
+	chars buf#unsigned32null
+	call sprintf(#buf,"%u",number)
+	sd err;setcall err addtolog_withchar(#buf,(log_expand))
+	return err
+endfunction
 
 function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data1,sd data2)
 	sd c

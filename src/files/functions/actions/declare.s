@@ -14,12 +14,12 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	sd is_expand
 	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
 
-	#if is_expand==(TRUE)
-	#	if parses==(pass_init)
-	#		call advancecursors(pcontent,pcomsize,pcomsize#)
-	#		return (noerror)
-	#	endif
-	#endif
+	if is_expand==(TRUE)
+		if parses==(pass_init)
+			call advancecursors(pcontent,pcomsize,pcomsize#)
+			return (noerror)
+		endif
+	endif
 
 	if declare_typenumber==(vintegersnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
@@ -132,8 +132,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 					return "Virtual declarations can have only the reserve sign."
 				endif
 			endelseif
-			SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,is_stack,relocbool)
-			#SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,is_stack,relocbool,is_expand)
+			SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,is_stack,relocbool,is_expand)
 		endelse
 	endif
 	return err

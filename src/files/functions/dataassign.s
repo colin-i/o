@@ -1,8 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool)
-#Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool,sd is_expand)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool,sd is_expand)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -32,8 +31,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				add sectiontypenumber typenumber
 				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,sectiontypenumber,long_mask,0) #there is 1 more argument but is not used
 			else
-				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0)
-				#SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand)
+				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand)
 			endelse
 			If err!=noerr;Return err;EndIf
 			if sign==nosign
@@ -195,12 +193,12 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				return (noerror)
 			endif
 			if stack==false
-				#if is_expand==(TRUE)
-				#	vdata ptrdataSize%ptrdatasecSize
-				#	add ptrdataSize# value
-				#else
+				if is_expand==(TRUE)
+					vdata ptrdataSize%ptrdataSize
+					add ptrdataSize# value
+				else
 					setcall err set_reserve(value)
-				#endelse
+				endelse
 			else
 				call growramp(value,#err)
 			endelse

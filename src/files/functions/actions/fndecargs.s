@@ -23,19 +23,20 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		Return err
 	EndIf
 
-	sd vartype
-	sd is_expand
-	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
-	data is_stack#1
-	data ptrstack^is_stack
-	call stackfilter(vartype,ptrstack)
-
-	#substract from the big size the parsed size
+	#substract from the big size the declaration+spc size, the ptrcontent is already there, outside are comma values
 	Sub len sz
 	Data length#1
 	Set length ptrsize#
 	Sub length len
 	Set ptrsize# length
+
+	sd vartype
+	sd is_expand
+	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
+
+	data is_stack#1
+	data ptrstack^is_stack
+	call stackfilter(vartype,ptrstack)
 
 	sd datasize=dwsz
 	sd long_mask=0
@@ -58,8 +59,10 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 
 	if parses==(pass_init)
 		if is_stack==(FALSE)
-			vdata ptrdataReg%ptrdataReg
-			add ptrdataReg# datasize
+			if is_expand==(FALSE)
+				vdata ptrdataReg%ptrdataReg
+				add ptrdataReg# datasize
+			endif
 		endif
 		call advancecursors(ptrcontent,ptrsize,sz)
 		return (noerror)
@@ -84,7 +87,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	#setcall err maxsectioncheck(stackoff,#stackindex)
 	add stackindex stackoff
 
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex) #there is 1 more argument but is not used
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex,is_expand)
 	If err!=noerr
 		Return err
 	EndIf
@@ -93,31 +96,36 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		return noerr
 	endif
 
+	if is_expand==(TRUE)
+		setcall memoff get_img_vdata_dataSize()
+		vdata ptrdataSize%ptrdataSize
+		add ptrdataSize# datasize
+	else
+		setcall memoff get_img_vdata_dataReg()
+		Data null={NULL,NULL}
+		Data ptrnull^null
+		Data _datasec%ptrdatasec
+		SetCall err addtosec(ptrnull,datasize,_datasec)
+		If err!=noerr
+			Return err
+		EndIf
+	endelse
+
 	Chars stackt1ini=moveatprocthemem
 	Chars stackt2ini=0xA3
 
 	Set stacktransfer1 stackt1ini
 	Set stacktransfer2 stackt2ini
 
-	setcall memoff get_img_vdata_dataReg()
-
 	If datasize==(bsz)
+	#chars
 		Dec stacktransfer1
 		Dec stacktransfer2
-	endIf
-
-	Data null={NULL,NULL}
-	Data ptrnull^null
-	Data _datasec%ptrdatasec
-	SetCall err addtosec(ptrnull,datasize,_datasec)
-	If err!=noerr
-		Return err
-	EndIf
-
-	if long_mask!=0
+	elseif long_mask!=0
+	#values
 		call rex_w(#err)
 		If err!=noerr;Return err;EndIf
-	endif
+	endelseif
 
 	data p_is_object%ptrobject
 	if p_is_object#==(TRUE)
