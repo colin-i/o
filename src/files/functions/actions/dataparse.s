@@ -20,27 +20,36 @@ Function entryvarsfns(data content,data size)
 	Return ptrvarfndup
 EndFunction
 
-#relocated offset or offset at objects
+#relocated offset or for objects
+function get_img_vdata()
+	Data value#1
+	Data inter#1
+
+	Data ptrimageoff%ptrimagebaseoffset
+	Data ptrdataoff%ptrstartofdata
+
+	Set value ptrimageoff#
+	Set inter ptrdataoff#
+	Add value inter
+	return value
+endfunction
+#same
 function get_img_vdata_dataReg()
-		Data value#1
-		Data inter#1
-
-		Data ptrimageoff%ptrimagebaseoffset
-		Data ptrdataoff%ptrstartofdata
-		Data ptrdataSec%ptrdatasec
-		Data ptrinter^inter
-
-		Set value ptrimageoff#
-		Set inter ptrdataoff#
-		Add value inter
-
-		Call getcontReg(ptrdataSec,ptrinter)
-		Add value inter
-		return value
+	sd reg;setcall reg get_img_vdata()
+	vdata ptrdataReg%ptrdataReg
+	add reg ptrdataReg#
+	return reg
+endfunction
+#same
+function get_img_vdata_dataSize()
+	sd reg;setcall reg get_img_vdata()
+	vdata ptrdataSize%ptrdataSize
+	add reg ptrdataSize#
+	return reg
 endfunction
 
 #err
-Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset,sd mask)
+Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	#duplications
 	Data content#1
 	Set content ptrcontent#
@@ -60,7 +69,11 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 		data ptrS^stack
 		call stackfilter(typenumber,ptrS)
 		if stack==false
-			setcall value get_img_vdata_dataReg()
+			if is_expand==(TRUE)
+				setcall value get_img_vdata_dataSize()
+			else
+				setcall value get_img_vdata_dataReg()
+			endelse
 		else
 			if stackoffset==zero
 				#stack free declared
@@ -90,9 +103,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 			Str pconstdup^constdup
 			Return pconstdup
 		EndIf
-		setcall errnr addtolog_withchar_ex_atunused(content,valsize,(log_declare))
-		If errnr!=noerr;Return errnr;EndIf
-		Set value zero
+		#this will be set outside Set value 0
 	EndElse
 
 	SetCall errnr addaref(value,ptrcontent,ptrsize,valsize,typenumber,mask)
@@ -100,7 +111,7 @@ Function addvarreference(data ptrcontent,data ptrsize,data valsize,data typenumb
 EndFunction
 
 #err
-function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data typenumber,data stackoffset,sd mask)
+function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	data err#1
 	data noerr=noerror
 
@@ -134,7 +145,7 @@ function addvarreferenceorunref(data ptrcontent,data ptrsize,data valsize,data t
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif
-		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,stackoffset,mask)
+		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
 		If err!=noerr
 			Return err
 		EndIf
@@ -224,16 +235,3 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	Str assignoperatorerr^_assignoperatorerr
 	Return assignoperatorerr
 endfunction
-
-#err
-Function dataparse(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd stack,sd mask)
-	Data false=FALSE
-	Data err#1
-
-	if stack!=false
-		data totalmemvariables=totalmemvariables
-		add typenumber totalmemvariables
-	endif
-	SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,false,mask)
-	Return err
-EndFunction

@@ -24,7 +24,7 @@ If formatresponse==false
 			setcall is_so stratmemspc(pcontent,pcomsize,"SO",false)
 			if is_so==true
 				if ignore_format_so==(No)
-					setcall errormsg addtolog_char((log_reusable),logaux)
+					setcall errormsg addtolog_char((log_reusable),logfile)
 				endif
 			endif
 			If errormsg==noerr

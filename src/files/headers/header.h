@@ -55,6 +55,7 @@ Const sizeofcontainer=3*dwsz
 #base containers
 Const includesSize=50*includesetSz
 #includesSize
+Const containersbegin=!
 Data includesMax#1
 Data includes#1
 Data includesReg#1
@@ -128,7 +129,14 @@ Const totalmemvariables=charsnumber+1
 	Const stackvaluenumber=totalmemvariables+valuesinnernumber
 	#that was +charsnumber because it is compared against 2. and more reasons
 Const numberofvars=stackvaluenumber+1
+
 const vnumbers=numberofvars
+	const vintegersnumber=vnumbers+integersnumber
+	const vstringsnumber=vnumbers+stringsnumber
+	const valuesnumber=vnumbers+valuesinnernumber
+const xnumbers=valuesnumber+1
+const xvnumbers=xnumbers+totalmemvariables
+
 #from numberofvars to afterscopes comes inner function local scopes
 Const afterscopes=numberofvars*2
 	Const constantsnumber=afterscopes+0
@@ -156,6 +164,7 @@ Data datasecMax#1
 Data datasec#1
 Data datasecReg#1
 Const ptrdatasec^datasecMax
+Const ptrdataReg^datasecReg
 
 Data codesecMax=sizeofsecdata
 Data codesec#1
@@ -196,7 +205,6 @@ Data unresLocal#1
 Data unresLocalReg#1
 Const ptrunresLocal^unresLocalMax
 
-Const containersbegin^includesMax
 Const containerssize=!-containersbegin
 
 chars dummyEntry_data#sizeof_minimumentry
@@ -260,9 +268,6 @@ Data ptraddresses%ptraddresses
 Data ptrextra%ptrextra
 Data ptrconditionsloops%ptrconditionsloops
 Data ptrnull^null
-
-Data relocbool#1
-Const ptrrelocbool^relocbool
 
 Data allocerrormsg#1
 const ptrallocerrormsg^allocerrormsg
@@ -421,3 +426,13 @@ const pass_calls=2
 const pass_write=1
 
 const nosign=0
+
+const allow_later_sec=-2
+const allow_later=-1
+const allow_no=0
+const allow_yes=1
+
+const getarg_str=asciidoublequote
+
+Data datasecSize#1
+const ptrdataSize^datasecSize

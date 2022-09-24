@@ -20,3 +20,6 @@ const log_declare=0x64
 
 #r
 const log_reusable=0x72
+
+#x
+const log_expand=0x78

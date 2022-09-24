@@ -17,7 +17,9 @@ const EM_386=3
 const EM_X86_64=62
 const ET_REL=1
 
-chars elf32_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
+Const elf_fileheaders_start=!
+
+chars *elf32_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
 
 #32-bit objects
 chars *elf32_ehd_e_ident_class={ELFCLASS32}
@@ -70,10 +72,11 @@ chars elf32_ehd_e_shnum#2
 #Section header string table index
 chars elf32_ehd_e_shstrndx#2
 
+Const elf_fileheaders_end=!
 
-Const elf_fileheaders_start^elf32_ehd_e_ident_sign
-Const elf_fileheaders_lastdata^elf32_ehd_e_shstrndx
-Const elf_fileheaders_end=elf_fileheaders_lastdata+wsz
+#Const elf_fileheaders_start^elf32_ehd_e_ident_sign
+#Const elf_fileheaders_lastdata^elf32_ehd_e_shstrndx
+#Const elf_fileheaders_end=elf_fileheaders_lastdata+wsz
 Data elf_fileheaders%elf_fileheaders_start
 Data elf_fileheaders_size=elf_fileheaders_end-elf_fileheaders_start
 
@@ -117,9 +120,12 @@ const PF_W=2
 const PF_R=4
 const PT_LOAD=1
 
+
+Const elf_progdeffileheaders_start=!
+
 #Program data section
 const elf_data_voff=elf_imagebase+elf_startofdata
-data elf32_phdr_p_type_data=PT_LOAD
+data *elf32_phdr_p_type_data=PT_LOAD
 #Segment file offset
 data elf32_phdr_p_offset_data=elf_startofdata
 #Segment virtual address
@@ -150,11 +156,13 @@ data elf32_phdr_p_memsz_code#1
 #Segment flags
 data *elf32_phdr_p_flags_code=PF_X|PF_R
 #Segment align
-data elf32_phdr_p_align_code=page_sectionalignment
+data *elf32_phdr_p_align_code=page_sectionalignment
 
-Const elf_progdeffileheaders_start^elf32_phdr_p_type_data
-Const elf_progdeffileheaders_lastdata^elf32_phdr_p_align_code
-Const elf_progdeffileheaders_end=elf_progdeffileheaders_lastdata+dwsz
+Const elf_progdeffileheaders_end=!
+
+#Const elf_progdeffileheaders_start^elf32_phdr_p_type_data
+#Const elf_progdeffileheaders_lastdata^elf32_phdr_p_align_code
+#Const elf_progdeffileheaders_end=elf_progdeffileheaders_lastdata+dwsz
 Data elf_progdeffileheaders%elf_progdeffileheaders_start
 Data elf_progdeffileheaders_size=elf_progdeffileheaders_end-elf_progdeffileheaders_start
 
@@ -162,8 +170,10 @@ Data elf_progdeffileheaders_size=elf_progdeffileheaders_end-elf_progdeffileheade
 const PT_DYNAMIC=2
 const PT_INTERP=3
 
+Const elf_importfileheaders=!
+
 #Interpreter section
-data elf32_phdr_p_type_interp=PT_INTERP
+data *elf32_phdr_p_type_interp=PT_INTERP
 #Segment file offset
 data elf32_phdr_p_offset_interp#1
 #Segment virtual address
@@ -211,11 +221,13 @@ data elf32_phdr_p_memsz_lib#1
 #Segment flags
 data *elf32_phdr_p_flags_lib=PF_R|PF_W
 #Segment align
-data elf32_phdr_p_align_lib=page_sectionalignment
+data *elf32_phdr_p_align_lib=page_sectionalignment
 
-Const elf_importfileheaders^elf32_phdr_p_type_interp
-Const elf_importfileheaders_lastdata^elf32_phdr_p_align_lib
-Const elf_importfileheaders_end=elf_importfileheaders_lastdata+dwsz
+Const elf_importfileheaders_end=!
+
+#Const elf_importfileheaders^elf32_phdr_p_type_interp
+#Const elf_importfileheaders_lastdata^elf32_phdr_p_align_lib
+#Const elf_importfileheaders_end=elf_importfileheaders_lastdata+dwsz
 
 Data elf_importfileheaders%elf_importfileheaders
 Data elf_importfileheaders_size=elf_importfileheaders_end-elf_importfileheaders
@@ -224,7 +236,9 @@ Chars interpreter="/lib/ld-linux.so.2"
 Str ptrinterpreter^interpreter
 Data interpretersize#1
 
-Data DT_HASH=0x4
+Const elf_dynfix_start=!
+
+Data *DT_HASH=0x4
 Data elf32_dyn_d_ptr_hash#1
 Data *DT_SYMTAB=6
 Data elf32_dyn_d_ptr_symtab#1
@@ -243,20 +257,26 @@ Data *DT_RELAENT=9
 Const elf32_dyn_d_val_relent=12
 Data elf32_dyn_d_val_relent=elf32_dyn_d_val_relent
 Data *DT_NULL=0
-Data elf32_dyn_d_val_null=0
+Data *elf32_dyn_d_val_null=0
 
-Const elf_dynfix_start^DT_HASH
-Const elf_dynfix_lastdata^elf32_dyn_d_val_null
-Const elf_dynfix_end=elf_dynfix_lastdata+dwsz
+Const elf_dynfix_end=!
+
+#Const elf_dynfix_start^DT_HASH
+#Const elf_dynfix_lastdata^elf32_dyn_d_val_null
+#Const elf_dynfix_end=elf_dynfix_lastdata+dwsz
 Data elf_dynfix_size=elf_dynfix_end-elf_dynfix_start
 
-Data sizeofbucket=1
-Data sizeofchain#1
-Data fakebucket=0
+Const elf_hash_start=!
 
-Const elf_hash_start^sizeofbucket
-Const elf_hash_lastdata^fakebucket
-Const elf_hash_end=elf_hash_lastdata+dwsz
+Data *sizeofbucket=1
+Data sizeofchain#1
+Data *fakebucket=0
+
+Const elf_hash_end=!
+
+#Const elf_hash_start^sizeofbucket
+#Const elf_hash_lastdata^fakebucket
+#Const elf_hash_end=elf_hash_lastdata+dwsz
 Data elf_hash_minsize=elf_hash_end-elf_hash_start
 
 

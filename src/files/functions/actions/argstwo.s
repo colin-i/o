@@ -1,6 +1,12 @@
 
 #err
-Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
+Function twoargs(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition)
+	sd err;setcall err twoargs_ex(ptrcontent,ptrsize,subtype,ptrcondition,(allow_no))
+	return err
+endfunction
+
+#err
+Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allowdata)
 	Data lowprim#1
 	Data ptrlowprim^lowprim
 	Data lowsec#1
@@ -30,10 +36,26 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	sd imm
 	Data errnr#1
 	Data noerr=noerror
-	SetCall errnr argfilters(ptrcondition,ptrcontent,ptrsize,ptrdataargprim,ptrlowprim,ptrsufixprim)
+	SetCall errnr argfilters(ptrcondition,ptrcontent,ptrsize,ptrdataargprim,ptrlowprim,ptrsufixprim,allowdata)
 	If errnr!=noerr
 		Return errnr
 	EndIf
+
+	Data callfn=callfunction
+
+	sd subtype_test
+
+	if allowdata==(allow_later_sec)
+		set subtype_test subtype;and subtype_test (x_call_flag)
+		if subtype_test==0
+			setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
+			return errnr
+		else
+			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
+			return errnr
+		endelse
+		return (noerror)
+	endif
 
 	Data sameimportant#1
 	Set sameimportant true
@@ -61,7 +83,7 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	If ptrcondition==false
 		#imm second arg can be, at conditions was already called
 		call setimm()
-		sd subtype_test;set subtype_test subtype;and subtype_test (x_call_flag)
+		set subtype_test subtype;and subtype_test (x_call_flag)
 		if subtype_test!=0
 			xor subtype (x_call_flag)
 			Set primcalltype true
@@ -126,13 +148,20 @@ Function twoargs(data ptrcontent,data ptrsize,data subtype,data ptrcondition)
 	EndElse
 
 	If primcalltype==false
-		SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true)
+		if ptrcondition==false
+			if subtype!=(cCALLEX)
+				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_yes))
+			else
+				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
+			endelse
+		else
+			SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
+		endelse
 		If errnr!=noerr
 			Return errnr
 		EndIf
 	Else
-		Data callfn=callfunction
-		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn)
+		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
 		If errnr!=noerr
 			Return errnr
 		EndIf

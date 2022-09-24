@@ -1,6 +1,8 @@
 
 #note that multiple calls on aftercall are tolerated and the next calls will use the last aftercall(can be used in a code strategy with multiple functions)
 
+const aftercalldeclaresize=1
+
 if comsize==0;set errormsg "AfterCall variable name expected."
 else
 	str ac_store_content#1;data ac_store_size#1
@@ -20,7 +22,7 @@ else
 			sd ac_current_data;setcall ac_current_data get_img_vdata_dataReg()
 			SetCall errormsg addaref(ac_current_data,pcontent,pcomsize,comsize,(charsnumber),(dummy_mask))
 			if errormsg==(noerror)
-				SetCall errormsg addtosec(#null,1,ptrdatasec)
+				SetCall errormsg addtosec(#null,(aftercalldeclaresize),ptrdatasec)
 				if errormsg==(noerror)
 					If object==(FALSE)
 						set g_e_p# ac_current_data

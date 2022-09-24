@@ -33,60 +33,42 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 endfunction
 
 #err
-Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data ptrlow,data ptrsufix,data sens)
+Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrdata,sd ptrlow,sd ptrsufix)
 	ss content
 	sd size
 	sd errnr
 
-	Set content ptrcontent#
-	set size ptrsize#
+	chars d_q=getarg_str
 
-	chars d_q=asciidoublequote
-
-	Str argnameerr="Argument name expected."
-	if sizetoverify==0
-		Return argnameerr
-	endif
-
-	sd argsize
-	if content#!=d_q
-		setcall errnr arg_size(content,sizetoverify,#argsize)
-		If errnr!=(noerror)
-			Return errnr
-		EndIf
+	if argsize==0
+		return "Argument name expected."
 	endif
 
 	Data noerr=noerror
 	data false=0
 
-	#call resetisimm()
-	sd bool
-	setcall bool is_constant_related_ascii(content#)
-	if bool==(TRUE)
-		#verify if imm is ok
-		sd canhaveimm
-		setcall canhaveimm getimm()
-		if canhaveimm==false
-			str immnothere="Unexpected numbers/constants, expecting a variable."
-			return immnothere
+	Set content ptrcontent#
+	set size ptrsize#
+
+	sd prefix
+	if content#==d_q
+		sd q_size
+		sd escapes
+		SetCall errnr quotinmem(#content,#size,#q_size,#escapes)
+		If errnr!=(noerror)
+			return errnr
 		endif
-		#extend to parenthesis if found
-		sd ptr_sz^argsize
-		setcall errnr parenthesis_all_size(content,size,ptr_sz)
-		If errnr!=noerr
-			Return errnr
-		EndIf
-		#find the imm
-		setcall errnr findimm(ptrcontent,ptrsize,argsize,ptrdata)
-		If errnr!=noerr
-			Return errnr
-		EndIf
-		#
-		set ptrlow# false
-		#sufix is not used at imm value
-	else
-		sd prefix
-		if content#==d_q
+		if allowdata!=(allow_yes)
+			if allowdata==(allow_later)
+				vdata ptrdataReg%ptrdataReg
+				sub q_size escapes
+				add ptrdataReg# q_size
+				inc ptrdataReg#   #null end
+			else
+				#allow_no later_sec
+				return "String here is useless at the moment."  #the real problem: is disturbing virtual calculation at pass_init
+			endelse
+		else
 			#get entry
 			sd sec%ptrdummyEntry
 			call getcont(sec,ptrdata)
@@ -94,12 +76,6 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			set location ptrdata#
 			setcall location# get_img_vdata_dataReg()
 			#set string to data
-			sd q_size
-			sd escapes
-			SetCall errnr quotinmem(#content,#size,#q_size,#escapes)
-			If errnr!=(noerror)
-				return errnr
-			endif
 			data ptrdatasec%ptrdatasec
 			SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
 			If errnr!=(noerror)
@@ -114,80 +90,112 @@ Function getarg(data ptrcontent,data ptrsize,data sizetoverify,data ptrdata,data
 			#the code operation is a "prefix" like
 			setcall prefix prefix_bool()
 			set prefix# 1
-		else
-			sd argsize_filter
-			if content#==(pointerascii)
-				#prefix
-				setcall prefix prefix_bool()
-				set prefix# 1
-				inc content
-				set argsize_filter argsize
-				dec argsize_filter
-				SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
-				if errnr!=(noerror)
-					return errnr
+		endelse
+	elseif allowdata!=(allow_later)  #exclude pass_init
+		setcall errnr arg_size(content,argsize,#argsize)
+		If errnr!=(noerror)
+			Return errnr
+		EndIf
+		if allowdata!=(allow_later_sec)
+			sd bool
+			setcall bool is_constant_related_ascii(content#)
+			if bool==(TRUE)
+				#verify if imm is ok
+				sd canhaveimm
+				setcall canhaveimm getimm()
+				if canhaveimm==false
+					str immnothere="Unexpected numbers/constants, expecting a variable."
+					return immnothere
 				endif
+				#extend to parenthesis if found
+				sd ptr_sz^argsize
+				setcall errnr parenthesis_all_size(content,size,ptr_sz)
+				If errnr!=noerr
+					Return errnr
+				EndIf
+				#find the imm
+				setcall errnr findimm(ptrcontent,ptrsize,argsize,ptrdata)
+				If errnr!=noerr
+					Return errnr
+				EndIf
+				#
+				set ptrlow# false
+				#sufix is not used at imm value
 			else
-				data ptrobject%ptrobject
-				data ptrfunctions%ptrfunctions
-				sd container_sz
-				setcall container_sz valinmem(content,argsize,(asciidot))
-				if container_sz!=argsize
-					#if is a dot
-					sd inter
-					#setcall inter vars(content,container_sz,ptrfunctions)
-					sd pos=0
-					setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
-					if inter==(NULL)
-						setcall errnr undefinedvar_fn()
-						return errnr
-					endif
-					inc container_sz
+				sd argsize_filter
+				if content#==(pointerascii)
+					#prefix
+					setcall prefix prefix_bool()
+					set prefix# 1
+					inc content
 					set argsize_filter argsize
-					call advancecursors(#content,#argsize_filter,container_sz)
-					#
-					sd scope
-					setcall scope scopes_get_scope(pos)
-					SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,scope)
+					dec argsize_filter
+					SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
 					if errnr!=(noerror)
 						return errnr
 					endif
-					sd test;setcall test stackbit(ptrdata#)
-					if test!=0
-						return "Stack variables are not relevant for scope.variable."
-					endif
-				elseif ptrobject#==1
-					#verify for function
-					setcall ptrdata# vars(content,argsize,ptrfunctions)
-					if ptrdata#==0
-						SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-						if errnr!=(noerror)
-							sd undvar_err
-							setcall undvar_err undefinedvariable()
-							if errnr==undvar_err
-								setcall errnr undefinedvar_fn()
-							endif
+				else
+					data ptrobject%ptrobject
+					data ptrfunctions%ptrfunctions
+					sd container_sz
+					setcall container_sz valinmem(content,argsize,(asciidot))
+					if container_sz!=argsize
+						#if is a dot
+						sd inter
+						#setcall inter vars(content,container_sz,ptrfunctions)
+						sd pos=0
+						setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
+						if inter==(NULL)
+							setcall errnr undefinedvar_fn()
 							return errnr
 						endif
+						inc container_sz
+						set argsize_filter argsize
+						call advancecursors(#content,#argsize_filter,container_sz)
+						#
+						sd scope
+						setcall scope scopes_get_scope(pos)
+						SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,scope)
+						if errnr!=(noerror)
+							return errnr
+						endif
+						sd test;setcall test stackbit(ptrdata#)
+						if test!=0
+							return "Stack variables are not relevant for scope.variable."
+						endif
+					elseif ptrobject#==1
+						#verify for function
+						setcall ptrdata# vars(content,argsize,ptrfunctions)
+						if ptrdata#==0
+							SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+							if errnr!=(noerror)
+								sd undvar_err
+								setcall undvar_err undefinedvariable()
+								if errnr==undvar_err
+									setcall errnr undefinedvar_fn()
+								endif
+								return errnr
+							endif
+						else
+							set ptrlow# (FALSE)
+							set ptrsufix# (FALSE)
+							sd var
+							setcall var function_in_code()
+							set var# 1
+							#the code operation is a "prefix" like
+							setcall prefix prefix_bool()
+							set prefix# 1
+						endelse
 					else
-						set ptrlow# (FALSE)
-						set ptrsufix# (FALSE)
-						sd var
-						setcall var function_in_code()
-						set var# 1
-						#the code operation is a "prefix" like
-						setcall prefix prefix_bool()
-						set prefix# 1
+						SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+						if errnr!=(noerror)
+							return errnr
+						endif
 					endelse
-				else
-					SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-					if errnr!=(noerror)
-						return errnr
-					endif
 				endelse
 			endelse
-		endelse
-	endelse
+		endif
+	endelseif
 	If sens==(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
 		Return noerr
@@ -226,19 +234,19 @@ function is_constant_related_ascii(sd in_byte)
 endfunction
 
 #err
-Function arg(data ptrcontent,data ptrsize,data ptrdata,data ptrlow,data ptrsufix,data sens)
+Function arg(sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd sens,sd allowdata)
 	sd szarg
 	set szarg ptrsize#
 
 	Data errnr#1
-	SetCall errnr getarg(ptrcontent,ptrsize,szarg,ptrdata,ptrlow,ptrsufix,sens)
+	SetCall errnr getarg(ptrcontent,ptrsize,szarg,allowdata,sens,ptrdata,ptrlow,ptrsufix)
 	Return errnr
 EndFunction
 
 #err
-Function argfilters(data ptrcondition,data ptrcontent,data ptrsize,data ptrdata,data ptrlow,data ptrsufix)
+Function argfilters(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd allowdata)
 	sd err
-	setcall err argfilters_helper(ptrcondition,ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix)
+	setcall err argfilters_helper(ptrcondition,ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,allowdata)
 	if err==(noerror)
 		#this is only at first arg
 		call spaces(ptrcontent,ptrsize)
@@ -246,14 +254,14 @@ Function argfilters(data ptrcondition,data ptrcontent,data ptrsize,data ptrdata,
 	return err
 endfunction
 #err
-function argfilters_helper(data ptrcondition,data ptrcontent,data ptrsize,data ptrdata,data ptrlow,data ptrsufix)
+function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd allowdata)
 	Data null=NULL
 	Data err#1
 	Data forward=FORWARD
 
 	If ptrcondition==null
 		call unsetimm()
-		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward)
+		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward,allowdata)
 		Return err
 	EndIf
 	call setimm()
@@ -305,7 +313,7 @@ Const enterifGREATER=0x8E
 			sd verifyafter
 			set verifyafter content
 			add verifyafter argsz
-			SetCall errnr getarg(ptrcontent,ptrsize,argsz,ptrdata,ptrlow,ptrsufix,forward)
+			SetCall errnr getarg(ptrcontent,ptrsize,argsz,allowdata,forward,ptrdata,ptrlow,ptrsufix)
 			data noerrnr=noerror
 			if errnr!=noerrnr
 				Return errnr

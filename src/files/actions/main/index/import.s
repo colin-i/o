@@ -69,7 +69,7 @@ If errormsg==noerr
 								if subtype==(cIMPORT)
 									sub impquotsz impescapes
 									add imp_mark names
-									setcall errormsg addtolog_withchar_ex_atunused_handle(imp_mark,impquotsz,(log_import),logaux) #at this pass is no log
+									setcall errormsg addtolog_withchar_ex_atunused_handle(imp_mark,impquotsz,(log_import),logfile)
 								endif
 							endif
 							If errormsg==noerr

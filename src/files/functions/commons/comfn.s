@@ -315,38 +315,51 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	EndIf
 
 	Data size#1
-	Data zero=0
 	Data seek_set=SEEK_SET
 	Data seek_end=SEEK_END
-	SetCall size lseek(file,zero,seek_end)
-	If size<zero
-		Chars filesizeerr="File length function error."
-		Str ptrfilesizeerr^filesizeerr
-		Set err ptrfilesizeerr
-	Else
-		Call lseek(file,zero,seek_set)
-
+	SetCall size lseek(file,0,seek_end)   #off_t is signed on elf32(ff... on c is only -1 at if, not 4billions...)
+	If size!=-1
+		#a simple test is showing that gedit can write, rm can delete, this is not exclusive
+		#The disk space won't be released until the last process with an open file descriptor for the file finally closes the file.
+		call lseek(file,0,seek_set)
 		#offset here
-		add size offset
-
-		Set ptrsize# size
-
+		add size offset       #this is only with MAX_PATH more on a int file size
+		#setcall err addfull(offset,#size)
 		SetCall err memoryalloc(size,ptrmem)
 		If err==noerr
-			Data mem#1
+			value mem#1
 			Set mem ptrmem#
 
 			#and offset here
 			add mem offset
+			Set ptrsize# size
 			sub size offset
 			#
 
-			Call read(file,mem,size)
+			sd sz;setcall sz read(file,mem,size)
+			if sz!=size
+				call free(ptrmem#)
+				set err "File read error."
+			endif
 		EndIf
-	EndElse
+	else
+		set err "File length function error."
+	endelse
 	Call close(file)
-	Return err
+	return err
 EndFunction
+
+#err
+#function addfull(sd u,sv ps)
+#	add ps# u
+#	if u>=0
+#		return (noerror)
+#	endif
+#	if ps#<0
+#		return (noerror)
+#	endif
+#	return "Overflow at two numbers."
+#endfunction
 
 #return remainder
 Function remainder(data quotient,data dividend)

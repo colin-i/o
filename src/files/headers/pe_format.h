@@ -8,6 +8,9 @@
 
 Const dossize=0x1e*wsz+dwsz
 #Const alldossize=dossize+0x40
+
+Const pe_fileheadersstart=!
+
 Chars dos_header#dossize
 Const stublength=0x40
 Chars stub#stublength
@@ -105,13 +108,19 @@ Data cVirtualAddress#1
 Data cSizeOfRawData#1
 Data cPointerToRawData#1
 Data *moreatcode={0,0,0}
-Data codesectionCharacteristics=IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ
+Data *codesectionCharacteristics=IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ
 
-Chars idatasection=".idata"
+Const sizefileheadercodedata=!
+
+Const idatasectionstart=!
+
+Chars *idatasection=".idata"
 Chars *alignmenttoEight_idata_name={0}
 Data *iVirtualSize=0x1000
 Data iVirtualAddress#1
 Data iSizeOfRawData=0x1000
 Data iPointerToRawData#1
 Data *moreatidata={0,0,0}
-Data idatasectionCharacteristics=IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_READ
+Data *idatasectionCharacteristics=IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_READ
+
+Const idatasectionend=!

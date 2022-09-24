@@ -8,6 +8,8 @@ Const spacenotreq=0
 Chars cCOMMENT_c={commentascii,0}
 Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHARS_c="CHARS";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
 	Chars cVDATA_c="VDATA";Chars cVSTR_c="VSTR";Chars cVALUE_c="VALUE"
+	Chars cDATAX_c="DATAX";Chars cSTRX_c="STRX";Chars cCHARSX_c="CHARSX"
+	Chars cVDATAX_c="VDATAX";Chars cVSTRX_c="VSTRX";Chars cVALUEX_c="VALUEX"
 	Chars cCONST_c="CONST"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
 Chars cRETURN_c="RETURN";Chars cINCST_c="INCST";Chars cINC_c="INC";Chars cDECST_c="DECST";Chars cDEC_c="DEC";Chars cNEG_c="NEG";Chars cNOT_c="NOT";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR";Chars cEXIT_c="EXIT"
@@ -85,6 +87,36 @@ Const com_size=cSTR-cDATA
 			data *^cVALUE_c
 			Data *=cDECLARE
 			Data *=cVALUE
+			Data *=spacereq
+		Const cDATAX=!-cDECLARE_top
+			data *^cDATAX_c
+			Data *=cDECLARE
+			Data *=cDATAX
+			Data *=spacereq
+		Const cSTRX=!-cDECLARE_top
+			data *^cSTRX_c
+			Data *=cDECLARE
+			Data *=cSTRX
+			Data *=spacereq
+		Const cCHARSX=!-cDECLARE_top
+			data *^cCHARSX_c
+			Data *=cDECLARE
+			Data *=cCHARSX
+			Data *=spacereq
+		Const cVDATAX=!-cDECLARE_top
+			data *^cVDATAX_c
+			Data *=cDECLARE
+			Data *=cVDATAX
+			Data *=spacereq
+		Const cVSTRX=!-cDECLARE_top
+			data *^cVSTRX_c
+			Data *=cDECLARE
+			Data *=cVSTRX
+			Data *=spacereq
+		Const cVALUEX=!-cDECLARE_top
+			data *^cVALUEX_c
+			Data *=cDECLARE
+			Data *=cVALUEX
 			Data *=spacereq
 #numberofcommandsvars to set these commands to search for them at function parameter declare
 Const numberofcommandsvars=(!-commandsvars_start)/com_size
@@ -362,12 +394,22 @@ Const compointersvarsloc^pointersvars
 const x_call_flag=0x80000000
 
 #declare coresp
-function commandSubtypeDeclare_to_typenumber(sd subtype)
+function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
 #these numbers will be used at getstruct directly
 	if subtype==(cCONST)
 		return (constantsnumber)
 	endif
 	div subtype (com_size)
+	if subtype>=(xnumbers)
+		if subtype>=(xvnumbers)
+			sub subtype (xnumbers-totalmemvariables)
+		else
+			sub subtype (xnumbers)
+		endelse
+		set p_is_expand# (TRUE)
+	else
+		set p_is_expand# (FALSE)   #this, if typenumber is constant, atm is not used
+	endelse
 	return subtype
 endfunction
 #set errormsg to pointer error or return the find

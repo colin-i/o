@@ -157,10 +157,9 @@ function include_sec_skip(sv pcontent,sd pcomsize)
 	call spaces(#content,#size)
 	if content#==(asciidoublequote)
 		sd err
-		sd s;sd e
-		SetCall err quotinmem(#content,#size,#s,#e)
+		sd s;sd dummy
+		SetCall err quotinmem(#content,#size,#s,#dummy)
 		if err==(noerror)
-			add s e
 			add content s;sub size s
 			call stepcursors(#content,#size)
 			set pcontent# content;set pcomsize# size

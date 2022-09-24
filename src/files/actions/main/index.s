@@ -84,14 +84,13 @@ if loop==1
 					if parses==(pass_init)
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 						if formatdefined==0;Set formatdefined 1;endif
-						#if commandset==(cDECLARE)        #needing to find virtual start
-						#at object is difficult, there is no virtual, ostrip will use: ld...-Tdata calculated, objcopy --update-section, write memsize, log file will include virtual point
-						#const at virtual start find
-						#	use offset on dataReg for !
-						#	const^ is not ok, init without ^,write only ^
-						#virtual.s,virtual_parse
-						#else
-						If commandset==(cIMPORTLINK) #needing importx here
+						#needing to find virtual start
+						if commandset==(cDECLARE)
+						ElseIf commandset==(cPRIMSEC)
+						ElseIf commandset==(cONEARG)
+						Elseif commandset==(cCALL)
+						#at object is difficult, there is no virtual, ostrip will use: ld...-Tdata calculated, objcopy --update-section, write memsize
+						elseIf commandset==(cIMPORTLINK) #needing importx here
 						elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
 						ElseIf commandset==(cLIBRARY)
 						elseif commandset==(cINCLUDE)
@@ -118,10 +117,8 @@ if loop==1
 			ElseIf commandset==(cDECLARE)
 				Include "./index/declare.s"
 			ElseIf commandset==(cPRIMSEC)
-		call entryscope_verify_code()
 				Include "./index/primsec.s"
 			ElseIf commandset==(cONEARG)
-		call entryscope_verify_code()
 				Include "./index/onearg.s"
 			ElseIf commandset==(cCALL)
 				if parses==(pass_write)
@@ -148,7 +145,8 @@ if loop==1
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset==(cDECLAREAFTERCALL)
 				if parses==(pass_write);Include "./index/aftercall.s";
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+				else;if subtype==(cAFTERCALL);add datasecReg (aftercalldeclaresize);endif
+					Call advancecursors(pcontent,pcomsize,comsize);endelse
 				set g_e_b_p# (TRUE)
 			ElseIf commandset==(cWARNING)
 				Include "./index/warning.s"

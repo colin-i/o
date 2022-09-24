@@ -11,7 +11,6 @@ if errormsg==noerr
 		ss include_test
 		set include_test content
 		add include_test quotsz
-		add include_test escapes
 		inc include_test
 		setcall include_test mem_spaces(include_test,pointer)
 		if include_test!=pointer

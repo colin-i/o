@@ -190,6 +190,13 @@ function addtolog_withchar_ex_atunused_handle(ss content,sd size,sd type,sd file
 	endif
 	return (noerror)
 endfunction
+#err
+function addtolog_natural(sd number)
+	chars buf#8+1
+	call sprintf(#buf,"%08x",number)  #for file seek at position
+	sd err;setcall err addtolog_withchar(#buf,(log_expand))
+	return err
+endfunction
 
 function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data1,sd data2)
 	sd c

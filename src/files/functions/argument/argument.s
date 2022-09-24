@@ -59,7 +59,7 @@ function argument_return(sd termswitch,ss pop,sd pregprepare_bool,sv pptrcontinu
 endfunction
 
 #err
-Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallsens)
+Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subtype)
 	Data false=FALSE
 	Data true=TRUE
 
@@ -75,11 +75,11 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data regopcode#1
 
 	Data err#1
+	Data forward=FORWARD
 
 	Set regprepare_bool false
 	Set sizeofcontinuation zero
 
-	Data forward=FORWARD
 	If forwardORcallsens==forward
 		call unsetimm() #set is at returns/and at push
 		If subtype==(cRETURN)
@@ -148,7 +148,7 @@ Function argument(data ptrcontent,data ptrsize,data subtype,data forwardORcallse
 	Data sufix#1
 	Data ptrsufix^sufix
 
-	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens)
+	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens,(allow_yes))
 	If err!=(noerror)
 		Return err
 	EndIf
@@ -234,7 +234,7 @@ function comp_one(sd low,sd dataarg,sd sufix,sd op)
 		else
 			sd b;setcall b is_for_64()
 			if b==(TRUE)
-			#return all r64; take all;is is from the time when was set that data, waiting outside, can have a char extended with zeros
+			#return all r64; take all; is from the time when was set that data, waiting outside, can have a char extended with zeros
 				setcall p val64_p_get()
 				set p# (val64_willbe)
 			endif
