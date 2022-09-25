@@ -1,6 +1,6 @@
 TOPTARGETS := all install clean distclean uninstall test
 
-SUBDIRS := src srcres
+SUBDIRS := src ounused
 
 $(TOPTARGETS): $(SUBDIRS)
 $(SUBDIRS):
@@ -9,7 +9,7 @@ $(SUBDIRS):
 
 
 all:
-	cd ./srcres; ./ounused ./ounused.s.log
-	if ! [ -f ./src/obj.o ];then cd ./src; ../srcres/ounused ./linux/obj.s.log; fi
+	cd ./ounused; ./ounused ./ounused.s.log
+	if ! [ -f ./src/obj.o ];then cd ./src; ../ounused/ounused ./linux/obj.s.log; fi
 
 .NOTPARALLEL:
