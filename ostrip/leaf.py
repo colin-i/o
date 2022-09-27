@@ -2,11 +2,13 @@
 
 #wget in Makefile maybe
 
-with open("temp",'rb') as f:
+fn="temp"
+with open(fn,'rb') as f:
 	unstripped_size=int(f.read(),base=16)
 
-import lief
 
+from os import remove
+import lief
 import sys
 
 elffile = lief.parse(sys.argv[1])
@@ -21,10 +23,10 @@ found=-1
 
 for x in h:
 	a=x.sections
-	n=len(a):
+	n=len(a)
 	for i in range(0,n):
 		b=a[i]
-		if ready==False:
+		if found==-1:
 			if c==b.name:
 				found=i+1
 				size=b.size
@@ -34,15 +36,19 @@ for x in h:
 			#The value of sh_addr must be congruent to 0, modulo the value of sh_addralign
 			#	i think that means   if align is 8 addr can start at 0h/8h only
 			test=b.virtual_address+dif
-			bittest=test&(test.alignment-1)
+			bittest=test&(b.alignment-1)
 			if bittest!=0:
-				dif+=test.alignment-bittest
+				dif+=b.alignment-bittest
 	if found!=-1:
 		#must first increase segment size if not want to lose the section
 		x.virtual_size+=dif
 		for i in range(found,n):
 			a[i].virtual_address+=dif
 		elffile.write(sys.argv[1])
+		#
+		#point that this script is not checking the existent virtual trail of .data
+		remove(fn)
+		#
 		exit(0)
 
 exit(-1)
