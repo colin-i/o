@@ -2,16 +2,23 @@
 
 #wget in Makefile maybe
 
-fn="temp"
-with open(fn,'rb') as f:
-	unstripped_size=int(f.read(),base=16)
+import subprocess
+import sys
 
+inputfile=sys.argv[1]
+
+txt=subprocess.check_output(['/bin/bash','-c',"printf '%s' $(objdump -h "+inputfile+" | grep ' .data ' | tr -s ' ' | cut -d ' ' -f 4)"])
+unstripped_size=int(txt,base=16)
+#fn="temp"
+#with open(fn,'rb') as f:
+#	unstripped_size=int(f.read(),base=16)
+
+subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin"])
 
 from os import remove
 import lief
-import sys
 
-elffile = lief.parse(sys.argv[1])
+elffile = lief.parse(inputfile)
 
 c=".data"
 
@@ -28,6 +35,12 @@ for x in h:
 		b=a[i]
 		if found==-1:
 			if c==b.name:
+				#only with .bss: it looks like objcopy is shrinking file size accordingly and is not touching on mem size in section and segment
+				#so this file was about to go
+				#but when it's at the edge is shrinking mem size
+				#then x.virtual_size+= is a must and a[i].virtual_address+= stays like a guardian
+				if (b.virtual_address+unstripped_size)<=(x.virtual_address+x.virtual_size):
+					exit(0)
 				found=i+1
 				size=b.size
 				dif=unstripped_size-size
@@ -47,7 +60,7 @@ for x in h:
 		elffile.write(sys.argv[1])
 		#
 		#point that this script is not checking the existent virtual trail of .data
-		remove(fn)
+		#remove(fn)
 		#
 		exit(0)
 
