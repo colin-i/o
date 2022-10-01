@@ -236,9 +236,6 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 	#const R_X86_64_PC32=R_386_PC32
 	#const R_X86_64_PC64=24
 
-	Data elf_rel#1
-	Data elf_rel_sz#1
-
 	sd err
 	sd x;setcall x is_for_64()
 	if x==(TRUE)
@@ -256,8 +253,7 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 		set elf64_r_info_symbolindex symbolindex
 		set elf64_r_addend addend
 
-		set elf_rel #elf64_r_offset
-		set elf_rel_sz (elf64_dyn_d_val_relent)
+		SetCall err addtosec(#elf64_r_offset,(elf64_dyn_d_val_relent),struct)
 	else
 		#offset
 		Data elf_r_offset#1
@@ -272,11 +268,8 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 		Call memtomem(#elf_r_info_symbolindex,#symbolindex,3)
 		set elf_r_addend addend
 
-		set elf_rel #elf_r_offset
-		set elf_rel_sz (elf32_dyn_d_val_relent)
+		SetCall err addtosec(#elf_r_offset,(elf32_dyn_d_val_relent),struct)
 	endelse
-
-	SetCall err addtosec(elf_rel,elf_rel_sz,struct)
 	Return err
 EndFunction
 

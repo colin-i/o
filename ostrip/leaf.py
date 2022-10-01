@@ -13,9 +13,14 @@ unstripped_size=int(txt,base=16)
 #with open(fn,'rb') as f:
 #	unstripped_size=int(f.read(),base=16)
 
-subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin"])
+import os
 
-from os import remove
+r="rela.bin"
+if (not os.path.exists(r)):
+	subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin"])
+else:
+	subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin","--update-section",".rela.dyn="+r])
+
 import lief
 
 elffile = lief.parse(inputfile)
