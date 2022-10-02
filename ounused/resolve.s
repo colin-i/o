@@ -53,21 +53,3 @@ function wrongExit(ss x,ss n,sd len)
 	call fwrite(n,len,1,st)
 	call erExit("")
 endfunction
-
-function importssize()
-	sv cont%imp_mem_p
-	sd p
-	sd mem
-	set p cont#
-	add cont :
-	set mem cont#d^
-	add mem p
-	#set mem cont#d^;add cont (dword);set p cont#;add mem p
-	sd i=0
-	while p!=mem
-		add p p#
-		add p (dword)
-		inc i
-	endwhile
-	return i
-endfunction

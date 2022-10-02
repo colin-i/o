@@ -10,6 +10,8 @@ const EXIT_FAILURE=1
 Importx "stderr" stderr
 Importx "fprintf" fprintf
 
+include "./throwless.s"
+
 function messagedelim()
 	sv st^stderr
 	Chars visiblemessage={0x0a,0}

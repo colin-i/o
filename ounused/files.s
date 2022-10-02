@@ -56,32 +56,6 @@ function fileentry_add(sd full,sd len)
 	call erExit(er)
 endfunction
 
-#er
-function fileentry_init(sd cont)
-	sd a;set a cont
-	sd b;set b cont;add b (size_conts)
-	while cont!=b
-		sd er
-		setcall er alloc_throwless(cont)
-		if er!=(NULL)
-			call fileentry_uninit_base(a,cont)
-			return er
-		endif
-		add cont (size_cont)
-	endwhile
-	return (NULL)
-endfunction
-function fileentry_uninit(sd cont)
-	sd b;set b cont;add b (size_conts)
-	call fileentry_uninit_base(cont,b)
-endfunction
-function fileentry_uninit_base(sd cont,sv cursor)
-	while cont!=cursor
-		sub cursor (size_cont)
-		call free(cursor#)
-	endwhile
-endfunction
-
 function fileentry(sd s,sd sz)
 	call nullend(s,sz)
 	sd temp
@@ -120,16 +94,4 @@ function fileentry_exists(sd s)
 	#set p fls#d^;add fls (dword);set fls fls#;add p fls;while fls!=p;sd b;setcall b fileentry_compare(fls#,s,sz);if b==0;call skip_set();return (void);endif;incst fls
 	endwhile
 	call fileentry_add(s,sz)
-endfunction
-
-#cmp
-function fileentry_compare(sd existent,sd new,sd sz)
-	add existent (size_conts)
-	if existent#!=sz
-		return (~0)
-	endif
-	add existent (dword)
-	sd c
-	setcall c memcmp(existent,new,sz)
-	return c
 endfunction

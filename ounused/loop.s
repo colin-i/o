@@ -16,7 +16,6 @@ include "../src/files/headers/log.h"
 
 include "inits.s"
 include "files.s"
-include "skip.s"
 include "const.s"
 include "uconst.s"
 
@@ -118,10 +117,6 @@ function import_add(sd s,sd sz)
 	if p==-1
 		call addtocont(imps,s,sz)
 	endif
-endfunction
-
-function nullend(ss s,sd sz)
-	add s sz;set s# 0 #this is on carriage return
 endfunction
 
 function changedir(ss s)

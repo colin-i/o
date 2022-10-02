@@ -1,16 +1,6 @@
 
 include "uconstres.s"
 
-function root_file()
-	sd lvs%levels_p
-	set lvs lvs#v^
-	set lvs lvs#
-	sv fls%files_p
-	set fls fls#
-	add fls lvs
-	return fls#
-endfunction
-
 function uconst_add(sd s,sd sz)
 	sd f
 	setcall f root_file()

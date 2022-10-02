@@ -81,15 +81,3 @@ function uconst_resolve(ss const_str)
 		add cursor :
 	endwhile
 endfunction
-
-function uconst_resolved(sd t,sd size)
-	data nr#1
-	if t==0
-		set nr 0
-	elseif t==1
-		div size (dword)
-		add nr size
-	else
-		return nr
-	endelse
-endfunction
