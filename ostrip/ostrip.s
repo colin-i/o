@@ -17,10 +17,45 @@ format elfobj64
 
 const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
+const NULL=0
 
-entrylinux main(sd argc,ss *argv0,ss *exec,ss *obj1,ss *log1)   #... objN logN
+Importx "stderr" stderr
+Importx "fprintf" fprintf
+
+function messagedelim()
+	sv st^stderr
+	Chars visiblemessage={0x0a,0}
+	Call fprintf(st#,#visiblemessage)
+endfunction
+Function Message(ss text)
+	sv st^stderr
+	Call fprintf(st#,text)
+	call messagedelim()
+EndFunction
+function erMessage(ss text)
+	call Message(text)
+	call erEnd()
+endfunction
+function erMessages(ss m1,ss m2)
+	call Message(m1)
+	call Message(m2)
+	call erEnd()
+endfunction
+function erEnd()
+	aftercall er
+	set er (~0)
+	return (EXIT_FAILURE)
+endfunction
+
+include "file.s"
+
+entrylinux main(sd argc,ss *argv0,ss exec,ss *obj1,ss *log1)   #... objN logN
 
 if argc>(1+3)  #0 is all the time
+	sd text
+	sd data;setcall data get_file(exec,".data",".text",#text)
+	if data!=(NULL)
+	endif
 	return (EXIT_SUCCESS)
 endif
 return (EXIT_FAILURE)
