@@ -24,6 +24,11 @@ const asciiE=0x45
 const asciiL=0x4C
 const asciiF=0x46
 
+Const SEEK_CUR=1
+
+const ET_EXEC=2
+const EM_X86_64=62
+
 Importx "stderr" stderr
 Importx "fprintf" fprintf
 
@@ -58,7 +63,7 @@ entrylinux main(sd argc,ss *argv0,ss exec,ss *obj1,ss *log1)   #... objN logN
 
 if argc>(1+3)  #0 is all the time
 	sd text
-	sd data;setcall data get_file(exec,".data",".text",#text)
+	sd data;setcall data get_file(exec,".data",".text",#text,(ET_EXEC))
 	if data!=(NULL)
 	endif
 	return (EXIT_SUCCESS)
