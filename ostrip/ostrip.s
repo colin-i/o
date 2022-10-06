@@ -24,6 +24,7 @@ const asciiE=0x45
 const asciiL=0x4C
 const asciiF=0x46
 
+Const SEEK_SET=0
 Const SEEK_CUR=1
 
 const ET_EXEC=2
@@ -31,6 +32,8 @@ const EM_X86_64=62
 
 Importx "stderr" stderr
 Importx "fprintf" fprintf
+
+include "throwless.s"
 
 function messagedelim()
 	sv st^stderr
@@ -52,6 +55,7 @@ function erMessages(ss m1,ss m2)
 	call erEnd()
 endfunction
 function erEnd()
+	call frees()
 	aftercall er
 	set er (~0)
 	return (EXIT_FAILURE)
@@ -66,6 +70,7 @@ if argc>(1+3)  #0 is all the time
 	sd data;setcall data get_file(exec,".data",".text",#text,(ET_EXEC))
 	if data!=(NULL)
 	endif
+	call frees()
 	return (EXIT_SUCCESS)
 endif
 return (EXIT_FAILURE)

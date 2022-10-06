@@ -5,7 +5,8 @@ Importx "lseek" lseek
 
 #p_sec1
 function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
-	sd file;setcall file fopen(name,"r")
+	sd pfile%pexefile;setcall pfile# fopen(name,"r")
+	sd file;set file pfile#
 	if file!=(NULL)
 		chars elf64_ehd_e_ident_sign={asciiDEL,asciiE,asciiL,asciiF}
 #chars *elf64_ehd_e_ident_class={ELFCLASS64}
@@ -20,11 +21,13 @@ function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
 #data *elf64_ehd_e_version=EV_CURRENT
 #data *elf64_ehd_e_entry={0,0}
 #data *elf64_ehd_e_phoff={0,0}
+		const after_machine_to_shoff=4+8+8
 #data elf64_ehd_e_shoff#1;data *=0
 #data *elf64_ehd_e_flags=0
 #chars *elf64_ehd_e_ehsize={64,0}
 #chars *elf64_ehd_e_phentsize={0,0}
 #chars *elf64_ehd_e_phnum={0,0}
+		const after_shoff_to_shentsize=4+2+2+2
 #chars *elf64_ehd_e_shentsize={64,0}
 #chars elf64_ehd_e_shnum#2
 #chars elf64_ehd_e_shstrndx#2
@@ -33,7 +36,7 @@ function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
 		sd sign;call read(file,#sign,sz)
 		sd c;setcall c memcmp(#sign,#elf64_ehd_e_ident_sign,sz)
 		if c==0
-			call seek(file,(after_sign_to_type))
+			call seekc(file,(after_sign_to_type))
 			sd wsz=2
 			sd w;call read(file,#w,wsz)
 			setcall c memcmp(#w,#type,wsz)
@@ -41,6 +44,21 @@ function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
 				call read(file,#w,wsz)
 				setcall c memcmp(#w,#elf64_ehd_e_machine,wsz)
 				if c==0
+					call seekc(file,(after_machine_to_shoff))
+					sd offset;call read(file,#offset,:)
+					call seekc(file,(after_shoff_to_shentsize))
+					data shentsize=0
+					data shnum=0
+					data shstrndx=0
+					call read(file,#shentsize,wsz)
+					call read(file,#shnum,wsz)
+					call read(file,#shstrndx,wsz)
+					call seeks(file,offset)
+
+					#alloc for section names table
+					call shnames(file,shentsize,shstrndx)
+					#iterate sections against [name1,name2,0]
+
 					valuex sec1_mem_sz#2
 					return #sec1_mem_sz
 				endif
@@ -59,11 +77,30 @@ function read(sd file,sd buf,sd size)
 	endif
 endfunction
 
-function seek(sd file,sd offset)
-	sd from_start;SetCall from_start lseek(file,offset,(SEEK_CUR))
-	#beyond seekable device limit is not our concerne
+function seekc(sd file,sd offset)
+	call seek(file,offset,(SEEK_CUR))
+endfunction
+function seeks(sd file,sd offset)
+	call seek(file,offset,(SEEK_SET))
+endfunction
+function seek(sd file,sd offset,sd whence)
+	sd from_start;SetCall from_start lseek(file,offset,whence)
+	#beyond seekable device limit is not our concerne, error check at seekc can go if seeks was not
 	#at section headers offset, error can be demonstrated (bad offset)
 	if from_start==-1
 		call erMessage("lseek error")
 	endif
+endfunction
+
+function shnames(sd *file,sd *shentsize,sd *shstrndx)
+#Data sh64_name#1
+#Data sh64_type#1
+#Data sh64_flags#1;data *=0
+#Data sh64_addr#1;data *=0
+#Data sh64_offset#1;data *=0
+#Data sh64_size#1;data *=0
+#Data sh64_link#1
+#Data sh64_info#1
+#Data sh64_addralign#1;data *=0
+#Data sh64_entsize#1;data *=0
 endfunction
