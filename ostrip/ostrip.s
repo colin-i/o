@@ -19,6 +19,11 @@ const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
 const NULL=0
 
+const asciiDEL=0x7F
+const asciiE=0x45
+const asciiL=0x4C
+const asciiF=0x46
+
 Importx "stderr" stderr
 Importx "fprintf" fprintf
 

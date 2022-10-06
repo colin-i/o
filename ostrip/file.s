@@ -1,11 +1,12 @@
 
 Importx "fopen" fopen
+Importx "memcmp" memcmp
 
 #p_sec1
 function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2)
 	sd file;setcall file fopen(name,"r")
 	if file!=(NULL)
-#chars elf64_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
+		chars elf64_ehd_e_ident_sign={asciiDEL,asciiE,asciiL,asciiF}
 #chars *elf64_ehd_e_ident_class={ELFCLASS64}
 #chars *elf64_ehd_e_ident_data={ELFDATA2LSB}
 #chars *elf64_ehd_e_ident_version={EV_CURRENT}
@@ -26,15 +27,20 @@ function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2)
 #chars elf64_ehd_e_shnum#2
 #chars elf64_ehd_e_shstrndx#2
 #chars *pad={0,0}
-		sd sign;call read(file,#sign,4)
-		sd data
-		return #data
+		sd sz=4
+		sd sign;call read(file,#sign,sz)
+		sd c;setcall c memcmp(#sign,#elf64_ehd_e_ident_sign,sz)
+		if c==0
+			valuex sec1_mem_sz#2
+			return #sec1_mem_sz
+		endif
+		call erMessages("not an elf",name)
 	endif
 	call erMessages("fopen error for",name)
 endfunction
 
-function read(sd *file,sd *buf,sd size)
-	sd readed
+function read(sd file,sd buf,sd size)
+	sd readed;setcall readed read(file,buf,size)
 	if readed!=size
 		call erMessage("fread error")
 	endif
