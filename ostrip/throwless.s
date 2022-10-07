@@ -4,6 +4,16 @@ function frees()
 	const pexefile^exefile
 	if exefile!=(NULL)
 		call fclose(exefile)
+		valuex exedata#1
+		const pexedata^exedata
+		if exedata!=(NULL)
+			call free(exedata)
+			valuex exetext#1
+			const pexetext^exetext
+			if exetext!=(NULL)
+				call free(exetext)
+			endif
+		endif
 	endif
 endfunction
 

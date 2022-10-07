@@ -1,11 +1,13 @@
 
 include "mem.s"
 
-#p_sec1
-function get_file(sd name,sd sec1,sd sec2,sd *p_sec2,sd type)
-	sd pfile%pexefile;setcall pfile# fopen(name,"r")
-	sd file;set file pfile#
+function get_file(sd name,sd p_file,sd sec1,sv p_sec1,sd sec2,sv p_sec2,sd type)
+	setcall p_file# fopen(name,"r")
+	sd file;set file p_file#
 	if file!=(NULL)
+		#at frees will check next
+		set p_sec1# (NULL)
+
 		chars elf64_ehd_e_ident_sign={asciiDEL,asciiE,asciiL,asciiF}
 #chars *elf64_ehd_e_ident_class={ELFCLASS64}
 #chars *elf64_ehd_e_ident_data={ELFDATA2LSB}
@@ -55,11 +57,19 @@ function get_file(sd name,sd sec1,sd sec2,sd *p_sec2,sd type)
 					#alloc for section names table
 					sd nrsec1;sd nrsec2;setcall nrsec1 shnames(file,offset,shentsize,shstrndx,sec1,sec2,#nrsec2)
 
-					#iterate sections against [name1,name2,0]
+					#get sections
+					sd end;set end shnum;mult end shentsize;add end offset
+					call get_section_many(file,offset,end,shentsize,nrsec1,p_sec1)
+					if p_sec1#!=(NULL)
+						#next at frees
+						set p_sec2# (NULL)
+						#get second section
+						call get_section_many(file,offset,end,shentsize,nrsec2,p_sec2)
+					endif
 
-					valuex sec1_mem_sz#2
-					return #sec1_mem_sz
+					ret
 				endif
+				call erMessages("wrong machine",name)
 			endif
 			call erMessages("bad type",name)
 		endif
@@ -97,6 +107,30 @@ endfunction
 function shnames(sd file,sd offset,sd shentsize,sd shstrndx,ss sec1,ss sec2,sd pnrsec2)  #nrsec is int
 	mult shstrndx shentsize
 	add offset shstrndx
+
+	sd mem;sd end;setcall end get_section(file,offset,#mem)
+	add end mem
+	#old remark:   count strings? safer than say it is the number of sections
+	sd nrsec1
+	setcall nrsec1 shnames_find(mem,end,sec1)
+	setcall pnrsec2# shnames_find(mem,end,sec2)
+	call free(mem)
+	return nrsec1
+endfunction
+
+function get_section_many(sd file,sd offset,sd end,sd shentsize,sd nrsec,sv p_sec)
+	while offset!=end
+		#the sh64_name is first
+		if offset#==nrsec
+			call get_section(file,offset,p_sec)
+			ret
+		endif
+		add offset shentsize
+	endwhile
+endfunction
+
+#fread
+function get_section(sd file,sd offset,sv pmem)
 #Data sh64_name#1
 #Data sh64_type#1
 #Data sh64_flags#1;data *=0
@@ -115,14 +149,9 @@ function shnames(sd file,sd offset,sd shentsize,sd shstrndx,ss sec1,ss sec2,sd p
 	sd mem;setcall mem alloc(size)
 	sd readed;setcall readed fread(file,mem,size)
 	if readed==size
-		#old remark:   count strings? safer than say it is the number of sections
-		add size mem
-		sd nrsec1;setcall nrsec1 shnames_find(mem,size,sec1)
-		setcall pnrsec2# shnames_find(mem,size,sec2)
-		return nrsec1
-	else
-		call free(mem)
-		call rError()
-	endelse
+		set pmem# mem
+		return size
+	endif
 	call free(mem)
+	call rError()
 endfunction
