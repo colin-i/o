@@ -10,29 +10,17 @@ endfunction
 
 #file
 
-#number of sections
-function shnames_total(ss mem,sd end)
-	add end mem
-	sd nr=0
+#pos/-1
+function shnames_find(ss mem,sd end,sd str)
+	sd pos=0
 	while mem!=end
-		if mem#==(asciiNUL)
-			inc nr
+		sd cmp;setcall cmp strcmp(mem,str)
+		if cmp==0
+			return pos
 		endif
+		addcall mem strlen(mem)
 		inc mem
+		inc pos
 	endwhile
-	return nr
-endfunction
-
-function shnames_pin(ss mem,sd end,sv offsets)
-	sd start;set start mem
-	add end mem
-	while mem!=end
-		if mem#==(asciiNUL)
-			sd snap;set snap mem
-			sub snap start
-			set offsets# snap
-			add offsets :
-		endif
-		inc mem
-	endwhile
+	return -1
 endfunction

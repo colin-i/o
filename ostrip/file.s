@@ -2,7 +2,7 @@
 include "mem.s"
 
 #p_sec1
-function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
+function get_file(sd name,sd sec1,sd sec2,sd *p_sec2,sd type)
 	sd pfile%pexefile;setcall pfile# fopen(name,"r")
 	sd file;set file pfile#
 	if file!=(NULL)
@@ -51,11 +51,11 @@ function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
 					call read(file,#shentsize,wsz)
 					call read(file,#shnum,wsz)
 					call read(file,#shstrndx,wsz)
-					call seeks(file,offset)
 
 					#alloc for section names table
+					sd nrsec1;sd nrsec2;setcall nrsec1 shnames(file,offset,shentsize,shstrndx,sec1,sec2,#nrsec2)
+
 					#iterate sections against [name1,name2,0]
-					call shnames(file,shentsize,shstrndx)
 
 					valuex sec1_mem_sz#2
 					return #sec1_mem_sz
@@ -93,8 +93,10 @@ function seek(sd file,sd offset,sd whence)
 	endif
 endfunction
 
-function shnames(sd file,sd shentsize,sd shstrndx)
+#nrsec1
+function shnames(sd file,sd offset,sd shentsize,sd shstrndx,ss sec1,ss sec2,sd pnrsec2)  #nrsec is int
 	mult shstrndx shentsize
+	add offset shstrndx
 #Data sh64_name#1
 #Data sh64_type#1
 #Data sh64_flags#1;data *=0
@@ -105,26 +107,19 @@ function shnames(sd file,sd shentsize,sd shstrndx)
 #Data sh64_info#1
 #Data sh64_addralign#1;data *=0
 #Data sh64_entsize#1;data *=0
-	add shstrndx (4+4+:+:)  #flags :?on 32 is ok
-	call seekc(file,shstrndx)
-	sd offset;call read(file,#offset,:)
+	add offset (4+4+:+:)  #flags :?on 32 is ok
+	call seeks(file,offset)
+	call read(file,#offset,:)
 	sd size;call read(file,#size,:)
 	call seeks(file,offset)
 	sd mem;setcall mem alloc(size)
 	sd readed;setcall readed fread(file,mem,size)
 	if readed==size
-		#count strings? safer than say it is the number of sections
-		sd nr;setcall nr shnames_total(mem,size)
-		sd offsets=:
-		mult offsets nr
-		setcall offsets malloc(offsets)
-		if offsets!=(NULL)
-			call shnames_pin(mem,size,offsets)
-			call free(offsets)
-		else
-			call free(mem)
-			call mError()
-		endelse
+		#old remark:   count strings? safer than say it is the number of sections
+		add size mem
+		sd nrsec1;setcall nrsec1 shnames_find(mem,size,sec1)
+		setcall pnrsec2# shnames_find(mem,size,sec2)
+		return nrsec1
 	else
 		call free(mem)
 		call rError()

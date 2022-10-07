@@ -5,8 +5,8 @@ function alloc(sd size)
 	if mem!=(NULL)
 		return mem
 	endif
-	call mError()
-endfunction
-function mError()
+#	call mError()
 	call erMessage("malloc error")
 endfunction
+#function mError()
+#endfunction
