@@ -1,7 +1,10 @@
 
 Importx "fopen" fopen
+Importx "fread" fread
 Importx "memcmp" memcmp
 Importx "lseek" lseek
+
+include "mem.s"
 
 #p_sec1
 function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
@@ -56,8 +59,8 @@ function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
 					call seeks(file,offset)
 
 					#alloc for section names table
-					call shnames(file,shentsize,shstrndx)
 					#iterate sections against [name1,name2,0]
+					call shnames(file,shentsize,shstrndx)
 
 					valuex sec1_mem_sz#2
 					return #sec1_mem_sz
@@ -70,10 +73,13 @@ function get_file(sd name,sd *sec1,sd *sec2,sd *p_sec2,sd type)
 	call erMessages("fopen error for",name)
 endfunction
 
+function rError()
+	call erMessage("fread error")
+endfunction
 function read(sd file,sd buf,sd size)
-	sd readed;setcall readed read(file,buf,size)
+	sd readed;setcall readed fread(file,buf,size)
 	if readed!=size
-		call erMessage("fread error")
+		call rError()
 	endif
 endfunction
 
@@ -92,7 +98,8 @@ function seek(sd file,sd offset,sd whence)
 	endif
 endfunction
 
-function shnames(sd *file,sd *shentsize,sd *shstrndx)
+function shnames(sd file,sd shentsize,sd shstrndx)
+	mult shstrndx shentsize
 #Data sh64_name#1
 #Data sh64_type#1
 #Data sh64_flags#1;data *=0
@@ -103,4 +110,56 @@ function shnames(sd *file,sd *shentsize,sd *shstrndx)
 #Data sh64_info#1
 #Data sh64_addralign#1;data *=0
 #Data sh64_entsize#1;data *=0
+	add shstrndx (4+4+:+:)  #flags :?on 32 is ok
+	call seekc(file,shstrndx)
+	sd offset;call read(file,#offset,:)
+	sd size;call read(file,#size,:)
+	call seeks(file,offset)
+	sd mem;setcall mem alloc(size)
+	sd readed;setcall readed fread(file,mem,size)
+	if readed==size
+		#count strings? safer than say it is the number of sections
+		sd nr;setcall nr shnames_total(mem,size)
+		sd offsets=:
+		mult offsets nr
+		setcall offsets malloc(offsets)
+		if offsets!=(NULL)
+			call shnames_pin(mem,size,offsets)
+			call free(offsets)
+		else
+			call free(mem)
+			call mError()
+		endelse
+	else
+		call free(mem)
+		call rError()
+	endelse
+	call free(mem)
+endfunction
+
+#number of sections
+function shnames_total(ss mem,sd end)
+	add end mem
+	sd nr=0
+	while mem!=end
+		if mem#==(asciiNUL)
+			inc nr
+		endif
+		inc mem
+	endwhile
+	return nr
+endfunction
+
+function shnames_pin(ss mem,sd end,sv offsets)
+	sd start;set start mem
+	add end mem
+	while mem!=end
+		if mem#==(asciiNUL)
+			sd snap;set snap mem
+			sub snap start
+			set offsets# snap
+			add offsets :
+		endif
+		inc mem
+	endwhile
 endfunction

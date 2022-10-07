@@ -5,6 +5,7 @@ OBJ = ${OB}.o
 FULLOBJ = ./${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
+FULLOBJLOG = ${FULLOBJS}.log
 
 %.o: ${FULLOBJS}
 	../src/o $< exit_end 1
@@ -13,6 +14,8 @@ syms =-s
 ATLDCOM = $(LD) ${syms} --dynamic-linker=/lib64/ld-linux-x86-64.so.2 -o $@ -lc -entry main
 
 ostrip: ${OBJ}
+	../ounused/ounused ${FULLOBJLOG}
+	@echo
 	${ATLDCOM} ${FULLOBJO}
 
 install: ostrip
@@ -21,7 +24,7 @@ install: ostrip
 
 clean-compile:
 	-rm -f ${FULLOBJO}
-	-rm -f ${FULLOBJS}.log
+	-rm -f ${FULLOBJLOG}
 
 clean-link:
 	-rm -f ostrip

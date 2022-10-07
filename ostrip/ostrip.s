@@ -15,20 +15,7 @@ format elfobj64
 #		addends from pointers to data section (this and the previous are saying the same thing but maybe is compatibility)
 #		data section offsets (direct:printf, pointers to text/data sections)
 
-const EXIT_SUCCESS=0
-const EXIT_FAILURE=1
-const NULL=0
-
-const asciiDEL=0x7F
-const asciiE=0x45
-const asciiL=0x4C
-const asciiF=0x46
-
-Const SEEK_SET=0
-Const SEEK_CUR=1
-
-const ET_EXEC=2
-const EM_X86_64=62
+include "header.h"
 
 Importx "stderr" stderr
 Importx "fprintf" fprintf
