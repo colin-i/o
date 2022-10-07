@@ -1,7 +1,7 @@
 
 include "mem.s"
 
-function get_file(sd name,sd p_file,sd sec1,sv p_sec1,sd sec2,sv p_sec2,sd type)
+function get_file(sd name,sv p_file,sd sec1,sv p_sec1,sd sec2,sv p_sec2,sd type)
 	setcall p_file# fopen(name,"r")
 	sd file;set file p_file#
 	if file!=(NULL)
