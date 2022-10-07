@@ -1,11 +1,6 @@
 
 const dword=4
 
-importx "malloc" malloc
-importx "realloc" realloc
-importx "memcpy" memcpy
-importx "memcmp" memcmp
-
 function alloc(sd p)
 	sd er
 	setcall er alloc_throwless(p)

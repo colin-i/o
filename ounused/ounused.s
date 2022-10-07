@@ -4,11 +4,7 @@
 
 format elfobj
 
-const EXIT_SUCCESS=0
-const EXIT_FAILURE=1
-
-Importx "stderr" stderr
-Importx "fprintf" fprintf
+include "header.h"
 
 include "./throwless.s"
 

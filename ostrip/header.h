@@ -14,3 +14,15 @@ Const SEEK_CUR=1
 
 const ET_EXEC=2
 const EM_X86_64=62
+
+Importx "stderr" stderr
+Importx "fprintf" fprintf
+
+Importx "fopen" fopen
+Importx "fread" fread
+importx "fclose" fclose
+Importx "lseek" lseek
+
+Importx "memcmp" memcmp
+importx "malloc" malloc
+importx "free" free

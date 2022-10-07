@@ -1,7 +1,4 @@
 
-importx "fwrite" fwrite
-importx "fflush" fflush
-
 function resolve(sd j)
 	sv cont%fn_mem_p
 	sd p

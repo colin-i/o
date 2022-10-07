@@ -1,7 +1,4 @@
 
-importx "get_current_dir_name" get_current_dir_name
-importx "strlen" strlen
-
 include "./mem.s"
 
 function allocs()

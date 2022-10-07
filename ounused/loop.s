@@ -4,14 +4,6 @@ const void=0
 const asciiperiod=0x2E
 const asciio=0x6F
 
-importx "fopen" fopen
-importx "fclose" fclose
-importx "getline" getline
-importx "feof" feof
-importx "free" free
-importx "chdir" chdir
-importx "stdout" stdout
-
 include "../src/files/headers/log.h"
 
 include "inits.s"

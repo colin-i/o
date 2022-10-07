@@ -17,9 +17,6 @@ format elfobj64
 
 include "header.h"
 
-Importx "stderr" stderr
-Importx "fprintf" fprintf
-
 include "throwless.s"
 
 function messagedelim()

@@ -1,7 +1,4 @@
 
-importx "malloc" malloc
-importx "free" free
-
 #mem
 function alloc(sd size)
 	sd mem;setcall mem malloc(size)

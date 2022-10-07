@@ -2,8 +2,6 @@
 const FALSE=0
 const TRUE=1
 
-importx "realpath" realpath
-
 #const size_cont=dword+:
 const size_cont=:+dword
 const size_conts=5*size_cont
