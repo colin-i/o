@@ -10,6 +10,7 @@ const asciiDEL=0x7F
 
 Const SEEK_SET=0
 Const SEEK_CUR=1
+Const SEEK_END=2
 
 const ET_EXEC=2
 const EM_X86_64=62
@@ -20,7 +21,8 @@ Importx "fprintf" fprintf
 Importx "fopen" fopen
 Importx "fread" fread
 importx "fclose" fclose
-Importx "lseek" lseek
+Importx "fseek" fseek
+Importx "ftell" ftell
 
 Importx "memcmp" memcmp
 importx "malloc" malloc
@@ -28,3 +30,4 @@ importx "free" free
 
 importx "strcmp" strcmp
 importx "strlen" strlen
+importx "sscanf" sscanf

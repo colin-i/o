@@ -46,14 +46,17 @@ function erEnd()
 endfunction
 
 include "file.s"
+include "size.s"
 
-entrylinux main(sd argc,ss *argv0,ss exec,ss *obj1,ss *log1)   #... objN logN
+entrylinux main(sd argc,ss *argv0,ss exec,ss obj1,ss *log1)   #... objN logN
 
 if argc>(1+3)  #0 is all the time
 	sv pfile%pexefile
 	sv pexedata%pexedata
 	sv pexetext%pexetext
 	call get_file(exec,pfile,".data",pexedata,".text",pexetext,(ET_EXEC))
+	sub argc 2
+	sd stripped_data_size;setcall stripped_data_size get_offset(#obj1,argc)
 	call frees()
 	return (EXIT_SUCCESS)
 endif

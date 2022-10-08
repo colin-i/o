@@ -2,7 +2,7 @@
 include "mem.s"
 
 function get_file(sd name,sv p_file,sd sec1,sv p_sec1,sd sec2,sv p_sec2,sd type)
-	setcall p_file# fopen(name,"r")
+	setcall p_file# fopen(name,"rb")
 	sd file;set file p_file#
 	if file!=(NULL)
 		#at frees will check next
@@ -75,6 +75,9 @@ function get_file(sd name,sv p_file,sd sec1,sv p_sec1,sd sec2,sv p_sec2,sd type)
 		endif
 		call erMessages("not an elf",name)
 	endif
+	call fError(name)
+endfunction
+function fError(ss name)
 	call erMessages("fopen error for",name)
 endfunction
 
@@ -82,7 +85,7 @@ function rError()
 	call erMessage("fread error")
 endfunction
 function read(sd file,sd buf,sd size)
-	sd readed;setcall readed fread(file,buf,size)
+	sd readed;setcall readed fread(buf,1,size,file)
 	if readed!=size
 		call rError()
 	endif
@@ -95,11 +98,12 @@ function seeks(sd file,sd offset)
 	call seek(file,offset,(SEEK_SET))
 endfunction
 function seek(sd file,sd offset,sd whence)
-	sd from_start;SetCall from_start lseek(file,offset,whence)
-	#beyond seekable device limit is not our concerne, error check at seekc can go if seeks was not
-	#at section headers offset, error can be demonstrated (bad offset)
-	if from_start==-1
-		call erMessage("lseek error")
+	sd return;SetCall return fseek(file,offset,whence)
+	#at lseek:
+	#	beyond seekable device limit is not our concerne, error check at seekc can go if seeks was not
+	#	at section headers offset, error can be demonstrated (bad offset)
+	if return!=0
+		call erMessage("fseek error")
 	endif
 endfunction
 

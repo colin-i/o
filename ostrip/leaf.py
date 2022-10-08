@@ -13,6 +13,9 @@ unstripped_size=int(txt,base=16)
 #with open(fn,'rb') as f:
 #	unstripped_size=int(f.read(),base=16)
 
+#this is not better than objcopy file --update-section .data=data.bin
+#data.content=bytearray(b"text")
+
 import os
 
 r="rela.bin"
@@ -70,6 +73,3 @@ for x in h:
 		exit(0)
 
 exit(-1)
-
-#this is not better than objcopy file --update-section .data=data.bin
-#data.content=bytearray(b"text")
