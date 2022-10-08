@@ -24,6 +24,9 @@ format elfobj64
 #	aftercall value at .dynsym
 
 #pin about .data align at objects that ld respects when concatenating
+#aftercall is retrieved in .symtab in an entry with Type=NOTYPE and Ndx=dataind, then .strtab for name, then in another objects an import with that name
+#at exec instead of .strtab can be value is inside data(there are outside data values as well), but that's extra code
+#aftercall can be resolved at another iteration at end
 
 include "header.h"
 
@@ -62,9 +65,12 @@ entrylinux main(sd argc,ss *argv0,ss exec,ss obj1,ss *log1)   #... objN logN
 
 if argc>(1+3)  #0 is all the time
 	sv pfile%pexefile
-	sv pexedata%pexedata
-	sv pexetext%pexetext
-	call get_file(exec,pfile,".data",pexedata,".text",pexetext,(ET_EXEC))
+	chars s1=".data";chars s2=".text"
+	const s1c^s1;const s2c^s2
+	value sN%{s1c,s2c,NULL}
+	sv pexe%{pexedata,pexetext}
+	datax nrs#2   #this is required inside but is better than passing 2
+	call get_file(exec,pfile,(ET_EXEC),#sN,#pexe,#nrs)
 	sub argc 2
 	sd stripped_data_size;setcall stripped_data_size get_offset(#obj1,argc)
 	call frees()

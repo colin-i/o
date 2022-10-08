@@ -18,11 +18,11 @@ unstripped_size=int(txt,base=16)
 
 import os
 
-r="rela.bin"
+s3="symtab.bin"
 if (not os.path.exists(r)):
 	subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin"])
 else:
-	subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin","--update-section",".rela.dyn="+r])
+	subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin","--update-section",".symtab="+s3])
 
 import lief
 

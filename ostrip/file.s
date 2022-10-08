@@ -1,12 +1,13 @@
 
 include "mem.s"
 
-function get_file(sd name,sv p_file,sd sec1,sv p_sec1,sd sec2,sv p_sec2,sd type)
+function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec)
 	setcall p_file# fopen(name,"rb")
 	sd file;set file p_file#
 	if file!=(NULL)
 		#at frees will check next
-		set p_sec1# (NULL)
+		sv p;set p p_secN#
+		set p# (NULL)
 
 		chars elf64_ehd_e_ident_sign={asciiDEL,asciiE,asciiL,asciiF}
 #chars *elf64_ehd_e_ident_class={ELFCLASS64}
@@ -55,18 +56,24 @@ function get_file(sd name,sv p_file,sd sec1,sv p_sec1,sd sec2,sv p_sec2,sd type)
 					call read(file,#shstrndx,wsz)
 
 					#alloc for section names table
-					sd nrsec1;sd nrsec2;setcall nrsec1 shnames(file,offset,shentsize,shstrndx,sec1,sec2,#nrsec2)
+					call shnames(file,offset,shentsize,shstrndx,secN,pnrsec)
 
 					#get sections
-					sd end;set end shnum;mult end shentsize;add end offset
-					call get_section_many(file,offset,end,shentsize,nrsec1,p_sec1)
-					if p_sec1#!=(NULL)
-						#next at frees
-						set p_sec2# (NULL)
-						#get second section
-						call get_section_many(file,offset,end,shentsize,nrsec2,p_sec2)
-					endif
 
+					sd end;set end shnum;mult end shentsize;add end offset
+
+					while secN#!=(NULL)
+						set p p_secN#
+						#next at frees
+						set p# (NULL)  #this is extra only at first
+						call get_section_many(file,offset,end,shentsize,pnrsec#,p_secN#)
+						if p#==(NULL)
+							ret
+						endif
+						add secN :
+						add pnrsec (datasize)
+						add p_secN :
+					endwhile
 					ret
 				endif
 				call erMessages("wrong machine",name)
@@ -107,19 +114,20 @@ function seek(sd file,sd offset,sd whence)
 	endif
 endfunction
 
-#nrsec1
-function shnames(sd file,sd offset,sd shentsize,sd shstrndx,ss sec1,ss sec2,sd pnrsec2)  #nrsec is int
+function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec)  #nrsec is int
 	mult shstrndx shentsize
 	add offset shstrndx
 
 	sd mem;sd end;setcall end get_section(file,offset,#mem)
 	add end mem
 	#old remark:   count strings? safer than say it is the number of sections
-	sd nrsec1
-	setcall nrsec1 shnames_find(mem,end,sec1)
-	setcall pnrsec2# shnames_find(mem,end,sec2)
+
+	while secN#!=(NULL)
+		setcall pnrsec# shnames_find(mem,end,secN#)
+		add secN :
+		add pnrsec (datasize)
+	endwhile
 	call free(mem)
-	return nrsec1
 endfunction
 
 function get_section_many(sd file,sd offset,sd end,sd shentsize,sd nrsec,sv p_sec)
