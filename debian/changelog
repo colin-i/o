@@ -1,3 +1,9 @@
+ocompiler (1-5+50) xenial; urgency=medium
+
+  * fix stack^fn for 64 rels
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 08 Oct 2022 14:11:00 +0300
+
 ocompiler (1-5+49) xenial; urgency=medium
 
   * extra command

@@ -23,7 +23,7 @@ format elfobj64
 #		data section offsets (direct:^printf, pointers to text/data sections)
 #	aftercall value at .dynsym
 
-#pin about .data align at objects they go through ld too
+#pin about .data align at objects that ld respects when concatenating
 
 include "header.h"
 
