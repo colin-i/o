@@ -6,14 +6,24 @@
 format elfobj64
 #modify debian/control exec depends,appimage.yml,debian/control arh order
 
-#at exec only pointers to dataind at text/data
+#at exec
 #there is a rare case with rela.dyn but it is not important here (resolved stderr to object)
 #these are not position independent code and inplace relocs add better with obj64 but at obj32 use addend>=0 or sum<0 error check
 
-#at shared: pointers
+#both exec and shared:
+#	pointers to dataind at text/data
+#	aftercall has a copy at .symtab
+
+#only exec:
+#	pointers to aftercall
+
+#only at shared:
 #	.rela.dyn:
 #		addends from pointers to data section (this and the previous are saying the same thing but maybe is compatibility)
-#		data section offsets (direct:printf, pointers to text/data sections)
+#		data section offsets (direct:^printf, pointers to text/data sections)
+#	aftercall value at .dynsym
+
+#pin about .data align at objects they go through ld too
 
 include "header.h"
 

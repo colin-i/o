@@ -321,7 +321,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					if stack==false
 						setcall err unresLc(0,ptrdatasec,0)
 					else
-						setcall err unresLc((rampadd_value_off),ptrcodesec,0)
+						#it's only an imm to reg
+						sd stack_off;setcall stack_off reloc64_offset((rampadd_value_off))
+						setcall err unresLc(stack_off,ptrcodesec,0)
 					endelse
 					if err!=(noerror)
 						return err

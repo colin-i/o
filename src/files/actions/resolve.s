@@ -40,5 +40,3 @@ While unresptr!=unresptrlastpoint
 
 	Add unresptr dwordsize
 EndWhile
-
-
