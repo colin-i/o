@@ -4,11 +4,11 @@ function frees()
 	const pexefile^exefile
 	if exefile!=(NULL)
 		call fclose(exefile)
-		valuex exedata#1
+		valuex exedata#section_nr_of_values
 		const pexedata^exedata
 		if exedata!=(NULL)
 			call free(exedata)
-			valuex exetext#1
+			valuex exetext#section_nr_of_values
 			const pexetext^exetext
 			if exetext!=(NULL)
 				call free(exetext)
@@ -24,17 +24,21 @@ function frees()
 endfunction
 function freeobjects(sv objects)
 	while objects#!=(NULL)
-		sv object;set object objects#
-		sd end=object_allocs
-		add end object
-		while object!=end
-			if object#!=(NULL)
-				call free(object#)
-			endif
-			add object :
-		endwhile
+		call freeobject(objects#)
 		call free(objects#)
 		add objects :
+	endwhile
+endfunction
+function freeobject(sv object)
+	sd end=object_alloc
+	add end object
+	while object!=end
+		if object#!=(NULL)
+			call free(object#)
+		else
+			ret
+		endelse
+		add object (section_alloc)
 	endwhile
 endfunction
 

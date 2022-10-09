@@ -36,3 +36,5 @@ const asciiL=0x4C
 const asciiDEL=0x7F
 
 const datasize=4
+
+const section_nr_of_values=2    ;#*2 for size

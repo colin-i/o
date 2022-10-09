@@ -66,12 +66,14 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec)
 						set p p_secN#
 						#next at frees
 						set p# (NULL)  #this is extra only at first
-						call get_section_many(file,offset,end,shentsize,pnrsec#,p_secN#)
+						sd size;setcall size get_section_many(file,offset,end,shentsize,pnrsec#,p_secN#)
 						if p#==(NULL)
 							ret
 						endif
 						add secN :
 						add pnrsec (datasize)
+						add p_secN :
+						set p_secN# size
 						add p_secN :
 					endwhile
 					ret
@@ -130,12 +132,13 @@ function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec)  
 	call free(mem)
 endfunction
 
+#sz
 function get_section_many(sd file,sd offset,sd end,sd shentsize,sd nrsec,sv p_sec)
 	while offset!=end
 		#the sh64_name is first
 		if offset#==nrsec
-			call get_section(file,offset,p_sec)
-			ret
+			sd sz;setcall sz get_section(file,offset,p_sec)
+			return sz   #it's in use at rels,syms and can verify errors at data/text
 		endif
 		add offset shentsize
 	endwhile
