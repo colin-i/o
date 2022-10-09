@@ -26,7 +26,7 @@ format elfobj64
 #pin about .data align at objects that ld respects when concatenating
 #aftercall is retrieved in .symtab in an entry with Type=NOTYPE and Ndx=dataind, then .strtab for name, then in another objects an import with that name
 #at exec instead of .strtab can be value is inside data(there are outside data values as well), but that's extra code
-#aftercall can be resolved at another iteration at end
+#aftercall can be resolved not from the first iteration
 
 include "header.h"
 
@@ -60,8 +60,9 @@ endfunction
 
 include "file.s"
 include "size.s"
+include "obj.s"
 
-entrylinux main(sd argc,ss *argv0,ss exec,ss obj1,ss *log1)   #... objN logN
+entrylinux main(sd argc,ss argv0,ss exec,ss obj1,ss *log1)   #... objN logN
 
 if argc>(1+3)  #0 is all the time
 	sv pfile%pexefile
@@ -69,10 +70,16 @@ if argc>(1+3)  #0 is all the time
 	const s1c^s1;const s2c^s2
 	value sN%{s1c,s2c,NULL}
 	sv pexe%{pexedata,pexetext}
-	datax nrs#2   #this is required inside but is better than passing 2
+	datax nrs#2   #this is required inside but is better than passing the number of sections
 	call get_file(exec,pfile,(ET_EXEC),#sN,#pexe,#nrs)
-	sub argc 2
+
+	sv pobjects%pobjects
+	set pobjects# (NULL) #this is on the main plan, is about frees
+
+	mult argc :
+	add argc #argv0
 	sd stripped_data_size;setcall stripped_data_size get_offset(#obj1,argc)
+	call get_objs(#obj1,argc) #aftercall can be in any object, need to keep memory
 	call frees()
 	return (EXIT_SUCCESS)
 endif

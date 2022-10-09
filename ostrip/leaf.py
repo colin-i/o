@@ -15,6 +15,7 @@ unstripped_size=int(txt,base=16)
 
 #this is not better than objcopy file --update-section .data=data.bin
 #data.content=bytearray(b"text")
+#ld...-Tdata to put data at trail
 
 import os
 

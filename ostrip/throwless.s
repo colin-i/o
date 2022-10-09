@@ -14,9 +14,29 @@ function frees()
 				call free(exetext)
 			endif
 		endif
+		valuex objects#1
+		const pobjects^objects
+		if objects!=(NULL)
+			call freeobjects(objects)
+			call free(objects)
+		endif
 	endif
 endfunction
-
+function freeobjects(sv objects)
+	while objects#!=(NULL)
+		sv object;set object objects#
+		sd end=object_allocs
+		add end object
+		while object!=end
+			if object#!=(NULL)
+				call free(object#)
+			endif
+			add object :
+		endwhile
+		call free(objects#)
+		add objects :
+	endwhile
+endfunction
 
 #file
 

@@ -1,7 +1,5 @@
 
 function get_offset(sd args,sd end)
-	mult end :
-	add end args
 	sd offset=0
 	while args!=end
 		add args :
