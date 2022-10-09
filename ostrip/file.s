@@ -6,8 +6,7 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec)
 	sd file;set file p_file#
 	if file!=(NULL)
 		#at frees will check next
-		sv p;set p p_secN#
-		set p# (NULL)
+		#set p_secN# (NULL)
 
 		chars elf64_ehd_e_ident_sign={asciiDEL,asciiE,asciiL,asciiF}
 #chars *elf64_ehd_e_ident_class={ELFCLASS64}
@@ -63,11 +62,10 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec)
 					sd end;set end shnum;mult end shentsize;add end offset
 
 					while secN#!=(NULL)
-						set p p_secN#
 						#next at frees
-						set p# (NULL)  #this is extra only at first
-						sd size;setcall size get_section_many(file,offset,end,shentsize,pnrsec#,p_secN#)
-						if p#==(NULL)
+						set p_secN# (NULL)  #this is extra only at first
+						sd size;setcall size get_section_many(file,offset,end,shentsize,pnrsec#,p_secN)
+						if p_secN#==(NULL)
 							ret
 						endif
 						add secN :

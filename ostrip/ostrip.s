@@ -69,17 +69,27 @@ if argc>(1+3)  #0 is all the time
 	chars s1=".data";chars s2=".text"
 	const s1c^s1;const s2c^s2
 	value sN%{s1c,s2c,NULL}
-	sv pexe%{pexedata,pexetext}
-	datax nrs#2   #this is required inside but is better than passing the number of sections
-	call get_file(exec,pfile,(ET_EXEC),#sN,#pexe,#nrs)
+	sv pexe%pexedata
+
+	#set here these(and sym for aftercall) null, text/data can go null later, with access error if rela points there
+	sv pt%pexetext
+	set pt# (NULL)
+	#and set data null here, it is useless there for objects call
+	set pexe# (NULL)   #data
 
 	sv pobjects%pobjects
-	set pobjects# (NULL) #this is on the main plan, is about frees
+	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
+
+	datax nrs#2   #this is required inside but is better than passing the number of sections
+	call get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs)
 
 	mult argc :
 	add argc #argv0
 	sd stripped_data_size;setcall stripped_data_size get_offset(#obj1,argc)
 	call get_objs(#obj1,argc) #aftercall can be in any object, need to keep memory
+
+	call iterate_simple() #stripped_data_size)  #without knowing aftercall
+
 	call frees()
 	return (EXIT_SUCCESS)
 endif

@@ -23,7 +23,7 @@ function get_objs(sv args,sd end)
 		setcall objects# alloc((object_alloc))
 
 		sv object;set object objects#
-		set object# (NULL)  #this is not like the first file, there are 2 more like this extra in get_file
+		set object# (NULL)  #this is not like the first file, there is 1 more like this extra in get_file
 		add objects :
 		set objects# (NULL)
 
@@ -32,8 +32,16 @@ function get_objs(sv args,sd end)
 		value oN%{o1c,o2c,NULL}
 		datax nrs#object_nr_of_sections   #same as previous call
 		sd file
+		#blank sections at ocomp?
 		call get_file(args,#file,(ET_REL),#oN,object,#nrs)
 		call fclose(file)
 		add args (2*:)
+	endwhile
+endfunction
+
+function iterate_simple() #sd voffset)
+	sv pobjects%pobjects
+	while pobjects#!=(NULL)
+		incst pobjects
 	endwhile
 endfunction

@@ -4,12 +4,12 @@ function frees()
 	const pexefile^exefile
 	if exefile!=(NULL)
 		call fclose(exefile)
-		valuex exedata#section_nr_of_values
+	valuex exedata#section_nr_of_values
+	valuex exetext#section_nr_of_values
 		const pexedata^exedata
+		const pexetext^exetext
 		if exedata!=(NULL)
 			call free(exedata)
-			valuex exetext#section_nr_of_values
-			const pexetext^exetext
 			if exetext!=(NULL)
 				call free(exetext)
 			endif
