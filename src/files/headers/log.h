@@ -21,7 +21,5 @@ const log_declare=0x64
 #r
 const log_reusable=0x72
 
-warning off
 #x
-const log_expand=0x78
-warning on
+#ostrip is reading only with fseek, ounused can skip 0-9 instead of x, but in code is log with a char

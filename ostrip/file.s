@@ -1,6 +1,7 @@
 
 include "mem.s"
 
+#data size
 function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec)
 	setcall p_file# fopen(name,"rb")
 	sd file;set file p_file#
@@ -55,18 +56,30 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec)
 					call read(file,#shstrndx,wsz)
 
 					#alloc for section names table
-					call shnames(file,offset,shentsize,shstrndx,secN,pnrsec)
+					sd datasec;setcall datasec shnames(file,offset,shentsize,shstrndx,secN,pnrsec)
 
-					#get sections
-
+					#end for iterations
 					sd end;set end shnum;mult end shentsize;add end offset
 
+					#get data size
+					sd data_size=0    #0 can go right now(it is blank section at our objects), but that can be stripped, favorizing
+					sd offs;set offs offset
+					while offs!=end
+						#the sh64_name is first
+						if offs#==datasec
+							call get_section_loc(file,offs,#data_size)
+							break
+						endif
+						add offs shentsize
+					endwhile
+
+					#get sections
 					while secN#!=(NULL)
 						#next at frees
 						set p_secN# (NULL)  #this is extra only at first
 						sd size;setcall size get_section_many(file,offset,end,shentsize,pnrsec#,p_secN)
 						if p_secN#==(NULL)
-							ret
+							return data_size
 						endif
 						add secN :
 						add pnrsec (datasize)
@@ -74,7 +87,7 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec)
 						set p_secN# size
 						add p_secN :
 					endwhile
-					ret
+					return data_size
 				endif
 				call erMessages("wrong machine",name)
 			endif
@@ -114,6 +127,7 @@ function seek(sd file,sd offset,sd whence)
 	endif
 endfunction
 
+#datasec
 function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec)  #nrsec is int
 	mult shstrndx shentsize
 	add offset shstrndx
@@ -127,7 +141,12 @@ function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec)  
 		add secN :
 		add pnrsec (datasize)
 	endwhile
+
+	sd datasec;setcall datasec shnames_find(mem,end,".data")
+
 	call free(mem)
+
+	return datasec
 endfunction
 
 #sz
@@ -142,8 +161,8 @@ function get_section_many(sd file,sd offset,sd end,sd shentsize,sd nrsec,sv p_se
 	endwhile
 endfunction
 
-#fread
-function get_section(sd file,sd offset,sv pmem)
+#offset
+function get_section_loc(sd file,sd offset,sv psize)
 #Data sh64_name#1
 #Data sh64_type#1
 #Data sh64_flags#1;data *=0
@@ -157,7 +176,13 @@ function get_section(sd file,sd offset,sv pmem)
 	add offset (4+4+:+:)  #flags :?on 32 is ok
 	call seeks(file,offset)
 	call read(file,#offset,:)
-	sd size;call read(file,#size,:)
+	call read(file,psize,:)
+	return offset
+endfunction
+#fread
+function get_section(sd file,sd offset,sv pmem)
+	sd size
+	setcall offset get_section_loc(file,offset,#size)
 	call seeks(file,offset)
 	sd mem;setcall mem alloc(size)
 	sd readed;setcall readed fread(file,mem,size)

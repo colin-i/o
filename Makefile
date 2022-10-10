@@ -10,6 +10,8 @@ $(SUBDIRS):
 
 all:
 	cd ./ounused; ./ounused ./ounused.s.log
+	@echo
 	if ! [ -f ./src/obj.o ];then cd ./src; ../ounused/ounused ./linux/obj.s.log; fi
+	@echo
 
 .NOTPARALLEL:

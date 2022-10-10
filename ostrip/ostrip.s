@@ -59,7 +59,6 @@ function erEnd()
 endfunction
 
 include "file.s"
-include "size.s"
 include "obj.s"
 
 entrylinux main(sd argc,ss argv0,ss exec,ss obj1,ss *log1)   #... objN logN
@@ -85,10 +84,9 @@ if argc>(1+3)  #0 is all the time
 
 	mult argc :
 	add argc #argv0
-	sd stripped_data_size;setcall stripped_data_size get_offset(#obj1,argc)
 	call get_objs(#obj1,argc) #aftercall can be in any object, need to keep memory
 
-	call iterate_simple() #stripped_data_size)  #without knowing aftercall
+	call objs_concat()
 
 	call frees()
 	return (EXIT_SUCCESS)

@@ -1,7 +1,8 @@
 
 const object_nr_of_sections=2
 const section_alloc=:*section_nr_of_values
-const object_alloc=object_nr_of_sections*section_alloc
+const object_alloc_secs=object_nr_of_sections*section_alloc
+const object_alloc=object_alloc_secs+:+datasize
 
 function get_objs(sv args,sd end)
 	#find the number of objects to prepare the field
@@ -33,15 +34,42 @@ function get_objs(sv args,sd end)
 		datax nrs#object_nr_of_sections   #same as previous call
 		sd file
 		#blank sections at ocomp?
-		call get_file(args,#file,(ET_REL),#oN,object,#nrs)
+		sv p=object_alloc_secs
+		add p object
+		setcall p# get_file(args,#file,(ET_REL),#oN,object,#nrs)
 		call fclose(file)
-		add args (2*:)
+		incst args
+		incst p
+		setcall p#d^ get_offset(args)  #the ocomp with these sections from that creation time are still respected (32 bits)
+		incst args
 	endwhile
 endfunction
 
-function iterate_simple() #sd voffset)
+function get_offset(sd fname)
+	sd file;setcall file fopen(fname,"rb")
+	if file!=(NULL)
+		#at the first 3 documentations there is no info about errno errors for fseek ftell
+		#it is implementation specific, many judgements can be made
+		call seek(file,0,(SEEK_END))
+		sd off;setcall off ftell(file)
+		if off!=-1
+			sub off (2+8)  #knowing \r\n same as ounused that is not headering with src. and 8 is copy-paste
+			call seeks(file,off)
+			chars buf={0,0,0,0, 0,0,0,0, 0}
+			call read(file,#buf,8) #copy-paste
+			datax nr#1
+			call sscanf(#buf,"%08x",#nr) #copy-paste
+			return nr
+		endif
+		call erMessages("ftell error at",fname)
+	endif
+	call fError(fname)
+endfunction
+
+function objs_concat()
 	sv pobjects%pobjects
 	while pobjects#!=(NULL)
+	#must import the align from ocomp
 		incst pobjects
 	endwhile
 endfunction

@@ -436,3 +436,6 @@ const getarg_str=asciidoublequote
 
 Data datasecSize#1
 const ptrdataSize^datasecSize
+
+#x
+const log_expand=0x78
