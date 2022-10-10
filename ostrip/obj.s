@@ -2,8 +2,9 @@
 const object_nr_of_sections=2
 const section_alloc=:*section_nr_of_values
 const object_alloc_secs=object_nr_of_sections*section_alloc
-const object_alloc=object_alloc_secs+:+datasize
+const object_alloc=object_alloc_secs+datasize+:
 
+##stripped size
 function get_objs(sv args,sd end)
 	#find the number of objects to prepare the field
 	sd pointers;set pointers end
@@ -19,6 +20,7 @@ function get_objs(sv args,sd end)
 	sv objects;set objects pointers#
 	set objects# (NULL)
 
+	#sd remaining_size=0
 	while args!=end
 		#alloc
 		setcall objects# alloc((object_alloc))
@@ -32,19 +34,27 @@ function get_objs(sv args,sd end)
 		const o1c^o1;const o2c^o2
 		value oN%{o1c,o2c,NULL}
 		datax nrs#object_nr_of_sections   #same as previous call
-		sd file
 		#blank sections at ocomp?
+
 		sv p=object_alloc_secs
 		add p object
+
+		setcall p#d^ get_offset(args)  #the ocomp with these sections from that creation time are still respected (32 bits)
+		#add remaining_size p#d^
+
+		add p (datasize)
+		incst args
+
+		sd file
 		setcall p# get_file(args,#file,(ET_REL),#oN,object,#nrs)
 		call fclose(file)
-		incst args
-		incst p
-		setcall p#d^ get_offset(args)  #the ocomp with these sections from that creation time are still respected (32 bits)
+		setcall p# objs_align(p#)
 		incst args
 	endwhile
+	#return remaining_size
 endfunction
 
+#stripped size
 function get_offset(sd fname)
 	sd file;setcall file fopen(fname,"rb")
 	if file!=(NULL)
@@ -66,10 +76,34 @@ function get_offset(sd fname)
 	call fError(fname)
 endfunction
 
-function objs_concat()
-	sv pobjects%pobjects
+function objs_concat(sd pobjects,sd dest)    #,sd sz)
+	#sd pdatabin%pdatabin;setcall pdatabin# alloc(sz)
+	sd src;set src dest
+
+	#skip first memtomem
+	sv object=object_alloc_secs;add object pobjects#
+	add dest object#d^
+	add object (datasize)
+	add src object#
+	incst pobjects
+
 	while pobjects#!=(NULL)
-	#must import the align from ocomp
+		set object (object_alloc_secs);add object pobjects#
+		sd stripped;set stripped object#d^
+		#we implement own memcpy here because right to left can break all
+		call memtomem(dest,src,stripped)
+		add dest stripped
+		add object (datasize)
+		add src object#
 		incst pobjects
 	endwhile
+endfunction
+
+function memtomem()
+i3
+endfunction
+
+function objs_align(sd *sz)
+#must import the align from ocomp
+i3
 endfunction

@@ -30,7 +30,7 @@ function freeobjects(sv objects)
 	endwhile
 endfunction
 function freeobject(sv object)
-	sd end=object_alloc
+	sd end=object_alloc_secs
 	add end object
 	while object!=end
 		if object#!=(NULL)

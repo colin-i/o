@@ -1,7 +1,7 @@
 
 #must do a stripped data.bin and resolved text.bin
 
-#input: exec o1 log1 ... oN logN
+#input: exec log1 o1 ... logN oN
 
 format elfobj64
 #modify debian/control exec depends,appimage.yml,debian/control arh order
@@ -61,7 +61,7 @@ endfunction
 include "file.s"
 include "obj.s"
 
-entrylinux main(sd argc,ss argv0,ss exec,ss obj1,ss *log1)   #... objN logN
+entrylinux main(sd argc,ss argv0,ss exec,ss log1,ss *obj1)   #... logN objN
 
 if argc>(1+3)  #0 is all the time
 	sv pfile%pexefile
@@ -84,9 +84,10 @@ if argc>(1+3)  #0 is all the time
 
 	mult argc :
 	add argc #argv0
-	call get_objs(#obj1,argc) #aftercall can be in any object, need to keep memory
+	#sd sz;setcall sz
+	call get_objs(#log1,argc) #aftercall can be in any object, need to keep memory
 
-	call objs_concat()
+	call objs_concat(pobjects#,pexe#)   #,sz)
 
 	call frees()
 	return (EXIT_SUCCESS)
