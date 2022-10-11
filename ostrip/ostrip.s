@@ -31,6 +31,7 @@ format elfobj64
 include "header.h"
 
 include "throwless.s"
+include "rel.s"
 
 function messagedelim()
 	sv st^stderr
@@ -89,6 +90,8 @@ if argc>(1+3)  #0 is all the time
 	call get_objs(#log1,argc) #aftercall can be in any object, need to keep memory
 
 	call objs_concat(pobjects#,pexe)
+
+	call reloc(pobjects#)
 
 	call write(#sN,pexe)
 

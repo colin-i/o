@@ -229,7 +229,6 @@ Data codestrtab#1
 Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 	#Direct 32 bit
 	Const R_386_32=1
-	const R_X86_64_64=1
 	const R_X86_64_32=10
 	#PC relative 32 bit
 	#const R_386_PC32=2

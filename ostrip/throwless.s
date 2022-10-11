@@ -63,28 +63,28 @@ endfunction
 
 #obj
 
-function objs_concat(sd pobjects,sv pdata)
+function objs_concat(sd objects,sv pdata)
 	sd initial;set initial pdata#
 	#sd pdatabin%pdatabin;setcall pdatabin# alloc(sz)
 	sd dest;set dest initial
 	sd src;set src dest
 
 	#skip first memtomem
-	sv object=object_alloc_secs;add object pobjects#
+	sv object=object_alloc_secs;add object objects#
 	add dest object#d^
 	add object (datasize)
 	add src object#
-	incst pobjects
+	incst objects
 
-	while pobjects#!=(NULL)
-		set object (object_alloc_secs);add object pobjects#
+	while objects#!=(NULL)
+		set object (object_alloc_secs);add object objects#
 		sd stripped;set stripped object#d^
 		#we implement own memcpy here because right to left can break all
 		call memtomem(dest,src,stripped)
 		add dest stripped
 		add object (datasize)
 		add src object#
-		incst pobjects
+		incst objects
 	endwhile
 
 	add pdata :
