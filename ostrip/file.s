@@ -102,6 +102,7 @@ function fError(ss name)
 endfunction
 
 function rError()
+	#pin that readed=size*1
 	call erMessage("fread error")
 endfunction
 function read(sd file,sd buf,sd size)
@@ -185,7 +186,7 @@ function get_section(sd file,sd offset,sv pmem)
 	setcall offset get_section_loc(file,offset,#size)
 	call seeks(file,offset)
 	sd mem;setcall mem alloc(size)
-	sd readed;setcall readed fread(file,mem,size)
+	sd readed;setcall readed fread(mem,1,size,file)
 	if readed==size
 		set pmem# mem
 		return size

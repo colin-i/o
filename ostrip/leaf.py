@@ -19,19 +19,19 @@ unstripped_size=int(txt,base=16)
 
 import os
 
-s3="symtab.bin"
-if (not os.path.exists(r)):
-	subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin"])
+s1=".data"
+s2=".text"
+s3=".symtab"
+if (not os.path.exists(s3)):
+	subprocess.run(["objcopy",inputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
 else:
-	subprocess.run(["objcopy",inputfile,"--update-section",".text=text.bin","--update-section",".data=data.bin","--update-section",".symtab="+s3])
+	subprocess.run(["objcopy",inputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1,"--update-section",s3+"="+s3])
 
 import lief
 
 elffile = lief.parse(inputfile)
 
-c=".data"
-
-s=elffile.get_section(c)
+s=elffile.get_section(s1)
 
 h=elffile.segments
 
@@ -43,7 +43,7 @@ for x in h:
 	for i in range(0,n):
 		b=a[i]
 		if found==-1:
-			if c==b.name:
+			if s1==b.name:
 				#only with .bss: it looks like objcopy is shrinking file size accordingly and is not touching on mem size in section and segment
 				#so this file was about to go
 				#but when it's at the edge is shrinking mem size

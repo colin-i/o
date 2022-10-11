@@ -20,7 +20,6 @@ function get_objs(sv args,sd end)
 	sv objects;set objects pointers#
 	set objects# (NULL)
 
-	#sd remaining_size=0
 	while args!=end
 		#alloc
 		setcall objects# alloc((object_alloc))
@@ -40,7 +39,6 @@ function get_objs(sv args,sd end)
 		add p object
 
 		setcall p#d^ get_offset(args)  #the ocomp with these sections from that creation time are still respected (32 bits)
-		#add remaining_size p#d^
 
 		add p (datasize)
 		incst args
@@ -51,7 +49,6 @@ function get_objs(sv args,sd end)
 		setcall p# objs_align(p#)
 		incst args
 	endwhile
-	#return remaining_size
 endfunction
 
 #stripped size
@@ -76,53 +73,26 @@ function get_offset(sd fname)
 	call fError(fname)
 endfunction
 
-function objs_concat(sd pobjects,sd dest)    #,sd sz)
-	#sd pdatabin%pdatabin;setcall pdatabin# alloc(sz)
-	sd src;set src dest
-
-	#skip first memtomem
-	sv object=object_alloc_secs;add object pobjects#
-	add dest object#d^
-	add object (datasize)
-	add src object#
-	incst pobjects
-
-	while pobjects#!=(NULL)
-		set object (object_alloc_secs);add object pobjects#
-		sd stripped;set stripped object#d^
-		#we implement own memcpy here because right to left can break all
-		call memtomem(dest,src,stripped)
-		add dest stripped
-		add object (datasize)
-		add src object#
-		incst pobjects
+function write(sv names,sv psections)
+	while names#!=(NULL)
+		sd sec;set sec psections#
+		if sec!=(NULL)
+			sd file;setcall file fopen(names#,"wb")
+			if file!=(NULL)
+				add psections :
+				sd size;set size psections#
+				sd written;setcall written fwrite(sec,1,size,file)
+				call fclose(file)
+				#pin that written=size*1
+				if written!=size
+					call erMessages("fwrite error",names#)
+				endif
+				add psections :
+			else
+				call fError(names#)
+			endelse
+		else
+			add psections (section_alloc)
+		endelse
 	endwhile
-endfunction
-
-function memtomem(sv dest,sv src,sd size)
-	#optimized?
-	const stack_size_trail=:-1
-	sd opt=~stack_size_trail
-	and opt size
-	sub size opt
-	add opt dest
-	while dest!=opt
-		set dest# src#
-		incst dest
-		incst src
-	endwhile
-	add size dest
-	while dest!=size
-		set dest#s^ src#s^
-		inc dest
-		inc src
-	endwhile
-endfunction
-
-function objs_align(sd sz)
-#must import the align from ocomp
-	add sz (elf_datasec_obj_align)
-	const elf_datasec_obj_align_trail=elf_datasec_obj_align-1
-	and sz (~elf_datasec_obj_align_trail)
-	return sz
 endfunction

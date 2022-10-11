@@ -22,6 +22,7 @@ Importx "fread" fread
 importx "fclose" fclose
 Importx "fseek" fseek
 Importx "ftell" ftell
+Importx "fwrite" fwrite
 
 Importx "memcmp" memcmp
 importx "malloc" malloc

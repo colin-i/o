@@ -1,5 +1,5 @@
 
-#must do a stripped data.bin and resolved text.bin
+#must do a stripped .data and resolved .text (and .symtab)
 
 #input: exec log1 o1 ... logN oN
 
@@ -69,25 +69,28 @@ if argc>(1+3)  #0 is all the time
 	const s1c^s1;const s2c^s2
 	value sN%{s1c,s2c,NULL}
 	sv pexe%pexedata
+	datax nrs#2   #this is required inside but is better than passing the number of sections
 
 	#set here these(and sym for aftercall) null, text/data can go null later, with access error if rela points there
 	sv pt%pexetext
 	set pt# (NULL)
+	#sv ps%pexesym
+	#set ps# (NULL)
 	#and set data null here, it is useless there for objects call
 	set pexe# (NULL)   #data
 
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
 
-	datax nrs#2   #this is required inside but is better than passing the number of sections
 	call get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs)
 
 	mult argc :
 	add argc #argv0
-	#sd sz;setcall sz
 	call get_objs(#log1,argc) #aftercall can be in any object, need to keep memory
 
-	call objs_concat(pobjects#,pexe#)   #,sz)
+	call objs_concat(pobjects#,pexe)
+
+	call write(#sN,pexe)
 
 	call frees()
 	return (EXIT_SUCCESS)
