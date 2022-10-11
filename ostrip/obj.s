@@ -99,11 +99,30 @@ function objs_concat(sd pobjects,sd dest)    #,sd sz)
 	endwhile
 endfunction
 
-function memtomem()
-i3
+function memtomem(sv dest,sv src,sd size)
+	#optimized?
+	const stack_size_trail=:-1
+	sd opt=~stack_size_trail
+	and opt size
+	sub size opt
+	add opt dest
+	while dest!=opt
+		set dest# src#
+		incst dest
+		incst src
+	endwhile
+	add size dest
+	while dest!=size
+		set dest#s^ src#s^
+		inc dest
+		inc src
+	endwhile
 endfunction
 
-function objs_align(sd *sz)
+function objs_align(sd sz)
 #must import the align from ocomp
-i3
+	add sz (elf_datasec_obj_align)
+	const elf_datasec_obj_align_trail=elf_datasec_obj_align-1
+	and sz (~elf_datasec_obj_align_trail)
+	return sz
 endfunction

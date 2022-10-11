@@ -1,4 +1,6 @@
 
+include "../src/files/headers/strip.h"
+
 const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
 const NULL=0
@@ -34,7 +36,5 @@ const asciiE=0x45
 const asciiF=0x46
 const asciiL=0x4C
 const asciiDEL=0x7F
-
-const datasize=4
 
 const section_nr_of_values=2    ;#*2 for size
