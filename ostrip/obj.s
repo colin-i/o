@@ -46,7 +46,7 @@ function get_objs(sv args,sd end)
 		sd file
 		setcall p# get_file(args,#file,(ET_REL),#oN,object,#nrs)
 		call fclose(file)
-		setcall p# objs_align(p#)
+		#setcall p# objs_align(p#)
 		incst args
 	endwhile
 endfunction

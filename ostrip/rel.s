@@ -1,16 +1,34 @@
 
 
 function reloc(sv objects)
+	sv voffset%pexedatasize
+	set voffset voffset#
+	sd doffset=0
 	while objects#!=(NULL)
 		sv object;set object objects#
-		call reloc_sec(object) #reladata
+		sd d;set d object
 		add object (section_alloc)
-		call reloc_sec(object) #relatext
+
+		sd t;set t object
+		add object (section_alloc)
+
+		sd voffset_obj;set voffset_obj object#d^
+		add object (datasize)
+
+		call reloc_sec(d,doffset,voffset,voffset_obj)
+		call reloc_sec(t,doffset,voffset,voffset_obj)
+
+		sv vsize_obj;set vsize_obj object#
+		sub vsize_obj voffset
+
+		add doffset voffset_obj
+		add voffset vsize_obj
+
 		incst objects
 	endwhile
 endfunction
 
-function reloc_sec(sv object)
+function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj)
 	sv pointer;set pointer object#
 	incst object
 	sd end;set end object#
@@ -20,17 +38,25 @@ function reloc_sec(sv object)
 #		data elf64_r_info_type#1
 #		data elf64_r_info_symbolindex#1
 #		data elf64_r_addend#1;data *=0
-		sv rel_offset;set rel_offset pointer#
+	#	sv rel_offset;set rel_offset pointer#
 		incst pointer
-		datax type#1;set type pointer#d^
-		if type==(R_X86_64_64)
-	#		if obj_offset>=obj_virtual
-	#			add obj_offset total_virtual
-	#		else
-	#			add obj_offset total_phisic
-	#		endelse
-	#		set databin# obj_offset
-		endif
-		add pointer (datasize+datasize+:)
+		if pointer#d^==(R_X86_64_64)
+			add pointer (datasize)
+			if pointer#d^==(dataind)
+				add pointer (datasize)
+				sv addend;set addend pointer#
+				if addend>=voffset_obj
+					add addend voffset
+				else
+					add addend doffset
+				endelse
+	#			add rel_offset section
+	#			set rel_offset# addend
+			else
+				add pointer (datasize+:)
+			endelse
+		else
+			add pointer (datasize+datasize+:)
+		endelse
 	endwhile
 endfunction

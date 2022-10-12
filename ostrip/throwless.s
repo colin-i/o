@@ -4,10 +4,10 @@ function frees()
 	const pexefile^exefile
 	if exefile!=(NULL)
 		call fclose(exefile)
-	valuex exedata#section_nr_of_values
+	valuex exedata#1;valuex exedatasize#1
 	valuex exetext#section_nr_of_values
 	#valuex exesym#section_nr_of_values
-	const pexedata^exedata
+	const pexedata^exedata;const pexedatasize^exedatasize
 	const pexetext^exetext
 	#const pexesym^exesym
 		if exedata!=(NULL)
@@ -73,7 +73,7 @@ function objs_concat(sd objects,sv pdata)
 	sv object=object_alloc_secs;add object objects#
 	add dest object#d^
 	add object (datasize)
-	add src object#
+	addcall src objs_align(object#)
 	incst objects
 
 	while objects#!=(NULL)
@@ -83,7 +83,7 @@ function objs_concat(sd objects,sv pdata)
 		call memtomem(dest,src,stripped)
 		add dest stripped
 		add object (datasize)
-		add src object#
+		addcall src objs_align(object#)
 		incst objects
 	endwhile
 

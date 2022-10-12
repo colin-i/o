@@ -208,7 +208,6 @@ Data STT_NOTYPE=STT_NOTYPE
 Data STT_FUNC=STT_FUNC
 Data STT_SECTION=STT_SECTION
 
-Const dataind=1
 Const codeind=2
 Const symind=3
 Data datastrtab#1
