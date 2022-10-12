@@ -83,7 +83,8 @@ if argc>(1+3)  #0 is all the time
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
 
-	call get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs)
+	sd textvirtualaddr
+	sd datavirtualaddr;setcall datavirtualaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,#textvirtualaddr)
 
 	mult argc :
 	add argc #argv0
