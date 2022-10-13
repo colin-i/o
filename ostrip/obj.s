@@ -1,7 +1,9 @@
 
-const object_nr_of_sections=2
+const object_nr_of_main_sections=2
+const object_nr_of_sections=object_nr_of_main_sections+2
 const section_alloc=:*section_nr_of_values
 const object_alloc_secs=object_nr_of_sections*section_alloc
+const to_symtab=object_nr_of_main_sections*section_alloc
 const object_alloc=object_alloc_secs+datasize+:+:
 
 ##stripped size
@@ -29,9 +31,9 @@ function get_objs(sv args,sd end)
 		add objects :
 		set objects# (NULL)
 
-		chars o1=".rela.data";chars o2=".rela.text"
-		const o1c^o1;const o2c^o2
-		value oN%{o1c,o2c,NULL}
+		chars o1=".rela.data";chars o2=".rela.text";chars o3=".symtab";chars o4=".strtab"
+		const o1c^o1;const o2c^o2;const o3c^o3;const o4c^o4
+		value oN%{o1c,o2c,o3c,o4c,NULL}
 		datax nrs#object_nr_of_sections   #same as previous call
 		#blank sections at ocomp?
 

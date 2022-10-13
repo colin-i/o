@@ -33,23 +33,22 @@ include "header.h"
 include "throwless.s"
 include "rel.s"
 
-function messagedelim()
-	sv st^stderr
+function messagedelim(sv st)
 	Chars visiblemessage={0x0a,0}
 	Call fprintf(st#,#visiblemessage)
 endfunction
-Function Message(ss text)
+Function eMessage(ss text)
 	sv st^stderr
 	Call fprintf(st#,text)
-	call messagedelim()
+	call messagedelim(st)
 EndFunction
 function erMessage(ss text)
-	call Message(text)
+	call eMessage(text)
 	call erEnd()
 endfunction
 function erMessages(ss m1,ss m2)
-	call Message(m1)
-	call Message(m2)
+	call eMessage(m1)
+	call eMessage(m2)
 	call erEnd()
 endfunction
 function erEnd()
@@ -61,22 +60,25 @@ endfunction
 
 include "file.s"
 include "obj.s"
+include "after.s"
 
 entrylinux main(sd argc,ss argv0,ss exec,ss log1,ss *obj1)   #... logN objN
 
 if argc>(1+3)  #0 is all the time
 	sv pfile%pexefile
-	chars s1=".data";chars s2=".text"
-	const s1c^s1;const s2c^s2
-	value sN%{s1c,s2c,NULL}
+	chars s1=".data";chars s2=".text";chars s3=".symtab";chars s4=".strtab"
+	const s1c^s1;const s2c^s2;const s3c^s3;const s4c^s4
+	value sN%{s1c,s2c}
+	value s3c%s3c
+	value s4c%{s4c,NULL}
 	sv pexe%pexedata
-	datax nrs#2   #this is required inside but is better than passing the number of sections
+	datax nrs#4   #this is required inside but is better than passing the number of sections
 
-	#set here these(and sym for aftercall) null, text/data can go null later, with access error if rela points there
-	sv pt%pexetext
-	set pt# (NULL)
-	#sv ps%pexesym
-	#set ps# (NULL)
+	#text/data can go null later, with access error if rela points there, but to not set here null is probably same access error
+	#sv pt%pexetext
+	#set pt# (NULL)
+	sv ps%pexesym
+	set ps# (NULL)
 	#and set data null here, it is useless there for objects call
 	set pexe# (NULL)   #data
 
@@ -92,6 +94,24 @@ if argc>(1+3)  #0 is all the time
 	call objs_concat(pobjects#,pexe)
 
 	call reloc(pobjects#,datavirtualaddr)
+
+	sd acall;setcall acall aftercall_find(pobjects#)
+	if acall!=(NULL)
+		#determine new aftercall value
+
+		if ps#!=(NULL)
+			#replace if exe symtab
+			set s4c (NULL)  #for write skip
+		else
+			#the symbols have been stripped (-s)
+			set s3c (NULL)
+		endelse
+
+		#replace on the field
+	else
+		#skip symtab if no aftercall
+		set s3c (NULL)  #write will stop there
+	endelse
 
 	call write(#sN,pexe)
 

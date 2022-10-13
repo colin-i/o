@@ -15,6 +15,7 @@ const EM_X86_64=62
 
 
 Importx "stderr" stderr
+Importx "stdout" stdout
 
 Importx "fprintf" fprintf
 Importx "fopen" fopen
@@ -39,3 +40,5 @@ const asciiL=0x4C
 const asciiDEL=0x7F
 
 const section_nr_of_values=2    ;#*2 for size
+
+const charsize=1

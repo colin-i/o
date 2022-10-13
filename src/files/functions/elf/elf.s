@@ -120,9 +120,9 @@ Function elfaddstrsec(data stringofname,data type,data flags,data fileoffset,dat
 EndFunction
 
 #err
-Function elfaddsym(data stringoff,data value,data size,chars type,chars bind,data index,data struct)
-	sd st_info
-	Set st_info type
+Function elfaddsym(data stringoff,data value,data size,chars st_info,chars bind,data index,data struct)
+#	sd st_info
+#	Set st_info type
 const elf_sym_st_info_tohibyte=16
 	Mult bind (elf_sym_st_info_tohibyte)
 	Or st_info bind
@@ -159,9 +159,7 @@ const elf_sym_st_info_tohibyte=16
 		Data elf32_sym_st_size#1
 		#Symbol type and binding
 		Const STB_LOCAL=0
-		Const STB_GLOBAL=1
 		Const STB_WEAK=2
-		Const STT_NOTYPE=0
 		Const STT_FUNC=2
 		Const STT_SECTION=3
 	#const elf32_sym_st_info_offset=3*dwsz

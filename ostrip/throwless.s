@@ -6,14 +6,17 @@ function frees()
 		call fclose(exefile)
 	valuex exedata#1;valuex exedatasize#1
 	valuex exetext#section_nr_of_values
-	#valuex exesym#section_nr_of_values
+	valuex exesym#section_nr_of_values
 	const pexedata^exedata;const pexedatasize^exedatasize
 	const pexetext^exetext
-	#const pexesym^exesym
+	const pexesym^exesym
 		if exedata!=(NULL)
 			call free(exedata)
 			if exetext!=(NULL)
 				call free(exetext)
+				if exesym!=(NULL)
+					call free(exesym)
+				endif
 			endif
 		endif
 		valuex objects#1
@@ -63,7 +66,7 @@ endfunction
 
 #obj
 
-function objs_concat(sd objects,sv pdata)
+function objs_concat(sv objects,sv pdata)
 	sd initial;set initial pdata#
 	#sd pdatabin%pdatabin;setcall pdatabin# alloc(sz)
 	sd dest;set dest initial
@@ -90,7 +93,14 @@ function objs_concat(sd objects,sv pdata)
 	add pdata :
 	#exe data size can have last object aligned/unaligned this way (don't count on initial size)
 	sub dest initial
+	#rewrite size from unstripped to stripped
+	sd size;set size pdata#
 	set pdata# dest
+
+	sub size dest
+	sv out^stdout
+	call fprintf(out#,"Stripped size: %llu bytes",size)
+	call messagedelim(out)
 endfunction
 
 function memtomem(sv dest,sv src,sd size)
