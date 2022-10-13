@@ -83,8 +83,7 @@ if argc>(1+3)  #0 is all the time
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
 
-	sd textvirtualaddr
-	sd datavirtualaddr;setcall datavirtualaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,#textvirtualaddr)
+	sd datavirtualaddr;setcall datavirtualaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL))
 
 	mult argc :
 	add argc #argv0
@@ -92,7 +91,7 @@ if argc>(1+3)  #0 is all the time
 
 	call objs_concat(pobjects#,pexe)
 
-	call reloc(pobjects#)
+	call reloc(pobjects#,datavirtualaddr)
 
 	call write(#sN,pexe)
 

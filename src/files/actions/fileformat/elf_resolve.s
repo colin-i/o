@@ -312,14 +312,14 @@ Else
 
 	Data elf_sec_flags_data=SHF_WRITE|SHF_ALLOC
 	Set elf_sec_fileoff elf32_phdr_p_offset_data
-	SetCall errormsg elfaddsec(datastrtab,SHT_PROGBITS,elf_sec_flags_data,elf_sec_fileoff,ptrdatasec,null,null,(elf_datasec_obj_align),null)
+	SetCall errormsg elfaddsec(datastrtab,SHT_PROGBITS,elf_sec_flags_data,elf_sec_fileoff,ptrdatasec,null,null,(elf_sec_obj_align),null)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
 
 	Data elf_sec_flags_text=SHF_ALLOC|SHF_EXECINSTR
 	Add elf_sec_fileoff datasecReg
-	SetCall errormsg elfaddsec(codestrtab,SHT_PROGBITS,elf_sec_flags_text,elf_sec_fileoff,ptrcodesec,null,null,dwordsize,null)
+	SetCall errormsg elfaddsec(codestrtab,SHT_PROGBITS,elf_sec_flags_text,elf_sec_fileoff,ptrcodesec,null,null,(elf_sec_obj_align),null)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf

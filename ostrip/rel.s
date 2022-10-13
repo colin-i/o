@@ -1,9 +1,14 @@
 
 
-function reloc(sv objects)
+function reloc(sv objects,sd daddr)
+	sd doffset;set doffset daddr
 	sv voffset%pexedatasize
 	set voffset voffset#
-	sd doffset=0
+	add voffset daddr
+	sv dphisic%pexedata
+	set dphisic dphisic#
+	sv tphisic%pexetext
+	set tphisic tphisic#
 	while objects#!=(NULL)
 		sv object;set object objects#
 		sd d;set d object
@@ -15,20 +20,23 @@ function reloc(sv objects)
 		sd voffset_obj;set voffset_obj object#d^
 		add object (datasize)
 
-		call reloc_sec(d,doffset,voffset,voffset_obj)
-		call reloc_sec(t,doffset,voffset,voffset_obj)
-
 		sv vsize_obj;set vsize_obj object#
 		sub vsize_obj voffset
+		incst object
+
+		call reloc_sec(d,doffset,voffset,voffset_obj,dphisic)
+		call reloc_sec(t,doffset,voffset,voffset_obj,tphisic)
 
 		add doffset voffset_obj
 		add voffset vsize_obj
+		add dphisic voffset_obj
+		addcall tphisic objs_align(object#)
 
 		incst objects
 	endwhile
 endfunction
 
-function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj)
+function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj,sd soffset)
 	sv pointer;set pointer object#
 	incst object
 	sd end;set end object#
@@ -38,7 +46,7 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj)
 #		data elf64_r_info_type#1
 #		data elf64_r_info_symbolindex#1
 #		data elf64_r_addend#1;data *=0
-	#	sv rel_offset;set rel_offset pointer#
+		sv rel_offset;set rel_offset pointer#
 		incst pointer
 		if pointer#d^==(R_X86_64_64)
 			add pointer (datasize)
@@ -50,8 +58,8 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj)
 				else
 					add addend doffset
 				endelse
-	#			add rel_offset section
-	#			set rel_offset# addend
+				add rel_offset soffset
+				set rel_offset# addend
 			else
 				add pointer (datasize+:)
 			endelse

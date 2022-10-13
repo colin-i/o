@@ -77,7 +77,7 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd pseco
 
 					sd return_value
 					sd offs;set offs offset
-					if psecond_sec==(NULL)
+					if psecond_sec!=(NULL)
 						#get data size
 						#set return_value 0    #0 can go right now(it is blank section at our objects), but that can be stripped, favorizing
 						while offs!=end
@@ -89,20 +89,20 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd pseco
 							endif
 							add offs shentsize
 						endwhile
+						set offs offset
+						while offs!=end
+							if offs#==psecond_sec#
+								set psecond_sec# (sh64_addr_to_size)
+								call get_section_loc(file,offs,psecond_sec)
+								break
+							endif
+							add offs shentsize
+						endwhile
 					else
 						while offs!=end
 							if offs#==datasec
 								set return_value 0
 								call get_section_loc(file,offs,#return_value)
-								break
-							endif
-							add offs shentsize
-						endwhile
-						set offs offset
-						while offs!=end
-							if offs#==psecond_sec#
-								set psecond_sec# 0
-								call get_section_loc(file,offs,psecond_sec)
 								break
 							endif
 							add offs shentsize

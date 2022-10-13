@@ -2,7 +2,7 @@
 const object_nr_of_sections=2
 const section_alloc=:*section_nr_of_values
 const object_alloc_secs=object_nr_of_sections*section_alloc
-const object_alloc=object_alloc_secs+datasize+:
+const object_alloc=object_alloc_secs+datasize+:+:
 
 ##stripped size
 function get_objs(sv args,sd end)
@@ -44,7 +44,9 @@ function get_objs(sv args,sd end)
 		incst args
 
 		sd file
-		setcall p# get_file(args,#file,(ET_REL),#oN,object,#nrs,(NULL))
+		sd t=:
+		add t p
+		setcall p# get_file(args,#file,(ET_REL),#oN,object,#nrs,t)
 		call fclose(file)
 		#setcall p# objs_align(p#)
 		incst args

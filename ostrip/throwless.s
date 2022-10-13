@@ -115,8 +115,8 @@ endfunction
 
 function objs_align(sd sz)
 #must import the align from ocomp
-	add sz (elf_datasec_obj_align)
-	const elf_datasec_obj_align_trail=elf_datasec_obj_align-1
-	and sz (~elf_datasec_obj_align_trail)
+	add sz (elf_sec_obj_align)
+	const elf_sec_obj_align_trail=elf_sec_obj_align-1
+	and sz (~elf_sec_obj_align_trail)
 	return sz
 endfunction
