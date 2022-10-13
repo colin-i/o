@@ -7,15 +7,20 @@ function frees()
 	valuex exedata#1;valuex exedatasize#1
 	valuex exetext#section_nr_of_values
 	valuex exesym#section_nr_of_values
+	valuex exestr#section_nr_of_values
 	const pexedata^exedata;const pexedatasize^exedatasize
 	const pexetext^exetext
 	const pexesym^exesym
+	const pexestr^exestr
 		if exedata!=(NULL)
 			call free(exedata)
 			if exetext!=(NULL)
 				call free(exetext)
 				if exesym!=(NULL)
 					call free(exesym)
+					if exestr!=(NULL)
+						call free(exestr)
+					endif
 				endif
 			endif
 		endif

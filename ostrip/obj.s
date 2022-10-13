@@ -2,6 +2,7 @@
 const object_nr_of_main_sections=2
 const object_nr_of_sections=object_nr_of_main_sections+2
 const section_alloc=:*section_nr_of_values
+const from_symsize_to_voffset=:+section_alloc
 const object_alloc_secs=object_nr_of_sections*section_alloc
 const to_symtab=object_nr_of_main_sections*section_alloc
 const object_alloc=object_alloc_secs+datasize+:+:

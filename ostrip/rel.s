@@ -2,7 +2,7 @@
 
 function reloc(sv objects,sd daddr)
 	sd doffset;set doffset daddr
-	sv voffset%pexedatasize
+	sv voffset%pexedatasize;   #this is after the new size was set
 	set voffset voffset#
 	add voffset daddr
 	sv dphisic%pexedata

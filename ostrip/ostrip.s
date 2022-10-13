@@ -85,7 +85,7 @@ if argc>(1+3)  #0 is all the time
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
 
-	sd datavirtualaddr;setcall datavirtualaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL))
+	sd datavaddr;setcall datavaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL))
 
 	mult argc :
 	add argc #argv0
@@ -93,14 +93,15 @@ if argc>(1+3)  #0 is all the time
 
 	call objs_concat(pobjects#,pexe)
 
-	call reloc(pobjects#,datavirtualaddr)
+	call reloc(pobjects#,datavaddr)
 
-	sd acall;setcall acall aftercall_find(pobjects#)
+	sd acall;setcall acall aftercall_find(pobjects#,#datavaddr)
 	if acall!=(NULL)
-		#determine new aftercall value
-
 		if ps#!=(NULL)
 			#replace if exe symtab
+			sv pexestr%pexestr
+			call aftercall_replace(ps,pexestr,acall,datavaddr)
+
 			set s4c (NULL)  #for write skip
 		else
 			#the symbols have been stripped (-s)
