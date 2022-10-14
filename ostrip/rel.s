@@ -30,7 +30,7 @@ function reloc(sv objects,sd daddr)
 		add doffset voffset_obj
 		add voffset vsize_obj
 		add dphisic voffset_obj
-		addcall tphisic objs_align(object#)
+		add tphisic object#
 
 		incst objects
 	endwhile
@@ -46,25 +46,43 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj,sd soffset)
 #		data elf64_r_info_type#1
 #		data elf64_r_info_symbolindex#1
 #		data elf64_r_addend#1;data *=0
-		sv rel_offset;set rel_offset pointer#
-		incst pointer
-		if pointer#d^==(R_X86_64_64)
-			add pointer (datasize)
-			if pointer#d^==(dataind)
-				add pointer (datasize)
-				sv addend;set addend pointer#
+		const rel_size=:+datasize+datasize+:
+		sv cursor;set cursor pointer
+		incst cursor
+		if cursor#d^==(R_X86_64_64)
+			add cursor (datasize)
+			if cursor#d^==(dataind)
+				add cursor (datasize)
+				sv addend;set addend cursor#
 				if addend>=voffset_obj
 					add addend voffset
 				else
 					add addend doffset
 				endelse
+				sv rel_offset;set rel_offset pointer#
 				add rel_offset soffset
 				set rel_offset# addend
-			else
-				add pointer (datasize+:)
-			endelse
-		else
-			add pointer (datasize+datasize+:)
-		endelse
+			endif
+		endif
+		add pointer (rel_size)
+	endwhile
+endfunction
+function reloc_item(sv object,sd index,sv replacement,sd soffset)
+	sv pointer;set pointer object#
+	incst object
+	sd end;set end object#
+	add end pointer
+	while pointer!=end
+		sv cursor;set cursor pointer
+		incst cursor
+		if cursor#d^==(R_X86_64_64)
+			add cursor (datasize)
+			if cursor#d^==index
+				sv rel_offset;set rel_offset pointer#
+				add rel_offset soffset
+				set rel_offset# replacement
+			endif
+		endif
+		add pointer (rel_size)
 	endwhile
 endfunction

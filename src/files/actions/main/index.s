@@ -179,7 +179,8 @@ if loop==1
 							Call advancecursors(pcontent,pcomsize,comsize)
 						endelse
 					elseIf was_whitespaces==(TRUE)
-						if parses==(pass_write)
+						if dot_comma_end==0
+						#parses (pass_write)
 							setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 						endif
 					endelseIf

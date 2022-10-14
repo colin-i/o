@@ -109,6 +109,7 @@ if argc>(1+3)  #0 is all the time
 		endelse
 
 		#replace on the field
+		call aftercall_in_objects(pobjects#,acall,datavaddr)
 	else
 		#skip symtab if no aftercall
 		set s3c (NULL)  #write will stop there

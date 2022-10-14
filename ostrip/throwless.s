@@ -68,6 +68,14 @@ function shnames_find(ss mem,sd end,sd str)
 	endwhile
 	return -1
 endfunction
+function shnames_find_sec(sv sec,sd str)
+	sd mem;set mem sec#
+	incst sec
+	sd end;set end mem
+	add end sec#
+	sd pos;setcall pos shnames_find(mem,end,str)
+	return pos
+endfunction
 
 #obj
 

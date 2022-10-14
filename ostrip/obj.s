@@ -2,10 +2,15 @@
 const object_nr_of_main_sections=2
 const object_nr_of_sections=object_nr_of_main_sections+2
 const section_alloc=:*section_nr_of_values
-const from_symsize_to_voffset=:+section_alloc
 const object_alloc_secs=object_nr_of_sections*section_alloc
+const to_text_extra=object_alloc_secs+datasize+:
+const object_alloc=to_text_extra+:
+#const to_text=section_alloc
 const to_symtab=object_nr_of_main_sections*section_alloc
-const object_alloc=object_alloc_secs+datasize+:+:
+const to_strtab=to_symtab+section_alloc
+const from_symsize_to_voffset=:+section_alloc
+const from_strtab_to_symtab=section_alloc
+const from_symtab_to_text=section_alloc
 
 ##stripped size
 function get_objs(sv args,sd end)
@@ -47,11 +52,11 @@ function get_objs(sv args,sd end)
 		incst args
 
 		sd file
-		sd t=:
+		sv t=:
 		add t p
 		setcall p# get_file(args,#file,(ET_REL),#oN,object,#nrs,t)
 		call fclose(file)
-		#setcall p# objs_align(p#)
+		setcall t# objs_align(t#)  #will be in two places used (same value)
 		incst args
 	endwhile
 endfunction

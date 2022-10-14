@@ -48,15 +48,11 @@ const sym_size=sym__to_value+:+:
 endfunction
 
 function aftercall_replace(sv psym,sv pstr,ss astr,sv aoffset)
-	sd sec;set sec pstr#
-	incst pstr
-	sd end;set end pstr#
-	add end sec
-	sd pos;setcall pos shnames_find(sec,end,astr)
+	sd pos;setcall pos shnames_find_sec(pstr,astr)
 	if pos!=-1
-		set sec psym#
+		sd sec;set sec psym#
 		incst psym
-		set end psym#
+		sd end;set end psym#
 		add end sec
 		while sec!=end
 			#name pos is first
@@ -68,4 +64,41 @@ function aftercall_replace(sv psym,sv pstr,ss astr,sv aoffset)
 			add sec (sym_size)
 		endwhile
 	endif
+endfunction
+
+function aftercall_in_objects(sv objects,ss astr,sv aoffset)
+	sv tphisic%pexetext
+	set tphisic tphisic#
+	while objects#!=(NULL)
+		sv object;set object objects#
+		sv pointer=to_strtab;add pointer object
+		sd pos;setcall pos shnames_find(pointer,astr)
+		if pos!=-1
+			sub pointer (from_strtab_to_symtab)
+
+			sd sympos;set sympos pointer#
+			sv end;set end pointer
+			incst end
+			set end end#
+			add end sympos
+			while sympos!=end
+				if sympos#==pos
+					break
+				endif
+				add sympos (sym_size)
+			endwhile
+			sub sympos pointer#
+			div sympos (sym_size)
+			#if not exists there is a problem, but who cares (since objects are our own scripts)
+
+			#in data is with dataind (and only in one object)
+			#sub pointer (to_symtab)
+			#call aftercall_object_section(pointer,sympos,aoffset)
+			sub pointer (from_symtab_to_text)
+			call reloc_item(pointer,sympos,aoffset,tphisic)
+		endif
+		add object (to_text_extra)
+		add tphisic object#
+		incst objects
+	endwhile
 endfunction
