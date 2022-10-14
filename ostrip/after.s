@@ -59,6 +59,8 @@ function aftercall_replace(sv psym,sv pstr,ss astr,sv aoffset)
 			if sec#==pos
 				add sec (sym__to_value)
 				set sec#v^ aoffset
+				call verbose((verbose_count))
+				call verbose((verbose_flush))
 				ret
 			endif
 			add sec (sym_size)

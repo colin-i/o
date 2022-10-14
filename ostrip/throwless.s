@@ -52,6 +52,22 @@ function freeobject(sv object)
 	endwhile
 endfunction
 
+function verbose(sd action)
+	datax a#1
+	const ptrverbose^a
+	data n=0     ;#only in one ocomp section
+	if a==0
+		if action==(verbose_count)
+			inc n
+		else
+		#if action==(verbose_flush)
+			chars out#10+1   ;#max 32
+			call sprintf(#out,"%u",n)
+			call Message(#out)
+		endelse
+	endif
+endfunction
+
 #file
 
 #pos/-1

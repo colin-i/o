@@ -13,6 +13,8 @@ const ET_REL=1
 const ET_EXEC=2
 const EM_X86_64=62
 
+const F_OK=0
+
 
 Importx "stderr" stderr
 Importx "stdout" stdout
@@ -28,10 +30,12 @@ Importx "fwrite" fwrite
 Importx "memcmp" memcmp
 importx "malloc" malloc
 importx "free" free
+importx "access" access
 
 importx "strcmp" strcmp
 importx "strlen" strlen
 importx "sscanf" sscanf
+importx "sprintf" sprintf
 
 
 const asciiE=0x45
@@ -42,3 +46,6 @@ const asciiDEL=0x7F
 const section_nr_of_values=2    ;#*2 for size
 
 const charsize=1
+
+const verbose_count=0
+const verbose_flush=-1

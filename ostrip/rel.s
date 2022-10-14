@@ -62,10 +62,12 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj,sd soffset)
 				sv rel_offset;set rel_offset pointer#
 				add rel_offset soffset
 				set rel_offset# addend
+				call verbose((verbose_count))
 			endif
 		endif
 		add pointer (rel_size)
 	endwhile
+	call verbose((verbose_flush))
 endfunction
 function reloc_item(sv object,sd index,sv replacement,sd soffset)
 	sv pointer;set pointer object#
@@ -81,8 +83,10 @@ function reloc_item(sv object,sd index,sv replacement,sd soffset)
 				sv rel_offset;set rel_offset pointer#
 				add rel_offset soffset
 				set rel_offset# replacement
+				call verbose((verbose_count))
 			endif
 		endif
 		add pointer (rel_size)
 	endwhile
+	call verbose((verbose_flush))
 endfunction

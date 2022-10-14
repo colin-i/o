@@ -37,6 +37,11 @@ function messagedelim(sv st)
 	Chars visiblemessage={0x0a,0}
 	Call fprintf(st#,#visiblemessage)
 endfunction
+Function Message(ss text)
+	sv st^stdout
+	Call fprintf(st#,text)
+	call messagedelim(st)
+EndFunction
 Function eMessage(ss text)
 	sv st^stderr
 	Call fprintf(st#,text)
@@ -54,7 +59,7 @@ endfunction
 function erEnd()
 	call frees()
 	aftercall er
-	set er (~0)
+	set er ~0
 	return (EXIT_FAILURE)
 endfunction
 
@@ -65,6 +70,9 @@ include "after.s"
 entrylinux main(sd argc,ss argv0,ss exec,ss log1,ss *obj1)   #... logN objN
 
 if argc>(1+3)  #0 is all the time
+	sd verb%ptrverbose
+	setcall verb# access(".debug",(F_OK))
+
 	sv pfile%pexefile
 	chars s1=".data";chars s2=".text";chars s3=".symtab";chars s4=".strtab"
 	const s1c^s1;const s2c^s2;const s3c^s3;const s4c^s4

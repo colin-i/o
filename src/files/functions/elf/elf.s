@@ -58,7 +58,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 
 	Const SHT_NULL=0
 	Const SHT_PROGBITS=1
-	Const SHT_NOBITS=8
+	#Const SHT_NOBITS=8
 
 	const SHF_WRITE=1
 		#Occupies memory during execution,1 << 1
@@ -68,14 +68,16 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 		#`sh_info' contains SHT index,1 << 6
 	#Const SHF_INFO_LINK=2*6
 
-	Data SHT_PROGBITS=SHT_PROGBITS
-	Data SHT_NOBITS=SHT_NOBITS
-	Data zero=0
-	If type==SHT_PROGBITS
-		If bsize==zero
-			Set type SHT_NOBITS
-		EndIf
-	EndIf
+	#A section of SHT_NOBITS may have a non-zero size, but it occupies no space in the file
+	#and ld is warning it, so why was here in the first place?
+	#Data SHT_PROGBITS=SHT_PROGBITS
+	#Data SHT_NOBITS=SHT_NOBITS
+	#Data zero=0
+	#If type==SHT_PROGBITS
+	#	If bsize==zero
+	#		Set type SHT_NOBITS
+	#	EndIf
+	#EndIf
 
 	Data err#1
 	#is false at inits, no worry about only at object
