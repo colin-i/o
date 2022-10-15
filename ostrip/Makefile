@@ -8,7 +8,7 @@ FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 
 %.o: ${FULLOBJS}
-	../src/o $< exit_end 1
+	../src/o $< exit_end 1 ${OFLAGS}
 
 syms =-s
 ATLDCOM = $(LD) ${syms} --dynamic-linker=/lib64/ld-linux-x86-64.so.2 -o $@ -lc -entry main

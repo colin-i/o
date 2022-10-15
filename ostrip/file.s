@@ -69,44 +69,20 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd pseco
 					call read(file,#shnum,wsz)
 					call read(file,#shstrndx,wsz)
 
-					#alloc for section names table
-					sd datasec;setcall datasec shnames(file,offset,shentsize,shstrndx,secN,pnrsec,psecond_sec)
+					sd return_value
+					#get sec indexes from section names table
+					setcall return_value shnames(file,offset,shentsize,shstrndx,secN,pnrsec,psecond_sec)
 
 					#end for iterations
 					sd end;set end shnum;mult end shentsize;add end offset
 
-					sd return_value
-					sd offs;set offs offset
 					if psecond_sec!=(NULL)
 						#get data size
 						#set return_value 0    #0 can go right now(it is blank section at our objects), but that can be stripped, favorizing
-						while offs!=end
-							#the sh64_name is first
-							if offs#==datasec
-								set return_value (sh64_addr_to_size)
-								call get_section_loc(file,offs,#return_value)
-								break
-							endif
-							add offs shentsize
-						endwhile
-						set offs offset
-						while offs!=end
-							if offs#==psecond_sec#
-								set psecond_sec# (sh64_addr_to_size)
-								call get_section_loc(file,offs,psecond_sec)
-								break
-							endif
-							add offs shentsize
-						endwhile
+						call get_section_item(file,offset,end,#return_value,(sh64_addr_to_size),shentsize)
+						call get_section_item(file,offset,end,psecond_sec,(sh64_addr_to_size),shentsize)
 					else
-						while offs!=end
-							if offs#==datasec
-								set return_value 0
-								call get_section_loc(file,offs,#return_value)
-								break
-							endif
-							add offs shentsize
-						endwhile
+						call get_section_item(file,offset,end,#return_value,0,shentsize)
 					endelse
 
 					#get sections
@@ -183,6 +159,7 @@ function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec,sd
 	if psecond_sec!=(NULL)
 		setcall psecond_sec# shnames_find(mem,end,".text")
 	endif
+	#else set datasec firstnrsec
 
 	call free(mem)
 
@@ -223,4 +200,20 @@ function get_section(sd file,sd offset,sv pmem)
 	endif
 	call free(mem)
 	call rError()
+endfunction
+function get_section_item(sd file,sd offset,sd end,sv p_in_out,sd itemoff,sd shentsize)
+	call seeks(file,offset)
+	sd rest=-datasize
+	add rest shentsize
+	while offset!=end
+		#the sh64_name is first
+		sd offs;call read(file,#offs,(datasize))
+		if offs==p_in_out#d^
+			set p_in_out# itemoff
+			call get_section_loc(file,offs,p_in_out)
+			ret
+		endif
+		call seekc(file,rest)
+		add offset shentsize
+	endwhile
 endfunction
