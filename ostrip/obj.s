@@ -39,7 +39,8 @@ function get_objs(sv args,sd end)
 
 		chars o1=".rela.data";chars o2=".rela.text";chars o3=".symtab";chars o4=".strtab"
 		const o1c^o1;const o2c^o2;const o3c^o3;const o4c^o4
-		value oN%{o1c,o2c,o3c,o4c,NULL}
+		value oN%{o1c,o2c,o3c,o4c}
+		value *=NULL
 		datax nrs#object_nr_of_sections   #same as previous call
 		#blank sections at ocomp?
 

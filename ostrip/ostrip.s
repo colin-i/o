@@ -78,7 +78,8 @@ if argc>(1+3)  #0 is all the time
 	const s1c^s1;const s2c^s2;const s3c^s3;const s4c^s4
 	value sN%{s1c,s2c}
 	value s3c%s3c
-	value s4c%{s4c,NULL}
+	value s4c%s4c
+	value *=NULL
 	sv pexe%pexedata
 	datax nrs#4   #this is required inside but is better than passing the number of sections
 
