@@ -173,7 +173,7 @@ function get_section_many(sd file,sd offset,sd end,sd shentsize,sd nrsec,sv p_se
 	add rest shentsize
 	while offset!=end
 		#the sh64_name is first
-		sd offs;call read(file,#offs,(datasize))
+		datax offs#1;call read(file,#offs,(datasize))
 		if offs==nrsec
 			sd sz;setcall sz get_section(file,offset,p_sec)
 			return sz   #it's in use at rels,syms and can verify errors at data/text . and also at data/text
@@ -215,7 +215,7 @@ function get_section_item(sd file,sd offset,sd end,sv p_in_out,sd itemoff,sd she
 		datax offs#1;call read(file,#offs,(datasize))
 		if offs==p_in_out#d^
 			set p_in_out# itemoff
-			call get_section_loc(file,offs,p_in_out)
+			call get_section_loc(file,offset,p_in_out)
 			ret
 		endif
 		call seekc(file,rest)

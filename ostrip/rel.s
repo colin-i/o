@@ -15,7 +15,7 @@ function reloc(sv objects,sd daddr)
 		add object (section_alloc)
 
 		sd t;set t object
-		add object (section_alloc)
+		add object (from_text_to_extra)
 
 		sd voffset_obj;set voffset_obj object#d^
 		add object (datasize)

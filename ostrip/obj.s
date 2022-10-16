@@ -1,6 +1,7 @@
 
 const object_nr_of_main_sections=2
-const object_nr_of_sections=object_nr_of_main_sections+2
+const object_nr_of_secondary_sections=2
+const object_nr_of_sections=object_nr_of_main_sections+object_nr_of_secondary_sections
 const section_alloc=:*section_nr_of_values
 const object_alloc_secs=object_nr_of_sections*section_alloc
 const to_text_extra=object_alloc_secs+datasize+:
@@ -11,6 +12,7 @@ const to_strtab=to_symtab+section_alloc
 const from_symsize_to_voffset=:+section_alloc
 const from_strtab_to_symtab=section_alloc
 const from_symtab_to_text=section_alloc
+const from_text_to_extra=section_alloc+(object_nr_of_secondary_sections*section_alloc)
 
 ##stripped size
 function get_objs(sv pargs,sd end)
