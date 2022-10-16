@@ -18,12 +18,13 @@ function aftercall_find(sv objects,sv poffset)
 #Data elf64_sym_st_size#1;data *=0
 const sym__to_value=datasize+charsize+charsize+(2*charsize)
 const sym_size=sym__to_value+:+:
-			add sym (datasize+charsize+charsize)
-			data d=dataind
+const sym__to_shndx=datasize+charsize+charsize
+			add sym (sym__to_shndx)
+			chars d={dataind,0}
 			sd cmp;setcall cmp memcmp(sym,#d,2)
 			if cmp==0
 				sub sym (charsize+charsize)
-				chars info=STB_GLOBAL*0x10|STT_NOTYPE;   #global seems to always be here but there is too much code to separate
+				chars info=STB_GLOBAL*0x10|STT_NOTYPE   ;#global seems to always be here but there is too much code to separate
 				if info==sym#
 				#this is the aftercall,get string pointer from strtab
 					sub sym (datasize)
@@ -37,8 +38,12 @@ const sym_size=sym__to_value+:+:
 					add poffset# doffset
 
 					return mem
-				endif
-			endif
+				else
+					add sym (sym_size-datasize)
+				endelse
+			else
+				add sym (sym_size-sym__to_shndx)
+			endelse
 		endwhile
 		add obj (from_symsize_to_voffset)
 		add doffset obj#d^
@@ -74,7 +79,7 @@ function aftercall_in_objects(sv objects,ss astr,sv aoffset)
 	while objects#!=(NULL)
 		sv object;set object objects#
 		sv pointer=to_strtab;add pointer object
-		sd pos;setcall pos shnames_find(pointer,astr)
+		sd pos;setcall pos shnames_find_sec(pointer,astr)
 		if pos!=-1
 			sub pointer (from_strtab_to_symtab)
 

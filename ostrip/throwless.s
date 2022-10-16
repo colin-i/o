@@ -64,6 +64,7 @@ function verbose(sd action)
 			chars out#10+1   ;#max 32
 			call sprintf(#out,"%u",n)
 			call Message(#out)
+			set n 0
 		endelse
 	endif
 endfunction
