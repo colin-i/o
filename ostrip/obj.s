@@ -13,10 +13,10 @@ const from_strtab_to_symtab=section_alloc
 const from_symtab_to_text=section_alloc
 
 ##stripped size
-function get_objs(sv args,sd end)
+function get_objs(sv pargs,sd end)
 	#find the number of objects to prepare the field
 	sd pointers;set pointers end
-	sub pointers args
+	sub pointers pargs
 	div pointers 2
 	add pointers :  #for null end
 
@@ -25,10 +25,10 @@ function get_objs(sv args,sd end)
 	setcall pobjects# alloc(pointers)
 
 	#set end
-	sv objects;set objects pointers#
+	sv objects;set objects pobjects#
 	set objects# (NULL)
 
-	while args!=end
+	while pargs!=end
 		#alloc
 		setcall objects# alloc((object_alloc))
 
@@ -47,18 +47,18 @@ function get_objs(sv args,sd end)
 		sv p=object_alloc_secs
 		add p object
 
-		setcall p#d^ get_offset(args)  #the ocomp with these sections from that creation time are still respected (32 bits)
+		setcall p#d^ get_offset(pargs#)  #the ocomp with these sections from that creation time are still respected (32 bits)
 
 		add p (datasize)
-		incst args
+		incst pargs
 
 		sd file
 		sv t=:
 		add t p
-		setcall p# get_file(args,#file,(ET_REL),#oN,object,#nrs,t)
+		setcall p# get_file(pargs#,#file,(ET_REL),#oN,object,#nrs,t)
 		call fclose(file)
 		setcall t# objs_align(t#)  #will be in two places used (same value)
-		incst args
+		incst pargs
 	endwhile
 endfunction
 

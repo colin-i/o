@@ -212,7 +212,7 @@ function get_section_item(sd file,sd offset,sd end,sv p_in_out,sd itemoff,sd she
 	add rest shentsize
 	while offset!=end
 		#the sh64_name is first
-		sd offs;call read(file,#offs,(datasize))
+		datax offs#1;call read(file,#offs,(datasize))
 		if offs==p_in_out#d^
 			set p_in_out# itemoff
 			call get_section_loc(file,offs,p_in_out)
