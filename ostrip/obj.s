@@ -88,21 +88,23 @@ endfunction
 
 function write(sv names,sv psections)
 	while names#!=(NULL)
-		sd file;setcall file fopen(names#,"wb")
-		if file!=(NULL)
-			sd sec;set sec psections#
-			add psections :
-			sd size;set size psections#
-			sd written;setcall written fwrite(sec,1,size,file)
-			call fclose(file)
-			#pin that written=size*1
-			if written!=size
-				call erMessages("fwrite error",names#)
-			endif
-			add psections :
-			incst names
-		else
-			call fError(names#)
-		endelse
+		sd sec;set sec psections#
+		add psections :
+		sd size;set size psections#
+		add psections :
+		if sec!=(NULL)   #is ok only to execute the prog with no data or text
+			sd file;setcall file fopen(names#,"wb")
+			if file!=(NULL)
+				sd written;setcall written fwrite(sec,1,size,file)
+				call fclose(file)
+				#pin that written=size*1
+				if written!=size
+					call erMessages("fwrite error",names#)
+				endif
+			else
+				call fError(names#)
+			endelse
+		endif
+		incst names
 	endwhile
 endfunction
