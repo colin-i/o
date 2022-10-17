@@ -24,7 +24,6 @@ s2=".text"
 s3=".symtab"
 if (os.path.exists(s3)):
 	#objcopy is not updating symtab
-	#value=subprocess.check_output(['/bin/bash','-c','cat '+s3+"_offset | rev"])
 	with open(s3+"_offset",'rb') as f:
 		value=f.read()
 		x=len(value)
