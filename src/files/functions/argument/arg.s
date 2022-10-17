@@ -123,6 +123,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				#sufix is not used at imm value
 			else
 				sd argsize_filter
+				sd container_sz
 				if content#==(pointerascii)
 					#prefix
 					setcall prefix prefix_bool()
@@ -130,38 +131,24 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					inc content
 					set argsize_filter argsize
 					dec argsize_filter
-					SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+
+					setcall container_sz valinmem(content,argsize_filter,(asciidot))
+					if container_sz!=argsize_filter
+						setcall errnr getarg_dot(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
+					else
+						SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+					endelse
 					if errnr!=(noerror)
 						return errnr
 					endif
 				else
 					data ptrobject%ptrobject
 					data ptrfunctions%ptrfunctions
-					sd container_sz
 					setcall container_sz valinmem(content,argsize,(asciidot))
 					if container_sz!=argsize
-						#if is a dot
-						sd inter
-						#setcall inter vars(content,container_sz,ptrfunctions)
-						sd pos=0
-						setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
-						if inter==(NULL)
-							setcall errnr undefinedvar_fn()
-							return errnr
-						endif
-						inc container_sz
-						set argsize_filter argsize
-						call advancecursors(#content,#argsize_filter,container_sz)
-						#
-						sd scope
-						setcall scope scopes_get_scope(pos)
-						SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,scope)
+						setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
 						if errnr!=(noerror)
 							return errnr
-						endif
-						sd test;setcall test stackbit(ptrdata#)
-						if test!=0
-							return "Stack variables are not relevant for scope.variable."
 						endif
 					elseif ptrobject#==1
 						#verify for function
@@ -204,6 +191,36 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 	setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
 	return errnr
 EndFunction
+#err
+function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
+	data ptrfunctions%ptrfunctions
+	#if is a dot
+	sd inter
+	#setcall inter vars(content,container_sz,ptrfunctions)
+	sd errnr
+	sd pos=0
+	setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
+	if inter==(NULL)
+		setcall errnr undefinedvar_fn()
+		return errnr
+	endif
+	inc container_sz
+	sd argsize_filter
+	set argsize_filter argsize
+	call advancecursors(#content,#argsize_filter,container_sz)
+	#
+	sd scope
+	setcall scope scopes_get_scope(pos)
+	SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,scope)
+	if errnr!=(noerror)
+		return errnr
+	endif
+	sd test;setcall test stackbit(ptrdata#)
+	if test==0
+		return (noerror)
+	endif
+	return "Stack variables are not relevant for scope.variable."
+endfunction
 
 function function_in_code()
 	data bool#1

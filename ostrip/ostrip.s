@@ -1,5 +1,5 @@
 
-#must do a stripped .data and resolved .text (and .symtab)
+#must do a stripped .data and resolved .text (and .symtab with offset (more at leaf.py))
 
 #input: exec log1 o1 ... logN oN
 
@@ -63,6 +63,8 @@ function erEnd()
 	return (EXIT_FAILURE)
 endfunction
 
+chars s1=".data";chars s2=".text";chars s3=".symtab";chars s3o=".symtab_offset";chars s4=".strtab"
+
 include "file.s"
 include "obj.s"
 include "after.s"
@@ -74,14 +76,15 @@ if argc>(1+3)  #0 is all the time
 	setcall verb# access(".debug",(F_OK))
 
 	sv pfile%pexefile
-	chars s1=".data";chars s2=".text";chars s3=".symtab";chars s4=".strtab"
 	const s1c^s1;const s2c^s2;const s3c^s3;const s4c^s4
 	value sN%{s1c,s2c}
 	value s3c%s3c
 	value s4c%s4c
 	value *=NULL
 	sv pexe%pexedata
-	datax nrs#4   #this is required inside but is better than passing the number of sections
+	datax nrs#2   #this is required inside but is better than passing the number of sections
+	datax symtabnr#1
+	datax *#1
 
 	#text/data can go null later, with access error if rela points there, but to not set here null is probably same access error
 	#sv pt%pexetext
@@ -94,7 +97,7 @@ if argc>(1+3)  #0 is all the time
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
 
-	sd datavaddr;setcall datavaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL))
+	sd datavaddr;setcall datavaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL),#symtabnr)
 
 	mult argc :
 	add argc #argv0

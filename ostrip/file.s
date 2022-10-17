@@ -16,7 +16,7 @@ const sh64_addr_to_offset=:
 const sh64_addr_to_size=sh64_addr_to_offset+:
 
 #data size
-function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd psecond_sec)
+function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd psecond_sec,sd only_at_exec)
 	setcall p_file# fopen(name,"rb")
 	sd file;set file p_file#
 	if file!=(NULL)
@@ -83,6 +83,7 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd pseco
 						call get_section_item(file,offset,end,psecond_sec,(sh64_addr_to_size),shentsize)
 					else
 						call get_section_item(file,offset,end,#return_value,0,shentsize)
+						call write_symtab_offset(file,offset,end,shentsize,only_at_exec)
 					endelse
 
 					#get sections

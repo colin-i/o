@@ -95,16 +95,43 @@ function write(sv names,sv psections)
 		if sec!=(NULL)   #is ok only to execute the prog with no data or text
 			sd file;setcall file fopen(names#,"wb")
 			if file!=(NULL)
-				sd written;setcall written fwrite(sec,1,size,file)
-				call fclose(file)
-				#pin that written=size*1
-				if written!=size
-					call erMessages("fwrite error",names#)
-				endif
+				call writeclose(file,sec,size)
 			else
 				call fError(names#)
 			endelse
 		endif
 		incst names
 	endwhile
+endfunction
+function writeclose(sd file,sd buf,sd size)
+	sd written;setcall written fwrite(buf,1,size,file)
+	call fclose(file)
+	#pin that written=size*1
+	if written!=size
+		call erMessages("fwrite error")
+	endif
+endfunction
+function write_symtab_offset(sd file,sd offset,sd end,sd shentsize,sd pnr)
+	datax nr#1;set nr pnr#
+	if nr!=-1
+		call seeks(file,offset)
+		sd rest=-datasize
+		add rest shentsize
+		while offset!=end
+			#the sh64_name is first
+			datax offs#1;call read(file,#offs,(datasize))
+			if offs==nr
+				sd off=sh64_addr_to_offset
+				call get_section_loc(file,offset,#off)
+				sd fout;setcall fout fopen(#main.s3o,"wb")
+				if fout!=(NULL)
+					call writeclose(file,#off,:)
+					ret
+				endif
+				call fError(main.s3o)
+			endif
+			call seekc(file,rest)
+			add offset shentsize
+		endwhile
+	endif
 endfunction

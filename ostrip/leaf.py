@@ -22,10 +22,15 @@ import os
 s1=".data"
 s2=".text"
 s3=".symtab"
-if (not os.path.exists(s3)):
-	subprocess.run(["objcopy",inputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
-else:
-	subprocess.run(["objcopy",inputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1,"--update-section",s3+"="+s3])
+if (os.path.exists(s3)):
+	#objcopy is not updating symtab
+	with open(s3+"_offset",'rb') as f:
+		offset=int(f.read(),base=16)
+	with open(inputfile,'+b') as f:
+		f.seek(offset)
+		with open(s3,'rb') as s:
+			f.write(s.read())
+subprocess.run(["objcopy",inputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
 
 import lief
 
