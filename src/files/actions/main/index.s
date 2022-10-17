@@ -100,7 +100,8 @@ if loop==1
 						else;set commandset (cCOMMENT);endelse
 					else
 					#pass_calls
-						if commandset==(cCALL);elseif commandset==(cENDFUNCTION);elseif commandset==(cINCLUDE)
+						If commandset==(cPRIMSEC);elseif commandset==(cCALL)
+						elseif commandset==(cENDFUNCTION);elseif commandset==(cINCLUDE)
 						else;set commandset (cCOMMENT);endelse
 					endelse
 				endif

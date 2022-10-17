@@ -125,10 +125,10 @@ function write_symtab_offset(sd file,sd offset,sd end,sd shentsize,sd pnr)
 				call get_section_loc(file,offset,#off)
 				sd fout;setcall fout fopen(#main.s3o,"wb")
 				if fout!=(NULL)
-					call writeclose(file,#off,:)
+					call writeclose(fout,#off,:)
 					ret
 				endif
-				call fError(main.s3o)
+				call fError(#main.s3o)
 			endif
 			call seekc(file,rest)
 			add offset shentsize

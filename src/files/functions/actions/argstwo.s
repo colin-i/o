@@ -1,12 +1,12 @@
 
 #err
 Function twoargs(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition)
-	sd err;setcall err twoargs_ex(ptrcontent,ptrsize,subtype,ptrcondition,(allow_no))
+	sd err;setcall err twoargs_ex(ptrcontent,ptrsize,subtype,ptrcondition,(allow_no)) #there is 1 more argument but is not used
 	return err
 endfunction
 
 #err
-Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allowdata)
+Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allowdata,sd parses)
 	Data lowprim#1
 	Data ptrlowprim^lowprim
 	Data lowsec#1
@@ -46,10 +46,16 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	sd subtype_test
 
 	if allowdata==(allow_later_sec)
+		#pass_init or pass_calls
 		set subtype_test subtype;and subtype_test (x_call_flag)
 		if subtype_test==0
-			setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
-			return errnr
+			if parses==(pass_init)
+				setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
+				return errnr
+			else
+			#skip this at pass_calls
+				Call advancecursors(ptrcontent,ptrsize,ptrsize#)
+			endelse
 		else
 			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
 			return errnr

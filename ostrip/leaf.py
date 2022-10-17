@@ -24,12 +24,20 @@ s2=".text"
 s3=".symtab"
 if (os.path.exists(s3)):
 	#objcopy is not updating symtab
+	#value=subprocess.check_output(['/bin/bash','-c','cat '+s3+"_offset | rev"])
 	with open(s3+"_offset",'rb') as f:
-		offset=int(f.read(),base=16)
-	with open(inputfile,'+b') as f:
-		f.seek(offset)
-		with open(s3,'rb') as s:
-			f.write(s.read())
+		value=f.read()
+		x=len(value)
+		y=b""
+		#need to reverse to big
+		for a in range(x,0,-1):
+			y+=(value[a-1]).to_bytes(1,'big')
+		value=y.hex()
+		offset=int(value,base=16)
+		with open(inputfile,'r+b') as f:
+			f.seek(offset)
+			with open(s3,'rb') as s:
+				f.write(s.read())
 subprocess.run(["objcopy",inputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
 
 import lief
