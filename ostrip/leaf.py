@@ -21,6 +21,7 @@ unstripped_size=int(txt,base=16)
 import shutil
 
 shutil.copyfile(inputfile,outputfile)
+#is a risk to run write at symtab_offset after objcopy
 
 import os
 
@@ -85,7 +86,7 @@ for x in h:
 			x.virtual_size+=dif
 			for i in range(found,n):
 				a[i].virtual_address+=dif
-		elffile.write(outputfile)
+			elffile.write(outputfile)
 		st = os.stat(outputfile)
 		import stat
 		os.chmod(outputfile, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
