@@ -106,15 +106,17 @@ jobs:
        echo first argument: 0 for ocompiler, 1 for ounused, 2 for ostrip
        exit 1
       fi
+      cd "\$(dirname "\$0")"
       if [ "\${1}" = "0" ]; then
        cmd=o
       elif [ "\${1}" = "1" ]; then
        cmd=ounused
       else
-       cmd=ostrip
+       shift
+       ./ostrip "\$@"
+       exit $?
       fi
       shift
-      cd "\$(dirname "\$0")"
       cd ../../
       LD_LIBRARY_PATH="\$(pwd)/lib32" \
        ./lib32/ld-linux.so.2 ./usr/bin/\${cmd} "\$@"
