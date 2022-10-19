@@ -21,7 +21,7 @@ function reloc(sv objects,sd daddr)
 		add object (datasize)
 
 		sv vsize_obj;set vsize_obj object#
-		sub vsize_obj voffset
+		sub vsize_obj voffset_obj
 		incst object
 
 		call reloc_sec(d,doffset,voffset,voffset_obj,dphisic)

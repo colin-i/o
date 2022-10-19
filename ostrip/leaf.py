@@ -6,6 +6,7 @@ import subprocess
 import sys
 
 inputfile=sys.argv[1]
+outputfile=sys.argv[2]
 
 txt=subprocess.check_output(['/bin/bash','-c',"printf '%s' $(objdump -h "+inputfile+" | grep ' .data ' | tr -s ' ' | cut -d ' ' -f 4)"])
 unstripped_size=int(txt,base=16)
@@ -16,6 +17,10 @@ unstripped_size=int(txt,base=16)
 #this is not better than objcopy file --update-section .data=data.bin
 #data.content=bytearray(b"text")
 #ld...-Tdata to put data at trail
+
+import shutil
+
+shutil.copyfile(inputfile,outputfile)
 
 import os
 
@@ -33,15 +38,15 @@ if (os.path.exists(s3)):
 			y+=(value[a-1]).to_bytes(1,'big')
 		value=y.hex()
 		offset=int(value,base=16)
-		with open(inputfile,'r+b') as f:
+		with open(outputfile,'r+b') as f:
 			f.seek(offset)
 			with open(s3,'rb') as s:
 				f.write(s.read())
-subprocess.run(["objcopy",inputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
+subprocess.run(["objcopy",outputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
 
 import lief
 
-elffile = lief.parse(inputfile)
+elffile = lief.parse(outputfile)
 
 s=elffile.get_section(s1)
 
@@ -78,7 +83,7 @@ for x in h:
 		x.virtual_size+=dif
 		for i in range(found,n):
 			a[i].virtual_address+=dif
-		elffile.write(sys.argv[1])
+		elffile.write(outputfile)
 		#
 		#point that this script is not checking the existent virtual trail of .data
 		#remove(fn)
