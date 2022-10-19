@@ -5,7 +5,6 @@ OBJ = ${OB}.o
 FULLOBJ = ./${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
-FULLOBJLOG = ${FULLOBJS}.log
 
 %.o: ${FULLOBJS}
 	../src/o $< exit_end 1
@@ -15,8 +14,6 @@ ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc
 
 ounused: ${OBJ}
 	${ATLDCOM} ${FULLOBJO}
-	./${OB} ${FULLOBJLOG}
-	@echo
 
 install: ounused
 	install -D ounused \
@@ -24,7 +21,7 @@ install: ounused
 
 clean-compile:
 	-rm -f ${FULLOBJO}
-	-rm -f ${FULLOBJLOG}
+	-rm -f ${FULLOBJS}.log
 
 clean-link:
 	-rm -f ounused
