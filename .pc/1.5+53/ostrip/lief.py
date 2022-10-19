@@ -47,7 +47,6 @@ if (os.path.exists(s3)):
 subprocess.run(["objcopy",outputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
 
 import lief
-dir(lief)
 
 elffile = lief.parse(outputfile)
 

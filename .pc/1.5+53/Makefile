@@ -18,7 +18,7 @@ all:
 	if ! [ -f ./src/obj.o ];then cd ./src; ../ounused/ounused ./linux/obj.s.log; fi
 	@echo
 	if [ "$(shell dpkg-architecture -qDEB_HOST_ARCH)" = "amd64" ]; then \
-		cd ./ostrip; ./ostrip ostrip ostrip.s.log ostrip.o; pip3 install lief; python3 lief.py ./ostrip ./ostrip; \
+		cd ./ostrip; ./ostrip ostrip.s.log ostrip.o; pip3 install lief; python3 lief.py ./ostrip ./ostrip; \
 	fi
 
 .NOTPARALLEL:
