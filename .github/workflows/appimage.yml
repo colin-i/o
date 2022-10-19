@@ -45,7 +45,7 @@ jobs:
        chmod a+x ${file}
       fi
       if [ ! -e "${name}.deb" ]; then
-       arh=i386
+       arh=amd64
        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
        if [ ! -e "lp2.py" ]; then
         wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
@@ -102,14 +102,16 @@ jobs:
        cd usr/bin
        cat > ${name} <<EOF
       #!/bin/bash
-      if [ "\${1}" != "0" ] && [ "\${1}" != "1" ] ; then
-       echo first argument: 0 for ocompiler, 1 for ounused
+      if [ "\${1}" != "0" ] && [ "\${1}" != "1" ] && [ "\${1}" != "2" ] ; then
+       echo first argument: 0 for ocompiler, 1 for ounused, 2 for ostrip
        exit 1
       fi
       if [ "\${1}" = "0" ]; then
        cmd=o
-      else
+      elif [ "\${1}" = "1" ]; then
        cmd=ounused
+      else
+       cmd=ostrip
       fi
       shift
       cd "\$(dirname "\$0")"

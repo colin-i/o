@@ -2,13 +2,13 @@ Source: ocompiler
 Section: utils
 Priority: optional
 Maintainer: Costin Botescu <costin.botescu@gmail.com>
-Build-Depends: debhelper (>= 9), ocompiler, libc6-dev-i386 [amd64]
+Build-Depends: debhelper (>= 9), ocompiler, libc6-dev-i386 [amd64], python3-pip [amd64]
 Standards-Version: 4.5.0
 Homepage: https://github.com/colin-i/o
 Rules-Requires-Root: no
 
 Package: ocompiler
-Architecture: i386 amd64
+Architecture: amd64 i386
 Multi-Arch: foreign
-Depends: libc6 [i386] | libc6-i386:amd64
+Depends: libc6, libc6-i386 [amd64]
 Description: O Compiler

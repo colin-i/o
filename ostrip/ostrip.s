@@ -71,7 +71,7 @@ include "after.s"
 
 entrylinux main(sd argc,ss argv0,ss exec,ss log1,ss *obj1)   #... logN objN
 
-if argc>(1+3)  #0 is all the time
+if argc>=(1+3)  #0 is all the time
 	sd verb%ptrverbose
 	setcall verb# access(".debug",(F_OK))
 

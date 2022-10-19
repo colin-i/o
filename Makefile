@@ -1,6 +1,10 @@
 TOPTARGETS := all install clean distclean uninstall test
 
+ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), amd64)
+SUBDIRS := src ounused ostrip
+else
 SUBDIRS := src ounused
+endif
 
 $(TOPTARGETS): $(SUBDIRS)
 $(SUBDIRS):
@@ -13,5 +17,6 @@ all:
 	@echo
 	if ! [ -f ./src/obj.o ];then cd ./src; ../ounused/ounused ./linux/obj.s.log; fi
 	@echo
+	cd ./ostrip; ./ostrip ostrip.s.log ostrip.o; pip3 install leaf; python3 leaf.py ./ostrip ./ostrip
 
 .NOTPARALLEL:
