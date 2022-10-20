@@ -15,14 +15,18 @@ OCOMP=../src/o
 
 syms =-s
 ATCCCOM = $(CC) ${syms} -o $@
+#ld build is failing, must do pie at bionic
 
 ostrip: ${OBJ}
 	../ounused/ounused ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
-	#- because it is not ready for a PIE
-	-./${OB} ${OB} ${FULLOBJLOG} ${FULLOBJO}
-	-python3 strip.py ./${OB} ./${OB}
+	if [ "$(shell lsb_release -cs)" != "xenial" ]; then \
+		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
+		if [ "$$?" = "0" ]; then \
+			python3 strip.py ${FULLOBJ} ${FULLOBJ}; \
+		fi; \
+	fi
 
 install: ostrip
 	install -D ostrip \
