@@ -44,56 +44,55 @@ if (os.path.exists(s3)):
 			f.seek(offset)
 			with open(s3,'rb') as s:
 				f.write(s.read())
-subprocess.run(["objcopy",outputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
+proc=subprocess.run(["objcopy",outputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
 
-import lief
-
-elffile = lief.parse(outputfile)
-
-s=elffile.get_section(s1)
-
-h=elffile.segments
-
-found=-1
-dif=0
-
-for x in h:
-	a=x.sections
-	n=len(a)
-	for i in range(0,n):
-		b=a[i]
-		if found==-1:
-			if b.name==s1:
-				#only with .bss: it looks like objcopy is shrinking file size accordingly and is not touching on mem size in section and segment
-				#so this file was about to go
-				#but when it's at the edge is shrinking mem size
-				#then x.virtual_size+= is a must and a[i].virtual_address+= stays like a guardian
-				found=i+1
-				if (b.virtual_address+unstripped_size)<=(x.virtual_address+x.virtual_size):
-					break
-				size=b.size
-				dif=unstripped_size-size
-		else:
-			#see about alignments
-			#The value of sh_addr must be congruent to 0, modulo the value of sh_addralign
-			#	i think that means   if align is 8 addr can start at 0h/8h only
-			test=b.virtual_address+dif
-			bittest=test&(b.alignment-1)
-			if bittest!=0:
-				dif+=b.alignment-bittest
-	if found!=-1:
-		if dif!=0:
-			#must first increase segment size if not want to lose the section
-			x.virtual_size+=dif
-			for i in range(found,n):
-				a[i].virtual_address+=dif
-			elffile.write(outputfile)
-		st = os.stat(outputfile)
-		import stat
-		os.chmod(outputfile, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-		#
-		#point that this script is not checking the existent virtual trail of .data
-		#remove(fn)
-		#
-		exit(0)
+if proc.returncode==0:
+	import lief
+	#
+	elffile = lief.parse(outputfile)
+	s=elffile.get_section(s1)
+	h=elffile.segments
+	#
+	found=-1
+	dif=0
+	#
+	for x in h:
+		a=x.sections
+		n=len(a)
+		for i in range(0,n):
+			b=a[i]
+			if found==-1:
+				if b.name==s1:
+					#only with .bss: it looks like objcopy is shrinking file size accordingly and is not touching on mem size in section and segment
+					#so this file was about to go
+					#but when it's at the edge is shrinking mem size
+					#then x.virtual_size+= is a must and a[i].virtual_address+= stays like a guardian
+					found=i+1
+					if (b.virtual_address+unstripped_size)<=(x.virtual_address+x.virtual_size):
+						break
+					size=b.size
+					dif=unstripped_size-size
+			else:
+				#see about alignments
+				#The value of sh_addr must be congruent to 0, modulo the value of sh_addralign
+				#	i think that means   if align is 8 addr can start at 0h/8h only
+				test=b.virtual_address+dif
+				bittest=test&(b.alignment-1)
+				if bittest!=0:
+					dif+=b.alignment-bittest
+		if found!=-1:
+			if dif!=0:
+				#must first increase segment size if not want to lose the section
+				x.virtual_size+=dif
+				for i in range(found,n):
+					a[i].virtual_address+=dif
+				elffile.write(outputfile)
+			st = os.stat(outputfile)
+			import stat
+			os.chmod(outputfile, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+			#
+			#point that this script is not checking the existent virtual trail of .data
+			#remove(fn)
+			#
+			exit(0)
 exit(-1)

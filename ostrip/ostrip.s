@@ -47,6 +47,12 @@ Function eMessage(ss text)
 	Call fprintf(st#,text)
 	call messagedelim(st)
 EndFunction
+function erEnd()
+	call frees()
+	aftercall er
+	set er ~0
+	return (EXIT_FAILURE)
+endfunction
 function erMessage(ss text)
 	call eMessage(text)
 	call erEnd()
@@ -56,12 +62,6 @@ function erMessages(ss m1,ss m2)
 	call eMessage(m2)
 	call erEnd()
 endfunction
-function erEnd()
-	call frees()
-	aftercall er
-	set er ~0
-	return (EXIT_FAILURE)
-endfunction
 
 chars s1=".data";chars s2=".text";chars s3=".symtab";chars s3o=".symtab_offset";chars s4=".strtab"
 
@@ -69,7 +69,7 @@ include "file.s"
 include "obj.s"
 include "after.s"
 
-entrylinux main(sd argc,ss argv0,ss exec,ss log1,ss *obj1)   #... logN objN
+entry main(sd argc,sv argv) #0,ss exec,ss log1,ss *obj1)   #... logN objN
 
 if argc>=(1+3)  #0 is all the time
 	sd verb%ptrverbose
@@ -97,11 +97,14 @@ if argc>=(1+3)  #0 is all the time
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
 
-	sd datavaddr;setcall datavaddr get_file(exec,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL),#symtabnr)
-
 	mult argc :
-	add argc #argv0
-	call get_objs(#log1,argc) #aftercall can be in any object, need to keep memory
+	add argc argv
+
+	incst argv
+	sd datavaddr;setcall datavaddr get_file(argv#,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL),#symtabnr)
+
+	incst argv
+	call get_objs(argv,argc) #aftercall can be in any object, need to keep memory
 
 	call objs_concat(pobjects#,pexe)
 

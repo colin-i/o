@@ -11,21 +11,18 @@ FULLOBJLOG = ${FULLOBJS}.log
 OCOMP=../src/o
 
 %.o: ${FULLOBJS}
-	if [ ! -s ${OBT} ];then ${OCOMP} $< exit_end 1 ${OFLAGS};fi
+	${OCOMP} $< ${OFLAGS}
 
 syms =-s
-ATLDCOM = $(LD) ${syms} --dynamic-linker=/lib64/ld-linux-x86-64.so.2 -o $@ -lc -entry main
+ATCCCOM = $(CC) ${syms} -o $@
 
 ostrip: ${OBJ}
-	if [ -s ${OBT} ];then base64 -d ${OBT} > $@; chmod a+x $@; \
-		else \
-			../ounused/ounused ${FULLOBJLOG}; \
-			echo; \
-			${ATLDCOM} ${FULLOBJO}; \
-			./${OB} ${OB} ${FULLOBJLOG} ${FULLOBJO}; \
-			pip3 install lief; \
-			python3 strip.py ./${OB} ./${OB}; \
-		fi
+	../ounused/ounused ${FULLOBJLOG}
+	@echo
+	${ATCCCOM} ${FULLOBJO}
+	#- because it is not ready for a PIE
+	-./${OB} ${OB} ${FULLOBJLOG} ${FULLOBJO}
+	-python3 strip.py ./${OB} ./${OB}
 
 install: ostrip
 	install -D ostrip \
