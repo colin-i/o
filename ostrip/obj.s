@@ -1,10 +1,14 @@
 
+#data extra align at realoffset,concat then unaligned at reloc
+#text extra aligned
+
 const object_nr_of_main_sections=2
 const object_nr_of_secondary_sections=2
 const object_nr_of_sections=object_nr_of_main_sections+object_nr_of_secondary_sections
 const section_alloc=:*section_nr_of_values
 const object_alloc_secs=object_nr_of_sections*section_alloc
-const to_text_extra=object_alloc_secs+datasize+:
+const to_data_extra=object_alloc_secs+datasize
+const to_text_extra=to_data_extra+:
 const object_alloc=to_text_extra+:
 #const to_text=section_alloc
 const to_symtab=object_nr_of_main_sections*section_alloc

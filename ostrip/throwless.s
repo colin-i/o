@@ -160,3 +160,24 @@ function objs_align(sd sz)
 	and sz (~elf_sec_obj_align_trail)
 	return sz
 endfunction
+
+#realoffset
+function data_realoffset(sv offset)
+	sv objs;set objs frees.objects
+	sd datasize=0
+	while objs#!=(NULL)
+		sv obj;set obj objs#
+		add obj (to_data_extra)
+		sd aligned;setcall aligned objs_align(obj#)
+		add datasize aligned
+		incst objs
+	endwhile
+	if aligned!=obj#
+	#last object is not aligned
+		sub aligned obj#
+		sub datasize aligned
+	endif
+	add offset frees.exedatasize
+	sub offset datasize
+	return offset
+endfunction

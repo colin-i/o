@@ -6,9 +6,6 @@
 format elfobj64
 #modify debian/control exec depends,appimage.yml,debian/control arh order
 
-#at pie(and everywhere like a good practice), there is a starting offset in data
-#	need to get our size then sub from full data size and use that instead of data virtual
-
 #at exec
 #there is a rare case with rela.dyn but it is not important here (resolved stderr to object)
 #these are not position independent code and inplace relocs add better with obj64 but at obj32 use addend>=0 or sum<0 error check
@@ -16,6 +13,8 @@ format elfobj64
 #both exec and shared:
 #	pointers to dataind at text/data
 #	aftercall has a copy at .symtab
+#	.rela.dyn:
+#		data section offsets (R_X86_64_64:^printf)
 
 #only exec:
 #	pointers to aftercall
@@ -23,7 +22,7 @@ format elfobj64
 #only at shared and pie:
 #	.rela.dyn:
 #		addends from pointers to data section (this and the previous are saying the same thing but maybe is compatibility)
-#		data section offsets (R_X86_64_64:^printf, R_X86_64_RELATIVE pointers to text/data sections)
+#		data section offsets (R_X86_64_RELATIVE pointers to text/data sections)
 #iterate by type,compare offset if is in data or in text,will have 3 go ways from there(at text the offset is ok)(at .._64 no addend)(at data both offset and addend)
 
 #only at shared:
@@ -111,6 +110,10 @@ if argc>=(1+3)  #0 is all the time
 
 	incst argv
 	call get_objs(argv,argc) #aftercall can be in any object, need to keep memory
+
+	#at pie(and everywhere like a good practice), there is a starting offset in data
+	#	need to get our size then sub from full data size and use that instead of data virtual
+	setcall datavaddr data_realoffset(datavaddr)
 
 	call objs_concat(pobjects#,pexe)
 
