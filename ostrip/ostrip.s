@@ -117,7 +117,9 @@ if argc>=(1+3)  #0 is all the time
 	#	need to get our size then sub from full data size and use that instead of data virtual
 	sd datainneroffset;setcall datainneroffset data_realoffset(#datavaddr)
 
-	call reloc_dyn()
+	if frees.execreladyn!=(NULL)  #or set size 0
+		call reloc_dyn()
+	endif
 
 	call objs_concat(pobjects#,pexe,datainneroffset)
 

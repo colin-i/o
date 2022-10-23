@@ -92,7 +92,7 @@ function get_offset(sd fname)
 endfunction
 
 function write_sec(ss name,sd sec,sd size)
-	if sec!=(NULL)   #is ok only to execute the prog with no data or text
+	if sec!=(NULL)   #is ok only to execute the prog with no data or text, and for reldyn
 		sd file;setcall file fopen(name,"wb")
 		if file!=(NULL)
 			call writeclose(file,sec,size)
