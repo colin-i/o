@@ -90,6 +90,7 @@ if proc.returncode==0:
 				x.virtual_size+=dif
 				for i in range(found,n):
 					a[i].virtual_address+=dif
+					#this is not tested at stdout/stderr that goes into .bss that is after .data
 				elffile.write(outputfile)
 			st = os.stat(outputfile)
 			import stat
