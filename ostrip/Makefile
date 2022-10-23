@@ -14,13 +14,19 @@ OCOMP=../src/o
 	${OCOMP} $< ${OFLAGS}
 
 syms =-s
-ATCCCOM = $(CC) ${syms} -o $@
+ATCCCOM = $(CC) ${syms} -o ${OB}
 #ld build is failing, must do pie at bionic
 
-ostrip: ${OBJ}
+ostrip: compile strip
+	@echo
+#without this echo will do a strange cc command
+
+compile: ${OBJ}
 	../ounused/ounused ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
+
+strip:
 	if [ "$(shell lsb_release -cs)" != "xenial" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \

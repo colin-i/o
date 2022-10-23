@@ -8,7 +8,7 @@ function frees()
 	valuex exetext#section_nr_of_values
 	valuex exesym#section_nr_of_values
 	valuex exestr#section_nr_of_values
-	valuex execreladynsize#1;valuex execreladyn#1
+	valuex execreladyn#1;valuex execreladynsize#1
 	const pexedata^exedata;const pexedatasize^exedatasize
 	const pexetext^exetext
 	const pexesym^exesym
@@ -100,8 +100,9 @@ endfunction
 
 #obj
 
-function objs_concat(sv objects,sv pdata)
+function objs_concat(sv objects,sv pdata,sd datainneroffset)
 	sd initial;set initial pdata#
+	add initial datainneroffset
 	#sd pdatabin%pdatabin;setcall pdatabin# alloc(sz)
 	sd dest;set dest initial
 	sd src;set src dest
@@ -127,7 +128,7 @@ function objs_concat(sv objects,sv pdata)
 	add pdata :
 	#exe data size can have last object aligned/unaligned this way (don't count on initial size)
 	sub dest initial
-	#rewrite size from unstripped to stripped
+	#rewrite size from extra+unstripped to stripped
 	sd size;set size pdata#
 	set pdata# dest
 
@@ -165,13 +166,13 @@ function objs_align(sd sz)
 	return sz
 endfunction
 
-#realoffset
-function data_realoffset(sv offset)
+#realoffset-offset
+function data_realoffset(sv poffset)
 	sv objs;set objs frees.objects
 	sd datasize=0
 	while objs#!=(NULL)
 		sv obj;set obj objs#
-		add obj (to_data_extra)
+		add obj (to_data_extra_sz)
 		sd aligned;setcall aligned objs_align(obj#)
 		add datasize aligned
 		incst objs
@@ -181,7 +182,8 @@ function data_realoffset(sv offset)
 		sub aligned obj#
 		sub datasize aligned
 	endif
-	add offset frees.exedatasize
-	sub offset datasize
-	return offset
+	sd dif;set dif frees.exedatasize
+	sub dif datasize
+	add poffset# dif
+	return dif
 endfunction

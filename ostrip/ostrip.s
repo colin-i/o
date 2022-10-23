@@ -115,9 +115,11 @@ if argc>=(1+3)  #0 is all the time
 
 	#at pie(and everywhere like a good practice), there is a starting offset in data
 	#	need to get our size then sub from full data size and use that instead of data virtual
-	setcall datavaddr data_realoffset(datavaddr)
+	sd datainneroffset;setcall datainneroffset data_realoffset(#datavaddr)
 
-	call objs_concat(pobjects#,pexe)
+	call reloc_dyn()
+
+	call objs_concat(pobjects#,pexe,datainneroffset)
 
 	call reloc(pobjects#,datavaddr)
 

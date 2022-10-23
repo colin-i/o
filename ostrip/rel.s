@@ -46,7 +46,8 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj,sd soffset)
 #		data elf64_r_info_type#1
 #		data elf64_r_info_symbolindex#1
 #		data elf64_r_addend#1;data *=0
-		const rel_size=:+datasize+datasize+:
+		const rel_to_type=:
+		const rel_size=rel_to_type+datasize+datasize+:
 		sv cursor;set cursor pointer
 		incst cursor
 		if cursor#d^==(R_X86_64_64)
@@ -90,3 +91,5 @@ function reloc_item(sv object,sd index,sv replacement,sd soffset)
 	endwhile
 	call verbose((verbose_flush))
 endfunction
+
+include "reldyn.s"
