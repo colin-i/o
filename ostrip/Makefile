@@ -24,7 +24,7 @@ ostrip: ${OBJ}
 	if [ "$(shell lsb_release -cs)" != "xenial" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
-			python3 strip.py ${FULLOBJ} ${FULLOBJ}; \
+			python3 --version; #strip.py ${FULLOBJ} ${FULLOBJ}; \
 		fi; \
 	fi
 
@@ -35,8 +35,9 @@ install: ostrip
 clean-compile:
 	-rm -f ${FULLOBJO}
 	-rm -f ${FULLOBJLOG}
-	-rm -f .text
 	-rm -f .data
+	-rm -f .text
+	-rm -f .rela.dyn
 
 clean-link:
 	-rm -f ostrip

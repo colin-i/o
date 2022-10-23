@@ -61,7 +61,8 @@ function get_objs(sv pargs,sd end)
 		sd file
 		sv t=:
 		add t p
-		setcall p# get_file(pargs#,#file,(ET_REL),#oN,object,#nrs,t)
+		#,(ET_REL)
+		setcall p# get_file(pargs#,#file,#oN,object,#nrs,t)
 		call fclose(file)
 		setcall t# objs_align(t#)  #will be in two places used (same value)
 		incst pargs
@@ -90,20 +91,23 @@ function get_offset(sd fname)
 	call fError(fname)
 endfunction
 
+function write_sec(ss name,sd sec,sd size)
+	if sec!=(NULL)   #is ok only to execute the prog with no data or text
+		sd file;setcall file fopen(name,"wb")
+		if file!=(NULL)
+			call writeclose(file,sec,size)
+		else
+			call fError(name)
+		endelse
+	endif
+endfunction
 function write(sv names,sv psections)
 	while names#!=(NULL)
 		sd sec;set sec psections#
 		add psections :
 		sd size;set size psections#
 		add psections :
-		if sec!=(NULL)   #is ok only to execute the prog with no data or text
-			sd file;setcall file fopen(names#,"wb")
-			if file!=(NULL)
-				call writeclose(file,sec,size)
-			else
-				call fError(names#)
-			endelse
-		endif
+		call write_sec(names#,sec,size)
 		incst names
 	endwhile
 endfunction

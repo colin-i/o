@@ -98,6 +98,7 @@ if argc>=(1+3)  #0 is all the time
 	set ps# (NULL)
 	#and set data null here, it is useless there for objects call
 	set pexe# (NULL)   #data
+	set frees.execreladyn (NULL)
 
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
@@ -106,7 +107,8 @@ if argc>=(1+3)  #0 is all the time
 	add argc argv
 
 	incst argv
-	sd datavaddr;setcall datavaddr get_file(argv#,pfile,(ET_EXEC),#sN,pexe,#nrs,(NULL),#symtabnr)
+	#,(ET_EXEC)
+	sd datavaddr;setcall datavaddr get_file(argv#,pfile,#sN,pexe,#nrs,(NULL),#symtabnr)
 
 	incst argv
 	call get_objs(argv,argc) #aftercall can be in any object, need to keep memory
@@ -140,6 +142,7 @@ if argc>=(1+3)  #0 is all the time
 	endelse
 
 	call write(#sN,pexe)
+	call write_sec(".rela.dyn",frees.execreladyn,frees.execreladynsize)
 
 	call frees()
 	return (EXIT_SUCCESS)

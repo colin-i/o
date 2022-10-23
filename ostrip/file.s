@@ -16,7 +16,7 @@ const sh64_addr_to_offset=:
 const sh64_addr_to_size=sh64_addr_to_offset+:
 
 #data size
-function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd psecond_sec,sd only_at_exec)
+function get_file(sd name,sv p_file,sv secN,sv p_secN,sd pnrsec,sd psecond_sec,sd only_at_exec)
 	setcall p_file# fopen(name,"rb")
 	sd file;set file p_file#
 	if file!=(NULL)
@@ -30,8 +30,8 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd pseco
 #chars *elf64_ehd_e_ident_osabi={ELFOSABI_NONE}
 #chars *elf64_ehd_e_ident_abiversion={EI_ABIVERSION}
 #chars *elf64_ehd_e_ident_pad={0,0,0,0,0,0,0}
-		const after_sign_to_type=1+1+1+1+1+7
 #Chars *elf64_ehd_e_type={ET_REL,0}
+		const after_sign_to_machine=1+1+1+1+1+7+2
 		Chars elf64_ehd_e_machine={EM_X86_64,0}
 #data *elf64_ehd_e_version=EV_CURRENT
 #data *elf64_ehd_e_entry={0,0}
@@ -51,60 +51,63 @@ function get_file(sd name,sv p_file,sd type,sv secN,sv p_secN,sd pnrsec,sd pseco
 		sd sign;call read(file,#sign,sz)
 		sd c;setcall c memcmp(#sign,#elf64_ehd_e_ident_sign,sz)
 		if c==0
-			call seekc(file,(after_sign_to_type))
+			call seekc(file,(after_sign_to_machine))
 			sd wsz=2
 			sd w;call read(file,#w,wsz)
-			setcall c memcmp(#w,#type,wsz)
+			setcall c memcmp(#w,#elf64_ehd_e_machine,wsz)
 			if c==0
-				call read(file,#w,wsz)
-				setcall c memcmp(#w,#elf64_ehd_e_machine,wsz)
-				if c==0
-					call seekc(file,(after_machine_to_shoff))
-					sd offset;call read(file,#offset,:)
-					call seekc(file,(after_shoff_to_shentsize))
-					data shentsize=0
-					data shnum=0
-					data shstrndx=0
-					call read(file,#shentsize,wsz)
-					call read(file,#shnum,wsz)
-					call read(file,#shstrndx,wsz)
+				call seekc(file,(after_machine_to_shoff))
+				sd offset;call read(file,#offset,:)
+				call seekc(file,(after_shoff_to_shentsize))
+				data shentsize=0
+				data shnum=0
+				data shstrndx=0
+				call read(file,#shentsize,wsz)
+				call read(file,#shnum,wsz)
+				call read(file,#shstrndx,wsz)
 
-					sd return_value
+				sd return_value
+				sd size
+
+				#end for iterations
+				sd end;set end shnum;mult end shentsize;add end offset
+
+				if psecond_sec!=(NULL)
 					#get sec indexes from section names table
 					setcall return_value shnames(file,offset,shentsize,shstrndx,secN,pnrsec,psecond_sec)
+					#get data size
+					#set return_value 0    #0 can go right now(it is blank section at our objects), but that can be stripped, favorizing
+					call get_section_item(file,offset,end,#return_value,(sh64_addr_to_size),shentsize)
+					call get_section_item(file,offset,end,psecond_sec,(sh64_addr_to_size),shentsize)
+				else
+				#exec
+					#get sec indexes from section names table
+					sd reladyn
+					setcall return_value shnames(file,offset,shentsize,shstrndx,secN,pnrsec,(NULL),#reladyn)
+					call get_section_item(file,offset,end,#return_value,0,shentsize)
+					call write_symtab_offset(file,offset,end,shentsize,only_at_exec)
+					if reladyn!=-1
+						setcall frees.execreladynsize get_section_many(file,offset,end,shentsize,reladyn,#frees.execreladyn)
+					endif
+				endelse
 
-					#end for iterations
-					sd end;set end shnum;mult end shentsize;add end offset
-
-					if psecond_sec!=(NULL)
-						#get data size
-						#set return_value 0    #0 can go right now(it is blank section at our objects), but that can be stripped, favorizing
-						call get_section_item(file,offset,end,#return_value,(sh64_addr_to_size),shentsize)
-						call get_section_item(file,offset,end,psecond_sec,(sh64_addr_to_size),shentsize)
-					else
-						call get_section_item(file,offset,end,#return_value,0,shentsize)
-						call write_symtab_offset(file,offset,end,shentsize,only_at_exec)
-					endelse
-
-					#get sections
-					while secN#!=(NULL)
-						#next at frees
-						set p_secN# (NULL)  #this is extra only at first
-						sd size;setcall size get_section_many(file,offset,end,shentsize,pnrsec#,p_secN)
-						if p_secN#==(NULL)
-							return return_value
-						endif
-						add secN :
-						add pnrsec (datasize)
-						add p_secN :
-						set p_secN# size
-						add p_secN :
-					endwhile
-					return return_value
-				endif
-				call erMessages("wrong machine",name)
+				#get sections
+				while secN#!=(NULL)
+					#next at frees
+					set p_secN# (NULL)  #this is extra only at first
+					setcall size get_section_many(file,offset,end,shentsize,pnrsec#,p_secN)
+					if p_secN#==(NULL)
+						return return_value
+					endif
+					add secN :
+					add pnrsec (datasize)
+					add p_secN :
+					set p_secN# size
+					add p_secN :
+				endwhile
+				return return_value
 			endif
-			call erMessages("bad type",name)
+			call erMessages("wrong machine",name)
 		endif
 		call erMessages("not an elf",name)
 	endif
@@ -142,7 +145,7 @@ function seek(sd file,sd offset,sd whence)
 endfunction
 
 #datasec
-function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec,sd psecond_sec)  #nrsec is int
+function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec,sd psecond_sec,sd only_at_exec)  #nrsec is int
 	mult shstrndx shentsize
 	add offset shstrndx
 
@@ -159,7 +162,9 @@ function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec,sd
 	sd datasec;setcall datasec shnames_find(mem,end,".data")
 	if psecond_sec!=(NULL)
 		setcall psecond_sec# shnames_find(mem,end,".text")
-	endif
+	else
+		setcall only_at_exec# shnames_find(mem,end,".rela.dyn")
+	endelse
 	#else set datasec firstnrsec
 
 	call free(mem)

@@ -44,7 +44,11 @@ if (os.path.exists(s3)):
 			f.seek(offset)
 			with open(s3,'rb') as s:
 				f.write(s.read())
-proc=subprocess.run(["objcopy",outputfile,"--update-section",s2+"="+s2,"--update-section",s1+"="+s1])
+s4=".rela.dyn"
+if (os.path.exists(s4)):
+	proc=subprocess.run(["objcopy",outputfile,"--update-section",s1+"="+s1,"--update-section",s2+"="+s2,"--update-section",s4+"="+s4])
+else:
+	proc=subprocess.run(["objcopy",outputfile,"--update-section",s1+"="+s1,"--update-section",s2+"="+s2])
 
 if proc.returncode==0:
 	import lief
