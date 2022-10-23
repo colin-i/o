@@ -18,5 +18,7 @@ endfunction
 function reloc_dyn_imps(sv pointer,sd end)
 	while pointer!=end
 		add pointer (rel_size)
+		call verbose((verbose_count))
 	endwhile
+	call verbose((verbose_flush))
 endfunction
