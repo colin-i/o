@@ -92,4 +92,28 @@ function reloc_item(sv object,sd index,sv replacement,sd soffset)
 	call verbose((verbose_flush))
 endfunction
 
-include "reldyn.s"
+#reldyn
+
+function reloc_sort(sv pointer,sv end,sv dest)
+	sv start;set start pointer
+	while start!=end
+		set pointer start
+		sd min;set min pointer#
+		sd pos;set pos pointer
+		add pointer (rel_size)
+		while pointer!=end
+			if pointer#<^min
+				set min pointer#
+				set pos pointer
+			endif
+			add pointer (rel_size)
+		endwhile
+		call memcpy(dest,pos,(rel_size))
+		add dest (rel_size)
+		if start!=pos
+		#to fill the gap
+			call memcpy(pos,start,(rel_size))
+		endif
+		add start (rel_size)
+	endwhile
+endfunction

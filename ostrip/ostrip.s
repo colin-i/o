@@ -73,6 +73,7 @@ chars s1=".data";chars s2=".text";chars s3=".symtab";chars s3o=".symtab_offset";
 include "file.s"
 include "obj.s"
 include "after.s"
+include "reldyn.s"
 
 entry main(sd argc,sv argv) #0,ss exec,ss log1,ss *obj1)   #... logN objN
 

@@ -25,10 +25,12 @@ Importx "fseek" fseek
 Importx "ftell" ftell
 Importx "fwrite" fwrite
 
+importx "access" access
+
 Importx "memcmp" memcmp
 importx "malloc" malloc
 importx "free" free
-importx "access" access
+Importx "memcpy" memcpy
 
 importx "strcmp" strcmp
 importx "strlen" strlen

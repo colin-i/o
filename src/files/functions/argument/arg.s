@@ -289,34 +289,21 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Set size ptrsize#
 	Data argsz#1
 
-Const enterifNOTequal=0x84
-	Chars s1="!="
-	Data *=enterifNOTequal
-
-Const enterifLESSorEQUAL=0x8F
-	Chars *s2="<="
-	Data *=enterifLESSorEQUAL
-
-Const enterifGREATERorEQUAL=0x8C
-	Chars *s3=">="
-	Data *=enterifGREATERorEQUAL
-
-Const enterifEQUAL=0x85
-	Chars *s4="=="
-	Data *=enterifEQUAL
-
-Const enterifLESS=0x8D
-	Chars *s5="<"
-	Data *=enterifLESS
-
-Const enterifGREATER=0x8E
-	Chars *s6=">"
-	Data *=enterifGREATER
-
+	#and same rule like getcommand like elseif then else
+	Chars firstcomp="==";Data *jne=0x85
+	Chars *="!=";        Data *je=0x84
+	Chars *="<=^";       Data *ja=0x87
+	Chars *=">=^";       Data *jb=0x82
+	Chars *="<=";        Data *jg=0x8F
+	Chars *=">=";        Data *jl=0x8C
+	Chars *="<^";        Data *jae=0x83   #wanted cast before but will problem with arg cast that was after to continue at sufix
+	Chars *=">^";        Data *jbe=0x86
+	Chars *="<";         Data *jge=0x8D
+	Chars *=">";         Data *jle=0x8E
 	Chars term={0}
 
 	Data ptr#1
-	Data ptrini^s1
+	Data ptrini^firstcomp
 	Chars byte#1
 
 	Set ptr ptrini
@@ -342,12 +329,9 @@ Const enterifGREATER=0x8E
 			return noerrnr
 		EndIf
 		Data sz#1
-		Data one=1
-		Data four=4
 		SetCall sz strlen(ptr)
 		Add ptr sz
-		Add ptr one
-		Add ptr four
+		Add ptr (1+4)
 		Set byte ptr#
 	EndWhile
 	Chars conderr="Condition sign(s) expected."
