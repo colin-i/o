@@ -124,9 +124,9 @@ if argc>=(1+3)  #0 is all the time
 
 	call objs_concat(pobjects#,pexe,datainneroffset)
 
-	call reloc(pobjects#,datavaddr)
+	call reloc(pobjects#,datavaddr,datainneroffset)
 
-	sd acall;setcall acall aftercall_find(pobjects#,#datavaddr)
+	sd acall;setcall acall aftercall_find(pobjects#,#datavaddr) #acall is the string and datavaddr new aftercall virtual
 	if acall!=(NULL)
 		if ps#!=(NULL)
 			#replace if exe symtab

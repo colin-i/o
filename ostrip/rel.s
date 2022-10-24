@@ -1,12 +1,13 @@
 
 
-function reloc(sv objects,sd daddr)
+function reloc(sv objects,sd daddr,sd datainneroffset)
 	sd doffset;set doffset daddr
 	sv voffset%pexedatasize;   #this is after the new size was set
 	set voffset voffset#
 	add voffset daddr
 	sv dphisic%pexedata
 	set dphisic dphisic#
+	add dphisic datainneroffset
 	sv tphisic%pexetext
 	set tphisic tphisic#
 	while objects#!=(NULL)

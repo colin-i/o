@@ -103,7 +103,6 @@ endfunction
 function objs_concat(sv objects,sv pdata,sd datainneroffset)
 	sd initial;set initial pdata#
 	add initial datainneroffset
-	#sd pdatabin%pdatabin;setcall pdatabin# alloc(sz)
 	sd dest;set dest initial
 	sd src;set src dest
 
@@ -125,7 +124,7 @@ function objs_concat(sv objects,sv pdata,sd datainneroffset)
 		incst objects
 	endwhile
 
-	add pdata :
+	incst pdata
 	#exe data size can have last object aligned/unaligned this way (don't count on initial size)
 	sub dest initial
 	#rewrite size from extra+unstripped to stripped
