@@ -10,6 +10,7 @@ Const SEEK_CUR=1
 Const SEEK_END=2
 
 const EM_X86_64=62
+const R_X86_64_RELATIVE=8
 
 const F_OK=0
 

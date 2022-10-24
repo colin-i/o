@@ -7,7 +7,12 @@ function reloc_dyn()
 	add end pointer
 	while pointer!=end
 		if pointer#==(R_X86_64_64)
-			setcall pointer reloc_dyn_imps(pointer,end)
+			setcall pointer reloc_dyn_sort(pointer,end,(R_X86_64_64))
+		elseif pointer#==(R_X86_64_RELATIVE)
+			#sort by addend then by offset to let at offset
+			#by addend
+			#by offset
+			setcall pointer reloc_dyn_sort(pointer,end,(R_X86_64_RELATIVE))
 		else
 			add pointer (rel_size)
 		endelse
@@ -15,10 +20,10 @@ function reloc_dyn()
 endfunction
 
 #pointer
-function reloc_dyn_imps(sd pointer,sd end)
+function reloc_dyn_sort(sd pointer,sd end,sd type)
 	sv start=-rel_to_type;add start pointer
 	while pointer!=end
-		if pointer#!=(R_X86_64_64)
+		if pointer#!=type
 			break
 		endif
 		add pointer (rel_size)
