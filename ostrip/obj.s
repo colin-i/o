@@ -7,16 +7,23 @@ const object_nr_of_secondary_sections=2
 const object_nr_of_sections=object_nr_of_main_sections+object_nr_of_secondary_sections
 const section_alloc=:*section_nr_of_values
 const object_alloc_secs=object_nr_of_sections*section_alloc
-const to_data_extra_sz=object_alloc_secs+datasize
-const to_text_extra=to_data_extra_sz+:
-const object_alloc=to_text_extra+:
+
 #const to_text=section_alloc
 const to_symtab=object_nr_of_main_sections*section_alloc
 const to_strtab=to_symtab+section_alloc
 const from_symsize_to_voffset=:+section_alloc
 const from_strtab_to_symtab=section_alloc
 const from_symtab_to_text=section_alloc
-const from_text_to_extra=section_alloc+(object_nr_of_secondary_sections*section_alloc)
+const from_text_to_data_extra=section_alloc+(object_nr_of_secondary_sections*section_alloc)
+
+const to_data_extra=object_alloc_secs
+const from_data_extra_to_data_extra_sz=datasize
+const from_data_extra_sz_to_data_extra_sz_a=:
+const from_data_extra_to_data_extra_sz_a=from_data_extra_to_data_extra_sz+from_data_extra_sz_to_data_extra_sz_a
+const to_data_extra_sz=object_alloc_secs+from_data_extra_to_data_extra_sz
+const from_data_extra_sz_to_text_extra=from_data_extra_sz_to_data_extra_sz_a+:
+const to_text_extra=to_data_extra_sz+from_data_extra_sz_to_text_extra
+const object_alloc=to_text_extra+:
 
 ##stripped size
 function get_objs(sv pargs,sd end)
@@ -50,12 +57,12 @@ function get_objs(sv pargs,sd end)
 		datax nrs#object_nr_of_sections   #same as previous call
 		#blank sections at ocomp?
 
-		sv p=object_alloc_secs
+		sv p=to_data_extra
 		add p object
 
 		setcall p#d^ get_offset(pargs#)  #the ocomp with these sections from that creation time are still respected (32 bits)
 
-		add p (datasize)
+		add p (from_data_extra_to_data_extra_sz)
 		incst pargs
 
 		sd file
@@ -64,6 +71,9 @@ function get_objs(sv pargs,sd end)
 		#,(ET_REL)
 		setcall p# get_file(pargs#,#file,#oN,object,#nrs,t)
 		call fclose(file)
+		sv d_unaligned;set d_unaligned p
+		incst p
+		setcall p# objs_align(d_unaligned#)
 		setcall t# objs_align(t#)  #will be in two places used (same value)
 		incst pargs
 	endwhile

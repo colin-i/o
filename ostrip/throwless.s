@@ -107,20 +107,20 @@ function objs_concat(sv objects,sv pdata,sd datainneroffset)
 	sd src;set src dest
 
 	#skip first memtomem
-	sv object=object_alloc_secs;add object objects#
+	sv object=to_data_extra;add object objects#
 	add dest object#d^
-	add object (datasize)
-	addcall src objs_align(object#)
+	add object (from_data_extra_to_data_extra_sz_a)
+	add src object#
 	incst objects
 
 	while objects#!=(NULL)
-		set object (object_alloc_secs);add object objects#
+		set object (to_data_extra);add object objects#
 		sd stripped;set stripped object#d^
 		#we implement own memcpy here because right to left can break all
 		call memtomem(dest,src,stripped)
 		add dest stripped
-		add object (datasize)
-		addcall src objs_align(object#)
+		add object (from_data_extra_to_data_extra_sz_a)
+		add src object#
 		incst objects
 	endwhile
 
@@ -166,23 +166,24 @@ function objs_align(sd sz)
 endfunction
 
 #realoffset-offset
-function data_realoffset(sv poffset)
+function data_realoffset()
 	sv objs;set objs frees.objects
-	sd datasize=0
+	sd data_size=0
 	while objs#!=(NULL)
 		sv obj;set obj objs#
 		add obj (to_data_extra_sz)
-		sd aligned;setcall aligned objs_align(obj#)
-		add datasize aligned
+		sv aligned;set aligned obj
+		incst aligned
+		set aligned aligned#
+		add data_size aligned
 		incst objs
 	endwhile
 	if aligned!=obj#
 	#last object is not aligned
 		sub aligned obj#
-		sub datasize aligned
+		sub data_size aligned
 	endif
-	sd dif;set dif frees.exedatasize
-	sub dif datasize
-	add poffset# dif
-	return dif
+	sub data_size frees.exedatasize
+	neg data_size
+	return data_size
 endfunction

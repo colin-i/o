@@ -16,14 +16,13 @@ function reloc(sv objects,sd daddr,sd datainneroffset)
 		add object (section_alloc)
 
 		sd t;set t object
-		add object (from_text_to_extra)
+		add object (from_text_to_data_extra)
 
 		sd voffset_obj;set voffset_obj object#d^
-		add object (datasize)
+		add object (from_data_extra_to_data_extra_sz)
 
 		sv vsize_obj;set vsize_obj object#
 		sub vsize_obj voffset_obj
-		incst object
 
 		call reloc_sec(d,doffset,voffset,voffset_obj,dphisic)
 		call reloc_sec(t,doffset,voffset,voffset_obj,tphisic)
@@ -31,6 +30,7 @@ function reloc(sv objects,sd daddr,sd datainneroffset)
 		add doffset voffset_obj
 		add voffset vsize_obj
 		add dphisic voffset_obj
+		add object (from_data_extra_sz_to_text_extra)
 		add tphisic object#
 
 		incst objects
@@ -48,7 +48,10 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj,sd soffset)
 #		data elf64_r_info_symbolindex#1
 #		data elf64_r_addend#1;data *=0
 		const rel_to_type=:
-		const rel_size=rel_to_type+datasize+datasize+:
+		const rel_from_type_to_addend=datasize+datasize
+		const rel_to_addend=rel_to_type+rel_from_type_to_addend
+		const rel_size=rel_to_addend+:
+
 		sv cursor;set cursor pointer
 		incst cursor
 		if cursor#d^==(R_X86_64_64)
@@ -93,28 +96,4 @@ function reloc_item(sv object,sd index,sv replacement,sd soffset)
 	call verbose((verbose_flush))
 endfunction
 
-#reldyn
-
-function reloc_sort(sv pointer,sv end,sv dest)
-	sv start;set start pointer
-	while start!=end
-		set pointer start
-		sd min;set min pointer#
-		sd pos;set pos pointer
-		add pointer (rel_size)
-		while pointer!=end
-			if pointer#<^min
-				set min pointer#
-				set pos pointer
-			endif
-			add pointer (rel_size)
-		endwhile
-		call memcpy(dest,pos,(rel_size))
-		add dest (rel_size)
-		if start!=pos
-		#to fill the gap
-			call memcpy(pos,start,(rel_size))
-		endif
-		add start (rel_size)
-	endwhile
-endfunction
+include "reldynt.s"
