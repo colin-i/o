@@ -1,5 +1,5 @@
 
-#data extra align at realoffset,concat then unaligned at reloc
+#data extra align at realoffset,concat,reldyn then unaligned at reloc,reldyn
 #text extra aligned
 
 const object_nr_of_main_sections=2
