@@ -33,14 +33,10 @@ endfunction
 
 #goodoffset
 function reloc_dyn_value(sd wrongoffset)
-	valuex objects#1
 	valuex srcstart#1
 	valuex srcmid#1
-	valuex srcend#1
 	valuex destd#1
-	valuex destdnext#1
 	valuex destv#1
-	valuex destvnext#1
 
 	if wrongoffset>=srcmid
 	#virtual
@@ -56,24 +52,29 @@ endfunction
 
 #datavaddr
 function reloc_dyn_initobj(sd datavaddr)
-	set reloc_dyn_value.destd reloc_dyn_value.destdnext
-	set reloc_dyn_value.destv reloc_dyn_value.destvnext
+	valuex objects#1
+	valuex srcend#1
+	valuex destdnext#1
+	valuex destvnext#1
+
+	set reloc_dyn_value.destd destdnext
+	set reloc_dyn_value.destv destvnext
 	set reloc_dyn_value.srcstart datavaddr
 
-	sv obj;set obj reloc_dyn_value.objects#
+	sv obj;set obj objects#
 	add obj (to_data_extra)
 	sd herevirtual;set herevirtual obj#d^
 	set reloc_dyn_value.srcmid datavaddr
 	add reloc_dyn_value.srcmid herevirtual
-	add reloc_dyn_value.destdnext herevirtual
+	add destdnext herevirtual
 	add obj (from_data_extra_to_data_extra_sz)
 	sub herevirtual obj#
 	neg herevirtual
-	add reloc_dyn_value.destvnext herevirtual
+	add destvnext herevirtual
 
 	add obj (from_data_extra_sz_to_data_extra_sz_a)
 	add datavaddr obj#
-	set reloc_dyn_value.srcend datavaddr
+	set srcend datavaddr
 
 	return datavaddr
 endfunction
@@ -99,15 +100,15 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 			add pointer (rel_size)
 		endwhile
 		if cursor!=pointer
-			set reloc_dyn_value.objects frees.objects
-			set reloc_dyn_value.destdnext datavaddr
-			set reloc_dyn_value.destvnext frees.exedatasize
-			add reloc_dyn_value.destvnext datavaddr
+			set reloc_dyn_initobj.objects frees.objects
+			set reloc_dyn_initobj.destdnext datavaddr
+			set reloc_dyn_initobj.destvnext frees.exedatasize
+			add reloc_dyn_initobj.destvnext datavaddr
 			setcall datavaddr reloc_dyn_initobj(datavaddr)
 			while cursor!=pointer
 				sd offset;set offset cursor#
-				while offset>=reloc_dyn_value.srcend
-					incst reloc_dyn_value.objects
+				while offset>=reloc_dyn_initobj.srcend
+					incst reloc_dyn_initobj.objects
 					setcall datavaddr reloc_dyn_initobj(datavaddr)
 				endwhile
 				setcall cursor# reloc_dyn_value(offset)
