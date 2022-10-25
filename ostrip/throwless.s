@@ -166,14 +166,14 @@ function objs_align(sd sz)
 endfunction
 
 #realoffset-offset
-function data_realoffset()
+function realoffset(sd add)
 	sv objs;set objs frees.objects
 	sd data_size=0
 	while objs#!=(NULL)
 		sv obj;set obj objs#
-		add obj (to_data_extra_sz)
+		add obj add
 		sv aligned;set aligned obj
-		incst aligned
+		add aligned (from_extra_sz_to_extra_sz_a)
 		set aligned aligned#
 		add data_size aligned
 		incst objs

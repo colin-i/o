@@ -116,7 +116,9 @@ if argc>=(1+3)  #0 is all the time
 
 	#at pie(and everywhere like a good practice), there is a starting offset in data
 	#	need to get our size then sub from full data size and use that instead of data virtual
-	sd datainneroffset;setcall datainneroffset data_realoffset()
+	sd datainneroffset;setcall datainneroffset realoffset((to_data_extra_sz))
+	#and same for text
+	sd textinneroffset;setcall textinneroffset realoffset((to_text_extra))
 
 	sd keepdatasize;set keepdatasize frees.exedatasize
 	call objs_concat(pobjects#,pexe,datainneroffset)
@@ -130,7 +132,7 @@ if argc>=(1+3)  #0 is all the time
 		add datavaddr datainneroffset
 	endelse
 
-	call reloc(pobjects#,datavaddr,datainneroffset)
+	call reloc(pobjects#,datavaddr,datainneroffset,textinneroffset)
 
 	sd acall;setcall acall aftercall_find(pobjects#,#datavaddr) #acall is the string and datavaddr new aftercall virtual
 	if acall!=(NULL)
@@ -146,12 +148,13 @@ if argc>=(1+3)  #0 is all the time
 		endelse
 
 		#replace on the field
-		call aftercall_in_objects(pobjects#,acall,datavaddr)
+		call aftercall_in_objects(pobjects#,acall,datavaddr,textinneroffset)
 	else
 		#skip symtab if no aftercall
 		set s3c (NULL)  #write will stop there
 	endelse
 
+	add frees.exedatasize datainneroffset    #set leading size back for write
 	call write(#sN,pexe)
 	call write_sec(".rela.dyn",frees.execreladyn,frees.execreladynsize)
 

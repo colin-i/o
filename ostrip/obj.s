@@ -18,12 +18,13 @@ const from_text_to_data_extra=section_alloc+(object_nr_of_secondary_sections*sec
 
 const to_data_extra=object_alloc_secs
 const from_data_extra_to_data_extra_sz=datasize
-const from_data_extra_sz_to_data_extra_sz_a=:
-const from_data_extra_to_data_extra_sz_a=from_data_extra_to_data_extra_sz+from_data_extra_sz_to_data_extra_sz_a
+const from_extra_sz_to_extra_sz_a=:
+const from_data_extra_to_data_extra_sz_a=from_data_extra_to_data_extra_sz+from_extra_sz_to_extra_sz_a
 const to_data_extra_sz=object_alloc_secs+from_data_extra_to_data_extra_sz
-const from_data_extra_sz_to_text_extra=from_data_extra_sz_to_data_extra_sz_a+:
-const to_text_extra=to_data_extra_sz+from_data_extra_sz_to_text_extra
-const object_alloc=to_text_extra+:
+const extra_sz=from_extra_sz_to_extra_sz_a+:
+const to_text_extra=to_data_extra_sz+extra_sz
+const to_text_extra_a=to_text_extra+from_extra_sz_to_extra_sz_a
+const object_alloc=to_text_extra+extra_sz
 
 ##stripped size
 function get_objs(sv pargs,sd end)
@@ -66,15 +67,17 @@ function get_objs(sv pargs,sd end)
 		incst pargs
 
 		sd file
-		sv t=from_data_extra_sz_to_text_extra
+		sv t=extra_sz
 		add t p
 		#,(ET_REL)
 		setcall p# get_file(pargs#,#file,#oN,object,#nrs,t)
 		call fclose(file)
 		sv d_unaligned;set d_unaligned p
-		add p (from_data_extra_sz_to_data_extra_sz_a)
+		add p (from_extra_sz_to_extra_sz_a)
 		setcall p# objs_align(d_unaligned#)
-		setcall t# objs_align(t#)  #will be in two places used (same value)
+		sv t_unaligned;set t_unaligned t
+		add t (from_extra_sz_to_extra_sz_a)
+		setcall t# objs_align(t_unaligned#)
 		incst pargs
 	endwhile
 endfunction

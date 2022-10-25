@@ -73,9 +73,10 @@ function aftercall_replace(sv psym,sv pstr,ss astr,sv aoffset)
 	endif
 endfunction
 
-function aftercall_in_objects(sv objects,ss astr,sv aoffset)
+function aftercall_in_objects(sv objects,ss astr,sv aoffset,sd textinneroffset)
 	sv tphisic%pexetext
 	set tphisic tphisic#
+	add tphisic textinneroffset
 	while objects#!=(NULL)
 		sv object;set object objects#
 		sv pointer=to_strtab;add pointer object
@@ -104,7 +105,7 @@ function aftercall_in_objects(sv objects,ss astr,sv aoffset)
 			sub pointer (from_symtab_to_text)
 			call reloc_item(pointer,sympos,aoffset,tphisic)
 		endif
-		add object (to_text_extra)
+		add object (to_text_extra_a)
 		add tphisic object#
 		incst objects
 	endwhile

@@ -16,8 +16,8 @@ function reloc_dyn(sd datavaddrstart,sd datavaddrend)
 			#sort by addend then by offset to let at offset, at start probably is at offset but who cares
 			set start pointer
 			#by addend
-			call reloc_dyn_sort(pointer,end,(R_X86_64_RELATIVE),(rel_to_addend))
-			call reloc_iteration(start,pointer,datavaddrstart,datavaddrend,(rel_from_type_to_addend))
+			sd group;setcall group reloc_dyn_sort(pointer,end,(R_X86_64_RELATIVE),(rel_to_addend))
+			call reloc_iteration(start,group,datavaddrstart,datavaddrend,(rel_from_type_to_addend))
 			call verbose((verbose_flush))
 			#by offset
 			setcall pointer reloc_dyn_sort(pointer,end,(R_X86_64_RELATIVE),0)

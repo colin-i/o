@@ -1,12 +1,11 @@
 
 function reloc_sort(sv pointer,sv end,sv dest,sd diff)
-	add end diff
-
 	sv start;set start pointer
 	while start!=end
 		set pointer start
 
 		add pointer diff
+		add end diff
 
 		sd min;set min pointer#
 		sd pos;set pos pointer
@@ -20,6 +19,7 @@ function reloc_sort(sv pointer,sv end,sv dest,sd diff)
 		endwhile
 
 		sub pos diff
+		sub end diff
 
 		call memcpy(dest,pos,(rel_size))
 		add dest (rel_size)
@@ -72,7 +72,7 @@ function reloc_dyn_initobj(sd datavaddr)
 	neg herevirtual
 	add destvnext herevirtual
 
-	add obj (from_data_extra_sz_to_data_extra_sz_a)
+	add obj (from_extra_sz_to_extra_sz_a)
 	add datavaddr obj#
 	set srcend datavaddr
 
@@ -100,10 +100,11 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 			add pointer (rel_size)
 		endwhile
 		if cursor!=pointer
+			#at first object only virtuals can be corrected
 			set reloc_dyn_initobj.objects frees.objects
 			set reloc_dyn_initobj.destdnext datavaddr
 			set reloc_dyn_initobj.destvnext datavaddr
-			add reloc_dyn_initobj.destvnext frees.exedatasize
+			add reloc_dyn_initobj.destvnext frees.exedatasize  #this is after the new size was set
 			setcall datavaddr reloc_dyn_initobj(datavaddr)
 			while cursor!=pointer
 				sd offset;set offset cursor#

@@ -1,6 +1,6 @@
 
 
-function reloc(sv objects,sd daddr,sd datainneroffset)
+function reloc(sv objects,sd daddr,sd datainneroffset,sd textinneroffset)
 	sd doffset;set doffset daddr
 	sv voffset%pexedatasize;   #this is after the new size was set
 	set voffset voffset#
@@ -10,6 +10,7 @@ function reloc(sv objects,sd daddr,sd datainneroffset)
 	add dphisic datainneroffset
 	sv tphisic%pexetext
 	set tphisic tphisic#
+	add tphisic textinneroffset
 	while objects#!=(NULL)
 		sv object;set object objects#
 		sd d;set d object
@@ -30,7 +31,7 @@ function reloc(sv objects,sd daddr,sd datainneroffset)
 		add doffset voffset_obj
 		add voffset vsize_obj
 		add dphisic voffset_obj
-		add object (from_data_extra_sz_to_text_extra)
+		add object (extra_sz)
 		add tphisic object#
 
 		incst objects
