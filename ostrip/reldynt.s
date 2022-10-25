@@ -31,14 +31,14 @@ function reloc_sort(sv pointer,sv end,sv dest,sd diff)
 	endwhile
 endfunction
 
-#goodoffset
+#correctoffset
 function reloc_dyn_value(sd wrongoffset)
 	valuex srcstart#1
 	valuex srcmid#1
 	valuex destd#1
 	valuex destv#1
 
-	if wrongoffset>=srcmid
+	if wrongoffset>=^srcmid
 	#virtual
 		sub wrongoffset srcmid
 		add wrongoffset destv
@@ -85,7 +85,7 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 	add end diff
 	#find the minimum and the maximum
 	while pointer!=end
-		if pointer#>=datavaddr
+		if pointer#>=^datavaddr
 			break
 		endif
 		add pointer (rel_size)
@@ -94,7 +94,7 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 		#can be .text after .data
 		sv cursor;set cursor pointer
 		while pointer!=end
-			if pointer#>=datavaddrend
+			if pointer#>=^datavaddrend
 				break
 			endif
 			add pointer (rel_size)
@@ -102,17 +102,25 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 		if cursor!=pointer
 			set reloc_dyn_initobj.objects frees.objects
 			set reloc_dyn_initobj.destdnext datavaddr
-			set reloc_dyn_initobj.destvnext frees.exedatasize
-			add reloc_dyn_initobj.destvnext datavaddr
+			set reloc_dyn_initobj.destvnext datavaddr
+			add reloc_dyn_initobj.destvnext frees.exedatasize
 			setcall datavaddr reloc_dyn_initobj(datavaddr)
 			while cursor!=pointer
 				sd offset;set offset cursor#
-				while offset>=reloc_dyn_initobj.srcend
+				while offset>=^reloc_dyn_value.srcstart
+					if offset<^reloc_dyn_initobj.srcend
+						break
+					endif
 					incst reloc_dyn_initobj.objects
-					setcall datavaddr reloc_dyn_initobj(datavaddr)
+					if reloc_dyn_initobj.objects#!=(NULL)
+						setcall datavaddr reloc_dyn_initobj(datavaddr)
+						continue
+					endif
+					ret     #it's not in .data anymore
 				endwhile
 				setcall cursor# reloc_dyn_value(offset)
 				add cursor (rel_size)
+				call verbose((verbose_count))
 			endwhile
 		endif
 	endif

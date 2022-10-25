@@ -10,16 +10,19 @@ function reloc_dyn(sd datavaddrstart,sd datavaddrend)
 		if pointer#==(R_X86_64_64)
 			set start pointer
 			setcall pointer reloc_dyn_sort(pointer,end,(R_X86_64_64),0)
-			call reloc_iteration(start,pointer,datavaddrstart,datavaddrend,(rel_from_type_to_addend))
+			call reloc_iteration(start,pointer,datavaddrstart,datavaddrend,-rel_to_type)
+			call verbose((verbose_flush))
 		elseif pointer#==(R_X86_64_RELATIVE)
 			#sort by addend then by offset to let at offset, at start probably is at offset but who cares
 			set start pointer
 			#by addend
 			call reloc_dyn_sort(pointer,end,(R_X86_64_RELATIVE),(rel_to_addend))
 			call reloc_iteration(start,pointer,datavaddrstart,datavaddrend,(rel_from_type_to_addend))
+			call verbose((verbose_flush))
 			#by offset
 			setcall pointer reloc_dyn_sort(pointer,end,(R_X86_64_RELATIVE),0)
 			call reloc_iteration(start,pointer,datavaddrstart,datavaddrend,-rel_to_type)
+			call verbose((verbose_flush))
 		else
 			add pointer (rel_size)
 		endelse
@@ -34,9 +37,7 @@ function reloc_dyn_sort(sd pointer,sd end,sd type,sd diff)
 			break
 		endif
 		add pointer (rel_size)
-		call verbose((verbose_count))
 	endwhile
-	call verbose((verbose_flush))
 
 	sd return;set return pointer
 

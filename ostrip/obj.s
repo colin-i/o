@@ -66,13 +66,13 @@ function get_objs(sv pargs,sd end)
 		incst pargs
 
 		sd file
-		sv t=:
+		sv t=from_data_extra_sz_to_text_extra
 		add t p
 		#,(ET_REL)
 		setcall p# get_file(pargs#,#file,#oN,object,#nrs,t)
 		call fclose(file)
 		sv d_unaligned;set d_unaligned p
-		incst p
+		add p (from_data_extra_sz_to_data_extra_sz_a)
 		setcall p# objs_align(d_unaligned#)
 		setcall t# objs_align(t#)  #will be in two places used (same value)
 		incst pargs
