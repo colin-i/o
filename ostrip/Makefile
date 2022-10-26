@@ -30,7 +30,7 @@ strip:
 	if [ "$(shell lsb_release -cs)" != "xenial" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
-			python3 --version; #strip.py ${FULLOBJ} ${FULLOBJ}; \
+			python3 strip.py ${FULLOBJ} ${FULLOBJ}; \
 		fi; \
 	fi
 

@@ -31,7 +31,7 @@ function reloc(sv objects,sd daddr,sd datainneroffset,sd textinneroffset)
 		add doffset voffset_obj
 		add voffset vsize_obj
 		add dphisic voffset_obj
-		add object (extra_sz)
+		add object (extra_sz+from_extra_sz_to_extra_sz_a)
 		add tphisic object#
 
 		incst objects

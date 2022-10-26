@@ -5,7 +5,7 @@ function frees()
 	if exefile!=(NULL)
 		call fclose(exefile)
 	valuex exedata#1;valuex exedatasize#1
-	valuex exetext#section_nr_of_values
+	valuex exetext#1;valuex exetextsize#1
 	valuex exesym#section_nr_of_values
 	valuex exestr#section_nr_of_values
 	valuex execreladyn#1;valuex execreladynsize#1
@@ -127,11 +127,12 @@ function objs_concat(sv objects,sv pdata,sd datainneroffset)
 	incst pdata
 	#exe data size can have last object aligned/unaligned this way (don't count on initial size)
 	sub dest initial
-	#rewrite size from extra+unstripped to stripped
+	#rewrite size from extra+unstripped to stripped, to be used at rel and reldyn
 	sd size;set size pdata#
 	set pdata# dest
 
 	sub size dest
+	sub size datainneroffset
 	sv out^stdout
 	call fprintf(out#,"Stripped size: %llu bytes",size)
 	call messagedelim(out)
@@ -166,7 +167,7 @@ function objs_align(sd sz)
 endfunction
 
 #realoffset-offset
-function realoffset(sd add)
+function realoffset(sd add,sd sec_size)
 	sv objs;set objs frees.objects
 	sd data_size=0
 	while objs#!=(NULL)
@@ -183,7 +184,7 @@ function realoffset(sd add)
 		sub aligned obj#
 		sub data_size aligned
 	endif
-	sub data_size frees.exedatasize
+	sub data_size sec_size
 	neg data_size
 	return data_size
 endfunction

@@ -116,9 +116,9 @@ if argc>=(1+3)  #0 is all the time
 
 	#at pie(and everywhere like a good practice), there is a starting offset in data
 	#	need to get our size then sub from full data size and use that instead of data virtual
-	sd datainneroffset;setcall datainneroffset realoffset((to_data_extra_sz))
+	sd datainneroffset;setcall datainneroffset realoffset((to_data_extra_sz),frees.exedatasize)
 	#and same for text
-	sd textinneroffset;setcall textinneroffset realoffset((to_text_extra))
+	sd textinneroffset;setcall textinneroffset realoffset((to_text_extra),frees.exetextsize)
 
 	sd keepdatasize;set keepdatasize frees.exedatasize
 	call objs_concat(pobjects#,pexe,datainneroffset)
