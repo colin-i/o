@@ -191,13 +191,15 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		elseif parses==(pass_calls)
 			SetCall ptrdata vars_ignoreref(content,sz,fns)
 			if ptrdata!=0
-				call is_for_64_is_impX_or_fnX_set(ptrdata)
-			endif
+				call is_for_64_is_impX_or_fnX_set(ptrdata,subtype)
+			else
+				call is_for_64_is_impX_or_fnX_set_force(subtype)
+			endelse
 			call advancecursors(ptrcontent,ptrsize,sz)
 		else
 			#pass_write
 			data boolindirect#1
-			setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect)
+			setcall err prepare_function_call(ptrcontent,ptrsize,sz,#ptrdata,#boolindirect,subtype)
 			if err!=(noerror)
 				return err
 			endif
@@ -293,7 +295,7 @@ function fn_text_info()
 endfunction
 
 #err
-function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect)
+function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect,sd subtype)
 	Data fns%ptrfunctions
 
 	SetCall p_data# vars(pcontent#,sz,fns)
@@ -311,10 +313,11 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 			EndIf
 		EndIf
 		set p_bool_indirect# (TRUE)
+		call is_for_64_is_impX_or_fnX_set_force(subtype)
 	Else
 		#at functions
-		call is_for_64_is_impX_or_fnX_set(p_data#)
 		set p_bool_indirect# (FALSE)
+		call is_for_64_is_impX_or_fnX_set(p_data#,subtype)
 	EndElse
 	Call advancecursors(pcontent,psize,sz)
 
@@ -341,7 +344,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	if pb#==(TRUE)
 		setcall err function_call_64(is_callex)
 		If err!=(noerror);Return err;EndIf
-		set pb# (FALSE) #can be at start but intern function are more popular and there is also a test in addition
+		set pb# (FALSE) #reset the flag
 	endif
 
 	Data ptrfnmask#1

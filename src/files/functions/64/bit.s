@@ -29,18 +29,34 @@ endfunction
 function is_for_64_is_impX_or_fnX_p_get();data b#1;return #b;endfunction
 #get
 function is_for_64_is_impX_or_fnX_get();sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get();return p_b#;endfunction
-function is_for_64_is_impX_or_fnX_set(sd ptrdata)
-	sd p_b
-	setcall p_b is_for_64_is_impX_or_fnX_p_get()
+function is_for_64_is_impX_or_fnX_set(sd ptrdata,sd subtype)
 	sd b
 	setcall b is_for_64()
 	#importX and functionX used to have a test with is_for_64 outside of this, but at log need to know the type
 	if b==(TRUE)
 		add ptrdata (maskoffset)
 		sd val;set val ptrdata#;and val (x86_64bit)
-		if val==(x86_64bit);set p_b# (TRUE);return (void);endif
+		sd p_b
+		if val==(x86_64bit)
+			setcall p_b is_for_64_is_impX_or_fnX_p_get()
+			set p_b# (TRUE)
+		elseif subtype==(x_callx_flag)
+			setcall p_b is_for_64_is_impX_or_fnX_p_get()
+			set p_b# (TRUE)
+		endelseif
 	endif
-	set p_b# (FALSE)
+	#is this required anymore? set p_b# (FALSE)
+endfunction
+function is_for_64_is_impX_or_fnX_set_force(sd subtype)
+	sd b
+	setcall b is_for_64()
+	if b==(TRUE)
+		if subtype==(x_callx_flag)
+			sd p_b
+			setcall p_b is_for_64_is_impX_or_fnX_p_get()
+			set p_b# (TRUE)
+		endif
+	endif
 endfunction
 
 #get
@@ -345,7 +361,7 @@ function function_call_64(sd is_callex)
 		chars *rax_conv={REX_Operand_64,0xb8};data *={lin_convention,0}
 		#push qwordsz
 		chars *={0x6a,qwsz}
-		#inc eax
+		#inc al
 		chars *={0xfe,regregmod}
 		#mul al [esp]
 		chars *={0xf6,4*toregopcode|espregnumber,espregnumber*toregopcode|espregnumber}
@@ -370,8 +386,8 @@ function callex64_call()
 	sd conv;setcall conv convdata((convdata_total))
 	#Stack aligned on 16 bytes.
 	const callex64_start=!
-	#bt rsp,3 (bit offset 3)
-	chars callex64_code={REX_Operand_64,0x0F,0xBA,bt_reg_imm8|espregnumber,3}
+	#bt esp,3 (bit offset 3)        rsp for 3 bits is useless
+	chars callex64_code={0x0F,0xBA,bt_reg_imm8|espregnumber,3}
 	#jc @ (jump when rsp=....8)
 	chars *=0x72;chars *=7+2+4+2+2
 	#7cmp ecx,5
@@ -398,6 +414,7 @@ function callex64_call()
 	#4 sub rsp,8
 	chars *={REX_Operand_64,0x83,0xEC};chars *=8
 	#$
+	#mov rdx,rcx
 	chars *keep_nr_args={REX_Operand_64,0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
 	sd ptrcodesec%ptrcodesec
 	sd err

@@ -213,6 +213,11 @@ Function stringsatmemspc(data pcontent,data psize,str match,data spacereq,str ex
 
 	If extstr!=zero
 		SetCall extbool# stratmem(tocontent,tosize,extstr)
+		if extbool#==(TRUE)
+			#to work around ...callx, and ok in other cases
+			Set pcontent# content
+			Set psize# size
+		endif
 	EndIf
 
 	If spacereq==nonzero

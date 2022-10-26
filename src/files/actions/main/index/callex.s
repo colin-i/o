@@ -5,7 +5,7 @@ setcall errormsg arg_size(pcontent#,pcomsize#,#call_sz)
 if errormsg==(noerror)
 	sd top_data
 	sd bool_indirect
-	setcall errormsg prepare_function_call(pcontent,pcomsize,call_sz,#top_data,#bool_indirect)
+	setcall errormsg prepare_function_call(pcontent,pcomsize,call_sz,#top_data,#bool_indirect,subtype)
 	if errormsg==(noerror)
 		call spaces(pcontent,pcomsize)
 		setcall errormsg twoargs(pcontent,pcomsize,(cCALLEX),(NULL))

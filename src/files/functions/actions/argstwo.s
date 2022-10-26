@@ -57,7 +57,8 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				Call advancecursors(ptrcontent,ptrsize,ptrsize#)
 			endelse
 		else
-			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
+			and subtype (x_callx_flag)
+			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype) #there is 1 more argument but is not used
 			return errnr
 		endelse
 		return (noerror)
@@ -93,6 +94,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		if subtype_test!=0
 			xor subtype (x_call_flag)
 			Set primcalltype true
+			set subtype_test subtype;and subtype_test (x_callx_flag)
 		endif
 		if subtype==(cSET)
 			Set opprim atmemtheproc
@@ -167,7 +169,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			Return errnr
 		EndIf
 	Else
-		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn) #there are 2 more arguments but are not used
+		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype_test) #there is 1 more argument but is not used
 		If errnr!=noerr
 			Return errnr
 		EndIf

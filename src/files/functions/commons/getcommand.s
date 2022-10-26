@@ -13,7 +13,7 @@ Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHARS_c="CHARS";Chars cSD_c="SD";
 	Chars cCONST_c="CONST"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
 Chars cRETURN_c="RETURN";Chars cINCST_c="INCST";Chars cINC_c="INC";Chars cDECST_c="DECST";Chars cDEC_c="DEC";Chars cNEG_c="NEG";Chars cNOT_c="NOT";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR";Chars cEXIT_c="EXIT"
-Chars cCALL_c="CALL"
+Chars cCALLX_c="CALLX";Chars cCALL_c="CALL"
 Chars cIF_c="IF";Chars cENDIF_c="ENDIF";Chars cELSEIF_c="ELSEIF";Chars cELSE_c="ELSE";Chars cENDELSEIF_c="ENDELSEIF";Chars cENDELSE_c="ENDELSE";Chars cWHILE_c="WHILE";Chars cENDWHILE_c="ENDWHILE";Chars cBREAK_c="BREAK";Chars cCONTINUE_c="CONTINUE"
 Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX"
 Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRYLINUX_c="ENTRYLINUX";Chars cENTRY_c="ENTRY"
@@ -23,7 +23,7 @@ Chars cINCLUDE_c="INCLUDE"
 Chars cFORMAT_c="FORMAT"
 Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL";Chars cAFTERCALL_c="AFTERCALL"
 Chars cWARNING_c="WARNING"
-Chars cCALLEX_c="CALLEX"
+Chars cCALLEXX_c="CALLEXX";Chars cCALLEX_c="CALLEX"
 Chars cOVERRIDE_c="OVERRIDE"
 Chars cLIBRARY_c="LIBRARY"
 Chars cHEX_c="HEX"
@@ -230,9 +230,13 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cEXIT
 			Data *=spacereq
 	Const cCALL=!-coms_start
+		data *^cCALLX_c
+		Data *=cCALL
+		Data *=x_callx_flag
+		Data *=spacereq
 		data *^cCALL_c
 		Data *=cCALL
-		Data *#1
+		Data *=0
 		Data *=spacereq
 	Const cCONDITIONS=!-coms_start
 	Const cCONDITIONS_top=!
@@ -359,9 +363,13 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *#1
 		Data *=spacereq
 	Const cCALLEX=!-coms_start
+		data *^cCALLEXX_c
+		Data *=cCALLEX
+		Data *=x_callx_flag
+		Data *=spacereq
 		data *^cCALLEX_c
 		Data *=cCALLEX
-		Data *#1
+		Data *=0
 		Data *=spacereq
 	Const cOVERRIDE=!-coms_start
 		data *^cOVERRIDE_c
@@ -392,6 +400,7 @@ Data pointersvars#numberofcommandsvars+1
 Const compointersvarsloc^pointersvars
 
 const x_call_flag=0x80000000
+const x_callx_flag=0x40000000
 
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
@@ -439,8 +448,9 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		Chars calldata="CALL"
 		Str call^calldata
 		Str extstr#1
-		Data extbooldata#1
-		Data extbool^extbooldata
+
+		sd extbooldata=FALSE
+		sv extbool^extbooldata
 
 		If command==(cPRIMSEC)
 			Set extstr call
@@ -449,15 +459,22 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		EndElse
 
 		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool)
-		If result==true
-			If command==(cPRIMSEC)
-				If extbooldata==true
-					#or first byte at subcommand to recognize the xcall at two args
-					or ptrsubtype# (x_call_flag)
-				EndIf
-			EndIf
+		If extbooldata==true
+			#If command==(cPRIMSEC)  only here atm
+			#or first byte at subcommand to recognize the xcall at two args
+			or ptrsubtype# (x_call_flag)
+			if result==(FALSE)
+				setcall result stratmemspc(pcontent,psize,"X",spacebool)
+				if result==(TRUE)
+					or ptrsubtype# (x_callx_flag)
+					return command
+				endif
+				break
+			endif
+			return command
+		elseIf result==true
 			Return command
-		EndIf
+		endelseIf
 		Add pointercommands dsz
 		Set cursor pointercommands#
 	EndWhile
