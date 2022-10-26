@@ -2,8 +2,8 @@ Source: ocompiler
 Section: utils
 Priority: optional
 Maintainer: Costin Botescu <costin.botescu@gmail.com>
-Build-Depends: debhelper (>= 9), ocompiler, libc6-dev-i386 [amd64]
-#python3-minimal, lief
+Build-Depends: debhelper (>= 9), ocompiler, libc6-dev-i386 [amd64], lief | ocompiler
+#to trick to not install lief on xenial
 Standards-Version: 4.5.0
 Homepage: https://github.com/colin-i/o
 Rules-Requires-Root: no

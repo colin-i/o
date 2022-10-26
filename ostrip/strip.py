@@ -92,6 +92,9 @@ if proc.returncode==0:
 					a[i].virtual_address+=dif
 					#this is not tested at stdout/stderr that goes into .bss that is after .data
 				elffile.write(outputfile)
+				print("virtual_address modifications")
+			else:
+				print("virtual_address modifications were not required")
 			st = os.stat(outputfile)
 			import stat
 			os.chmod(outputfile, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
