@@ -32,7 +32,6 @@ git restore debian/changelog
 
 #plans:
 
-#value^importx    for call value and for rsp ...8 align
 #SHT_NOBITS at virtual
 #simple and or
 #={"a","b"}
