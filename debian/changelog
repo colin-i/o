@@ -1,3 +1,9 @@
+ocompiler (1-5+58) bionic; urgency=medium
+
+  * fix and callx variants
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 27 Oct 2022 07:30:36 +0300
+
 ocompiler (1-5+57) xenial; urgency=medium
 
   * fix
