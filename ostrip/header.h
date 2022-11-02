@@ -4,6 +4,8 @@ include "../src/files/headers/strip.h"
 const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
 const NULL=0
+const TRUE=1
+const FALSE=0
 
 Const SEEK_SET=0
 Const SEEK_CUR=1

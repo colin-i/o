@@ -83,11 +83,19 @@ function get_file(sd name,sv p_file,sv secN,sv p_secN,sd pnrsec,sd psecond_sec,s
 				#exec
 					#get sec indexes from section names table
 					sd reladyn
+					sd dynsym
+					sd dynstr
 					setcall return_value shnames(file,offset,shentsize,shstrndx,secN,pnrsec,(NULL),#reladyn)
 					call get_section_item(file,offset,end,#return_value,0,shentsize)
 					call write_symtab_offset(file,offset,end,shentsize,only_at_exec)
 					if reladyn!=-1
 						setcall frees.execreladynsize get_section_many(file,offset,end,shentsize,reladyn,#frees.execreladyn)
+					endif
+					if dynsym!=-1
+						if dynstr!=-1
+							setcall frees.execdynsymsize get_section_many(file,offset,end,shentsize,dynsym,#frees.execdynsym)
+							setcall frees.execdynstrsize get_section_many(file,offset,end,shentsize,dynstr,#frees.execdynstr)
+						endif
 					endif
 				endelse
 
@@ -164,6 +172,10 @@ function shnames(sd file,sd offset,sd shentsize,sd shstrndx,sv secN,sd pnrsec,sd
 		setcall psecond_sec# shnames_find(mem,end,".text")
 	else
 		setcall only_at_exec# shnames_find(mem,end,".rela.dyn")
+		incst only_at_exec
+		setcall only_at_exec# shnames_find(mem,end,".dynsym")
+		incst only_at_exec
+		setcall only_at_exec# shnames_find(mem,end,".dynstr")
 	endelse
 	#else set datasec firstnrsec
 

@@ -45,10 +45,15 @@ if (os.path.exists(s3)):
 			with open(s3,'rb') as s:
 				f.write(s.read())
 s4=".rela.dyn"
+objcopy=["objcopy",outputfile,"--update-section",s1+"="+s1,"--update-section",s2+"="+s2]
 if (os.path.exists(s4)):
-	proc=subprocess.run(["objcopy",outputfile,"--update-section",s1+"="+s1,"--update-section",s2+"="+s2,"--update-section",s4+"="+s4])
-else:
-	proc=subprocess.run(["objcopy",outputfile,"--update-section",s1+"="+s1,"--update-section",s2+"="+s2])
+	objcopy.append("--update-section")
+	objcopy.append(s4+"="+s4)
+s5=".dynsym"
+if (os.path.exists(s5)):
+	objcopy.append("--update-section")
+	objcopy.append(s5+"="+s5)
+proc=subprocess.run(objcopy)
 
 if proc.returncode==0:
 	import lief

@@ -100,6 +100,8 @@ if argc>=(1+3)  #0 is all the time
 	#and set data null here, it is useless there for objects call
 	set pexe# (NULL)   #data
 	set frees.execreladyn (NULL)
+	set frees.execdynsym (NULL)
+	set frees.execdynstr (NULL)
 
 	sv pobjects%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
@@ -149,6 +151,15 @@ if argc>=(1+3)  #0 is all the time
 
 		#replace on the field
 		call aftercall_in_objects(pobjects#,acall,datavaddr,textinneroffset)
+
+		#replace in dynsym (can be at shared, mainly)
+		if frees.execdynsym!=(NULL)
+			sd bool;setcall bool aftercall_replace(#frees.execdynsym,#frees.execdynstr,acall,datavaddr)
+			#it is not in all cases here (even at shared)
+			if bool==(TRUE)
+				call write_sec(".dynsym",frees.execdynsym,frees.execdynsymsize)
+			endif
+		endif
 	else
 		#skip symtab if no aftercall
 		set s3c (NULL)  #write will stop there

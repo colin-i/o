@@ -52,6 +52,7 @@ const sym__to_shndx=datasize+charsize+charsize
 	return (NULL)
 endfunction
 
+#bool
 function aftercall_replace(sv psym,sv pstr,ss astr,sv aoffset)
 	sd pos;setcall pos shnames_find_sec(pstr,astr)
 	if pos!=-1
@@ -66,11 +67,12 @@ function aftercall_replace(sv psym,sv pstr,ss astr,sv aoffset)
 				set sec#v^ aoffset
 				call verbose((verbose_count))
 				call verbose((verbose_flush))
-				ret
+				return (TRUE)
 			endif
 			add sec (sym_size)
 		endwhile
 	endif
+	return (FALSE)
 endfunction
 
 function aftercall_in_objects(sv objects,ss astr,sv aoffset,sd textinneroffset)

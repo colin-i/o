@@ -8,11 +8,13 @@ function frees()
 	valuex exetext#1;valuex exetextsize#1
 	valuex exesym#section_nr_of_values
 	valuex exestr#section_nr_of_values
-	valuex execreladyn#1;valuex execreladynsize#1
 	const pexedata^exedata;const pexedatasize^exedatasize
 	const pexetext^exetext
 	const pexesym^exesym
 	const pexestr^exestr
+	valuex execreladyn#1;valuex execreladynsize#1
+	valuex execdynsym#1;valuex execdynsymsize#1
+	valuex execdynstr#1;valuex execdynstrsize#1
 		if exedata!=(NULL)
 			call free(exedata)
 			if exetext!=(NULL)
@@ -27,6 +29,12 @@ function frees()
 		endif
 		if execreladyn!=(NULL)
 			call free(execreladyn)
+		endif
+		if execdynsym!=(NULL)
+			call free(execdynsym)
+			if execdynstr!=(NULL)
+				call free(execdynstr)
+			endif
 		endif
 		valuex objects#1
 		const pobjects^objects
