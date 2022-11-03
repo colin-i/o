@@ -1,3 +1,9 @@
+ocompiler (1-5+60) jammy; urgency=medium
+
+  * ostrip: dynsym and fix the build
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 03 Nov 2022 08:49:57 +0200
+
 ocompiler (1-5+59) bionic; urgency=medium
 
   * fix and callx variants

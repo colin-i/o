@@ -26,9 +26,8 @@ compile: ${OBJ}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
 
-#xenial do wrong access somehow, bionic and focal do extra code at text and need to extra code at realoffset for .text
 strip:
-	if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
+	if [ "$(shell lsb_release -cs)" != "xenial" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
 			python3 strip.py ${FULLOBJ} ${FULLOBJ}; \
