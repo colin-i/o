@@ -27,10 +27,11 @@ sed -i '1s/)/x)/' debian/changelog && \
 ~/test/publp && \
 ~/test/publp2 && \
 ~/test/lp 0 "bionic focal" && \
-git restore debian/changelog && \
 ~/test/lp x "bionic focal" && \
+git restore debian/changelog && \
 git diff
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
+#restore after last lp where inside publp2 will check version
 
 #plans:
 

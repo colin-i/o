@@ -15,20 +15,19 @@ endif
 #OFLAGS=
 
 %.o: ${FULLOBJS}
-	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else ${OCOMP} $< ${OFLAGS};fi
+	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else ${OCOMP} $< ${OFLAGS};mv ${FULLOBJO} .;fi
 
 syms =-s
 ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
 
 o: ${OBJ}
-	if [ -f ${OBJ} ];then ${ATLDCOM} $^;else ${ATLDCOM} ${FULLOBJO};fi
+	${ATLDCOM} $^
 
-install: o
+install: all
 	install -D o \
 		$(DESTDIR)$(prefix)/bin/o
 
 clean-compile:
-	-rm -f ${FULLOBJO}
 	-rm -f ${OBJ}
 	-rm -f ${FULLOBJS}.log
 

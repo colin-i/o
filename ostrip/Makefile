@@ -15,27 +15,22 @@ OCOMP=../src/o
 
 syms =-s
 ATCCCOM = $(CC) ${syms} -o ${OB}
-#ld build is failing, must do pie at bionic
 
-ostrip: compile strip
-	@echo
-#without this echo will do a strange cc command
-
-compile: ${OBJ}
+ostrip: ${OBJ}
 	../ounused/ounused ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
-
-#xenial do wrong access somehow, bionic and focal do extra code at text and need to extra code at realoffset for .text
-strip:
 	if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
 			python3 strip.py ${FULLOBJ} ${FULLOBJ}; \
 		fi; \
 	fi
+#	@echo
+#without this echo will do a strange cc command
+#xenial do wrong access somehow, bionic and focal do extra code at text and need to extra code at realoffset for .text
 
-install: ostrip
+install: all
 	install -D ostrip \
 		$(DESTDIR)$(prefix)/bin/ostrip
 

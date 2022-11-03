@@ -7,8 +7,12 @@ FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 
+ifndef OCOMP
+OCOMP=../src/o
+endif
+
 %.o: ${FULLOBJS}
-	../src/o $< exit_end 1
+	${OCOMP} $< exit_end 1
 
 syms =-s
 ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
@@ -18,7 +22,7 @@ ounused: ${OBJ}
 	./${OB} ${FULLOBJLOG}
 	@echo
 
-install: ounused
+install: all
 	install -D ounused \
 		$(DESTDIR)$(prefix)/bin/ounused
 
