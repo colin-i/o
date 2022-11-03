@@ -25,9 +25,9 @@ sed -i '1s/)/x)/' debian/changelog && \
 ~/test/debuild && \
 ~/test/deb && \
 ~/test/publp && \
-git restore debian/changelog && \
 ~/test/publp2 && \
 ~/test/lp 0 "bionic focal" && \
+git restore debian/changelog && \
 ~/test/lp x "bionic focal" && \
 git diff
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
