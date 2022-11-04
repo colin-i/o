@@ -9,6 +9,7 @@ FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 OCOMP=../src/o
+OUNUSED=../ounused/ounused
 
 %.o: ${FULLOBJS}
 	${OCOMP} $< ${OFLAGS}
@@ -17,7 +18,7 @@ syms =-s
 ATCCCOM = $(CC) ${syms} -o ${OB}
 
 ostrip: ${OBJ}
-	../ounused/ounused ${FULLOBJLOG}
+	${OUNUSED} ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
 	if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
