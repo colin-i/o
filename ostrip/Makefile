@@ -17,6 +17,8 @@ OUNUSED=../ounused/ounused
 syms =-s
 ATCCCOM = $(CC) ${syms} -o ${OB}
 
+strippy=ostriputil
+
 ostrip: ${OBJ}
 	${OUNUSED} ${FULLOBJLOG}
 	@echo
@@ -24,7 +26,7 @@ ostrip: ${OBJ}
 	if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
-			python3 strip.py ${FULLOBJ} ${FULLOBJ}; \
+			${strippy} ${FULLOBJ} ${FULLOBJ}; \
 		fi; \
 	fi
 #	@echo
