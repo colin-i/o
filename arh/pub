@@ -20,18 +20,26 @@ last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_n
 ~/test/keyring && \
 ~/test/del x ${last} && \
 ~/test/arh2 ${last} && \
+sed -i '1s/jammy/bionic/' debian/changelog && \
+sed -i '1s/)/b)/' debian/changelog && \
+~/test/debuild && \
+~/test/deb && \
+~/test/publp && \
+~/test/publp2 && \
+~/test/lp 0 "focal" && \
+~/test/lp x "focal" && \
+git restore debian/changelog && \
 sed -i '1s/jammy/xenial/' debian/changelog && \
 sed -i '1s/)/x)/' debian/changelog && \
 ~/test/debuild && \
 ~/test/deb && \
 ~/test/publp && \
 ~/test/publp2 && \
-~/test/lp 0 "bionic focal" && \
-~/test/lp x "bionic focal" && \
 git restore debian/changelog && \
 git diff
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
 #restore after last lp where inside publp2 will check version
+#the xenial ostrip is not working (is just a cc)
 
 #plans:
 
