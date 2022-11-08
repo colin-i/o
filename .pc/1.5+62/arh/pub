@@ -36,7 +36,6 @@ sed -i '1s/)/x)/' debian/changelog && \
 ~/test/publp && \
 ~/test/publp2 && \
 git restore debian/changelog && \
-git restore debian/files && \
 git diff
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
 #restore after last lp where inside publp2 will check version

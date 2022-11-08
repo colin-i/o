@@ -190,7 +190,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					while argsize!=last
 						if argsize#==d_quot
 							dec argsize
-							if argsize#!=(asciibs)
+							if argsize!=(asciibs)
 								inc argsize
 								set last argsize
 							else
