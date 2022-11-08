@@ -83,11 +83,11 @@ const fndecandgroup=1
 #er
 Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrparses,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool)
 	Data zero=0
-	Data argsize#1
+	vstrx argsize#1
 	Chars comma=","
 	Data err#1
 	Data noerr=noerror
-	Data content#1
+	datax content#1
 	Data csv#1
 	Data csvloop=1
 
@@ -176,48 +176,38 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			if typenumberOrparses==(pass_calls) #for regs at call   and shadow space
 				call nr_of_args_64need_count()
 			endif
-			sd delim
-			set delim comma
+
 			if sz!=0
-				ss test
-				set test content
-				dec test
+				set argsize content
+				dec argsize
 				chars d_quot=asciidoublequote
-				if test#==d_quot
-					set delim d_quot
+				if argsize#==d_quot
 					#look later at escapes, here only at the margins
-					ss c
-					sd s
-					set c content
-					set s sz
-					set argsize s
-					#case "abc,"
-					dec test
-					if test#==comma
-						sub c 2
-						sub s 2
-					endif
-					#
-					sd len
-					sd loop=1
-					while loop==1
-						#here the sens is backward and ," or (" represents the end of the string
-						SetCall len valinmemsens(c,s,comma,sens)
-						mult len -1
-						Call advancecursors(#c,#s,len)
-						if c#==d_quot
-							set loop 0
+					#here the string ".." is in a good condition when quotes_forward was called at fn(...)
+					sd last;set last content
+					sub last sz
+					dec argsize
+					while argsize!=last
+						if argsize#==d_quot
+							dec argsize
+							if argsize!=(asciibs)
+								inc argsize
+								set last argsize
+							else
+								dec argsize
+							endelse
 						else
-							#here the string ".." is in a good condition when quotes_forward was called at fn(...)
-							Call advancecursors(#c,#s,-1)
+							dec argsize
 						endelse
 					endwhile
-					sub argsize s
-				endif
-			endif
-			if delim==comma
-				SetCall argsize valinmemsens(content,sz,comma,sens)
-			endif
+					sub argsize content
+					neg argsize
+				else
+					SetCall argsize valinmemsens(content,sz,comma,sens)
+				endelse
+			else
+				set argsize 0
+			endelse
 
 			Data negvalue#1
 			Set negvalue zero
