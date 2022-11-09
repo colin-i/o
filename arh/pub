@@ -40,7 +40,7 @@ git restore debian/files && \
 git diff
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
 #restore after last lp where inside publp2 will check version
-#the xenial ostrip is not working (is just a cc)
+#the xenial ostrip is not working, but was ok on edb testing here on jammy
 
 #plans:
 
