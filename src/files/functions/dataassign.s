@@ -111,6 +111,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 								add value (qwsz)
 							else
 								add value (dwsz)
+								addcall value reloc64_mid()
 							endelse
 						endif
 						if relocbool==true
@@ -121,6 +122,12 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					else
 						#let relocationsign, mess with dataReg, possible error will be catched at pass_write
 						inc punitsize#   #null end
+						if stack==false
+							if long_mask==0
+								#for ^ and rel64 write is somewhere else
+								addcall punitsize# reloc64_mid()
+							endif
+						endif
 					endelse
 				EndElseIf
 				if stringtodata==false
