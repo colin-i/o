@@ -1,3 +1,9 @@
+ocompiler (1-5+63) jammy; urgency=medium
+
+  * fix reloc64 at str
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 11 Nov 2022 06:05:27 +0200
+
 ocompiler (1-5+62) jammy; urgency=medium
 
   * fix
