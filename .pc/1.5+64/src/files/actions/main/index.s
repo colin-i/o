@@ -97,13 +97,11 @@ if loop==1
 						Elseif commandset==(cFORMAT)
 						Elseif commandset==(cDECLAREAFTERCALL)  #and import
 						elseif commandset==(cWARNING)    #for addaref
-						elseif commandset==(cOVERRIDE)   #example underscore_pref
 						else;set commandset (cCOMMENT);endelse
 					else
 					#pass_calls
 						If commandset==(cPRIMSEC);elseif commandset==(cCALL)
-						elseif commandset==(cINCLUDE);elseif commandset==(cENDFUNCTION)
-						elseif commandset==(cOVERRIDE)   #example call_align
+						elseif commandset==(cENDFUNCTION);elseif commandset==(cINCLUDE)
 						else;set commandset (cCOMMENT);endelse
 					endelse
 				endif
@@ -157,7 +155,6 @@ if loop==1
 		call entryscope_verify_code()
 				Include "./index/callex.s"
 			ElseIf commandset==(cOVERRIDE)
-				#is at all, example at write hidden_pref
 				Include "./index/override.s"
 			ElseIf commandset==(cLIBRARY)
 				if parses==(pass_init);Include "./index/library.s"
