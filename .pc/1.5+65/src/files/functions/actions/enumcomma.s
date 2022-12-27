@@ -16,21 +16,15 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 				#data
 				Data ptraddresses%ptraddresses
 				Data relocoff=0
-
 				SetCall err adddirectrel_base(ptraddresses,relocoff,relindex,ptrvalue#)
 				If err!=noerr;Return err;EndIf
 				#data a^dataB
 				if relindex==(codeind)
 					#data^functionReloc
-					#this is at relocs not at data
 					setcall err unresReloc(ptraddresses)
 					If err!=noerr;Return err;EndIf
-					#ptrvalue# it is an addresses value (nothing related to the real value)
-					#	that will be resolved and overwritten at resolve.s
 				endif
-
 				call inplace_reloc(ptrvalue)
-
 				#endif
 				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec)
 				If err==(noerror)

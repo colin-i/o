@@ -2,6 +2,11 @@
 data nul_res_pref#1
 const p_nul_res_pref^nul_res_pref
 
+data inplace_reloc_pref#1
+const p_inplace_reloc_pref^inplace_reloc_pref
+const zero_reloc=0
+const addend_reloc=1
+
 data ignore_format_so#1
 const p_ignore_format_so^ignore_format_so
 

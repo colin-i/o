@@ -388,11 +388,6 @@ const nr_of_prefs_jumper=nr_of_prefs*:
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
 const nr_of_prefs_pointers_p^nr_of_prefs_pointers;const nr_of_prefs_strings_p^nr_of_prefs_strings
 
-data inplace_reloc_pref#1
-const p_inplace_reloc_pref^inplace_reloc_pref
-const zero_reloc=0
-const addend_reloc=1
-
 data pref_reloc_64#1
 const p_pref_reloc_64^pref_reloc_64
 

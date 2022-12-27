@@ -22,7 +22,6 @@ function localResolve(sd unrLc,sd unrLcReg)
 		add cont offset
 
 		call getcont(fns,ptr_funcs)
-
 		add funcs cont#
 		sd value
 		set value funcs#

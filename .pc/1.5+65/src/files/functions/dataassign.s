@@ -324,12 +324,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if punitsize==(NULL)
 				#init -1, 0 is local function in the right
 				if importbittest==0
+				#and no problems if inplace_reloc is 0 there
 					if stack==false
-						sd p_inplace_reloc_pref%p_inplace_reloc_pref
-						if p_inplace_reloc_pref#!=(zero_reloc)
-							#at addend 0 at data must not pe resolved
-							setcall err unresLc(0,ptrdatasec,0)
-						endif
+						setcall err unresLc(0,ptrdatasec,0)
 					else
 						#it's only an imm to reg
 						sd stack_off;setcall stack_off reloc64_offset((rampadd_value_off))
