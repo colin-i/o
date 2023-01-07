@@ -324,19 +324,19 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if punitsize==(NULL)
 				#init -1, 0 is local function in the right
 				if importbittest==0
-					sd p_inplace_reloc_pref%p_inplace_reloc_pref
-					#at addend 0 at data/code must not pe resolved
-					if p_inplace_reloc_pref#!=(zero_reloc)
-						if stack==false
+					if stack==false
+						sd p_inplace_reloc_pref%p_inplace_reloc_pref
+						if p_inplace_reloc_pref#!=(zero_reloc)
+							#at addend 0 at data must not pe resolved
 							setcall err unresLc(0,ptrdatasec,0)
-						else
-							#it's only an imm to reg
-							sd stack_off;setcall stack_off reloc64_offset((rampadd_value_off))
-							setcall err unresLc(stack_off,ptrcodesec,0)
-						endelse
-						if err!=(noerror)
-							return err
 						endif
+					else
+						#it's only an imm to reg
+						sd stack_off;setcall stack_off reloc64_offset((rampadd_value_off))
+						setcall err unresLc(stack_off,ptrcodesec,0)
+					endelse
+					if err!=(noerror)
+						return err
 					endif
 				endif
 				#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
