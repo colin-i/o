@@ -37,7 +37,9 @@ sed -i '1s/)/x)/' debian/changelog && \
 ~/test/publp2 && \
 git restore debian/changelog && \
 git restore debian/files && \
-echo git diff = `git diff && echo $?`
+echo git diff = `git diff && echo $?` && \
+~/test/sync/s
+
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
 #restore after last lp where inside publp2 will check version
 #the xenial ostrip is not working, but was ok on edb testing here on jammy
