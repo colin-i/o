@@ -37,7 +37,7 @@ sed -i '1s/)/x)/' debian/changelog && \
 ~/test/publp2 && \
 git restore debian/changelog && \
 git restore debian/files && \
-echo git diff = `git diff && echo $?` && \
+git diff && echo git-diff=$? && \
 ~/test/sync/s
 
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
