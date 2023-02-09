@@ -46,7 +46,7 @@ git diff && echo git-diff=$? && \
 
 #plans:
 
-#SHT_NOBITS at virtual
+#SHT_NOBITS at virtual (.dtnb name; will not work .data named)
 #simple and or
 #={"a","b"}
 #~(page_sectionalignment-1)
