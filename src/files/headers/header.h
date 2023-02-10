@@ -382,7 +382,7 @@ const p_hidden_pref^hidden_pref
 Data safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=19
+const nr_of_prefs=20
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
@@ -444,3 +444,6 @@ const ptrdataSize^datasecSize
 
 #x
 const log_expand=0x78
+
+data nobits_virtual#1
+const ptr_nobits_virtual^nobits_virtual

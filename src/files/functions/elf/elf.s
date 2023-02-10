@@ -58,7 +58,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 
 	Const SHT_NULL=0
 	Const SHT_PROGBITS=1
-	#Const SHT_NOBITS=8
+	Const SHT_NOBITS=8
 
 	const SHF_WRITE=1
 		#Occupies memory during execution,1 << 1

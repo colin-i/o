@@ -4,6 +4,7 @@ Const TRUE=1
 Const FALSE=0
 Const NULL=0
 Const No=FALSE
+Const Yes=TRUE
 
 #files
  #open

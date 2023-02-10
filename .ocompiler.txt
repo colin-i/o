@@ -78,3 +78,7 @@ ignore_format_so=0
 19. At 64, before a call, align stack. Cases for arguments and shadow(windows only).
 0 is No; 1 is Yes; 2 is Yes for arguments and shadow; 3 is Yes for arguments
 call_align=1
+
+20. Virtual data to a SHT_NOBITS at object
+0 is No; 1 is Yes
+nobits_virtual=1

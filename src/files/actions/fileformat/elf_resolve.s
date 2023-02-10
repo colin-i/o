@@ -276,31 +276,13 @@ Else
 	#######
 	call memtomem(ptrelf32_ehd_e_phnum,ptrnull,wordsize)
 	#######
-	Const elf_sec_nr=7
-	Const elf_sec_strtab_nr=elf_sec_nr-1
-	Data elf_sec_nr=elf_sec_nr
-	data ptrelf_sec_nr^elf_sec_nr
 	#######
-	Data elf_sec_strtab_nr=elf_sec_strtab_nr
-	data ptrelf_sec_strtab_nr^elf_sec_strtab_nr
+	sd elf_sec_nr=7
+	sd ptrelf_sec_nr^elf_sec_nr
 	#######
-
-	sd syment;sd relent
-	if p_is_for_64_value#==(TRUE)
-		Set elf64_ehd_e_shoff (elf64_fileheaders_size)
-		call memtomem(#elf64_ehd_e_shnum,ptrelf_sec_nr,wordsize)
-		call memtomem(#elf64_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
-		Set fileheaders #elf64_ehd_e_ident_sign
-		Set sizefileheaders (elf64_fileheaders_size)
-		set syment (elf64_dyn_d_val_syment);set relent (elf64_dyn_d_val_relent)
-	else
-		Set elf32_ehd_e_shoff elf_fileheaders_size
-		call memtomem(ptrelf32_ehd_e_shnum,ptrelf_sec_nr,wordsize)
-		call memtomem(ptrelf32_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
-		Set fileheaders elf_fileheaders
-		Set sizefileheaders elf_fileheaders_size
-		set syment elf32_dyn_d_val_syment;set relent elf32_dyn_d_val_relent
-	endelse
+	sd elf_sec_strtab_nr=-1
+	sd ptrelf_sec_strtab_nr^elf_sec_strtab_nr
+	#######
 
 	Data SHT_PROGBITS=SHT_PROGBITS
 	Data elf_sec_fileoff#1
@@ -324,6 +306,35 @@ Else
 		Call msgerrexit(errormsg)
 	EndIf
 
+	sd symind=symind
+
+	if nobits_virtual==(Yes)
+		SetCall errormsg elfaddstrsec(".dtnb",(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,ptrdummyEntry,null,null,(elf_sec_obj_align),null)
+		If errormsg!=noerr
+			Call msgerrexit(errormsg)
+		EndIf
+		inc elf_sec_nr
+		inc symind
+	endif
+
+	add elf_sec_strtab_nr elf_sec_nr
+	sd syment;sd relent
+	if p_is_for_64_value#==(TRUE)
+		Set elf64_ehd_e_shoff (elf64_fileheaders_size)
+		call memtomem(#elf64_ehd_e_shnum,ptrelf_sec_nr,wordsize)
+		call memtomem(#elf64_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
+		Set fileheaders #elf64_ehd_e_ident_sign
+		Set sizefileheaders (elf64_fileheaders_size)
+		set syment (elf64_dyn_d_val_syment);set relent (elf64_dyn_d_val_relent)
+	else
+		Set elf32_ehd_e_shoff elf_fileheaders_size
+		call memtomem(ptrelf32_ehd_e_shnum,ptrelf_sec_nr,wordsize)
+		call memtomem(ptrelf32_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)
+		Set fileheaders elf_fileheaders
+		Set sizefileheaders elf_fileheaders_size
+		set syment elf32_dyn_d_val_syment;set relent elf32_dyn_d_val_relent
+	endelse
+
 	Chars elfsymtab=".symtab"
 	Str ptrelfsymtab^elfsymtab
 	Data SHT_SYMTAB=2
@@ -335,7 +346,6 @@ Else
 	EndIf
 
 	Data SHT_RELA=4
-	Data symind=symind
 
 	Chars elfreldata=".rela.data"
 	Str ptrelfreldata^elfreldata
