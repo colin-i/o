@@ -45,6 +45,12 @@ function get_img_vdata_dataSize()
 	sd reg;setcall reg get_img_vdata()
 	vdata ptrdataSize%ptrdataSize
 	add reg ptrdataSize#
+	vdata ptr_nobits_virtual%ptr_nobits_virtual
+	if ptr_nobits_virtual#==(Yes)
+		#this is here because this function is called from fndecargs and from simple assignment
+		vdata ptrdataReg%ptrdataReg
+		sub reg ptrdataReg#
+	endif
 	return reg
 endfunction
 

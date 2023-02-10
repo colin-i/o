@@ -215,6 +215,11 @@ Data dummyEntryReg#1
 data ptrdummyEntry^dummyEntryMax
 Const ptrdummyEntry^dummyEntryMax
 
+data clownEntry#1
+data *#1
+Data datasecSize#1
+const ptrdataSize^datasecSize
+
 #fileformat#
 #file format variable
 Data fileformat#1
@@ -438,9 +443,6 @@ const allow_no=0
 const allow_yes=1
 
 const getarg_str=asciidoublequote
-
-Data datasecSize#1
-const ptrdataSize^datasecSize
 
 #x
 const log_expand=0x78

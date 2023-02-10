@@ -4,7 +4,7 @@ if errormsg!=(noerror)
 	call msgerrexit(errormsg)
 endif
 
-#this is temporary
+#in case old style virtual
 sub datasecSize datasecReg
 setcall errormsg set_reserve(datasecSize)
 if errormsg!=(noerror)
