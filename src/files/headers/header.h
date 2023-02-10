@@ -220,6 +220,10 @@ data *#1
 Data datasecSize#1
 const ptrdataSize^datasecSize
 
+#when taking offset at nobits
+data nobitsDataStart#1
+const ptr_nobitsDataStart^nobitsDataStart
+
 #fileformat#
 #file format variable
 Data fileformat#1

@@ -101,6 +101,7 @@ While includesReg!=null
 
 						set datasecSize datasecReg
 						set datasecReg 0
+						set nobitsDataStart datasecSize
 
 						set logbackup logfile
 						set logfile negative   #will reiterate tree. and will also have reusable,imports and constants

@@ -48,8 +48,8 @@ function get_img_vdata_dataSize()
 	vdata ptr_nobits_virtual%ptr_nobits_virtual
 	if ptr_nobits_virtual#==(Yes)
 		#this is here because this function is called from fndecargs and from simple assignment
-		vdata ptrdataReg%ptrdataReg
-		sub reg ptrdataReg#
+		vdata ptr_nobitsDataStart%ptr_nobitsDataStart
+		sub reg ptr_nobitsDataStart#
 	endif
 	return reg
 endfunction
