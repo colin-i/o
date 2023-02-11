@@ -208,10 +208,13 @@ Data STT_NOTYPE=STT_NOTYPE
 Data STT_FUNC=STT_FUNC
 Data STT_SECTION=STT_SECTION
 
+#const dataind=1
 Const codeind=2
+const dtnbind=3
 Const symind=3
 Data datastrtab#1
 Data codestrtab#1
+Data dtnbstrtab#1
 
 #Data objfnmask#1
 #Const ptrobjfnmask^objfnmask

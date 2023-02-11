@@ -96,10 +96,15 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		return noerr
 	endif
 
+	sd sectionind=dataind
 	if is_expand==(TRUE)
 		setcall memoff get_img_vdata_dataSize()
 		vdata ptrdataSize%ptrdataSize
 		add ptrdataSize# datasize
+		sd ptr_nobits_virtual%ptr_nobits_virtual
+		if ptr_nobits_virtual#==(Yes)
+			set sectionind (dtnbind)
+		endif
 	else
 		setcall memoff get_img_vdata_dataReg()
 		Data null={NULL,NULL}
@@ -132,12 +137,11 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		Const fndecargs_offend^memoff
 		Const fndecargs_offstart^stacktransfer1
 		Data ptrextra%ptrextra
-		Data dataind=dataind
 		sd reloff=fndecargs_offend-fndecargs_offstart
 		if long_mask!=0
 			inc reloff
 		endif
-		SetCall err adddirectrel_base(ptrextra,reloff,dataind,memoff)
+		SetCall err adddirectrel_base(ptrextra,reloff,sectionind,memoff)
 		If err!=noerr
 			Return err
 		EndIf

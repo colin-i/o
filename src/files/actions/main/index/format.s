@@ -58,7 +58,14 @@ If formatresponse==false
 						Data codeind=codeind
 						Set codestrtab namesReg
 						SetCall errormsg elfaddstrsym(ptrelftext,null,null,STT_SECTION,(STB_LOCAL),codeind,ptrtable)
-				const totallocalsymsaddedatstart=3
+						#sd totallocalsymsaddedatstart=3
+						If errormsg==noerr
+							if nobits_virtual==(Yes)
+								Set dtnbstrtab namesReg
+								SetCall errormsg elfaddstrsym(".dtnb",null,null,STT_SECTION,(STB_LOCAL),(dtnbind),ptrtable)
+								#inc totallocalsymsaddedatstart
+							endif
+						EndIf
 					EndIf
 				EndIf
 				Set imagebaseoffset null
@@ -69,9 +76,13 @@ If formatresponse==false
 			Set imagebaseoffset elf_imagebase
 
 			Set startofdata elf_startofdata
+
+			set nobits_virtual (No) #.dtnb is not yet at exec format
 		EndElse
 	EndIf
-EndIf
+Else
+	set nobits_virtual (No) #.dtnb is not yet at exe format
+EndElse
 
 If errormsg==noerr
 	If formatresponse==false

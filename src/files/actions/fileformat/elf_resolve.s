@@ -309,7 +309,7 @@ Else
 	sd symind=symind
 
 	if nobits_virtual==(Yes)
-		SetCall errormsg elfaddstrsec(".dtnb",(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,#clownEntry,null,null,(elf_sec_obj_align),null)
+		SetCall errormsg elfaddsec(dtnbstrtab,(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,#clownEntry,null,null,(elf_sec_obj_align),null)
 		If errormsg!=noerr
 			Call msgerrexit(errormsg)
 		EndIf
@@ -340,7 +340,8 @@ Else
 	Data SHT_SYMTAB=2
 	Add elf_sec_fileoff codesecReg
 
-	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,(totallocalsymsaddedatstart),dwordsize,syment)
+	#                                                                                                     totallocalsymsaddedatstart
+	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,symind,dwordsize,syment)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf

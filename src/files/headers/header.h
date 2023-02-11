@@ -12,7 +12,8 @@ Const stackbit=0x04
 Const stack_relative=0x08
 	#nostackbit: datapointbit
 Const datapointbit=0x08
-#bit offset 4:
+#bit offset 4: 1 means is virtual
+const expandbit=0x10
 #bit offset 5: 1 means ignore aftercall
 const aftercallthrowlessbit=0x20
 #bit offset 6: is functionX/importX

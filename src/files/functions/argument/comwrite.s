@@ -62,7 +62,7 @@ function datatake_reloc(sd takeindex,sd take_loc)
 		sd relocoff
 		setcall relocoff reloc64_offset(1)
 		sd errnr
-		setcall errnr adddirectrel_base_inplace(relocoff,#take_loc)
+		setcall errnr adddirectrel_base_inplace(relocoff,#take_loc,0)
 		If errnr!=(noerror)
 			Return errnr
 		EndIf
@@ -79,11 +79,17 @@ function datatake(sd takeindex,sd take_loc)
 	return errnr
 endfunction
 #err
-function adddirectrel_base_inplace(sd relocoff,sd p_take_loc)
+function adddirectrel_base_inplace(sd relocoff,sd p_take_loc,sd expand)
 	Data ptrextra%ptrextra
-	Data dataind=dataind
+	sd sectionind=dataind
+	if expand!=0
+		sd ptr_nobits_virtual%ptr_nobits_virtual
+		if ptr_nobits_virtual#==(Yes)
+			set sectionind (dtnbind)
+		endif
+	endif
 	sd errnr
-	SetCall errnr adddirectrel_base(ptrextra,relocoff,dataind,p_take_loc#)
+	SetCall errnr adddirectrel_base(ptrextra,relocoff,sectionind,p_take_loc#)
 	If errnr==(noerror)
 		call inplace_reloc(p_take_loc)
 	EndIf
@@ -104,7 +110,8 @@ function writetake(sd takeindex,sd entry)
 			sd var
 			setcall var function_in_code()
 			if var#==0
-				setcall errnr adddirectrel_base_inplace(relocoff,#take_loc)
+				sd expand;setcall expand expandbit(entry)
+				setcall errnr adddirectrel_base_inplace(relocoff,#take_loc,expand)
 				If errnr!=(noerror)
 					Return errnr
 				EndIf
