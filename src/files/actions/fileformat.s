@@ -4,13 +4,16 @@ if errormsg!=(noerror)
 	call msgerrexit(errormsg)
 endif
 
-#in case old style virtual
+#also needed at dtnb
 sub datasecSize datasecReg
-setcall errormsg set_reserve(datasecSize)
-if errormsg!=(noerror)
-	Call msgerrexit(errormsg)
+
+if nobits_virtual==(No)
+	#in case old style virtual
+	setcall errormsg set_reserve(datasecSize)
+	if errormsg!=(noerror)
+		Call msgerrexit(errormsg)
+	endif
 endif
-#
 
 If fileformat==pe_exec
 	Include "./fileformat/pe_struct.s"
