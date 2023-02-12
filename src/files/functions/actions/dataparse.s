@@ -77,6 +77,10 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 		if stack==false
 			if is_expand==(TRUE)
 				setcall value get_img_vdata_dataSize()
+				sd ptr_nobits_virtual%ptr_nobits_virtual
+				if ptr_nobits_virtual#==(Yes)
+					or mask (expandbit)
+				endif
 			else
 				setcall value get_img_vdata_dataReg()
 			endelse

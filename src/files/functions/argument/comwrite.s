@@ -83,10 +83,11 @@ function adddirectrel_base_inplace(sd relocoff,sd p_take_loc,sd expand)
 	Data ptrextra%ptrextra
 	sd sectionind=dataind
 	if expand!=0
-		sd ptr_nobits_virtual%ptr_nobits_virtual
-		if ptr_nobits_virtual#==(Yes)
-			set sectionind (dtnbind)
-		endif
+		#this test is already at var declaration
+		#sd ptr_nobits_virtual%ptr_nobits_virtual
+		#if ptr_nobits_virtual#==(Yes)
+		set sectionind (dtnbind)
+		#endif
 	endif
 	sd errnr
 	SetCall errnr adddirectrel_base(ptrextra,relocoff,sectionind,p_take_loc#)
