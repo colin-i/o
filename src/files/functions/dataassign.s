@@ -238,6 +238,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				set relocbool false
 				if stack==false
 					If typenumber!=constantsnr
+					#data^stack
 						setcall err writetake((eaxregnumber),pointer)
 						If err!=noerr
 							Return err

@@ -62,7 +62,7 @@ function datatake_reloc(sd takeindex,sd take_loc)
 		sd relocoff
 		setcall relocoff reloc64_offset(1)
 		sd errnr
-		setcall errnr adddirectrel_base_inplace(relocoff,#take_loc,0)
+		setcall errnr adddirectrel_base_inplace(relocoff,#take_loc,(dataind))
 		If errnr!=(noerror)
 			Return errnr
 		EndIf
@@ -79,16 +79,8 @@ function datatake(sd takeindex,sd take_loc)
 	return errnr
 endfunction
 #err
-function adddirectrel_base_inplace(sd relocoff,sd p_take_loc,sd expand)
+function adddirectrel_base_inplace(sd relocoff,sd p_take_loc,sd sectionind)
 	Data ptrextra%ptrextra
-	sd sectionind=dataind
-	if expand!=0
-		#this test is already at var declaration
-		#sd ptr_nobits_virtual%ptr_nobits_virtual
-		#if ptr_nobits_virtual#==(Yes)
-		set sectionind (dtnbind)
-		#endif
-	endif
 	sd errnr
 	SetCall errnr adddirectrel_base(ptrextra,relocoff,sectionind,p_take_loc#)
 	If errnr==(noerror)
@@ -112,7 +104,17 @@ function writetake(sd takeindex,sd entry)
 			setcall var function_in_code()
 			if var#==0
 				sd expand;setcall expand expandbit(entry)
-				setcall errnr adddirectrel_base_inplace(relocoff,#take_loc,expand)
+				sd sectionind
+				if expand!=0
+					#this test is already at var declaration
+					#sd ptr_nobits_virtual%ptr_nobits_virtual
+					#if ptr_nobits_virtual#==(Yes)
+					set sectionind (dtnbind)
+					#endif
+				else
+					set sectionind (dataind)
+				endelse
+				setcall errnr adddirectrel_base_inplace(relocoff,#take_loc,sectionind)
 				If errnr!=(noerror)
 					Return errnr
 				EndIf
