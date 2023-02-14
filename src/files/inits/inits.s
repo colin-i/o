@@ -91,6 +91,7 @@ set functionTagIndex 0
 call resetisimm()
 
 #this is init at main.s and used after that    set datasecSize 0
+set nobitssecReg 0
 
 sd p_b
 setcall p_b is_for_64_is_impX_or_fnX_p_get()

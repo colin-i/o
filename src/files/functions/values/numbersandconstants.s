@@ -166,12 +166,27 @@ function numbertoint(str content,data size,data outval,data minusbool)
 	#test to see if the ! sign is present that means the current data cursor
 	chars data_cursor=asciiexclamationmark
 	if content#==data_cursor
-		setcall outval# get_img_vdata_dataReg()
-		if size!=1
-			str er="The text after the data cursor sign isn't recognized."
-			return er
+		if size==1
+			setcall outval# get_img_vdata_dataReg()
+			return (noerror)
 		endif
-		return (noerror)
+		if size==2
+			inc content
+			if content#==(asciix)
+				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain or nothing at windows
+				vdata ptr_nobits_virtual%ptr_nobits_virtual
+				if ptr_nobits_virtual#==(Yes)
+					vdata pnobitsReg%ptrnobitsReg
+					set outval# pnobitsReg#
+					#add outval# get_img_vdata()
+					return (noerror)
+				endif
+				return "At the moment, !x not calculated for this format (example: is calculated at object with nobits section)"
+			endif
+			return "Expecting !x"
+		endif
+		str er="The text after the data cursor sign isn't recognized."
+		return er
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
 	chars int_size=asciicolon
 	elseif content#==int_size

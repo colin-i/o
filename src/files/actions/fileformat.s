@@ -5,11 +5,12 @@ if errormsg!=(noerror)
 endif
 
 #also needed at dtnb
-sub datasecSize datasecReg
+#sub datasecSize datasecReg
 
 if nobits_virtual==(No)
 	#in case old style virtual
-	setcall errormsg set_reserve(datasecSize)
+	#setcall errormsg set_reserve(datasecSize)
+	setcall errormsg set_reserve(nobitssecReg)
 	if errormsg!=(noerror)
 		Call msgerrexit(errormsg)
 	endif

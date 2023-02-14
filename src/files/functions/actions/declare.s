@@ -14,12 +14,13 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	sd is_expand
 	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
 
-	if is_expand==(TRUE)
-		if parses==(pass_init)
-			call advancecursors(pcontent,pcomsize,pcomsize#)
-			return (noerror)
-		endif
-	endif
+	#still can be ok at nobits=No, let natural selection because pnobitsReg is implemented instead of datasecSize at writes for simplicity
+	#if is_expand==(TRUE)
+	#	if parses==(pass_init)
+	#		call advancecursors(pcontent,pcomsize,pcomsize#)
+	#		return (noerror)
+	#	endif
+	#endif
 
 	if declare_typenumber==(vintegersnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
@@ -118,8 +119,13 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 					endif
 				endelse
 				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,is_stack) #there is 1 more argument but is not used
-				sd pdataReg%ptrdataReg
-				add pdataReg# unitsize    #this is init by 0
+				if is_expand==(FALSE)
+					sd pdataReg%ptrdataReg
+					add pdataReg# unitsize    #this is init by 0
+				else
+					sd pnobitsReg%ptrnobitsReg
+					add pnobitsReg# unitsize    #this is init by 0
+				endelse
 			endelse
 		else
 			if typenumber==(constantsnumber)

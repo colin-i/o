@@ -17,7 +17,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 				Data ptraddresses%ptraddresses
 				Data relocoff=0
 
-				SetCall err adddirectrel_base(ptraddresses,relocoff,relindex,ptrvalue#)
+				SetCall err adddirectrel(ptraddresses,relocoff,relindex,ptrvalue)
 				If err!=noerr;Return err;EndIf
 				#data a^dataB
 				if relindex==(codeind)
@@ -55,7 +55,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 			sd stackoff
 			setcall stackoff reloc64_offset((rampadd_value_off))
 			data ptrextra%ptrextra
-			setcall err adddirectrel_base(ptrextra,stackoff,relindex,ptrvalue#)
+			setcall err adddirectrel(ptrextra,stackoff,relindex,ptrvalue)
 			If err!=noerr;Return err;EndIf
 			#s^dat
 			if relindex==(codeind)
