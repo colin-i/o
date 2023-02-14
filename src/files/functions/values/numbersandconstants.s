@@ -181,9 +181,9 @@ function numbertoint(str content,data size,data outval,data minusbool)
 					#add outval# get_img_vdata()
 					return (noerror)
 				endif
-				return "At the moment, !x not calculated for this format (example: is calculated at object with nobits section)"
+				return "At the moment, !x is not calculated for this format (example: is calculated at object with nobits section)."
 			endif
-			return "Expecting !x"
+			return "Expecting !x."
 		endif
 		str er="The text after the data cursor sign isn't recognized."
 		return er

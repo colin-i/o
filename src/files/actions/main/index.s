@@ -83,7 +83,12 @@ if loop==1
 				if commandset!=(cCOMMENT)
 					if parses==(pass_init)
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
-						if formatdefined==0;Set formatdefined 1;endif
+						if formatdefined==0
+							if commandset!=(cFORMAT)
+								set nobits_virtual (No)   #this is pe_exe format, same behavior for nobits
+							endif
+							Set formatdefined 1
+						endif
 						#needing to find virtual start
 						if commandset==(cDECLARE)
 						ElseIf commandset==(cPRIMSEC)
@@ -171,6 +176,27 @@ if loop==1
 				Include "./index/i3.s"
 			EndElse
 			If errormsg==(noerror)
+				#after the first noncomment command, the format command cannot be changed
+				#this can be at line 0
+				if formatdefined==1;Set formatdefined 2;endif
+
+				#set when code started
+				#this can be at line 0
+				If fnavailable==two
+					#retain the file and line where the main scope was started for functions separated from main code
+					#fnavailable two was set by code detectors
+					Data currentfile#1
+					Set currentfile includes
+					Add currentfile nameofstoffile
+					Data sizeshortstr=shortstrsize
+					Call memtomem(ptrentrystartfile,currentfile,sizeshortstr)
+
+					Set entrylinenumber lineoffile
+					Inc entrylinenumber
+
+					Set fnavailable zero
+				EndIf
+
 				If comsize!=zero
 					setcall was_whitespaces spaces(pcontent,pcomsize)
 					If comsize!=zero
@@ -188,24 +214,7 @@ if loop==1
 							setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 						endif
 					endelseIf
-				#twoparse==2 more
-				#after the first noncomment command, the format command cannot be changed
-				elseif formatdefined==1;Set formatdefined 2
-				#twoparse==1 more
-				ElseIf fnavailable==two
-					#retain the file and line where the main scope was started for functions separated from main code
-					#fnavailable two was set by code detectors
-					Data currentfile#1
-					Set currentfile includes
-					Add currentfile nameofstoffile
-					Data sizeshortstr=shortstrsize
-					Call memtomem(ptrentrystartfile,currentfile,sizeshortstr)
-
-					Set entrylinenumber lineoffile
-					Inc entrylinenumber
-
-					Set fnavailable zero
-				EndElseIf
+				endIf
 			EndIf
 		EndIf
 	Elseif cursor_start!=content
