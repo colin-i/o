@@ -172,7 +172,13 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		endif
 		if size==2
 			inc content
-			if content#==(asciix)
+			charsx against#1
+			set against content#
+			if against!=(asciix)
+			#maybe is X
+				add against (az_to_AZ)
+			endif
+			if against==(asciix)
 				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain or nothing at windows
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
 				if ptr_nobits_virtual#==(Yes)
@@ -181,9 +187,9 @@ function numbertoint(str content,data size,data outval,data minusbool)
 					#add outval# get_img_vdata()
 					return (noerror)
 				endif
-				return "At the moment, !x is not calculated for this format (example: is calculated at object with nobits section)."
+				return "At the moment, !X is not calculated for this format (example: is calculated at object with nobits section)."
 			endif
-			return "Expecting !x."
+			return "Expecting !X ."
 		endif
 		str er="The text after the data cursor sign isn't recognized."
 		return er

@@ -34,6 +34,7 @@ Const asciiF=0x46
 Const asciiL=0x4c
 Const asciiS=0x53
 Const asciiV=0x56
+Const asciiX=0x58
 Const asciiZ=0x5A
 Const asciibs=0x5C
 Const asciicirc=0x5E
