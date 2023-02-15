@@ -88,6 +88,19 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		Chars byte#1
 		Set content ptrcontent#
 		Set byte content#
+		if byte==(relsign)
+			#this comparation is not for chars and const is excluded at getsign
+			if relocbool!=true
+				return "Unexpected relocation sign."
+			endif
+			vdata ptr_nobits_virtual%ptr_nobits_virtual
+			if ptr_nobits_virtual#==(Yes)
+				set relocindx (dtnbind)
+			endif
+			Call stepcursors(#content,#size)
+			Call stepcursors(ptrcontent,ptrsize)
+			Set byte content#
+		endif
 		Chars groupstart="{"
 		If byte!=groupstart
 			chars stringstart=asciidoublequote
@@ -180,11 +193,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Return ptrgroupend
 			EndIf
 			if punitsize==(NULL)
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool)
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool,relocindx)
 			else
 				sd aux;set aux punitsize#
 				set punitsize# 0   #will add unit sizes inside
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 3 more arguments but are not used
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 4 more arguments but are not used
 			endelse
 			If err!=noerr
 				Return err

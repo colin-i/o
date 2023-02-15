@@ -84,7 +84,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	endelse
 
 	sd err
-	sd relocbool
+	sd relocbool=FALSE
 	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool)
 	if err==(noerror)
 		if parses==(pass_init)
@@ -95,7 +95,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						call advancecursors(pcontent,pcomsize,pcomsize#)
 						return (noerror)
 					endif
-					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask) #there are 2 more argument but are not used
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask) #there are 3 more argument but are not used
 				endif
 			else
 				if unitsize==0
@@ -118,7 +118,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						endif
 					endif
 				endelse
-				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,is_stack) #there is 1 more argument but is not used
+				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,is_stack,relocbool) #there is 1 more argument but is not used
+				#                                                                                        since %%
 				if is_expand==(FALSE)
 					sd pdataReg%ptrdataReg
 					add pdataReg# unitsize    #this is init by 0

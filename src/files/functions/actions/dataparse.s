@@ -177,8 +177,6 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	Data valsize#1
 	Chars equalsign=assignsign
 
-	#Set ptrrelocbool# (FALSE)
-
 	SetCall valsize valinmem_pipes(content,size,equalsign,ptrsz)
 	If valsize!=size
 		Set assigntype# equalsign
@@ -217,7 +215,7 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 		return noerr
 	endif
 
-	Chars relsign="%"
+	Chars relsign=relsign
 	SetCall valsize valinmem_pipes(content,size,relsign,ptrsz)
 	If valsize!=size
 		Chars ptrrelchar="Incorrect relocation sign ('%') used at CHARS/CONST declaration."
