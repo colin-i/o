@@ -300,15 +300,3 @@ Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
 	SetCall err addrel_base(off,index,addend,relsec)
 	Return err
 EndFunction
-
-#err
-Function adddirectrel(sd relsec,sd extraoff,sd index,sd entryvar)
-	sd err
-	sd expand;setcall expand expandbit(entryvar)
-	if expand!=0
-		setcall err adddirectrel_base(relsec,extraoff,(dtnbind),entryvar#)
-	else
-		setcall err adddirectrel_base(relsec,extraoff,index,entryvar#)
-	endelse
-	return err
-EndFunction

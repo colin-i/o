@@ -85,7 +85,7 @@ if loop==1
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 						if formatdefined==0
 							if commandset!=(cFORMAT)
-								set nobits_virtual (No)   #this is pe_exe format, same behavior for nobits
+								set nobits_virtual (No)   #this is default pe_exe format, same behavior for nobits
 							endif
 							Set formatdefined 1
 						endif
