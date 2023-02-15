@@ -95,7 +95,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						call advancecursors(pcontent,pcomsize,pcomsize#)
 						return (noerror)
 					endif
-					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask) #there are 3 more argument but are not used
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool) #there are 2 more argument but are not used
+					#                                                                            since %%|
 				endif
 			else
 				if unitsize==0
@@ -118,8 +119,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						endif
 					endif
 				endelse
-				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,is_stack,relocbool) #there is 1 more argument but is not used
-				#                                                                                        since %%
+				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,is_stack) #there is 1 more argument but is not used
+				#                                                                               since %%|
 				if is_expand==(FALSE)
 					sd pdataReg%ptrdataReg
 					add pdataReg# unitsize    #this is init by 0
@@ -139,7 +140,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 					return "Virtual declarations can have only the reserve sign."
 				endif
 			endelseif
-			SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,is_stack,relocbool,is_expand)
+			SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool,is_stack,is_expand)
 		endelse
 	endif
 	return err

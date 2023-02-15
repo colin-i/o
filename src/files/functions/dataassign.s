@@ -1,7 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd stack,sd relocbool,sd is_expand)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd relocbool,sd stack,sd is_expand)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
