@@ -89,6 +89,12 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		Set content ptrcontent#
 		Set byte content#
 		if byte==(relsign)
+			Call stepcursors(ptrcontent,ptrsize)
+			Call stepcursors(#content,#size)
+			If size==0
+				#to not set byte in vain
+				Return ptrrightsideerr
+			endIf
 			#this comparation is not for chars and const is excluded at getsign
 			if relocbool!=true
 				return "Unexpected relocation sign."
@@ -97,8 +103,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if ptr_nobits_virtual#==(Yes)
 				set relocindx (dtnbind)
 			endif
-			Call stepcursors(#content,#size)
-			Call stepcursors(ptrcontent,ptrsize)
 			Set byte content#
 		endif
 		Chars groupstart="{"
