@@ -1,3 +1,9 @@
+ocompiler (1-5+67) xenial; urgency=medium
+
+  * SHT_NOBITS data section with pointer/relocations
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 16 Feb 2023 08:28:49 +0200
+
 ocompiler (1-5+66) jammy; urgency=medium
 
   * fix win builds for sd^local
