@@ -19,14 +19,18 @@ ATCCCOM = $(CC) ${syms} -o ${OB}
 
 strippy=ostriputil
 
+nobits_virtual=1
+
 ostrip: ${OBJ}
 	${OUNUSED} ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
-	if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
-		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
-		if [ "$$?" = "0" ]; then \
-			${strippy} ${FULLOBJ} ${FULLOBJ}; \
+	if [ "${nobits_virtual}" != "1" ]; then \
+		if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
+			${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
+			if [ "$$?" = "0" ]; then \
+				${strippy} ${FULLOBJ} ${FULLOBJ}; \
+			fi; \
 		fi; \
 	fi
 #	@echo

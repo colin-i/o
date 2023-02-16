@@ -1,8 +1,8 @@
 
-#1
+#1 msg  optional 2 dist
 
 last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_name -r` && \
-~/test/debinit2 "${1}" jammy && \
+~/test/debinit2 "${1}" ${2} && \
 ~/test/keyring2 && \
 ~/test/deb && \
 ~/test/publp && \
@@ -19,26 +19,27 @@ last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_n
 ~/test/publp2 && \
 ~/test/keyring && \
 ~/test/del x ${last} && \
-~/test/arh2 ${last} && \
-sed -i '1s/jammy/bionic/' debian/changelog && \
-sed -i '1s/)/b)/' debian/changelog && \
-~/test/debuild && \
-~/test/deb && \
-~/test/publp && \
-~/test/publp2 && \
-~/test/lp 0 "focal" && \
-~/test/lp x "focal" && \
-git restore debian/changelog && \
-sed -i '1s/jammy/xenial/' debian/changelog && \
-sed -i '1s/)/x)/' debian/changelog && \
-~/test/debuild && \
-~/test/deb && \
-~/test/publp && \
-~/test/publp2 && \
-git restore debian/changelog && \
-git restore debian/files && \
-git diff && echo git-diff=$? && \
-~/test/sync/s
+~/test/arh2 ${last}
+
+# && \
+#sed -i '1s/jammy/bionic/' debian/changelog && \
+#sed -i '1s/)/b)/' debian/changelog && \
+#~/test/debuild && \
+#~/test/deb && \
+#~/test/publp && \
+#~/test/publp2 && \
+#~/test/lp 0 "focal" && \
+#~/test/lp x "focal" && \
+#git restore debian/changelog && \
+#sed -i '1s/jammy/xenial/' debian/changelog && \
+#sed -i '1s/)/x)/' debian/changelog && \
+#~/test/debuild && \
+#~/test/deb && \
+#~/test/publp && \
+#~/test/publp2 && \
+#git restore debian/changelog && \
+#git restore debian/files && \
+#git diff && echo git-diff=$? && \
 
 #is something wrong with copy package and rebuild (maybe same with copy-package without -b)
 #restore after last lp where inside publp2 will check version
@@ -46,7 +47,6 @@ git diff && echo git-diff=$? && \
 
 #plans:
 
-#SHT_NOBITS at virtual (.dtnb name; will not work .data named)
 #simple and or
 #={"a","b"}
 #~(page_sectionalignment-1)
