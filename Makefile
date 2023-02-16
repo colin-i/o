@@ -13,7 +13,7 @@ $(SUBDIRS):
 
 
 all:
-	if ! [ -f ./src/obj.o ];then cd ./src; ../ounused/ounused ./linux/obj.s.log; fi
+	if ! [ -s ./src/obj.txt ];then cd ./src; ../ounused/ounused ./linux/obj.s.log; fi
 	@echo
 
 .NOTPARALLEL:

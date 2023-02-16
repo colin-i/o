@@ -34,7 +34,12 @@ clean-compile:
 clean-link:
 	-rm -f o
 
-clean: clean-compile clean-link
+clean-test:
+	-rm -f ./linux/o
+	-rm -f ./linux/o.s.log
+	-rm -f ./linux/z
+
+clean: clean-compile clean-link clean-test
 distclean: clean
 
 uninstall:
