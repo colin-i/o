@@ -15,7 +15,7 @@ ElseIf programentrypoint!=codesecReg
 	Set errormsg allocerrormsg
 Else
 	if subtype==(cENTRY);set el_or_e (TRUE)
-	elseif subtype==(cENTRYLINUX);set el_or_e (TRUE)
+	elseif subtype==(cENTRYRAW);set el_or_e (TRUE)
 	else;set el_or_e (FALSE);endelse
 	If el_or_e==(TRUE)
 		#Data referencebit=referencebit

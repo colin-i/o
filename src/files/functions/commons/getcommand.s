@@ -16,7 +16,7 @@ Chars cRETURN_c="RETURN";Chars cINCST_c="INCST";Chars cINC_c="INC";Chars cDECST_
 Chars cCALLX_c="CALLX";Chars cCALL_c="CALL"
 Chars cIF_c="IF";Chars cENDIF_c="ENDIF";Chars cELSEIF_c="ELSEIF";Chars cELSE_c="ELSE";Chars cENDELSEIF_c="ENDELSEIF";Chars cENDELSE_c="ENDELSE";Chars cWHILE_c="WHILE";Chars cENDWHILE_c="ENDWHILE";Chars cBREAK_c="BREAK";Chars cCONTINUE_c="CONTINUE"
 Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX"
-Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRYLINUX_c="ENTRYLINUX";Chars cENTRY_c="ENTRY"
+Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRYRAW_c="ENTRYRAW";Chars cENTRY_c="ENTRY"
 Chars cENDFUNCTION_c="ENDFUNCTION"
 Chars cRET_c="RET"
 Chars cINCLUDE_c="INCLUDE"
@@ -314,10 +314,10 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cSTARTFUNCTION
 			Data *=cFUNCTIONX
 			Data *=spacereq
-		Const cENTRYLINUX=!-cSTARTFUNCTION_top
-			data *^cENTRYLINUX_c
+		Const cENTRYRAW=!-cSTARTFUNCTION_top
+			data *^cENTRYRAW_c
 			Data *=cSTARTFUNCTION
-			Data *=cENTRYLINUX
+			Data *=cENTRYRAW
 			Data *=spacereq
 		Const cENTRY=!-cSTARTFUNCTION_top
 			data *^cENTRY_c

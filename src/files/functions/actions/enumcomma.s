@@ -147,10 +147,16 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			sub argumentsize sizeaux
 			#
 			If typenumberOrparses==fnnr
-				SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset,punitsizeOrparses)
-				If err!=noerr
-					Return err
-				EndIf
+				if punitsizeOrparses!=(pass_write0)
+					#pass_init/pass_write
+					SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset,punitsizeOrparses)
+					If err!=noerr
+						Return err
+					EndIf
+				else
+					inc hexOrunitsize#
+					call advancecursors(ptrcontent,ptrsize,argumentsize)
+				endelse
 			Else
 				if punitsizeOrparses==(NULL)
 					Data value#1

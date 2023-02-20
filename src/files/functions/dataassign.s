@@ -198,14 +198,12 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			EndIf
 			if punitsize==(NULL)
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool,relocindx)
+				If err!=noerr;Return err;EndIf
 			else
 				sd aux;set aux punitsize#
 				set punitsize# 0   #will add unit sizes inside
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 4 more arguments but are not used
+				Call enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 4 more arguments but are not used
 			endelse
-			If err!=noerr
-				Return err
-			EndIf
 			Call stepcursors(ptrcontent,ptrsize)
 			Return noerr
 		EndElse

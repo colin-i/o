@@ -660,17 +660,21 @@
 </p>
 <h3><a name="usingfunctions">VII. Using functions</a></h3>
 <p>
-	<b>Functions</b> can be declared and the called later in the program. Functions must be closed with <b>EndFunction</b> command.
+	<b>Function</b> can be declared and called later in the program. Functions must be closed with <b>EndFunction</b> command.
 	To call a function use the <b>Call</b> command. To call a function and store the return value into a variable use the <b>SetCall</b> comand.
 	The functions must be declared before the main scope.
 	For example, at the first operation within the main scope (ex. basic Set command, or arithmetic Add command) the Entry Point is placed there and the Function statement it is no longer available.
+	<br>
+	The <b>Entry</b> command acts like a <b>Function</b> command but with some differences: 1. the scope is not changed to a local scope; 2. the function is not added to the unreferences list; 3. the <b>endfunction</b> command is not used at this function.
+	<br>
+	<b>EntryRaw</b> is an <b>Entry</b> command which is acting like it does not have a value for <b>Ret</b> at the top of the stack and without a calling convention.
+	<br>
+	<b>FunctionX</b> is described at objects. <b>FunctionXX</b> and <b>EntryX</b> will handle the input arguments as if they don't know how many there are (varargs).
 	<br>
 	All functions can be used in combinations like AddCall, OrCall, XorCall, etc.
 	<br>
 	<b>CallEx</b> is for prepared calls. This is a 3 argument operation. The first argument is the function name, the second argument is the arguments pointer and the third argument is the number of arguments. The arguments are passed forward respecting the size of the integer(4 bytes on 32-bits app, 8 on 64). One usage can be when there is a call with a number of arguments detected at run-time and want to pass them all to another call.
 	A "SetCallEx" trick is to wrap <b>CallEx</b> in a function and to <b>SetCall</b> that function.
-	<br>
-	The <b>Entry</b> command acts like a <b>Function</b> command but with some differences: 1. the scope is not changed to a local scope; 2. the function is not added to the unreferences list; 3. the <b>endfunction</b> command is not used at this function.
 	<br>
 	<b>CallX</b>, <b>...CallX</b>, <b>CallExX</b> will call like a <b>FunctionX</b>/<b>ImportX</b>.
 	<p>

@@ -167,20 +167,22 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			else
 				setcall scope64 is_funcx_subtype(subtype)
 				#functionx,entry in 64 conventions
-				#entrylinux has no return but has argc,aexec,a1...an
+				#entryraw has no return but has argc,aexec,a1...an
 				if scope64==(TRUE)
 					setcall scope64 is_for_64()
-					if scope64==(TRUE)
-						setcall err function_start_64()
-						If err!=noerr
-							Return err
-						EndIf
-					endif
+					#if scope64==(TRUE)
+					#	setcall err function_start_64()
+					#	If err!=noerr
+					#		Return err
+					#	EndIf
+					#endif
 					call scope64_set(scope64)
 				else
-				#if subtype==(cENTRYLINUX)
-					#scope64 not using, never get into getreturn here
-					setcall err entrylinux_top();if err!=noerr;Return err;EndIf
+				#if subtype==(cENTRYRAW)
+					setcall err entryraw_top();if err!=noerr;Return err;EndIf
+
+					#set only to avoid at start args, else, not using, never get into getreturn here
+					call scope64_set((FALSE))
 				endelse
 			endelse
 		endelse
@@ -214,6 +216,20 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 	endif
 
 	If is_declare==true
+		if parses==(pass_write)
+			sd b;setcall b scope64_get()
+			if b==(TRUE)
+				sd nr_of_args=0
+				If sz!=zero
+					sv c;sd s;set c ptrcontent#;set s ptrsize#
+					Call enumcommas(#c,#s,sz,is_declare,fnnr,(pass_write0),#nr_of_args) #there are 4 more arguments but are not used
+				endIf
+				setcall err function_start_64(nr_of_args)
+				If err!=noerr
+					Return err
+				EndIf
+			endif
+		endif
 		If sz!=zero
 			SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,fnnr,parses) #there are 5 more arguments but are not used
 			if err!=noerr
@@ -493,7 +509,7 @@ function is_linux_end()
 	return p_real_exit_end#
 endfunction
 #er
-function entrylinux_top()
+function entryraw_top()
 	chars s={0x6a,0}
 	data code%ptrcodesec
 	sd err

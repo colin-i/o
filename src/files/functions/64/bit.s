@@ -151,7 +151,7 @@ function val64_p_get()
 	data x#1;return #x
 endfunction
 
-function convdata(sd type,sd dest)
+function convdata(sd type,sd dest,sd fnargs)
 	if type==(convdata_total)
 		data nr_of_args#1
 		return nr_of_args   #ms_convention or lin
@@ -177,7 +177,7 @@ function convdata(sd type,sd dest)
 		incst dest;set dest# #hex_4
 		incst dest;set dest# #hex_5
 		incst dest;set dest# #hex_6
-		return (void)
+		ret
 	elseif type==(convdata_fn)
 		const functionxlin_start=!
 		#pop a
@@ -186,24 +186,63 @@ function convdata(sd type,sd dest)
 		chars *={REX_Operand_64,0x83,5*toregopcode|regregmod|espregnumber};chars *=lin_convention*qwsz
 		#push a
 		chars *=0x50
+		const functionxlin_shadow=!-functionxlin_start
+
 		chars *={REX_Operand_64,moveatmemtheproc,ediregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
+		const conv_fn_b1=!-functionxlin_start
+
 		chars *={REX_Operand_64,moveatmemtheproc,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,16}
 		const functionx_start=!
-		#mov [rsp++8h],rcx
+		const conv_fn_b2=!-functionxlin_start
+
+		#mov [rsp++8h],rcx/rdx
 		chars functionx_code={REX_Operand_64,moveatmemtheproc};chars f3#1;chars *=0x24;chars f3o#1
-		#mov [rsp++10h],rdx
+		const conv_fn_a1=!-functionx_start
+		const conv_fn_b3=!-functionxlin_start
+
+		#mov [rsp++10h],rdx/rcx
 		chars *={REX_Operand_64,moveatmemtheproc};chars f4#1;chars *=0x24;chars f4o#1
+		const conv_fn_a2=!-functionx_start
+		const conv_fn_b4=!-functionxlin_start
+
 		#mov [rsp++18h],r8
 		chars *={REX_R8_15,moveatmemtheproc,0x44,0x24};chars f5o#1
+		const conv_fn_a3=!-functionx_start
+		const conv_fn_b5=!-functionxlin_start
+
 		#mov [rsp++20h],r9
 		chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24};chars f6o#1
+
 		if nr_of_args==(ms_convention)
-			set dest# (!-functionx_start)
+			if fnargs==0
+				set dest# 0
+			elseif fnargs==1
+				set dest# (conv_fn_a1)
+			elseif fnargs==2
+				set dest# (conv_fn_a2)
+			elseif fnargs==3
+				set dest# (conv_fn_a3)
+			else
+				set dest# (!-functionx_start)
+			endelse
 			return #functionx_code
+		endif
+		if fnargs==0
+			set dest# (functionxlin_shadow)
+		elseif fnargs==1
+			set dest# (conv_fn_b1)
+		elseif fnargs==2
+			set dest# (conv_fn_b2)
+		elseif fnargs==3
+			set dest# (conv_fn_b3)
+		elseif fnargs==4
+			set dest# (conv_fn_b4)
+		elseif fnargs==5
+			set dest# (conv_fn_b5)
 		else
 			set dest# (!-functionxlin_start)
-			return #functionxlin_code
 		endelse
+		return #functionxlin_code
 	endelseif
 	set nr_of_args dest
 	if nr_of_args==(ms_convention)
@@ -373,10 +412,10 @@ function function_call_64(sd is_callex)
 	return err
 endfunction
 #err
-function function_start_64()
+function function_start_64(sd nr_of_args)
 	Data code%ptrcodesec
 	sd data;sd sz
-	setcall data convdata((convdata_fn),#sz)
+	setcall data convdata((convdata_fn),#sz,nr_of_args)
 	sd err
 	SetCall err addtosec(data,sz,code)
 	return err
