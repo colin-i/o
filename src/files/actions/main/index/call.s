@@ -1,3 +1,3 @@
 
 Data callfn=callfunction
-SetCall errormsg parsefunction(pcontent,pcomsize,callfn,subtype) #there is 1 more argument but is not used
+SetCall errormsg parsefunction(pcontent,pcomsize,callfn,subtype) #there are 2 more arguments but are not used

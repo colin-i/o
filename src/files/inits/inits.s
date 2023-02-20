@@ -97,5 +97,5 @@ sd p_b
 setcall p_b is_for_64_is_impX_or_fnX_p_get()
 set p_b# (FALSE)
 
-#this is used when no entry/fn tags
+#this is declared here for no entry/fn tags
 call scope64_set((FALSE))

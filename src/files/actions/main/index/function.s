@@ -14,6 +14,10 @@ ElseIf programentrypoint!=codesecReg
 	EndIf
 	Set errormsg allocerrormsg
 Else
+	sd varargs;set varargs subtype
+	and varargs (x_func_flag)
+	and subtype (~x_func_flag)
+
 	if subtype==(cENTRY);set el_or_e (TRUE)
 	elseif subtype==(cENTRYRAW);set el_or_e (TRUE)
 	else;set el_or_e (FALSE);endelse
@@ -32,6 +36,6 @@ Else
 	EndElse
 	if errormsg==(noerror)
 		Data declarefn=declarefunction
-		SetCall errormsg parsefunction(pcontent,pcomsize,declarefn,subtype,el_or_e)
+		SetCall errormsg parsefunction(pcontent,pcomsize,declarefn,subtype,el_or_e,varargs)
 	endif
 EndElse

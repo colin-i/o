@@ -16,7 +16,7 @@ function p_neg_is_for_64()
 endfunction
 
 function scope64_p()
-	data bool#1;return #bool
+	datax bool#1;return #bool
 endfunction
 function scope64_get()
 	sd p;setcall p scope64_p();return p#
@@ -195,22 +195,22 @@ function convdata(sd type,sd dest,sd fnargs)
 		const functionx_start=!
 		const conv_fn_b2=!-functionxlin_start
 
-		#mov [rsp++8h],rcx/rdx
+		#mov [rsp+(8h/18h)],rcx/rdx
 		chars functionx_code={REX_Operand_64,moveatmemtheproc};chars f3#1;chars *=0x24;chars f3o#1
 		const conv_fn_a1=!-functionx_start
 		const conv_fn_b3=!-functionxlin_start
 
-		#mov [rsp++10h],rdx/rcx
+		#mov [rsp+(10h/20h)],rdx/rcx
 		chars *={REX_Operand_64,moveatmemtheproc};chars f4#1;chars *=0x24;chars f4o#1
 		const conv_fn_a2=!-functionx_start
 		const conv_fn_b4=!-functionxlin_start
 
-		#mov [rsp++18h],r8
+		#mov [rsp+(18h/28h)],r8
 		chars *={REX_R8_15,moveatmemtheproc,0x44,0x24};chars f5o#1
 		const conv_fn_a3=!-functionx_start
 		const conv_fn_b5=!-functionxlin_start
 
-		#mov [rsp++20h],r9
+		#mov [rsp+(20h/30h)],r9
 		chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24};chars f6o#1
 
 		if nr_of_args==(ms_convention)

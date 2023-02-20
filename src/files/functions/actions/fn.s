@@ -40,6 +40,14 @@ function fnimp_exists(sd content,sd size)
 	return "Function/Import name is already defined."
 endfunction
 #b
+function is_funcx64_subtype(sd subtype)
+	sd b;setcall b is_funcx_subtype(subtype)
+	if b==(TRUE)
+		setcall b is_for_64()
+	endif
+	return b
+endfunction
+#b
 function is_funcx_subtype(sd subtype)
 	if subtype==(cFUNCTIONX)
 		return (TRUE)
@@ -50,7 +58,7 @@ function is_funcx_subtype(sd subtype)
 endfunction
 #subtype is only when declarefn(not callfn)
 #err
-Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,sd el_or_e)
+Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,sd el_or_e,sd varargs)
 	Data true=TRUE
 	#Data false=FALSE
 
@@ -219,11 +227,16 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		if parses==(pass_write)
 			sd b;setcall b scope64_get()
 			if b==(TRUE)
-				sd nr_of_args=0
-				If sz!=zero
-					sv c;sd s;set c ptrcontent#;set s ptrsize#
-					Call enumcommas(#c,#s,sz,is_declare,fnnr,(pass_write0),#nr_of_args) #there are 4 more arguments but are not used
-				endIf
+				sd nr_of_args
+				if varargs!=0
+					setcall nr_of_args convdata((convdata_total))
+				else
+					set nr_of_args 0
+					If sz!=zero
+						sv c;sd s;set c ptrcontent#;set s ptrsize#
+						Call enumcommas(#c,#s,sz,is_declare,fnnr,(pass_write0),#nr_of_args) #there are 4 more arguments but are not used
+					endIf
+				endelse
 				setcall err function_start_64(nr_of_args)
 				If err!=noerr
 					Return err

@@ -1,7 +1,7 @@
 
 #err
 Function twoargs(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition)
-	sd err;setcall err twoargs_ex(ptrcontent,ptrsize,subtype,ptrcondition,(allow_no)) #there is 1 more argument but is not used
+	sd err;setcall err twoargs_ex(ptrcontent,ptrsize,subtype,ptrcondition,(allow_no)) #there are 2 more arguments but are not used
 	return err
 endfunction
 
@@ -58,7 +58,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			endelse
 		else
 			and subtype (x_callx_flag)
-			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype) #there is 1 more argument but is not used
+			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype) #there are 2 more arguments but are not used
 			return errnr
 		endelse
 		return (noerror)

@@ -1,5 +1,5 @@
 
-EntryLinux main(sd argc,ss argv0,ss argv1)
+EntryRaw main(sd argc,ss argv0,ss argv1)
 
 #main
 Include "../files/inits_top.s"

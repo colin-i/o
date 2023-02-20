@@ -32,7 +32,7 @@ endfunction
 include "./loop.s"
 include "./resolve.s"
 
-entrylinux main(sd argc,ss *argv0,ss argv1)
+entryraw main(sd argc,ss *argv0,ss argv1)
 
 if argc>1
 	call inits()

@@ -400,6 +400,7 @@ Data pointersvars#numberofcommandsvars+1
 Const compointersvarsloc^pointersvars
 
 const x_call_flag=0x80000000
+const x_func_flag=0x80000000
 const x_callx_flag=0x40000000
 
 #declare coresp
@@ -447,30 +448,41 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		#implement for SetCall...
 		Chars calldata="CALL"
 		Str call^calldata
-		Str extstr#1
+
+		ss extstr=NULL
 
 		sd extbooldata=FALSE
 		sv extbool^extbooldata
 
 		If command==(cPRIMSEC)
 			Set extstr call
-		Else
-			Set extstr zero
-		EndElse
+		Elseif command==(cSTARTFUNCTION)
+			sd is_x;setcall is_x is_funcx64_subtype(ptrsubtype#)
+			if is_x==(TRUE)
+				Set extstr "X"
+			endif
+		endElseif
 
 		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool)
 		If extbooldata==true
-			#If command==(cPRIMSEC)  only here atm
-			#or first byte at subcommand to recognize the xcall at two args
-			or ptrsubtype# (x_call_flag)
-			if result==(FALSE)
-				setcall result stratmemspc(pcontent,psize,"X",spacebool)
-				if result==(TRUE)
-					or ptrsubtype# (x_callx_flag)
-					return command
+			If command==(cPRIMSEC)
+				#or first byte at subcommand to recognize the xcall at two args
+				or ptrsubtype# (x_call_flag)
+				if result==(FALSE)
+					setcall result stratmemspc(pcontent,psize,"X",spacebool)
+					if result==(TRUE)
+						or ptrsubtype# (x_callx_flag)
+					else
+						break
+					endelse
 				endif
-				break
-			endif
+			Else
+			#funcx
+				if result==(FALSE)
+					break
+				endif
+				or ptrsubtype# (x_func_flag)
+			endElse
 			return command
 		elseIf result==true
 			Return command
