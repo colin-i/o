@@ -18,7 +18,7 @@ jobs:
  # This workflow contains a single job called "build"
  build:
   # The type of runner that the job will run on
-  runs-on: ubuntu-18.04
+  runs-on: ubuntu-20.04
   # Steps represent a sequence of tasks that will be executed as part of the job
   steps:
    - uses: actions/checkout@v3
@@ -49,7 +49,7 @@ jobs:
        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
        if [ ! -e "lp2.py" ]; then
         wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
-        sudo apt install python3-launchpadlib
+        #is already at focal sudo apt install python3-launchpadlib
        fi
        #OUTPUT=$(python3 lp.py ppa${{ github.event.inputs.ppa }} ${dist} ${arh} ${name} ${version})
        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
