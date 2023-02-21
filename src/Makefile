@@ -15,10 +15,19 @@ endif
 #OFLAGS=
 
 %.o: ${FULLOBJS}
-	if [ -s ${OBT} ];then base64 -d ${OBT} > $@;else ${OCOMP} $< ${OFLAGS};mv ${FULLOBJO} .;fi
+	if [ -s ${OBT} ];then \
+		echo text; \
+		base64 -d ${OBT} > $@; \
+		${_ATLDCOM} o $@; \
+		./o ${FULLOBJS}; \
+	else \
+		${OCOMP} $< ${OFLAGS}; \
+	fi; \
+	mv ${FULLOBJO} . \
 
 syms =-s
-ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
+_ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -lc -entry main -o
+ATLDCOM = ${_ATLDCOM} $@
 
 o: ${OBJ}
 	${ATLDCOM} $^
