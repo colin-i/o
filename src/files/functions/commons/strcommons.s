@@ -86,8 +86,7 @@ Function stratmem(data pcontent,data psize,str match)
 		Set b content#
 		If b>=a_from_az
 			If b<=z_from_az
-				Chars az_to_AZ={az_to_AZ}
-				Sub b az_to_AZ
+				Sub b (AZ_to_az)
 			EndIf
 		EndIf
 		Set c match#

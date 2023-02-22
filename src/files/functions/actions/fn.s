@@ -40,14 +40,6 @@ function fnimp_exists(sd content,sd size)
 	return "Function/Import name is already defined."
 endfunction
 #b
-function is_funcx64_subtype(sd subtype)
-	sd b;setcall b is_funcx_subtype(subtype)
-	if b==(TRUE)
-		setcall b is_for_64()
-	endif
-	return b
-endfunction
-#b
 function is_funcx_subtype(sd subtype)
 	if subtype==(cFUNCTIONX)
 		return (TRUE)

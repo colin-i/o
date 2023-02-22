@@ -457,7 +457,7 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		If command==(cPRIMSEC)
 			Set extstr call
 		Elseif command==(cSTARTFUNCTION)
-			sd is_x;setcall is_x is_funcx64_subtype(ptrsubtype#)
+			sd is_x;setcall is_x is_funcx_subtype(ptrsubtype#)
 			if is_x==(TRUE)
 				Set extstr "X"
 			endif
@@ -481,7 +481,11 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 				if result==(FALSE)
 					break
 				endif
-				or ptrsubtype# (x_func_flag)
+				#allow the command at 64 but not consider it
+				sd for64;setcall for64 is_for_64()
+				if for64==(TRUE)
+					or ptrsubtype# (x_func_flag)
+				endif
 			endElse
 			return command
 		elseIf result==true

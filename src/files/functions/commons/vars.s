@@ -328,7 +328,7 @@ function cast_test(ss content,sd p_size)
 		sd c
 		set c content#
 		if c>=(a_from_az)
-			sub c (az_to_AZ)
+			sub c (AZ_to_az)
 		endif
 		if c==(cast_value)
 		elseif c==(cast_data)

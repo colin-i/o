@@ -33,7 +33,7 @@ Const A_from_AZ=asciiA
 #Const Z_from_AZ=asciiZ
 Const a_from_az=asciia
 Const z_from_az=asciiz
-Const az_to_AZ=a_from_az-A_from_AZ
+Const AZ_to_az=a_from_az-A_from_AZ
 
 
 #Integers
