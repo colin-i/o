@@ -176,7 +176,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			set against content#
 			if against!=(asciix)
 			#maybe is X
-				sub against (AZ_to_az)
+				add against (AZ_to_az)
 			endif
 			if against==(asciix)
 				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain or nothing at windows
