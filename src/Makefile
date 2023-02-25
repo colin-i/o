@@ -12,6 +12,10 @@ ifndef OCOMP
 OCOMP=o
 endif
 
+ifndef syms
+syms=-s
+endif
+
 #OFLAGS=
 
 %.o: ${FULLOBJS}
@@ -25,7 +29,6 @@ endif
 	fi; \
 	mv ${FULLOBJO} . \
 
-syms =-s
 _ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -lc -entry main -o
 ATLDCOM = ${_ATLDCOM} $@
 
