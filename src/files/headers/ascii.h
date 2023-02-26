@@ -15,7 +15,7 @@ Const asciiparenthesisstart=0x28
 Const asciiparenthesisend=0x29
 Const asciiast=0x2A
 Const asciiplus=0x2B
-#2c comma
+Const asciicomma=0x2C
 Const asciiminus=0x2D
 Const asciidot=0x2E
 Const asciislash=0x2F

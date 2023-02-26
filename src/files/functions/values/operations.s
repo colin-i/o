@@ -9,8 +9,10 @@ Const orNumber=asciivbar
 Const xorNumber=asciicirc
 Const powNumber=asciidollar
 Const remNumber=asciipercent
-Const shlNumber=asciiless
-Const shrNumber=asciigreater
+Const lessNumber=asciiless
+Const greaterNumber=asciigreater
+Const shlNumber=asciicomma
+Const shrNumber=asciidot
 #asciiminus and asciinot for one arg
 
 #err
@@ -18,6 +20,7 @@ function const_security(sd item)
 	#2$31 is last one
 	#1 shl 63 is last one
 	#maximum first overflow, ok
+	#why not 32 or 33? this check only stops evil big numbers
 	sd maximum=qwsz*8-1
 	if item#>maximum
 		str err="Overflow at constants."
@@ -136,8 +139,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			SetCall errptr shift_left(#currentitem,newitem)
 		endelse
 		If errptr!=(noerror);return errptr;endif
-	Else
-	#If number==(shrNumber)
+	ElseIf number==(shrNumber)
 		if newitem<0
 			neg newitem
 			SetCall errptr shift_left(#currentitem,newitem)
@@ -145,6 +147,19 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			SetCall errptr shift_right(#currentitem,newitem)
 		endelse
 		If errptr!=(noerror);return errptr;endif
+	ElseIf number==(lessNumber)
+		if currentitem<newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	Else
+	#If number==(greaterNumber)
+		if currentitem>newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
 	EndElse
 
 	Set inoutvalue# currentitem
@@ -165,8 +180,8 @@ Function signop(chars byte,sd outval)
 	ElseIf byte==(xorNumber)
 	ElseIf byte==(powNumber)
 	ElseIf byte==(remNumber)
-	ElseIf byte==(shlNumber)
-	ElseIf byte==(shrNumber)
+	ElseIf byte==(lessNumber)
+	ElseIf byte==(greaterNumber)
 	Else
 		return false
 	EndElse
@@ -227,7 +242,8 @@ Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments)
 				If errptr!=noerr
 					Return errptr
 				EndIf
-				Set number nr
+				call doubleoperation(pnr,#content,end)
+				set number nr
 				Set bool true
 			EndIf
 		elseif content#==(asciiparenthesisstart)
@@ -269,3 +285,30 @@ Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments)
 	Call advancecursors(ptrcontent,ptrsize,sz)
 	Return noerr
 EndFunction
+
+function doubleoperation(ss pnr,sv pcontent,sd end)
+	sd nr;set nr pnr#
+	if nr!=(lessNumber)
+		if nr!=(greaterNumber)
+			ret
+		endif
+	endif
+	ss content;set content pcontent#
+	inc content
+	if content==end
+		ret  #error is catched how was before
+	endif
+	if content#==(lessNumber)
+		if nr==(lessNumber)
+			set pnr# (shlNumber)
+			inc pcontent#
+			ret
+		endif
+	endif
+	if content#==(greaterNumber)
+		if nr==(greaterNumber)
+			set pnr# (shrNumber)
+			inc pcontent#
+		endif
+	endif
+endfunction
