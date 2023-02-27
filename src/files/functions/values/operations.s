@@ -12,7 +12,7 @@ Const remNumber=asciipercent
 Const lessNumber=asciiless
 Const greaterNumber=asciigreater
 Const shlNumber=asciicomma
-Const shrNumber=asciidot
+Const sarNumber=asciidot
 #asciiminus and asciinot for one arg
 
 #err
@@ -43,7 +43,7 @@ function shift_right(sd a,sd n)
 	If err!=(noerror);return err;endif
 	while n>0
 		dec n
-		shr a#
+		sar a#
 	endwhile
 	return (noerror)
 endfunction
@@ -139,7 +139,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			SetCall errptr shift_left(#currentitem,newitem)
 		endelse
 		If errptr!=(noerror);return errptr;endif
-	ElseIf number==(shrNumber)
+	ElseIf number==(sarNumber)
 		if newitem<0
 			neg newitem
 			SetCall errptr shift_left(#currentitem,newitem)
@@ -307,7 +307,7 @@ function doubleoperation(ss pnr,sv pcontent,sd end)
 	endif
 	if content#==(greaterNumber)
 		if nr==(greaterNumber)
-			set pnr# (shrNumber)
+			set pnr# (sarNumber)
 			inc pcontent#
 		endif
 	endif
