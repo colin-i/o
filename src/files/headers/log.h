@@ -23,3 +23,7 @@ const log_reusable=0x72
 
 #x
 #ostrip is reading only with fseek, ounused can skip 0-9 instead of x, but in code is log with a char
+
+#QwERtyuIoP 5 5
+#asDFghjkl  2 7
+#zXCvbNm    3 4
