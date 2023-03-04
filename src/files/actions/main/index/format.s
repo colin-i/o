@@ -57,12 +57,12 @@ If formatresponse==false
 						Data codeind=codeind
 						Set codestrtab namesReg
 						SetCall errormsg elfaddstrsym(ptrelftext,null,null,STT_SECTION,(STB_LOCAL),codeind,ptrtable)
-						#sd totallocalsymsaddedatstart=3
+						sd totallocalsymsaddedatstart=3
 						If errormsg==noerr
 							if nobits_virtual==(Yes)
 								Set dtnbstrtab namesReg
 								SetCall errormsg elfaddstrsym(".dtnb",null,null,STT_SECTION,(STB_LOCAL),(dtnbind),ptrtable)
-								#inc totallocalsymsaddedatstart
+								inc totallocalsymsaddedatstart
 							endif
 						EndIf
 					EndIf

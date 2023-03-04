@@ -101,6 +101,13 @@ function elfaddsecn()
 	Return err
 endfunction
 #err
+Function elfaddsecs(sd stringoff,sd type,sd flags,sd fileoffset,sd bsize,sd align)
+	Data ptrmiscbag%ptrmiscbag
+	sd err
+	SetCall err elfaddsec_base(stringoff,type,flags,fileoffset,bsize,0,0,align,0,(NULL),ptrmiscbag)
+	Return err
+EndFunction
+#err
 Function elfaddsec(data stringoff,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
 	sd bsize
 	Call getcontReg(seccont,#bsize)

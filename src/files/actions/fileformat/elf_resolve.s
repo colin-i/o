@@ -298,21 +298,32 @@ Else
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
+	Add elf_sec_fileoff datasecReg
 
 	Data elf_sec_flags_text=SHF_ALLOC|SHF_EXECINSTR
-	Add elf_sec_fileoff datasecReg
 	SetCall errormsg elfaddsec(codestrtab,SHT_PROGBITS,elf_sec_flags_text,elf_sec_fileoff,ptrcodesec,null,null,(elf_sec_obj_align),null)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf
+	Add elf_sec_fileoff codesecReg
 
 	sd symind=symind
 
 	if nobits_virtual==(Yes)
-		SetCall errormsg elfaddsec(dtnbstrtab,(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,#clownEntry,null,null,(elf_sec_obj_align),null)
+		SetCall errormsg elfaddsecs(dtnbstrtab,(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,nobitssecReg,(elf_sec_obj_align))
 		If errormsg!=noerr
 			Call msgerrexit(errormsg)
 		EndIf
+		inc elf_sec_nr
+		inc symind
+	endif
+
+	if has_debug==(Yes)
+		SetCall errormsg elfaddstrsec(".debug",(SHT_NULL),0,elf_sec_fileoff,debug,0,0,(bsz),0)
+		If errormsg!=noerr
+			Call msgerrexit(errormsg)
+		EndIf
+		add elf_sec_fileoff debugReg
 		inc elf_sec_nr
 		inc symind
 	endif
@@ -338,10 +349,8 @@ Else
 	Chars elfsymtab=".symtab"
 	Str ptrelfsymtab^elfsymtab
 	Data SHT_SYMTAB=2
-	Add elf_sec_fileoff codesecReg
 
-	#                                                                                                     totallocalsymsaddedatstart
-	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,symind,dwordsize,syment)
+	SetCall errormsg elfaddstrsec(ptrelfsymtab,SHT_SYMTAB,null,elf_sec_fileoff,ptrtable,elf_sec_strtab_nr,totallocalsymsaddedatstart,dwordsize,syment)
 	If errormsg!=noerr
 		Call msgerrexit(errormsg)
 	EndIf

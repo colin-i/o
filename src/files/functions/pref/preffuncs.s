@@ -167,6 +167,7 @@ function initpreferences()
 	sd p_ignore_format_so%p_ignore_format_so
 	sd ptr_call_align%ptr_call_align
 	sd ptr_nobits_virtual%ptr_nobits_virtual
+	sd ptr_has_debug%ptr_has_debug
 
 	data true=TRUE
 	data false=FALSE
@@ -191,13 +192,14 @@ function initpreferences()
 	set p_ignore_format_so# (No)
 	set ptr_call_align# (call_align_yes_all)
 	set ptr_call_align# (Yes)
+	set ptr_has_debug# (No)
 
 	#this is used also at arguments
 
 	sv q%nr_of_prefs_pointers_p
-	set q# ptrwarningsbool;    incst q;set q# p_over_pref; incst q;set q# p_hidden_pref; incst q;set q# p_w_as_e; incst q;set q# ptrlogbool; incst q;set q# ptrcodeFnObj; incst q;set q# cb;           incst q;set q# ptrincludedir; incst q;set q# text_fn_info;    incst q;set q# conv_64;   incst q;set q# p_nul_res_pref; incst q;set q# sdsv_p;     incst q;set q# p_inplace_reloc_pref; incst q;set q# p_pref_reloc_64; incst q;set q# p_underscore_pref; incst q;set q# p_exit_end; incst q;set q# p_include_sec; incst q;set q# p_ignore_format_so; incst q;set q# ptr_call_align; incst q;set q# ptr_nobits_virtual
+	set q# ptrwarningsbool;    incst q;set q# p_over_pref; incst q;set q# p_hidden_pref; incst q;set q# p_w_as_e; incst q;set q# ptrlogbool; incst q;set q# ptrcodeFnObj; incst q;set q# cb;           incst q;set q# ptrincludedir; incst q;set q# text_fn_info;    incst q;set q# conv_64;   incst q;set q# p_nul_res_pref; incst q;set q# sdsv_p;     incst q;set q# p_inplace_reloc_pref; incst q;set q# p_pref_reloc_64; incst q;set q# p_underscore_pref; incst q;set q# p_exit_end; incst q;set q# p_include_sec; incst q;set q# p_ignore_format_so; incst q;set q# ptr_call_align; incst q;set q# ptr_nobits_virtual; incst q;set q# ptr_has_debug
 	sv t%nr_of_prefs_strings_p
-	set t# "warnings";         incst t;set t# "over_pref"; incst t;set t# "hidden_pref"; incst t;set t# "w_as_e"; incst t;set t# "logfile";  incst t;set t# "codeFnObj";  incst t;set t# "const_warn"; incst t;set t# "includedir";  incst t;set t# "function_name"; incst t;set t# "conv_64"; incst t;set t# "nul_res_pref"; incst t;set t# "sd_as_sv"; incst t;set t# "inplace_reloc";      incst t;set t# "reloc_64";      incst t;set t# "underscore_pref"; incst t;set t# "exit_end"; incst t;set t# "include_sec"; incst t;set t# "ignore_format_so"; incst t;set t# "call_align"; incst t;set t# "nobits_virtual"
+	set t# "warnings";         incst t;set t# "over_pref"; incst t;set t# "hidden_pref"; incst t;set t# "w_as_e"; incst t;set t# "logfile";  incst t;set t# "codeFnObj";  incst t;set t# "const_warn"; incst t;set t# "includedir";  incst t;set t# "function_name"; incst t;set t# "conv_64"; incst t;set t# "nul_res_pref"; incst t;set t# "sd_as_sv"; incst t;set t# "inplace_reloc";      incst t;set t# "reloc_64";      incst t;set t# "underscore_pref"; incst t;set t# "exit_end"; incst t;set t# "include_sec"; incst t;set t# "ignore_format_so"; incst t;set t# "call_align";   incst t;set t# "nobits_virtual";   incst t;set t# "has_debug"
 endfunction
 
 #void

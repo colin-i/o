@@ -206,7 +206,12 @@ Data unresLocal#1
 Data unresLocalReg#1
 Const ptrunresLocal^unresLocalMax
 
+data debugMax#2
+data debugReg#1
+
 Const containerssize=!-containersbegin
+
+value debug^debugMax
 
 chars dummyEntry_data#sizeof_minimumentry
 
@@ -216,8 +221,8 @@ Data dummyEntryReg#1
 data ptrdummyEntry^dummyEntryMax
 Const ptrdummyEntry^dummyEntryMax
 
-data clownEntry#1
-data *#1
+#data clownEntry#1
+#data *#1
 data nobitssecReg#1
 const ptrnobitsReg^nobitssecReg
 #used at !x offset
@@ -396,7 +401,7 @@ const p_hidden_pref^hidden_pref
 Data safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=20
+const nr_of_prefs=21
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
@@ -460,3 +465,6 @@ const log_expand=0x78
 
 data nobits_virtual#1
 const ptr_nobits_virtual^nobits_virtual
+
+data has_debug#1
+const ptr_has_debug^has_debug
