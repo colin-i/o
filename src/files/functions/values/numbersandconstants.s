@@ -246,7 +246,7 @@ Function numbersconstants(str content,data size,data outval)
 	If bool==(FALSE)
 		setcall err numbertoint(content,size,outval,minusbool)
 	Else
-		Data constr%ptrconstants
+		Data constr%%ptr_constants
 		Data pointer#1
 		SetCall pointer vars(content,size,constr)
 		If pointer==0

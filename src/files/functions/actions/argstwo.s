@@ -238,7 +238,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		EndElse
 	EndElse
 
-	Data codeptr%ptrcodesec
+	Data codeptr%%ptr_codesec
 
 	If primcalltype==false
 		setcall imm getisimm()
@@ -531,7 +531,7 @@ endfunction
 #err
 function div_prepare(sd low,sd big,ss p_regopcode)
 	const bt_atdiv=bt_reg_imm8|eaxregnumber
-	vData codeptr%ptrcodesec
+	vData codeptr%%ptr_codesec
 	Chars regopcodeidiv={7}
 	sd errnr
 	if big==(TRUE)

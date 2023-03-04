@@ -56,68 +56,70 @@ Const sizeofcontainer=3*dwsz
 #base containers
 Const includesSize=50*includesetSz
 #includesSize
-Const containersbegin=!
-Data includesMax#1
-Data includes#1
-Data includesReg#1
-Const ptrincludes^includesMax
+
+#this, not yet at simple exec Const containersbegin=!x
+
+Datax includesMax#1
+Datax includes#1
+Datax includesReg#1
+Const ptr_includes^includesMax
 
 #subscope
-Data miscbagMax#1
-Data miscbag#1
-Data miscbagReg#1
-Const ptrmiscbag^miscbagMax
+Datax miscbagMax#1
+Datax miscbag#1
+Datax miscbagReg#1
+Const ptr_miscbag^miscbagMax
 
 Const conditionssize=200*dwsz
 #conditionssize
-Data conditionsloopsMax#1
-Data *conditionsloops#1
-Data *conditionsloopsReg#1
-Const ptrconditionsloops^conditionsloopsMax
+Datax conditionsloopsMax#1
+Datax *conditionsloops#1
+Datax *conditionsloopsReg#1
+Const ptr_conditionsloops^conditionsloopsMax
 
-Data unresolvedcallsMax=mainscope
-Data unresolvedcalls#1
-Data unresolvedcallsReg#1
-Const ptrunresolvedcalls^unresolvedcallsMax
+Datax unresolvedcallsMax#1
+Datax unresolvedcalls#1
+Datax unresolvedcallsReg#1
+Const ptr_unresolvedcalls^unresolvedcallsMax
 
 #variables, constants and functions containers
-Data integerMax#1
-Data *#1
-Data *#1
-Data stringMax#1
-Data *#1
-Data *#1
-Data charsMax#1
-Data *#1
-Data *#1
-Data sdMax#1
-Data *#1
-Data *#1
-Data ssMax#1
-Data *#1
-Data *#1
-Data svMax#1
-Data *#1
-Data *#1
+Datax integerMax#1
+Datax *#1
+Datax *#1
+Datax stringMax#1
+Datax *#1
+Datax *#1
+Datax charsMax#1
+Datax *#1
+Datax *#1
+Datax sdMax#1
+Datax *#1
+Datax *#1
+Datax ssMax#1
+Datax *#1
+Datax *#1
+Datax svMax#1
+Datax *#1
+Datax *#1
 
-Data integerfnscopeMax#1
-Data *#1
-Data *#1
-Data stringfnscopeMax#1
-Data *#1
-Data *#1
-Data charsfnscopeMax#1
-Data *#1
-Data *#1
-Data sdfnMax#1
-Data *#1
-Data *#1
-Data ssfnMax#1
-Data *#1
-Data *#1
-Data svfnMax#1
-Data *#1
-Data *#1
+Datax integerfnscopeMax#1
+Datax *#1
+Datax *#1
+Datax stringfnscopeMax#1
+Datax *#1
+Datax *#1
+Datax charsfnscopeMax#1
+Datax *#1
+Datax *#1
+Datax sdfnMax#1
+Datax *#1
+Datax *#1
+Datax ssfnMax#1
+Datax *#1
+Datax *#1
+Datax svfnMax#1
+Datax *#1
+Datax *#1
 
 Const memvariablesnumber=0
 	Const integersnumber=memvariablesnumber+0
@@ -146,70 +148,74 @@ const sizeofscope=sizeofcontainer*numberofvars
 
 Const constantssize=10*mainscope
 #constantssize
-Data constantsMax#1
-Data *constants#1
-Data *constantsReg#1
-Const ptrconstants^constantsMax
+Datax constantsMax#1
+Datax *constants#1
+Datax *constantsReg#1
+Const ptr_constants^constantsMax
 
-Data functionsMax#1
-Data *functions#1
-Data *functionsReg#1
-Const ptrfunctions^functionsMax
+Datax functionsMax#1
+Datax *functions#1
+Datax *functionsReg#1
+Const ptr_functions^functionsMax
 
-Const ptrscopes^integerMax
-Const ptrfnscopes^integerfnscopeMax
+Const ptr_scopes^integerMax
+Const ptr_fnscopes^integerfnscopeMax
 
 #file containers
 Const sizeofsecdata=0x1000
-Data datasecMax#1
-Data datasec#1
-Data datasecReg#1
-Const ptrdatasec^datasecMax
-Const ptrdataReg^datasecReg
+Datax datasecMax#1
+Datax datasec#1
+Datax datasecReg#1
+Const ptr_datasec^datasecMax
+Const ptr_dataReg^datasecReg
 
-Data codesecMax=sizeofsecdata
-Data codesec#1
-Data codesecReg#1
-Const ptrcodesec^codesecMax
+Datax codesecMax#1
+Datax codesec#1
+Datax codesecReg#1
+Const ptr_codesec^codesecMax
 
 #table
 Const sizeofiedataparts=sizeofsecdata/0x10
 Const itablesize=sizeofiedataparts
-Data tableMax#1
-Data table#1
-Data tableReg#1
+Datax tableMax#1
+Datax table#1
+Datax tableReg#1
 Const IMAGE_IMPORT_DESCRIPTORsize=dwsz*5
-Const ptrtable^tableMax
+Const ptr_table^tableMax
 
 Const iaddressessize=3*sizeofiedataparts
 #addressessize
-Data addressesMax#1
-Data addresses#1
-Data addressesReg#1
-Const ptraddresses^addressesMax
+Datax addressesMax#1
+Datax addresses#1
+Datax addressesReg#1
+Const ptr_addresses^addressesMax
 
 Const sizeofienames=sizeofsecdata-iaddressessize-itablesize
 #Const inamessize=sizeofienames
 #namessize
-Data namesMax#1
-Data names#1
-Data namesReg#1
-Const ptrnames^namesMax
+Datax namesMax#1
+Datax names#1
+Datax namesReg#1
+Const ptr_names^namesMax
 
-Data extraMax#1
-Data extra#1
-Data extraReg#1
-Const ptrextra^extraMax
+Datax extraMax#1
+Datax extra#1
+Datax extraReg#1
+Const ptr_extra^extraMax
 
-Data unresLocalMax#1
-Data unresLocal#1
-Data unresLocalReg#1
-Const ptrunresLocal^unresLocalMax
+Datax unresLocalMax#1
+Datax unresLocal#1
+Datax unresLocalReg#1
+Const ptr_unresLocal^unresLocalMax
 
-data debugMax#2
-data debugReg#1
+Datax debugMax#2
+Datax debugReg#1
 
-Const containerssize=!-containersbegin
+#not yet at simple exec Const containerssize=!x-containersbegin
+const containersbegin^includesMax
+const containersalmostend^debugReg
+data containerssize=containersalmostend+dwsz-containersbegin
+const containerssize^containerssize
 
 value debug^debugMax
 
@@ -278,14 +284,14 @@ Const declarefunction=1
 
 
 #more values
-Data ptrdatasec%ptrdatasec
-Data ptrcodesec%ptrcodesec
-Data ptrmiscbag%ptrmiscbag
-Data ptrtable%ptrtable
-Data ptrnames%ptrnames
-Data ptraddresses%ptraddresses
-Data ptrextra%ptrextra
-Data ptrconditionsloops%ptrconditionsloops
+Data ptrdatasec%%ptr_datasec
+Data ptrcodesec%%ptr_codesec
+Data ptrmiscbag%%ptr_miscbag
+Data ptrtable%%ptr_table
+Data ptrnames%%ptr_names
+Data ptraddresses%%ptr_addresses
+Data ptrextra%%ptr_extra
+Data ptrconditionsloops%%ptr_conditionsloops
 Data ptrnull^null
 
 Data allocerrormsg#1

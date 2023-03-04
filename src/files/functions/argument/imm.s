@@ -111,7 +111,7 @@ function write_imm(sd dataarg,sd op)
 	set immop op
 	set value dataarg
 	data sz=5
-	data code%ptrcodesec
+	data code%%ptr_codesec
 	sd err
 	setcall err addtosec(immadd,sz,code)
 	call resetisimm()
@@ -119,7 +119,7 @@ function write_imm(sd dataarg,sd op)
 endfunction
 #er
 function write_imm_sign(sd dataarg,sd regopcode)
-	vData codeptr%ptrcodesec
+	vData codeptr%%ptr_codesec
 	sd err
 	setcall err rex_w_if64()
 	if err==(noerror)
@@ -155,7 +155,7 @@ function write_imm_trunc(sd value,sd reg,sd low,sd data,sd sufix)
 	inc b
 	set b# value
 	dec b
-	vData codeptr%ptrcodesec
+	vData codeptr%%ptr_codesec
 	setcall err addtosec(b,2,codeptr)
 	return err
 endfunction

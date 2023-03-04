@@ -37,7 +37,7 @@ endfunction
 function getptrramp()
 	data code#1
 	data ptrcode^code
-	data ptrcodesec%ptrcodesec
+	data ptrcodesec%%ptr_codesec
 	call getcont(ptrcodesec,ptrcode)
 	data get=1
 	addcall code ramp_index(get)
@@ -68,7 +68,7 @@ endfunction
 
 #er
 function entryscope()
-	data container%ptrcodesec
+	data container%%ptr_codesec
 	sd err
 	#push ebx,push ebp
 	const scope1_start=!;chars scope1={0x53,0x55};const scope1_sz=!-scope1_start
@@ -118,7 +118,7 @@ function addtocode_decstack(sd for_64)
 
 	data stack^movtostack
 	data size=2+4
-	data ptrcodesec%ptrcodesec
+	data ptrcodesec%%ptr_codesec
 
 	sd err
 	if for_64==(TRUE)
@@ -152,7 +152,7 @@ function addtocodefordata(sd value,sd for_64,sd ext)
 
 	sd err
 	setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
-	data ptrcodesec%ptrcodesec
+	data ptrcodesec%%ptr_codesec
 	set val value
 	setcall err addtosec(#code,5,ptrcodesec);If err!=(noerror);Return err;EndIf
 	setcall err reloc64_post_base_extension(ptrcodesec,ext);If err!=(noerror);Return err;EndIf

@@ -10,11 +10,11 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	sd for_64
 
 	if stack==false
-		data ptrdatasec%ptrdatasec
+		data ptrdatasec%%ptr_datasec
 		if ptrobject#==1
 			If relocbool==true
 				#data
-				Data ptraddresses%ptraddresses
+				Data ptraddresses%%ptr_addresses
 				Data relocoff=0
 
 				SetCall err adddirectrel_base(ptraddresses,relocoff,relindex,ptrvalue#)
@@ -54,7 +54,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 			#code
 			sd stackoff
 			setcall stackoff reloc64_offset((rampadd_value_off))
-			data ptrextra%ptrextra
+			data ptrextra%%ptr_extra
 			setcall err adddirectrel_base(ptrextra,stackoff,relindex,ptrvalue#)
 			If err!=noerr;Return err;EndIf
 			if relindex==(codeind)
@@ -171,7 +171,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 							Return err
 						EndIf
 					else
-						sd ptrcodesec%ptrcodesec
+						sd ptrcodesec%%ptr_codesec
 						setcall err addtosec(ptrvalue,unitsize,ptrcodesec)
 						If err!=noerr
 							Return err

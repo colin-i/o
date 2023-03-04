@@ -8,7 +8,7 @@ Function entryvarsfns(data content,data size)
 	Data noerr=noerror
 	Data zero=0
 	If pointer==zero
-		Data fns%ptrfunctions
+		Data fns%%ptr_functions
 		SetCall pointer vars_ignoreref(content,size,fns)
 		If pointer==zero
 			Return noerr
@@ -36,7 +36,7 @@ endfunction
 #same
 function get_img_vdata_dataReg()
 	sd reg;setcall reg get_img_vdata()
-	vdata ptrdataReg%ptrdataReg
+	vdata ptrdataReg%%ptr_dataReg
 	add reg ptrdataReg#
 	return reg
 endfunction

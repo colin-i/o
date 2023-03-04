@@ -12,7 +12,7 @@ function scopes_free()
 		add pointer start
 		if start!=pointer
 			sub pointer :
-			sd scps%ptrscopes
+			sd scps%%ptr_scopes
 			if pointer#!=scps
 				add pointer :
 			endif
@@ -72,7 +72,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 		if has_named_entry==(TRUE)
 			#entry tag is, and is last, entry. can be used in functions
 			sub pointer :
-			sd scps%ptrscopes
+			sd scps%%ptr_scopes
 			set pointer# scps
 		endif
 		#alloc some dummy values
@@ -99,7 +99,7 @@ function scopes_store(sv scope)
 	add scope s#
 	set scope scope#
 	sd last=sizeofscope
-	sv pointer%ptrfnscopes
+	sv pointer%%ptr_fnscopes
 	add last pointer
 	while pointer!=last
 		sd cont;sd contReg;call getcontandcontReg(pointer,#cont,#contReg)
@@ -128,7 +128,7 @@ function scopes_searchinvars(sd p_err,sv p_name)
 	div sz :
 	sd i=0
 
-	sv ptrfunctions%ptrfunctions
+	sv ptrfunctions%%ptr_functions
 	sd fns
 	call getcont(ptrfunctions,#fns)
 	while i!=sz

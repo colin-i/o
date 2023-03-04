@@ -4,7 +4,7 @@
 function localResolve(sd unrLc,sd unrLcReg)
 	data funcs#1
 	data ptr_funcs^funcs
-	data fns%ptrfunctions
+	data fns%%ptr_functions
 
 	sd struct
 	sd offset
@@ -45,7 +45,7 @@ function localResolve(sd unrLc,sd unrLcReg)
 endfunction
 
 function get_fn_pos(sd varfnpointer,sd ptr_out)
-	Data ptrfunctions%ptrfunctions
+	Data ptrfunctions%%ptr_functions
 	#store the functions reg
 	sd fns_cont
 	sd ptr_fns_cont^fns_cont
@@ -70,7 +70,7 @@ function unresLc(sd addition,sd structure,sd direct)
 	set struct structure
 	set isdirect direct
 
-	data unresLocal%ptrunresLocal
+	data unresLocal%%ptr_unresLocal
 	sd err
 	SetCall err addtosec(ptradd,12,unresLocal)
 	return err

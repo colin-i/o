@@ -1,7 +1,7 @@
 
 #err
 Function addtonamessized(data str,data sz,data regoff)
-	Data ptrnames%ptrnames
+	Data ptrnames%%ptr_names
 	Call getcontReg(ptrnames,regoff)
 	Data err#1
 	SetCall err addtosecstr(str,sz,ptrnames)
@@ -95,14 +95,14 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 endfunction
 #err
 function elfaddsecn()
-	Data ptrmiscbag%ptrmiscbag
+	Data ptrmiscbag%%ptr_miscbag
 	sd err
 	SetCall err elfaddsec_base((NULL),(SHT_NULL),0,(NULL),(NULL),0,0,0,0,(NULL),ptrmiscbag)
 	Return err
 endfunction
 #err
 Function elfaddsecs(sd stringoff,sd type,sd flags,sd fileoffset,sd bsize,sd align)
-	Data ptrmiscbag%ptrmiscbag
+	Data ptrmiscbag%%ptr_miscbag
 	sd err
 	SetCall err elfaddsec_base(stringoff,type,flags,fileoffset,bsize,0,0,align,0,(NULL),ptrmiscbag)
 	Return err
@@ -111,7 +111,7 @@ EndFunction
 Function elfaddsec(data stringoff,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
 	sd bsize
 	Call getcontReg(seccont,#bsize)
-	Data ptrmiscbag%ptrmiscbag
+	Data ptrmiscbag%%ptr_miscbag
 	sd err
 	SetCall err elfaddsec_base(stringoff,type,flags,fileoffset,bsize,link,info,align,entsize,(NULL),ptrmiscbag)
 	Return err
@@ -293,9 +293,9 @@ Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
 	Data err#1
 	Data off#1
 	Data ptroff^off
-	Data ptrdatasec%ptrdatasec
-	Data ptrcodesec%ptrcodesec
-	Data ptraddresses%ptraddresses
+	Data ptrdatasec%%ptr_datasec
+	Data ptrcodesec%%ptr_codesec
+	Data ptraddresses%%ptr_addresses
 	Data struct#1
 	If relsec==ptraddresses
 		Set struct ptrdatasec

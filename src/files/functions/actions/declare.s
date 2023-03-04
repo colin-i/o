@@ -122,7 +122,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,is_stack) #there is 1 more argument but is not used
 				#                                                                               since %%|
 				if is_expand==(FALSE)
-					sd pdataReg%ptrdataReg
+					sd pdataReg%%ptr_dataReg
 					add pdataReg# unitsize    #this is init by 0
 				else
 					sd pnobitsReg%ptrnobitsReg

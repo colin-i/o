@@ -48,7 +48,7 @@ function takewithimm(sd ind,sd addr)
 	Add takeop ind
 	set takeloc addr
 
-	Data ptrcodesec%ptrcodesec
+	Data ptrcodesec%%ptr_codesec
 	Data sz1=bsz+dwsz
 
 	sd err
@@ -80,7 +80,7 @@ function datatake(sd takeindex,sd take_loc)
 endfunction
 #err
 function adddirectrel_base_inplace(sd relocoff,sd p_take_loc,sd sectionind)
-	Data ptrextra%ptrextra
+	Data ptrextra%%ptr_extra
 	sd errnr
 	SetCall errnr adddirectrel_base(ptrextra,relocoff,sectionind,p_take_loc#)
 	If errnr==(noerror)
@@ -97,7 +97,7 @@ function writetake(sd takeindex,sd entry)
 	if stack==0
 		data p_is_object%ptrobject
 		if p_is_object#==(TRUE)
-			Data ptrextra%ptrextra
+			Data ptrextra%%ptr_extra
 			data relocoff#1
 			setcall relocoff reloc64_offset(1)
 			sd var
@@ -155,7 +155,7 @@ function writetake(sd takeindex,sd entry)
 			set getfromstack 0x03
 		else;set getfromstack (moveatprocthemem);endelse
 		setcall errnr rex_w_if64();if errnr!=(noerror);return errnr;endif
-		Data ptrcodesec%ptrcodesec
+		Data ptrcodesec%%ptr_codesec
 		SetCall errnr addtosec(ptrgetfromstack,sizegetfromstack,ptrcodesec)
 	endelse
 	Return errnr
@@ -215,7 +215,7 @@ function sufix_take(sd takeindex,sd take64)
 		if err!=(noerror)
 			return err;endif
 	endif
-	Data ptrcodesec%ptrcodesec
+	Data ptrcodesec%%ptr_codesec
 	Chars newtake=moveatprocthemem
 	Chars newtakemodrm#1
 	Str ptrnewtake^newtake
@@ -242,7 +242,7 @@ endfunction
 
 #er
 Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd takeindex)
-	Data ptrcodesec%ptrcodesec
+	Data ptrcodesec%%ptr_codesec
 	Data errnr#1
 	Data noerr=noerror
 	Data sz2=bsz+bsz

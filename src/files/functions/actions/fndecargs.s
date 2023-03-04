@@ -60,7 +60,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	if parses==(pass_init)
 		if is_stack==(FALSE)
 			if is_expand==(FALSE)
-				vdata ptrdataReg%ptrdataReg
+				vdata ptrdataReg%%ptr_dataReg
 				add ptrdataReg# datasize
 			endif
 		endif
@@ -109,7 +109,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		setcall memoff get_img_vdata_dataReg()
 		Data null={NULL,NULL}
 		Data ptrnull^null
-		Data _datasec%ptrdatasec
+		Data _datasec%%ptr_datasec
 		SetCall err addtosec(ptrnull,datasize,_datasec)
 		If err!=noerr
 			Return err
@@ -136,7 +136,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	if p_is_object#==(TRUE)
 		Const fndecargs_offend^memoff
 		Const fndecargs_offstart^stacktransfer1
-		Data ptrextra%ptrextra
+		Data ptrextra%%ptr_extra
 		sd reloff=fndecargs_offend-fndecargs_offstart
 		if long_mask!=0
 			inc reloff
@@ -148,7 +148,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		call inplace_reloc(#memoff)
 	endif
 
-	Data _codesec%ptrcodesec
+	Data _codesec%%ptr_codesec
 
 	SetCall err addtosec(#stacktransfer1,(3*bsz+dwsz),_codesec);If err!=noerr;Return err;EndIf
 	if long_mask!=0

@@ -14,12 +14,12 @@ Function unresolvedcallsfn(data struct,data inneroffset,data atend,data valuedat
 	Data ptrobject%ptrobject
 
 	If ptrobject#==true
-		Data ptrextra%ptrextra
+		Data ptrextra%%ptr_extra
 		SetCall err addrel_base(offset,valuedata,atend,ptrextra)
 	Else
 		#add to resolve at end
 		Data unressz=3*dwsz
-		Data uncall%ptrunresolvedcalls
+		Data uncall%%ptr_unresolvedcalls
 		data ptrstruct^structure
 
 		set structure struct
@@ -32,7 +32,7 @@ EndFunction
 
 #err
 function fnimp_exists(sd content,sd size)
-	sd fns%ptrfunctions
+	sd fns%%ptr_functions
 	sd d;setcall d vars_ignoreref(content,size,fns)
 	if d==0
 		return (noerror)
@@ -55,8 +55,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 	#Data false=FALSE
 
 	Data zero=0
-	Data fns%ptrfunctions
-	Data code%ptrcodesec
+	Data fns%%ptr_functions
+	Data code%%ptr_codesec
 
 	Data err#1
 	Data noerr=noerror
@@ -150,7 +150,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			If ptrobject#==true
 				Data STT_FUNC=STT_FUNC
 				Data codeind=codeind
-				Data ptrtable%ptrtable
+				Data ptrtable%%ptr_table
 				if subtype!=(cFUNCTION)
 				#entries are also not local
 					SetCall err elfaddstrszsym(content,sz,value,zero,STT_FUNC,(STB_GLOBAL),codeind,ptrtable)
@@ -317,7 +317,7 @@ endfunction
 
 #err
 function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect,sd subtype)
-	Data fns%ptrfunctions
+	Data fns%%ptr_functions
 
 	SetCall p_data# vars(pcontent#,sz,fns)
 	If p_data#==0
@@ -344,7 +344,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 
 	#move over the stack arguments, ebx is also shorting the first stack variable (mov rbx,rdx)
 	#mov esp,ebx
-	Data code%ptrcodesec
+	Data code%%ptr_codesec
 	sd err
 	#
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
@@ -359,7 +359,7 @@ endfunction
 #err
 function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	sd err
-	Data code%ptrcodesec
+	Data code%%ptr_codesec
 
 	sd pb;setcall pb is_for_64_is_impX_or_fnX_p_get()
 	if pb#==(TRUE)
@@ -444,7 +444,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	endif
 	if tless==0
 		sd global_err_ptr;setcall global_err_ptr global_err_p()
-		Data ptrextra%ptrextra
+		Data ptrextra%%ptr_extra
 		If ptrobject#==(FALSE)
 		#absolute
 			const global_err_ex_start=!
@@ -516,7 +516,7 @@ endfunction
 #er
 function entryraw_top()
 	chars s={0x6a,0}
-	data code%ptrcodesec
+	data code%%ptr_codesec
 	sd err
 	setcall err addtosec(#s,2,code)
 	return err

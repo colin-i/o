@@ -27,7 +27,7 @@ function getexit(sv ptrptrcontinuation,sd psizeofcontinuation)
 	chars sys_exit={0xb8,1,0,0,0}
 	data exinit^sys_exit
 	data exitsize=5
-	Data codeptr%ptrcodesec
+	Data codeptr%%ptr_codesec
 	sd err
 	SetCall err addtosec(exinit,exitsize,codeptr)
 	If err!=(noerror)
@@ -71,7 +71,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 	Str ptrcontinuation#1
 	Data sizeofcontinuation#1
 
-	vData codeptr%ptrcodesec
+	vData codeptr%%ptr_codesec
 	Data regopcode#1
 
 	Data err#1

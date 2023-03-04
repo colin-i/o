@@ -24,7 +24,7 @@ Function warnings(sd p_err,sd has_named_entry)
 			if var==(NULL)
 				data ptrcodeFnObj%ptrcodeFnObj
 				if ptrcodeFnObj#!=(ignore_warn)
-					Data functionsptr%ptrfunctions
+					Data functionsptr%%ptr_functions
 					SetCall var varscore((NULL),0,functionsptr,p_err)
 					if var!=(NULL)
 						set fn_name "(function)"
@@ -33,7 +33,7 @@ Function warnings(sd p_err,sd has_named_entry)
 				if var==(NULL)
 					sd cb;setcall cb constants_bool((const_warn_get))
 					if cb!=(ignore_warn)
-						data constantsptr%ptrconstants
+						data constantsptr%%ptr_constants
 						SetCall var varscore((NULL),0,constantsptr,p_err)
 						if var!=(NULL)
 							set fn_name "(constant)"
@@ -286,7 +286,7 @@ function inplace_reloc_unres(sd p,sd add)
 	sd p_inplace_reloc_pref%p_inplace_reloc_pref
 	if p_inplace_reloc_pref#!=(zero_reloc)
 		sd err
-		sd ptrcodesec%ptrcodesec
+		sd ptrcodesec%%ptr_codesec
 		setcall err unresLc(add,ptrcodesec,0)
 		return err
 	endif

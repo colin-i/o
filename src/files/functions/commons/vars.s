@@ -45,12 +45,12 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 			Data checkvalue#1
 			Set checkvalue container#
 			And checkvalue ReferenceBit
-			data ptrconstants%ptrconstants;sd cb
+			data ptrconstants%%ptr_constants;sd cb
 			If checkvalue==zero
 				data returnvalue#1
 				set returnvalue entrypoint
 				#
-				data ptrfunctions%ptrfunctions
+				data ptrfunctions%%ptr_functions
 				if ptrfunctions==ptrstructure
 					Set checkvalue container#
 					sd against_idata=idatabitfunction

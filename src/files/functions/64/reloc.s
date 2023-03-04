@@ -53,7 +53,7 @@ function reloc64_post_base(sd struct)
 endfunction
 #er
 function reloc64_post()
-	sd ptrcodesec%ptrcodesec
+	sd ptrcodesec%%ptr_codesec
 	sd err
 	setcall err reloc64_post_base(ptrcodesec)
 	return err

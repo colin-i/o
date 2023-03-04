@@ -123,7 +123,7 @@ Function include(Str path)
 	Set dest# 0
 
 
-	Data pincludes%ptrincludes
+	Data pincludes%%ptr_includes
 	Data isetsize=includesetSz
 
 	SetCall err addtosec(includeset,isetsize,pincludes)

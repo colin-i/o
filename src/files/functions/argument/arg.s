@@ -60,7 +60,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 		endif
 		if allowdata!=(allow_yes)
 			if allowdata==(allow_later)
-				vdata ptrdataReg%ptrdataReg
+				vdata ptrdataReg%%ptr_dataReg
 				sub q_size escapes
 				add ptrdataReg# q_size
 				inc ptrdataReg#   #null end
@@ -76,7 +76,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			set location ptrdata#
 			setcall location# get_img_vdata_dataReg()
 			#set string to data
-			data ptrdatasec%ptrdatasec
+			data ptrdatasec%%ptr_datasec
 			SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
 			If errnr!=(noerror)
 				return errnr
@@ -143,7 +143,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					endif
 				else
 					data ptrobject%ptrobject
-					data ptrfunctions%ptrfunctions
+					data ptrfunctions%%ptr_functions
 					setcall container_sz valinmem(content,argsize,(asciidot))
 					if container_sz!=argsize
 						setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
@@ -193,7 +193,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 EndFunction
 #err
 function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
-	data ptrfunctions%ptrfunctions
+	data ptrfunctions%%ptr_functions
 	#if is a dot
 	sd inter
 	#setcall inter vars(content,container_sz,ptrfunctions)

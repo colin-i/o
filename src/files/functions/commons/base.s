@@ -53,7 +53,7 @@ Const globalinnerfunction^innerfunction
 #pdata
 Function getstructcont(data typenumber)
 	Data dest#1
-	Data scopes%ptrscopes
+	Data scopes%%ptr_scopes
 	Data sizeofdataset=sizeofcontainer
 
 	Data fnboolptr%globalinnerfunction

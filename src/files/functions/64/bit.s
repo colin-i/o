@@ -70,7 +70,7 @@ endfunction
 
 ##REX_W
 function rex_w(sd p_err)
-	Data code%ptrcodesec
+	Data code%%ptr_codesec
 	chars r=REX_Operand_64
 	SetCall p_err# addtosec(#r,1,code)
 endfunction
@@ -315,7 +315,7 @@ endfunction
 function function_call_64(sd is_callex)
 	sd conv;setcall conv convdata((convdata_total))
 	sd err
-	Data code%ptrcodesec
+	Data code%%ptr_codesec
 	sd hex_1;sd hex_2;sd hex_3;sd hex_4;sd hex_5;sd hex_6
 	call convdata((convdata_call),#hex_1)
 	#
@@ -413,7 +413,7 @@ function function_call_64(sd is_callex)
 endfunction
 #err
 function function_start_64(sd nr_of_args)
-	Data code%ptrcodesec
+	Data code%%ptr_codesec
 	sd data;sd sz
 	setcall data convdata((convdata_fn),#sz,nr_of_args)
 	sd err
@@ -455,7 +455,7 @@ function callex64_call()
 	#$
 	#mov rdx,rcx
 	chars *keep_nr_args={REX_Operand_64,0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
-	sd ptrcodesec%ptrcodesec
+	sd ptrcodesec%%ptr_codesec
 	sd err
 	SetCall err addtosec(#callex64_code,(!-callex64_start),ptrcodesec)
 	return err

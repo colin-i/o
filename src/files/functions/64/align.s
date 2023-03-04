@@ -38,7 +38,7 @@ function stack_align(sd nr)
 				return (noerror)
 		endelseif
 		#Stack aligned on 16 bytes. Depending on the number of arguments
-		vdata code%ptrcodesec
+		vdata code%%ptr_codesec
 		chars align={REX_Operand_64,0x83,0xEC,8}
 		sd err
 		SetCall err addtosec(#align,(4),code)
@@ -176,7 +176,7 @@ function align_entryscope()
 			#Jump short if carry
 			set jump (0x72)
 		endelse
-		vdata code%ptrcodesec
+		vdata code%%ptr_codesec
 		sd err
 		SetCall err addtosec(#bt,(4+6),code)
 		return err

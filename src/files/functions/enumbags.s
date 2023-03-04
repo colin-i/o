@@ -2,8 +2,9 @@
 
 #err
 Function enumbags(data is_declare)
-	sd pointer%containersbegin
-	sd cursor=containerssize
+	sd pointer%%containersbegin
+	sd cursor%containerssize
+	set cursor cursor#
 	add cursor pointer
 	While pointer!=cursor
 		If is_declare==(TRUE)

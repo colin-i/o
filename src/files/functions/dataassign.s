@@ -14,7 +14,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 
 	data offset_const#1
 	Data ptroffset_const^offset_const
-	Data constantsstruct%ptrconstants
+	Data constantsstruct%%ptr_constants
 	#Data pointer_structure#1
 	#at constants and at data^sd,str^ss
 
@@ -64,9 +64,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	Data ptrvalue^value
 
 	Str content#1
-	Data ptrdatasec%ptrdatasec
-	Data ptrcodesec%ptrcodesec
-	Data ptrfunctions%ptrfunctions
+	Data ptrdatasec%%ptr_datasec
+	Data ptrcodesec%%ptr_codesec
+	Data ptrfunctions%%ptr_functions
 
 	Data zero=0
 
@@ -464,7 +464,7 @@ endfunction
 
 #err
 function set_reserve(sd value)
-	vData ptrdatasec%ptrdatasec
+	vData ptrdatasec%%ptr_datasec
 	sd p_nul_res_pref%p_nul_res_pref
 	if p_nul_res_pref#==(TRUE)
 		sd reg;call getcontReg(ptrdatasec,#reg)

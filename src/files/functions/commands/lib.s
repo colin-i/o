@@ -8,8 +8,8 @@ Function openlib()
 	Data namesReg#1
 	Data ptraddressesReg^addressesReg
 	Data ptrnamesReg^namesReg
-	Data iaddresses%ptraddresses
-	Data inames%ptrnames
+	Data iaddresses%%ptr_addresses
+	Data inames%%ptr_names
 	Call getcontReg(iaddresses,ptraddressesReg)
 	Call getcontReg(inames,ptrnamesReg)
 
@@ -24,7 +24,7 @@ Function openlib()
 
 	Data iid^OriginalFirstThunk
 	Data iid_size=IMAGE_IMPORT_DESCRIPTORsize
-	Data itable%ptrtable
+	Data itable%%ptr_table
 	Data err#1
 	SetCall err addtosec(iid,iid_size,itable)
 	Return err
@@ -32,14 +32,14 @@ EndFunction
 
 #er
 Function closelib()
-	Data itable%ptrtable
+	Data itable%%ptr_table
 	Data itab#1
 	Data tabsize#1
 	Data ptritab^itab
 	Data ptrtabsize^tabsize
 	Call getcontandcontReg(itable,ptritab,ptrtabsize)
 
-	Data iaddresses%ptraddresses
+	Data iaddresses%%ptr_addresses
 
 	Data null=NULL
 	Data ptrnull^null

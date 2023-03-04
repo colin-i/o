@@ -36,8 +36,8 @@ Function addtosec(str content,data size,data dst)
 	Set avail destMax
 	Sub avail destData
 	If avail<size
-		Data datasec%ptrdatasec
-		Data codesec%ptrcodesec
+		Data datasec%%ptr_datasec
+		Data codesec%%ptr_codesec
 		Data ptrfileformat%ptrfileformat
 		Data elf_unix=elf_unix
 		Data false=FALSE
@@ -101,7 +101,7 @@ Function addtosec(str content,data size,data dst)
 EndFunction
 #errnr
 function addtoCode_set_programentrypoint(ss content,sd size)
-	sd err;data code%ptrcodesec
+	sd err;data code%%ptr_codesec
 	setcall err addtosec(content,size,code)
 	if err!=(noerror);return err;endif
 	data c#1

@@ -1,14 +1,14 @@
 
 #err
 Function coderegtocondloop()
-	Data codesec%ptrcodesec
+	Data codesec%%ptr_codesec
 	Data codeReg#1
 	Data ptrcodeReg^codeReg
 
 	Call getcontReg(codesec,ptrcodeReg)
 
 	Data err#1
-	Data condloopsec%ptrconditionsloops
+	Data condloopsec%%ptr_conditionsloops
 	Data dsz=dwsz
 
 	SetCall err addtosec(ptrcodeReg,dsz,condloopsec)
@@ -25,7 +25,7 @@ Function condbeginwrite(data condnumber)
 		Return err
 	EndIf
 
-	Data condloopsec%ptrconditionsloops
+	Data condloopsec%%ptr_conditionsloops
 	Data dsz=dwsz
 
 	Data ptrcondnumber^condnumber
@@ -53,7 +53,7 @@ EndFunction
 Function checkcondloopclose()
 	Data regnr#1
 	Data ptrregnr^regnr
-	Data condloop%ptrconditionsloops
+	Data condloop%%ptr_conditionsloops
 	Call getcontReg(condloop,ptrregnr)
 	Data zero=0
 	If regnr!=zero
@@ -79,14 +79,14 @@ Function condjump(data size)
 	Data pjump^jump
 
 	Data err#1
-	Data code%ptrcodesec
+	Data code%%ptr_codesec
 	SetCall err addtosec(pjump,bjsz,code)
 	Return err
 EndFunction
 
 #err
 Function condend(data number)
-	Data condloop%ptrconditionsloops
+	Data condloop%%ptr_conditionsloops
 	Data ptrcReg#1
 	Data ptrptrcReg^ptrcReg
 
@@ -99,7 +99,7 @@ Function condend(data number)
 
 	Data codeoffset#1
 	Data ptrcodeoff^codeoffset
-	Data codesec%ptrcodesec
+	Data codesec%%ptr_codesec
 	Data whilenr=whilenumber
 	Data structure#1
 	Data ptrstructure^structure
@@ -188,7 +188,7 @@ endfunction
 
 function condendwrite(sd structure,sd codeoffset)
 	Data jumploc#1
-	Data codesec%ptrcodesec
+	Data codesec%%ptr_codesec
 	vData writeloc#1
 	Data ptrwriteloc^writeloc
 
@@ -227,7 +227,7 @@ Function conditionscondend(data close1,data close2)
 
 	Data ifnr=ifnumber
 	Data elsenr=elsenumber
-	Data structure%ptrconditionsloops
+	Data structure%%ptr_conditionsloops
 	Data dsz=dwsz
 
 	While loop==loopini
@@ -266,7 +266,7 @@ Function conditionscondend(data close1,data close2)
 EndFunction
 function prevcond()
 	vData cl#1
-	vData structure%ptrconditionsloops
+	vData structure%%ptr_conditionsloops
 	Call getcontplusReg(structure,#cl)
 	Sub cl (dwsz)
 	return cl#
@@ -295,7 +295,7 @@ EndFunction
 function continue()
 	sd regnr
 	sd structure
-	vData condloop%ptrconditionsloops
+	vData condloop%%ptr_conditionsloops
 	call getcontandcontReg(condloop,#structure,#regnr)
 	if regnr!=0
 		sd start;set start structure
@@ -307,7 +307,7 @@ function continue()
 			if type!=(ifinscribe)
 				sub structure (dwsz)
 				if type==(whilenumber)
-					vdata ptrcodesec%ptrcodesec
+					vdata ptrcodesec%%ptr_codesec
 					sd codeoffset
 					call getcontReg(ptrcodesec,#codeoffset)
 					Add codeoffset (backjumpsize)
@@ -324,7 +324,7 @@ endfunction
 function break()
 	sd regnr
 	sd structure
-	vData condloop%ptrconditionsloops
+	vData condloop%%ptr_conditionsloops
 	call getcontandcontReg(condloop,#structure,#regnr)
 	if regnr!=0
 		sd start;set start structure
