@@ -170,13 +170,21 @@ Function writefile(data hfile,str buf,data ln)
 	Return writeres
 EndFunction
 #err
-Function writefile_errversion(data hfile,str buf,data ln)
+Function writefile_errversion_debug(data hfile,str buf,data ln)
 	sd writeres
 	SetCall writeres write(hfile,buf,ln)
 	If writeres!=ln
 		sd writeerr%writefile_err_p
 		Return writeerr
 	EndIf
+	sd ptr_has_debug%ptr_has_debug
+	if ptr_has_debug#==(Yes)
+	#at exec formats will add for no one
+	#if blocking at exe , care to remove if dst==debugsec from addtosec
+		sv ptrdebug%%ptr_debug
+		sd err;setcall err addtosec(buf,ln,ptrdebug)
+		return err
+	endif
 	Return (noerror)
 EndFunction
 

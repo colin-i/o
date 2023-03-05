@@ -127,13 +127,13 @@ EndFunction
 #err
 function addtolog_handle(ss content,sd sizetowrite,sd filehandle)
 	sd err
-	setcall err writefile_errversion(filehandle,content,sizetowrite)
+	setcall err writefile_errversion_debug(filehandle,content,sizetowrite)
 	if err!=(noerror);return err;endif
 
 	chars textterm={asciicarriage,asciireturn,0}
 	str text^textterm
 	data sz=2
-	setcall err writefile_errversion(filehandle,text,sz)
+	setcall err writefile_errversion_debug(filehandle,text,sz)
 	return err
 endfunction
 #err
@@ -147,7 +147,7 @@ function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
 	if handle!=-1
 	#this compare only at first chdir is extra
 		sd err
-		setcall err writefile_errversion(handle,#type,1)
+		setcall err writefile_errversion_debug(handle,#type,1)
 		if err==(noerror)
 			setcall err addtolog_handle(content,size,handle)
 		endif

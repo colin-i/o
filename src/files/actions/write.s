@@ -88,6 +88,15 @@ If writeres==writefalse
 EndIf
 
 If object==true
+	#debug
+	if debugsecReg!=0
+		#has_debug is Yes
+		SetCall writeres writefile(fileout,#debugsec,debugsecReg)
+		If writeres==writefalse
+			Call errexit()
+		EndIf
+	endif
+
 	#symtab
 	SetCall writeres writefile(fileout,table,tableReg)
 	If writeres==writefalse

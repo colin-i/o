@@ -48,7 +48,7 @@ Set extraMax subscope
 
 Set unresLocalMax mainscope
 
-set debugMax 0    #(subscope)
+set debugsecMax 0    #(subscope)
 
 
 SetCall errormsg enumbags(true)

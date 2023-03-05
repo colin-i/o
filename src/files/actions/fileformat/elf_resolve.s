@@ -319,11 +319,12 @@ Else
 	endif
 
 	if has_debug==(Yes)
-		SetCall errormsg elfaddstrsec(".debug",(SHT_NULL),0,elf_sec_fileoff,debug,0,0,(bsz),0)
+		#SHT_NULL will not reach linker output
+		SetCall errormsg elfaddstrsec(".debug",(SHT_PROGBITS),0,elf_sec_fileoff,ptrdebug,0,0,(bsz),0)
 		If errormsg!=noerr
 			Call msgerrexit(errormsg)
 		EndIf
-		add elf_sec_fileoff debugReg
+		add elf_sec_fileoff debugsecReg
 		inc elf_sec_nr
 		inc symind
 	endif

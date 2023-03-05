@@ -208,16 +208,16 @@ Datax unresLocal#1
 Datax unresLocalReg#1
 Const ptr_unresLocal^unresLocalMax
 
-Datax debugMax#2
-Datax debugReg#1
+Datax debugsecMax#1
+Datax debugsec#1
+Datax debugsecReg#1
+Const ptr_debug^debugsecMax
 
 #not yet at simple exec Const containerssize=!x-containersbegin
 const containersbegin^includesMax
-const containersalmostend^debugReg
+const containersalmostend^debugsecReg
 data containerssize=containersalmostend+dwsz-containersbegin
 const containerssize^containerssize
-
-value debug^debugMax
 
 chars dummyEntry_data#sizeof_minimumentry
 
@@ -284,15 +284,16 @@ Const declarefunction=1
 
 
 #more values
-Data ptrdatasec%%ptr_datasec
-Data ptrcodesec%%ptr_codesec
-Data ptrmiscbag%%ptr_miscbag
-Data ptrtable%%ptr_table
-Data ptrnames%%ptr_names
-Data ptraddresses%%ptr_addresses
-Data ptrextra%%ptr_extra
-Data ptrconditionsloops%%ptr_conditionsloops
-Data ptrnull^null
+Value ptrdatasec%%ptr_datasec
+Value ptrcodesec%%ptr_codesec
+Value ptrmiscbag%%ptr_miscbag
+Value ptrtable%%ptr_table
+Value ptrnames%%ptr_names
+Value ptraddresses%%ptr_addresses
+Value ptrextra%%ptr_extra
+Value ptrconditionsloops%%ptr_conditionsloops
+Value ptrdebug%%ptr_debug
+Value ptrnull^null
 
 Data allocerrormsg#1
 const ptrallocerrormsg^allocerrormsg

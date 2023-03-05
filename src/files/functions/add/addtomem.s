@@ -38,6 +38,7 @@ Function addtosec(str content,data size,data dst)
 	If avail<size
 		Data datasec%%ptr_datasec
 		Data codesec%%ptr_codesec
+		Data debugsec%%ptr_debug
 		Data ptrfileformat%ptrfileformat
 		Data elf_unix=elf_unix
 		Data false=FALSE
@@ -50,6 +51,10 @@ Function addtosec(str content,data size,data dst)
 			If dst==datasec
 				Set sectionexpand true
 			ElseIf dst==codesec
+				Set sectionexpand true
+			ElseIf dst==debugsec
+			#this is only because there is no blocking at writefile_errversion_debug for speed reasons
+			#this is also called before format is defined
 				Set sectionexpand true
 			EndElseIf
 		EndElse
