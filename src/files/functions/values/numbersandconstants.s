@@ -326,3 +326,10 @@ function parenthesis_all_size(ss content,sd size,sd ptr_sz)
 	add ptr_sz# two
 	return err
 endfunction
+
+#len
+function dwtomem(sd dw,ss mem)
+	sd len
+	setcall len sprintf(mem,"%u",dw)
+	return len
+endfunction

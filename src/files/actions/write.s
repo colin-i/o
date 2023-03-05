@@ -91,7 +91,7 @@ If object==true
 	#debug
 	if debugsecReg!=0
 		#has_debug is Yes
-		SetCall writeres writefile(fileout,#debugsec,debugsecReg)
+		SetCall writeres writefile(fileout,debugsec,debugsecReg)
 		If writeres==writefalse
 			Call errexit()
 		EndIf

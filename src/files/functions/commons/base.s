@@ -124,15 +124,20 @@ Function congruentmoduloatsegments(data virtual,data offset,data modulo,data new
 	return virtual
 EndFunction
 
+#str
+function log_term(sd psz)
+	chars textterm={asciicarriage,asciireturn,0}
+	set psz# 2
+	return #textterm
+endfunction
 #err
 function addtolog_handle(ss content,sd sizetowrite,sd filehandle)
 	sd err
 	setcall err writefile_errversion_debug(filehandle,content,sizetowrite)
 	if err!=(noerror);return err;endif
 
-	chars textterm={asciicarriage,asciireturn,0}
-	str text^textterm
-	data sz=2
+	sd sz
+	ss text;setcall text log_term(#sz)
 	setcall err writefile_errversion_debug(filehandle,text,sz)
 	return err
 endfunction

@@ -99,3 +99,8 @@ set p_b# (FALSE)
 
 #this is declared here for no entry/fn tags
 call scope64_set((FALSE))
+
+vdata ptrprevLineD%%ptrprevLineD
+set ptrprevLineD# 0
+vdata ptrcodeRegD%%ptrcodeRegD
+set ptrcodeRegD# 0

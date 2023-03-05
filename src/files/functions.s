@@ -51,3 +51,5 @@ Include "./functions/enumbags.s"
 Include "./functions/import.s"
 Include "./functions/override.s"
 Include "./functions/scopes.s"
+
+Include "./functions/debug.s"

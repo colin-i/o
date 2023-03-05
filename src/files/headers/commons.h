@@ -61,4 +61,7 @@ Data negative=-1
 Data i#1
 Chars dot="."
 
+const dw_chars=10
+const dw_chars_0=dw_chars+1
+
 const sym_with_size=dwsz

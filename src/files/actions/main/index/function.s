@@ -7,8 +7,8 @@ ElseIf programentrypoint!=codesecReg
 	Chars funcafterentry="Unavailable FUNCTION/ENTRY[...] statement; The start address was at File: %s; Line: %s."
 	Str fnafteren^funcafterentry
 
-	call sprintf(uint64s,"%u",entrylinenumber)
-	SetCall allocerrormsg printbuf(fnafteren,ptrentrystartfile,uint64s,0)
+	call dwtomem(entrylinenumber,uint32s)
+	SetCall allocerrormsg printbuf(fnafteren,ptrentrystartfile,uint32s,0)
 	If allocerrormsg==null
 		Call errexit()
 	EndIf

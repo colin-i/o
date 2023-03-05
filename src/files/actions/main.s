@@ -35,6 +35,13 @@ While includesReg!=null
 
 		While content!=last
 			Include "./main/index.s"
+			If errormsg==noerr
+				if parses==(pass_write)
+					if has_debug==(Yes)
+						setcall errormsg debug_lines(codesecReg,lineoffile)
+					endif
+				endif
+			EndIf
 			If errormsg!=noerr
 				Str nameoffilewitherr#1
 				Set nameoffilewitherr includes

@@ -5,7 +5,7 @@
 Include "./headers/ascii.h"
 Include "./headers/commons.h"
 
-Include "./headers/log.h"
+Include "./headers/logs.h"
 Include "./headers/strip.h"
 
 Include "./headers/header.h"

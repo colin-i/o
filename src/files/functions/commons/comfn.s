@@ -110,9 +110,9 @@ Function printbuf(sd format,sd message,sd s1,sd nr,sd n1,sd n2)
 	addCall bufsize strlen(message)
 	addCall bufsize strlen(s1)
 	if nr>0
-		add bufsize (max_uint64)
+		add bufsize (dw_chars)
 		if nr>1
-			add bufsize (max_uint64)
+			add bufsize (dw_chars)
 		endif
 	endif
 
