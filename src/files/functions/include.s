@@ -26,7 +26,7 @@ function offsetoffile_value()
 endfunction
 
 #err
-Function include(Str path)
+Function include(ss path,sd both)
 	Data zero=0
 	Data one=1
 
@@ -64,7 +64,7 @@ Function include(Str path)
 			return getcwderr
 		endif
 
-		setcall err addtolog_withchar(pcontentoffl#,(log_pathfolder))
+		setcall err addtolog_withchar_parses(pcontentoffl#,(log_pathfolder),both)
 		If err!=noerr;Return err;EndIf
 
 		chars storechar#1
@@ -83,7 +83,7 @@ Function include(Str path)
 		set folders# storechar
 	endif
 
-	setcall err addtolog_withchar(path,(log_pathname))
+	setcall err addtolog_withchar_parses(path,(log_pathname),both)
 	If err!=noerr;Return err;EndIf
 
 	Data strsz#1

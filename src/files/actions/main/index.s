@@ -252,11 +252,12 @@ if loop==1
 			Add inccursor dwordsize
 
 			Set inccursor# lineoffile
-			SetCall errormsg include(miscbag)
+			SetCall errormsg include(miscbag,(FALSE))
 			If errormsg!=noerr
 				Set content textlinestart
 				Sub lineoffile lineincrease
 			Else
+				set ptrprevLineD# 0    #here 0, at main set back
 				Set content contentoffile
 				Set last content
 				Add content offsetoffile

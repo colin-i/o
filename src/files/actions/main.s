@@ -7,8 +7,10 @@ data contentlineinclude=lineoffile_offset
 
 data dot_comma_end#1;set dot_comma_end 0
 
+#data logbackup#1
+
 set parses (pass_init)
-data logbackup#1
+
 While includesReg!=null
 	Data cursorforincludes#1
 	Set cursorforincludes includes
@@ -23,6 +25,7 @@ While includesReg!=null
 		Set offsetoffile cursorforincludes#
 		Add cursorforincludes dwordsize
 		Set lineoffile cursorforincludes#
+		set ptrprevLineD# lineoffile
 		Add cursorforincludes dwordsize
 		Sub cursorforincludes includes
 
@@ -38,7 +41,7 @@ While includesReg!=null
 			If errormsg==noerr
 				if parses==(pass_write)
 					if has_debug==(Yes)
-						setcall errormsg debug_lines(codesecReg,lineoffile)
+						setcall errormsg debug_lines(codesecReg,lineoffile,content,last)
 					endif
 				endif
 			EndIf
@@ -71,7 +74,7 @@ While includesReg!=null
 			EndIf
 		EndWhile
 		If errormsg==noerr
-			setcall errormsg addtolog_char(fileendchar,logfile) #also ok on win
+			setcall errormsg addtolog_withchar_parses("",fileendchar,(FALSE)) #also ok on win
 			if errormsg!=(noerror)
 				Call Message(errormsg)
 			elseif includedir==true
@@ -110,8 +113,8 @@ While includesReg!=null
 						set datasecReg 0
 						set nobitsDataStart datasecSize
 
-						set logbackup logfile
-						set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
+						#set logbackup logfile
+						#set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
 					else
 						set parses (pass_write)
 						call align_resolve()
@@ -143,7 +146,7 @@ While includesReg!=null
 	endif
 EndWhile
 
-set logfile logbackup       #set for errexit, func/const at object, virtual, exit
+#set logfile logbackup       #set for errexit, func/const at object, virtual, exit
 
 If errormsg!=noerr
 	Call errexit()

@@ -64,7 +64,7 @@ if logbool==true
 				chars getcwd_first="first getcwd error"
 				set errormsg #getcwd_first
 			else
-				setcall errormsg addtolog_withchar(log_main_folder,(log_pathfolder))
+				setcall errormsg addtolog_withchar_parses(log_main_folder,(log_pathfolder),(TRUE))
 				call free(log_main_folder)
 			endelse
 		endif

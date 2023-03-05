@@ -133,12 +133,12 @@ endfunction
 #err
 function addtolog_handle(ss content,sd sizetowrite,sd filehandle)
 	sd err
-	setcall err writefile_errversion_debug(filehandle,content,sizetowrite)
+	setcall err writefile_errversion(filehandle,content,sizetowrite)
 	if err!=(noerror);return err;endif
 
 	sd sz
 	ss text;setcall text log_term(#sz)
-	setcall err writefile_errversion_debug(filehandle,text,sz)
+	setcall err writefile_errversion(filehandle,text,sz)
 	return err
 endfunction
 #err
@@ -152,7 +152,7 @@ function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
 	if handle!=-1
 	#this compare only at first chdir is extra
 		sd err
-		setcall err writefile_errversion_debug(handle,#type,1)
+		setcall err writefile_errversion(handle,#type,1)
 		if err==(noerror)
 			setcall err addtolog_handle(content,size,handle)
 		endif
@@ -173,6 +173,27 @@ function addtolog_withchar(ss content,sd type)
 	setcall len strlen(content)
 	sd err
 	setcall err addtolog_withchar_ex(content,len,type)
+	return err
+endfunction
+#err
+function addtolog_withchar_parses(ss content,sd type,sd both)
+	sd err
+	if both==(FALSE)
+		sd ptrparses%ptr_parses
+		if ptrparses#==(pass_init)
+			setcall err addtolog_withchar(content,type)
+		elseif ptrparses#==(pass_write)
+			setcall err addtodebug_withchar(content,type)
+		else
+		#skip pass_calls
+			return (noerror)
+		endelse
+		return err
+	endif
+	setcall err addtolog_withchar(content,type)
+	if err==(noerror)
+		setcall err addtodebug_withchar(content,type)
+	endif
 	return err
 endfunction
 #err

@@ -101,6 +101,6 @@ set p_b# (FALSE)
 call scope64_set((FALSE))
 
 vdata ptrprevLineD%%ptrprevLineD
-set ptrprevLineD# 0
+#set ptrprevLineD# 0    #set acording to includes
 vdata ptrcodeRegD%%ptrcodeRegD
 set ptrcodeRegD# 0
