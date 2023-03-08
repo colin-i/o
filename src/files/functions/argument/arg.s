@@ -228,7 +228,7 @@ function function_in_code()
 endfunction
 
 function is_constant_related_ascii(sd in_byte)
-#! data cursor
+# ! data cursor
 	if in_byte==(asciiexclamationmark)
 		return (TRUE)
 	elseif in_byte==(asciiparenthesisstart)
@@ -240,10 +240,10 @@ function is_constant_related_ascii(sd in_byte)
 		return (FALSE)
 	elseif in_byte<=(asciinine)
 		return (TRUE)
-#: size of integer
+# : size of integer
 	elseif in_byte==(asciicolon)
 		return (TRUE)
-#not,~
+# not,~
 	elseif in_byte==(asciiequiv)
 		return (TRUE)
 	endelseif

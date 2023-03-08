@@ -257,7 +257,7 @@ Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd take
 
 	#if is like was xor prepare,prepare
 	If is_prepare==(TRUE)
-	#!=(noregnumber)
+	# !=(noregnumber)
 		#Chars comprepare1={0x33}
 		#Chars comprepare2#1
 		#setcall comprepare2 formmodrm((RegReg),regprepare,regprepare)
