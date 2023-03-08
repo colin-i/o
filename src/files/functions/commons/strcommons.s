@@ -150,20 +150,29 @@ data warn_hidden_whitespaces_times#1
 const warn_hidden_whitespaces_times_p^warn_hidden_whitespaces_times
 #err
 function warn_hidden_whitespaces(sd inc,sd add)
-	data warn_hidden_whitespaces_times_p%warn_hidden_whitespaces_times_p
-	if warn_hidden_whitespaces_times_p#==0
-		add inc add
-		sd goodwrongstring
-		setcall goodwrongstring errorDefOut("Hidden whitespaces at :",inc)
-		call safeMessage(goodwrongstring)
-		inc warn_hidden_whitespaces_times_p#
+	sd p%p_hidden_pref
+	if p#==(TRUE)
+		data warn_hidden_whitespaces_times_p%warn_hidden_whitespaces_times_p
+		if warn_hidden_whitespaces_times_p#==0
+		#show once
+			add inc add
+			sd goodwrongstring
+			setcall goodwrongstring errorDefOut("Hidden whitespaces at :",inc)
+			call safeMessage(goodwrongstring)
+			inc warn_hidden_whitespaces_times_p#
+		endif
 		sd w%p_w_as_e
 		if w#==(TRUE)
-			sd p%p_hidden_pref
-			if p#==(TRUE)
-				return ""
-			endif
+			return ""
 		endif
+	endif
+	return (noerror)
+endfunction
+#err
+function warn_hidden_whitespaces_after(sd inc,sd add,sd dot_comma_end)
+	if dot_comma_end==0
+		sd er;setcall er warn_hidden_whitespaces(inc,add)
+		return er
 	endif
 	return (noerror)
 endfunction

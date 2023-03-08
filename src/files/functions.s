@@ -53,3 +53,5 @@ Include "./functions/override.s"
 Include "./functions/scopes.s"
 
 Include "./functions/debug.s"
+
+Include "./functions/index.s"

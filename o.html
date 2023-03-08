@@ -97,7 +97,7 @@
 	<a class="code">
 	Const TRUE=1<br>
 	if 20==(ConstantValue+11)<br>
-&emsp;		set	x	20<br>
+&emsp;	set	x	20<br>
 	endif<br>
 	Const x=3$2<br>
     #is 3 pow 2 = 9</a>
@@ -891,6 +891,16 @@
 	1. Comments
 	<br>
 	To comment the code use the sign <b>#</b> before any text.
+	<br>
+	Multiline comments are using <b>#! ... !</b> syntax.
+	<a class="code">
+&emsp;format elf<br>
+&emsp;	sd a=2; #! 1111<br>
+&emsp;	2222<br>
+&emsp;	 3333<br>
+&emsp;	 ! ; inc a<br>
+&emsp;	exit a #will be 3
+	</a>
 	<br>
 	2. Interrupts
 	<br>

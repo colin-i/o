@@ -12,42 +12,54 @@ if dot_comma_end==0
 	Set textlinestart content
 endif
 
-#cursor for hidden whitespaces
-sd cursor_start;set cursor_start content
-setcall content mem_spaces(content,last)
-
 #test the line size and set the size of line break
 Chars newline=asciireturn
 Data linebreaksize#1
 Set linebreaksize bytesize
 
-#set comsize 0
-ss pointer
-set pointer content
 sd loop=2
-sd is_comment=0
-if pointer!=last
-	if pointer#==(commentascii)
-		set is_comment 1
-	endif
-endif
+#set comsize 0
+
+#cursor for hidden whitespaces, this is different than textlinestart
+sd cursor_start
+ss pointer
+sd is_comment;sd is_comment_multiline
+
+setcall pointer command_start(#is_comment,#is_comment_multiline,#cursor_start,#content,last)
 while loop==2
 	if pointer==last
 		set loop 1
 	elseif pointer#==newline
-		set loop 1
-		set dot_comma_end 0
-		if pointer!=content
-			ss testcarriage
-			Chars carriage=asciicarriage
-			set testcarriage pointer
-			dec testcarriage
-			If testcarriage#==carriage
-				#Dec comsize
-				set pointer testcarriage
-				Inc linebreaksize
-			EndIf
-		endif
+		set dot_comma_end 0   #a multiline comment can also be in a commands line
+		if is_comment_multiline==0
+			set loop 1
+			if pointer!=content
+				Chars carriage=asciicarriage
+				ss testcontent
+				set testcontent pointer
+				dec testcontent
+				If testcontent#==carriage
+					#Dec comsize
+					set pointer testcontent
+					Inc linebreaksize
+				EndIf
+			endif
+		else
+			#like: #!line\nline\nline\n ! command
+			inc lineoffile
+			inc pointer
+			set textlinestart pointer
+			if pointer!=last
+				setcall pointer mem_spaces(pointer,last)
+				if pointer!=last
+					if pointer#==(asciiexclamationmark)
+						inc pointer
+						set content pointer
+						setcall pointer command_start(#is_comment,#is_comment_multiline,#cursor_start,#content,last)
+					endif
+				endif
+			endif
+		endelse
 	elseif is_comment==0
 		if pointer#==(asciidoublequote)
 			setcall errormsg quotes_forward(#pointer,last,#newlines,#textlinestart)
@@ -119,6 +131,7 @@ if loop==1
 				if parses==(pass_write)
 					set was_whitespaces content;dec was_whitespaces;setcall was_whitespaces is_whitespace(was_whitespaces#)
 					if was_whitespaces==(TRUE)
+					#this is comment ending in whitespace
 						setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
 					endif
 				endif
@@ -209,18 +222,20 @@ if loop==1
 							Call advancecursors(pcontent,pcomsize,comsize)
 						endelse
 					elseIf was_whitespaces==(TRUE)
-						if dot_comma_end==0
-						#parses (pass_write)
-							setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
-						endif
+						#mostly parses (pass_write), example: at cCALL is at all parses
+						#this is whitespace after command
+						#if parses==(pass_write) when show once check was not
+						setcall errormsg warn_hidden_whitespaces_after(includes,nameofstoffile,dot_comma_end)
 					endelseIf
 				endIf
 			EndIf
 		EndIf
 	Elseif cursor_start!=content
-		if parses==(pass_write)
-			setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
-		endif
+		#if parses==(pass_write) when show once check was not
+		#this is only whitespace
+		setcall errormsg warn_hidden_whitespaces_after(includes,nameofstoffile,dot_comma_end)
+		#dot_comma_end check: is not like it accepts "    ;" but it accepts "...!    ;"
+		#endif
 	Endelseif
 
 	If errormsg==noerr
