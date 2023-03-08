@@ -14,15 +14,7 @@ Multi-Arch: foreign
 Depends: libc6 [i386], libc6-i386 [amd64]
 Description: O Compiler
 
-#Package: ocompiler-dev
-#Architecture: all
-#Multi-Arch: foreign
-#Description: O Compiler dev files for logs
-
-#file in same debian folder: ocompiler.install
-#src/o usr/bin/
-#ounused/ounused usr/bin/
-#ostrip/ostrip usr/bin/
-
-#ocompiler-dev.install
-#.h
+Package: ocompiler-dev
+Architecture: all
+Multi-Arch: foreign
+Description: O Compiler dev files
