@@ -20,3 +20,9 @@ override_dh_auto_install:
 
 #override_dh_install:
 #	dh_install --list-missing -X.pyc -X.pyo
+
+ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
+override_dh_auto_configure:
+	dh_auto_configure
+	sed -i '/ostrip/d' debian/ocompiler.install
+endif
