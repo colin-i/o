@@ -26,7 +26,7 @@ jobs:
        wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
       fi
       version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
-      arh=`cat debian/control | grep ^Architecture | cut -d ' ' -f2`
+      arh=`cat debian/control | grep ^Architecture | head -1 | cut -d ' ' -f2`
       OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
       wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
       #
