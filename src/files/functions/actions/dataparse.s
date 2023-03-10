@@ -34,23 +34,32 @@ function get_img_vdata()
 	return value
 endfunction
 #same
-function get_img_vdata_dataReg()
-	sd reg;setcall reg get_img_vdata()
+function get_dataReg()
 	vdata ptrdataReg%%ptr_dataReg
-	add reg ptrdataReg#
-	return reg
+	return ptrdataReg#
 endfunction
 #same
-function get_img_vdata_dataSize()
-	sd reg;setcall reg get_img_vdata()
+function get_dataSize()
 	vdata ptrdataSize%ptrdataSize
-	add reg ptrdataSize#
+	sd reg;set reg ptrdataSize#
 	vdata ptr_nobits_virtual%ptr_nobits_virtual
 	if ptr_nobits_virtual#==(Yes)
 		#this is here because this function is called from fndecargs and from simple declare add reference
 		vdata ptr_nobitsDataStart%ptr_nobitsDataStart
 		sub reg ptr_nobitsDataStart#
 	endif
+	return reg
+endfunction
+#same
+function get_img_vdata_dataReg()
+	sd reg;setcall reg get_img_vdata()
+	addcall reg get_dataReg()
+	return reg
+endfunction
+#same
+function get_img_vdata_dataSize()
+	sd reg;setcall reg get_img_vdata()
+	addcall reg get_dataSize()
 	return reg
 endfunction
 

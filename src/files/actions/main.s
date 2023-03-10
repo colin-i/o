@@ -135,7 +135,8 @@ While includesReg!=null
 
 						set skipfree 1
 
-						set functionTagIndex 0
+						set functionTagIndex 0   #used after pass_init for alloc,through pass_calls,pass_write with scope store/store class
+						#and scopes alloc
 					endif
 				EndElse
 			endif

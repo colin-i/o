@@ -121,6 +121,10 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			#
 			#return noerr
 		else
+			if el_or_e==(FALSE)
+				call scopes_store_class()
+			endif
+
 			#pass_write
 			sd pointer
 			setcall pointer vars_ignoreref(content,sz,fns)

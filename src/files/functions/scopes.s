@@ -1,4 +1,6 @@
 
+const sizeofclassinfo=dwsz+dwsz
+
 value scopesbag#1
 data scopesbag_size#1
 const scopesbag_ptr^scopesbag
@@ -20,14 +22,16 @@ function scopes_free()
 			while start!=pointer
 				sub pointer :
 				sv cursor_first;set cursor_first pointer#
-				sv cursor=sizeofscope
-				add cursor cursor_first
-				while cursor_first!=cursor
-				#the order is reversed but it is not a work more if all mallocs are ok
-					sub cursor (sizeofcontainer)
-					call enumbags_free(cursor)
-				endwhile
-				call free(cursor_first)
+				if cursor_first!=(NULL)
+					sv cursor=sizeofscope
+					add cursor cursor_first
+					while cursor_first!=cursor
+						#reversed order for speed reasons here, not care about alloc order
+						sub cursor (sizeofcontainer)
+						call enumbags_free(cursor) #this has check against NULL
+					endwhile
+					call free(cursor_first)
+				endif
 			endwhile
 		endif
 		call free(start)
@@ -78,7 +82,10 @@ function scopes_alloc(sd has_named_entry,sd i)
 		#alloc some dummy values
 		while start!=pointer
 			sub pointer :
-			setcall pointer# memcalloc((sizeofscope)) #is calloc, needing reg 0, in case it is searched , and at freeings
+			setcall pointer# memcalloc((sizeofscope+sizeofclassinfo)) #is calloc, needing reg 0, in case it is searched , and at freeings
+			if pointer#==(NULL)
+				return (error)
+			endif
 		endwhile
 		return (noerror)
 	endif
@@ -149,4 +156,14 @@ function scopes_searchinvars(sd p_err,sv p_name)
 		inc fns
 	endwhile
 	return (NULL)
+endfunction
+
+
+function scopes_store_class()
+	sd ptrfunctionTagIndex%ptrfunctionTagIndex
+	sd scope;setcall scope scopes_get_scope(ptrfunctionTagIndex#)
+	add scope (sizeofscope)
+	setcall scope# get_dataReg()
+	add scope (dwsz)
+	setcall scope# get_dataSize()
 endfunction
