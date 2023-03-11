@@ -132,11 +132,17 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					set argsize_filter argsize
 					dec argsize_filter
 
-					setcall container_sz valinmem(content,argsize_filter,(asciidot))
-					if container_sz!=argsize_filter
-						setcall errnr getarg_dot(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
+					#class test
+					setcall container_sz valinmem(content,argsize_filter,(asciicolon))
+					if container_sz!=argsize
+						setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
 					else
-						SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+						setcall container_sz valinmem(content,argsize_filter,(asciidot))
+						if container_sz!=argsize_filter
+							setcall errnr getarg_dot(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
+						else
+							SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+						endelse
 					endelse
 					if errnr!=(noerror)
 						return errnr
@@ -144,40 +150,47 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				else
 					data ptrobject%ptrobject
 					data ptrfunctions%%ptr_functions
-					setcall container_sz valinmem(content,argsize,(asciidot))
+
+					#class test
+					setcall container_sz valinmem(content,argsize,(asciicolon))
 					if container_sz!=argsize
-						setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
-						if errnr!=(noerror)
-							return errnr
-						endif
-					elseif ptrobject#==1
-						#verify for function
-						setcall ptrdata# vars(content,argsize,ptrfunctions)
-						if ptrdata#==0
-							SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+						setcall errnr getarg_colon(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
+					else
+						setcall container_sz valinmem(content,argsize,(asciidot))
+						if container_sz!=argsize
+							setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
 							if errnr!=(noerror)
-								sd undvar_err
-								setcall undvar_err undefinedvariable()
-								if errnr==undvar_err
-									setcall errnr undefinedvar_fn()
-								endif
 								return errnr
 							endif
+						elseif ptrobject#==1
+							#verify for function
+							setcall ptrdata# vars(content,argsize,ptrfunctions)
+							if ptrdata#==0
+								SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+								if errnr!=(noerror)
+									sd undvar_err
+									setcall undvar_err undefinedvariable()
+									if errnr==undvar_err
+										setcall errnr undefinedvar_fn()
+									endif
+									return errnr
+								endif
+							else
+								set ptrlow# (FALSE)
+								set ptrsufix# (FALSE)
+								sd var
+								setcall var function_in_code()
+								set var# 1
+								#the code operation is a "prefix" like
+								setcall prefix prefix_bool()
+								set prefix# 1
+							endelse
 						else
-							set ptrlow# (FALSE)
-							set ptrsufix# (FALSE)
-							sd var
-							setcall var function_in_code()
-							set var# 1
-							#the code operation is a "prefix" like
-							setcall prefix prefix_bool()
-							set prefix# 1
+							SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+							if errnr!=(noerror)
+								return errnr
+							endif
 						endelse
-					else
-						SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-						if errnr!=(noerror)
-							return errnr
-						endif
 					endelse
 				endelse
 			endelse
@@ -194,7 +207,6 @@ EndFunction
 #err
 function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
 	data ptrfunctions%%ptr_functions
-	#if is a dot
 	sd inter
 	#setcall inter vars(content,container_sz,ptrfunctions)
 	sd errnr
@@ -205,13 +217,12 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 		return errnr
 	endif
 	inc container_sz
-	sd argsize_filter
-	set argsize_filter argsize
-	call advancecursors(#content,#argsize_filter,container_sz)
+	call advancecursors(#content,#argsize,container_sz)
 	#
 	sd scope
 	setcall scope scopes_get_scope(pos)
-	SetCall errnr varsufix_ex(content,argsize_filter,ptrdata,ptrlow,ptrsufix,scope)
+
+	SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
 	if errnr!=(noerror)
 		return errnr
 	endif
@@ -220,6 +231,9 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 		return (noerror)
 	endif
 	return "Stack variables are not relevant for scope.variable."
+endfunction
+#er
+function getarg_colon()
 endfunction
 
 function function_in_code()
