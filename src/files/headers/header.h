@@ -24,8 +24,10 @@ const pointbit=0x80
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
 
-Const maskoffset=dwsz
-Const nameoffset=maskoffset+dwsz
+const location=dwsz
+Const maskoffset=location
+const location_and_mask=maskoffset+dwsz
+Const nameoffset=location_and_mask
 
 const sizeof_minimumentry=nameoffset+1
 #ref entry end

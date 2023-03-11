@@ -347,6 +347,20 @@ function cast_test(ss content,sd p_size)
 	return (no_cast)
 endfunction
 
+function tempdatapair(ss p_trick,sv ptrdata)
+	xor p_trick# 1
+	sd test=1;and test p_trick#
+	inc p_trick
+	if test==0
+		add p_trick (location_and_mask)
+	endif
+	sd val;set val ptrdata#
+	set ptrdata# p_trick
+	set p_trick#d^ val#
+	add p_trick (maskoffset);add val (maskoffset)
+	set p_trick#d^ val#
+endfunction
+
 #bool is_string
 function cast_resolve(sd number,sd cast,sv ptrdata)
 	if cast==(no_cast)
@@ -364,26 +378,13 @@ function cast_resolve(sd number,sd cast,sv ptrdata)
 		#call store_argmask(data)
 
 		chars random#1
-		value location#1;data mask#1   #ignore name
-		#in case is twoargs
-		value location2#1;data mask2#1   #ignore name
+		data *#2    #ignore name
+		#in case are two args
+		data *#2    #ignore name
 
-		sd pointer;set pointer ptrdata#
-		sd data
-
-		xor random 1
-		sd test=1;and test random
-		if test==0
-			set location pointer#v^
-			incst pointer;set mask pointer#
-			set ptrdata# #location
-			set data #mask
-		else
-			set location2 pointer#v^
-			incst pointer;set mask2 pointer#
-			set ptrdata# #location2
-			set data #mask2
-		endelse
+		call tempdatapair(#random,ptrdata)
+		sd data;set data ptrdata#
+		add data (maskoffset)
 
 		if cast==(cast_data)
 			and data# (~pointbit)
