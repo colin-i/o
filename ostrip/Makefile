@@ -1,6 +1,18 @@
 
 all: ostrip
 
+ifndef nobits_virtual
+nobits_virtual=1
+endif
+
+#ifndef strippy
+strippy=ostriputil
+#endif
+
+ifeq (${nobits_virtual},0)
+OFLAGS+=nobits_virtual 0
+endif
+
 OB = ostrip
 OBJ = ${OB}.o
 OBT = ${OB}.txt
@@ -17,24 +29,20 @@ OUNUSED=../ounused/ounused
 syms =-s
 ATCCCOM = $(CC) ${syms} -o ${OB}
 
-strippy=ostriputil
-
-nobits_virtual=1
-
 ostrip: ${OBJ}
 	${OUNUSED} ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
 	if [ "${nobits_virtual}" != "1" ]; then \
-		if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
-			${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
-			if [ "$$?" = "0" ]; then \
-				${strippy} ${FULLOBJ} ${FULLOBJ}; \
-			fi; \
+		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
+		if [ "$$?" = "0" ]; then \
+			${strippy} ${FULLOBJ} ${FULLOBJ}; \
 		fi; \
 	fi
 #	@echo
 #without this echo will do a strange cc command
+#		if [ "$(shell lsb_release -cs)" = "jammy" ]; then \
+#		fi; \
 #xenial do wrong access somehow, bionic and focal do extra code at text and need to extra code at realoffset for .text
 
 install: all
@@ -58,6 +66,20 @@ uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/ostrip
 
 test:
-	echo "Nothing"
+	if [ "${nobits_virtual}" != "1" ]; then \
+		${ATCCCOM} ${FULLOBJO} -o z; \
+		if [ "$$?" = "0" ]; then \
+			${FULLOBJ} ./z ${FULLOBJLOG} ${FULLOBJO}; \
+			if [ "$$?" = "0" ]; then \
+				${strippy} ./z ./z; \
+				if [ "$$?" = "0" ]; then \
+					diff ./z ${FULLOBJ}; \
+					if [ "$$?" = "0" ]; then \
+						rm ./z; \
+					fi; \
+				fi; \
+			fi; \
+		fi; \
+	fi
 
 .PHONY: all install clean distclean uninstall test
