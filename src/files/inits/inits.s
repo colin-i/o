@@ -67,9 +67,9 @@ set warn_hidden_whitespaces_times 0
 sd convention_64
 setcall convention_64 p_neg_is_for_64()
 
-ss init_argmasks
-setcall init_argmasks argmasks()
-set init_argmasks# 0
+#ss init_argmasks
+#setcall init_argmasks argmasks()
+#set init_argmasks# 0
 
 if includedir==(TRUE)
 	set fileendchar (log_fileend)

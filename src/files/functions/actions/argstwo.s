@@ -266,7 +266,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				#call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
 				#pprefix is reset in the road at remind
 			endelse
-			call restore_argmask_ex(dataargsec)
+			#call restore_argmask_ex(dataargsec)
 		endelse
 		If errnr!=noerr
 			Return errnr
@@ -391,7 +391,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 		SetCall errnr addtosec(jumpcond,conddatasz,codeptr)
 	EndElseIf
-	call restore_argmask() #this must be after primwrite and/or divmul
+	#call restore_argmask() #this must be after primwrite and/or divmul
 	Return errnr
 EndFunction
 
@@ -484,48 +484,48 @@ function writeop_promotes(sd dataarg,sd op,sd sufix,sd regopcode,sd low,sd comp_
 	return err
 endfunction
 
-function argmasks()
-	value a#5 #aligned(no casts at the time of write)
-	return #a
-endfunction
-function store_argmask(sd data)
-	ss a
-	setcall a argmasks()
-	inc a#
-	if a#==2
-		add a (2*:)
-	endif
-	incst a
-	set a#v^ data
-	incst a
-	add data (maskoffset)
-	set a#d^ data#
-endfunction
-function restore_argmask()
-	call restore_argmask_ex((NULL))
-endfunction
-function restore_argmask_ex(sd original)
-	ss a
-	setcall a argmasks()
-	if a#>0
-		sv copy;set copy a
-		if a#==2
-			add copy (2*:)
-		endif
-		incst copy
-		sd data
-		set data copy#
-		if original!=(NULL)
-			if data!=original
-				ret  #this is the case when catsfirst secondnothing and try to restore second onfirst
-			endif
-		endif
-		incst copy
-		add data (maskoffset)
-		set data# copy#d^
-		dec a#
-	endif
-endfunction
+#function argmasks()
+#	value a#5 #aligned(no casts at the time of write)
+#	return #a
+#endfunction
+#function store_argmask(sd data)
+#	ss a
+#	setcall a argmasks()
+#	inc a#
+#	if a#==2
+#		add a (2*:)
+#	endif
+#	incst a
+#	set a#v^ data
+#	incst a
+#	add data (maskoffset)
+#	set a#d^ data#
+#endfunction
+#function restore_argmask()
+#	call restore_argmask_ex((NULL))
+#endfunction
+#function restore_argmask_ex(sd original)
+#	ss a
+#	setcall a argmasks()
+#	if a#>0
+#		sv copy;set copy a
+#		if a#==2
+#			add copy (2*:)
+#		endif
+#		incst copy
+#		sd data
+#		set data copy#
+#		if original!=(NULL)
+#			if data!=original
+#				ret  #this is the case when castfirst secondnothing and try to restore second onfirst
+#			endif
+#		endif
+#		incst copy
+#		add data (maskoffset)
+#		set data# copy#d^
+#		dec a#
+#	endif
+#endfunction
 
 
 #err

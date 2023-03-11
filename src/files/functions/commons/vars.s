@@ -284,7 +284,7 @@ function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scop
 	endIf
 
 	sd is_str
-	setcall is_str cast_resolve(type,cast,data)
+	setcall is_str cast_resolve(type,cast,ptrdata)
 
 	If is_str==false
 		Set ptrlow# false
@@ -348,7 +348,7 @@ function cast_test(ss content,sd p_size)
 endfunction
 
 #bool is_string
-function cast_resolve(sd number,sd cast,sd data)
+function cast_resolve(sd number,sd cast,sv ptrdata)
 	if cast==(no_cast)
 		Data stringsnumber=stringsnumber
 		Data stackstringnumber=stackstringnumber
@@ -360,8 +360,31 @@ function cast_resolve(sd number,sd cast,sd data)
 		return (FALSE)
 	endif
 	if cast!=(cast_string)
-		call store_argmask(data)
-		add data (maskoffset)
+
+		#call store_argmask(data)
+
+		chars random#1
+		value location#1;data mask#1   #ignore name
+		#in case is twoargs
+		value location2#1;data mask2#1   #ignore name
+
+		sd pointer;set pointer ptrdata#
+		sd data
+
+		xor random 1
+		sd test=1;and test random
+		if test==0
+			set location pointer#v^
+			incst pointer;set mask pointer#
+			set ptrdata# #location
+			set data #mask
+		else
+			set location2 pointer#v^
+			incst pointer;set mask2 pointer#
+			set ptrdata# #location2
+			set data #mask2
+		endelse
+
 		if cast==(cast_data)
 			and data# (~pointbit)
 		else

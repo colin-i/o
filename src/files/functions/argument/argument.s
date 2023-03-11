@@ -193,7 +193,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 		EndElseIf
 		sd comp_at_bigs;setcall comp_at_bigs comp_one(lowbyte,dataarg,sufix,op)
 		setcall err writeop_promotes(dataarg,op,sufix,regopcode,lowbyte,comp_at_bigs)
-		call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
+		#call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
 	Else
 	#imm
 		If forwardORcallsens!=forward

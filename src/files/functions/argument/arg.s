@@ -134,7 +134,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 
 					#class test
 					setcall container_sz valinmem(content,argsize_filter,(asciicolon))
-					if container_sz!=argsize
+					if container_sz!=argsize_filter
 						setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
 					else
 						setcall container_sz valinmem(content,argsize_filter,(asciidot))
