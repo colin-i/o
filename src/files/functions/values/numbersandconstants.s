@@ -182,8 +182,9 @@ function numbertoint(str content,data size,data outval,data minusbool)
 				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain or nothing at windows
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
 				if ptr_nobits_virtual#==(Yes)
-					vdata pnobitsReg%ptrnobitsReg
-					set outval# pnobitsReg#
+					#vdata pnobitsReg%ptrnobitsReg
+					#set outval# pnobitsReg#
+					setcall outval# get_dataSize()
 					#add outval# get_img_vdata()
 					return (noerror)
 				endif

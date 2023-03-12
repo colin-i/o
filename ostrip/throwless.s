@@ -147,18 +147,19 @@ function objs_concat(sv objects,sv pdata,sd datainneroffset)
 endfunction
 
 function memtomem(sv dest,sv src,sd size)
-	#optimized?
-	const stack_size_trail=:-1
-	sd opt=~stack_size_trail
+	#optimized
+	sd opt=:-1
 	and opt size
+
 	sub size opt
-	add opt dest
-	while dest!=opt
+	add size dest
+	while dest!=size
 		set dest# src#
 		incst dest
 		incst src
 	endwhile
-	add size dest
+
+	add size opt
 	while dest!=size
 		set dest#s^ src#s^
 		inc dest

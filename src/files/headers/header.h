@@ -231,8 +231,8 @@ Const ptrdummyEntry^dummyEntryMax
 
 #data clownEntry#1
 #data *#1
-data nobitssecReg#1
-const ptrnobitsReg^nobitssecReg
+#data nobitssecReg#1
+#const ptrnobitsReg^nobitssecReg
 #used at !x offset
 
 Data datasecSize#1

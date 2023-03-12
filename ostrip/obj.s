@@ -7,13 +7,15 @@ const object_nr_of_secondary_sections=2
 const object_nr_of_sections=object_nr_of_main_sections+object_nr_of_secondary_sections
 const section_alloc=:*section_nr_of_values
 const object_alloc_secs=object_nr_of_sections*section_alloc
+#data text sym str
+#8,8  8,8  8,8 8,8=0x40
 
 #const to_text=section_alloc
 const to_symtab=object_nr_of_main_sections*section_alloc
 const to_strtab=to_symtab+section_alloc
 const from_symsize_to_voffset=:+section_alloc
 const from_strtab_to_symtab=section_alloc
-const from_symtab_to_text=section_alloc
+const from_text_to_symtab=section_alloc
 const from_text_to_data_extra=section_alloc+(object_nr_of_secondary_sections*section_alloc)
 
 const to_data_extra=object_alloc_secs
@@ -25,6 +27,9 @@ const extra_sz=from_extra_sz_to_extra_sz_a+:
 const to_text_extra=to_data_extra_sz+extra_sz
 const to_text_extra_a=to_text_extra+from_extra_sz_to_extra_sz_a
 const object_alloc=to_text_extra+extra_sz
+#4,8,8                   8,8
+#Xlogoffset,sz,szaligned textsz,szaligned
+#0x64
 
 ##stripped size
 function get_objs(sv pargs,sd end)
@@ -35,7 +40,7 @@ function get_objs(sv pargs,sd end)
 	add pointers :  #for null end
 
 	#make a container
-	sv pobjects%pobjects
+	sv pobjects%%pobjects
 	setcall pobjects# alloc(pointers)
 
 	#set end

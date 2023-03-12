@@ -4,13 +4,13 @@ if errormsg!=(noerror)
 	call msgerrexit(errormsg)
 endif
 
-#also needed at dtnb
-#sub datasecSize datasecReg
+#also needed at dtnb and old
+sub datasecSize datasecReg
 
 if nobits_virtual==(No)
 	#in case old style virtual
-	#setcall errormsg set_reserve(datasecSize)
-	setcall errormsg set_reserve(nobitssecReg)
+	setcall errormsg set_reserve(datasecSize)
+	#setcall errormsg set_reserve(nobitssecReg)
 	if errormsg!=(noerror)
 		Call msgerrexit(errormsg)
 	endif

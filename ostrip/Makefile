@@ -5,9 +5,9 @@ ifndef nobits_virtual
 nobits_virtual=1
 endif
 
-#ifndef strippy
 strippy=ostriputil
-#endif
+
+OFLAGS=${OFLAGSEXTRA}
 
 ifeq (${nobits_virtual},0)
 OFLAGS+=nobits_virtual 0
@@ -55,11 +55,16 @@ clean-compile:
 	-rm -f .data
 	-rm -f .text
 	-rm -f .rela.dyn
+	-rm -f .symtab
+	-rm -f .symtab_offset
 
 clean-link:
 	-rm -f ostrip
 
-clean: clean-compile clean-link
+clean-test:
+	-rm -f z
+
+clean: clean-compile clean-link clean-test
 distclean: clean
 
 uninstall:
@@ -74,9 +79,6 @@ test:
 				${strippy} ./z ./z; \
 				if [ "$$?" = "0" ]; then \
 					diff ./z ${FULLOBJ}; \
-					if [ "$$?" = "0" ]; then \
-						rm ./z; \
-					fi; \
 				fi; \
 			fi; \
 		fi; \

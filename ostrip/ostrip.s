@@ -78,24 +78,24 @@ include "reldyn.s"
 entry main(sd argc,sv argv) #0,ss exec,ss log1,ss *obj1)   #... logN objN
 
 if argc>=(1+3)  #0 is all the time
-	sd verb%ptrverbose
+	sd verb%%ptrverbose
 	setcall verb# access(".debug",(F_OK))
 
-	sv pfile%pexefile
+	sv pfile%%pexefile
 	const s1c^s1;const s2c^s2;const s3c^s3;const s4c^s4
 	value sN%{s1c,s2c}
 	value s3c%s3c
 	value s4c%s4c
 	value *=NULL
-	sv pexe%pexedata
+	sv pexe%%pexedata
 	datax nrs#2   #this is required inside but is better than passing the number of sections
 	datax symtabnr#1
 	datax *#1
 
 	#text/data can go null later, with access error if rela points there, but to not set here null is probably same access error
-	#sv pt%pexetext
+	#sv pt%%pexetext
 	#set pt# (NULL)
-	sv ps%pexesym
+	sv ps%%pexesym
 	set ps# (NULL)
 	#and set data null here, it is useless there for objects call
 	set pexe# (NULL)   #data
@@ -103,7 +103,7 @@ if argc>=(1+3)  #0 is all the time
 	set frees.execdynsym (NULL)
 	set frees.execdynstr (NULL)
 
-	sv pobjects%pobjects
+	sv pobjects%%pobjects
 	set pobjects# (NULL) #this is on the main plan, is after ss exec at frees
 
 	mult argc :
@@ -140,7 +140,7 @@ if argc>=(1+3)  #0 is all the time
 	if acall!=(NULL)
 		if ps#!=(NULL)
 			#replace if exe symtab
-			sv pexestr%pexestr
+			sv pexestr%%pexestr
 			call aftercall_replace(ps,pexestr,acall,datavaddr)
 
 			set s4c (NULL)  #for write skip

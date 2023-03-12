@@ -310,7 +310,7 @@ Else
 	sd symind=symind
 
 	if nobits_virtual==(Yes)
-		SetCall errormsg elfaddsecs(dtnbstrtab,(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,nobitssecReg,(elf_sec_obj_align))
+		SetCall errormsg elfaddsecs(dtnbstrtab,(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,datasecSize,(elf_sec_obj_align))
 		If errormsg!=noerr
 			Call msgerrexit(errormsg)
 		EndIf
