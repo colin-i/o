@@ -57,12 +57,16 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		set datasize (bsz)
 	endelseif
 
+	vdata ptrdataSize%ptrdataSize
+
 	if parses==(pass_init)
 		if is_stack==(FALSE)
 			if is_expand==(FALSE)
 				vdata ptrdataReg%%ptr_dataReg
 				add ptrdataReg# datasize
-			endif
+			else
+				add ptrdataSize# datasize
+			endelse
 		endif
 		call advancecursors(ptrcontent,ptrsize,sz)
 		return (noerror)
@@ -99,7 +103,6 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	sd sectionind=dataind
 	if is_expand==(TRUE)
 		setcall memoff get_img_vdata_dataSize()
-		vdata ptrdataSize%ptrdataSize
 		add ptrdataSize# datasize
 		sd ptr_nobits_virtual%ptr_nobits_virtual
 		if ptr_nobits_virtual#==(Yes)

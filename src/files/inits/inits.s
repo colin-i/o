@@ -90,7 +90,9 @@ set functionTagIndex 0
 
 call resetisimm()
 
-#this is init at main.s and used after that    set datasecSize 0
+#this is init at main.s and used after that
+#but since #! needed at first pass too
+set datasecSize 0
 #set nobitssecReg 0
 
 sd p_b
