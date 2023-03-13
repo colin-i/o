@@ -228,6 +228,7 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 endfunction
 #er
 function getarg_colon(sd content,sd argsize,sd container_sz,sd *ptrdata,sd *ptrlow,sd *ptrsufix)
+	sd data
 	sd part_sz;setcall part_sz valinmem(content,container_sz,(asciidot))
 	if part_sz!=container_sz
 		sub argsize container_sz
@@ -237,13 +238,14 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sd *ptrdata,sd *ptrl
 		if err!=(noerror)
 			return err
 		endif
-		sd data
 		sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
 		if nr>=(totalmemvariables)
 			setcall err there_is_nothing_there()
 			return err
 		endif
-	endif
+	else
+		setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
+	endelse
 	return ""
 endfunction
 
