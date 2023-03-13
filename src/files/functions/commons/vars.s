@@ -74,10 +74,12 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 				endif
 			endIf
 			#elseIf ptrconstants==ptrstructure 0x72
-		EndIf
-		Add container dwlen
-		SetCall varsize strlen(container)
-		If warningssearch==(NULL)
+			Add container dwlen
+			SetCall varsize strlen(container)
+		Else
+			sd pmask;set pmask container
+			Add container dwlen
+			SetCall varsize strlen(container)
 			If varsize==size
 				Data cmpret#1
 				SetCall cmpret memcmp(container,content,size)
@@ -85,31 +87,27 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 					#if set the reference is true
 					if setref==1
 						#go back from string to mask
-						Sub container dwlen
+						#Sub container dwlen
 
 						#get the value and change the reference bit of the mask to true
 						Data value#1
-						Set value container#
+						Set value pmask#
 						Data referenceBit=referencebit
 						Or value referenceBit
-						Set container# value
+						Set pmask# value
 					endif
-
 					Return entrypoint
 				EndIf
 			EndIf
 			if position_pointer!=(NULL)
 				#are mixed with imports
-				#go back from string to mask
 				sd against=idatabitfunction
-				sd back=-dwsz
-				add back container
-				and against back#
+				and against pmask#
 				if against==0
 					inc position_pointer#
 				endif
 			endif
-		EndIf
+		endElse
 		Add varsize blen
 		Add container varsize
 	EndWhile

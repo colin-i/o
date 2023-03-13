@@ -155,6 +155,9 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					setcall container_sz valinmem(content,argsize,(asciicolon))
 					if container_sz!=argsize
 						setcall errnr getarg_colon(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
+						if errnr!=(noerror)
+							return errnr
+						endif
 					else
 						setcall container_sz valinmem(content,argsize,(asciidot))
 						if container_sz!=argsize
@@ -206,22 +209,12 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 EndFunction
 #err
 function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
-	data ptrfunctions%%ptr_functions
-	sd inter
-	#setcall inter vars(content,container_sz,ptrfunctions)
 	sd errnr
-	sd pos=0
-	setcall inter vars_core_ref_scope(content,container_sz,ptrfunctions,(NULL),(TRUE),#pos)
-	if inter==(NULL)
-		setcall errnr undefinedvar_fn()
+	sd scope
+	setcall errnr get_scope(#content,#argsize,container_sz,#scope)
+	if errnr!=(noerror)
 		return errnr
 	endif
-	inc container_sz
-	call advancecursors(#content,#argsize,container_sz)
-	#
-	sd scope
-	setcall scope scopes_get_scope(pos)
-
 	SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
 	if errnr!=(noerror)
 		return errnr
@@ -230,10 +223,47 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 	if test==0
 		return (noerror)
 	endif
-	return "Stack variables are not relevant for scope.variable."
+	setcall errnr there_is_nothing_there()
+	return errnr
 endfunction
 #er
-function getarg_colon()
+function getarg_colon(sd content,sd argsize,sd container_sz,sd *ptrdata,sd *ptrlow,sd *ptrsufix)
+	sd part_sz;setcall part_sz valinmem(content,container_sz,(asciidot))
+	if part_sz!=container_sz
+		sub argsize container_sz
+		sd err
+		sd scope
+		setcall err get_scope(#content,#container_sz,part_sz,#scope)
+		if err!=(noerror)
+			return err
+		endif
+		sd data
+		sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
+		if nr>=(totalmemvariables)
+			setcall err there_is_nothing_there()
+			return err
+		endif
+	endif
+	return ""
+endfunction
+
+function there_is_nothing_there()
+	return "Stack variables are not relevant for scope.variable."
+endfunction
+
+#err
+function get_scope(sv pcontent,sd psize,sd sz,sv pscope)
+	data ptrfunctions%%ptr_functions
+	sd var
+	sd pos=0
+	setcall var vars_core_ref_scope(pcontent#,sz,ptrfunctions,(NULL),(TRUE),#pos)
+	if var==(NULL)
+		return "Undefined function name."
+	endif
+	inc sz
+	call advancecursors(pcontent,psize,sz)
+	setcall pscope# scopes_get_scope(pos)
+	return (noerror)
 endfunction
 
 function function_in_code()
