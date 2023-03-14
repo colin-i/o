@@ -250,11 +250,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if rightstackbit==0
 				Set value pointer#
 
-				#vdata ptr_nobits_virtual%ptr_nobits_virtual
-				#if ptr_nobits_virtual#==(Yes)
 				#data^datax or sd^datax
-				#expandbit already has nobits_virtual previous test
-				sd expand;setcall expand expandbit(pointer)
+				#before expandbit at class: expandbit already has nobits_virtual previous test
+				sd expand;setcall expand expandbit_wrap(pointer)
 				if expand!=0
 					set relocindx (dtnbind)
 				endif

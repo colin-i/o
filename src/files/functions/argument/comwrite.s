@@ -103,14 +103,11 @@ function writetake(sd takeindex,sd entry)
 			sd var
 			setcall var function_in_code()
 			if var#==0
-				sd expand;setcall expand expandbit(entry)
 				sd sectionind
+				sd expand;setcall expand expandbit_wrap(entry)
 				if expand!=0
-					#this test is already at var declaration
-					#sd ptr_nobits_virtual%ptr_nobits_virtual
-					#if ptr_nobits_virtual#==(Yes)
+					#before expandbit at class: this test is already at var declaration
 					set sectionind (dtnbind)
-					#endif
 				else
 					set sectionind (dataind)
 				endelse

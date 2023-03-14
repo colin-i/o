@@ -33,6 +33,15 @@ function expandbit(sd pointer)
 	setcall bit data_get_maskbit(pointer,(expandbit))
 	return bit
 endfunction
+function expandbit_wrap(sd pointer)
+	vdata ptr_nobits_virtual%ptr_nobits_virtual
+	if ptr_nobits_virtual#==(Yes)
+		sd bit
+		setcall bit data_get_maskbit(pointer,(expandbit))
+		return bit
+	endif
+	return 0
+endfunction
 
 function stack_get_relative(sd location)
 	sd mask

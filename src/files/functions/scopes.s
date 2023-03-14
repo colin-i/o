@@ -167,3 +167,12 @@ function scopes_store_class()
 	add scope (dwsz)
 	setcall scope# get_img_vdata_dataSize()
 endfunction
+function scopes_get_class_data(sd scope,sd data)
+	add scope (sizeofscope)
+	sd expand;setcall expand expandbit(data)
+	if expand!=0
+		add scope (location)
+		return scope#
+	endif
+	return scope#
+endfunction
