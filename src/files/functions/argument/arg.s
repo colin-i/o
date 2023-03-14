@@ -137,12 +137,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					if container_sz!=argsize_filter
 						setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
 					else
-						setcall container_sz valinmem(content,argsize_filter,(asciidot))
-						if container_sz!=argsize_filter
-							setcall errnr getarg_dot(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
-						else
-							SetCall errnr varsufix(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
-						endelse
+						setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
 					endelse
 					if errnr!=(noerror)
 						return errnr
@@ -227,13 +222,13 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 	return errnr
 endfunction
 #er
-function getarg_colon(sd content,sd argsize,sd container_sz,sd *ptrdata,sd *ptrlow,sd *ptrsufix)
+function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,sd ptrsufix)
 	sd data
+	sd err
+	sd scope
 	sd part_sz;setcall part_sz valinmem(content,container_sz,(asciidot))
+	sub argsize container_sz
 	if part_sz!=container_sz
-		sub argsize container_sz
-		sd err
-		sd scope
 		setcall err get_scope(#content,#container_sz,part_sz,#scope)
 		if err!=(noerror)
 			return err
@@ -246,7 +241,62 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sd *ptrdata,sd *ptrl
 	else
 		setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
 	endelse
+	add content container_sz
+	call stepcursors(#content,#argsize)
+
+	sd subtract_base
+	sd test
+	setcall container_sz valinmem(content,argsize,(asciidot))
+	if container_sz!=argsize
+		setcall err get_scope(#content,#argsize,container_sz,#scope)
+		if err!=(noerror)
+			return err
+		endif
+		SetCall err varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
+		if err!=(noerror)
+			return err
+		endif
+		setcall test stackbit(ptrdata#)
+		if test==0
+			sd entrybags%%ptr_scopes
+			if scope!=entrybags
+				#stored class info
+			else
+				setcall subtract_base get_img_vdata() #or img_nbdata if exec will have (test expandbit)
+			endelse
+		else
+			set subtract_base 0
+		endelse
+	else
+		SetCall err varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+		if err!=(noerror)
+			return err
+		endif
+		setcall test stackbit(ptrdata#)
+		if test==0
+			sd ptrinnerfunction%globalinnerfunction
+			if ptrinnerfunction#==(TRUE)
+				#stored class info
+			else
+				setcall subtract_base get_img_vdata() #or img_nbdata if exec will have (test expandbit)
+			endelse
+		else
+			set subtract_base 0
+		endelse
+	endelse
 	return ""
+endfunction
+#err
+function getarg_testdot(sd content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
+	sd errnr
+	sd container_sz
+	setcall container_sz valinmem(content,size,(asciidot))
+	if container_sz!=size
+		setcall errnr getarg_dot(content,size,container_sz,ptrdata,ptrlow,ptrsufix)
+	else
+		SetCall errnr varsufix(content,size,ptrdata,ptrlow,ptrsufix)
+	endelse
+	return errnr
 endfunction
 
 function there_is_nothing_there()

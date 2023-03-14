@@ -163,7 +163,7 @@ function scopes_store_class()
 	sd ptrfunctionTagIndex%ptrfunctionTagIndex
 	sd scope;setcall scope scopes_get_scope(ptrfunctionTagIndex#)
 	add scope (sizeofscope)
-	setcall scope# get_dataReg()
+	setcall scope# get_img_vdata_dataReg()  #and img_vdata ? at getarg will subtract from ptrdata# that is with the same img_vdata
 	add scope (dwsz)
-	setcall scope# get_dataSize()
+	setcall scope# get_img_vdata_dataSize()
 endfunction
