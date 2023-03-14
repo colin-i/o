@@ -105,7 +105,7 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 				#stack function argument
 				set value stackoffset
 				#data ebp_relative=ebpregnumber*tostack_relative
-				or mask (stack_relative)
+				or mask (stackrelativebit)
 			endelse
 			or mask (stackbit)
 			sd vbool

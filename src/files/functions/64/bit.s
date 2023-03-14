@@ -141,6 +141,14 @@ function stack64_enlarge(sd val)
 	endif
 	return val
 endfunction
+function stack64_base(sv pdata)
+	sd is_arg;setcall is_arg stackrelativebit(pdata#)
+	if is_arg==0
+		return 0
+	endif
+	sd val;setcall val stack64_enlarge((stackinitpush+dwsz))  #ebp/ebx+return
+	return val
+endfunction
 
 #setx
 

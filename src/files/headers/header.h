@@ -9,7 +9,7 @@ Const idatabitfunction=0x02
 Const stackbit=0x04
 #bit offset 3:
 	#stackbit: 1 means ebp fn arguments          #was bit offset 3,4,5: stack ebx/ebp
-Const stack_relative=0x08
+Const stackrelativebit=0x08
 	#nostackbit: datapointbit
 Const datapointbit=0x08
 #bit offset 4: 1 means is nobits
@@ -23,6 +23,8 @@ const pointbit=0x80
 
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
+const location_bits=stackbit|expandbit
+const stack_location_bits=location_bits|stackrelativebit
 
 const location=dwsz
 Const maskoffset=location
