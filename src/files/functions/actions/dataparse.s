@@ -214,7 +214,7 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 		If typenumber==charsnr
 			#grep    stackfilter2 4
 			if stack==(FALSE)
-				Chars ptrchar="Incorrect pointer sign ('^') used at CHARS declaration."
+				Chars ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
 				Str ptrptrchar^ptrchar
 				Return ptrptrchar
 			endif
@@ -229,7 +229,7 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	Chars relsign=relsign
 	SetCall valsize valinmem_pipes(content,size,relsign,ptrsz)
 	If valsize!=size
-		Chars ptrrelchar="Incorrect relocation sign ('%') used at CHARS/CONST declaration."
+		Chars ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
 		Str ptrptrrelchar^ptrrelchar
 		If typenumber==charsnr
 			#stackfilter2   grep5

@@ -268,7 +268,7 @@ function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scop
 
 	If type==charsnumber
 		If ptrsufix#==true
-			Chars ptrsfxerr="CHARS statement cannot have the pointer sufix."
+			Chars ptrsfxerr="CHAR statement cannot have the pointer sufix."
 			Str _ptrsfxerr^ptrsfxerr
 			Return _ptrsfxerr
 		EndIf

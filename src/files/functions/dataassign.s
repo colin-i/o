@@ -148,7 +148,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					endelse
 				EndElseIf
 				if stringtodata==false
-					chars bytesatintegers="The string assignment (\"\") can be used at CHARS, STR or SS."
+					chars bytesatintegers="The string assignment (\"\") can be used at CHAR, STR or SS."
 					str bytesatints^bytesatintegers
 					return bytesatints
 				endif

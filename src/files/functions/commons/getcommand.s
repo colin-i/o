@@ -6,9 +6,9 @@ Const spacenotreq=0
 #with caution like elseif before else for getcommand comparations
 
 Chars cCOMMENT_c={commentascii,0}
-Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHARS_c="CHARS";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
+Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHAR_c="CHAR";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
 	Chars cVDATA_c="VDATA";Chars cVSTR_c="VSTR";Chars cVALUE_c="VALUE"
-	Chars cDATAX_c="DATAX";Chars cSTRX_c="STRX";Chars cCHARSX_c="CHARSX"
+	Chars cDATAX_c="DATAX";Chars cSTRX_c="STRX";Chars cCHARX_c="CHARX"
 	Chars cVDATAX_c="VDATAX";Chars cVSTRX_c="VSTRX";Chars cVALUEX_c="VALUEX"
 	Chars cCONST_c="CONST"
 Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
@@ -53,10 +53,10 @@ Const com_size=cSTR-cDATA
 			Data *=cDECLARE
 			Data *=cSTR
 			Data *=spacereq
-		Const cCHARS=!-cDECLARE_top
-			data *^cCHARS_c
+		Const cCHAR=!-cDECLARE_top
+			data *^cCHAR_c
 			Data *=cDECLARE
-			Data *=cCHARS
+			Data *=cCHAR
 			Data *=spacereq
 		Const cSD=!-cDECLARE_top
 			data *^cSD_c
@@ -98,10 +98,10 @@ Const com_size=cSTR-cDATA
 			Data *=cDECLARE
 			Data *=cSTRX
 			Data *=spacereq
-		Const cCHARSX=!-cDECLARE_top
-			data *^cCHARSX_c
+		Const cCHARX=!-cDECLARE_top
+			data *^cCHARX_c
 			Data *=cDECLARE
-			Data *=cCHARSX
+			Data *=cCHARX
 			Data *=spacereq
 		Const cVDATAX=!-cDECLARE_top
 			data *^cVDATAX_c
