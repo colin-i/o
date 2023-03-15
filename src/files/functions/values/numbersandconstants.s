@@ -1,9 +1,9 @@
 
 
 #bool numeric
-Function numeric(chars c)
-	Chars zero={asciizero}
-	Chars nine={asciinine}
+Function numeric(char c)
+	Char zero={asciizero}
+	Char nine={asciinine}
 	Data false=FALSE
 	Data true=TRUE
 	If c<zero
@@ -30,7 +30,7 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		Dec content;Dec size
 
 		Data bool#1
-		Chars byte#1
+		Char byte#1
 		Set byte content#
 		SetCall bool numeric(byte)
 		If bool==(FALSE)
@@ -79,14 +79,14 @@ EndFunction
 const nothex_value=-1
 
 #out -1 or the converted number
-Function hexnr(chars byte)
-	Chars Asciizero={asciizero}
-	Chars Asciinine={asciinine}
-	Chars AsciiA={asciiA}
-	Chars AsciiF={asciiF}
-	Chars Asciia={asciia}
-	Chars Asciif={asciif}
-	Chars afternine={10}
+Function hexnr(char byte)
+	Char Asciizero={asciizero}
+	Char Asciinine={asciinine}
+	Char AsciiA={asciiA}
+	Char AsciiF={asciiF}
+	Char Asciia={asciia}
+	Char Asciif={asciif}
+	Char afternine={10}
 	If byte<Asciizero
 		Return (nothex_value)
 	ElseIf byte<=Asciinine
@@ -132,7 +132,7 @@ Function memtohex(str content,data size,data outvalue)
 	Data ps^size
 	Data bool=0
 	Data zero=0
-	Chars byte#1
+	Char byte#1
 	Data nr#1
 	Data initialmultp=1
 	Data multp#1
@@ -164,7 +164,7 @@ EndFunction
 function numbertoint(str content,data size,data outval,data minusbool)
 	Data bool#1
 	#test to see if the ! sign is present that means the current data cursor
-	chars data_cursor=asciiexclamationmark
+	char data_cursor=asciiexclamationmark
 	if content#==data_cursor
 		if size==1
 			setcall outval# get_img_vdata_dataReg()
@@ -172,7 +172,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		endif
 		if size==2
 			inc content
-			charsx against#1
+			charx against#1
 			set against content#
 			if against!=(asciix)
 			#maybe is X
@@ -195,7 +195,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		str er="The text after the data cursor sign isn't recognized."
 		return er
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
-	chars int_size=asciicolon
+	char int_size=asciicolon
 	elseif content#==int_size
 		if size!=1;return "The text after the size of an integer sign isn't recognized.";endif
 		sd b;setcall b is_for_64()
@@ -208,7 +208,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 	If bool==0
 		SetCall bool memtohex(content,size,outval)
 		If bool==0
-			Chars _intvalerr="Integer(dec/hex) value not recognized."
+			Char _intvalerr="Integer(dec/hex) value not recognized."
 			Str intvallerr^_intvalerr
 			Return intvallerr
 		EndIf
@@ -222,7 +222,7 @@ Function numbersconstants(str content,data size,data outval)
 	If size<=0
 		Return intconsterr
 	EndIf
-	chars not=asciiequiv
+	char not=asciiequiv
 	sd notbool=FALSE
 	if content#==not
 		set notbool (TRUE)
@@ -251,7 +251,7 @@ Function numbersconstants(str content,data size,data outval)
 		Data pointer#1
 		SetCall pointer vars(content,size,constr)
 		If pointer==0
-			Chars unconst="Undefined constant name."
+			Char unconst="Undefined constant name."
 			Str ptruncost^unconst
 			Return ptruncost
 		EndIf
@@ -276,7 +276,7 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 	sd mark
 	data noerr=noerror
 	sd last
-	Chars closefnexp="Close parenthesis sign (')') expected."
+	Char closefnexp="Close parenthesis sign (')') expected."
 	Str closeerr^closefnexp
 
 	set mark content
@@ -293,8 +293,8 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 		if content==last
 			return closeerr
 		endif
-		Chars fnbegin=asciiparenthesisstart
-		Chars fnend=asciiparenthesisend
+		Char fnbegin=asciiparenthesisstart
+		Char fnend=asciiparenthesisend
 		if content#==fnend
 			dec opens
 			if opens==z
@@ -312,7 +312,7 @@ endfunction
 #er
 function parenthesis_all_size(ss content,sd size,sd ptr_sz)
 	data noerr=noerror
-	Chars fnbegin=asciiparenthesisstart
+	Char fnbegin=asciiparenthesisstart
 	if content#!=fnbegin
 		return noerr
 	endif

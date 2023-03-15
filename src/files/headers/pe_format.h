@@ -11,22 +11,22 @@ Const dossize=0x1e*wsz+dwsz
 
 Const pe_fileheadersstart=!
 
-Chars dos_header#dossize
+Char dos_header#dossize
 Const stublength=0x40
-Chars stub#stublength
+Char stub#stublength
 
-Chars *coffmagic="PE"
+Char *coffmagic="PE"
 #IMAGE_FILE_HEADER
-Chars *align={0}
-Chars fileheader#4*wsz+dwsz+dwsz+dwsz
+Char *align={0}
+Char fileheader#4*wsz+dwsz+dwsz+dwsz
 
 #IMAGE_OPTIONAL_HEADER
 #Standard fields.
 ####set later
-Chars Magic#2
+Char Magic#2
 ####system linker i think
-Chars *MajorLinkerVersion={1}
-Chars *MinorLinkerVersion={0x45}
+Char *MajorLinkerVersion={1}
+Char *MinorLinkerVersion={0x45}
 ####hard (file pad)
 Data SizeOfCode=0x1000
 Data SizeOfInitializedData=0x2000
@@ -43,12 +43,12 @@ Data *ImageBase=pe_imagebase
 Data SectionAlignment=page_sectionalignment
 Data FileAlignment=0x200
 #Const VersionsSize=6*wsz
-Chars *MajorOperatingSystemVersion={1,0}
-Chars *MinorOperatingSystemVersion={0,0}
-Chars *MajorImageVersion={0,0}
-Chars *MinorImageVersion={0,0}
-Chars *MajorSubsystemVersion={5,0}
-Chars *MinorSubsystemVersion={1,0}
+Char *MajorOperatingSystemVersion={1,0}
+Char *MinorOperatingSystemVersion={0,0}
+Char *MajorImageVersion={0,0}
+Char *MinorImageVersion={0,0}
+Char *MajorSubsystemVersion={5,0}
+Char *MinorSubsystemVersion={1,0}
 Data *Win32VersionValue=0
 	#all virtuals(sec pad)
 Data SizeOfImage=0x4000
@@ -58,8 +58,8 @@ Data *CheckSum=0
 
 #Const IMAGE_SUBSYSTEM_WINDOWS_GUI=2
 Const IMAGE_SUBSYSTEM_WINDOWS_CUI=3
-Chars *Subsystem={IMAGE_SUBSYSTEM_WINDOWS_CUI,0}
-Chars DllCharacteristics#2
+Char *Subsystem={IMAGE_SUBSYSTEM_WINDOWS_CUI,0}
+Char DllCharacteristics#2
 Data *SizeOfStackReserve=0x10000
 Data *SizeOfStackCommit=0x1000
 Data *SizeOfHeapReserve=0x10000
@@ -86,9 +86,9 @@ Const IMAGE_SCN_MEM_WRITE=0x80000000
 Const IMAGE_SCN_CNT_CODE=0x00000020
 Const IMAGE_SCN_MEM_EXECUTE=0x20000000
 
-Chars *datasection=".data"
+Char *datasection=".data"
 #IMAGE_SIZEOF_SHORT_NAME=8
-Chars *alignmenttoEight_data_name={0,0}
+Char *alignmenttoEight_data_name={0,0}
 Data dVirtualSize=0x1000
 Const pe_data_offset=0x1000
 Data *dVirtualAddress=pe_data_offset
@@ -101,8 +101,8 @@ Data *dPointerToRawData=0x1000
 Data *moreatdata={0,0,0}
 Data *datasectionCharacteristics=IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_READ|IMAGE_SCN_MEM_WRITE
 
-Chars *codesection=".code"
-Chars *alignmenttoEight_code_name={0,0}
+Char *codesection=".code"
+Char *alignmenttoEight_code_name={0,0}
 Data cVirtualSize#1
 Data cVirtualAddress#1
 Data cSizeOfRawData#1
@@ -114,8 +114,8 @@ Const sizefileheadercodedata=!
 
 Const idatasectionstart=!
 
-Chars *idatasection=".idata"
-Chars *alignmenttoEight_idata_name={0}
+Char *idatasection=".idata"
+Char *alignmenttoEight_idata_name={0}
 Data *iVirtualSize=0x1000
 Data iVirtualAddress#1
 Data iSizeOfRawData=0x1000

@@ -42,7 +42,7 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 
 	add end pcontent#
 	While pcontent#!=end
-		Chars byte#1
+		Char byte#1
 		SetCall byte quotescaped(pcontent,psize,zero)
 		Set destloc# byte
 		Inc destloc

@@ -3,10 +3,10 @@
 
 
 #return the size of the value, if the delim is found the size counts until there
-Function valinmemsens(str content,data size,chars delim,data sens)
+Function valinmemsens(str content,data size,char delim,data sens)
 	Data length#1
 	Set length size
-	Chars byte#1
+	Char byte#1
 	Data zero=0
 
 	If size==zero
@@ -35,14 +35,14 @@ Function valinmemsens(str content,data size,chars delim,data sens)
 	Return length
 EndFunction
 
-Function valinmem(str content,data size,chars delim)
+Function valinmem(str content,data size,char delim)
 	Data returnvalue#1
 	Data forward=FORWARD
 	SetCall returnvalue valinmemsens(content,size,delim,forward)
 	Return returnvalue
 EndFunction
 
-function valinmem_pipes(str content,data size,chars delim,data pipe)
+function valinmem_pipes(str content,data size,char delim,data pipe)
 	data sz#1
 	setcall sz valinmem(content,size,delim)
 	set pipe# sz

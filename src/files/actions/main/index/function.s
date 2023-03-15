@@ -1,10 +1,10 @@
 
 If innerfunction==true
-	Chars finferr="There is already another function started."
+	Char finferr="There is already another function started."
 	Str ptrfinf^finferr
 	Set errormsg ptrfinf
 ElseIf programentrypoint!=codesecReg
-	Chars funcafterentry="Unavailable FUNCTION/ENTRY[...] statement; The start address was at File: %s; Line: %s."
+	Char funcafterentry="Unavailable FUNCTION/ENTRY[...] statement; The start address was at File: %s; Line: %s."
 	Str fnafteren^funcafterentry
 
 	call dwtomem(entrylinenumber,uint32s)

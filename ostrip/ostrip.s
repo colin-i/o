@@ -39,7 +39,7 @@ include "throwless.s"
 include "rel.s"
 
 function messagedelim(sv st)
-	Chars visiblemessage={0x0a,0}
+	Char visiblemessage={0x0a,0}
 	Call fprintf(st#,#visiblemessage)
 endfunction
 Function Message(ss text)
@@ -68,7 +68,7 @@ function erMessages(ss m1,ss m2)
 	call erEnd()
 endfunction
 
-chars s1=".data";chars s2=".text";chars s3=".symtab";chars s3o=".symtab_offset";chars s4=".strtab"
+char s1=".data";char s2=".text";char s3=".symtab";char s3o=".symtab_offset";char s4=".strtab"
 
 include "file.s"
 include "obj.s"

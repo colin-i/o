@@ -2,7 +2,7 @@
 #err
 function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	Data valsize#1
-	Chars sign#1
+	Char sign#1
 	#below also at virtual at get_reserve (with mask there)
 	sd is_stack
 	sd typenumber
@@ -66,7 +66,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 					return (noerror)
 				endelse
 			else
-				if typenumber!=(charsnumber)
+				if typenumber!=(charnumber)
 					if typenumber!=(constantsnumber)
 						set unitsize (dwsz)
 					endif

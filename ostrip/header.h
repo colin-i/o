@@ -48,7 +48,7 @@ const asciiDEL=0x7F
 
 const section_nr_of_values=2    ;#*2 for size
 
-const charsize=1
+const charize=1
 
 const verbose_count=0
 const verbose_flush=-1

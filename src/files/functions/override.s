@@ -15,7 +15,7 @@ function override_com(sd pcontent,sd psize)
 	endif
 	sd err
 	ss t
-	charsx aux#1   #override is at all passes coming again here
+	charx aux#1   #override is at all passes coming again here
 	set t name;add t size;set aux t#;set t# 0
 	#work can be done do allow line comment here
 	ss p

@@ -2,7 +2,7 @@
 
 if parses==(pass_init)
 	if innerfunction==false
-		Chars unexef="Unexpected ENDFUNCTION command."
+		Char unexef="Unexpected ENDFUNCTION command."
 		Str unexeferr^unexef
 		Set errormsg unexeferr
 	else

@@ -20,7 +20,7 @@ Else
 		Set d_un namesReg
 		SetCall errormsg addtosec(ptr_d_tag,sizeofElf32_Dyn,ptrtable)
 	Else
-		Chars libatobj="LIBRARY statement is not used at object format."
+		Char libatobj="LIBRARY statement is not used at object format."
 		Str ptrlibatobj^libatobj
 		Set errormsg ptrlibatobj
 	EndElse

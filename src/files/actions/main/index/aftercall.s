@@ -20,7 +20,7 @@ else
 		SetCall errormsg entryvarsfns(pcontent#,pcomsize#)
 		if errormsg==(noerror)
 			sd ac_current_data;setcall ac_current_data get_img_vdata_dataReg()
-			SetCall errormsg addaref(ac_current_data,pcontent,pcomsize,comsize,(charsnumber),(dummy_mask))
+			SetCall errormsg addaref(ac_current_data,pcontent,pcomsize,comsize,(charnumber),(dummy_mask))
 			if errormsg==(noerror)
 				SetCall errormsg addtosec(#null,(aftercalldeclaresize),ptrdatasec)
 				if errormsg==(noerror)

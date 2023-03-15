@@ -15,7 +15,7 @@ Function entryvarsfns(data content,data size)
 		EndIf
 	EndIf
 
-	Chars varfndup="Variable/Function name is already defined."
+	Char varfndup="Variable/Function name is already defined."
 	Str ptrvarfndup^varfndup
 	Return ptrvarfndup
 EndFunction
@@ -120,7 +120,7 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 		Data pointer#1
 		SetCall pointer vars(content,valsize,structure)
 		If pointer!=zero
-			Chars constdup="Constant name is already defined."
+			Char constdup="Constant name is already defined."
 			Str pconstdup^constdup
 			Return pconstdup
 		EndIf
@@ -138,16 +138,16 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 
 	Data zero=0
 	If valsize==zero
-		Chars _namecverr="Name for variable/constant expected."
+		Char _namecverr="Name for variable/constant expected."
 		vStr namecverr^_namecverr
 		Return namecverr
 	EndIf
 
 	data content#1
 	set content ptrcontent#
-	Chars firstchar#1
+	Char firstchar#1
 	Set firstchar content#
-	Chars unrefsign="*"
+	Char unrefsign="*"
 
 	If firstchar!=unrefsign
 		if firstchar==(asciicirc)   #throwless if on a throwing area
@@ -172,7 +172,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 		EndIf
 	Else
 		If typenumber==(constantsnumber)
-			Chars unrefconstant="Unexpected unreference sign ('*') at constant declaration."
+			Char unrefconstant="Unexpected unreference sign ('*') at constant declaration."
 			vStr ptrunrefconstant^unrefconstant
 			Return ptrunrefconstant
 		EndIf
@@ -186,7 +186,7 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	data true=TRUE
 	data noerr=noerror
 	Data valsize#1
-	Chars equalsign=assignsign
+	Char equalsign=assignsign
 
 	SetCall valsize valinmem_pipes(content,size,equalsign,ptrsz)
 	If valsize!=size
@@ -194,12 +194,12 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 		return noerr
 	endif
 
-	Chars reservesign=reserveascii
+	Char reservesign=reserveascii
 	SetCall valsize valinmem_pipes(content,size,reservesign,ptrsz)
 	If valsize!=size
 		Data constnr=constantsnumber
 		If typenumber==constnr
-			Chars constreserveerr="Unexpected reserve sign ('#') at constant declaration."
+			Char constreserveerr="Unexpected reserve sign ('#') at constant declaration."
 			Str ptrconstreserveerr^constreserveerr
 			Return ptrconstreserveerr
 		EndIf
@@ -207,14 +207,14 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 		return noerr
 	endif
 
-	Data charsnr=charsnumber
-	Chars pointersign=pointersigndeclare
+	Data charnr=charnumber
+	Char pointersign=pointersigndeclare
 	SetCall valsize valinmem_pipes(content,size,pointersign,ptrsz)
 	If valsize!=size
-		If typenumber==charsnr
+		If typenumber==charnr
 			#grep    stackfilter2 4
 			if stack==(FALSE)
-				Chars ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
+				Char ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
 				Str ptrptrchar^ptrchar
 				Return ptrptrchar
 			endif
@@ -226,12 +226,12 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 		return noerr
 	endif
 
-	Chars relsign=relsign
+	Char relsign=relsign
 	SetCall valsize valinmem_pipes(content,size,relsign,ptrsz)
 	If valsize!=size
-		Chars ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
+		Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
 		Str ptrptrrelchar^ptrrelchar
-		If typenumber==charsnr
+		If typenumber==charnr
 			#stackfilter2   grep5
 			if stack==(FALSE)
 				Return ptrptrrelchar
@@ -245,12 +245,12 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	endif
 
 	if stack==true
-		chars nosign=nosign
+		char nosign=nosign
 		Set assigntype# nosign
 		return noerr
 	endif
 
-	Chars _assignoperatorerr="One from the assign operators expected."
+	Char _assignoperatorerr="One from the assign operators expected."
 	Str assignoperatorerr^_assignoperatorerr
 	Return assignoperatorerr
 endfunction

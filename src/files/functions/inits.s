@@ -38,7 +38,7 @@ function comline_parse(sd argc,sv argv)
 endfunction
 #err
 function comline_value(ss v,sd p)
-	chars input#1
+	char input#1
 	set input v#
 	if input!=0
 		if input>=(asciizero)

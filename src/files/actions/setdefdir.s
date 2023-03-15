@@ -1,11 +1,11 @@
 
 
-Chars safedirdata="./"
+Char safedirdata="./"
 Str safedir^safedirdata
 
 Str filenameloc#1
 SetCall filenameloc endoffolders(path_nofree)
-Chars storeachar#1
+Char storeachar#1
 Set storeachar filenameloc#
 Set filenameloc# null
 
@@ -40,7 +40,7 @@ Add safecurrentdirloc wordsize
 Call memtomem(safecurrentdirloc,filenameloc,movesize)
 
 if logbool==true
-	chars logfileextension=".log"
+	char logfileextension=".log"
 	str logextension^logfileextension
 
 	setcall errormsg maxpathverif(safecurrentdirtopath,logextension)
@@ -61,7 +61,7 @@ if logbool==true
 			sd log_main_folder
 			setcall log_main_folder getcwd((NULL),0)
 			if log_main_folder==(NULL)
-				chars getcwd_first="first getcwd error"
+				char getcwd_first="first getcwd error"
 				set errormsg #getcwd_first
 			else
 				setcall errormsg addtolog_withchar_parses(log_main_folder,(log_pathfolder),(TRUE))

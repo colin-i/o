@@ -57,7 +57,7 @@ Function checkcondloopclose()
 	Call getcontReg(condloop,ptrregnr)
 	Data zero=0
 	If regnr!=zero
-		Chars closeerr="All conditions/loops within a scope most be closed."
+		Char closeerr="All conditions/loops within a scope most be closed."
 		Str _closeerr^closeerr
 		Return _closeerr
 	EndIf
@@ -68,7 +68,7 @@ EndFunction
 Const backjumpsize=5
 #err
 Function condjump(data size)
-	Chars jump={0xe9}
+	Char jump={0xe9}
 	Data jsize#1
 	Data bjsz=backjumpsize
 
@@ -92,7 +92,7 @@ Function condend(data number)
 
 	Call getptrcontReg(condloop,ptrptrcReg)
 	If ptrcReg#==0
-		Chars uncloseerr="Unexpected condition/loop close command."
+		Char uncloseerr="Unexpected condition/loop close command."
 		Str _uncloseerr^uncloseerr
 		Return _uncloseerr
 	EndIf
@@ -149,7 +149,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 				call condendwrite(conds,codeoffset)
 			endif
 		elseIf lastcondition!=number
-			Chars difcloseerr="The previous condition/loop is from a different type."
+			Char difcloseerr="The previous condition/loop is from a different type."
 			vStr _difcloseerr^difcloseerr
 			Return _difcloseerr
 		else

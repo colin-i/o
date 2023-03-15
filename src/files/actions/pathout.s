@@ -18,7 +18,7 @@ Sub minpath unit
 Sub cursorpath unit
 
 While minpath!=cursorpath
-	Chars teststr#1
+	Char teststr#1
 	Set teststr cursorpath#
 	If teststr==dot
 		Set pointofpathout cursorpath
@@ -33,12 +33,12 @@ Data extension#1
 Set extension null
 
 If fileformat==pe_exec
-	Chars exe=".exe"
+	Char exe=".exe"
 	Str pexe^exe
 	Set extension pexe
 Else
 	If object==true
-		Chars obj=".o"
+		Char obj=".o"
 		Str pobj^obj
 		Set extension pobj
 	EndIf

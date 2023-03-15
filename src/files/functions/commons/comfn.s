@@ -8,7 +8,7 @@ Function memrealloc(data ptrpointer,data size)
 	SetCall newpointer realloc(oldpointer,size)
 	Data null=NULL
 	If newpointer==null
-		Chars newmem="Memory allocation error."
+		Char newmem="Memory allocation error."
 		Data pnewmem^newmem
 		Return pnewmem
 	EndIf
@@ -72,8 +72,8 @@ Function memcmp(str m1,str m2,data size)
 	Data equal=0
 	Data notequal=-1
 
-	Chars c1#1
-	Chars c2#1
+	Char c1#1
+	Char c2#1
 	While size!=zero
 		Set c1 m1#
 		Set c2 m2#
@@ -89,8 +89,8 @@ EndFunction
 
 #sizeof the string
 Function strlen(str str)
-	Chars term={0}
-	Chars byte#1
+	Char term={0}
+	Char byte#1
 	Data sz#1
 	Data zero=0
 	Set sz zero
@@ -110,9 +110,9 @@ Function printbuf(sd format,sd message,sd s1,sd nr,sd n1,sd n2)
 	addCall bufsize strlen(message)
 	addCall bufsize strlen(s1)
 	if nr>0
-		add bufsize (dw_chars)
+		add bufsize (dw_char)
 		if nr>1
-			add bufsize (dw_chars)
+			add bufsize (dw_char)
 		endif
 	endif
 
@@ -156,7 +156,7 @@ Function openfile(data pfile,str path,data oflag)
 	Return noerr
 EndFunction
 
-chars writefile_err="Cannot write data to a file."
+char writefile_err="Cannot write data to a file."
 const writefile_err_p^writefile_err
 #return _write (-1 or wrln)
 Function writefile(data hfile,str buf,data ln)
@@ -249,9 +249,9 @@ Function padsec(data hfile,data value,data pad)
 EndFunction
 
 #true if match or false
-Function filepathdelims(chars chr)
-	Chars bslash=asciibs
-	Chars slash=asciislash
+Function filepathdelims(char chr)
+	Char bslash=asciibs
+	Char slash=asciislash
 	Data true=TRUE
 	Data false=FALSE
 	If chr==bslash
@@ -402,7 +402,7 @@ endfunction
 function compareagainstmaxpath(data sizetocompare)
 	data flag_max_path=flag_MAX_PATH
 	if sizetocompare>flag_max_path
-		chars greaterthanmax="A file path size is greater than maximum number."
+		char greaterthanmax="A file path size is greater than maximum number."
 		str greater^greaterthanmax
 		return greater
 	else

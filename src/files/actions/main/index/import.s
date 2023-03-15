@@ -7,7 +7,7 @@ Data ptrimpescapes^impescapes
 
 If object==false
 	If implibsstarted==false
-		Chars noliberr="Unexpected IMPORT statement; there is no LIBRARY opened."
+		Char noliberr="Unexpected IMPORT statement; there is no LIBRARY opened."
 		Str ptrnoliberr^noliberr
 		Set errormsg ptrnoliberr
 	EndIf
@@ -59,7 +59,7 @@ If errormsg==noerr
 					#after this will find var in vars/fns and if not add a new
 					sd imp_size;setcall imp_size find_whitespaceORcomment(content,comsize)
 					If imp_size==zero
-						Chars missimportref="Import name for compiler must be specified after the name for output."
+						Char missimportref="Import name for compiler must be specified after the name for output."
 						Str ptrimpref^missimportref
 						Set errormsg ptrimpref
 					Else

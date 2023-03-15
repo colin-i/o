@@ -90,7 +90,7 @@ const fndecandgroup=1
 Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrparses,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool,sd relocindx)
 	Data zero=0
 	vstrx argsize#1
-	Chars comma=","
+	Char comma=","
 	Data err#1
 	Data noerr=noerror
 	datax content#1
@@ -116,9 +116,9 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Data bSz=bsz
 			Data dwSz=dwsz
 			Data unitsize#1   #ignored at stack
-			Data charsnr=charsnumber
+			Data charnr=charnumber
 			if punitsizeOrparses==(NULL)
-				If typenumberOrparses==charsnr
+				If typenumberOrparses==charnr
 				#ignored at stack value   grep stackfilter2  1
 					Set unitsize bSz    #used also at hex
 				Else
@@ -191,7 +191,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			if sz!=0
 				set argsize content
 				dec argsize
-				chars d_quot=asciidoublequote
+				char d_quot=asciidoublequote
 				if argsize#==d_quot
 					#look later at escapes, here only at the margins
 					#here the string ".." is in a good condition when quotes_forward was called at fn(...)

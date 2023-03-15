@@ -41,7 +41,7 @@ Function formmodrm(data mod,data regopcode,data rm)
 EndFunction
 
 function takewithimm(sd ind,sd addr)
-	Chars takeop#1
+	Char takeop#1
 	Data takeloc#1
 
 	Set takeop (0xb8)
@@ -139,11 +139,11 @@ function writetake(sd takeindex,sd entry)
 		endif
 		setcall errnr datatake(takeindex,take_loc)
 	else
-		chars stack_relative#1
-		chars regreg=RegReg
+		char stack_relative#1
+		char regreg=RegReg
 		setcall stack_relative stack_get_relative(entry)
-		chars getfromstack={0x03}
-		chars getfromstack_modrm#1
+		char getfromstack={0x03}
+		char getfromstack_modrm#1
 		SetCall getfromstack_modrm formmodrm(regreg,takeindex,stack_relative)
 		data ptrgetfromstack^getfromstack
 		data sizegetfromstack=2
@@ -163,8 +163,8 @@ function writetake_offset(sd takeindex,sd entry)
 	if er==(noerror)
 		sd test;setcall test suffixbit(entry)
 		if test!=0
-			chars op=0x81
-			chars modrm#1
+			char op=0x81
+			char modrm#1
 			data disp32#1
 			add entry (addoffset)
 			set disp32 entry#
@@ -175,8 +175,8 @@ function writetake_offset(sd takeindex,sd entry)
 			setcall er rex_w_if64()
 			if er==(noerror)
 				#need to take further
-				chars take=moveatprocthemem
-				chars tmodrm#1
+				char take=moveatprocthemem
+				char tmodrm#1
 				setcall tmodrm formmodrm((mod_0),takeindex,takeindex)
 				value ptrcodesec%%ptr_codesec
 				SetCall er addtosec(#take,2,ptrcodesec)
@@ -248,8 +248,8 @@ function sufix_take(sd takeindex,sd take64)
 			return err;endif
 	endif
 	Data ptrcodesec%%ptr_codesec
-	Chars newtake=moveatprocthemem
-	Chars newtakemodrm#1
+	Char newtake=moveatprocthemem
+	Char newtakemodrm#1
 	Str ptrnewtake^newtake
 	Data sz2=bsz+bsz
 	setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
@@ -290,13 +290,13 @@ Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd take
 	#if is like was xor prepare,prepare
 	If is_prepare==(TRUE)
 	# !=(noregnumber)
-		#Chars comprepare1={0x33}
-		#Chars comprepare2#1
+		#Char comprepare1={0x33}
+		#Char comprepare2#1
 		#setcall comprepare2 formmodrm((RegReg),regprepare,regprepare)
 		#SetCall errnr addtosec(#comprepare1,sz2,ptrcodesec)
 
 		#zero extend
-		chars extend_byte=twobytesinstruction_byte1
+		char extend_byte=twobytesinstruction_byte1
 		SetCall errnr addtosec(#extend_byte,1,ptrcodesec)
 		If errnr!=noerr
 			Return errnr
@@ -316,8 +316,8 @@ Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd take
 		#endElse
 	EndElse
 
-	Chars actionop#1
-	Chars actionmodrm#1
+	Char actionop#1
+	Char actionmodrm#1
 
 	Set actionop operationopcode
 	SetCall actionmodrm formmodrm(mod,regopcode,takeindex)

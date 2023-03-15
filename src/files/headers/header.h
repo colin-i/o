@@ -97,7 +97,7 @@ Datax *#1
 Datax stringMax#1
 Datax *#1
 Datax *#1
-Datax charsMax#1
+Datax charMax#1
 Datax *#1
 Datax *#1
 Datax sdMax#1
@@ -116,7 +116,7 @@ Datax *#1
 Datax stringfnscopeMax#1
 Datax *#1
 Datax *#1
-Datax charsfnscopeMax#1
+Datax charfnscopeMax#1
 Datax *#1
 Datax *#1
 Datax sdfnMax#1
@@ -132,13 +132,13 @@ Datax *#1
 Const memvariablesnumber=0
 	Const integersnumber=memvariablesnumber+0
 	Const stringsnumber=memvariablesnumber+1
-	Const charsnumber=memvariablesnumber+2
-	const valuesinnernumber=charsnumber
-Const totalmemvariables=charsnumber+1
+	Const charnumber=memvariablesnumber+2
+	const valuesinnernumber=charnumber
+Const totalmemvariables=charnumber+1
 	Const stackdatanumber=totalmemvariables+integersnumber
 	Const stackstringnumber=totalmemvariables+stringsnumber
 	Const stackvaluenumber=totalmemvariables+valuesinnernumber
-	#that was +charsnumber because it is compared against 2. and more reasons
+	#that was +charnumber because it is compared against 2. and more reasons
 Const numberofvars=stackvaluenumber+1
 
 const vnumbers=numberofvars
@@ -227,7 +227,7 @@ const containersalmostend^debugsecReg
 data containerssize=containersalmostend+dwsz-containersbegin
 const containerssize^containerssize
 
-chars dummyEntry_data#sizeof_minimumentry
+char dummyEntry_data#sizeof_minimumentry
 
 Data dummyEntryMax=sizeof_minimumentry
 Data *dummyEntry^dummyEntry_data
@@ -321,7 +321,7 @@ const ptrlogfile^logfile
 
 data includedir#1
 const ptrincludedir^includedir
-chars fileendchar#1
+char fileendchar#1
 
 const ignore_warn=0
 #const show_warn=1
@@ -356,7 +356,7 @@ Data ptrsubtype^subtype
 
 
 ##stack
-#chars movtostack={0xc7,0x85}
+#char movtostack={0xc7,0x85}
 #data rampindex#1
 #data rampvalue#1
 const rampadd_value_off=bsz
@@ -401,7 +401,7 @@ const reserveascii=asciinumber
 const pointerascii=asciinumber
 
 #const max_uint64=20
-chars uint32c#dw_chars_0
+char uint32c#dw_char_0
 vstr uint32s^uint32c
 
 data w_as_e#1

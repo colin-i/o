@@ -5,7 +5,7 @@ Data err#1
 
 SetCall err openfile(ptrfileout,safecurrentdirtopath,_open_write)
 If err!=noerr
-	Chars fouterr="Error with the file out open function."
+	Char fouterr="Error with the file out open function."
 	Str fileouterr^fouterr
 	Call msgerrexit(fileouterr)
 EndIf

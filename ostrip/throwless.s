@@ -73,7 +73,7 @@ function verbose(sd action)
 			inc n
 		else
 		#if action==(verbose_flush)
-			chars out#10+1   ;#max 32
+			char out#10+1   ;#max 32
 			call sprintf(#out,"%u",n)
 			call Message(#out)
 			set n 0

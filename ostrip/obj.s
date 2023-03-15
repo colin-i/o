@@ -56,7 +56,7 @@ function get_objs(sv pargs,sd end)
 		add objects :
 		set objects# (NULL)
 
-		chars o1=".rela.data";chars o2=".rela.text";chars o3=".symtab";chars o4=".strtab"
+		char o1=".rela.data";char o2=".rela.text";char o3=".symtab";char o4=".strtab"
 		const o1c^o1;const o2c^o2;const o3c^o3;const o4c^o4
 		value oN%{o1c,o2c,o3c,o4c}
 		value *=NULL
@@ -98,7 +98,7 @@ function get_offset(sd fname)
 		if off!=-1
 			sub off (2+8)  #knowing \r\n same as ounused that is not headering with src. and 8 is copy-paste
 			call seeks(file,off)
-			chars buf={0,0,0,0, 0,0,0,0, 0}
+			char buf={0,0,0,0, 0,0,0,0, 0}
 			call read(file,#buf,8) #copy-paste
 			datax nr#1
 			call sscanf(#buf,"%08x",#nr) #copy-paste

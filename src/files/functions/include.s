@@ -34,7 +34,7 @@ Function include(ss path,sd both)
 	Data sizeoffl#1
 	Data offsetoffl#1
 	Data *lineoffl=0
-	Chars nameoffl#shortstrsize
+	Char nameoffl#shortstrsize
 
 	Data err#1
 	Data noerr=noerror
@@ -67,7 +67,7 @@ Function include(ss path,sd both)
 		setcall err addtolog_withchar_parses(pcontentoffl#,(log_pathfolder),both)
 		If err!=noerr;Return err;EndIf
 
-		chars storechar#1
+		char storechar#1
 		set storechar folders#
 		set folders# 0
 
@@ -115,7 +115,7 @@ Function include(ss path,sd both)
 
 	Add dest fnamesize
 	If moresize==one
-		Chars morestr="~"
+		Char morestr="~"
 		Set dest# morestr
 		Add dest one
 	EndIf

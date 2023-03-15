@@ -5,29 +5,29 @@ Const spacenotreq=0
 
 #with caution like elseif before else for getcommand comparations
 
-Chars cCOMMENT_c={commentascii,0}
-Chars cDATA_c="DATA";Chars cSTR_c="STR";Chars cCHAR_c="CHAR";Chars cSD_c="SD";Chars cSS_c="SS";Chars cSV_c="SV"
-	Chars cVDATA_c="VDATA";Chars cVSTR_c="VSTR";Chars cVALUE_c="VALUE"
-	Chars cDATAX_c="DATAX";Chars cSTRX_c="STRX";Chars cCHARX_c="CHARX"
-	Chars cVDATAX_c="VDATAX";Chars cVSTRX_c="VSTRX";Chars cVALUEX_c="VALUEX"
-	Chars cCONST_c="CONST"
-Chars cSET_c="SET";Chars cADD_c="ADD";Chars cSUB_c="SUB";Chars cMULT_c="MULT";Chars cDIV_c="DIV";Chars cREM_c="REM";Chars cAND_c="AND";Chars cOR_c="OR";Chars cXOR_c="XOR"
-Chars cRETURN_c="RETURN";Chars cINCST_c="INCST";Chars cINC_c="INC";Chars cDECST_c="DECST";Chars cDEC_c="DEC";Chars cNEG_c="NEG";Chars cNOT_c="NOT";Chars cSHL_c="SHL";Chars cSHR_c="SHR";Chars cSAR_c="SAR";Chars cEXIT_c="EXIT"
-Chars cCALLX_c="CALLX";Chars cCALL_c="CALL"
-Chars cIF_c="IF";Chars cENDIF_c="ENDIF";Chars cELSEIF_c="ELSEIF";Chars cELSE_c="ELSE";Chars cENDELSEIF_c="ENDELSEIF";Chars cENDELSE_c="ENDELSE";Chars cWHILE_c="WHILE";Chars cENDWHILE_c="ENDWHILE";Chars cBREAK_c="BREAK";Chars cCONTINUE_c="CONTINUE"
-Chars cIMPORT_c="IMPORT";Chars cIMPORTX_c="IMPORTX"
-Chars cFUNCTION_c="FUNCTION";Chars cFUNCTIONX_c="FUNCTIONX";Chars cENTRYRAW_c="ENTRYRAW";Chars cENTRY_c="ENTRY"
-Chars cENDFUNCTION_c="ENDFUNCTION"
-Chars cRET_c="RET"
-Chars cINCLUDE_c="INCLUDE"
-Chars cFORMAT_c="FORMAT"
-Chars cIMPORTAFTERCALL_c="IMPORTAFTERCALL";Chars cAFTERCALL_c="AFTERCALL"
-Chars cWARNING_c="WARNING"
-Chars cCALLEXX_c="CALLEXX";Chars cCALLEX_c="CALLEX"
-Chars cOVERRIDE_c="OVERRIDE"
-Chars cLIBRARY_c="LIBRARY"
-Chars cHEX_c="HEX"
-Chars cI3_c="I3"
+Char cCOMMENT_c={commentascii,0}
+Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cSD_c="SD";Char cSS_c="SS";Char cSV_c="SV"
+	Char cVDATA_c="VDATA";Char cVSTR_c="VSTR";Char cVALUE_c="VALUE"
+	Char cDATAX_c="DATAX";Char cSTRX_c="STRX";Char cCHARX_c="CHARX"
+	Char cVDATAX_c="VDATAX";Char cVSTRX_c="VSTRX";Char cVALUEX_c="VALUEX"
+	Char cCONST_c="CONST"
+Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cREM_c="REM";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
+Char cRETURN_c="RETURN";Char cINCST_c="INCST";Char cINC_c="INC";Char cDECST_c="DECST";Char cDEC_c="DEC";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cSHL_c="SHL";Char cSHR_c="SHR";Char cSAR_c="SAR";Char cEXIT_c="EXIT"
+Char cCALLX_c="CALLX";Char cCALL_c="CALL"
+Char cIF_c="IF";Char cENDIF_c="ENDIF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE";Char cENDELSEIF_c="ENDELSEIF";Char cENDELSE_c="ENDELSE";Char cWHILE_c="WHILE";Char cENDWHILE_c="ENDWHILE";Char cBREAK_c="BREAK";Char cCONTINUE_c="CONTINUE"
+Char cIMPORT_c="IMPORT";Char cIMPORTX_c="IMPORTX"
+Char cFUNCTION_c="FUNCTION";Char cFUNCTIONX_c="FUNCTIONX";Char cENTRYRAW_c="ENTRYRAW";Char cENTRY_c="ENTRY"
+Char cENDFUNCTION_c="ENDFUNCTION"
+Char cRET_c="RET"
+Char cINCLUDE_c="INCLUDE"
+Char cFORMAT_c="FORMAT"
+Char cIMPORTAFTERCALL_c="IMPORTAFTERCALL";Char cAFTERCALL_c="AFTERCALL"
+Char cWARNING_c="WARNING"
+Char cCALLEXX_c="CALLEXX";Char cCALLEX_c="CALLEX"
+Char cOVERRIDE_c="OVERRIDE"
+Char cLIBRARY_c="LIBRARY"
+Char cHEX_c="HEX"
+Char cI3_c="I3"
 
 const not_a_subtype=-1
 
@@ -446,7 +446,7 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		Set spacebool cursor#
 
 		#implement for SetCall...
-		Chars calldata="CALL"
+		Char calldata="CALL"
 		Str call^calldata
 
 		ss extstr=NULL
@@ -495,7 +495,7 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		Set cursor pointercommands#
 	EndWhile
 
-	Chars _unrecCom="Unrecognized command/declaration name."
+	Char _unrecCom="Unrecognized command/declaration name."
 	Str unrecCom^_unrecCom
 	Set ptrerrormsg# unrecCom
 EndFunction

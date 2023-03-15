@@ -126,7 +126,7 @@ EndFunction
 
 #str
 function log_term(sd psz)
-	chars textterm={asciicarriage,asciireturn,0}
+	char textterm={asciicarriage,asciireturn,0}
 	set psz# 2
 	return #textterm
 endfunction
@@ -218,7 +218,7 @@ function addtolog_withchar_ex_atunused_handle(ss content,sd size,sd type,sd file
 endfunction
 #err
 function addtolog_natural(sd number)
-	chars buf#8+1
+	char buf#8+1
 	call sprintf(#buf,"%08x",number)  #for file seek at position
 	sd err;setcall err addtolog_withchar(#buf,(log_expand))
 	return err

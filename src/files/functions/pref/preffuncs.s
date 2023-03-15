@@ -44,7 +44,7 @@ Function warnings(sd p_err,sd has_named_entry)
 		EndIf
 		If var!=(NULL)
 			if p_err#==(noerror)
-				Chars unrefformat="Unreferenced variable/function/constant: %s. Parent: %s."
+				Char unrefformat="Unreferenced variable/function/constant: %s. Parent: %s."
 				Str ptrunrefformat^unrefformat
 
 				Data printbuffer#1
@@ -71,7 +71,7 @@ EndFunction
 #void
 #parse and set the value, 0-9(one digit) values are expected here
 function parsepreferences(sd ptrcontent,sd ptrsize,sd strs_pointers)
-	Chars searchsign="="
+	Char searchsign="="
 	Data sizeuntilsign#1
 
 	str content#1

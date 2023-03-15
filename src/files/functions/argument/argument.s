@@ -5,15 +5,15 @@ function getreturn(data ptrptrcontinuation)
 	if b==(TRUE)
 		sd conv;setcall conv convdata((convdata_total))
 		if conv==(lin_convention)
-			chars lin64_return={0xc9,0x5b}
+			char lin64_return={0xc9,0x5b}
 			#pop c;add rsp,8*conv;push c
-			chars *={0x59,REX_Operand_64,0x83,regregmod|espregnumber,lin_convention*qwsz,0x51}
-			chars *=retcom
+			char *={0x59,REX_Operand_64,0x83,regregmod|espregnumber,lin_convention*qwsz,0x51}
+			char *=retcom
 			set ptrptrcontinuation# #lin64_return
 			return (2+6+1)
 		endif
 	endif
-	Chars returncontinuation={0xc9,0x5b,retcom}
+	Char returncontinuation={0xc9,0x5b,retcom}
 	str ptrreturncontinuation^returncontinuation
 	data sizeretcontinuation=3
 	set ptrptrcontinuation# ptrreturncontinuation
@@ -24,7 +24,7 @@ function getexit(sv ptrptrcontinuation,sd psizeofcontinuation)
 	#if to keep rsp can be leave pop sub rsp,:
 
 	#int 0x80, sys_exit, eax 1,ebx the return number
-	chars sys_exit={0xb8,1,0,0,0}
+	char sys_exit={0xb8,1,0,0,0}
 	data exinit^sys_exit
 	data exitsize=5
 	Data codeptr%%ptr_codesec
@@ -34,7 +34,7 @@ function getexit(sv ptrptrcontinuation,sd psizeofcontinuation)
 		Return err
 	EndIf
 
-	Chars unixcontinuation={intimm8,0x80}
+	Char unixcontinuation={intimm8,0x80}
 	set ptrptrcontinuation# #unixcontinuation
 	set psizeofcontinuation# 2
 	return (noerror)
@@ -65,7 +65,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 
 	Data regprepare_bool#1
 
-	Chars op#1
+	Char op#1
 	Data zero=0
 
 	Str ptrcontinuation#1
@@ -90,12 +90,12 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 				Return err
 			EndIf
 		ElseIf subtype==(cINC)
-			Chars inc={0xFF}
+			Char inc={0xFF}
 			Set op inc
 			set regopcode 0
 		ElseIf subtype==(cDEC)
-			Chars dec={0xFF}
-			Chars decregopcode={1}
+			Char dec={0xFF}
+			Char decregopcode={1}
 			Set op dec
 			Set regopcode decregopcode
 		ElseIf subtype<=(cDECST)
@@ -105,7 +105,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			else
 				set regopcode 5
 			endelse
-			chars incs_sz#1
+			char incs_sz#1
 			sd b;setcall b is_for_64()
 			if b==(FALSE);set incs_sz (dwsz)
 			else;set incs_sz (qwsz);endelse
@@ -115,8 +115,8 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			set op (0xf7)
 			set regopcode 3
 		ElseIf subtype==(cNOT)
-			Chars not={0xF7}
-			Chars notregopcode={Notregopcode}
+			Char not={0xF7}
+			Char notregopcode={Notregopcode}
 			Set op not
 			Set regopcode notregopcode
 		ElseIf subtype<=(cSAR)
@@ -164,8 +164,8 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 		#push
 			#If lowbyte==false
 			#since with 64 push data will push quad even without rex
-			#	Chars push={0xff}
-			#	Chars pushopcode={6}
+			#	Char push={0xff}
+			#	Char pushopcode={6}
 			#	Set op push
 			#	Set regopcode pushopcode
 			#	call stack64_op_set()
@@ -174,11 +174,11 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			#	#prepare for eax for al
 			#	Set intchar eaxreg
 			#EndIf
-			Chars pushaction={moveatprocthemem}
+			Char pushaction={moveatprocthemem}
 			Set op pushaction
 			set regopcode (eaxregnumber)
 
-			chars pushadvance={0x50}
+			char pushadvance={0x50}
 			data pushcontinuationsize=1
 			data ptrpushcontinuation^pushadvance
 			Set ptrcontinuation ptrpushcontinuation

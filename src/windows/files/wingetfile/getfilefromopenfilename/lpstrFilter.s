@@ -1,10 +1,10 @@
 
 
-Chars allfiles="All Files (*.*)"
+Char allfiles="All Files (*.*)"
 Str ptrallfiles^allfiles
-Chars filter2="*.*"
+Char filter2="*.*"
 Str ptrfilter2^filter2
-chars nullstr=""
+char nullstr=""
 
 Data ofnfiltersize#1
 Data str1sz#1

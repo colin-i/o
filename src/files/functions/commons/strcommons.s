@@ -78,10 +78,10 @@ Function stratmem(data pcontent,data psize,str match)
 
 	Set sizetorun nrsz
 	While sizetorun!=zero
-		Chars a_from_az={a_from_az}
-		Chars z_from_az={z_from_az}
-		Chars b#1
-		Chars c#1
+		Char a_from_az={a_from_az}
+		Char z_from_az={z_from_az}
+		Char b#1
+		Char c#1
 
 		Set b content#
 		If b>=a_from_az
@@ -120,7 +120,7 @@ function find_whitespaceORcomment(ss content,sd size)
 	ss end;set end content;add end size
 	ss start;set start content
 	while content!=end
-		chars b#1;set b content#
+		char b#1;set b content#
 		if b==(commentascii)
 			sub content start
 			return content
@@ -137,7 +137,7 @@ function find_whitespaceORcomment(ss content,sd size)
 	return content
 endfunction
 #bool
-function is_whitespace(chars c)
+function is_whitespace(char c)
 	if c==(asciispace)
 		return (TRUE)
 	endif
@@ -251,8 +251,8 @@ EndFunction
 Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	Str content#1
 	Data size#1
-	Chars byte#1
-	Chars bs=asciibs
+	Char byte#1
+	Char bs=asciibs
 	Data zero=0
 
 	Set content pcontent#
@@ -279,7 +279,7 @@ EndFunction
 
 #return false or true
 Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
-	Chars quotation={asciidoublequote,0}
+	Char quotation={asciidoublequote,0}
 	Str pquotation^quotation
 	Data intnr=0
 	Data zero=0
@@ -301,8 +301,8 @@ Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
 	Data escbefore=0
 	Data escafter=0
 
-	Chars byte={0}
-	Chars bnull={0}
+	Char byte={0}
+	Char bnull={0}
 	While length!=zero
 		Set escbefore pescapes#
 		SetCall byte quotescaped(ptrdata,ptrlength,pescapes)
@@ -330,7 +330,7 @@ Function quotinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
 	SetCall bool quotientinmem(ptrcontent,ptrsize,pquotsz,pescapes)
 	Data false=FALSE
 	If bool==false
-		Chars strerr="Expecting string delimited by quotations and with the backslash the escape character."
+		Char strerr="Expecting string delimited by quotations and with the backslash the escape character."
 		Str ptrstrerr^strerr
 		Return ptrstrerr
 	EndIf
@@ -355,7 +355,7 @@ endfunction
 #err
 function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 #this version is knowing that the first char is "
-	chars delim=asciidoublequote
+	char delim=asciidoublequote
 	ss content
 	set content p_content#
 	str unend="end string (\") expected"
@@ -366,7 +366,7 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 	endif
 	sd newlines=0
 	while content#!=delim
-		chars escape_c=asciibs
+		char escape_c=asciibs
 		while content#==escape_c
 			if escapes==0
 				set escapes 1
@@ -378,7 +378,7 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 				return unend
 			endif
 		endwhile
-		chars newline=asciireturn
+		char newline=asciireturn
 		if content#==newline
 			if p_newlines!=0
 				inc newlines

@@ -19,35 +19,35 @@ const ET_REL=1
 
 Const elf_fileheaders_start=!
 
-chars *elf32_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
+char *elf32_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
 
 #32-bit objects
-chars *elf32_ehd_e_ident_class={ELFCLASS32}
+char *elf32_ehd_e_ident_class={ELFCLASS32}
 
 #2's complement, little endian
 const ELFDATA2LSB=1
-chars *elf32_ehd_e_ident_data={ELFDATA2LSB}
+char *elf32_ehd_e_ident_data={ELFDATA2LSB}
 
 #Current version
 const EV_CURRENT=1
-chars *elf32_ehd_e_ident_version={EV_CURRENT}
+char *elf32_ehd_e_ident_version={EV_CURRENT}
 
 #EI_OSABI
 const ELFOSABI_NONE=0
-chars *elf32_ehd_e_ident_osabi={ELFOSABI_NONE}
+char *elf32_ehd_e_ident_osabi={ELFOSABI_NONE}
 
 #If no values are specified for the EI_OSABI field by the processor supplement or no version values are specified for the ABI determined by a particular value of the EI_OSABI byte, the value 0 shall be used for the EI_ABIVERSION byte; it indicates unspecified.
 const EI_ABIVERSION=0
-chars *elf32_ehd_e_ident_abiversion={EI_ABIVERSION}
+char *elf32_ehd_e_ident_abiversion={EI_ABIVERSION}
 
 #pad to 0x10
-chars *elf32_ehd_e_ident_pad={0,0,0,0,0,0,0}
+char *elf32_ehd_e_ident_pad={0,0,0,0,0,0,0}
 
 
 #Object file type
-Chars elf32_ehd_e_type#2
+Char elf32_ehd_e_type#2
 #Architecture,Intel 80386
-Chars *elf32_ehd_e_machine={EM_386,0}
+Char *elf32_ehd_e_machine={EM_386,0}
 
 data *elf32_ehd_e_version=EV_CURRENT
 #entry point
@@ -58,19 +58,19 @@ data elf32_ehd_e_phoff#1
 data elf32_ehd_e_shoff#1
 data *elf32_ehd_e_flags=0
 #Size of this header
-chars *elf32_ehd_e_ehsize={52,0}
+char *elf32_ehd_e_ehsize={52,0}
 #Program header table entry size
 Const elf32_ehd_e_phentsize=32
-chars *elf32_ehd_e_phentsize={elf32_ehd_e_phentsize,0}
+char *elf32_ehd_e_phentsize={elf32_ehd_e_phentsize,0}
 #Program header table entry count
-chars elf32_ehd_e_phnum#2
+char elf32_ehd_e_phnum#2
 #Section header table entry size
 Const elf32_ehd_e_shentsize=40
-chars *elf32_ehd_e_shentsize={elf32_ehd_e_shentsize,0}
+char *elf32_ehd_e_shentsize={elf32_ehd_e_shentsize,0}
 #Section header table entry count
-chars elf32_ehd_e_shnum#2
+char elf32_ehd_e_shnum#2
 #Section header string table index
-chars elf32_ehd_e_shstrndx#2
+char elf32_ehd_e_shstrndx#2
 
 Const elf_fileheaders_end=!
 
@@ -89,27 +89,27 @@ data ptrelf32_ehd_e_shstrndx^elf32_ehd_e_shstrndx
 
 #64 bit objects
 Const elf64_fileheaders_start=!
-chars elf64_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
-chars *elf64_ehd_e_ident_class={ELFCLASS64}
-chars *elf64_ehd_e_ident_data={ELFDATA2LSB}
-chars *elf64_ehd_e_ident_version={EV_CURRENT}
-chars *elf64_ehd_e_ident_osabi={ELFOSABI_NONE}
-chars *elf64_ehd_e_ident_abiversion={EI_ABIVERSION}
-chars *elf64_ehd_e_ident_pad={0,0,0,0,0,0,0}
-Chars *elf64_ehd_e_type={ET_REL,0}
-Chars *elf64_ehd_e_machine={EM_X86_64,0}
+char elf64_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
+char *elf64_ehd_e_ident_class={ELFCLASS64}
+char *elf64_ehd_e_ident_data={ELFDATA2LSB}
+char *elf64_ehd_e_ident_version={EV_CURRENT}
+char *elf64_ehd_e_ident_osabi={ELFOSABI_NONE}
+char *elf64_ehd_e_ident_abiversion={EI_ABIVERSION}
+char *elf64_ehd_e_ident_pad={0,0,0,0,0,0,0}
+Char *elf64_ehd_e_type={ET_REL,0}
+Char *elf64_ehd_e_machine={EM_X86_64,0}
 data *elf64_ehd_e_version=EV_CURRENT
 data *elf64_ehd_e_entry={0,0}
 data *elf64_ehd_e_phoff={0,0}
 data elf64_ehd_e_shoff#1;data *=0
 data *elf64_ehd_e_flags=0
-chars *elf64_ehd_e_ehsize={64,0}
-chars *elf64_ehd_e_phentsize={0,0}
-chars *elf64_ehd_e_phnum={0,0}
-chars *elf64_ehd_e_shentsize={64,0}
-chars elf64_ehd_e_shnum#2
-chars elf64_ehd_e_shstrndx#2
-chars *pad={0,0}
+char *elf64_ehd_e_ehsize={64,0}
+char *elf64_ehd_e_phentsize={0,0}
+char *elf64_ehd_e_phnum={0,0}
+char *elf64_ehd_e_shentsize={64,0}
+char elf64_ehd_e_shnum#2
+char elf64_ehd_e_shstrndx#2
+char *pad={0,0}
 Const elf64_fileheaders_size=!-elf64_fileheaders_start
 
 
@@ -232,7 +232,7 @@ Const elf_importfileheaders_end=!
 Data elf_importfileheaders%elf_importfileheaders
 Data elf_importfileheaders_size=elf_importfileheaders_end-elf_importfileheaders
 
-Chars interpreter="/lib/ld-linux.so.2"
+Char interpreter="/lib/ld-linux.so.2"
 Str ptrinterpreter^interpreter
 Data interpretersize#1
 

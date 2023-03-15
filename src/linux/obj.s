@@ -13,7 +13,7 @@ Function Message(str text)
 	sd stderrorobject^stderr
 	set stderrorobject stderrorobject#
 
-	Chars visiblemessagedata={0x0a,0}
+	Char visiblemessagedata={0x0a,0}
 	Str visiblemessage^visiblemessagedata
 
 	Call fprintf(stderrorobject,visiblemessage)

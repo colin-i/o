@@ -29,7 +29,7 @@ Call sortallcommands()
 
 #the detailed functions and entry point informations
 #main alloc error msg
-Chars entrystartfile#shortstrsize
+Char entrystartfile#shortstrsize
 Str ptrentrystartfile^entrystartfile
 Data entrylinenumber#1
 

@@ -129,7 +129,7 @@ Function elfaddstrsec(data stringofname,data type,data flags,data fileoffset,dat
 EndFunction
 
 #err
-Function elfaddsym(data stringoff,data value,data size,chars st_info,chars bind,data index,data struct)
+Function elfaddsym(data stringoff,data value,data size,char st_info,char bind,data index,data struct)
 #	sd st_info
 #	Set st_info type
 const elf_sym_st_info_tohibyte=16
@@ -144,9 +144,9 @@ const elf_sym_st_info_tohibyte=16
 	if x==(TRUE)
 		Data elf64_sym_st_name#1
 	#const elf64_sym_st_info_offset=dwsz
-		Chars elf64_sym_st_info#1
-		Chars *elf64_sym_st_other={0}
-		Chars elf64_sym_st_shndx#2
+		Char elf64_sym_st_info#1
+		Char *elf64_sym_st_other={0}
+		Char elf64_sym_st_shndx#2
 		Data elf64_sym_st_value#1;data *=0
 		Data elf64_sym_st_size#1;data *=0
 
@@ -172,11 +172,11 @@ const elf_sym_st_info_tohibyte=16
 		Const STT_FUNC=2
 		Const STT_SECTION=3
 	#const elf32_sym_st_info_offset=3*dwsz
-		Chars elf32_sym_st_info#1
+		Char elf32_sym_st_info#1
 		#Symbol visibility
-		Chars *elf32_sym_st_other={0}
+		Char *elf32_sym_st_other={0}
 		#Section index
-		Chars elf32_sym_st_shndx#2
+		Char elf32_sym_st_shndx#2
 
 		Set elf32_sym_st_name stringoff
 		Set elf32_sym_st_value value
@@ -191,7 +191,7 @@ const elf_sym_st_info_tohibyte=16
 	Return err
 EndFunction
 #err
-Function elfaddstrszsym(data stringstroff,data sz,data value,data size,chars type,chars bind,data index,data struct)
+Function elfaddstrszsym(data stringstroff,data sz,data value,data size,char type,char bind,data index,data struct)
 	Data regnr#1
 	Data ptrregnr^regnr
 	Data err#1
@@ -203,7 +203,7 @@ Function elfaddstrszsym(data stringstroff,data sz,data value,data size,chars typ
 	Return err
 EndFunction
 #err
-Function elfaddstrsym(data stringstroff,data value,data size,chars type,chars bind,data index,data struct)
+Function elfaddstrsym(data stringstroff,data value,data size,char type,char bind,data index,data struct)
 	Data sz#1
 	SetCall sz strlen(stringstroff)
 	Data err#1
@@ -266,9 +266,9 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 		#offset
 		Data elf_r_offset#1
 		#Relocation type and symbol index
-		Chars *elf_r_info_type=R_386_32
+		Char *elf_r_info_type=R_386_32
 	#const elf_r_info_symbolindex_offset=dwsz+bsz
-		chars elf_r_info_symbolindex#3
+		char elf_r_info_symbolindex#3
 	#const elf_r_info_symbolindex_size=3
 		data elf_r_addend#1
 

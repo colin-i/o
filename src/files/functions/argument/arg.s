@@ -15,8 +15,8 @@ endfunction
 
 #err
 function arg_size(ss content,sd sizetoverify,sd p_argsize)
-	Chars spc=" "
-	Chars tab={0x09}
+	Char spc=" "
+	Char tab={0x09}
 	sd szargspc
 	sd szargtab
 	SetCall szargspc valinmem(content,sizetoverify,spc)
@@ -38,7 +38,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 	sd size
 	sd errnr
 
-	chars d_q=getarg_str
+	char d_q=getarg_str
 
 	if argsize==0
 		return "Argument name expected."
@@ -288,7 +288,7 @@ endfunction
 #		return err
 #	endif
 
-#	chars random#1
+#	char random#1
 #	data *#2    #ignore name
 #	#in case are two args
 #	data *#2    #ignore name
@@ -387,7 +387,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			setcall subtract_base stack64_base(ptrdata)
 		endelse
 	endelse
-	chars random#1
+	char random#1
 	data *#3
 	#in case are two args
 	data d2#3
@@ -526,21 +526,21 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Data argsz#1
 
 	#and same rule like getcommand like elseif then else
-	Chars firstcomp="==";Data *jne=0x85
-	Chars *="!=";        Data *je=0x84
-	Chars *="<=^";       Data *ja=0x87
-	Chars *=">=^";       Data *jb=0x82
-	Chars *="<=";        Data *jg=0x8F
-	Chars *=">=";        Data *jl=0x8C
-	Chars *="<^";        Data *jae=0x83   #wanted cast before but will problem with arg cast that was after to continue at sufix
-	Chars *=">^";        Data *jbe=0x86
-	Chars *="<";         Data *jge=0x8D
-	Chars *=">";         Data *jle=0x8E
-	Chars term={0}
+	Char firstcomp="==";Data *jne=0x85
+	Char *="!=";        Data *je=0x84
+	Char *="<=^";       Data *ja=0x87
+	Char *=">=^";       Data *jb=0x82
+	Char *="<=";        Data *jg=0x8F
+	Char *=">=";        Data *jl=0x8C
+	Char *="<^";        Data *jae=0x83   #wanted cast before but will problem with arg cast that was after to continue at sufix
+	Char *=">^";        Data *jbe=0x86
+	Char *="<";         Data *jge=0x8D
+	Char *=">";         Data *jle=0x8E
+	Char term={0}
 
 	Data ptr#1
 	Data ptrini^firstcomp
-	Chars byte#1
+	Char byte#1
 
 	Set ptr ptrini
 	Set byte ptr#
@@ -570,7 +570,7 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 		Add ptr (1+4)
 		Set byte ptr#
 	EndWhile
-	Chars conderr="Condition sign(s) expected."
+	Char conderr="Condition sign(s) expected."
 	Str _conderr^conderr
 	Return _conderr
 	Return err

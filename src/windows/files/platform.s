@@ -23,7 +23,7 @@ function wide_to_ansi(ss in)
 	ss out
 	set out in
 	dec out
-	chars n=0;chars x#1
+	char n=0;char x#1
 	while 0==0
 		inc out
 		set x in#

@@ -17,14 +17,14 @@ Set unresolvedcallsMax mainscope
 Data constantssize=constantssize
 Set integerMax mainscope
 Set stringMax mainscope
-Set charsMax mainscope
+Set charMax mainscope
 Set sdMax mainscope
 Set ssMax mainscope
 Set svMax mainscope
 
 Set integerfnscopeMax subscope
 Set stringfnscopeMax subscope
-Set charsfnscopeMax subscope
+Set charfnscopeMax subscope
 Set sdfnMax subscope
 Set ssfnMax subscope
 Set svfnMax subscope

@@ -11,20 +11,20 @@ function aftercall_find(sv objects,sv poffset)
 		add end sym
 		while sym!=end
 #Data elf64_sym_st_name#1
-#Chars elf64_sym_st_info#1
-#Chars *elf64_sym_st_other={0}
-#Chars elf64_sym_st_shndx#2
+#Char elf64_sym_st_info#1
+#Char *elf64_sym_st_other={0}
+#Char elf64_sym_st_shndx#2
 #Data elf64_sym_st_value#1;data *=0
 #Data elf64_sym_st_size#1;data *=0
-const sym__to_value=datasize+charsize+charsize+(2*charsize)
+const sym__to_value=datasize+charize+charize+(2*charize)
 const sym_size=sym__to_value+:+:
-const sym__to_shndx=datasize+charsize+charsize
+const sym__to_shndx=datasize+charize+charize
 			add sym (sym__to_shndx)
-			chars d={dataind,0}
+			char d={dataind,0}
 			sd cmp;setcall cmp memcmp(sym,#d,2)
 			if cmp==0
-				sub sym (charsize+charsize)
-				chars info=STB_GLOBAL*0x10|STT_NOTYPE   ;#global seems to always be here but there is too much code to separate
+				sub sym (charize+charize)
+				char info=STB_GLOBAL*0x10|STT_NOTYPE   ;#global seems to always be here but there is too much code to separate
 				if info==sym#
 				#this is the aftercall,get string pointer from strtab
 					sub sym (datasize)

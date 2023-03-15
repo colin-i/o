@@ -39,7 +39,7 @@ function stack_align(sd nr)
 		endelseif
 		#Stack aligned on 16 bytes. Depending on the number of arguments
 		vdata code%%ptr_codesec
-		chars align={REX_Operand_64,0x83,0xEC,8}
+		char align={REX_Operand_64,0x83,0xEC,8}
 		sd err
 		SetCall err addtosec(#align,(4),code)
 		return err
@@ -164,9 +164,9 @@ function align_entryscope()
 	if type!=0
 		#bt ebx,3 (offset 3) x8 or x0
 		#rex to bt the first byte it is useless
-		chars bt={twobytesinstruction_byte1,bt_instruction,bt_reg_imm8|ebxregnumber,3}
+		char bt={twobytesinstruction_byte1,bt_instruction,bt_reg_imm8|ebxregnumber,3}
 		#j(c|nc);sub rbx,8
-		chars jump#1;chars *=4;chars *={REX_Operand_64,0x83,RegReg*tomod|(5*toregopcode)|ebxregnumber,8}
+		char jump#1;char *=4;char *={REX_Operand_64,0x83,RegReg*tomod|(5*toregopcode)|ebxregnumber,8}
 		if type==(even_align)
 			#there are more even calls to align
 			#Jump short if not carry

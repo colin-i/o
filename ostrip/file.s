@@ -23,30 +23,30 @@ function get_file(sd name,sv p_file,sv secN,sv p_secN,sd pnrsec,sd psecond_sec,s
 		#at frees will check next
 		#set p_secN# (NULL)
 
-		chars elf64_ehd_e_ident_sign={asciiDEL,asciiE,asciiL,asciiF}
-#chars *elf64_ehd_e_ident_class={ELFCLASS64}
-#chars *elf64_ehd_e_ident_data={ELFDATA2LSB}
-#chars *elf64_ehd_e_ident_version={EV_CURRENT}
-#chars *elf64_ehd_e_ident_osabi={ELFOSABI_NONE}
-#chars *elf64_ehd_e_ident_abiversion={EI_ABIVERSION}
-#chars *elf64_ehd_e_ident_pad={0,0,0,0,0,0,0}
-#Chars *elf64_ehd_e_type={ET_REL,0}
+		char elf64_ehd_e_ident_sign={asciiDEL,asciiE,asciiL,asciiF}
+#char *elf64_ehd_e_ident_class={ELFCLASS64}
+#char *elf64_ehd_e_ident_data={ELFDATA2LSB}
+#char *elf64_ehd_e_ident_version={EV_CURRENT}
+#char *elf64_ehd_e_ident_osabi={ELFOSABI_NONE}
+#char *elf64_ehd_e_ident_abiversion={EI_ABIVERSION}
+#char *elf64_ehd_e_ident_pad={0,0,0,0,0,0,0}
+#Char *elf64_ehd_e_type={ET_REL,0}
 		const after_sign_to_machine=1+1+1+1+1+7+2
-		Chars elf64_ehd_e_machine={EM_X86_64,0}
+		Char elf64_ehd_e_machine={EM_X86_64,0}
 #data *elf64_ehd_e_version=EV_CURRENT
 #data *elf64_ehd_e_entry={0,0}
 #data *elf64_ehd_e_phoff={0,0}
 		const after_machine_to_shoff=4+8+8
 #data elf64_ehd_e_shoff#1;data *=0
 #data *elf64_ehd_e_flags=0
-#chars *elf64_ehd_e_ehsize={64,0}
-#chars *elf64_ehd_e_phentsize={0,0}
-#chars *elf64_ehd_e_phnum={0,0}
+#char *elf64_ehd_e_ehsize={64,0}
+#char *elf64_ehd_e_phentsize={0,0}
+#char *elf64_ehd_e_phnum={0,0}
 		const after_shoff_to_shentsize=4+2+2+2
-#chars *elf64_ehd_e_shentsize={64,0}
-#chars elf64_ehd_e_shnum#2
-#chars elf64_ehd_e_shstrndx#2
-#chars *pad={0,0}
+#char *elf64_ehd_e_shentsize={64,0}
+#char elf64_ehd_e_shnum#2
+#char elf64_ehd_e_shstrndx#2
+#char *pad={0,0}
 		sd sz=4
 		sd sign;call read(file,#sign,sz)
 		sd c;setcall c memcmp(#sign,#elf64_ehd_e_ident_sign,sz)

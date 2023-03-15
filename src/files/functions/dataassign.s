@@ -6,10 +6,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	Data true=TRUE
 	Str err#1
 	Data noerr=noerror
-	chars nosign=nosign
+	char nosign=nosign
 
 	Data constantsnr=constantsnumber
-	Data charsnr=charsnumber
+	Data charnr=charnumber
 	Data stringsnr=stringsnumber
 
 	data offset_const#1
@@ -50,7 +50,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	Set size ptrsize#
 	If size==0
 		#not at unitsize: constants,stacks
-		Chars rightsideerr="Right side of the assignment expected."
+		Char rightsideerr="Right side of the assignment expected."
 		Str ptrrightsideerr^rightsideerr
 		Return ptrrightsideerr
 	endIf
@@ -71,9 +71,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	Data zero=0
 
 	data valuewritesize#1
-	#is for chars name="value" or str name="value"
+	#is for char name="value" or str name="value"
 	data stringtodata#1
-	#is for chars name="value"
+	#is for char name="value"
 	data skipNumberValue#1
 	Data importbittest#1
 
@@ -85,7 +85,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	set importbittest -1
 
 	If sign==(assignsign)
-		Chars byte#1
+		Char byte#1
 		Set content ptrcontent#
 		Set byte content#
 		if byte==(relsign)
@@ -95,7 +95,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				#to not set byte in vain
 				Return ptrrightsideerr
 			endIf
-			#this comparation is not for chars and const is excluded at getsign
+			#this comparation is not for char and const is excluded at getsign
 			if relocbool!=true
 				return "Unexpected relocation sign."
 			endif
@@ -105,12 +105,12 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			endif
 			Set byte content#
 		endif
-		Chars groupstart="{"
+		Char groupstart="{"
 		If byte!=groupstart
-			chars stringstart=asciidoublequote
+			char stringstart=asciidoublequote
 			If byte==stringstart
 			#"text"
-				If typenumber==charsnr
+				If typenumber==charnr
 					if stack==false
 					#else is at stack value   grep stackfilter2   2
 						set stringtodata true
@@ -148,7 +148,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					endelse
 				EndElseIf
 				if stringtodata==false
-					chars bytesatintegers="The string assignment (\"\") can be used at CHAR, STR or SS."
+					char bytesatintegers="The string assignment (\"\") can be used at CHAR, STR or SS."
 					str bytesatints^bytesatintegers
 					return bytesatints
 				endif
@@ -164,7 +164,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				if err!=noerr
 					return err
 				endif
-				If typenumber==charsnr
+				If typenumber==charnr
 					if stack==false
 					#else is at stack value   grep stackfilter2   3
 						set valuewritesize (bsz)
@@ -181,7 +181,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				endif
 			endif
 			If typenumber==constantsnr
-				Chars constgroup="Group begin sign ('{') is not expected to declare a constant."
+				Char constgroup="Group begin sign ('{') is not expected to declare a constant."
 				Str ptrconstgroup^constgroup
 				Return ptrconstgroup
 			EndIf
@@ -189,10 +189,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Set content ptrcontent#
 			Set size ptrsize#
 			Data sz#1
-			Chars groupstop="}"
+			Char groupstop="}"
 			SetCall sz valinmem(content,size,groupstop)
 			If sz==size
-				Chars groupend="Group end sign ('}') expected."
+				Char groupend="Group end sign ('}') expected."
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
@@ -427,13 +427,13 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 	If err!=(noerror)
 		Return err
 	EndIf
-	Chars negreserve="Unexpected negative value at reserve declaration."
+	Char negreserve="Unexpected negative value at reserve declaration."
 	vStr ptrnegreserve^negreserve
 	If ptrvalue#<0
 		Return ptrnegreserve
 	EndIf
 	if is_stack==(FALSE)
-		If typenumber!=(charsnumber)
+		If typenumber!=(charnumber)
 			SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
 			If err==(noerror)
 				SetCall err maxsectioncheck(ptrvalue#,ptrvalue)

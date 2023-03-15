@@ -35,9 +35,9 @@ endfunction
 Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumber,data mask)
 	Ss content
 	Set content ptrcontent#
-	Chars byte#1
+	Char byte#1
 
-	Chars err="The declarations must contain only alphanumeric, underscore and around chars and cannot start with a number."
+	Char err="The declarations must contain only alphanumeric, underscore and around chars and cannot start with a number."
 	Str _err^err
 
 	sd bool

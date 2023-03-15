@@ -93,7 +93,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 	ElseIf number==(divNumber)
 		Data zero=0
 		If newitem==zero
-			Chars zerodiv="Division by 0 error."
+			Char zerodiv="Division by 0 error."
 			Str ptrzerodiv^zerodiv
 			Return ptrzerodiv
 		EndIf
@@ -167,7 +167,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 endfunction
 
 #bool
-Function signop(chars byte,sd outval)
+Function signop(char byte,sd outval)
 	Data false=FALSE
 	Data true=TRUE
 

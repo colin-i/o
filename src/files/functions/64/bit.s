@@ -71,7 +71,7 @@ endfunction
 ##REX_W
 function rex_w(sd p_err)
 	Data code%%ptr_codesec
-	chars r=REX_Operand_64
+	char r=REX_Operand_64
 	SetCall p_err# addtosec(#r,1,code)
 endfunction
 #er
@@ -165,17 +165,17 @@ function convdata(sd type,sd dest,sd fnargs)
 		return nr_of_args   #ms_convention or lin
 	elseif type==(convdata_call)
 		#rdi
-		chars hex_1={REX_Operand_64,moveatprocthemem,ediregnumber*toregopcode|espregnumber,0x24,0}
+		char hex_1={REX_Operand_64,moveatprocthemem,ediregnumber*toregopcode|espregnumber,0x24,0}
 		#rsi
-		chars hex_2={REX_Operand_64,moveatprocthemem,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
+		char hex_2={REX_Operand_64,moveatprocthemem,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
 		#rcx/rdx,rsp+
-		chars hex_3={REX_Operand_64,moveatprocthemem};chars c3#1;chars *=0x24;chars c3o#1
+		char hex_3={REX_Operand_64,moveatprocthemem};char c3#1;char *=0x24;char c3o#1
 		#rdx/rcx,rsp+
-		chars hex_4={REX_Operand_64,moveatprocthemem};chars c4#1;chars *=0x24;chars c4o#1
+		char hex_4={REX_Operand_64,moveatprocthemem};char c4#1;char *=0x24;char c4o#1
 		#r8,rsp+
-		chars hex_5={REX_R8_15,moveatprocthemem,0x44,0x24};chars c5o#1
+		char hex_5={REX_R8_15,moveatprocthemem,0x44,0x24};char c5o#1
 		#r9,rsp+
-		chars hex_6={REX_R8_15,moveatprocthemem,0x4C,0x24};chars c6o#1
+		char hex_6={REX_R8_15,moveatprocthemem,0x4C,0x24};char c6o#1
 		if nr_of_args==(lin_convention)
 			set dest# #hex_1
 			incst dest;set dest# #hex_2
@@ -189,37 +189,37 @@ function convdata(sd type,sd dest,sd fnargs)
 	elseif type==(convdata_fn)
 		const functionxlin_start=!
 		#pop a
-		chars functionxlin_code=0x58
+		char functionxlin_code=0x58
 		#sub esp,conv8
-		chars *={REX_Operand_64,0x83,5*toregopcode|regregmod|espregnumber};chars *=lin_convention*qwsz
+		char *={REX_Operand_64,0x83,5*toregopcode|regregmod|espregnumber};char *=lin_convention*qwsz
 		#push a
-		chars *=0x50
+		char *=0x50
 		const functionxlin_shadow=!-functionxlin_start
 
-		chars *={REX_Operand_64,moveatmemtheproc,ediregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
+		char *={REX_Operand_64,moveatmemtheproc,ediregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
 		const conv_fn_b1=!-functionxlin_start
 
-		chars *={REX_Operand_64,moveatmemtheproc,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,16}
+		char *={REX_Operand_64,moveatmemtheproc,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,16}
 		const functionx_start=!
 		const conv_fn_b2=!-functionxlin_start
 
 		#mov [rsp+(8h/18h)],rcx/rdx
-		chars functionx_code={REX_Operand_64,moveatmemtheproc};chars f3#1;chars *=0x24;chars f3o#1
+		char functionx_code={REX_Operand_64,moveatmemtheproc};char f3#1;char *=0x24;char f3o#1
 		const conv_fn_a1=!-functionx_start
 		const conv_fn_b3=!-functionxlin_start
 
 		#mov [rsp+(10h/20h)],rdx/rcx
-		chars *={REX_Operand_64,moveatmemtheproc};chars f4#1;chars *=0x24;chars f4o#1
+		char *={REX_Operand_64,moveatmemtheproc};char f4#1;char *=0x24;char f4o#1
 		const conv_fn_a2=!-functionx_start
 		const conv_fn_b4=!-functionxlin_start
 
 		#mov [rsp+(18h/28h)],r8
-		chars *={REX_R8_15,moveatmemtheproc,0x44,0x24};chars f5o#1
+		char *={REX_R8_15,moveatmemtheproc,0x44,0x24};char f5o#1
 		const conv_fn_a3=!-functionx_start
 		const conv_fn_b5=!-functionxlin_start
 
 		#mov [rsp+(20h/30h)],r9
-		chars *={REX_R8_15,moveatmemtheproc,0x4C,0x24};chars f6o#1
+		char *={REX_R8_15,moveatmemtheproc,0x4C,0x24};char f6o#1
 
 		if nr_of_args==(ms_convention)
 			if fnargs==0
@@ -305,14 +305,14 @@ function function_call_64f(sd hex_n,sd conv,sd code)
 			if nr_of_args<conv
 				#shadow space
 				#sub esp,x;default 4 args stack space convention
-				chars hex_w={REX_Operand_64,0x83,0xEC};chars argspush#1
+				char hex_w={REX_Operand_64,0x83,0xEC};char argspush#1
 				set argspush nr_of_args;sub argspush conv;mult argspush (-1*qwsz)
 				SetCall err addtosec(#hex_w,4,code)
 			endif
 		elseif nr_of_args>0
 			#lin_convention
 			#add esp,x
-			chars hex_x={REX_Operand_64,0x83,regregmod|espregnumber};chars adjuster#1
+			char hex_x={REX_Operand_64,0x83,regregmod|espregnumber};char adjuster#1
 			if nr_of_args>conv;set adjuster conv;else;set adjuster nr_of_args;endelse
 			mult adjuster (qwsz)
 			SetCall err addtosec(#hex_x,4,code)
@@ -333,39 +333,39 @@ function function_call_64(sd is_callex)
 	endif
 	##
 	#mov edx,eax
-	chars find_args={REX_Operand_64,0x8b,edxregnumber|regregmod}
+	char find_args={REX_Operand_64,0x8b,edxregnumber|regregmod}
 	SetCall err addtosec(#find_args,3,code);If err!=(noerror);Return err;EndIf
 	#
 	#convention and shadow space
 	#cmp rax,imm32
-	chars cmp_je={REX_Operand_64,0x3d};data cmp_imm32#1
+	char cmp_je={REX_Operand_64,0x3d};data cmp_imm32#1
 	set cmp_imm32 conv;dec cmp_imm32
 	#jump if above
-	chars *callex_jump=0x77;chars j_off#1
+	char *callex_jump=0x77;char j_off#1
 	#
 	#convention gdb view,and gui view
 	#push a
-	chars callex_conv=0x50
+	char callex_conv=0x50
 	#neg al
-	chars *={0xf6,3*toregopcode|regregmod}
+	char *={0xf6,3*toregopcode|regregmod}
 	#add al conv
-	chars *=0x04;chars conv_neg#1
+	char *=0x04;char conv_neg#1
 	#mov cl 5
-	chars *={0xb1,5}
+	char *={0xb1,5}
 	#mult al cl
-	chars *={0xf6,4*toregopcode|ecxregnumber|regregmod}
+	char *={0xf6,4*toregopcode|ecxregnumber|regregmod}
 	#call
-	chars *={0xe8,0,0,0,0}
+	char *={0xe8,0,0,0,0}
 	#pop c
-	chars *=0x59
+	char *=0x59
 	#add rax rcx    can be --image-base=int64 but more than 0xff000000 x64 dbg says invalid but there is int64 rip in parent x64 debug
-	chars *={REX_Operand_64,0x01,ecxregnumber|regregmod}
+	char *={REX_Operand_64,0x01,ecxregnumber|regregmod}
 	#pop a
-	chars *=0x58
+	char *=0x58
 	#add rcx,imm8
-	chars *={REX_Operand_64,0x83,ecxregnumber|regregmod,11}
+	char *={REX_Operand_64,0x83,ecxregnumber|regregmod,11}
 	#j cl
-	chars *={0xff,4*toregopcode|ecxregnumber|regregmod}
+	char *={0xff,4*toregopcode|ecxregnumber|regregmod}
 	#
 	set conv_neg conv
 	set j_off 25
@@ -385,15 +385,15 @@ function function_call_64(sd is_callex)
 	#shadow space
 	if conv==(ms_convention)
 		#neg al
-		chars callex_shadow={0xf6,3*toregopcode|regregmod}
+		char callex_shadow={0xf6,3*toregopcode|regregmod}
 		#add al conv-1
-		chars *=0x04;chars shadow_neg#1
+		char *=0x04;char shadow_neg#1
 		#push qwordsz
-		chars *={0x6a,qwsz}
+		char *={0x6a,qwsz}
 		#mul al [esp]
-		chars *={0xf6,4*toregopcode|espregnumber,espregnumber*toregopcode|espregnumber}
+		char *={0xf6,4*toregopcode|espregnumber,espregnumber*toregopcode|espregnumber}
 		#sub rsp,rax
-		chars *={REX_Operand_64,0x2b,espregnumber*toregopcode|regregmod}
+		char *={REX_Operand_64,0x2b,espregnumber*toregopcode|regregmod}
 		#
 		set shadow_neg conv;dec shadow_neg
 		set j_off 12
@@ -402,18 +402,18 @@ function function_call_64(sd is_callex)
 	else
 		#lin_convention
 		#cmp rax,imm32
-		chars callex_unshadow={REX_Operand_64,0x3d};data *cmp_imm32=lin_convention
+		char callex_unshadow={REX_Operand_64,0x3d};data *cmp_imm32=lin_convention
 		#jump if below or equal
-		chars *callex_jump=0x76;chars *j_off=10
-		chars *rax_conv={REX_Operand_64,0xb8};data *={lin_convention,0}
+		char *callex_jump=0x76;char *j_off=10
+		char *rax_conv={REX_Operand_64,0xb8};data *={lin_convention,0}
 		#push qwordsz
-		chars *={0x6a,qwsz}
+		char *={0x6a,qwsz}
 		#inc al
-		chars *={0xfe,regregmod}
+		char *={0xfe,regregmod}
 		#mul al [esp]
-		chars *={0xf6,4*toregopcode|espregnumber,espregnumber*toregopcode|espregnumber}
+		char *={0xf6,4*toregopcode|espregnumber,espregnumber*toregopcode|espregnumber}
 		#add rsp,rax
-		chars *={REX_Operand_64,0x03,espregnumber*toregopcode|regregmod}
+		char *={REX_Operand_64,0x03,espregnumber*toregopcode|regregmod}
 		#
 		SetCall err addtosec(#callex_unshadow,28,code)
 	endelse
@@ -434,35 +434,35 @@ function callex64_call()
 	#Stack aligned on 16 bytes.
 	const callex64_start=!
 	#bt esp,3 (bit offset 3)        rsp for 3 bits is useless
-	chars callex64_code={0x0F,0xBA,bt_reg_imm8|espregnumber,3}
+	char callex64_code={0x0F,0xBA,bt_reg_imm8|espregnumber,3}
 	#jc @ (jump when rsp=....8)
-	chars *=0x72;chars *=7+2+4+2+2
+	char *=0x72;char *=7+2+4+2+2
 	#7cmp ecx,5
-	chars *={REX_Operand_64,0x81,0xf9};data jcase1#1
+	char *={REX_Operand_64,0x81,0xf9};data jcase1#1
 	set jcase1 conv;inc jcase1
 	#2jb $
-	chars *=0x72;chars *=4+2+2+7+2+4+2+4
+	char *=0x72;char *=4+2+2+7+2+4+2+4
 	#4bt ecx,0
-	chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
+	char *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
 	#2jc %
-	chars *=0x72;chars *=2+7+2+4+2
+	char *=0x72;char *=2+7+2+4+2
 	#2jmp $
-	chars *=0xEB;chars *=7+2+4+2+4
+	char *=0xEB;char *=7+2+4+2+4
 	#7@ cmp ecx,5
-	chars *={REX_Operand_64,0x81,0xf9};data jcase2#1
+	char *={REX_Operand_64,0x81,0xf9};data jcase2#1
 	set jcase2 conv;inc jcase2
 	#2jb %
-	chars *=0x72;chars *=4+2
+	char *=0x72;char *=4+2
 	#4bt ecx,0
-	chars *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
+	char *={0x0F,0xBA,bt_reg_imm8|ecxregnumber,0}
 	#2jc $
-	chars *=0x72;chars *=4
+	char *=0x72;char *=4
 	#%
 	#4 sub rsp,8
-	chars *={REX_Operand_64,0x83,0xEC};chars *=8
+	char *={REX_Operand_64,0x83,0xEC};char *=8
 	#$
 	#mov rdx,rcx
-	chars *keep_nr_args={REX_Operand_64,0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
+	char *keep_nr_args={REX_Operand_64,0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
 	sd ptrcodesec%%ptr_codesec
 	sd err
 	SetCall err addtosec(#callex64_code,(!-callex64_start),ptrcodesec)

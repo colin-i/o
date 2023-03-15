@@ -21,17 +21,17 @@ function debug_lines(sd reg,sd line,sd content,sd last)
 	if test==(TRUE)
 		if reg!=codeRegD
 			sv ptrdebug%%ptr_debug
-			chars a=log_line
+			char a=log_line
 			sd err
 			setcall err addtosec(#a,(bsz),ptrdebug)
 			if err==(noerror)
-				charsx buf#dw_chars_0
+				charx buf#dw_char_0
 				sd len
 				inc aux
 				setcall len dwtomem(aux,#buf)
 				setcall err addtosec(#buf,len,ptrdebug)
 				if err==(noerror)
-					chars b=asciispace
+					char b=asciispace
 					setcall err addtosec(#b,(bsz),ptrdebug)
 					if err==(noerror)
 						setcall len dwtomem(codeRegD,#buf)

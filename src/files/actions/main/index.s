@@ -13,7 +13,7 @@ if dot_comma_end==0
 endif
 
 #test the line size and set the size of line break
-Chars newline=asciireturn
+Char newline=asciireturn
 Data linebreaksize#1
 Set linebreaksize bytesize
 
@@ -34,7 +34,7 @@ while loop==2
 		if is_comment_multiline==0
 			set loop 1
 			if pointer!=content
-				Chars carriage=asciicarriage
+				Char carriage=asciicarriage
 				ss testcontent
 				set testcontent pointer
 				dec testcontent
@@ -214,7 +214,7 @@ if loop==1
 					setcall was_whitespaces spaces(pcontent,pcomsize)
 					If comsize!=zero
 						if content#!=(commentascii)
-							Chars _unreccomaftererr="Unrecognized data after command."
+							Char _unreccomaftererr="Unrecognized data after command."
 							Str unreccomaftererr^_unreccomaftererr
 							Set errormsg unreccomaftererr
 						else

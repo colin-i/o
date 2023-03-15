@@ -70,12 +70,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 	SetCall sz valinmem(content,size,(asciiparenthesisstart))
 	If sz==zero
-		Chars funnameexp="Function name expected."
+		Char funnameexp="Function name expected."
 		Str fnerr^funnameexp
 		Return fnerr
 	EndIf
 	If sz==size
-		Chars startfnexp="Open parenthesis sign ('(') expected."
+		Char startfnexp="Open parenthesis sign ('(') expected."
 		Str starterr^startfnexp
 		Return starterr
 	EndIf
@@ -331,7 +331,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 			If p_data#==0
 				setcall p_data# vars_number(pcontent#,sz,(stackvaluenumber))
 				If p_data#==0
-					Chars unfndeferr="Undefined function/data call."
+					Char unfndeferr="Undefined function/data call."
 					Str ptrunfndef^unfndeferr
 					Return ptrunfndef
 				EndIf
@@ -353,7 +353,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 	#
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
 	#
-	chars espebx={moveatregthemodrm,0xe3}
+	char espebx={moveatregthemodrm,0xe3}
 	Str ptrespebx^espebx
 	Data sizeespebx=2
 	SetCall err addtosec(ptrespebx,sizeespebx,code)
@@ -392,7 +392,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	EndIf
 
 	If boolindirect==(FALSE)
-		Chars directcall#1
+		Char directcall#1
 		Data directcalloff#1
 
 		Data ptrdirectcall^directcall
@@ -414,7 +414,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
 			SetCall err addtosec(ptrdirectcall,(directcallsize),code);If err!=(noerror);Return err;EndIf
 			setcall err reloc64_post();If err!=(noerror);Return err;EndIf
-			chars callcode={0xff,0xd0}
+			char callcode={0xff,0xd0}
 			setcall err addtosec(#callcode,2,code)
 		EndElse
 	Else
@@ -424,9 +424,9 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			SetCall err unresolvedcallsfn(code,1,ptrvirtualimportsoffset) #,ptrdata#
 			If err!=(noerror);Return err;EndIf
 		endif
-		Chars callaction={0xff}
+		Char callaction={0xff}
 		#Data noreg=noregnumber
-		Chars callactionopcode={2}
+		Char callactionopcode={2}
 		Data eaxregnumber=eaxregnumber
 		#call stack64_op_set()
 		SetCall err writeopera(ptrdata,callaction,callactionopcode,eaxregnumber) #no sufix was
@@ -453,9 +453,9 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		#absolute
 			const global_err_ex_start=!
 			#mov ecx,imm32
-			chars g_err_mov=0xb8+ecxregnumber;data g_err_mov_disp32#1
+			char g_err_mov=0xb8+ecxregnumber;data g_err_mov_disp32#1
 			#cmp byte[ecx],0
-			chars *={0x80,7*toregopcode|ecxregnumber};chars *=0
+			char *={0x80,7*toregopcode|ecxregnumber};char *=0
 			const global_err_ex_sz=!-global_err_ex_start
 			#add rel,1 is (b8+ecx), one byte
 			set g_err_mov_disp32 global_err_ptr#
@@ -463,7 +463,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			SetCall err addtosec(#g_err_mov,(global_err_ex_sz),code)
 		Else
 			#mov to ecx is reseting the high part of the rcx
-			chars g_err=0xb9
+			char g_err=0xb9
 			data *rel=0
 			#
 			sd af_relof
@@ -472,21 +472,21 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
 			SetCall err addtosec(#g_err,5,code);If err!=(noerror);Return err;EndIf
 			setcall err reloc64_post();If err!=(noerror);Return err;EndIf
-			chars g_cmp={0x80,7*toregopcode|ecxregnumber,0}
+			char g_cmp={0x80,7*toregopcode|ecxregnumber,0}
 			SetCall err addtosec(#g_cmp,3,code)
 		EndElse
 		If err!=(noerror);Return err;EndIf
 		#jz
-		chars g_err_jz=0x74;chars ret_end_sz#1
+		char g_err_jz=0x74;char ret_end_sz#1
 		#
 		ss ret_end_p
 		sd is_linux_term;setcall is_linux_term is_linux_end()
 		if is_linux_term==(TRUE)
 			#int 0x80, sys_exit, eax 1,ebx the return number
 			const g_err_sys_start=!
-			chars g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
-			chars *={0xb8,1,0,0,0}
-			Chars *={intimm8,0x80}
+			char g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
+			char *={0xb8,1,0,0,0}
+			Char *={intimm8,0x80}
 			const g_err_sys_size=!-g_err_sys_start
 			set ret_end_sz (g_err_sys_size)
 			set ret_end_p #g_err_sys
@@ -519,7 +519,7 @@ function is_linux_end()
 endfunction
 #er
 function entryraw_top()
-	chars s={0x6a,0}
+	char s={0x6a,0}
 	data code%%ptr_codesec
 	sd err
 	setcall err addtosec(#s,2,code)

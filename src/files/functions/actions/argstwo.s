@@ -28,10 +28,10 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	Data eaxreg=eaxregnumber
 	Data ecxreg=ecxregnumber
 
-	Chars opprim#1
-	Chars opsec#1
-	Chars atprocthemem={moveatprocthemem}
-	Chars atmemtheproc={moveatmemtheproc}
+	Char opprim#1
+	Char opsec#1
+	Char atprocthemem={moveatprocthemem}
+	Char atmemtheproc={moveatmemtheproc}
 
 	sd imm
 	Data errnr#1
@@ -82,7 +82,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	call storefirst_isimm()
 
 	Data primcalltype#1
-	Chars two=2
+	Char two=2
 
 	Set primcalltype false
 
@@ -99,10 +99,10 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		if subtype==(cSET)
 			Set opprim atmemtheproc
 		ElseIf subtype==(cADD)
-			Chars addprim={0x01}
+			Char addprim={0x01}
 			Set opprim addprim
 		ElseIf subtype==(cSUB)
-			Chars subprim={0x29}
+			Char subprim={0x29}
 			Set opprim subprim
 		ElseIf subtype<=(cREM)
 			Set opprim atprocthemem
@@ -116,14 +116,14 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		ElseIf subtype<=(cXOR)
 			Set sameimportant false
 			If subtype==(cAND)
-				Chars andprim={0x21}
+				Char andprim={0x21}
 				Set opprim andprim
 			ElseIf subtype==(cOR)
-				Chars orprim={0x09}
+				Char orprim={0x09}
 				Set opprim orprim
 			Else
 			#(cXOR)
-				Chars xorprim={0x31}
+				Char xorprim={0x31}
 				Set opprim xorprim
 			EndElse
 		Else
@@ -146,12 +146,12 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		Data conditionmodrm#1
 		Set conditionmodrm condition#
 
-		Chars compare=0x39
+		Char compare=0x39
 		Set opprim compare
 
 		#imm specific
-		chars compimminitial={0x39}
-		chars compimmop#1
+		char compimminitial={0x39}
+		char compimmop#1
 		set compimmop compimminitial
 	EndElse
 
@@ -243,7 +243,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	If primcalltype==false
 		setcall imm getisimm()
 		if imm==true
-			#chars immtake=0xB8
+			#char immtake=0xB8
 			#set opsec immtake
 			#if divmul==(TRUE)
 			#	add opsec 1
@@ -273,7 +273,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		EndIf
 	Elseif divmul==(TRUE)
 		#only at multcall and divcall
-		chars transferreturntoecx={0x89,0xc1}
+		char transferreturntoecx={0x89,0xc1}
 		str ptrcall^transferreturntoecx
 		data calltransfersize=2
 		if big==(TRUE)
@@ -306,9 +306,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	If divmul==true
 		Data regreg=RegReg
 
-		Chars regopcodemult={5}
+		Char regopcodemult={5}
 		#If you don't care about the upper half, you can use either mul or imul
-		Chars regopcodeex#1
+		Char regopcodeex#1
 
 		If subtype==(cMULT)
 			Set regopcodeex regopcodemult
@@ -316,13 +316,13 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			setcall errnr div_prepare(lowprim,big,#regopcodeex)
 		EndElse
 
-		Chars opcodexini={0xF7}
-		Chars opcodeex#1
-		Chars modrmex#1
+		Char opcodexini={0xF7}
+		Char opcodeex#1
+		Char modrmex#1
 		Data sizeex=2
 		Str ptropcodeex^opcodeex
-		Chars storeex#1
-		chars storeexrm#1
+		Char storeex#1
+		char storeexrm#1
 
 		Set opcodeex opcodexini
 		Set storeex atmemtheproc
@@ -345,7 +345,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		EndIf
 
 		if lowprim==(TRUE)
-		# str# ss# chars
+		# str# ss# char
 		#rdx is ready
 			if rem==(FALSE)
 				setcall storeexrm formmodrm((mod_0),eaxreg,(edxregnumber))
@@ -364,9 +364,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		if imm==true
 			#first imm true only at comparations
 			#continue to write the imm comparation(first is imm, second doesnt care)ex: 1(constant)==1(constant)->cmp ecx,eax (eax,ecx can be if switch)
-			chars immcompdata#1
+			char immcompdata#1
 			set immcompdata compimmop
-			chars *immcompdatamodrm=0xc1
+			char *immcompdatamodrm=0xc1
 			str immcomp^immcompdata
 			data immcompsz=2
 			if store_big==(TRUE)
@@ -379,8 +379,8 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			EndIf
 		endif
 
-		Chars jumpifnotcond={0x0f}
-		Chars cond#1
+		Char jumpifnotcond={0x0f}
+		Char cond#1
 		#this will be resolved at endcond
 		Data *jump#1
 
@@ -532,27 +532,27 @@ endfunction
 function div_prepare(sd low,sd big,ss p_regopcode)
 	const bt_atdiv=bt_reg_imm8|eaxregnumber
 	vData codeptr%%ptr_codesec
-	Chars regopcodeidiv={7}
+	Char regopcodeidiv={7}
 	sd errnr
 	if big==(TRUE)
 	#bt rax,63;jc,;mov 0,edx;jmp,;mov -1,rdx
 	#In x64, any operation on a 32-bit register clears the top 32 bits of the corresponding 64-bit register too, so there's no need to use mov 0,rax (and xor rax, rax)
 		const div_prepare_high=!
-		chars high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,jnc_instruction,9,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
+		char high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,jnc_instruction,9,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
 		SetCall errnr addtosec(#high,(!-div_prepare_high),codeptr)
 		set p_regopcode# regopcodeidiv
 	elseif low==(FALSE)
 	#bt eax,31;jc,;mov 0,edx;jmp,;mov -1,edx
 		const div_prepare_mediu=!
-		chars mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,jnc_instruction,7,atedximm,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
+		char mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,jnc_instruction,7,atedximm,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
 		SetCall errnr addtosec(#mediu,(!-div_prepare_mediu),codeptr)
 		set p_regopcode# regopcodeidiv
 	else
 	#like the zero extension, this remains zero
 		const div_prepare_low=!
 	#bt eax,15;jc,;mov ah,0;jmp,;mov ah,-1
-	#	chars small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,jnc_instruction,5,0xc6,regregmod|ahregnumber,-1,jmp_rel8,3,0xc6,regregmod|ahregnumber,0}
-		chars small={0xc6,regregmod|ahregnumber,0}
+	#	char small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,jnc_instruction,5,0xc6,regregmod|ahregnumber,-1,jmp_rel8,3,0xc6,regregmod|ahregnumber,0}
+		char small={0xc6,regregmod|ahregnumber,0}
 		SetCall errnr addtosec(#small,(!-div_prepare_low),codeptr)
 		set p_regopcode# 6    #otherwise, 255/-1 idiv -255 exception (-128 to 127 allowed)
 	endelse

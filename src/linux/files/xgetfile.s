@@ -1,6 +1,6 @@
 
 if argc<1
-	Chars cmdscripterr="Cannot parse to input file name."
+	Char cmdscripterr="Cannot parse to input file name."
 	Str ptrcmdscripterr^cmdscripterr
 	call exitMessage(ptrcmdscripterr)
 endif
@@ -8,7 +8,7 @@ endif
 #if the file was executed from the PATH, then the root folder it is searched
 Data argumentssize#1
 str scriptfullname#1
-chars slash=asciislash
+char slash=asciislash
 data slashtest#1
 
 setcall argumentssize strlen(argv0)
@@ -29,7 +29,7 @@ else
 		setcall sizeofpath strlen(envpath)
 		set accessresult negative
 		while sizeofpath!=zero
-			chars pathdelim=":"
+			char pathdelim=":"
 			data sizeoffolder#1
 			setcall sizeoffolder valinmem(envpath,sizeofpath,pathdelim)
 
@@ -51,7 +51,7 @@ else
 					add scrpointer sizeoffolder
 					dec scrpointer
 
-					chars slashcompare#1
+					char slashcompare#1
 					set slashcompare scrpointer#
 					inc scrpointer
 					if slashcompare!=slash
@@ -94,8 +94,8 @@ else
 endelse
 
 if argc<2
-	Chars cmdnoinput="O Compiler - usage: o \"filename\" [[pref1 value1]...[prefN valueN]]"
-	chars moreinfo="Documentation is here: https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html"
+	Char cmdnoinput="O Compiler - usage: o \"filename\" [[pref1 value1]...[prefN valueN]]"
+	char moreinfo="Documentation is here: https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html"
 	ss moreinfo_helper^moreinfo
 	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
 	call exitMessage(#cmdnoinput)

@@ -59,7 +59,7 @@ Function addtosec(str content,data size,data dst)
 			EndElseIf
 		EndElse
 		If sectionexpand==false
-			Chars _memerr="Memory space error."
+			Char _memerr="Memory space error."
 			Str memerr^_memerr
 			Return memerr
 		Else
@@ -123,7 +123,7 @@ Function addtosecstr(str content,data size,data dst)
 	If errnr!=noerr
 		Return errnr
 	EndIf
-	Chars null={0}
+	Char null={0}
 	Data sz=1
 	Str ptrnull^null
 	SetCall errnr addtosec(ptrnull,sz,dst)

@@ -219,7 +219,7 @@ EndFunction
 
 #err
 Function undefinedvariable()
-	Chars undefinedvar="Undefined variable name."
+	Char undefinedvar="Undefined variable name."
 	Str _undefinedvar^undefinedvar
 	Return _undefinedvar
 EndFunction
@@ -262,20 +262,20 @@ function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scop
 	EndIf
 	Set ptrdata# data
 
-	Data charsnumber=charsnumber
+	Data charnumber=charnumber
 	sd prefix
 	setcall prefix prefix_bool()
 
-	If type==charsnumber
+	If type==charnumber
 		If ptrsufix#==true
-			Chars ptrsfxerr="CHAR statement cannot have the pointer sufix."
+			Char ptrsfxerr="CHAR statement cannot have the pointer sufix."
 			Str _ptrsfxerr^ptrsfxerr
 			Return _ptrsfxerr
 		EndIf
 		if prefix#==0
 			Set ptrlow# true
 		else
-			#need all chars address at prefix
+			#need all char address at prefix
 			set ptrlow# false
 		endelse
 		return (noerror)
@@ -377,7 +377,7 @@ function cast_resolve(sd number,sd cast,sv ptrdata)
 
 		#call store_argmask(data)
 
-		chars random#1
+		char random#1
 		data *#2    #ignore name
 		#in case are two args
 		data data2#2    #ignore name

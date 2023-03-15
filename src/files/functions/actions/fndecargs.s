@@ -2,7 +2,7 @@
 
 Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	If sz==0
-		Chars szexp="Variable declaration expected."
+		Char szexp="Variable declaration expected."
 		Str szexpptr^szexp
 		Return szexpptr
 	EndIf
@@ -53,7 +53,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 			set long_mask (datapointbit)
 			set datasize (qwsz)
 		endelseif
-	elseif vartype==(charsnumber)
+	elseif vartype==(charnumber)
 		set datasize (bsz)
 	endelseif
 
@@ -73,9 +73,9 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	endif
 
 	#this is a write to sec for old data args, careful with stackoff
-	Chars stacktransfer1#1;chars *={0x84,0x24}
+	Char stacktransfer1#1;char *={0x84,0x24}
 	Data stackoff#1
-	Chars stacktransfer2#1
+	Char stacktransfer2#1
 	Data memoff#1
 
 	sd stackindex
@@ -119,14 +119,14 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		EndIf
 	endelse
 
-	Chars stackt1ini=moveatprocthemem
-	Chars stackt2ini=0xA3
+	Char stackt1ini=moveatprocthemem
+	Char stackt2ini=0xA3
 
 	Set stacktransfer1 stackt1ini
 	Set stacktransfer2 stackt2ini
 
 	If datasize==(bsz)
-	#chars
+	#char
 		Dec stacktransfer1
 		Dec stacktransfer2
 	elseif long_mask!=0

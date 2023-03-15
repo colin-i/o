@@ -48,11 +48,11 @@ If object==false
 		#add here, next will be calculations and these will be above
 		data secstrs_off_atnames#1
 		setcall errormsg addtonames(ptrnull,#secstrs_off_atnames)
-		chars dynstr_c=".dynstr";data dynstr#1
+		char dynstr_c=".dynstr";data dynstr#1
 		#shstrtab
 		setcall errormsg addtonames(#dynstr_c,#dynstr)
 		If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
-		chars dynsec_c=".dynamic";data dynsec#1
+		char dynsec_c=".dynamic";data dynsec#1
 		setcall errormsg addtonames(#dynsec_c,#dynsec)
 		If errormsg!=noerr;Call msgerrexit(errormsg);EndIf
 		#
@@ -347,7 +347,7 @@ Else
 		set syment elf32_dyn_d_val_syment;set relent elf32_dyn_d_val_relent
 	endelse
 
-	Chars elfsymtab=".symtab"
+	Char elfsymtab=".symtab"
 	Str ptrelfsymtab^elfsymtab
 	Data SHT_SYMTAB=2
 
@@ -358,7 +358,7 @@ Else
 
 	Data SHT_RELA=4
 
-	Chars elfreldata=".rela.data"
+	Char elfreldata=".rela.data"
 	Str ptrelfreldata^elfreldata
 	Add elf_sec_fileoff tableReg
 	SetCall errormsg elfaddstrsec(ptrelfreldata,SHT_RELA,null,elf_sec_fileoff,ptraddresses,symind,dataind,dwordsize,relent)
@@ -366,7 +366,7 @@ Else
 		Call msgerrexit(errormsg)
 	EndIf
 
-	Chars elfreltxt=".rela.text"
+	Char elfreltxt=".rela.text"
 	Str ptrelfreltxt^elfreltxt
 	Add elf_sec_fileoff addressesReg
 	SetCall errormsg elfaddstrsec(ptrelfreltxt,SHT_RELA,null,elf_sec_fileoff,ptrextra,symind,codeind,dwordsize,relent)
@@ -374,7 +374,7 @@ Else
 		Call msgerrexit(errormsg)
 	EndIf
 
-	Chars elfstrtab=".strtab"
+	Char elfstrtab=".strtab"
 	Str ptrelfstrtab^elfstrtab
 	Add elf_sec_fileoff extraReg
 	SetCall errormsg elfaddstrsec(ptrelfstrtab,(SHT_STRTAB),null,elf_sec_fileoff,ptrnames,null,null,bytesize,null)

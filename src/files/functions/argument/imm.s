@@ -105,7 +105,7 @@ endfunction
 
 #er
 function write_imm(sd dataarg,sd op)
-	chars immop#1
+	char immop#1
 	data value#1
 	data immadd^immop
 	set immop op
@@ -123,7 +123,7 @@ function write_imm_sign(sd dataarg,sd regopcode)
 	sd err
 	setcall err rex_w_if64()
 	if err==(noerror)
-		chars movs_imm=mov_imm_to_rm
+		char movs_imm=mov_imm_to_rm
 		SetCall err addtosec(#movs_imm,1,codeptr)
 		if err==(noerror)
 			sd op
@@ -149,7 +149,7 @@ function write_imm_trunc(sd value,sd reg,sd low,sd data,sd sufix)
 		return err
 	endif
 	#low
-	chars a#2
+	char a#2
 	ss b^a;set b# (atalimm)
 	add b# reg
 	inc b

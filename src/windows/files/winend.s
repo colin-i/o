@@ -14,9 +14,9 @@ If openfilenamemethod==true
 	Mult SectoMil MillisecperSec
 	Sub timeatend SectoMil
 	Const sizeofouttime=100
-	Chars outtime#sizeofouttime
+	Char outtime#sizeofouttime
 	Str ptrouttime^outtime
-	Chars outtimeformat="Done. %u.%u seconds"
+	Char outtimeformat="Done. %u.%u seconds"
 	Str ptrouttimeformat^outtimeformat
 
 	Call sprintf(ptrouttime,ptrouttimeformat,seconds,timeatend)

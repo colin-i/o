@@ -59,9 +59,9 @@ data two=2
 data three=3
 Data negative=-1
 Data i#1
-Chars dot="."
+Char dot="."
 
-const dw_chars=10
-const dw_chars_0=dw_chars+1
+const dw_char=10
+const dw_char_0=dw_char+1
 
 const sym_with_size=dwsz

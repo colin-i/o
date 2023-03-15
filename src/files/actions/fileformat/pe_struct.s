@@ -28,7 +28,7 @@ Data pdos^dos_header
 Data dos_size=dossize
 Call memset(pdos,null,dos_size)
 
-Chars mz="MZ"
+Char mz="MZ"
 Str pmz^mz
 Call memtomem(pdos,pmz,wordsize)
 
@@ -50,9 +50,9 @@ Sub pdoscrs dwordsize
 Data e_lfanew=0x80
 Set pdoscrs# e_lfanew
 
-Chars stubcode={0x0e,0x1f,0xba,0x0e,0x00,0xb4,0x09,0xcd,0x21,0xb8,0x01,0x4c,0xcd,0x21}
-Chars stubstr="This program cannot be run in DOS mode."
-Chars stubstrend={0xd,0xa,0x24,0,0,0,0,0,0,0,0}
+Char stubcode={0x0e,0x1f,0xba,0x0e,0x00,0xb4,0x09,0xcd,0x21,0xb8,0x01,0x4c,0xcd,0x21}
+Char stubstr="This program cannot be run in DOS mode."
+Char stubstrend={0xd,0xa,0x24,0,0,0,0,0,0,0,0}
 Data pstub^stub
 Data stubsz^stubstr
 Data pstubcode^stubcode
