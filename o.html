@@ -33,13 +33,15 @@
 
 <h3><a href="#looping">X. Looping</a></h3>
 
-<h3><a href="#includingfiles">XI. Including files</a></h3>
+<h3><a href="#class">XI. Pointing on templates</a></h3>
 
-<h3><a href="#exec">XII. Creating executable files</a></h3>
+<h3><a href="#includingfiles">XII. Including files</a></h3>
 
-<h3><a href="#object">XIII. Creating object files</a></h3>
+<h3><a href="#exec">XIII. Creating executable files</a></h3>
 
-<h3><a href="#otheroperations">XIV. Other operations</a></h3>
+<h3><a href="#object">XIV. Creating object files</a></h3>
+
+<h3><a href="#otheroperations">XV. Other operations</a></h3>
 
 
 
@@ -798,7 +800,21 @@
 &emsp;	break<br>
 	endwhile</a>
 </p>
-<h3><a name="includingfiles">XI. Including files</a></h3>
+<h3><a name="class">XI. Pointing with templates</a></h3>
+<p>
+	Can point at compile time structures or at runtime structures with ':' sign.
+	<a class="code">
+&emsp;	format elf<br>
+&emsp;	entry main()<br>
+&emsp;	sd a=2<br>
+&emsp;	sd b=3<br>
+&emsp;	sd c^a<br>
+&emsp;	sd d<br>
+&emsp;	set d c#:b<br>
+&emsp;	add d a:b<br>
+&emsp;	exit d  #3+3</a>
+</p>
+<h3><a name="includingfiles">XII. Including files</a></h3>
 <p>
 	The program can be formed with multiple files using the <b>Include</b> command.
 	If compiling for multiple oses add a second path at <b>INCLUDE</b>;
@@ -811,7 +827,7 @@
         Include "files\\headers_win.h" "files\\headers_lin.h"</a>
 	</p>
 </p>
-<h3><a name="exec">XII. Creating executable files</a></h3>
+<h3><a name="exec">XIII. Creating executable files</a></h3>
 <p>
 	Exe files for windows will be created by default. Executable and Linking Format (ELF) files can be created for Unix - System V, operable on linux platforms. <i>format elf</i> will override the default <i>format exe</i>.
 	<p>
@@ -834,7 +850,7 @@
         #linux sys_exit with the argument 1</a>
 	</p>
 </p>
-<h3><a name="object">XIII. Creating object files</a></h3>
+<h3><a name="object">XIV. Creating object files</a></h3>
 <p>
   <div>
 	Object files can be created that have elf relocatable format. The format is <b>ElfObj</b>.
@@ -884,7 +900,7 @@
 	</p>
   </div>
 </p>
-<h3><a name="otheroperations">XIV. Other operations</a></h3>
+<h3><a name="otheroperations">XV. Other operations</a></h3>
 <p>
 	Other commands that comes with the language.
 	<br>
