@@ -299,6 +299,18 @@ endfunction
 #endfunction
 #er
 function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,sd ptrsufix)
+	#first test if has runtime pointer
+	sd pointer_size=0
+	if container_sz!=0
+		# !=0? yes, example: ":"
+		ss cursor=-1
+		add cursor content
+		add cursor container_sz
+		if cursor#==(pointerascii)
+			dec container_sz
+			inc pointer_size
+		endif
+	endif
 	sd data
 	sd err
 	sd scope
@@ -329,6 +341,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		setcall is_stack stackbit(data)
 	endelse
 	add content container_sz
+	call advancecursors(#content,#argsize,pointer_size)
 	call stepcursors(#content,#argsize)
 
 	sd subtract_base
@@ -375,29 +388,41 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		endelse
 	endelse
 	chars random#1
-	data *#2    #ignore name
+	data *#3
 	#in case are two args
-	data *#2    #ignore name
-	call tempdatapair(#random,ptrdata)
+	data d2#3
+	call tempdatapair(#random,ptrdata,#d2)
+
 	sd pointer;set pointer ptrdata#
 	sub pointer# subtract_base
-	add pointer# data#
 
 	#keep location, will be some disturbance if combining stack with data, but if not is ok
-	add pointer (maskoffset)
-	add data (maskoffset)
+	sd pointer2=maskoffset;sd data2=maskoffset
+	add pointer2 pointer
+	add data2 data
 	sd location_part;sd transformation_part
 	if is_stack!=0
 		set location_part (stack_location_bits)
-		and location_part data#
+		and location_part data2#
 		set transformation_part (~stack_location_bits)
 	else
 		set location_part (location_bits)
-		and location_part data#
+		and location_part data2#
 		set transformation_part (~location_bits)
 	endelse
-	and pointer# transformation_part
-	or pointer# location_part
+	and pointer2# transformation_part
+	or pointer2# location_part
+
+	#decide if add offset now or at runtime with sufix
+	if pointer_size!=0
+		#runtime
+		or pointer2# (suffixbit)
+		add pointer2 (masksize)
+		set pointer2# pointer#
+		set pointer# data#
+	else
+		add pointer# data#
+	endelse
 
 	return (noerror)
 endfunction

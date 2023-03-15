@@ -262,7 +262,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				setcall errnr writeop_promotes(dataargsec,opsec,sufixsec,regopcode,lowsec,comp_at_bigs)
 			else
 			#only take at prefix on regcode
-				setcall errnr writetake(regopcode,dataargsec)
+				setcall errnr writetake_offset(regopcode,dataargsec)
 				#call writeoperation_take(#errnr,dataargsec,sufixsec,regopcode,lowsec)
 				#pprefix is reset in the road at remind
 			endelse
@@ -436,7 +436,7 @@ endfunction
 
 function writeoper(sd takeindex,sd location,sd sufix)
 	sd err
-	setcall err writetake(takeindex,location)
+	setcall err writetake_offset(takeindex,location)
 	If err==(noerror)
 		if sufix==(TRUE)
 			sd t;setcall t sufix64(location)

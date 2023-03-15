@@ -20,6 +20,8 @@ const aftercallthrowlessbit=0x20
 const x86_64bit=0x40
 #bit offset 7; pointer bit (sv# with rex, sd# without rex)
 const pointbit=0x80
+#bit offset 8; runtime sufix offset
+const suffixbit=0x100
 
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
@@ -28,8 +30,10 @@ const stack_location_bits=location_bits|stackrelativebit
 
 const location=dwsz
 Const maskoffset=location
-const location_and_mask=maskoffset+dwsz
+const masksize=dwsz
+const location_and_mask=maskoffset+masksize
 Const nameoffset=location_and_mask
+const addoffset=location_and_mask
 
 const sizeof_minimumentry=nameoffset+1
 #ref entry end

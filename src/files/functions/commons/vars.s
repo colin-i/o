@@ -345,13 +345,15 @@ function cast_test(ss content,sd p_size)
 	return (no_cast)
 endfunction
 
-function tempdatapair(ss p_trick,sv ptrdata)
+function tempdatapair(ss p_trick,sv ptrdata,sd data2)
 	xor p_trick# 1
 	sd test=1;and test p_trick#
-	inc p_trick
 	if test==0
-		add p_trick (location_and_mask)
-	endif
+		set p_trick data2
+		#add p_trick (location_and_mask)
+	else
+		inc p_trick
+	endelse
 	sd val;set val ptrdata#
 	set ptrdata# p_trick
 	set p_trick#d^ val#
@@ -378,9 +380,9 @@ function cast_resolve(sd number,sd cast,sv ptrdata)
 		chars random#1
 		data *#2    #ignore name
 		#in case are two args
-		data *#2    #ignore name
+		data data2#2    #ignore name
 
-		call tempdatapair(#random,ptrdata)
+		call tempdatapair(#random,ptrdata,#data2)
 		sd data;set data ptrdata#
 		add data (maskoffset)
 

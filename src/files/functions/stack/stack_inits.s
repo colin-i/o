@@ -1,13 +1,12 @@
 
 
 
-function data_get_maskbit(ss pointer,sd bit)
+#mask bit
+function data_get_maskbit(sd pointer,sd bit)
 	add pointer (maskoffset)
 	and bit pointer#
 	return bit
 endfunction
-
-#import bit
 function importbit(sd pointer)
 	sd bit
 	setcall bit data_get_maskbit(pointer,(idatabitfunction))
@@ -45,6 +44,11 @@ endfunction
 function pointbit(sd pointer)
 	sd bit
 	setcall bit data_get_maskbit(pointer,(pointbit))
+	return bit
+endfunction
+function suffixbit(sd pointer)
+	sd bit
+	setcall bit data_get_maskbit(pointer,(suffixbit))
 	return bit
 endfunction
 

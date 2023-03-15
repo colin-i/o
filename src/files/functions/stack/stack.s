@@ -134,6 +134,7 @@ function addtocode_decstack(sd for_64)
 endfunction
 #er
 function addtocodeforstack(sd rightstackpointer,sd for_64)
+	#s^s
 	data noerr=noerror
 
 	sd err

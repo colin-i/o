@@ -157,6 +157,41 @@ function writetake(sd takeindex,sd entry)
 	endelse
 	Return errnr
 endfunction
+#er
+function writetake_offset(sd takeindex,sd entry)
+	sd er;setcall er writetake(takeindex,entry)
+	if er==(noerror)
+		sd test;setcall test suffixbit(entry)
+		if test!=0
+			chars op=0x81
+			chars modrm#1
+			data disp32#1
+			add entry (addoffset)
+			set disp32 entry#
+			if disp32<0
+				#is only sign-extended imm32 to r64
+				return "The displacement for this value is not implemented at the moment."
+			endif
+			setcall er rex_w_if64()
+			if er==(noerror)
+				#need to take further
+				chars take=moveatprocthemem
+				chars tmodrm#1
+				setcall tmodrm formmodrm((mod_0),takeindex,takeindex)
+				value ptrcodesec%%ptr_codesec
+				SetCall er addtosec(#take,2,ptrcodesec)
+				if er==(noerror)
+					setcall er rex_w_if64()
+					if er==(noerror)
+						setcall modrm formmodrm((RegReg),0,takeindex)
+						SetCall er addtosec(#op,6,ptrcodesec)
+					endif
+				endif
+			endif
+		endif
+	endif
+	return er
+endfunction
 
 #val64. is one call at this that will break val64 if not a return value
 Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_low)
@@ -164,7 +199,7 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	Data errnr#1
 	Data noerr=noerror
 
-	setcall errnr writetake(takeindex,location)
+	setcall errnr writetake_offset(takeindex,location)
 	If errnr!=noerr
 		set p_errnr# errnr;return (void)
 	EndIf
