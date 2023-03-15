@@ -1,3 +1,9 @@
+ocompiler (1-5+78) xenial; urgency=medium
+
+  * class-like offsets and at runtime, and CHAR
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Wed, 15 Mar 2023 14:56:47 +0200
+
 ocompiler (1-5+77) xenial; urgency=medium
 
   * i386 ostrip portback lseek64,malloc64? no
