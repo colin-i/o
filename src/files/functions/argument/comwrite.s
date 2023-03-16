@@ -163,7 +163,7 @@ function writetake_offset(sd takeindex,sd entry)
 	if er==(noerror)
 		sd test;setcall test suffixbit(entry)
 		if test!=0
-			char op=0x81
+			char op#1
 			char modrm#1
 			data disp32#1
 			add entry (addoffset)
@@ -184,7 +184,15 @@ function writetake_offset(sd takeindex,sd entry)
 					setcall er rex_w_if64()
 					if er==(noerror)
 						setcall modrm formmodrm((RegReg),0,takeindex)
-						SetCall er addtosec(#op,6,ptrcodesec)
+						sd sz
+						if disp32<0x80
+							set op (0x83)
+							set sz 3
+						else
+							set op (0x81)
+							set sz 6
+						endelse
+						SetCall er addtosec(#op,sz,ptrcodesec)
 					endif
 				endif
 			endif

@@ -113,12 +113,11 @@ endfunction
 #er
 function addtocode_decstack(sd for_64)
 	char movtostack=moveatmemtheproc
-	char *modrm=disp32mod|ebxregnumber
+	char modrm#1
 	data rampindex#1
 
-	data stack^movtostack
-	data size=2+4
-	data ptrcodesec%%ptr_codesec
+	vdata stack^movtostack
+	vdata ptrcodesec%%ptr_codesec
 
 	sd err
 	if for_64==(TRUE)
@@ -128,6 +127,14 @@ function addtocode_decstack(sd for_64)
 	setcall rampindex addramp(#err)
 	#is with sub now     neg rampindex
 	if err==(noerror)
+		sd size
+		if rampindex<^0x80    #disp8 is signed
+			setcall modrm formmodrm((disp8),0,(ebxregnumber))
+			set size 3
+		else
+			setcall modrm formmodrm((disp32),0,(ebxregnumber))
+			set size 6
+		endelse
 		setcall err addtosec(stack,size,ptrcodesec)
 	endif
 	return err
