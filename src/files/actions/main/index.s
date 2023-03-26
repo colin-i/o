@@ -132,7 +132,7 @@ if loop==1
 					set was_whitespaces content;dec was_whitespaces;setcall was_whitespaces is_whitespace(was_whitespaces#)
 					if was_whitespaces==(TRUE)
 					#this is comment ending in whitespace
-						setcall errormsg warn_hidden_whitespaces(includes,nameofstoffile)
+						setcall errormsg warn_hidden_whitespaces(cursorforincludes) #includes,nameofstoffile)
 					endif
 				endif
 			ElseIf commandset==(cDECLARE)
@@ -198,11 +198,12 @@ if loop==1
 				If fnavailable==two
 					#retain the file and line where the main scope was started for functions separated from main code
 					#fnavailable two was set by code detectors
-					Data currentfile#1
-					Set currentfile includes
-					Add currentfile nameofstoffile
+
+					#Data currentfile#1
+					#Set currentfile includes
+					#Add currentfile nameofstoffile
 					Data sizeshortstr=shortstrsize
-					Call memtomem(ptrentrystartfile,currentfile,sizeshortstr)
+					Call memtomem(ptrentrystartfile,cursorforincludes,sizeshortstr)
 
 					Set entrylinenumber lineoffile
 					Inc entrylinenumber
@@ -225,7 +226,7 @@ if loop==1
 						#mostly parses (pass_write), example: at cCALL is at all parses
 						#this is whitespace after command
 						#if parses==(pass_write) when show once check was not
-						setcall errormsg warn_hidden_whitespaces_after(includes,nameofstoffile,dot_comma_end)
+						setcall errormsg warn_hidden_whitespaces_after(cursorforincludes,dot_comma_end) #includes,nameofstoffile
 					endelseIf
 				endIf
 			EndIf
@@ -233,7 +234,7 @@ if loop==1
 	Elseif cursor_start!=content
 		#if parses==(pass_write) when show once check was not
 		#this is only whitespace
-		setcall errormsg warn_hidden_whitespaces_after(includes,nameofstoffile,dot_comma_end)
+		setcall errormsg warn_hidden_whitespaces_after(cursorforincludes,dot_comma_end) #includes,nameofstoffile
 		#dot_comma_end check: is not like it accepts "    ;" but it accepts "...!    ;"
 		#endif
 	Endelseif

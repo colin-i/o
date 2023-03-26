@@ -27,9 +27,9 @@ While includesReg!=null
 		Set lineoffile cursorforincludes#
 		set ptrprevLineD# lineoffile
 		Add cursorforincludes dwordsize
-		Sub cursorforincludes includes
 
-		Set nameofstoffile cursorforincludes
+		#Sub cursorforincludes includes
+		#Set nameofstoffile cursorforincludes
 
 		Set content contentoffile
 		Add content offsetoffile
@@ -46,9 +46,9 @@ While includesReg!=null
 				endif
 			EndIf
 			If errormsg!=noerr
-				Str nameoffilewitherr#1
-				Set nameoffilewitherr includes
-				Add nameoffilewitherr nameofstoffile
+				#Str nameoffilewitherr#1
+				#Set nameoffilewitherr includes
+				#Add nameoffilewitherr nameofstoffile
 
 				Data columnoffile#1
 				Set columnoffile content
@@ -60,10 +60,10 @@ While includesReg!=null
 				Data printbuffer#1
 
 				if totalnewlines==0
-					setcall printbuffer printbuf("%s File %s, Row %u, Column %u",errormsg,nameoffilewitherr,2,lineoffile,columnoffile)
+					setcall printbuffer printbuf("%s File %s, Row %u, Column %u",errormsg,cursorforincludes,2,lineoffile,columnoffile)
 				else
 				#first textlinestart is lost at multilines command
-					setcall printbuffer printbuf("%s File %s, Row %u",errormsg,nameoffilewitherr,1,lineoffile)
+					setcall printbuffer printbuf("%s File %s, Row %u",errormsg,cursorforincludes,1,lineoffile)
 				endelse
 				If printbuffer==null
 					Call errexit()

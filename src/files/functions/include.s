@@ -5,7 +5,7 @@ Str contentoffile#1
 Data sizeoffile#1
 Data offsetoffile#1
 Data lineoffile#1
-Data nameofstoffile#1
+#Data *nameofstoffile#1
 
 Const contentoffileoff=2*dwsz
 Const lineoffile_offset=contentoffileoff+dwsz
@@ -137,15 +137,15 @@ Function include(ss path,sd both)
 	Sub sizeadd allowedforsize
 	Call memtomem(pointers,includeset,sizeadd)
 
-	Data includespoint#1
-	Data ptrincludespoint^includespoint
-	Call getcontReg(pincludes,ptrincludespoint)
-	Sub includespoint allowedforsize
+#	Data includespoint#1
+#	Data ptrincludespoint^includespoint
+#	Call getcontReg(pincludes,ptrincludespoint)
+#	Sub includespoint allowedforsize
 
-	Data envinccursor#1
-	Set envinccursor pointers
-	Add envinccursor sizeadd
-	Set envinccursor# includespoint
+#	Data envinccursor#1
+#	Set envinccursor pointers
+#	Add envinccursor sizeadd
+#	Set envinccursor# includespoint
 
 	Return noerr
 EndFunction
