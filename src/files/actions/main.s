@@ -17,16 +17,19 @@ While includesReg!=null
 	Add cursorforincludes includesReg
 	Data sizeofincludeset=includesetSz
 	Sub cursorforincludes sizeofincludeset
+
 	Set contentoffile cursorforincludes#
 	If errormsg==noerr
+		if includemask==(TRUE)
+			set warningsbool (TRUE)
+		#else was not einclude or warns was off
+		endif
+
 		Add cursorforincludes dwordsize
-		Set sizeoffile cursorforincludes#
-		Add cursorforincludes dwordsize
-		Set offsetoffile cursorforincludes#
-		Add cursorforincludes dwordsize
-		Set lineoffile cursorforincludes#
+		call memtomem(#sizeoffile,cursorforincludes,(includesetSzData-dwsz))
+		Add cursorforincludes (includesetSzData-dwsz)
+
 		set ptrprevLineD# lineoffile
-		Add cursorforincludes dwordsize
 
 		#Sub cursorforincludes includes
 		#Set nameofstoffile cursorforincludes

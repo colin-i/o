@@ -5,7 +5,7 @@ Include "./inits/alloc.s"
 Include "./actions/setdefdir.s"
 
 Set includebool zero #include or not include for applying after command parse
-SetCall errormsg include(safecurrentdirtopath,(TRUE))
+SetCall errormsg include(safecurrentdirtopath,(TRUE),(cINCLUDE))
 If errormsg!=noerr
 	Call msgerrexit(errormsg)
 EndIf

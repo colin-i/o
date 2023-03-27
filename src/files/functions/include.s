@@ -5,7 +5,7 @@ Str contentoffile#1
 Data sizeoffile#1
 Data offsetoffile#1
 Data lineoffile#1
-#Data *nameofstoffile#1
+Data includemask#1
 
 Const contentoffileoff=2*dwsz
 Const lineoffile_offset=contentoffileoff+dwsz
@@ -26,7 +26,7 @@ function offsetoffile_value()
 endfunction
 
 #err
-Function include(ss path,sd both)
+Function include(ss path,sd both,sd subtype)
 	Data zero=0
 	Data one=1
 
@@ -34,6 +34,7 @@ Function include(ss path,sd both)
 	Data sizeoffl#1
 	Data offsetoffl#1
 	Data *lineoffl=0
+	data mask#1
 	Char nameoffl#shortstrsize
 
 	Data err#1
@@ -46,6 +47,16 @@ Function include(ss path,sd both)
 	Data pcontentoffl%includeset
 
 	setcall offsetoffl offsetoffile_value()
+
+	if subtype==(cEINCLUDE)
+		vData warningsboolptr%ptrwarningsbool
+		set mask warningsboolptr#
+		if mask==(TRUE)
+			set warningsboolptr# (FALSE)
+		endif
+	else
+		set mask (FALSE)
+	endelse
 
 	SetCall err file_get_content_ofs(path,psizeoffl,pcontentoffl,offsetoffl)
 	If err!=noerr
@@ -132,10 +143,10 @@ Function include(ss path,sd both)
 	EndIf
 
 	Data pointers%includestructure
-	Data sizeadd#1
-	Set sizeadd isetsize
-	Sub sizeadd allowedforsize
-	Call memtomem(pointers,includeset,sizeadd)
+#	Data sizeadd#1
+#	Set sizeadd isetsize
+#	Sub sizeadd allowedforsize
+	Call memtomem(pointers,includeset,(includesetSzData))
 
 #	Data includespoint#1
 #	Data ptrincludespoint^includespoint

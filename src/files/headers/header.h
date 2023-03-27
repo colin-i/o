@@ -55,7 +55,8 @@ Const subscope=2*0x1000
 Const _open_read=_O_RDONLY|flag_O_BINARY
 Const _open_write=_O_WRONLY|flag_O_BINARY|flag_O_CREAT|_O_TRUNC
 Const shortstrsize=16
-Const includesetSz=4*dwsz+shortstrsize
+const includesetSzData=5*dwsz
+Const includesetSz=includesetSzData+shortstrsize
 
 #Const containersdataMaxoffset=0
 Const containersdataoffset=4

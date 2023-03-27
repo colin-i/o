@@ -110,7 +110,7 @@ if loop==1
 						elseIf commandset==(cIMPORTLINK) #needing importx here
 						elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
 						ElseIf commandset==(cLIBRARY)
-						elseif commandset==(cINCLUDE)
+						elseif commandset==(cINCLUDELINK)
 						Elseif commandset==(cFORMAT)
 						Elseif commandset==(cDECLAREAFTERCALL)  #and import
 						elseif commandset==(cWARNING)    #for addaref
@@ -119,7 +119,7 @@ if loop==1
 					else
 					#pass_calls
 						If commandset==(cPRIMSEC);elseif commandset==(cCALL)
-						elseif commandset==(cINCLUDE);elseif commandset==(cENDFUNCTION)
+						elseif commandset==(cINCLUDELINK);elseif commandset==(cENDFUNCTION)
 						elseif commandset==(cOVERRIDE)   #example call_align
 						else;set commandset (cCOMMENT);endelse
 					endelse
@@ -159,7 +159,7 @@ if loop==1
 			ElseIf commandset==(cRET)
 		call entryscope_verify_code()
 				Include "./index/ret.s"
-			ElseIf commandset==(cINCLUDE)
+			ElseIf commandset==(cINCLUDELINK)
 				Include "./index/include.s"
 			ElseIf commandset==(cFORMAT)
 				if parses==(pass_init);Include "./index/format.s"
@@ -268,7 +268,7 @@ if loop==1
 			Add inccursor dwordsize
 
 			Set inccursor# lineoffile
-			SetCall errormsg include(miscbag,(FALSE))
+			SetCall errormsg include(miscbag,(FALSE),subtype)
 			If errormsg!=noerr
 				Set content textlinestart
 				Sub lineoffile lineincrease

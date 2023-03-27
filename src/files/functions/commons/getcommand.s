@@ -19,7 +19,7 @@ Char cIMPORT_c="IMPORT";Char cIMPORTX_c="IMPORTX"
 Char cFUNCTION_c="FUNCTION";Char cFUNCTIONX_c="FUNCTIONX";Char cENTRYRAW_c="ENTRYRAW";Char cENTRY_c="ENTRY"
 Char cENDFUNCTION_c="ENDFUNCTION"
 Char cRET_c="RET"
-Char cINCLUDE_c="INCLUDE"
+Char cINCLUDE_c="INCLUDE";Char cEINCLUDE_c="EINCLUDE"
 Char cFORMAT_c="FORMAT"
 Char cIMPORTAFTERCALL_c="IMPORTAFTERCALL";Char cAFTERCALL_c="AFTERCALL"
 Char cWARNING_c="WARNING"
@@ -334,11 +334,18 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *=cRET
 		Data *#1
 		Data *=spacenotreq
-	Const cINCLUDE=!-coms_start
-		data *^cINCLUDE_c
-		Data *=cINCLUDE
-		Data *#1
-		Data *=spacereq
+	Const cINCLUDELINK=!-coms_start
+	Const cINCLUDELINK_top=!
+		Const cINCLUDE=!-cINCLUDELINK_top
+			data *^cINCLUDE_c
+			Data *=cINCLUDELINK
+			Data *=cINCLUDE
+			Data *=spacereq
+		Const cEINCLUDE=!-cINCLUDELINK_top
+			data *^cEINCLUDE_c
+			Data *=cINCLUDELINK
+			Data *=cEINCLUDE
+			Data *=spacereq
 	Const cFORMAT=!-coms_start
 		data *^cFORMAT_c
 		Data *=cFORMAT
