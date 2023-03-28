@@ -15,8 +15,8 @@ endfunction
 
 #err
 function arg_size(ss content,sd sizetoverify,sd p_argsize)
-	Char spc=" "
-	Char tab={0x09}
+	Char spc=asciispace
+	Char tab=asciitab
 	sd szargspc
 	sd szargtab
 	SetCall szargspc valinmem(content,sizetoverify,spc)
@@ -30,6 +30,41 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 		return "Expecting argument name."
 	endif
 	return (noerror)
+endfunction
+
+function extend_arg_size(ss content,sd sizetoverify,sd p_argsize)
+	sub sizetoverify p_argsize#
+	if sizetoverify!=0
+		add content p_argsize#
+		sd marker;set marker content
+		call spaces(#content,#sizetoverify)
+		if sizetoverify!=0
+			if content#==(pointerascii)
+				call stepcursors(#content,#sizetoverify)
+				if sizetoverify!=0
+					if content#==(pointerascii)
+						#this " ##" is the only line end comment after sufix and allowing spaces
+						ret
+					endif
+					#this disallow "arg #comment"
+					addcall p_argsize# find_whitespaceORcomment(content,sizetoverify)
+				endif
+				#and not letting "arg #" as comment to not regret later
+				sub content marker
+				add p_argsize# content
+			endif
+		endif
+	endif
+endfunction
+function extend_sufix_test(ss content,sd p_size)
+	while p_size#!=0
+		dec content
+		sd b;setcall b is_whitespace(content#)
+		if b==(FALSE)
+			ret
+		endif
+		dec p_size#
+	endwhile
 endfunction
 
 #err
@@ -122,6 +157,11 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				set ptrlow# false
 				#sufix is not used at imm value
 			else
+				if allowdata==(allow_yes)
+					#at last/only argument it is better to allow space before sufix to not regret later
+					#"##" will be a comment and "#" a sufix
+					call extend_arg_size(content,size,#argsize)
+				endif
 				sd argsize_filter
 				sd container_sz
 				if content#==(pointerascii)

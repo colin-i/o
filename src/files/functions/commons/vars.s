@@ -315,6 +315,7 @@ function sufix_test(ss content,sd p_size,sd p_cast)
 	endif
 	dec p_size#
 	set p_cast# (no_cast)
+	call extend_sufix_test(content,p_size)
 	#and, allow prefix and sufix same time, for fun
 	return (TRUE)
 endfunction
@@ -338,6 +339,7 @@ function cast_test(ss content,sd p_size)
 			dec content
 			if content#==(pointerascii)
 				sub p_size# 3
+				call extend_sufix_test(content,p_size)
 				return c
 			endif
 		endif

@@ -116,7 +116,7 @@ function mem_spaces(ss content,ss last)
 endfunction
 #new size
 function find_whitespaceORcomment(ss content,sd size)
-#size is greater than zero
+#size is greater than zero but this is not a problem here
 	ss end;set end content;add end size
 	ss start;set start content
 	while content!=end
