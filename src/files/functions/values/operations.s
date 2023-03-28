@@ -19,7 +19,7 @@ Const sarNumber=asciidot
 function const_security(sd item)
 	#2$31 is last one
 	#at 64? 1 shl 63 is last one
-	#why not 32? set 0 at constants
+	#only <32? yes, else is 0/-1 at constants
 	sd maximum=dwsz*8
 	if item#>=^maximum
 		sd p%p_over_pref
