@@ -21,7 +21,8 @@ function const_security(sd item)
 	#at 64? 1 shl 63 is last one
 	#only <32? yes, else is 0/-1 at constants
 	sd maximum=dwsz*8
-	if item#>=^maximum
+	if item#>=maximum     ##don't use unsigned ^ comparation, item# is already positive, will be extra code in source
+	#                            , at this commit time was not a technical/extra problem in compilation
 		sd p%p_over_pref
 		if p#==(TRUE)
 			vstr err="Overflow at constants."
