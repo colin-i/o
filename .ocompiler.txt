@@ -3,7 +3,7 @@ This file is parsed by the program to set the preferences. "nameEQUALx" must be 
 
 1. Display unreferenced variables/functions/constants warning.
 0 is Hide; 1 is Show
-warnings=1
+orphans=1
 
 2. Overflow at constants warning.
 0 is Hide; 1 is Show
@@ -22,12 +22,12 @@ w_as_e=1
 logfile=1
 
 6. Take the following action at FUNCTION entries at the object format that are not referred in the object and when the reference warning is enabled. This will also log import functions.
-[if warnings is 1]
+[if orphans is 1]
 0 is Ignore them; 1 is Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
 codeFnObj=2
 
 7. CONST to unreferenced warnings, same as with FUNCTION. This will also log declared/used constants.
-[if warnings is 1]
+[if orphans is 1]
 0 is Ignore them; 1 is Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
 const_warn=2
 

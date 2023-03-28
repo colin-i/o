@@ -816,15 +816,17 @@
 </p>
 <h3><a name="includingfiles">XII. Including files</a></h3>
 <p>
-	The program can be formed with multiple files using the <b>Include</b> command.
-	If compiling for multiple oses add a second path at <b>INCLUDE</b>;
-		the preference include_sec 0 will take the first path, 1 will take the second path.
+	The program can be formed with multiple files using the <b>Include</b> command.<br>
+	If wanting to switch between two files (one use can be at multiple OSes) add a second path at the command:
+		the preference include_sec 0 will take the first path, 1 will take the second path.<br>
+	<b>EInclude</b> will turn unreferenced warning off (one use can be when including a header between multiple projects).
 	<p>
 	Example:
 	<br>
 	<a class="code">
         Include "files\\headers.h"<br>
         Include "files\\headers_win.h" "files\\headers_lin.h"</a>
+        eInclude "/usr/include/ocompiler/logs.h"</a>
 	</p>
 </p>
 <h3><a name="exec">XIII. Creating executable files</a></h3>
@@ -926,9 +928,9 @@
 	<br>
 	Write bytes in the code section.
 	<br>
-	4. Warning
+	4. Orphan
 	<br>
-	Turn on or off the warnings.
+	Turn on or off the orphan warnings.
 	<br>
 	5. Override
 	<br>
@@ -942,9 +944,9 @@
         #this will pause the program into a debugger<br>
         HEX 0x33,0xc0,0xC3<br>
         #this will write 3 bytes in the code section<br>
-        warning off<br>
+        orphan off<br>
         import "common_function" common<br>
-        warning on<br>
+        orphan on<br>
         #useful when having a header in multiple objects<br>
 	  override underscore_pref 0<br>
 	  importx "__errno_location" errno<br>

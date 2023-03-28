@@ -18,20 +18,20 @@ Const sarNumber=asciidot
 #err
 function const_security(sd item)
 	#2$31 is last one
-	#1 shl 63 is last one
-	#maximum first overflow, ok
-	#why not 32 or 33? this check only stops evil big numbers
-	sd maximum=qwsz*8-1
-	if item#>maximum
-		str err="Overflow at constants."
-		sd w%p_w_as_e
-		if w#==(TRUE)
-			sd p%p_over_pref
-			if p#==(TRUE)
+	#at 64? 1 shl 63 is last one
+	#why not 32? set 0 at constants
+	sd maximum=dwsz*8
+	if item#>=^maximum
+		sd p%p_over_pref
+		if p#==(TRUE)
+			vstr err="Overflow at constants."
+			call Message(err)
+			sd w%p_w_as_e
+			if w#==(TRUE)
 				return err
 			endif
 		endif
-		call Message(err)
+		#it is ok with the overflow
 		set item# maximum
 	endif
 	return (noerror)

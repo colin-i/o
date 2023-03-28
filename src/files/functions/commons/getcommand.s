@@ -22,7 +22,7 @@ Char cRET_c="RET"
 Char cINCLUDE_c="INCLUDE";Char cEINCLUDE_c="EINCLUDE"
 Char cFORMAT_c="FORMAT"
 Char cIMPORTAFTERCALL_c="IMPORTAFTERCALL";Char cAFTERCALL_c="AFTERCALL"
-Char cWARNING_c="WARNING"
+Char cORPHAN_c="ORPHAN"
 Char cCALLEXX_c="CALLEXX";Char cCALLEX_c="CALLEX"
 Char cOVERRIDE_c="OVERRIDE"
 Char cLIBRARY_c="LIBRARY"
@@ -364,9 +364,9 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cDECLAREAFTERCALL
 			Data *=cAFTERCALL
 			Data *=spacereq
-	Const cWARNING=!-coms_start
-		data *^cWARNING_c
-		Data *=cWARNING
+	Const cORPHAN=!-coms_start
+		data *^cORPHAN_c
+		Data *=cORPHAN
 		Data *#1
 		Data *=spacereq
 	Const cCALLEX=!-coms_start

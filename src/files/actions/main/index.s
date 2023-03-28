@@ -113,7 +113,7 @@ if loop==1
 						elseif commandset==(cINCLUDELINK)
 						Elseif commandset==(cFORMAT)
 						Elseif commandset==(cDECLAREAFTERCALL)  #and import
-						elseif commandset==(cWARNING)    #for addaref
+						elseif commandset==(cORPHAN)    #for addaref
 						elseif commandset==(cOVERRIDE)   #example underscore_pref
 						else;set commandset (cCOMMENT);endelse
 					else
@@ -169,7 +169,7 @@ if loop==1
 				else;if subtype==(cAFTERCALL);add datasecReg (aftercalldeclaresize);endif
 					Call advancecursors(pcontent,pcomsize,comsize);endelse
 				set g_e_b_p# (TRUE)
-			ElseIf commandset==(cWARNING)
+			ElseIf commandset==(cORPHAN)
 				Include "./index/warning.s"
 			ElseIf commandset==(cCALLEX)
 		call entryscope_verify_code()
@@ -280,6 +280,11 @@ if loop==1
 				Add last sizeoffile
 				Set miscbagReg zero
 				Set includebool zero
+
+				#and set for error informations
+				set cursorforincludes includes
+				add cursorforincludes includesReg
+				sub cursorforincludes (shortstrsize)
 			EndElse
 		EndIf
 	EndIf
