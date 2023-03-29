@@ -36,11 +36,11 @@ function extend_arg_size(ss content,sd sizetoverify,sd p_argsize)
 	sub sizetoverify p_argsize#
 	if sizetoverify!=0
 		add content p_argsize#
-		sd marker;set marker content
-		ss test;set test content
-		dec test	##argsize is not 0
-		if test#!=(pointerascii)
-			if test#!=(castascii)
+		ss marker;set marker content
+		dec marker	##argsize is not 0
+		if marker#!=(pointerascii)
+			if marker#!=(castascii)
+				set marker content
 				call spaces(#content,#sizetoverify)
 				if sizetoverify!=0
 					if content#==(pointerascii)
