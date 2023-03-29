@@ -120,7 +120,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			if punitsizeOrparses==(NULL)
 				If typenumberOrparses==charnr
 				#ignored at stack value   grep stackfilter2  1
-					Set unitsize bSz    #used also at hex
+					Set unitsize bSz    ##used also at hex
 				Else
 					Set unitsize dwSz
 				EndElse

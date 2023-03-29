@@ -37,21 +37,27 @@ function extend_arg_size(ss content,sd sizetoverify,sd p_argsize)
 	if sizetoverify!=0
 		add content p_argsize#
 		sd marker;set marker content
-		call spaces(#content,#sizetoverify)
-		if sizetoverify!=0
-			if content#==(pointerascii)
-				call stepcursors(#content,#sizetoverify)
+		ss test;set test content
+		dec test	##argsize is not 0
+		if test#!=(pointerascii)
+			if test#!=(castascii)
+				call spaces(#content,#sizetoverify)
 				if sizetoverify!=0
 					if content#==(pointerascii)
-						#this " ##" is the only line end comment after sufix and allowing spaces
-						ret
+						call stepcursors(#content,#sizetoverify)
+						if sizetoverify!=0
+							if content#==(pointerascii)
+								#this " ##" is the only line end comment after sufix and allowing spaces
+								ret
+							endif
+							#this disallow "arg #comment"
+							addcall p_argsize# find_whitespaceORcomment(content,sizetoverify)
+						endif
+						#and not letting "arg #" as comment to not regret later
+						sub content marker
+						add p_argsize# content
 					endif
-					#this disallow "arg #comment"
-					addcall p_argsize# find_whitespaceORcomment(content,sizetoverify)
 				endif
-				#and not letting "arg #" as comment to not regret later
-				sub content marker
-				add p_argsize# content
 			endif
 		endif
 	endif

@@ -51,7 +51,7 @@ If errormsg==noerr
 				SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,(STB_GLOBAL),null,ptrtable)
 			EndIf
 			If errormsg==noerr
-				sd imp_mark;set imp_mark namesReg #this is because the null at end makes code harder
+				sd imp_mark;set imp_mark namesReg ##this is because the null at end makes code harder
 				SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames,true)
 				If errormsg==noerr
 					Call stepcursors(pcontent,pcomsize)

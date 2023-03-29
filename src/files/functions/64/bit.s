@@ -162,7 +162,7 @@ endfunction
 function convdata(sd type,sd dest,sd fnargs)
 	if type==(convdata_total)
 		data nr_of_args#1
-		return nr_of_args   #ms_convention or lin
+		return nr_of_args   ##ms_convention or lin
 	elseif type==(convdata_call)
 		#rdi
 		char hex_1={REX_Operand_64,moveatprocthemem,ediregnumber*toregopcode|espregnumber,0x24,0}

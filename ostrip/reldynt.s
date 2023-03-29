@@ -104,7 +104,7 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 			set reloc_dyn_initobj.objects frees.objects
 			set reloc_dyn_initobj.destdnext datavaddr
 			set reloc_dyn_initobj.destvnext datavaddr
-			add reloc_dyn_initobj.destvnext frees.exedatasize  #this is after the new size was set
+			add reloc_dyn_initobj.destvnext frees.exedatasize  ##this is after the new size was set
 			setcall datavaddr reloc_dyn_initobj(datavaddr)
 			while cursor!=pointer
 				sd offset;set offset cursor#

@@ -323,7 +323,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 		#The disk space won't be released until the last process with an open file descriptor for the file finally closes the file.
 		call lseek(file,0,seek_set)
 		#offset here
-		add size offset       #this is only with MAX_PATH more on a int file size
+		add size offset       ##this is only with MAX_PATH more on a int file size
 		#setcall err addfull(offset,#size)
 		SetCall err memoryalloc(size,ptrmem)
 		If err==noerr

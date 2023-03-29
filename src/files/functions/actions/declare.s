@@ -123,10 +123,10 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				#                                                                               since %%|
 				if is_expand==(FALSE)
 					sd pdataReg%%ptr_dataReg
-					add pdataReg# unitsize    #this is init by 0
+					add pdataReg# unitsize    ##this is init by 0
 				else
 					sd pnobitsReg%ptrdataSize
-					add pnobitsReg# unitsize    #this is init by 0
+					add pnobitsReg# unitsize    ##this is init by 0
 				endelse
 			endelse
 		else

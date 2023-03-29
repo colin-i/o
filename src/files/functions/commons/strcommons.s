@@ -271,7 +271,7 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	Set psize# size
 	If pescapes!=zero
 		Inc pescapes#
-		Return byte   #quotation/null/another are relevant here
+		Return byte   ##quotation/null/another are relevant here
 	EndIf
 
 	if byte==(asciin)

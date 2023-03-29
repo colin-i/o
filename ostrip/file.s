@@ -194,7 +194,7 @@ function get_section_many(sd file,sd offset,sd end,sd shentsize,sd nrsec,sv p_se
 		datax offs#1;call read(file,#offs,(datasize))
 		if offs==nrsec
 			sd sz;setcall sz get_section(file,offset,p_sec)
-			return sz   #it's in use at rels,syms and can verify errors at data/text . and also at data/text
+			return sz   ##it's in use at rels,syms and can verify errors at data/text . and also at data/text
 		endif
 		call seekc(file,rest)
 		add offset shentsize

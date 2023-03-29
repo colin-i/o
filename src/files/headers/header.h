@@ -400,6 +400,7 @@ const sd_as_sv_get=1
 const commentascii=asciinumber
 const reserveascii=asciinumber
 const pointerascii=asciinumber
+const castascii=asciicirc
 
 #const max_uint64=20
 char uint32c#dw_char_0

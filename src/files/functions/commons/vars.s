@@ -306,7 +306,7 @@ function sufix_test(ss content,sd p_size,sd p_cast)
 	add content p_size#
 	dec content
 	if content#!=(pointerascii)
-		if content#==(asciicirc)
+		if content#==(castascii)
 			setcall p_cast# cast_test(content,p_size)
 			return (TRUE)
 		endif

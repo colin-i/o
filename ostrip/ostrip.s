@@ -165,7 +165,7 @@ if argc>=(1+3)  #0 is all the time
 		set s3c (NULL)  #write will stop there
 	endelse
 
-	add frees.exedatasize datainneroffset    #set leading size back for write
+	add frees.exedatasize datainneroffset    ##set leading size back for write
 	call write(#sN,pexe)
 	call write_sec(".rela.dyn",frees.execreladyn,frees.execreladynsize)
 

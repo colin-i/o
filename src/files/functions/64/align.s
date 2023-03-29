@@ -4,7 +4,7 @@ data *stackalign_size#1
 const ptrstackalign^stackalign
 #er
 function align_alloc(sd sz)
-	inc sz   #for entry
+	inc sz   ##for entry
 	mult sz (dwsz)
 	sv s%ptrstackalign
 	setcall s# memcalloc(sz) #need 0 by default

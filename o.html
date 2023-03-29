@@ -658,7 +658,7 @@
         Entry main()<br>
 &emsp;	Call test()<br>
 &emsp;	Add a test.b<br>
-&emsp;	Exit a #9<br></a>
+&emsp;	Exit a ##9<br></a>
 </p>
 <h3><a name="usingfunctions">VII. Using functions</a></h3>
 <p>
@@ -812,7 +812,7 @@
 &emsp;	sd d<br>
 &emsp;	set d c#:b<br>
 &emsp;	add d a:b<br>
-&emsp;	exit d  #3+3</a>
+&emsp;	exit d  ##3+3</a>
 </p>
 <h3><a name="includingfiles">XII. Including files</a></h3>
 <p>
@@ -917,7 +917,7 @@
 &emsp;	2222<br>
 &emsp;	 3333<br>
 &emsp;	 ! ; inc a<br>
-&emsp;	exit a #will be 3
+&emsp;	exit a ##will be 3
 	</a>
 	<br>
 	2. Interrupts
@@ -941,6 +941,7 @@
 	<a class="code">
         #This is a comment and it will not be executed<br>
         I3 #a line ending comment<br>
+        sd a;set a a ##line ending comment (with two), only one #, in this case, is a pointer<br>
         #this will pause the program into a debugger<br>
         HEX 0x33,0xc0,0xC3<br>
         #this will write 3 bytes in the code section<br>
