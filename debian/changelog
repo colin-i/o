@@ -1,3 +1,9 @@
+ocompiler (1-5+84) xenial; urgency=medium
+
+  * minor optimization
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 30 Mar 2023 07:02:51 +0300
+
 ocompiler (1-5+83) xenial; urgency=medium
 
   * disallow "argument #comment", make it "argument ##comment"
