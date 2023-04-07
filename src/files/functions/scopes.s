@@ -1,5 +1,5 @@
 
-const sizeofclassinfo=dwsz+dwsz
+const sizeofclassinfo=location+location
 
 value scopesbag#1
 data scopesbag_size#1
@@ -74,7 +74,8 @@ function scopes_alloc(sd has_named_entry,sd i)
 		sv pointer;set pointer start
 		add pointer i
 		if has_named_entry==(TRUE)
-			#entry tag is, and is last, entry. can be used in functions
+			#entry tag is, and is last, entry. like set b entry.a is valid syntax but not practical
+			#                                  get entry size is a rare use
 			sub pointer :
 			sd scps%%ptr_scopes
 			set pointer# scps
@@ -164,7 +165,7 @@ function scopes_store_class()
 	sd scope;setcall scope scopes_get_scope(ptrfunctionTagIndex#)
 	add scope (sizeofscope)
 	setcall scope# get_img_vdata_dataReg()  #and img_vdata ? at getarg will subtract from ptrdata# that is with the same img_vdata
-	add scope (dwsz)
+	add scope (location)
 	setcall scope# get_img_vdata_dataSize()
 endfunction
 function scopes_get_class_data(sd scope,sd data)
