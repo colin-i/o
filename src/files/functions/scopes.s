@@ -74,8 +74,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 		sv pointer;set pointer start
 		add pointer i
 		if has_named_entry==(TRUE)
-			#entry tag is, and is last, entry. like set b entry.a is valid syntax but not practical
-			#                                  get entry size is a rare use
+			#entry tag is, and is last, entry. define global variable, use in function is practical
 			sub pointer :
 			sd scps%%ptr_scopes
 			set pointer# scps
