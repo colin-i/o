@@ -176,3 +176,17 @@ function scopes_get_class_data(sd scope,sd data)
 	endif
 	return scope#
 endfunction
+
+#size
+function get_scope_xdata_size(sd pos)
+	sd scope;setcall scope scopes_get_scope(pos)
+	sd entrybags%%ptr_scopes
+	if scope!=entrybags
+		#pos==tag
+		#	!x -start
+		#else
+		#	end-start
+	else
+		# !x - sum, attention at tagindex, calloc
+	endelse
+endfunction

@@ -491,17 +491,25 @@ endfunction
 
 #err
 function get_scope(sv pcontent,sd psize,sd sz,sv pscope)
-	data ptrfunctions%%ptr_functions
-	sd var
-	sd pos=0
-	setcall var vars_core_ref_scope(pcontent#,sz,ptrfunctions,(NULL),(TRUE),#pos)
-	if var==(NULL)
-		return "Undefined function name."
+	sd pos
+	sd err;setcall err get_scope_pos(pcontent#,sz,#pos)
+	if err==(noerror)
+		inc sz
+		call advancecursors(pcontent,psize,sz)
+		setcall pscope# scopes_get_scope(pos)
 	endif
-	inc sz
-	call advancecursors(pcontent,psize,sz)
-	setcall pscope# scopes_get_scope(pos)
-	return (noerror)
+	return err
+endfunction
+#err
+function get_scope_pos(ss content,sd sz,sv ppos)
+	data ptrfunctions%%ptr_functions
+	set ppos# 0
+	sd var
+	setcall var vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
+	if var!=(NULL)
+		return (noerror)
+	endif
+	return "Undefined function name."
 endfunction
 
 function function_in_code()

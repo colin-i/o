@@ -170,18 +170,18 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			setcall outval# get_img_vdata_dataReg()
 			return (noerror)
 		endif
+		vdata p_parses%ptr_parses
+		inc content
+		charx against#1
+		set against content#
 		if size==2
-			inc content
-			charx against#1
-			set against content#
 			if against!=(asciix)
 			#maybe is X
 				add against (AZ_to_az)
 			endif
 			if against==(asciix)
-				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain/main or ""
+				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain/main or (NULL)
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
-				vdata p_parses%ptr_parses
 				if ptr_nobits_virtual#==(No)
 					if p_parses#==(pass_init)
 						return "At the moment, !X is not implemented here."
@@ -192,7 +192,22 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			endif
 			return "Expecting !X ."
 		endif
-		str er="The text after the data cursor sign isn't recognized."
+		#size >=3
+		if against==data_cursor
+			if p_parses#==(pass_init)
+				return "At the moment, !! is not implemented here."
+			endif
+			inc content
+			sub size 2
+			#for virtual is implemented at the moment. if against==data_cursor !!!
+			sd pos
+			sd err;setcall err get_scope_pos(content,size,#pos)
+			if err==(noerror)
+				setcall outval# get_scope_xdata_size(pos)
+			endif
+			return err
+		endif
+		vstr er="The text after the data cursor sign isn't recognized."
 		return er
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
 	char int_size=asciicolon
