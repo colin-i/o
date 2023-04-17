@@ -179,16 +179,16 @@ function numbertoint(str content,data size,data outval,data minusbool)
 				add against (AZ_to_az)
 			endif
 			if against==(asciix)
-				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain or nothing at windows
+				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain/main or ""
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
-				if ptr_nobits_virtual#==(Yes)
-					#vdata pnobitsReg%ptrnobitsReg
-					#set outval# pnobitsReg#
-					setcall outval# get_dataSize()
-					#add outval# get_img_vdata()
-					return (noerror)
+				vdata p_parses%ptr_parses
+				if ptr_nobits_virtual#==(No)
+					if p_parses#==(pass_init)
+						return "At the moment, !X is not implemented here."
+					endif
 				endif
-				return "At the moment, !X is not calculated for this format (example: is calculated at object with nobits section)."
+				setcall outval# get_img_vdata_dataSize()
+				return (noerror)
 			endif
 			return "Expecting !X ."
 		endif
