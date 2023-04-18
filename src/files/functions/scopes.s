@@ -1,5 +1,11 @@
 
-const sizeofclassinfo=location+location
+const sizeofclassinfostartdata=location
+const classinfostartdatax=sizeofclassinfostartdata
+const sizeofclassinfostarts=sizeofclassinfostartdata+location
+#                                                    datax
+const classinfosizedatax=sizeofclassinfostarts
+const sizeofclassinfo=sizeofclassinfostarts+location
+#                                           dataxsize
 
 value scopesbag#1
 data scopesbag_size#1
@@ -82,7 +88,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 		#alloc some dummy values
 		while start!=pointer
 			sub pointer :
-			setcall pointer# memcalloc((sizeofscope+sizeofclassinfo)) #is calloc, needing reg 0, in case it is searched , and at freeings
+			setcall pointer# memcalloc((sizeofscope+sizeofclassinfo)) #is calloc, needing reg 0, in case it is searched , and at freeings, and at size (grab future)
 			if pointer#==(NULL)
 				return (error)
 			endif
@@ -125,6 +131,12 @@ function scopes_store(sv scope)
 		add scope (sizeofcontainer)
 		add pointer (sizeofcontainer)
 	endwhile
+	#and set for class size, can have inter functions size for entry
+	add scope (location)
+	sd start;set start scope
+	add scope (location)
+	setcall scope#d^ get_img_vdata_dataSize()
+	sub scope#d^ start#
 	return (noerror)
 endfunction
 
@@ -178,15 +190,43 @@ function scopes_get_class_data(sd scope,sd data)
 endfunction
 
 #size
-function get_scope_xdata_size(sd pos)
+function get_scope_datax_size(sd pos)
+	value entrybags%%ptr_scopes
+	vdata ptrfunctionTagIndex%ptrfunctionTagIndex
+	vdata ptrinnerfunction%globalinnerfunction
+	sd size
 	sd scope;setcall scope scopes_get_scope(pos)
-	sd entrybags%%ptr_scopes
 	if scope!=entrybags
-		#pos==tag
-		#	!x -start
-		#else
-		#	end-start
+		if ptrfunctionTagIndex#==pos
+			if ptrinnerfunction#==(TRUE)
+				setcall size get_img_vdata_dataSize()
+				add scope (sizeofscope+classinfostartdatax)
+				sub size scope#
+				return size
+			endif
+			#will be 0 (from calloc)
+		endif
+		#another function
+		add scope (sizeofscope+classinfosizedatax)
+		return scope# #calloc at bigger
+	endif
+	#entry
+	if ptrinnerfunction#==(TRUE)
+		setcall scope scopes_get_scope(ptrfunctionTagIndex#)
+		add scope (sizeofscope+classinfostartdatax)
+		set size scope#
 	else
-		# !x - sum, attention at tagindex, calloc
+		setcall size get_img_vdata_dataSize()
 	endelse
+	sv p%scopesbag_ptr
+	set p p#
+	sd last=:;mult last ptrfunctionTagIndex#
+	add last p
+	while p<^last
+		sd s;set s p#
+		add s (sizeofscope+classinfosizedatax)
+		sub size s#
+		incst p
+	endwhile
+	return size
 endfunction

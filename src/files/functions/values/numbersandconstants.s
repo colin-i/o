@@ -203,7 +203,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			sd pos
 			sd err;setcall err get_scope_pos(content,size,#pos)
 			if err==(noerror)
-				setcall outval# get_scope_xdata_size(pos)
+				setcall outval# get_scope_datax_size(pos)
 			endif
 			return err
 		endif

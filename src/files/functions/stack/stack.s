@@ -101,7 +101,7 @@ function entryscope_verify_code()
 	data one=1
 	if ptrfnavailable#==one
 		data ptrinnerfunction%globalinnerfunction
-		if ptrinnerfunction#!=one
+		if ptrinnerfunction#!=(TRUE)
 			data two=2
 			set ptrfnavailable# two
 			call entryscope()
