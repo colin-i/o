@@ -5,8 +5,8 @@ ifndef nobits_virtual
 nobits_virtual=1
 endif
 
-ifndef syms
-syms=-O1 -s
+ifndef linkerflags
+linkerflags=-O1 -s
 endif
 
 strippy=ostriputil
@@ -30,7 +30,7 @@ OUNUSED=../ounused/ounused
 %.o: ${FULLOBJS}
 	${OCOMP} $< ${OFLAGS}
 
-ATCCCOM = $(CC) ${syms} -o ${OB}
+ATCCCOM = $(CC) ${linkerflags} -o ${OB}
 
 ostrip: ${OBJ}
 	${OUNUSED} ${FULLOBJLOG}

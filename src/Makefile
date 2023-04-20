@@ -12,8 +12,8 @@ ifndef OCOMP
 OCOMP=o
 endif
 
-ifndef syms
-syms=-O1 -s
+ifndef linkerflags
+linkerflags=-O1 -s
 endif
 
 #OFLAGS=
@@ -29,7 +29,7 @@ endif
 	fi; \
 	mv ${FULLOBJO} . \
 
-_ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -lc -entry main -o
+_ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -lc -entry main -o
 ATLDCOM = ${_ATLDCOM} $@
 
 o: ${OBJ}

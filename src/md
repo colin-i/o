@@ -1,2 +1,2 @@
 
-OFLAGS="function_name 1" make syms= $@
+OFLAGS="function_name 1" make linkerflags= $@
