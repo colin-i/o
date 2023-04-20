@@ -13,7 +13,7 @@ OCOMP=o
 endif
 
 ifndef syms
-syms=-s
+syms="-O3 -s"
 endif
 
 #OFLAGS=
