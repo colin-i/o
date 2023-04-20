@@ -11,10 +11,13 @@ ifndef OCOMP
 OCOMP=../src/o
 endif
 
+ifndef syms
+syms=-O1 -s
+endif
+
 %.o: ${FULLOBJS}
 	${OCOMP} $< exit_end 1
 
-syms =-s
 ATLDCOM = $(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
 
 ounused: ${OBJ}

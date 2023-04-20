@@ -5,6 +5,10 @@ ifndef nobits_virtual
 nobits_virtual=1
 endif
 
+ifndef syms
+syms=-O1 -s
+endif
+
 strippy=ostriputil
 
 OFLAGS=${OFLAGSEXTRA}
@@ -26,7 +30,6 @@ OUNUSED=../ounused/ounused
 %.o: ${FULLOBJS}
 	${OCOMP} $< ${OFLAGS}
 
-syms =-s
 ATCCCOM = $(CC) ${syms} -o ${OB}
 
 ostrip: ${OBJ}
