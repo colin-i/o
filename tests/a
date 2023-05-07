@@ -1,4 +1,6 @@
 
-../src/o ${1}.s && \
+if [ -z "${2}" ]; then OCOMP=../src/o; else OCOMP=${2}; fi
+
+${OCOMP} ${1}.s && \
 cc ${1}.o && \
 ./a.out
