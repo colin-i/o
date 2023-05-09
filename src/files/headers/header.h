@@ -337,6 +337,9 @@ const ptrcodeFnObj^codeFnObj
 const const_warn_get=0
 const const_warn_get_init=1
 
+datax offset_warn#1
+const p_offset_warn^offset_warn
+
 
 #main alloc error msg
 Data fnavailable#1
@@ -418,7 +421,7 @@ const p_hidden_pref^hidden_pref
 Data safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=21
+const nr_of_prefs=22
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs

@@ -22,7 +22,7 @@ const log_declare=0x64
 const log_reusable=0x72
 
 #v
-#const log_variable=0x76
+const log_variable=0x76
 #Characteristic that can present variation from one element to another of a collectivity.
 #o
 #const log_offset=0x6F

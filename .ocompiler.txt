@@ -26,63 +26,68 @@ logfile=1
 0 is Ignore them; 1 is Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
 codeFnObj=2
 
-7. CONST to unreferenced warnings, same as with FUNCTION. This will also log declared/used constants.
+7. CONST to unreferenced warnings, same as with FUNCTION. This will also log declared constants.
 [if orphans is 1]
 0 is Ignore them; 1 is Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
 const_warn=2
 
-8. Include active folder. Change the active directory when including and stepping into a file.
+8. Variables to unreferenced warnings, same as with CONST.
+[if orphans is 1]
+0 is Ignore them; 1 is Show warning; 2 [if logfile is 1] is Write them to the logfile, else take 1
+offset_warn=2
+
+9. Include active folder. Change the active directory when including and stepping into a file.
 0 is No; 1 is Yes
 includedir=1
 
-9. Write the function names above the function in code section, useful when debugging asm instructions.
+10. Write the function names above the function in code section, useful when debugging asm instructions.
 0 is No; 1 is Yes
 function_name=0
 
-10. Ignore elfobj64
+11. Ignore elfobj64
 0 is No,use linux convention if ocompiler was compiled for linux,else use microsoft; 1 is Yes; 2 is No,and cross-compile
 conv_64=0
 
-11. Zeroset reserved data section declarations.
+12. Zeroset reserved data section declarations.
 0 is No; 1 is Yes
 nul_res_pref=0
 
-12. SD as SV (old programs don't have sv and may be with 64 logic).
+13. SD as SV (old programs don't have sv and may be with 64 logic).
 0 is No; 1 is Yes
 sd_as_sv=0
 
-13. Inplace reloc 0 or the addend for objects? (standard ld wants addend, i686-w64-mingw32-ld wants 0)
+14. Inplace reloc 0 or the addend for objects? (standard ld wants addend, i686-w64-mingw32-ld wants 0)
 0 is Zero; 1 is Addend
 inplace_reloc=1
 
-14. At objects, when on 64 format, relocs are R_X86_64_64.
+15. At objects, when on 64 format, relocs are R_X86_64_64.
 0 is No; 1 is Yes
 reloc_64=1
 
-15. Remove leading underscore at IMPORT?
+16. Remove leading underscore at IMPORT?
 0 is No; 1 is Yes
 underscore_pref=0
 
-16. RETURNs at main scope like EXIT.
+17. RETURNs at main scope like EXIT.
 0 is No; 1 is Yes
 exit_end=0
 
-17. Take second file path at INCLUDE statement.
+18. Take second file path at INCLUDE statement.
 0 is No; 1 is Yes
 include_sec=0
 
-18. Ignore FORMAT ...SO .
+19. Ignore FORMAT ...SO .
 0 is No; 1 is Yes
 ignore_format_so=0
 
-19. At 64, before a call, align stack. Cases for arguments and shadow(windows only).
+20. At 64, before a call, align stack. Cases for arguments and shadow(windows only).
 0 is No; 1 is Yes; 2 is Yes for arguments and shadow; 3 is Yes for arguments
 call_align=1
 
-20. Virtual data to a SHT_NOBITS at object
+21. Virtual data to a SHT_NOBITS at object
 0 is No; 1 is Yes
 nobits_virtual=1
 
-21. Debug section at object.
+22. Debug section at object.
 0 is No; 1 is Yes
 has_debug=0

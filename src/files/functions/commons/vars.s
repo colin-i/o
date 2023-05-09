@@ -25,7 +25,7 @@ endfunction
 function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssearch,sd setref,sd position_pointer)
 	Data zero=0
 	Data varsize#1
-	Data dwlen=dwsz
+	#Data dwlen=dwsz
 	Data blen=bsz
 
 	Str container#1
@@ -39,7 +39,7 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 	add end containerReg
 	While container!=end
 		Set entrypoint container
-		Add container dwlen
+		Add container (location)
 		If warningssearch!=(NULL)
 			Data ReferenceBit=referencebit
 			Data checkvalue#1
@@ -68,17 +68,20 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 				elseif ptrconstants==ptrstructure
 					setcall cb constants_bool((const_warn_get))
 					setcall returnvalue warn_or_log((log_constant),returnvalue,container,cb,warningssearch)
-				endelseif
+				else
+					data p_o_w%%p_offset_warn
+					setcall returnvalue warn_or_log((log_variable),returnvalue,container,p_o_w#,warningssearch)
+				endelse
 				if returnvalue!=zero
 					Return returnvalue
 				endif
 			endIf
 			#elseIf ptrconstants==ptrstructure 0x72
-			Add container dwlen
+			Add container (masksize)
 			SetCall varsize strlen(container)
 		Else
 			sd pmask;set pmask container
-			Add container dwlen
+			Add container (masksize)
 			SetCall varsize strlen(container)
 			If varsize==size
 				Data cmpret#1

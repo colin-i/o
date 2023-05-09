@@ -1,0 +1,2 @@
+
+rsync -av .ocompiler.txt ~/

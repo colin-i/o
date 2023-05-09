@@ -16,6 +16,10 @@ ifndef linkerflags
 linkerflags=-O1 -s
 endif
 
+ifndef linker
+linker=/lib/ld-linux.so.2
+endif
+
 #OFLAGS=
 
 %.o: ${FULLOBJS}
@@ -29,7 +33,7 @@ endif
 	fi; \
 	mv ${FULLOBJO} . \
 
-_ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -lc -entry main -o
+_ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=${linker} -lc -entry main -o
 ATLDCOM = ${_ATLDCOM} $@
 
 o: ${OBJ}
@@ -59,6 +63,7 @@ uninstall:
 
 test:
 	echo "test"
-	cd linux; ../o o.s nul_res_pref 1; mv o z; /lib/ld-linux.so.2 ./z o.s nul_res_pref 1; diff o z
+	cd linux; ../o o.s nul_res_pref 1; mv o z; ${linker} ./z o.s nul_res_pref 1; diff o z
+#/home/bc/Desktop/out/libc6-i386.AppImage /home/bc/o/ocompiler-1/src/linux/z /home/bc/o/ocompiler-1/src/linux/o.s nul_res_pref 1
 
 .PHONY: all install clean distclean uninstall test
