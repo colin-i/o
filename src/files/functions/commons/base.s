@@ -188,10 +188,11 @@ function addtolog_array_withchar(sv array,sd type)
 		setcall err writefile_errversion(ptrfilehandle#,#type,1)
 		if err==(noerror)
 			while array#!=(NULL)
-				sd size;setcall size strlen(array#)
-				setcall err writefile_errversion(ptrfilehandle#,array#,size)
-				if err!=(noerror);return err;endif
+				sd val;set val array#
 				incst array
+				setcall err writefile_errversion(ptrfilehandle#,val,array#d^)
+				if err!=(noerror);return err;endif
+				add array (dwsz)
 			endwhile
 			setcall err addtolog_term(ptrfilehandle#)
 		endif

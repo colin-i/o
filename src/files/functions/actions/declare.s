@@ -99,35 +99,38 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 					#                                                                            since %%|
 				endif
 			else
-				if unitsize==0
-				#ss?
-					if sign!=(assignsign)
-						call advancecursors(pcontent,pcomsize,pcomsize#)
-						return (noerror)
-					endif
-					#ss =% ""/x/{}
-				else
-				#search for data%  with R_X86_64_64
-					if relocbool==(TRUE)
-						if mask==0
-						#data str
-						#strs are without ""
-							vdata is_64_and_pref_is_rx866464%p_elf64_r_info_type
-							if is_64_and_pref_is_rx866464#==(R_X86_64_64)
-								set unitsize (qwsz)
+				setcall err vars_log_prepare(pcontent#,valsize)
+				if err==(noerror)
+					if unitsize==0
+					#ss?
+						if sign!=(assignsign)
+							call advancecursors(pcontent,pcomsize,pcomsize#)
+							return (noerror)
+						endif
+						#ss =% ""/x/{}
+					else
+					#search for data%  with R_X86_64_64
+						if relocbool==(TRUE)
+							if mask==0
+							#data str
+							#strs are without ""
+								vdata is_64_and_pref_is_rx866464%p_elf64_r_info_type
+								if is_64_and_pref_is_rx866464#==(R_X86_64_64)
+									set unitsize (qwsz)
+								endif
 							endif
 						endif
-					endif
-				endelse
-				setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,is_stack) #there is 1 more argument but is not used
-				#                                                                               since %%|
-				if is_expand==(FALSE)
-					sd pdataReg%%ptr_dataReg
-					add pdataReg# unitsize    ##this is init by 0
-				else
-					sd pnobitsReg%ptrdataSize
-					add pnobitsReg# unitsize    ##this is init by 0
-				endelse
+					endelse
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,is_stack) #there is 1 more argument but is not used
+					#                                                                               since %%|
+					if is_expand==(FALSE)
+						sd pdataReg%%ptr_dataReg
+						add pdataReg# unitsize    ##this is init by 0
+					else
+						sd pnobitsReg%ptrdataSize
+						add pnobitsReg# unitsize    ##this is init by 0
+					endelse
+				endif
 			endelse
 		else
 			if typenumber==(constantsnumber)

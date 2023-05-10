@@ -153,11 +153,12 @@ function scopes_searchinvars(sd p_err,sv p_name)
 	while i!=sz
 		sd ibit;setcall ibit importbit(fns)
 		add fns (nameoffset)
+		sd size;setcall size strlen(fns)
 		if ibit==0
 			sd data
 			sd scope
 			setcall scope scopes_get_scope(i)
-			call vars_log((set),fns)
+			call vars_log((set),fns,size)
 			setcall data searchinvars_scope_warn(p_err,scope)
 			if data!=(NULL)
 				set p_name# fns
@@ -165,7 +166,7 @@ function scopes_searchinvars(sd p_err,sv p_name)
 			endif
 			inc i
 		endif
-		addcall fns strlen(fns)
+		add fns size
 		inc fns
 	endwhile
 	return (NULL)

@@ -94,6 +94,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				return err
 			endif
 
+			call vars_log((set),content,sz)
+
 			Data mask#1
 			#Data ptrobjfnmask%ptrobjfnmask
 			if el_or_e==(TRUE)

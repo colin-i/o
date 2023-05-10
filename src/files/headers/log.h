@@ -25,5 +25,5 @@ const log_reusable=0x72
 const log_variable=0x76
 #Characteristic that can present variation from one element to another of a collectivity.
 #o
-#const log_offset=0x6F
+const log_offset=0x6F
 #a WEAK function can be in two objects (having same name for variable)

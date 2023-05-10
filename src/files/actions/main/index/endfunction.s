@@ -7,6 +7,7 @@ if parses==(pass_init)
 		Set errormsg unexeferr
 	else
 		Set innerfunction false
+		call vars_log_reset() #to let next variables be ".var"
 	endelse
 else
 	if parses==(pass_write)

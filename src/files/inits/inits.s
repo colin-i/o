@@ -106,3 +106,5 @@ vdata ptrprevLineD%%ptrprevLineD
 #set ptrprevLineD# 0    #set acording to includes
 vdata ptrcodeRegD%%ptrcodeRegD
 set ptrcodeRegD# 0
+
+call vars_log_reset() #to let next variables be ".var"
