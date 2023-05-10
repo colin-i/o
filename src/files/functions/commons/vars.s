@@ -5,7 +5,6 @@ function warn_or_log(sd type,sd return_value,ss symbolname,sd log_option,sd p_er
 	data ptrobject%ptrobject
 	if ptrobject#==(TRUE)
 		if log_option==(log_warn)
-			add symbolname (dwsz)
 			setcall p_err# addtolog_withchar(symbolname,type) #is not calling atunused version, that will return noerror at object false
 			if p_err#==(noerror)
 				return 0
@@ -13,6 +12,34 @@ function warn_or_log(sd type,sd return_value,ss symbolname,sd log_option,sd p_er
 		endif
 	endif
 	return return_value
+endfunction
+#same function, except the array
+function warn_or_log_vars(sd type,sd return_value,ss symbolname,sd log_option,sd p_err)
+	data ptrobject%ptrobject
+	if ptrobject#==(TRUE)
+		if log_option==(log_warn)
+			sd vals;setcall vals vars_log((get),symbolname)
+			setcall p_err# addtolog_array_withchar(vals,type)
+			if p_err#==(noerror)
+				return 0
+			endif
+		endif
+	endif
+	return return_value
+endfunction
+
+function vars_log(sd type,sd val)
+	char dot="."
+	value a#1
+	value *^dot
+	value c#1
+	value *=NULL
+	if type==(set)
+		set a val
+	else
+		set c val
+		return #a
+	endelse
 endfunction
 
 function vars_core_ref(ss content,sd size,sv ptrstructure,sv warningssearch,sd setref)
@@ -40,10 +67,12 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 	While container!=end
 		Set entrypoint container
 		Add container (location)
+		sd pmask;set pmask container
+		Add container (masksize) #add here, not twice, inside warn_or_log and outside (since logging all variables)
 		If warningssearch!=(NULL)
 			Data ReferenceBit=referencebit
 			Data checkvalue#1
-			Set checkvalue container#
+			Set checkvalue pmask#
 			And checkvalue ReferenceBit
 			data ptrconstants%%ptr_constants;sd cb
 			If checkvalue==zero
@@ -52,7 +81,7 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 				#
 				data ptrfunctions%%ptr_functions
 				if ptrfunctions==ptrstructure
-					Set checkvalue container#
+					Set checkvalue pmask#
 					sd against_idata=idatabitfunction
 					and against_idata checkvalue
 					if against_idata==0
@@ -70,18 +99,15 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 					setcall returnvalue warn_or_log((log_constant),returnvalue,container,cb,warningssearch)
 				else
 					data p_o_w%%p_offset_warn
-					setcall returnvalue warn_or_log((log_variable),returnvalue,container,p_o_w#,warningssearch)
+					setcall returnvalue warn_or_log_vars((log_variable),returnvalue,container,p_o_w#,warningssearch)
 				endelse
 				if returnvalue!=zero
 					Return returnvalue
 				endif
 			endIf
 			#elseIf ptrconstants==ptrstructure 0x72
-			Add container (masksize)
 			SetCall varsize strlen(container)
 		Else
-			sd pmask;set pmask container
-			Add container (masksize)
 			SetCall varsize strlen(container)
 			If varsize==size
 				Data cmpret#1

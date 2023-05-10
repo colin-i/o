@@ -131,14 +131,19 @@ function log_term(sd psz)
 	return #textterm
 endfunction
 #err
+function addtolog_term(sd filehandle)
+	sd sz
+	ss text;setcall text log_term(#sz)
+	sd err
+	setcall err writefile_errversion(filehandle,text,sz)
+	return err
+endfunction
+#err
 function addtolog_handle(ss content,sd sizetowrite,sd filehandle)
 	sd err
 	setcall err writefile_errversion(filehandle,content,sizetowrite)
 	if err!=(noerror);return err;endif
-
-	sd sz
-	ss text;setcall text log_term(#sz)
-	setcall err writefile_errversion(filehandle,text,sz)
+	setcall err addtolog_term(filehandle)
 	return err
 endfunction
 #err
@@ -174,6 +179,25 @@ function addtolog_withchar(ss content,sd type)
 	sd err
 	setcall err addtolog_withchar_ex(content,len,type)
 	return err
+endfunction
+#err
+function addtolog_array_withchar(sv array,sd type)
+	vdata ptrfilehandle%ptrlogfile
+	if ptrfilehandle#!=-1
+		sd err
+		setcall err writefile_errversion(ptrfilehandle#,#type,1)
+		if err==(noerror)
+			while array#!=(NULL)
+				sd size;setcall size strlen(array#)
+				setcall err writefile_errversion(ptrfilehandle#,array#,size)
+				if err!=(noerror);return err;endif
+				incst array
+			endwhile
+			setcall err addtolog_term(ptrfilehandle#)
+		endif
+		return err
+	endif
+	return (noerror)
 endfunction
 #err
 function addtolog_withchar_parses(ss content,sd type,sd both)

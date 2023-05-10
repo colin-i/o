@@ -65,3 +65,6 @@ const dw_char=10
 const dw_char_0=dw_char+1
 
 const sym_with_size=dwsz
+
+const set=0
+const get=1

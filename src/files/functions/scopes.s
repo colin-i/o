@@ -157,6 +157,7 @@ function scopes_searchinvars(sd p_err,sv p_name)
 			sd data
 			sd scope
 			setcall scope scopes_get_scope(i)
+			call vars_log((set),fns)
 			setcall data searchinvars_scope_warn(p_err,scope)
 			if data!=(NULL)
 				set p_name# fns
