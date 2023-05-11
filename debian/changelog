@@ -1,3 +1,9 @@
+ocompiler (1-5+86) xenial; urgency=medium
+
+  * resolve offsets across objects
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 11 May 2023 14:12:02 +0300
+
 ocompiler (1-5+85) xenial; urgency=medium
 
   * sizes at templates
