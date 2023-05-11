@@ -218,7 +218,7 @@ function setpreferences(str scrpath)
 	setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent)
 	If err!=noerr
 		data null=0
-		data void#1
+		#data void#1
 
 		str folders#1
 		setcall folders endoffolders(scrpath)
@@ -238,7 +238,7 @@ function setpreferences(str scrpath)
 		setcall err memoryalloc(total,allocptrmem)
 		if err!=noerr
 			call Message(err)
-			return void
+			ret
 		endif
 
 		call memtomem(ptrmem,scrpath,folders)

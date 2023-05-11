@@ -39,7 +39,7 @@ function fileentry_add(sd full,sd len)
 					add previous_file (2*size_cont)
 					call adddwordtocont(previous_file,offset)
 				endif
-				return (void)
+				ret
 			endif
 			call fileentry_uninit(init)
 			call free(init)
@@ -61,7 +61,7 @@ function fileentry(sd s,sd sz)
 	if temp!=(NULL)
 		call fileentry_exists(temp)
 		call free(temp)
-		return (void)
+		ret
 	endif
 	call erExit("realpath error")
 endfunction
@@ -86,10 +86,10 @@ function fileentry_exists(sd s)
 			sub p init
 			add wf (size_cont)
 			call adddwordtocont(wf,p)
-			return (void)
+			ret
 		endif
 		incst p
-	#set p fls#d^;add fls (dword);set fls fls#;add p fls;while fls!=p;sd b;setcall b fileentry_compare(fls#,s,sz);if b==0;call skip_set();return (void);endif;incst fls
+	#set p fls#d^;add fls (dword);set fls fls#;add p fls;while fls!=p;sd b;setcall b fileentry_compare(fls#,s,sz);if b==0;call skip_set();ret;endif;incst fls
 	endwhile
 	call fileentry_add(s,sz)
 endfunction

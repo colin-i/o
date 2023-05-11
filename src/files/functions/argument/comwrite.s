@@ -209,7 +209,7 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 
 	setcall errnr writetake_offset(takeindex,location)
 	If errnr!=noerr
-		set p_errnr# errnr;return (void)
+		set p_errnr# errnr;ret
 	EndIf
 
 	sd v_64

@@ -10,7 +10,7 @@ function resolve(sd j)
 	#set mem cont#d^;add cont (dword);set p cont#;add mem p
 	sv imps%imp_mem_p
 	sd i=0
-	str f="function"
+	vstr f="function"
 	while p!=mem
 		sd len
 		set len p#
@@ -23,8 +23,9 @@ function resolve(sd j)
 		add p len
 		inc i
 	endwhile
-	str c="constant"
-	call uconst_resolve(c)
+	vstr c="constant"
+	vstr v="variable"
+	call uconst_resolve(c,v)
 	sd k
 	setcall k uconst_resolved(2)
 	#
@@ -36,7 +37,7 @@ function resolve(sd j)
 	setcall imps_sz importssize()
 	sd const_sz
 	setcall const_sz constssize()
-	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s, %u %s resolved, %u %s resolved.",j,fls,imps_sz,const_sz,c,i,f,k,c)
+	Call fprintf(st#,"%u logs, %u files, %u unique imports, %u %s/%s, %u %s resolved, %u %s/%s resolved.",j,fls,imps_sz,const_sz,c,v,i,f,k,c,v)
 	call messagedelim()
 
 	sv so^stdout

@@ -1,6 +1,6 @@
 
 const NULL=0
-const void=0
+#const void=0
 const asciiperiod=0x2E
 const asciio=0x6F
 
@@ -40,7 +40,7 @@ function log_file(ss file)
 		if link==(TRUE)
 			call printlink(file)
 		endif
-		return (void)
+		ret
 	endif
 	call erExit("fopen error")
 endfunction
@@ -52,25 +52,34 @@ function log_line(ss s,sd sz,sd plink)
 	inc s;dec sz
 	sd skip
 	if plink#==(TRUE)
-		if type==(log_declare)
+		if type==(log_offset)
 			setcall skip skip_test()
+			if skip==(FALSE)
+				call constant_add(s,sz) #same as with const, except it has a dot
+			endif
+			ret
+		elseif type==(log_declare)
+			setcall skip skip_test() #skip same included file
 			if skip==(FALSE)
 				call constant_add(s,sz)
 			endif
-			return (void)
+			ret
 		elseif type==(log_import)
 			setcall skip skip_test()
 			if skip==(FALSE)
 				call import_add(s,sz)
 			endif
-			return (void)
+			ret
 		elseif type==(log_constant)
 			call uconst_add(s,sz)
-			return (void)
+			ret
 		elseif type==(log_function)
 			sv fns%fn_mem_p
 			call addtocont(fns,s,sz)
-			return (void)
+			ret
+		elseif type==(log_variable)
+			call uconst_add(s,sz)
+			ret
 		endelseif
 	endif
 	if type==(log_pathname)
@@ -168,7 +177,7 @@ function printlink(sd file)
 							setCall len fprintf(st#,file)
 							sub back file
 							if len==back
-								return (void)
+								ret
 							endif
 						endif
 						call erExit("fprintf error.")

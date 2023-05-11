@@ -30,3 +30,6 @@ importx "feof" feof
 importx "free" free
 importx "chdir" chdir
 importx "stdout" stdout
+
+#uconstres
+importx "memchr" memchr

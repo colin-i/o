@@ -47,7 +47,7 @@ Const noerror=0
 Const error=-1 #is also for some windows
 Const FORWARD=1
 Const BACKWARD=-1
-Const void=0
+#Const void=0
 
 Data bytesize=bsz
 Data wordsize=wsz

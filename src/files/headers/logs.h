@@ -10,6 +10,6 @@ const log_expand=0x78
 #extern shared with odbg
 const log_line=0x6C
 
-#QwERtyuIoP 5 5
+#QwERtyuIOP 6 4
 #asDFghjkL  3 6
-# zXCvbNm   3 4
+# zXCVbNm   4 3

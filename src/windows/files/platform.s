@@ -29,7 +29,7 @@ function wide_to_ansi(ss in)
 		set x in#
 		set out# x
 		if x==n
-			return (void)
+			ret
 		endif
 		add in 2
 	endwhile

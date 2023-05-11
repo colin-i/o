@@ -57,7 +57,7 @@ function uconstres_search(sv f,sd is_new)
 	endwhile
 endfunction
 
-function uconst_resolve(ss const_str)
+function uconst_resolve(ss const_str,ss var_str)
 	sv fls%files_p
 	sv cursor
 	set cursor fls#
@@ -76,7 +76,13 @@ function uconst_resolve(ss const_str)
 			sd offset
 			set offset cursor#d^
 			add cursor (dword)
-			call wrongExit(const_str,cursor,offset)
+
+			sd is_var;setcall is_var memchr(cursor,(asciiperiod),offset)
+			if is_var!=(NULL)
+				call wrongExit(var_str,cursor,offset)
+			else
+				call wrongExit(const_str,cursor,offset)
+			endelse
 		endif
 		add cursor :
 	endwhile

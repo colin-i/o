@@ -85,11 +85,11 @@ function uconst_unused(sv cont,sd ofs)
 					add pointer (dword)
 				endwhile
 				call ralloc(uns,(-dword))
-				return (void)
+				ret
 			endif
 			add cursor (dword)
 		else
-			return (void)
+			ret
 		endelse
 	endwhile
 endfunction
