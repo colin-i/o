@@ -73,23 +73,28 @@ function uconst_unused(sv cont,sd ofs)
 	while cursor!=end
 		sd offset
 		set offset cursor#
-		if offset<=ofs
-			if offset==ofs
-				#move to doubleunused
-				call adddwordtocont(cont,offset)
-				sub end (dword)
-				sd pointer;set pointer cursor
-				while cursor!=end
-					add cursor (dword)
-					set pointer# cursor#
-					add pointer (dword)
-				endwhile
-				call ralloc(uns,(-dword))
-				ret
-			endif
-			add cursor (dword)
-		else
+
+		#if offset<=ofs
+		#this is not ordered since mixing const and variables
+
+		if offset==ofs
+			#move to doubleunused
+			call adddwordtocont(cont,offset)
+			sub end (dword)
+			sd pointer;set pointer cursor
+			while cursor!=end
+				add cursor (dword)
+				set pointer# cursor#
+				add pointer (dword)
+			endwhile
+			call ralloc(uns,(-dword))
 			ret
-		endelse
+		endif
+		add cursor (dword)
+
+		#else
+		#	ret
+		#endelse
+
 	endwhile
 endfunction
