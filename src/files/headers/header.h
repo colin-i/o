@@ -3,30 +3,38 @@
 #ref entry start
 #bit offset 0: 1 means referenced
 Const referencebit=0x01
+
 #bit offset 1: 1 means idata function
 Const idatabitfunction=0x02
+
 #bit offset 2: 1 means stack variable
 Const stackbit=0x04
+
 #bit offset 3:
 	#stackbit: 1 means ebp fn arguments          #was bit offset 3,4,5: stack ebx/ebp
 Const stackrelativebit=0x08
 	#nostackbit: datapointbit
 Const datapointbit=0x08
+
 #bit offset 4: 1 means is nobits
 const expandbit=0x10
+
 #bit offset 5: 1 means ignore aftercall
 const aftercallthrowlessbit=0x20
+
 #bit offset 6: is functionX/importX
 const x86_64bit=0x40
+
 #bit offset 7; pointer bit (sv# with rex, sd# without rex)
 const pointbit=0x80
+
 #bit offset 8; runtime sufix offset
 const suffixbit=0x100
 
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
 const location_bits=stackbit|expandbit
-const stack_location_bits=location_bits|stackrelativebit
+const stack_location_bits=location_bits|stackrelativebit    #and expandbit? will be always 0 at stack, keep it clean from what we combine
 
 const location=dwsz
 Const maskoffset=location

@@ -463,7 +463,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 	if pointer_size!=0
 		#runtime
 		or pointer2# (suffixbit)
-		add pointer2 (masksize)
+		add pointer2 (masksize) #note that here is not on nameoffset, is on data#3 value from temp
 		set pointer2# pointer#
 		set pointer# data#
 	else
