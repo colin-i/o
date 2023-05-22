@@ -407,12 +407,12 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			sd entrybags%%ptr_scopes
 			if scope!=entrybags
 				#stored class info
-				setcall subtract_base scopes_get_class_data(scope,ptrdata) # test expandbit is inside
+				setcall subtract_base scopes_get_class_data(scope,ptrdata#) # test expandbit is inside
 			else
 				setcall subtract_base get_img_vdata() #or img_nbdata if exec will have (test expandbit)
 			endelse
 		else
-			setcall subtract_base stack64_base(ptrdata)
+			setcall subtract_base stack64_base(ptrdata#)
 		endelse
 	else
 		SetCall err varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
@@ -425,12 +425,12 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			if ptrinnerfunction#==(TRUE)
 				sd ptrfunctionTagIndex%ptrfunctionTagIndex
 				setcall scope scopes_get_scope(ptrfunctionTagIndex#)
-				setcall subtract_base scopes_get_class_data(scope,ptrdata)
+				setcall subtract_base scopes_get_class_data(scope,ptrdata#)
 			else
 				setcall subtract_base get_img_vdata() #or img_nbdata if exec will have (test expandbit)
 			endelse
 		else
-			setcall subtract_base stack64_base(ptrdata)
+			setcall subtract_base stack64_base(ptrdata#)
 		endelse
 	endelse
 	char random#1

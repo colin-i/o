@@ -141,8 +141,8 @@ function stack64_enlarge(sd val)
 	endif
 	return val
 endfunction
-function stack64_base(sv pdata)
-	sd is_arg;setcall is_arg stackrelativebit(pdata#)
+function stack64_base(sv data)
+	sd is_arg;setcall is_arg stackrelativebit(data)
 	if is_arg==0
 		return 0
 	endif
