@@ -194,17 +194,59 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		endif
 		#size >=3
 		if against==data_cursor
-			if p_parses#==(pass_init)
-				return "At the moment, !! is not implemented here."
-			endif
 			inc content
 			sub size 2
-			#for virtual is implemented at the moment. if against==data_cursor !!!
-			sd pos
-			sd err;setcall err get_scope_pos(content,size,#pos)
-			if err==(noerror)
-				setcall outval# get_scope_datax_size(pos)
-			endif
+
+			sd err
+
+			sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
+			if dot_offset!=size
+				#size of variable
+				#sufixed,casted, nobody is stopping them
+				datax data#1;datax low#1;datax sufix#1
+				setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
+				if err==(noerror)
+					if low!=0
+						set outval# (bsz)
+					else
+						set outval# (dwsz)
+						sd test;setcall test stackbit(data)
+						if test==0
+							if sufix==0
+								setcall test datapointbit(data)
+								if test!=0
+									set outval# (qwsz)
+								endif
+							else
+								setcall test pointbit(data) #it has 64 check
+								if test!=0
+									set outval# (qwsz)
+								endif
+							endelse
+						else
+							if sufix==0
+								setcall outval# stack64_enlarge(outval#)
+							else
+								setcall test pointbit(data) #it has 64 check
+								if test!=0
+									set outval# (qwsz)
+								endif
+							endelse
+						endelse
+					endelse
+				endif
+			else
+				#size of function
+				if p_parses#==(pass_init)
+					return "At the moment, !! is not implemented here."
+				endif
+				#for virtual is implemented at the moment. if against==data_cursor !!!
+				sd pos
+				setcall err get_scope_pos(content,size,#pos)
+				if err==(noerror)
+					setcall outval# get_scope_datax_size(pos)
+				endif
+			endelse
 			return err
 		endif
 		vstr er="The text after the data cursor sign isn't recognized."

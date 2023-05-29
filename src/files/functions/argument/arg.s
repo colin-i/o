@@ -249,7 +249,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 	return errnr
 EndFunction
 #err
-function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
+function getarg_dot_any(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd errnr
 	sd scope
 	setcall errnr get_scope(#content,#argsize,container_sz,#scope)
@@ -257,6 +257,12 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 		return errnr
 	endif
 	SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
+	return errnr
+endfunction
+#err
+function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
+	sd errnr
+	setcall errnr getarg_dot_any(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
 	if errnr!=(noerror)
 		return errnr
 	endif
