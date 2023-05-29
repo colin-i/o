@@ -23,6 +23,7 @@ endfunction
 data *#1;datax *#1;data a=!!main
 
 entry main()
+#const not_here=!!f1
 call f1()
 call f2()
 call printf("%u\n",a)         #20
