@@ -234,6 +234,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 							endelse
 						endelse
 					endelse
+					#data, shortvalue, max decides, mult outval
 				endif
 			else
 				#size of function

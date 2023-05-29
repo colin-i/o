@@ -29,11 +29,16 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if stack==(TRUE)
 				sd sectiontypenumber=totalmemvariables
 				add sectiontypenumber typenumber
+				#getstructcont sectiontypenumber, reg
 				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,sectiontypenumber,long_mask,0) #there is 1 more argument but is not used
+				#getstructcont
 			else
+				#getstructcont typenumber, reg
 				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand)
+				#getstructcont
 			endelse
 			If err!=noerr;Return err;EndIf
+			#add reg, set 1
 			if sign==nosign
 				#stack variable declared without assignation, only increment stack variables
 				call addramp(#err)
@@ -208,7 +213,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Return noerr
 		EndElse
 	ElseIf sign==(reserveascii)
-		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask)
+		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask)#,pshortvalue
 		if err==(noerror)
 			if punitsize!=(NULL)
 				set punitsize# value
@@ -421,12 +426,13 @@ function get_function_values(sd impbit,sd p_value,sd pointer)
 endfunction
 
 #err
-function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask)
+function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask)#,pshortvalue
 	sd err
 	SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 	If err!=(noerror)
 		Return err
 	EndIf
+	#set shortvalue,max check
 	Char negreserve="Unexpected negative value at reserve declaration."
 	vStr ptrnegreserve^negreserve
 	If ptrvalue#<0
