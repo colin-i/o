@@ -202,7 +202,8 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
 			if dot_offset!=size
 				#size of variable, !!a.b! offset
-				#sufixed,casted, nobody is stopping them
+				#suffixed,casted, nobody is stopping them (casted will not reach here, will be xor)
+				#	and suffix+0 only, else is a comment
 				datax data#1;datax low#1;datax sufix#1
 				setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
 				if err==(noerror)
