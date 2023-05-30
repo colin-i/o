@@ -440,7 +440,7 @@ function cast_resolve(sd number,sd cast,sv ptrdata)
 		else
 		#cast==(cast_value)
 			sd for_64;setcall for_64 is_for_64()
-			if for_64!=0 #example at sizeof variable
+			if for_64!=0 #not at sizeof variable, will be xor
 				or data# (pointbit)
 			endif
 		endelse

@@ -201,7 +201,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 
 			sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
 			if dot_offset!=size
-				#size of variable
+				#size of variable, !!a.b! offset
 				#sufixed,casted, nobody is stopping them
 				datax data#1;datax low#1;datax sufix#1
 				setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
@@ -234,7 +234,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 							endelse
 						endelse
 					endelse
-					#data, shortvalue, max decides, mult outval
+					#data, shortvalue, max decides, mult outval but not at suffix
 				endif
 			else
 				#size of function
