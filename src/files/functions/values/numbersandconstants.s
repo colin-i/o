@@ -203,7 +203,7 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			if dot_offset!=size
 				#size of variable, !!a.b! offset
 				#suffixed,casted, nobody is stopping them (casted will not reach here, will be xor)
-				#	and suffix+0 only, else is a comment
+				#	and suffix+0 at def, else is a comment;at code is ok
 				datax data#1;datax low#1;datax sufix#1
 				setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
 				if err==(noerror)
