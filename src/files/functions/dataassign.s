@@ -432,15 +432,22 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 	If err!=(noerror)
 		Return err
 	EndIf
-	#set shortvalue,max check
 	Char negreserve="Unexpected negative value at reserve declaration."
 	vStr ptrnegreserve^negreserve
 	If ptrvalue#<0
 		Return ptrnegreserve
 	EndIf
+
+	sd value;set value ptrvalue#
+	#if value<=max
+	#	call d_to_s(value,pshortvalue)
+	#else
+	#	call d_to_s(max,pshortvalue)
+	#endelse
+
 	if is_stack==(FALSE)
 		If typenumber!=(charnumber)
-			SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+			SetCall err maxsectioncheck(value,ptrvalue)
 			If err==(noerror)
 				SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
 				If err==(noerror)
@@ -451,7 +458,7 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 			EndIf
 		EndIf
 	else
-		SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+		SetCall err maxsectioncheck(value,ptrvalue)
 		If err==(noerror)
 			SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
 			If err==(noerror)

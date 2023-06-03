@@ -55,3 +55,5 @@ Include "./functions/scopes.s"
 Include "./functions/debug.s"
 
 Include "./functions/index.s"
+
+Include "./functions/short.s"

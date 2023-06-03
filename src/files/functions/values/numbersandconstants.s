@@ -235,7 +235,12 @@ function numbertoint(str content,data size,data outval,data minusbool)
 							endelse
 						endelse
 					endelse
-					#data, shortvalue, max decides, mult outval but not at suffix
+
+					#if sufix!=0
+					#	add data (maskoffset_reserve)
+					#	sd shortvalue;setcall shortvalue s_to_d(data)
+					#max decides, mult outval
+					#endif
 				endif
 			else
 				#size of function
