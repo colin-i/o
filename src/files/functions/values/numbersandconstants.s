@@ -236,11 +236,14 @@ function numbertoint(str content,data size,data outval,data minusbool)
 						endelse
 					endelse
 
-					#if sufix!=0
-					#	add data (maskoffset_reserve)
-					#	sd shortvalue;setcall shortvalue s_to_d(data)
-					#max decides, mult outval
-					#endif
+					if sufix==0
+						add data (maskoffset_reserve)
+						sd shortvalue;setcall shortvalue s_to_i(data)
+						if shortvalue==0
+							return "Great reserve size is not implemented yet."
+						endif
+						mult outval# shortvalue
+					endif
 				endif
 			else
 				#size of function

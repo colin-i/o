@@ -40,6 +40,7 @@ const location=dwsz
 Const maskoffset=location
 const masksize=dwsz
 const location_and_mask=maskoffset+masksize
+const maskoffset_reserve=location_and_mask-wsz
 Const nameoffset=location_and_mask
 const addoffset=location_and_mask
 

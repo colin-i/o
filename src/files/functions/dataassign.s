@@ -18,6 +18,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	#Data pointer_structure#1
 	#at constants and at data^sd,str^ss
 
+	#for size of var
+	sd reg;sd ptr_reserve
+
 	if punitsize==(NULL)
 		if typenumber==constantsnr
 			#this can't go after dataparse, addvarref will increase the offset
@@ -26,19 +29,31 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			#it is not a mistake to go with 0 mask in variable from here to addaref
 			If err!=noerr;Return err;EndIf
 		else
+			sd before_add_cont
 			if stack==(TRUE)
 				sd sectiontypenumber=totalmemvariables
 				add sectiontypenumber typenumber
-				#getstructcont sectiontypenumber, reg
+				#
+				setcall before_add_cont getstructcont(sectiontypenumber)
+				call getcontReg(before_add_cont,#reg)
+				#
 				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,sectiontypenumber,long_mask,0) #there is 1 more argument but is not used
-				#getstructcont
+				setcall ptr_reserve getstructcont(sectiontypenumber)
 			else
-				#getstructcont typenumber, reg
+				#
+				setcall before_add_cont getstructcont(typenumber)
+				call getcontReg(before_add_cont,#reg)
+				#
 				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand)
-				#getstructcont
+				setcall ptr_reserve getstructcont(typenumber)
 			endelse
 			If err!=noerr;Return err;EndIf
-			#add reg, set 1
+
+			#for size of var
+			add ptr_reserve reg
+			add ptr_reserve (maskoffset_reserve)
+			call i_to_s(1,ptr_reserve) #why not set # 1? anyone can modify in peace and not set this part if not required. is this a plan? don't care
+
 			if sign==nosign
 				#stack variable declared without assignation, only increment stack variables
 				call addramp(#err)
@@ -213,7 +228,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Return noerr
 		EndElse
 	ElseIf sign==(reserveascii)
-		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask)#,pshortvalue
+		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask,ptr_reserve)
 		if err==(noerror)
 			if punitsize!=(NULL)
 				set punitsize# value
@@ -426,7 +441,7 @@ function get_function_values(sd impbit,sd p_value,sd pointer)
 endfunction
 
 #err
-function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask)#,pshortvalue
+function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask,sd ptr_reserve)
 	sd err
 	SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 	If err!=(noerror)
@@ -439,11 +454,11 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 	EndIf
 
 	sd value;set value ptrvalue#
-	#if value<=max
-	#	call d_to_s(value,pshortvalue)
-	#else
-	#	call d_to_s(max,pshortvalue)
-	#endelse
+	if value<=(wmax)
+		call i_to_s(value,ptr_reserve)
+	else
+		call i_to_s(0,ptr_reserve)
+	endelse
 
 	if is_stack==(FALSE)
 		If typenumber!=(charnumber)

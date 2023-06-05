@@ -29,6 +29,9 @@ Const bsz=1
 Const wsz=2
 Const dwsz=4
 Const qwsz=8
+
+const wmax=0xffFF
+
 Const A_from_AZ=asciiA
 #Const Z_from_AZ=asciiZ
 Const a_from_az=asciia
