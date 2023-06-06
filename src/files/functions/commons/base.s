@@ -52,6 +52,7 @@ Const globalinnerfunction^innerfunction
 
 #pdata
 Function getstructcont(data typenumber)
+#structcont is not same as cont, it's easy to rename
 	Data dest#1
 	Data scopes%%ptr_scopes
 	Data sizeofdataset=sizeofcontainer

@@ -29,27 +29,26 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			#it is not a mistake to go with 0 mask in variable from here to addaref
 			If err!=noerr;Return err;EndIf
 		else
-			sd before_add_cont
+			sd immovable_struct_cont
 			if stack==(TRUE)
 				sd sectiontypenumber=totalmemvariables
 				add sectiontypenumber typenumber
 				#
-				setcall before_add_cont getstructcont(sectiontypenumber)
-				call getcontReg(before_add_cont,#reg)
+				setcall immovable_struct_cont getstructcont(sectiontypenumber)
+				call getcontReg(immovable_struct_cont,#reg)
 				#
 				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,sectiontypenumber,long_mask,0) #there is 1 more argument but is not used
-				setcall ptr_reserve getstructcont(sectiontypenumber)
 			else
 				#
-				setcall before_add_cont getstructcont(typenumber)
-				call getcontReg(before_add_cont,#reg)
+				setcall immovable_struct_cont getstructcont(typenumber)
+				call getcontReg(immovable_struct_cont,#reg)
 				#
 				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand)
-				setcall ptr_reserve getstructcont(typenumber)
 			endelse
 			If err!=noerr;Return err;EndIf
 
 			#for size of var
+			call getcont(immovable_struct_cont,#ptr_reserve)
 			add ptr_reserve reg
 			add ptr_reserve (maskoffset_reserve)
 			call i_to_s(1,ptr_reserve) #why not set # 1? anyone can modify in peace and not set this part if not required. is this a plan? don't care

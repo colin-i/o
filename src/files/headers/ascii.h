@@ -43,7 +43,7 @@ Const asciif=0x66
 Const asciin=0x6E
 Const asciir=0x72
 Const asciit=0x74
-Const asciix=0x78
+#Const asciix=0x78
 Const asciiz=0x7A
 #7b left curly bracket {
 Const asciivbar=0x7C

@@ -163,104 +163,98 @@ EndFunction
 #error
 function numbertoint(str content,data size,data outval,data minusbool)
 	Data bool#1
-	#test to see if the ! sign is present that means the current data cursor
+	#test to see if the ! sign is present
 	char data_cursor=asciiexclamationmark
 	if content#==data_cursor
 		if size==1
+			#the current data cursor
 			setcall outval# get_img_vdata_dataReg()
 			return (noerror)
 		endif
+
 		vdata p_parses%ptr_parses
 		inc content
 		charx against#1
 		set against content#
-		if size==2
-			if against!=(asciix)
-			#maybe is X
-				add against (AZ_to_az)
-			endif
-			if against==(asciix)
+		if against==(asciiexclamationmark)
+			if size==2
+				#the current virtual data cursor
 				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain/main or (NULL)
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
 				if ptr_nobits_virtual#==(No)
 					if p_parses#==(pass_init)
-						return "At the moment, !X is not implemented here."
+						return "At the moment, !! is not implemented here."
 					endif
 				endif
 				setcall outval# get_img_vdata_dataSize()
 				return (noerror)
 			endif
-			return "Expecting !X ."
+			return "Expecting !! ."
 		endif
-		#size >=3
-		if against==data_cursor
-			inc content
-			sub size 2
 
-			sd err
-
-			sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
-			if dot_offset!=size
-				#size of variable, !!a.b! offset
-				#suffixed,casted, nobody is stopping them (casted will not reach here, will be xor)
-				#	and suffix+0 at def, else is a comment;at code is ok
-				datax data#1;datax low#1;datax sufix#1
-				setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
-				if err==(noerror)
-					if low!=0
-						set outval# (bsz)
-					else
-						set outval# (dwsz)
-						sd test;setcall test stackbit(data)
-						if test==0
-							if sufix==0
-								setcall test datapointbit(data)
-								if test!=0
-									set outval# (qwsz)
-								endif
-							else
-								setcall test pointbit(data) #it has 64 check
-								if test!=0
-									set outval# (qwsz)
-								endif
-							endelse
+		dec size
+		sd err
+		sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
+		if dot_offset!=size
+			#size of variable, !!a.b! offset
+			#suffixed,casted, nobody is stopping them (casted will not reach here, will be xor)
+			#	and suffix+0 at def, else is a comment;at code is ok
+			datax data#1;datax low#1;datax sufix#1
+			setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
+			if err==(noerror)
+				if low!=0
+					set outval# (bsz)
+				else
+					set outval# (dwsz)
+					sd test;setcall test stackbit(data)
+					if test==0
+						if sufix==0
+							setcall test datapointbit(data)
+							if test!=0
+								set outval# (qwsz)
+							endif
 						else
-							if sufix==0
-								setcall outval# stack64_enlarge(outval#)
-							else
-								setcall test pointbit(data) #it has 64 check
-								if test!=0
-									set outval# (qwsz)
-								endif
-							endelse
+							setcall test pointbit(data) #it has 64 check
+							if test!=0
+								set outval# (qwsz)
+							endif
+						endelse
+					else
+						if sufix==0
+							setcall outval# stack64_enlarge(outval#)
+						else
+							setcall test pointbit(data) #it has 64 check
+							if test!=0
+								set outval# (qwsz)
+							endif
 						endelse
 					endelse
+				endelse
 
-					if sufix==0
-						add data (maskoffset_reserve)
-						sd shortvalue;setcall shortvalue s_to_i(data)
-						if shortvalue==0
-							return "Great reserve size is not implemented yet."
-						endif
-						mult outval# shortvalue
+				if sufix==0
+					add data (maskoffset_reserve)
+					sd shortvalue;setcall shortvalue s_to_i(data)
+					if shortvalue==0
+						return "Great reserve size is not implemented yet."
 					endif
+					mult outval# shortvalue
 				endif
-			else
-				#size of function
-				if p_parses#==(pass_init)
-					return "At the moment, !! is not implemented here."
-				endif
-				#for virtual is implemented at the moment. if against==data_cursor !!!
-				sd pos
-				setcall err get_scope_pos(content,size,#pos)
-				if err==(noerror)
-					setcall outval# get_scope_datax_size(pos)
-				endif
-			endelse
-			return err
-		endif
-		vstr er="The text after the data cursor sign isn't recognized."
-		return er
+			endif
+		else
+			#size of function
+			if p_parses#==(pass_init)
+				return "At the moment, !func is not implemented here."
+			endif
+			#for virtual is implemented at the moment. if against==data_cursor !!
+			sd pos
+			setcall err get_scope_pos(content,size,#pos)
+			if err==(noerror)
+				setcall outval# get_scope_datax_size(pos)
+			endif
+		endelse
+		return err
+		#vstr er="The text after the data cursor sign isn't recognized."
+		#return er
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
 	char int_size=asciicolon
 	elseif content#==int_size

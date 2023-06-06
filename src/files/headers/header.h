@@ -75,7 +75,7 @@ Const sizeofcontainer=3*dwsz
 Const includesSize=50*includesetSz
 #includesSize
 
-#this, not yet at simple exec Const containersbegin=!x
+#this, not yet at simple exec Const containersbegin=!!
 
 Datax includesMax#1
 Datax includes#1
@@ -231,7 +231,7 @@ Datax debugsec#1
 Datax debugsecReg#1
 Const ptr_debug^debugsecMax
 
-#not yet at simple exec Const containerssize=!x-containersbegin
+#not yet at simple exec Const containerssize=!!-containersbegin
 const containersbegin^includesMax
 const containersalmostend^debugsecReg
 data containerssize=containersalmostend+dwsz-containersbegin
@@ -249,7 +249,7 @@ Const ptrdummyEntry^dummyEntryMax
 #data *#1
 #data nobitssecReg#1
 #const ptrnobitsReg^nobitssecReg
-#used at !x offset
+#used at !! offset
 
 Data datasecSize#1
 const ptrdataSize^datasecSize
