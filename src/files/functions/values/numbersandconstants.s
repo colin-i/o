@@ -243,9 +243,8 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		else
 			#size of function
 			if p_parses#==(pass_init)
-				return "At the moment, !func is not implemented here."
+				return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
-			#for virtual is implemented at the moment. if against==data_cursor !!
 			sd pos
 			setcall err get_scope_pos(content,size,#pos)
 			if err==(noerror)

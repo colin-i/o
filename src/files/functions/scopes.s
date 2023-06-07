@@ -1,11 +1,17 @@
 
 const sizeofclassinfostartdata=location
+#                              data
 const classinfostartdatax=sizeofclassinfostartdata
 const sizeofclassinfostarts=sizeofclassinfostartdata+location
 #                                                    datax
-const classinfosizedatax=sizeofclassinfostarts
-const sizeofclassinfo=sizeofclassinfostarts+location
-#                                           dataxsize
+#const classinfosizedata=sizeofclassinfostarts
+const sizeofclassinfosizedata=location
+#                             datasize
+const sizeofclassinfosize=sizeofclassinfosizedata+location
+#                                                 dataxsize
+const classinfosizedatax=sizeofclassinfostarts+sizeofclassinfosizedata
+
+const sizeofclassinfo=sizeofclassinfostarts+sizeofclassinfosize
 
 value scopesbag#1
 data scopesbag_size#1
@@ -131,12 +137,19 @@ function scopes_store(sv scope)
 		add scope (sizeofcontainer)
 		add pointer (sizeofcontainer)
 	endwhile
-	#and set for class size, can have inter functions size for entry
-	add scope (location)
+
+	#and set for class size, can get fast inter functions size for entry, and also the size of it
 	sd start;set start scope
-	add scope (location)
+	add scope (sizeofclassinfostarts)
+
+	setcall scope#d^ get_img_vdata_dataReg()
+	sub scope#d^ start#
+
+	add start (sizeofclassinfostartdata)
+	add scope (sizeofclassinfosizedata)
 	setcall scope#d^ get_img_vdata_dataSize()
 	sub scope#d^ start#
+
 	return (noerror)
 endfunction
 
