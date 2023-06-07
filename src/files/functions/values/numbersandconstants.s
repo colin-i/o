@@ -172,6 +172,8 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			return (noerror)
 		endif
 
+		sd err
+
 		vdata p_parses%ptr_parses
 		inc content
 		charx against#1
@@ -189,11 +191,13 @@ function numbertoint(str content,data size,data outval,data minusbool)
 				setcall outval# get_img_vdata_dataSize()
 				return (noerror)
 			endif
-			return "Expecting !! ."
+			inc content
+			sub size 2
+			setcall err get_sizeoffunction(content,size,outval,(TRUE))
+			return err
 		endif
 
 		dec size
-		sd err
 		sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
 		if dot_offset!=size
 			#size of variable, !a.b! offset
@@ -241,19 +245,9 @@ function numbertoint(str content,data size,data outval,data minusbool)
 				endif
 			endif
 		else
-			#size of function
-			if p_parses#==(pass_init)
-				return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
-			endif
-			sd pos
-			setcall err get_scope_pos(content,size,#pos)
-			if err==(noerror)
-				setcall outval# get_scope_datax_size(pos)
-			endif
+			setcall err get_sizeoffunction(content,size,outval,(FALSE))
 		endelse
 		return err
-		#vstr er="The text after the data cursor sign isn't recognized."
-		#return er
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
 	char int_size=asciicolon
 	elseif content#==int_size
@@ -274,6 +268,21 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		EndIf
 	EndIf
 	return (noerror)
+endfunction
+
+#size of function
+function get_sizeoffunction(sd content,sd size,sd outval,sd is_expand)
+	vdata p_parses%ptr_parses
+	if p_parses#==(pass_init)
+		return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
+	endif
+	sd err
+	sd pos
+	setcall err get_scope_pos(content,size,#pos)
+	if err==(noerror)
+		setcall outval# get_scope_data_size(pos,is_expand)
+	endif
+	return err
 endfunction
 
 #err pointer

@@ -4,12 +4,12 @@ const sizeofclassinfostartdata=location
 const classinfostartdatax=sizeofclassinfostartdata
 const sizeofclassinfostarts=sizeofclassinfostartdata+location
 #                                                    datax
-#const classinfosizedata=sizeofclassinfostarts
+const classinfosizedata=sizeofclassinfostarts
 const sizeofclassinfosizedata=location
 #                             datasize
 const sizeofclassinfosize=sizeofclassinfosizedata+location
 #                                                 dataxsize
-const classinfosizedatax=sizeofclassinfostarts+sizeofclassinfosizedata
+const classinfosizedatax=sizeofclassinfosizedata
 
 const sizeofclassinfo=sizeofclassinfostarts+sizeofclassinfosize
 
@@ -205,7 +205,7 @@ function scopes_get_class_data(sd scope,sd data)
 endfunction
 
 #size
-function get_scope_datax_size(sd pos)
+function get_scope_data_size(sd pos,sd is_expand)
 	value entrybags%%ptr_scopes
 	vdata ptrfunctionTagIndex%ptrfunctionTagIndex
 	vdata ptrinnerfunction%globalinnerfunction
@@ -214,24 +214,39 @@ function get_scope_datax_size(sd pos)
 	if scope!=entrybags
 		if ptrfunctionTagIndex#==pos
 			if ptrinnerfunction#==(TRUE)
-				setcall size get_img_vdata_dataSize()
-				add scope (sizeofscope+classinfostartdatax)
+				add scope (sizeofscope)
+				if is_expand!=0
+					add scope (classinfostartdatax)
+					setcall size get_img_vdata_dataSize()
+				else
+					setcall size get_img_vdata_dataReg()
+				endelse
 				sub size scope#
 				return size
 			endif
 			#will be 0 (from calloc)
 		endif
 		#another function
-		add scope (sizeofscope+classinfosizedatax)
+		add scope (sizeofscope+classinfosizedata)
+		if is_expand!=0
+			add scope (classinfosizedatax)
+		endif
 		return scope# #calloc at bigger
 	endif
 	#entry
 	if ptrinnerfunction#==(TRUE)
 		setcall scope scopes_get_scope(ptrfunctionTagIndex#)
-		add scope (sizeofscope+classinfostartdatax)
+		add scope (sizeofscope)
+		if is_expand!=0
+			add scope (classinfostartdatax)
+		endif
 		set size scope#
 	else
-		setcall size get_img_vdata_dataSize()
+		if is_expand!=0
+			setcall size get_img_vdata_dataSize()
+		else
+			setcall size get_img_vdata_dataReg()
+		endelse
 	endelse
 	sv p%scopesbag_ptr
 	set p p#
@@ -239,7 +254,10 @@ function get_scope_datax_size(sd pos)
 	add last p
 	while p<^last
 		sd s;set s p#
-		add s (sizeofscope+classinfosizedatax)
+		add s (sizeofscope+classinfosizedata)
+		if is_expand!=0
+			add s (classinfosizedatax)
+		endif
 		sub size s#
 		incst p
 	endwhile
