@@ -164,8 +164,7 @@ EndFunction
 function numbertoint(str content,data size,data outval,data minusbool)
 	Data bool#1
 	#test to see if the ! sign is present
-	char data_cursor=asciiexclamationmark
-	if content#==data_cursor
+	if content#==(asciiexclamationmark)
 		if size==1
 			#the current data cursor
 			setcall outval# get_img_vdata_dataReg()
@@ -200,50 +199,57 @@ function numbertoint(str content,data size,data outval,data minusbool)
 		dec size
 		sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
 		if dot_offset!=size
-			#size of variable, !a.b! offset
 			#suffixed,casted, nobody is stopping them (casted will not reach here, will be xor)
 			#	and suffix+0 at def, else is a comment;at code is ok
+			ss pointer=-1;add pointer content;add pointer size
 			datax data#1;datax low#1;datax sufix#1
-			setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
-			if err==(noerror)
-				if low!=0
-					set outval# (bsz)
-				else
-					set outval# (dwsz)
-					sd test;setcall test stackbit(data)
-					if test==0
-						if sufix==0
-							setcall test datapointbit(data)
-							if test!=0
-								set outval# (qwsz)
-							endif
-						else
-							setcall test pointbit(data) #it has 64 check
-							if test!=0
-								set outval# (qwsz)
-							endif
-						endelse
+			if pointer#!=(asciiexclamationmark)
+				#size of variable
+				setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
+				if err==(noerror)
+					if low!=0
+						set outval# (bsz)
 					else
-						if sufix==0
-							setcall outval# stack64_enlarge(outval#)
+						set outval# (dwsz)
+						sd test;setcall test stackbit(data)
+						if test==0
+							if sufix==0
+								setcall test datapointbit(data)
+								if test!=0
+									set outval# (qwsz)
+								endif
+							else
+								setcall test pointbit(data) #it has 64 check
+								if test!=0
+									set outval# (qwsz)
+								endif
+							endelse
 						else
-							setcall test pointbit(data) #it has 64 check
-							if test!=0
-								set outval# (qwsz)
-							endif
+							if sufix==0
+								setcall outval# stack64_enlarge(outval#)
+							else
+								setcall test pointbit(data) #it has 64 check
+								if test!=0
+									set outval# (qwsz)
+								endif
+							endelse
 						endelse
 					endelse
-				endelse
 
-				if sufix==0
-					add data (maskoffset_reserve)
-					sd shortvalue;setcall shortvalue s_to_i(data)
-					if shortvalue==0
-						return "Great reserve size is not implemented yet."
+					if sufix==0
+						add data (maskoffset_reserve)
+						sd shortvalue;setcall shortvalue s_to_i(data)
+						if shortvalue==0
+							return "Great reserve size is not implemented yet."
+						endif
+						mult outval# shortvalue
 					endif
-					mult outval# shortvalue
 				endif
-			endif
+			else
+				# !a.b! offset
+				dec size
+				return "to do" #return "Not using offset of suffix."
+			endelse
 		else
 			setcall err get_sizeoffunction(content,size,outval,(FALSE))
 		endelse

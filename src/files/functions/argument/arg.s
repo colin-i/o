@@ -415,7 +415,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				#stored class info
 				setcall subtract_base scopes_get_class_data(scope,ptrdata#) # test expandbit is inside
 			else
-				setcall subtract_base get_img_vdata() #or img_nbdata if exec will have (test expandbit)
+				setcall subtract_base get_entry_base(ptrdata#)
 			endelse
 		else
 			setcall subtract_base stack64_base(ptrdata#)
@@ -433,7 +433,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				setcall scope scopes_get_scope(ptrfunctionTagIndex#)
 				setcall subtract_base scopes_get_class_data(scope,ptrdata#)
 			else
-				setcall subtract_base get_img_vdata() #or img_nbdata if exec will have (test expandbit)
+				setcall subtract_base get_entry_base(ptrdata#)
 			endelse
 		else
 			setcall subtract_base stack64_base(ptrdata#)
@@ -489,6 +489,17 @@ function getarg_testdot(sd content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
 		SetCall errnr varsufix(content,size,ptrdata,ptrlow,ptrsufix)
 	endelse
 	return errnr
+endfunction
+
+function get_entry_base(sd data)
+	sd expand;setcall expand expandbit(data)
+	if expand!=0
+		vdata ptr_nobits_virtual%ptr_nobits_virtual
+		if ptr_nobits_virtual#==(Yes)
+			return 0  #or img_nbdata if exec will have
+		endif
+	endif
+	call get_img_vdata();ret   #is this a trick or a returnCall? (retcall, callret)
 endfunction
 
 function there_is_nothing_there()
@@ -635,7 +646,6 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Return _conderr
 	Return err
 EndFunction
-
 
 function prefix_bool()
 	data value#1
