@@ -21,7 +21,7 @@ Function entryvarsfns(data content,data size)
 EndFunction
 
 #relocated offset or for objects
-function get_img_vdata()
+function get_img_vdata()   #(exandbit & nobits) = .nbsection
 	Data value#1
 	Data inter#1
 
