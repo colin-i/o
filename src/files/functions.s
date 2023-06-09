@@ -37,6 +37,7 @@ Include "./functions/actions/declare.s"
 
 Include "./functions/commands/cond.s"
 Include "./functions/commands/lib.s"
+Include "./functions/commands/ret.s"
 
 Include "./functions/pref/preffuncs.s"
 Include "./functions/pref/sdsv.s"

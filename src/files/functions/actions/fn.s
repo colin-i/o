@@ -516,8 +516,8 @@ endfunction
 
 #bool
 function is_linux_end()
-	sd p_real_exit_end%p_real_exit_end
-	return p_real_exit_end#
+	sd p_exit_end%p_exit_end ;#real_
+	return p_exit_end#
 endfunction
 #er
 function entryraw_top()

@@ -158,7 +158,7 @@ if loop==1
 				Include "./index/endfunction.s"
 			ElseIf commandset==(cRET)
 		call entryscope_verify_code()
-				Include "./index/ret.s"
+				setcall errormsg writeret()
 			ElseIf commandset==(cINCLUDELINK)
 				Include "./index/include.s"
 			ElseIf commandset==(cFORMAT)

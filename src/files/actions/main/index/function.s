@@ -26,9 +26,9 @@ Else
 		#Set objfnmask referencebit
 		if parses==(pass_write)
 			set fnavailable two
-			if exit_end==(TRUE)
-				set real_exit_end (TRUE)
-			endif
+			#??? is not working for override. if exit_end==(TRUE)
+			#	set real_exit_end (TRUE)
+			#endif
 		endif
 	Else
 		#Set objfnmask null
