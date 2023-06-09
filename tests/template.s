@@ -1,6 +1,9 @@
 
 format elfobj64
 
+valuex x#1
+valuex y#1
+
 function file()
 	valuex path#1
 	valuex lines#1
@@ -24,11 +27,16 @@ set test:line.a 4
 set n:main.n 4
 set n:main.c 4
 
+set test:main.y 4
+add test:y 4
+add test:main.test 4
+add test:test 4
+
 #not this right now
 #set aux#:file.a 4
 set auxdata#:file.a 4
 
 set aux#:file.path 2
-set aux#:file.lines 3
+add aux#:file.lines 2
 add test test2
-return test
+return test    ##20
