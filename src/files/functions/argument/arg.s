@@ -415,7 +415,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				#stored class info
 				setcall subtract_base scopes_get_class_data(scope,ptrdata#) # test expandbit is inside
 			else
-				setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called once for each data(reg/size)
+				setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
 			endelse
 		else
 			setcall subtract_base stack64_base(ptrdata#)
@@ -433,7 +433,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				setcall scope scopes_get_scope(ptrfunctionTagIndex#)
 				setcall subtract_base scopes_get_class_data(scope,ptrdata#)
 			else
-				setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called once for each data(reg/size)
+				setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
 			endelse
 		else
 			setcall subtract_base stack64_base(ptrdata#)
