@@ -400,26 +400,10 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 	sd test
 	setcall container_sz valinmem(content,argsize,(asciidot))
 	if container_sz!=argsize
-		setcall err get_scope(#content,#argsize,container_sz,#scope)
+		setcall err getarg_base(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix,#subtract_base)
 		if err!=(noerror)
 			return err
 		endif
-		SetCall err varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
-		if err!=(noerror)
-			return err
-		endif
-		setcall test stackbit(ptrdata#)
-		if test==0
-			sd entrybags%%ptr_scopes
-			if scope!=entrybags
-				#stored class info
-				setcall subtract_base scopes_get_class_data(scope,ptrdata#) # test expandbit is inside
-			else
-				setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
-			endelse
-		else
-			setcall subtract_base stack64_base(ptrdata#)
-		endelse
 	else
 		SetCall err varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
 		if err!=(noerror)
@@ -489,6 +473,34 @@ function getarg_testdot(sd content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
 		SetCall errnr varsufix(content,size,ptrdata,ptrlow,ptrsufix)
 	endelse
 	return errnr
+endfunction
+
+#err
+function getarg_base(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,sd ptrsufix,sd p_subtract_base)
+	sd err
+	sd scope
+	setcall err get_scope(#content,#argsize,container_sz,#scope)
+	if err!=(noerror)
+		return err
+	endif
+	SetCall err varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
+	if err!=(noerror)
+		return err
+	endif
+	sd test
+	setcall test stackbit(ptrdata#)
+	if test==0
+		sd entrybags%%ptr_scopes
+		if scope!=entrybags
+			#stored class info
+			setcall p_subtract_base# scopes_get_class_data(scope,ptrdata#) # test expandbit is inside
+		else
+			setcall p_subtract_base# get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
+		endelse
+	else
+		setcall p_subtract_base# stack64_base(ptrdata#)
+	endelse
+	return (noerror)
 endfunction
 
 function there_is_nothing_there()
