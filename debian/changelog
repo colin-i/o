@@ -1,3 +1,9 @@
+ocompiler (1-5+89) xenial; urgency=medium
+
+  * critical undefined fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 10 Jun 2023 07:07:59 +0300
+
 ocompiler (1-5+88) xenial; urgency=medium
 
   * size of var, and size of modifications

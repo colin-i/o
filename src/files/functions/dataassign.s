@@ -453,11 +453,15 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 	EndIf
 
 	sd value;set value ptrvalue#
-	if value<=(wmax)
-		call i_to_s(value,ptr_reserve)
-	else
-		call i_to_s(0,ptr_reserve)
-	endelse
+	vdata p_parses%ptr_parses
+	if p_parses==(pass_write)
+	#ptr_reserve is undefined at another pass (and theoretically at constants)
+		if value<=(wmax)
+			call i_to_s(value,ptr_reserve)
+		else
+			call i_to_s(0,ptr_reserve)
+		endelse
+	endif
 
 	if is_stack==(FALSE)
 		If typenumber!=(charnumber)
