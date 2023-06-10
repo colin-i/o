@@ -136,7 +136,7 @@ if loop==1
 					endif
 				endif
 			ElseIf commandset==(cDECLARE)
-				Include "./index/declare.s"
+				setcall errormsg declare(pcontent,pcomsize,p_is_for_64_value#,subtype,parses)
 			ElseIf commandset==(cPRIMSEC)
 				Include "./index/primsec.s"
 			ElseIf commandset==(cONEARG)
@@ -176,7 +176,7 @@ if loop==1
 				Include "./index/callex.s"
 			ElseIf commandset==(cOVERRIDE)
 				#is at all, example at write hidden_pref
-				Include "./index/override.s"
+				setcall errormsg override_com(#content,#comsize)
 			ElseIf commandset==(cLIBRARY)
 				if parses==(pass_init);Include "./index/library.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse

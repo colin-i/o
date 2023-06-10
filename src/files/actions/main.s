@@ -9,6 +9,9 @@ data dot_comma_end#1;set dot_comma_end 0
 
 #data logbackup#1
 
+#backup prefs between passes, this can also be here: comline args, this, actions.s
+call pref_store()
+
 set parses (pass_init)
 
 While includesReg!=null
@@ -106,10 +109,8 @@ While includesReg!=null
 					set errormsg endfnexp
 					Call Message(errormsg)
 				Else
+					call pref_restore()
 					if parses==(pass_init)
-						setcall errormsg align_alloc(functionTagIndex)
-
-						set parses (pass_calls)
 						set g_e_b_p# (FALSE)  #in case was set, for writes
 
 						set datasecSize datasecReg
@@ -118,10 +119,14 @@ While includesReg!=null
 
 						#set logbackup logfile
 						#set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
+
+						setcall errormsg align_alloc(functionTagIndex)
+						set parses (pass_calls)
 					else
-						set parses (pass_write)
 						call align_resolve()
+
 						setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
+						set parses (pass_write)
 					endelse
 					if errormsg==(noerror)
 						#used when having multiple includes

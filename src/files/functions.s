@@ -41,6 +41,7 @@ Include "./functions/commands/ret.s"
 
 Include "./functions/pref/preffuncs.s"
 Include "./functions/pref/sdsv.s"
+Include "./functions/pref/backup.s"
 
 Include "./functions/64/bit.s"
 Include "./functions/64/reloc.s"
