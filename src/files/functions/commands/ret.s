@@ -18,3 +18,14 @@ function writeret()
 	endelse
 	return err
 endfunction
+
+#err
+function after_after_call(sd subtype)
+	and subtype (call_ret_flag)
+	if subtype!=0
+		sd err
+		setcall err writeret()
+		return err
+	endif
+	return (noerror)
+endfunction

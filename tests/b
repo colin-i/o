@@ -1,4 +1,2 @@
 
-edb --run ../src/o ${1}.s && \
-cc ${1}.o && \
-./a.out
+edb=0 ./a $@

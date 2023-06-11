@@ -45,6 +45,9 @@ if errormsg==(noerror)
 				SetCall errormsg addtosec(callex_data,callex_sz,ptrcodesec)
 				if errormsg==(noerror)
 					setcall errormsg write_function_call(top_data,bool_indirect,(TRUE))
+					if errormsg==(noerror)
+						setcall errormsg after_after_call(subtype)
+					endif
 				endif
 			endif
 		endif

@@ -406,9 +406,9 @@ Const compointersloc^pointers
 Data pointersvars#numberofcommandsvars+1
 Const compointersvarsloc^pointersvars
 
-const x_call_flag=0x80000000  ;#at setcall...
-const x_func_flag=0x80000000  ;#at def, varargs
-const call_ret_flag=0x80000000;#at call
+const x_call_flag=0x80000000   #at setcall...
+const x_func_flag=0x80000000   #at def, varargs
+const call_ret_flag=0x80000000 #at call
 const x_callx_flag=0x40000000 ;#at call and setcall..., call a variable/function/import like functionx/importx
 
 #declare coresp
