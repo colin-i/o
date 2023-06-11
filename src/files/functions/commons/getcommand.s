@@ -406,9 +406,10 @@ Const compointersloc^pointers
 Data pointersvars#numberofcommandsvars+1
 Const compointersvarsloc^pointersvars
 
-const x_call_flag=0x80000000
-const x_func_flag=0x80000000
-const x_callx_flag=0x40000000
+const x_call_flag=0x80000000  ;#at setcall...
+const x_func_flag=0x80000000  ;#at def, varargs
+const call_ret_flag=0x80000000;#at call
+const x_callx_flag=0x40000000 ;#at call and setcall..., call a variable/function/import like functionx/importx
 
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
@@ -463,19 +464,26 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 
 		If command==(cPRIMSEC)
 			Set extstr call
+		elseif command==(cCALL)
+		vstr call_ret_str="RET"
+			set extstr call_ret_str
 		Elseif command==(cSTARTFUNCTION)
 			sd is_x;setcall is_x is_funcx_subtype(ptrsubtype#)
 			if is_x==(TRUE)
-				Set extstr "X"
+				Set extstr "X" #varargs
 			endif
+		elseif command==(cCALLEX)
+			set extstr call_ret_str
 		endElseif
 
 		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool)
 		If extbooldata==true
+		#here firstAndSecond part was recognized
 			If command==(cPRIMSEC)
 				#or first byte at subcommand to recognize the xcall at two args
 				or ptrsubtype# (x_call_flag)
 				if result==(FALSE)
+				#here there was not a space
 					setcall result stratmemspc(pcontent,psize,"X",spacebool)
 					if result==(TRUE)
 						or ptrsubtype# (x_callx_flag)
@@ -484,15 +492,21 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 					endelse
 				endif
 			Else
-			#funcx
 				if result==(FALSE)
+				#here there was not a space
 					break
 				endif
-				#allow the command at 64 but not consider it
-				sd for64;setcall for64 is_for_64()
-				if for64==(TRUE)
-					or ptrsubtype# (x_func_flag)
-				endif
+				If command==(cSTARTFUNCTION)
+				#functionx/entry [x] , varargs
+					#allow the command at 64
+					sd for64;setcall for64 is_for_64()
+					if for64==(TRUE)
+						or ptrsubtype# (x_func_flag)
+					endif
+				else
+				#call[ex][x]ret
+					or ptrsubtype# (call_ret_flag)
+				endelse
 			endElse
 			return command
 		elseIf result==true

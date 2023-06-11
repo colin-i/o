@@ -11,5 +11,8 @@ for f in "${@}"; do
 done
 ${OLINK} ${logs} && \
 cc ${objs} && \
-./a.out
+if [ -z "${edb}" ]; then ./a.out
+else edb --run a.out
+fi
+
 echo $?

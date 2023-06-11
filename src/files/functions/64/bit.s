@@ -40,10 +40,13 @@ function is_for_64_is_impX_or_fnX_set(sd ptrdata,sd subtype)
 		if val==(x86_64bit)
 			setcall p_b is_for_64_is_impX_or_fnX_p_get()
 			set p_b# (TRUE)
-		elseif subtype==(x_callx_flag)
-			setcall p_b is_for_64_is_impX_or_fnX_p_get()
-			set p_b# (TRUE)
-		endelseif
+		else
+			setcall subtype callx_flag(subtype)
+			if subtype!=0
+				setcall p_b is_for_64_is_impX_or_fnX_p_get()
+				set p_b# (TRUE)
+			endif
+		endelse
 	endif
 	#is this required anymore? set p_b# (FALSE)
 endfunction
@@ -51,12 +54,18 @@ function is_for_64_is_impX_or_fnX_set_force(sd subtype)
 	sd b
 	setcall b is_for_64()
 	if b==(TRUE)
-		if subtype==(x_callx_flag)
+		setcall subtype callx_flag(subtype)
+		if subtype!=0
 			sd p_b
 			setcall p_b is_for_64_is_impX_or_fnX_p_get()
 			set p_b# (TRUE)
 		endif
 	endif
+endfunction
+
+function callx_flag(sd subtype)
+	and subtype (x_callx_flag)
+	return subtype
 endfunction
 
 #get
