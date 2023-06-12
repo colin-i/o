@@ -248,7 +248,15 @@ function numbertoint(str content,data size,data outval,data minusbool)
 			else
 				# !a.b! offset
 				dec size
-				return "to do" #return "Not using offset of suffix."
+
+				setcall err getarg_base(content,size,dot_offset,#data,#low,#sufix,outval)
+				if err==(noerror)
+					if sufix!=0
+						return "Not using offset of suffix."
+					endif
+					sub outval# data#
+					neg outval#
+				endif
 			endelse
 		else
 			setcall err get_sizeoffunction(content,size,outval,(FALSE))
