@@ -1,3 +1,9 @@
+ocompiler (1-5+90) xenial; urgency=medium
+
+  * override fix, offset of variable, call..ret
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Mon, 12 Jun 2023 07:50:37 +0300
+
 ocompiler (1-5+89) xenial; urgency=medium
 
   * critical undefined fix
