@@ -169,6 +169,8 @@ if loop==1
 				else;if subtype==(cAFTERCALL);add datasecReg (aftercalldeclaresize);endif
 					Call advancecursors(pcontent,pcomsize,comsize);endelse
 				set g_e_b_p# (TRUE)
+			ElseIf commandset==(cMANIPULATEAFTERCALL)
+				Include "./index/aftercallmanipulate.s"
 			ElseIf commandset==(cORPHAN)
 				Include "./index/warning.s"
 			ElseIf commandset==(cCALLEX)

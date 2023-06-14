@@ -457,7 +457,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 			#mov ecx,imm32
 			char g_err_mov=0xb8+ecxregnumber;data g_err_mov_disp32#1
 			#cmp byte[ecx],0
-			char *={0x80,7*toregopcode|ecxregnumber};char *=0
+			char *={0x80,7*toregopcode|ecxregnumber};char *=aftercall_clearstate
 			const global_err_ex_sz=!-global_err_ex_start
 			#add rel,1 is (b8+ecx), one byte
 			set g_err_mov_disp32 global_err_ptr#
