@@ -9,6 +9,5 @@ else
 	#cAFTERCALLCLEAR
 		set acall_val (aftercall_clearstate)
 	endelse
-
-	#REX + C6 /0 ib
+	setcall errormsg aftercall_manipulate(acall_val)
 endelse

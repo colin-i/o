@@ -51,6 +51,7 @@ Const edxregnumber=2
 Const ebxregnumber=3
 Const espregnumber=4
 Const ebpregnumber=5
+const disp32regnumber=5
 Const esiregnumber=6
 Const ediregnumber=7
 Const ahregnumber=4

@@ -497,7 +497,8 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		endelse
 		SetCall err addtosec(#g_err_jz,(bsz+bsz),code);If err!=(noerror);Return err;EndIf
 		#return
-		SetCall err addtosec(ret_end_p,ret_end_sz,code);If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(ret_end_p,ret_end_sz,code)
+		#;If err!=(noerror);Return err;EndIf
 	endif
 
 	return err
@@ -525,5 +526,38 @@ function entryraw_top()
 	data code%%ptr_codesec
 	sd err
 	setcall err addtosec(#s,2,code)
+	return err
+endfunction
+
+#err
+function aftercall_manipulate(sd acall_val)
+	sd err
+	vData ptrobject%ptrobject
+	vData ptrextra%%ptr_extra
+	vData code%%ptr_codesec
+	sd global_err_ptr;setcall global_err_ptr global_err_p()
+
+	If ptrobject#==(FALSE)
+	#absolute
+		#mov [disp32],imm8 /0
+		char a=0xc6;char *=disp32regnumber;data b#1;char c#1
+		set b global_err_ptr#
+		set c acall_val
+		SetCall err addtosec(#a,7,code)
+	Else
+		char g_err=0xc6;char *=disp32regnumber
+		data *rel=0
+		#
+		sd af_relof
+		setcall af_relof reloc64_offset((bsz))
+		setcall err adddirectrel_base(ptrextra,af_relof,global_err_ptr#,0);If err!=(noerror);Return err;EndIf
+		setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
+		SetCall err addtosec(#g_err,6,code);If err!=(noerror);Return err;EndIf
+		setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+
+		char val#1
+		set val acall_val
+		SetCall err addtosec(#val,1,code)
+	EndElse
 	return err
 endfunction
