@@ -1,8 +1,7 @@
 
-format elfobj
-
+library "msvcrt.dll"
 importx "printf" printf
 
 include "a.s"
 
-exit 0
+return 0

@@ -1,6 +1,4 @@
 
-importx "printf" printf
-
 vdata *=0
 
 aftercall *test
@@ -19,7 +17,7 @@ endfunction
 
 entry main()
 value ^e^a
-
+#i3
 call e()
 aftercallactivate
 call e()
