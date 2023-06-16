@@ -552,21 +552,19 @@ function aftercall_manipulate(sd acall_val)
 
 		if af_relof!=normal_offset
 			char a64={REX_Operand_64,ateaximm+ecxregnumber};data *=reloc64_main;data *=reloc64_main
+			char *=0xc6;char *=ecxregnumber;char val#1
 
 			setcall err adddirectrel_base(ptrextra,af_relof,global_err_ptr#,0);If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(#a64,10,code);If err!=(noerror);Return err;EndIf
 
-			char g64=0xc6;char *=ecxregnumber;char val#1
 			set val acall_val
-
-			SetCall err addtosec(#g64,(bsz+bsz+bsz),code)
+			SetCall err addtosec(#a64,(10+3),code)
 		else
-			char g_err=0xc6;char *=disp32regnumber
-			data *rel=0
+			char g_err=0xc6;char *=disp32regnumber;data *rel=0;char val32#1
 
 			setcall err adddirectrel_base(ptrextra,(bsz+bsz),global_err_ptr#,0);If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(#g_err,6,code);If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(#acall_val,(bsz),code)
+
+			set val32 acall_val
+			SetCall err addtosec(#g_err,7,code)
 		endelse
 	EndElse
 	return err
