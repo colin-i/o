@@ -147,9 +147,8 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 	set content ptrcontent#
 	Char firstchar#1
 	Set firstchar content#
-	Char unrefsign="*"
 
-	If firstchar!=unrefsign
+	If firstchar!=(unrefsign)
 		if firstchar==(asciicirc)   #throwless if on a throwing area
 			If typenumber==(constantsnumber)
 				Return "Unexpected throwless sign ('^') at constant declaration."
@@ -208,24 +207,6 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 	endif
 
 	Data charnr=charnumber
-	Char pointersign=pointersigndeclare
-	SetCall valsize valinmem_pipes(content,size,pointersign,ptrsz)
-	If valsize!=size
-		If typenumber==charnr
-			#grep    stackfilter2 4
-			if stack==(FALSE)
-				Char ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
-				Str ptrptrchar^ptrchar
-				Return ptrptrchar
-			endif
-		EndIf
-		Set assigntype# pointersign
-		If typenumber!=constnr
-			Set ptrrelocbool# true
-		EndIf
-		return noerr
-	endif
-
 	Char relsign=relsign
 	SetCall valsize valinmem_pipes(content,size,relsign,ptrsz)
 	If valsize!=size
@@ -241,6 +222,37 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 		EndElseIf
 		Set assigntype# equalsign
 		Set ptrrelocbool# true
+		return noerr
+	endif
+
+	Char pointersign=pointersigndeclare
+	SetCall valsize valinmem(content,size,pointersign)
+	If valsize!=size
+		If typenumber==charnr
+			#grep    stackfilter2 4
+			if stack==(FALSE)
+				Char ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
+				Str ptrptrchar^ptrchar
+				Return ptrptrchar
+			endif
+		EndIf
+
+		if valsize==0
+			#throwless ^name^
+			#If typenumber==constnr error is elsewhere also for another signs
+			inc content;dec size
+			SetCall valsize valinmem(content,size,pointersign)
+			If valsize==size
+				return "Throwless without a sign."   #at another sign there is this check at addvar...
+			endif
+			inc valsize ##put throwless at size for later recons
+		endif
+		set ptrsz# valsize
+
+		Set assigntype# pointersign
+		If typenumber!=constnr
+			Set ptrrelocbool# true
+		EndIf
 		return noerr
 	endif
 

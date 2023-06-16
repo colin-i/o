@@ -545,19 +545,31 @@ function aftercall_manipulate(sd acall_val)
 		set c acall_val
 		SetCall err addtosec(#a,7,code)
 	Else
-		char g_err=0xc6;char *=disp32regnumber
-		data *rel=0
-		#
+		#for a 64 rel: 0xc6/0xc7 is still disp32; and rex is nothing at 0xc6
+		sd normal_offset=bsz
 		sd af_relof
-		setcall af_relof reloc64_offset((bsz))
-		setcall err adddirectrel_base(ptrextra,af_relof,global_err_ptr#,0);If err!=(noerror);Return err;EndIf
-		setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(#g_err,6,code);If err!=(noerror);Return err;EndIf
-		setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+		setcall af_relof reloc64_offset(normal_offset)
 
-		char val#1
-		set val acall_val
-		SetCall err addtosec(#val,1,code)
+		if af_relof!=normal_offset
+			char a64=ateaximm+ecxregnumber;data *=0
+
+			setcall err adddirectrel_base(ptrextra,af_relof,global_err_ptr#,0);If err!=(noerror);Return err;EndIf
+			setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(#a64,5,code);If err!=(noerror);Return err;EndIf
+			setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+
+			char g64=0xc6;char *=ecxregnumber;char val#1
+			set val acall_val
+
+			SetCall err addtosec(#g64,(bsz+bsz+bsz),code)
+		else
+			char g_err=0xc6;char *=disp32regnumber
+			data *rel=0
+
+			setcall err adddirectrel_base(ptrextra,(bsz+bsz),global_err_ptr#,0);If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(#g_err,6,code);If err!=(noerror);Return err;EndIf
+			SetCall err addtosec(#acall_val,(bsz),code)
+		endelse
 	EndElse
 	return err
 endfunction

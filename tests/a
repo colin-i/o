@@ -1,22 +1,38 @@
 
 if [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
-if [ -z "${OLINK}" ]; then OLINK=../ounused/ounused; fi
 
-logs=
-objs=
-for f in "${@}"; do
+comp () {
 	if [ "${edb}" = "0" ]; then
-		edb --run ${OCOMP} ${f}.s || exit 1
+		edb --run ${OCOMP} ${1}.s || exit 1
 	else
-		${OCOMP} ${f}.s || exit 1
+		${OCOMP} ${1}.s || exit 1
 	fi
-	logs+=" ${f}.s.log"
-	objs+=" ${f}.o"
-done
-${OLINK} ${logs} && \
-cc ${objs} && \
-if [ -z "${edb}" ]; then ./a.out
-else edb --run a.out
-fi
+}
 
+if [ -z "ex" ]; then
+	if [ -z "${OLINK}" ]; then OLINK=../ounused/ounused; fi
+
+	logs=
+	objs=
+	for f in "${@}"; do
+		comp ${f}
+		logs+=" ${f}.s.log"
+		objs+=" ${f}.o"
+	done
+	${OLINK} ${logs} && \
+	if [ -z "${old}" ]; then
+		cc ${objs}
+	else
+		ld ${objs} --entry main --dynamic-linker=/lib/ld-linux.so.2 -m elf_i386 -o a.out -lc
+	fi
+	if [ -z "${edb}" ]; then ./a.out
+	else edb --run a.out
+	fi
+else
+	comp ${1}
+	mv ${1} `pwd`/a.out
+	if [ -z "${edb}" ]; then /home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 ./a.out
+	else edb --run /home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 ./a.out
+	fi
+fi && \
 echo $?

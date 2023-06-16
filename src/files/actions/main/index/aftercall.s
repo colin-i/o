@@ -6,7 +6,7 @@ const aftercalldeclaresize=1
 if comsize==0;set errormsg "AfterCall variable name expected."
 else
 	str ac_store_content#1;data ac_store_size#1
-	set ac_store_content pcontent#;set ac_store_size comsize
+	set ac_store_content content;set ac_store_size comsize
 	data acsym_value#1;data acsym_size#1;data acsym_shndx#1
 	sd g_e_p;setcall g_e_p global_err_p()
 	if subtype==(cIMPORTAFTERCALL)
@@ -17,20 +17,25 @@ else
 		endelse
 	else
 	#(cAFTERCALL)
-		SetCall errormsg entryvarsfns(pcontent#,pcomsize#)
+		sd ac_current_data
+		setcall ac_current_data get_img_vdata_dataReg()  #this must be before addtosec
+		SetCall errormsg addtosec(#null,(aftercalldeclaresize),ptrdatasec)
 		if errormsg==(noerror)
-			sd ac_current_data;setcall ac_current_data get_img_vdata_dataReg()
-			SetCall errormsg addaref(ac_current_data,pcontent,pcomsize,comsize,(charnumber),(dummy_mask))
-			if errormsg==(noerror)
-				SetCall errormsg addtosec(#null,(aftercalldeclaresize),ptrdatasec)
+			If object==(FALSE)
+				set g_e_p# ac_current_data
+			else
+				set acsym_value ac_current_data;set acsym_size 0;set acsym_shndx (dataind)
+			endelse
+			#size 0 test is above
+			if content#!=(unrefsign)
+				SetCall errormsg entryvarsfns(content,comsize)
 				if errormsg==(noerror)
-					If object==(FALSE)
-						set g_e_p# ac_current_data
-					else
-						set acsym_value ac_current_data;set acsym_size 0;set acsym_shndx (dataind)
-					endelse
+					SetCall errormsg addaref(ac_current_data,pcontent,pcomsize,comsize,(charnumber),(dummy_mask))
 				endif
-			endif
+			else
+				#since aftercall(activate/clear)
+				call advancecursors(pcontent,pcomsize,comsize)
+			endelse
 		endif
 	endelse
 	if errormsg==(noerror)
