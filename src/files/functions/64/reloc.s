@@ -48,7 +48,7 @@ endfunction
 #er
 function reloc64_post_base(sd struct)
 	sd err
-	setcall err reloc64_post_base_extension(struct,(NULL))
+	setcall err reloc64_post_base_extension(struct,(reloc64_main))
 	return err
 endfunction
 #er

@@ -405,6 +405,7 @@ const convdata_init=3
 #const i386_obj_default_reloc_rah=-1
 const i386_obj_default_reloc=0
 const i386_obj_default_reloc_rah=0
+const reloc64_main=NULL
 
 const sd_as_sv_bool=0
 const sd_as_sv_get=1
