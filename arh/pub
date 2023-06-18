@@ -50,7 +50,10 @@ last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_n
 
 #plans:
 
-#oanalyzer taking another log from both ocompiler(dbg) and ounused(exec.dbg) and making a json with vars/fns/consts and usage locations
+#vars/fns/consts and usage locations in a json:
+#	oanalyzer or ounused, dbg file log(+exec.dbg) or same, libounused/libocompiler or liboanalyzer
+#will replace grep commands
+#can be for odbg or something new
 
 #simple and or
 #={"a","b"}
