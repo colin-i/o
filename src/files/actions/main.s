@@ -10,7 +10,7 @@ data dot_comma_end#1;set dot_comma_end 0
 #data logbackup#1
 
 #backup prefs between passes, this can also be here: comline args, this, actions.s
-call pref_store()
+#moved to after the format is set: call pref_store()
 
 set parses (pass_init)
 

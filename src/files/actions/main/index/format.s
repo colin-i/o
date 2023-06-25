@@ -81,11 +81,11 @@ else
 
 				Set startofdata elf_startofdata
 
-				call modify_pref()  #.dtnb is not yet at exec format
+				set nobits_virtual (No)  #.dtnb is not yet at exec format
 			EndElse
 		EndIf
 	Else
-		call modify_pref()  #.dtnb is not yet at exe format
+		set nobits_virtual (No)  #.dtnb is not yet at exe format
 	EndElse
 
 	If errormsg==noerr
@@ -94,7 +94,7 @@ else
 			Str ptrunrecform^unrecform
 			Set errormsg ptrunrecform
 		else
-			set formatdefined 1
+			call backup_pref(#formatdefined)
 		endelse
 	EndIf
 endelse

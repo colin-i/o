@@ -1,0 +1,3 @@
+
+linker=/home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 make test
+echo $?

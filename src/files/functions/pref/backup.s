@@ -27,8 +27,7 @@ function pref_restore()
 	endwhile
 endfunction
 
-function modify_pref()
-	sd ptr_nobits_virtual%ptr_nobits_virtual
-	set ptr_nobits_virtual# (No)
-	call pref_store()  #the other option is to search by string name or to make some offset calculation
+function backup_pref(sd p_formatdefined)
+	set p_formatdefined# 1
+	call pref_store() #this must be after "set nobits_virtual"
 endfunction
