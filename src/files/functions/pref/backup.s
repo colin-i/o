@@ -26,3 +26,9 @@ function pref_restore()
 		add src (dwsz)
 	endwhile
 endfunction
+
+function modify_pref()
+	sd ptr_nobits_virtual%ptr_nobits_virtual
+	set ptr_nobits_virtual# (No)
+	call pref_store()  #the other option is to search by string name or to make some offset calculation
+endfunction

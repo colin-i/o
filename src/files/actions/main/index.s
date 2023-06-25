@@ -97,9 +97,9 @@ if loop==1
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 						if formatdefined==0
 							if commandset!=(cFORMAT)
-								set nobits_virtual (No)   #this is default pe_exe format, same behavior for nobits
+								call modify_pref()     #this is default pe_exe format, same behavior for nobits
+								Set formatdefined 1
 							endif
-							Set formatdefined 1
 						endif
 						#needing to find virtual start
 						if commandset==(cDECLARE)
@@ -191,10 +191,6 @@ if loop==1
 				Include "./index/i3.s"
 			EndElse
 			If errormsg==(noerror)
-				#after the first noncomment command, the format command cannot be changed
-				#this can be at line 0
-				if formatdefined==1;Set formatdefined 2;endif
-
 				#set when code started
 				#this can be at line 0
 				If fnavailable==two
