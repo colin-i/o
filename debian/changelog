@@ -1,3 +1,9 @@
+ocompiler (1-5+93) xenial; urgency=medium
+
+  * critical: fix exec and nobits
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Mon, 26 Jun 2023 06:36:34 +0300
+
 ocompiler (1-5+92) xenial; urgency=medium
 
   * extracode revision for last version
