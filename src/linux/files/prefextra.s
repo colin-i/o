@@ -34,7 +34,9 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 					call safeMessage(err)
 				endif
 				return err
-			endif
+			else
+				call free(mem)
+			endelse
 			str er="No preferences file found in HOME. The file is here: https://raw.githubusercontent.com/colin-i/o/master/.ocompiler.txt"
 			return er
 		endif
