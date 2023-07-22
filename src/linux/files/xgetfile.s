@@ -5,6 +5,15 @@ if argc<1
 	call exitMessage(ptrcmdscripterr)
 endif
 
+if argc<2
+	Char cmdnoinput="O Compiler - usage: o \"filename\" [[pref1 value1]...[prefN valueN]]"
+	char moreinfo="Documentation is here: https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html"
+	ss moreinfo_helper^moreinfo
+	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
+	call exitMessage(#cmdnoinput)
+EndIf
+
+
 #if the file was executed from the PATH, then the root folder it is searched
 Data argumentssize#1
 str scriptfullname#1
@@ -92,13 +101,5 @@ else
 		call free(scriptfullname)
 	endif
 endelse
-
-if argc<2
-	Char cmdnoinput="O Compiler - usage: o \"filename\" [[pref1 value1]...[prefN valueN]]"
-	char moreinfo="Documentation is here: https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html"
-	ss moreinfo_helper^moreinfo
-	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
-	call exitMessage(#cmdnoinput)
-EndIf
 
 set path_nofree argv1
