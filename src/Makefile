@@ -7,6 +7,7 @@ FULLOBJ = ./linux/${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 OBT = ${OB}.txt
+PREFFILE=.ocompiler.txt
 
 ifndef OCOMP
 OCOMP=o
@@ -42,6 +43,7 @@ o: ${OBJ}
 install: all
 	install -D o \
 		$(DESTDIR)$(prefix)/bin/o
+	install -D ../${PREFFILE} $(DESTDIR)/etc/${PREFFILE}
 
 clean-compile:
 	-rm -f ${OBJ}
@@ -60,6 +62,7 @@ distclean: clean
 
 uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
+	-rm -f $(DESTDIR)/etc/${PREFFILE}
 
 test:
 	echo "test"

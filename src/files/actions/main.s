@@ -109,7 +109,10 @@ While includesReg!=null
 					set errormsg endfnexp
 					Call Message(errormsg)
 				Else
-					call pref_restore()
+					if formatdefined==1
+					# a file with only comments, but cCOMMENT whitespaces is at pass write
+						call pref_restore()
+					endif
 					if parses==(pass_init)
 						set g_e_b_p# (FALSE)  #in case was set, for writes
 

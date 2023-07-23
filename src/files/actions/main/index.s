@@ -128,7 +128,7 @@ if loop==1
 			if commandset==(cCOMMENT)
 				Call advancecursors(pcontent,pcomsize,comsize)
 				#1 is last
-				if parses==(pass_write)
+				if parses==(pass_write) #at init and calls cCOMMENT istead of many commands
 					set was_whitespaces content;dec was_whitespaces;setcall was_whitespaces is_whitespace(was_whitespaces#)
 					if was_whitespaces==(TRUE)
 					#this is comment ending in whitespace
@@ -223,14 +223,14 @@ if loop==1
 					elseIf was_whitespaces==(TRUE)
 						#mostly parses (pass_write), example: at cCALL is at all parses
 						#this is whitespace after command
-						#if parses==(pass_write) when show once check was not
+						#if parses==(pass_write) can be at init commands only, or write commands only, if all parses then extra code for wrongers (only at not w_as_e)
 						setcall errormsg warn_hidden_whitespaces_after(cursorforincludes,dot_comma_end) #includes,nameofstoffile
 					endelseIf
 				endIf
 			EndIf
 		EndIf
 	Elseif cursor_start!=content
-		#if parses==(pass_write) when show once check was not
+		#if parses==(pass_write) if all parses then extra code for wrongers (only at not w_as_e)
 		#this is only whitespace
 		setcall errormsg warn_hidden_whitespaces_after(cursorforincludes,dot_comma_end) #includes,nameofstoffile
 		#dot_comma_end check: is not like it accepts "    ;" but it accepts "...!    ;"
