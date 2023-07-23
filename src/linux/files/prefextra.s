@@ -2,16 +2,16 @@
 const variable_convention=lin_convention
 
 #err
-function prefextra(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
+function prefextra(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent,ss scrpath)
 	sd err
-	setcall err prefextra_helper(prefpath,ptrpreferencessize,ptrpreferencescontent)
+	setcall err prefextra_helper(prefpath,ptrpreferencessize,ptrpreferencescontent,scrpath)
 	if err!=(noerror)
 		Call Message(err)
 	endif
 	return err
 endfunction
 #err
-function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent)
+function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescontent,ss scrpath)
 	sd err
 	sd s2;setcall s2 strlen(prefpath)
 	sd mem
@@ -46,31 +46,47 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 		call Message("Getenv error on HOME.")
 	endelse
 
-	#second verify in etc, note that there is not suposed to be a /usr/etc, /usr is read-only, so scrpath is not needed
-	const prefextra_sz_const=1+3+1
-	sd size=prefextra_sz_const+1;add size s2
-	setcall err memoryalloc(size,#mem)
-	if err==(noerror)
-		call memtomem(mem,"/etc/",(prefextra_sz_const))
-		ss pointer=prefextra_sz_const
-		add pointer mem
-		call memtomem(pointer,prefpath,s2)
-		add pointer s2;set pointer# (NULL)
-		setcall a access(mem,(F_OK))
-		if a==0
-			SetCall err file_get_content_ofs(mem,ptrpreferencessize,ptrpreferencescontent,(NULL)) #openfile cas alloc err msg
+	#second verify in etc, more at Makefile about etcinclude
+	sd size;setcall size strlen(scrpath)
+	include "../../etcinclude.s"
+	if size>etchelper
+		sd test;set test scrpath
+		add test size
+		sub test etchelper
+		sd cmp;setcall cmp memcmp(etc_helper,test,etchelper) #an example when testing from src folder, is not usr/bin/o / bin/o
+		if cmp==0
+			sub size etchelper
+			sd sz=3+1+1
+			sd allsize;set allsize size
+			add allsize sz
+			add allsize s2
+			setcall err memoryalloc(allsize,#mem)
 			if err==(noerror)
+				call memtomem(mem,scrpath,size)
+				set scrpath mem
+				add scrpath size
+				call memtomem(scrpath,"etc/",(3+1))
+				add scrpath (3+1)
+				call memtomem(scrpath,prefpath,s2)
+				add scrpath s2
+				set scrpath# (NULL)
+				setcall a access(mem,(F_OK))
+				if a==0
+					SetCall err file_get_content_ofs(mem,ptrpreferencessize,ptrpreferencescontent,(NULL)) #openfile has alloc err msg
+					if err==(noerror)
+						call free(mem)
+						return (noerror)
+					endif
+					Call safeMessage(err)  #openfile has alloc err msg
+				endif
 				call free(mem)
-				return (noerror)
-			endif
-			Call safeMessage(err)  #openfile has alloc err msg
-		else
-			call Message("No preferences file found in etc.")
-		endelse
-		call free(mem)
-	else
-		return err
-	endelse
+			else
+				return err
+			endelse
+		endif
+	endif
+
+	call Message("No preferences file found in etc.")
 
 	return "No preferences file found in HOME. The file is here: https://raw.githubusercontent.com/colin-i/o/master/.ocompiler.txt"
 endfunction

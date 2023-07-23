@@ -206,7 +206,7 @@ function initpreferences()
 endfunction
 
 #void
-function setpreferences(str scrpath)
+function setpreferences(vstr scrpath)
 	Str preferences=".ocompiler.txt"
 	data err#1
 	data noerr=noerror
@@ -215,7 +215,7 @@ function setpreferences(str scrpath)
 	Data preferencessize#1
 	Data ptrpreferencessize^preferencessize
 
-	setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent)
+	setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent,scrpath)
 	If err!=noerr
 		data null=0
 		#data void#1

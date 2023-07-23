@@ -1,5 +1,7 @@
 
-all: o
+projname=o
+
+all: ${projname}
 
 OB = obj
 OBJ = ${OB}.o
@@ -7,7 +9,6 @@ FULLOBJ = ./linux/${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 OBT = ${OB}.txt
-PREFFILE=.ocompiler.txt
 
 ifndef OCOMP
 OCOMP=o
@@ -21,7 +22,31 @@ ifndef linker
 linker=/lib/ld-linux.so.2
 endif
 
+ifndef prefix
+prefix=/usr
+endif
+
+#set preffile data
+PREFFILE=.ocompiler.txt
+#there is not suposed to be a /usr/etc, /usr is read-only
+ifeq ($(prefix),/usr)
+	PREFFILEFULL=$(DESTDIR)/etc/${PREFFILE}
+	#also move back the usr folder: usr/bin/o
+	#$((3+1+3+1+${#projname}))
+	etchelper=9
+	etc_helper=usr/bin/o
+else
+	PREFFILEFULL=$(DESTDIR)$(prefix)/etc/${PREFFILE}
+	#move back only exec name and bin folder: /usr/local/etc is ok. bin/o
+	#$((3+1+${#projname}))
+	etchelper=5
+	etc_helper=bin/o
+endif
+etcinclude=etcinclude.s
+
 #OFLAGS=
+
+${FULLOBJS}: ${etcinclude}
 
 %.o: ${FULLOBJS}
 	if [ -s ${OBT} ];then \
@@ -37,17 +62,22 @@ endif
 _ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=${linker} -lc -entry main -o
 ATLDCOM = ${_ATLDCOM} $@
 
-o: ${OBJ}
+${etcinclude}:
+	echo sd etchelper=${etchelper}\;ss etc_helper=\"${etc_helper}\" > ${etcinclude}
+
+${projname}: ${OBJ}
 	${ATLDCOM} $^
+#$^ is all objects here, $< is first object
 
 install: all
 	install -D o \
 		$(DESTDIR)$(prefix)/bin/o
-	install -D ../${PREFFILE} $(DESTDIR)/etc/${PREFFILE}
+	install -D ../${PREFFILE} ${PREFFILEFULL}
 
 clean-compile:
 	-rm -f ${OBJ}
 	-rm -f ${FULLOBJS}.log
+	-rm -f ${etcinclude}
 
 clean-link:
 	-rm -f o
@@ -62,7 +92,7 @@ distclean: clean
 
 uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
-	-rm -f $(DESTDIR)/etc/${PREFFILE}
+	-rm -f ${PREFFILEFULL}
 
 test:
 	echo "test"
