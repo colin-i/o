@@ -207,7 +207,7 @@ endfunction
 
 #void
 function setpreferences(vstr scrpath)
-	Str preferences=".ocompiler.txt"
+	Str preferences="ocompiler.conf"
 	data err#1
 	data noerr=noerror
 	Str preferencescontent#1

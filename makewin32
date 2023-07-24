@@ -17,7 +17,7 @@ rm ./src/windows/obj32.s.log && \
 \
 mkdir ocompiler && \
 mv o.exe ocompiler && \
-cp .ocompiler.txt ocompiler && \
+cp ocompiler.conf ocompiler && \
 \
 zip -r ocompiler.zip ocompiler && \
 rm -r ./ocompiler && \

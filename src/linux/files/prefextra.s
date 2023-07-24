@@ -47,6 +47,7 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 	endelse
 
 	#second verify in etc, more at Makefile about etcinclude
+
 	sd size;setcall size strlen(scrpath)
 	include "../../etcinclude.s"
 	if size>etchelper
@@ -88,5 +89,5 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 
 	call Message("No preferences file found in etc.")
 
-	return "No preferences file found in HOME. The file is here: https://raw.githubusercontent.com/colin-i/o/master/.ocompiler.txt"
+	return "No preferences file found in HOME. The file is here: https://raw.githubusercontent.com/colin-i/o/master/ocompiler.conf"
 endfunction

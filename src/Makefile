@@ -27,7 +27,7 @@ prefix=/usr
 endif
 
 #set preffile data
-PREFFILE=.ocompiler.txt
+PREFFILE=ocompiler.conf
 #there is not suposed to be a /usr/etc, /usr is read-only
 ifeq ($(prefix),/usr)
 	PREFFILEFULL=$(DESTDIR)/etc/${PREFFILE}
@@ -43,6 +43,7 @@ else
 	etc_helper=bin/o
 endif
 etcinclude=etcinclude.s
+#debian/ocompiler.install is forcing to usr/ / etc/
 
 #OFLAGS=
 
@@ -99,5 +100,6 @@ test:
 	cd linux; ../o o.s nul_res_pref 1; mv o z; ${linker} ./z o.s nul_res_pref 1; diff o z
 #/home/bc/Desktop/out/libc6-i386.AppImage /home/bc/o/ocompiler-1/src/linux/z /home/bc/o/ocompiler-1/src/linux/o.s nul_res_pref 1
 #2.36-0ubuntu4 (jammy) was ok, backportpackage is working for esm packages (tested)
+#DEB_BUILD_OPTIONS=nocheck debuild -us -uc
 
 .PHONY: all install clean distclean uninstall test

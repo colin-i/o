@@ -22,7 +22,7 @@ On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/
 
 ## Info
 Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html).\
-[Preferences file](https://raw.githubusercontent.com/colin-i/o/master/.ocompiler.txt).
+[Preferences file](https://raw.githubusercontent.com/colin-i/o/master/ocompiler.conf).
 
 ## Donations
 The *donations* section is here
