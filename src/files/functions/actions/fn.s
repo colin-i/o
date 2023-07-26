@@ -517,8 +517,13 @@ endfunction
 
 #bool
 function is_linux_end()
-	sd p_exit_end%p_exit_end ;#real_
-	return p_exit_end#
+	sd ptrfnavailable%ptrfnavailable
+	if ptrfnavailable#==0  #one is default, two from multiple entry start detectors and from entry tags
+	#here innerfunction is also practical, but that is more for data offsets
+		sd p_exit_end%p_exit_end
+		return p_exit_end#
+	endif
+	return (FALSE) #not at inner functions
 endfunction
 #er
 function entryraw_top()

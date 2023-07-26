@@ -26,10 +26,6 @@ Else
 		#Set objfnmask referencebit
 		if parses==(pass_write)
 			set fnavailable two
-
-			set exit_end forced_exit_end
-			#and overrides? who cares, can add a bool for every pref that was overrided that can also be at pref_store
-			#    this can be at all parses if needed
 		endif
 	Else
 		#Set objfnmask null

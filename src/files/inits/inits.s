@@ -106,6 +106,3 @@ vdata ptrcodeRegD%%ptrcodeRegD
 set ptrcodeRegD# 0
 
 call vars_log_reset() #to let next variables be ".var"
-
-set forced_exit_end exit_end
-set exit_end (FALSE)

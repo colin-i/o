@@ -72,7 +72,7 @@ function comline_pointer(ss a,sd p_p)
 			sd c
 			setcall c memcmp(a,b,a_len)
 			if c==0
-				sub t (nr_of_prefs_jumper)
+				sub t (nr_of_prefs_jumper)  #this will subtract from strings and will be straight on the pointers
 				set p_p# t#
 				return (noerror)
 			endif

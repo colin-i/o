@@ -1,40 +1,39 @@
 
 #err
 function override_com(sd pcontent,sd psize)
-	sd size
-	setcall size valinmem(pcontent#,psize#,(asciispace))
-	if size==0
+	sd name
+	sd namesize
+	setcall namesize valinmem(pcontent#,psize#,(asciispace))
+	if namesize==0
 		return "first argument is missing at override"
 	endif
-	sd name
 	set name pcontent#
-	call advancecursors(pcontent,psize,size)
+	call advancecursors(pcontent,psize,namesize)
 	call spaces(pcontent,psize)
-	if size==0
+	if psize#==0
 		return "second argument is missing at override"
 	endif
-	sd err
-	ss t
-	charx aux#1   #override is at all passes coming again here
-	set t name;add t size;set aux t#;set t# 0
 	#work can be done do allow line comment here
-	ss p
-	set size psize#
-	setcall err memoryalloc(size,#p)
-	#it is file_get_content memwise (not strwise with null ending)
-	#memoryalloc? the override mimics command line, but this can be changed
+
+	sd err
+	ss mem
+	sd valuesize;set valuesize psize#
+
+	sd allocsize=1+1;add allocsize valuesize
+	add allocsize namesize
+	setcall err memoryalloc(allocsize,#mem)
 	if err==(noerror)
-		inc size
-		call memtomem(p,pcontent#,size)
-		dec size
-		add p size;set p# 0
-		sub p size
-		setcall err prefs_set(name,p)
-		call free(p)
+		ss p;set p mem
+		call memtomem(p,name,namesize);add p namesize
+		set p# 0;inc p
+		ss value;set value p
+		call memtomem(p,pcontent#,valuesize);add p valuesize
+		set p# 0
+		setcall err prefs_set(mem,value)
 		if err==(noerror)
-			set t# aux
-			call advancecursors(pcontent,psize,size)
+			call advancecursors(pcontent,psize,valuesize)
 		endif
+		call free(mem)
 	endif
 	return err
 endfunction
