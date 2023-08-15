@@ -1,6 +1,7 @@
 
 
 #some ascii Constants commonly used
+Const asciinul=0x0
 Const asciitab=0x9
 Const asciireturn=0xa
 Const asciicarriage=0xd

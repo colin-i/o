@@ -155,6 +155,21 @@ Function openfile(data pfile,str path,data oflag)
 	Data noerr=noerror
 	Return noerr
 EndFunction
+#err
+function openfile_write_add_extension(ss path,ss extension,sd popen)
+	sd er
+	setcall er maxpathverif(path,extension)
+	if er==(noerror)
+		ss c;set c path
+		addcall c strlen(path)
+		ss b;setcall b strlen(extension)
+		inc b
+		call memtomem(c,extension,b)
+		setcall er openfile(popen,path,(_open_write))
+		set c# (asciinul)  #required in all cases
+	endif
+	return er
+endfunction
 
 char writefile_err="Cannot write data to a file."
 const writefile_err_p^writefile_err

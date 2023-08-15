@@ -40,35 +40,17 @@ Add safecurrentdirloc wordsize
 Call memtomem(safecurrentdirloc,filenameloc,movesize)
 
 if logbool==true
-	char logfileextension=".log"
-	str logextension^logfileextension
-
-	setcall errormsg maxpathverif(safecurrentdirtopath,logextension)
+	setcall errormsg openfile_write_add_extension(safecurrentdirtopath,".log",ptrlogfile)
 	if errormsg==noerr
-		str appendextension#1
-
-		set appendextension safecurrentdirloc
-		add appendextension movesize
-		dec appendextension
-
-		data sizelogext#1
-		setcall sizelogext strlen(logextension)
-		inc sizelogext
-		call memtomem(appendextension,logextension,sizelogext)
-
-		setcall errormsg openfile(ptrlogfile,safecurrentdirtopath,_open_write)
-		if errormsg==noerr
-			sd log_main_folder
-			setcall log_main_folder getcwd((NULL),0)
-			if log_main_folder==(NULL)
-				char getcwd_first="first getcwd error"
-				set errormsg #getcwd_first
-			else
-				setcall errormsg addtolog_withchar_parses(log_main_folder,(log_pathfolder),(TRUE))
-				call free(log_main_folder)
-			endelse
-		endif
-		set appendextension# null
+		sd log_main_folder
+		setcall log_main_folder getcwd((NULL),0)
+		if log_main_folder==(NULL)
+			char getcwd_first="first getcwd error"
+			set errormsg #getcwd_first
+		else
+			setcall errormsg addtolog_withchar_parses(log_main_folder,(log_pathfolder),(TRUE))
+			call free(log_main_folder)
+		endelse
 	endif
 	if errormsg!=noerr
 		Call msgerrexit(errormsg)
