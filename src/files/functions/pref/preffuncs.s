@@ -69,9 +69,9 @@ Function warnings(sd p_err,sd has_named_entry)
 	return (TRUE)
 EndFunction
 
-#void
+#bool
 #parse and set the value, 0-9(one digit) values are expected here
-function parsepreferences(sd ptrcontent,sd ptrsize,sd strs_pointers)
+function parsepreferences(sd ptrcontent,sd ptrsize)
 	Char searchsign="="
 	Data sizeuntilsign#1
 
@@ -84,7 +84,8 @@ function parsepreferences(sd ptrcontent,sd ptrsize,sd strs_pointers)
 	call advancecursors(ptrcontent,ptrsize,sizeuntilsign)
 
 	If sizeuntilsign!=size
-		sd backp;setcall backp parsepreferences_back(sizeuntilsign,ptrcontent#,strs_pointers)
+		sd is_comment=FALSE
+		sd backp;setcall backp parsepreferences_back(sizeuntilsign,ptrcontent#,#is_comment)
 		Call stepcursors(ptrcontent,ptrsize)
 		if backp!=(NULL)
 			set size ptrsize#
@@ -94,12 +95,19 @@ function parsepreferences(sd ptrcontent,sd ptrsize,sd strs_pointers)
 				Set backp# content#
 				Sub backp# (asciizero)
 			endIf
-		endif
+		else
+			if is_comment==(FALSE)
+				call Message("Unrecognized preference")
+			endif
+		endelse
+		return (TRUE)
 	EndIf
+	return (FALSE)
 endfunction
 #pointer/null
-function parsepreferences_back(sd sizeback,ss content,sd strs_pointers)
-	sd end;set end strs_pointers
+function parsepreferences_back(sd sizeback,ss content,sd p_is_comment)
+	sv strs_pointers%nr_of_prefs_strings_p
+	sv end;set end strs_pointers
 	add end (nr_of_prefs_jumper)
 	while strs_pointers!=end
 		sd i
@@ -108,25 +116,36 @@ function parsepreferences_back(sd sizeback,ss content,sd strs_pointers)
 		if sizeback>=i
 			ss e;set e s;add e i
 			sd b
-			setcall b parsepreferences_back_helper(content,e,s)
+			setcall b parsepreferences_back_helper(content,e,s,sizeback,i,p_is_comment)
 			if b==(TRUE)
-				#and put this to last to not get it again without a fight
-				sd test;set test strs_pointers
-				sd test2;set test2 test;sub test2 (nr_of_prefs_jumper)
+				#and put this to last because it is not expected to get same preference more than one time
+				sv test;sv test2
+				set test2 strs_pointers;sub test2 (nr_of_prefs_jumper)
 				sd return
-				set return test2#
 				sd store
+				set return test2#
 				set store strs_pointers#
-				sd test3;set test3 test2
 				sub end :
-				while test!=end
-					incst test;incst test2
-					set strs_pointers# test#
-					set test3# test2#
-					incst strs_pointers;incst test3
-				endwhile
+
+				#this was before commenting preferences
+				#set test strs_pointers
+				#sd test3;set test3 test2
+				#while test!=end
+				#	incst test;incst test2
+				#	set strs_pointers# test#
+				#	set test3# test2#
+				#	incst strs_pointers;incst test3
+				#endwhile
+				#set test2# return
+
+				#this is now
+				set strs_pointers# end#
+				set test end
+				sub end (nr_of_prefs_jumper)
+				set test2# end#
+				set end# return
+
 				set test# store
-				set test2# return
 				return return
 			endif
 		endif
@@ -135,7 +154,7 @@ function parsepreferences_back(sd sizeback,ss content,sd strs_pointers)
 	return (NULL)
 endfunction
 #bool
-function parsepreferences_back_helper(ss content,ss e,ss s)
+function parsepreferences_back_helper(ss content,ss e,ss s,sd sizeback,sd i,sd p_is_comment)
 	while s!=e
 		dec content
 		dec e
@@ -143,6 +162,18 @@ function parsepreferences_back_helper(ss content,ss e,ss s)
 			return (FALSE)
 		endif
 	endwhile
+	#and verify if it is commented or another case
+	if sizeback>i
+		dec content
+		if content#!=(asciireturn)
+			if content#!=(asciicarriage)
+				if content#==(asciinumber)
+					set p_is_comment# (TRUE)
+				endif
+				return (FALSE)
+			endif
+		endif
+	endif
 	return (TRUE)
 endfunction
 
@@ -258,11 +289,9 @@ function setpreferences(vstr scrpath)
 		Data freepreferences#1
 		Set freepreferences preferencescontent
 
-		sv t%nr_of_prefs_strings_p
-		sd n=nr_of_prefs
-		while n>0
-			call parsepreferences(ptrpreferencescontent,ptrpreferencessize,t)
-			dec n
+		sd b=TRUE
+		while b==(TRUE)
+			setcall b parsepreferences(ptrpreferencescontent,ptrpreferencessize)
 		endwhile
 
 		Call free(freepreferences)
