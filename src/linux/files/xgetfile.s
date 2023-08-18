@@ -7,7 +7,7 @@ endif
 
 if argc<2
 	Char cmdnoinput="O Compiler - usage: o \"filename\" [[pref1 value1]...[prefN valueN]]"
-	char moreinfo="Documentation is here: https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html"
+	char moreinfo="Documentation is here: https://colin-i.github.io/o.html"
 	ss moreinfo_helper^moreinfo
 	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
 	call exitMessage(#cmdnoinput)

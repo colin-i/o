@@ -1,0 +1,1 @@
+sudo rsync -av /home/bc/Desktop/colin-i.github.io/o.html /var/www/html/o.html
