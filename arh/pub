@@ -49,12 +49,9 @@ last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_n
 
 #plans:
 
-#vars/fns/consts and usage locations in a json:
-#	oanalyzer or ounused, dbg file log(+exec.dbg) or same, libounused/libocompiler or liboanalyzer
-#will replace grep commands
-#can be for odbg or something new
+#vars/fns/consts and usage locations in dbg sec for odbg
 
-#another project otoc / or at the same time with o, another project c-o(can test with github actions maybe) / or o subproject
+#subproject otoc
 
 #simple and or
 #={"a","b"}

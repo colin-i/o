@@ -431,7 +431,7 @@ const p_hidden_pref^hidden_pref
 Data safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=22
+const nr_of_prefs=23
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
@@ -499,3 +499,6 @@ const ptr_has_debug^has_debug
 const aftercall_clearstate=0
 
 const unrefsign=asciiast
+
+data xbool#1
+data xfile#1

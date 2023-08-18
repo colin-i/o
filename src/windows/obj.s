@@ -8,5 +8,6 @@ Include "./head.h"
 #	int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 #but lpCmdLine is a structure, the string is after some bytes
 
-Entry _WinMain@16()
+#Entry _WinMain@16()
+entry main()  #since .x , c and relocs (% and %%) is complicated
 	Include "./text.s"

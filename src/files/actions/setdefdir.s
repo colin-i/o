@@ -52,7 +52,10 @@ if logbool==true
 			call free(log_main_folder)
 		endelse
 	endif
-	if errormsg!=noerr
-		Call msgerrexit(errormsg)
-	endif
+endif
+if xbool==true
+	setcall errormsg openfile_write_add_extension(safecurrentdirtopath,".x",#xfile)
+endif
+if errormsg!=noerr
+	Call msgerrexit(errormsg)
 endif
