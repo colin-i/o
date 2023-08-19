@@ -55,6 +55,10 @@ Function freeclose()
 		Call close(value)
 	EndIf
 
+	if main.xfile!=negative
+		call close(main.xfile)
+	endif
+
 	#here if allocerrormsg was a submessage(included in sprintf)
 	#here at some main msgerrexits
 	call clearmessage()

@@ -3,6 +3,7 @@
 #files
 Set fileout negative
 set logfile negative
+set xfile negative
 
 #containers initialisations
 Data containersptr%%containersbegin

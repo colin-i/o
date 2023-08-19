@@ -29,6 +29,13 @@ setcall pointer command_start(#is_comment,#is_comment_multiline,#cursor_start,#c
 while loop==2
 	if pointer==last
 		set loop 1
+		if is_comment!=0
+			if is_comment_multiline==0
+				setcall errormsg xfile_add((Xfile_comment),cursor_start,pointer)
+			else
+				setcall errormsg xfile_add((Xfile_multicomment),cursor_start,pointer)
+			endelse
+		endif
 	elseif pointer#==newline
 		set dot_comma_end 0   #a multiline comment can also be in a commands line
 		if is_comment_multiline==0
@@ -43,6 +50,9 @@ while loop==2
 					set pointer testcontent
 					Inc linebreaksize
 				EndIf
+				if is_comment!=0
+					setcall errormsg xfile_add((Xfile_comment),cursor_start,pointer)
+				endif
 			endif
 		else
 			#like: #!line\nline\nline\n ! command
@@ -53,9 +63,14 @@ while loop==2
 				setcall pointer mem_spaces(pointer,last)
 				if pointer!=last
 					if pointer#==(asciiexclamationmark)
-						inc pointer
-						set content pointer
-						setcall pointer command_start(#is_comment,#is_comment_multiline,#cursor_start,#content,last)
+						setcall errormsg xfile_add((Xfile_multicomment),cursor_start,pointer)
+						if errormsg!=(noerror)
+							set loop 1
+						else
+							inc pointer
+							set content pointer
+							setcall pointer command_start(#is_comment,#is_comment_multiline,#cursor_start,#content,last)
+						endelse
 					endif
 				endif
 			endif
@@ -64,7 +79,7 @@ while loop==2
 		if pointer#==(asciidoublequote)
 			setcall errormsg quotes_forward(#pointer,last,#newlines,#textlinestart)
 			if errormsg!=(noerror)
-				set loop 0
+				set loop 1
 			else
 				add totalnewlines newlines
 			endelse
@@ -78,7 +93,7 @@ while loop==2
 		inc pointer
 	endelse
 endwhile
-if loop==1
+if errormsg==(noerror)
 	set comsize pointer
 	sub comsize content
 	#\r\n case begin

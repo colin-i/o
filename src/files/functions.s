@@ -59,3 +59,5 @@ Include "./functions/debug.s"
 Include "./functions/index.s"
 
 Include "./functions/short.s"
+
+Include "./functions/xfile.s"
