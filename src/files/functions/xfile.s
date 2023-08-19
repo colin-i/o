@@ -18,7 +18,7 @@ function xfile_add(sd type,sd start,sd end)
 	return (noerror)
 endfunction
 function xfile_add_comment(sd start,sd end)
-	if main.parses==(pass_init)
+	if main.parses==(pass_write)
 		inc start ##one for commentascii
 		sd e;setcall e xfile_add((Xfile_comment),start,end)
 		return e
@@ -26,7 +26,7 @@ function xfile_add_comment(sd start,sd end)
 	return (noerror)
 endfunction
 function xfile_add_comment_multi(sd start,sd end)
-	if main.parses==(pass_init)
+	if main.parses==(pass_write)
 		add start 2 #one for commentascii and one for asciiexclamationmark
 		sd e;setcall e xfile_add((Xfile_multicomment),start,end)
 		return e
