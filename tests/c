@@ -2,6 +2,7 @@
 rm -f ./a.out
 rm -f ./*.o
 rm -f ./*.log
+rm -f ./*.x
 
 a=( `ls` )
 for var in "${a[@]}"; do
@@ -9,6 +10,8 @@ for var in "${a[@]}"; do
 		cd "${var}"
 			rm -f ./*.o
 			rm -f ./*.log
+			rm -f ./*.x
+			rm -f ./*.exe    #by ocomp
 		cd ..
 	fi
 done

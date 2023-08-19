@@ -31,9 +31,9 @@ while loop==2
 		set loop 1
 		if is_comment!=0
 			if is_comment_multiline==0
-				setcall errormsg xfile_add((Xfile_comment),cursor_start,pointer)
+				setcall errormsg xfile_add_comment(content,pointer)
 			else
-				setcall errormsg xfile_add((Xfile_multicomment),cursor_start,pointer)
+				setcall errormsg xfile_add_comment_multi(content,pointer)
 			endelse
 		endif
 	elseif pointer#==newline
@@ -51,7 +51,7 @@ while loop==2
 					Inc linebreaksize
 				EndIf
 				if is_comment!=0
-					setcall errormsg xfile_add((Xfile_comment),cursor_start,pointer)
+					setcall errormsg xfile_add_comment(content,pointer)
 				endif
 			endif
 		else
@@ -63,7 +63,7 @@ while loop==2
 				setcall pointer mem_spaces(pointer,last)
 				if pointer!=last
 					if pointer#==(asciiexclamationmark)
-						setcall errormsg xfile_add((Xfile_multicomment),cursor_start,pointer)
+						setcall errormsg xfile_add_comment_multi(content,pointer)
 						if errormsg!=(noerror)
 							set loop 1
 						else

@@ -1,6 +1,8 @@
 
 if [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
 
+#edb,ex(exec),win,old(for32),onlycomp
+
 comp () {
 	if [ "${edb}" = "0" ]; then
 		edb --run ${OCOMP} ${1}.s ${OFLAGS} || exit 1
@@ -12,7 +14,7 @@ if [ -z "${ex}" ]; then
 	if [ -z "${OLINK}" ]; then OLINK=../ounused/ounused; fi
 
 	if [ -n "${win}" ]; then
-		OFLAGS="inplace_reloc 0"
+		OFLAGS+="inplace_reloc 0"
 		if [ -z "${old}" ]; then OFLAGS+=" conv_64 2"; fi
 	#else underscore_pref 1
 	fi
@@ -25,6 +27,8 @@ if [ -z "${ex}" ]; then
 		objs+=" ${f}.o"
 	done
 	${OLINK} ${logs} || exit 1
+
+	if [ -n "${onlycomp}" ]; then exit 0; fi
 
 	if [ -z "${win}" ]; then
 		if [ -z "${old}" ]; then
@@ -50,6 +54,7 @@ if [ -z "${ex}" ]; then
 	fi
 else
 	comp ${1}
+	if [ -n "${onlycomp}" ]; then exit 0; fi
 	if [ -z "${win}" ]; then
 		mv ${1} `pwd`/a.out
 		if [ -z "${edb}" ]; then /home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 ./a.out
