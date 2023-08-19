@@ -1,17 +1,18 @@
 
+del () {
+	rm -f ./*.o
+	rm -f ./*.log
+	rm -f ./*.x
+	rm -f ./*.exe    #by ocomp
+}
 rm -f ./a.out
-rm -f ./*.o
-rm -f ./*.log
-rm -f ./*.x
+del
 
 a=( `ls` )
 for var in "${a[@]}"; do
 	if [ -d "${var}" ]; then
 		cd "${var}"
-			rm -f ./*.o
-			rm -f ./*.log
-			rm -f ./*.x
-			rm -f ./*.exe    #by ocomp
+			del
 		cd ..
 	fi
 done
