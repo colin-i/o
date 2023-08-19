@@ -5,12 +5,13 @@ Const FALSE=0
 Const NULL=0
 Const No=FALSE
 Const Yes=TRUE
+const negative=-1
 
 #files
  #open
 Const _O_RDONLY=0
 
-Const openno=-1
+Const openno=negative
 Const _O_WRONLY=0x0001
 Const _O_TRUNC=0x0200
 
@@ -60,7 +61,7 @@ Data zero=0
 Data one=1
 data two=2
 data three=3
-Data negative=-1
+Data negative=negative
 Data i#1
 Char dot="."
 
