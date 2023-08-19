@@ -41,7 +41,7 @@ Function freeclose()
 
 	Call enumbags(zero)
 
-	Data negative=-1
+	Data negative=openno
 
 	Data ptrfileout%ptrfileout
 	Set value ptrfileout#

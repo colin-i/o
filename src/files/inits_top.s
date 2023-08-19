@@ -1,9 +1,9 @@
 
 
 #files
-Set fileout negative
-set logfile negative
-set xfile negative
+Set fileout (openno)
+set logfile (openno)
+set xfile (openno)
 
 #containers initialisations
 Data containersptr%%containersbegin
