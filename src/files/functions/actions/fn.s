@@ -240,13 +240,13 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 			sd b;setcall b scope64_get()
 			if b==(TRUE)
-				sd nr_of_args
 				if varargs!=0
+					sd nr_of_args
 					setcall nr_of_args convdata((convdata_total))
+					setcall err function_start_64(nr_of_args)
 				else
-					set nr_of_args nr_of_args_for_xfile
+					setcall err function_start_64(nr_of_args_for_xfile)
 				endelse
-				setcall err function_start_64(nr_of_args)
 				If err!=noerr
 					Return err
 				EndIf
