@@ -106,3 +106,5 @@ vdata ptrcodeRegD%%ptrcodeRegD
 set ptrcodeRegD# 0
 
 call vars_log_reset() #to let next variables be ".var"
+
+set xfile_sharp_comment 0

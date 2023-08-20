@@ -48,6 +48,7 @@ function extend_arg_size(ss content,sd sizetoverify,sd p_argsize)
 						if sizetoverify!=0
 							if content#==(pointerascii)
 								#this " ##" is the only line end comment after sufix and allowing spaces
+								set main.xfile_sharp_comment (nonzero)   #and notify for xfile
 								ret
 							endif
 							#this disallow "arg #comment"

@@ -6,6 +6,7 @@ Const NULL=0
 Const No=FALSE
 Const Yes=TRUE
 const negative=-1
+const nonzero=-1
 
 #files
  #open

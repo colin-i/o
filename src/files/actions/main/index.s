@@ -233,7 +233,14 @@ if errormsg==(noerror)
 							Set errormsg unreccomaftererr
 						else
 							#this is comment after command
-							Call advancecursors(pcontent,pcomsize,comsize)
+							if xfile_sharp_comment!=0
+								call stepcursors(pcontent,pcomsize)
+								set xfile_sharp_comment 0
+							endif
+							setcall errormsg xfile_add_comment(content,pointer)
+							if errormsg==(noerror)
+								Call advancecursors(pcontent,pcomsize,comsize)
+							endif
 						endelse
 					elseIf was_whitespaces==(TRUE)
 						#mostly parses (pass_write), example: at cCALL is at all parses

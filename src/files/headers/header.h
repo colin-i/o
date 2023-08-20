@@ -502,3 +502,4 @@ const unrefsign=asciiast
 
 data xbool#1
 data xfile#1
+charx xfile_sharp_comment#1
