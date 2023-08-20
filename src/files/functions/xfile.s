@@ -1,21 +1,36 @@
 
 const Xfile_comment=0
 const Xfile_multicomment=1
+const Xfile_functiondef=2
+
+const Xfile_sz_char=bsz
+const Xfile_sz_int=dwsz
 
 #err
-function xfile_add(sd type,sd start,sd end)
+function xfile_add_int(sd int)
 	if main.xfile!=(openno)
-		sd err;setcall err writefile_errversion(main.xfile,#type,(bsz))
+		sd err;setcall err writefile_errversion(main.xfile,#int,(Xfile_sz_int))
+		return err
+	endif
+	return (noerror)
+endfunction
+function xfile_add_base(sd type,sd text,sd size)
+	if main.xfile!=(openno)
+		sd err;setcall err writefile_errversion(main.xfile,#type,(Xfile_sz_char))
 		if err==(noerror)
-			sub end start
-			setcall err writefile_errversion(main.xfile,#end,(dwsz))
+			setcall err writefile_errversion(main.xfile,#size,(Xfile_sz_int))
 			if err==(noerror)
-				setcall err writefile_errversion(main.xfile,start,end)
+				setcall err writefile_errversion(main.xfile,text,size)
 			endif
 		endif
 		return err
 	endif
 	return (noerror)
+endfunction
+function xfile_add(sd type,sd start,sd end)
+	sub end start
+	sd e;setcall e xfile_add_base(type,start,end)
+	return e
 endfunction
 function xfile_add_comment(sd start,sd end)
 	if main.parses==(pass_write)
