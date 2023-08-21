@@ -6,11 +6,26 @@ const Xfile_functiondef=2
 const Xfile_sz_char=bsz
 const Xfile_sz_int=dwsz
 
+const Xfile_argtype_byte=0
+const Xfile_argtype_int=1
+const Xfile_argtype_long=2
+const Xfile_argtype_long_byte=3
+const Xfile_argtype_long_int=4
+
 #err
 function xfile_add_int(sd int)
 	if main.xfile!=(openno)
 		sd err;setcall err writefile_errversion(main.xfile,#int,(Xfile_sz_int))
 		return err
+	endif
+	return (noerror)
+endfunction
+function xfile_add_functiondef_argtype(sd type)
+	if main.parses==(pass_write)
+		if main.xfile!=(openno)
+			sd err;setcall err writefile_errversion(main.xfile,#type,(Xfile_sz_char))
+			return err
+		endif
 	endif
 	return (noerror)
 endfunction

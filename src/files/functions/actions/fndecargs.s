@@ -49,13 +49,40 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				set long_mask (valueslongmask)
 				set datasize (qwsz)
 			endif
-		elseif b==(TRUE)
-			set long_mask (datapointbit)
-			set datasize (qwsz)
-		endelseif
+			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long))
+		else
+			if b==(TRUE)
+				set long_mask (datapointbit)
+				set datasize (qwsz)
+			endif
+			if vartype==(integersnumber)
+				setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_int))
+			else
+			#was vstringsnumber
+				setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_byte))
+			endelse
+		endelse
 	elseif vartype==(charnumber)
 		set datasize (bsz)
-	endelseif
+		setcall err xfile_add_functiondef_argtype((Xfile_argtype_byte))
+	elseif is_stack==(TRUE)
+		if vartype==(stackdatanumber)
+			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_int))
+		elseif vartype==(stackstringnumber)
+			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_byte))
+		else
+		#stackvaluenumber
+			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long))
+		endelse
+	elseif vartype==(integersnumber)
+		setcall err xfile_add_functiondef_argtype((Xfile_argtype_int))
+	else
+	#stringsnumber
+		setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_byte))
+	endelse
+	If err!=noerr
+		Return err
+	EndIf
 
 	vdata ptrdataSize%ptrdataSize
 
