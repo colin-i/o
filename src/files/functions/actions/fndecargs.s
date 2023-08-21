@@ -49,36 +49,36 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				set long_mask (valueslongmask)
 				set datasize (qwsz)
 			endif
-			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long))
+			setcall err xfile_add_char((Xfile_argtype_long))
 		else
 			if b==(TRUE)
 				set long_mask (datapointbit)
 				set datasize (qwsz)
 			endif
 			if vartype==(integersnumber)
-				setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_int))
+				setcall err xfile_add_char((Xfile_argtype_long_int))
 			else
 			#was vstringsnumber
-				setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_byte))
+				setcall err xfile_add_char((Xfile_argtype_long_byte))
 			endelse
 		endelse
 	elseif vartype==(charnumber)
 		set datasize (bsz)
-		setcall err xfile_add_functiondef_argtype((Xfile_argtype_byte))
+		setcall err xfile_add_char((Xfile_argtype_byte))
 	elseif is_stack==(TRUE)
 		if vartype==(stackdatanumber)
-			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_int))
+			setcall err xfile_add_char((Xfile_argtype_long_int))
 		elseif vartype==(stackstringnumber)
-			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_byte))
+			setcall err xfile_add_char((Xfile_argtype_long_byte))
 		else
 		#stackvaluenumber
-			setcall err xfile_add_functiondef_argtype((Xfile_argtype_long))
+			setcall err xfile_add_char((Xfile_argtype_long))
 		endelse
 	elseif vartype==(integersnumber)
-		setcall err xfile_add_functiondef_argtype((Xfile_argtype_int))
+		setcall err xfile_add_char((Xfile_argtype_int))
 	else
 	#stringsnumber
-		setcall err xfile_add_functiondef_argtype((Xfile_argtype_long_byte))
+		setcall err xfile_add_char((Xfile_argtype_long_byte))
 	endelse
 	If err!=noerr
 		Return err
@@ -97,7 +97,12 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		endif
 		call advancecursors(ptrcontent,ptrsize,sz)
 		return (noerror)
-	endif
+	else
+		setcall err xfile_add_string_if(ptrcontent#,sz)
+		If err!=noerr
+			Return err
+		EndIf
+	endelse
 
 	#this is a write to sec for old data args, careful with stackoff
 	Char stacktransfer1#1;char *={0x84,0x24}
