@@ -2,6 +2,7 @@
 const Xfile_comment=0
 const Xfile_multicomment=1
 const Xfile_functiondef=2
+const Xfile_declare=2
 
 const Xfile_sz_char=bsz
 const Xfile_sz_int=dwsz
@@ -11,6 +12,7 @@ const Xfile_argtype_int=1
 const Xfile_argtype_long=2
 const Xfile_argtype_long_byte=3
 const Xfile_argtype_long_int=4
+const Xfile_argtype_const=5
 
 #err
 function xfile_add_int(sd int)
@@ -21,11 +23,16 @@ function xfile_add_int(sd int)
 	return (noerror)
 endfunction
 function xfile_add_char(sd type)
+	if main.xfile!=(openno)
+		sd err;setcall err writefile_errversion(main.xfile,#type,(Xfile_sz_char))
+		return err
+	endif
+	return (noerror)
+endfunction
+function xfile_add_char_if(sd type)
 	if main.parses==(pass_write)
-		if main.xfile!=(openno)
-			sd err;setcall err writefile_errversion(main.xfile,#type,(Xfile_sz_char))
-			return err
-		endif
+		sd err;setcall err xfile_add_char(type)
+		return err
 	endif
 	return (noerror)
 endfunction

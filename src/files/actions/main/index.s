@@ -151,7 +151,10 @@ if errormsg==(noerror)
 					endif
 				endif
 			ElseIf commandset==(cDECLARE)
-				setcall errormsg declare(pcontent,pcomsize,p_is_for_64_value#,subtype,parses)
+				setcall errormsg xfile_add_char_if((Xfile_declare))
+				If errormsg==(noerror)
+					setcall errormsg declare(pcontent,pcomsize,p_is_for_64_value#,subtype,parses)
+				endIf
 			ElseIf commandset==(cPRIMSEC)
 				Include "./index/primsec.s"
 			ElseIf commandset==(cONEARG)

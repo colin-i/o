@@ -22,38 +22,57 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	#	endif
 	#endif
 
+	sd err
 	if declare_typenumber==(vintegersnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
 		if bool_64==(TRUE);set mask (datapointbit)
 			if parses==(pass_init)
 				set unitsize (qwsz)
-			endif
+			else
+				setcall err xfile_add_char((Xfile_argtype_long_int))
+				if err!=(noerror); return err; endif
+			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
-			endif
+			else
+				setcall err xfile_add_char((Xfile_argtype_long_int))
+				if err!=(noerror); return err; endif
+			endelse
 		endelse
 	elseif declare_typenumber==(vstringsnumber)
 		set is_stack (FALSE);set typenumber (stringsnumber)
 		if bool_64==(TRUE);set mask (datapointbit)
 			if parses==(pass_init)
 				set unitsize (qwsz)
-			endif
+			else
+				setcall err xfile_add_char((Xfile_argtype_long_byte))
+				if err!=(noerror); return err; endif
+			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
-			endif
+			else
+				setcall err xfile_add_char((Xfile_argtype_long_byte))
+				if err!=(noerror); return err; endif
+			endelse
 		endelse
 	elseif declare_typenumber==(valuesnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
 		if bool_64==(TRUE);set mask (valueslongmask)
 			if parses==(pass_init)
 				set unitsize (qwsz)
-			endif
+			else
+				setcall err xfile_add_char((Xfile_argtype_long))
+				if err!=(noerror); return err; endif
+			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
-			endif
+			else
+				setcall err xfile_add_char((Xfile_argtype_long))
+				if err!=(noerror); return err; endif
+			endelse
 		endelse
 	else
 		setcall typenumber stackfilter(declare_typenumber,#is_stack)
@@ -78,12 +97,32 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			if is_stack==(TRUE)
 				#must be at the start
 				call entryscope_verify_code()
-			endif
+
+				#xfile part
+				if typenumber==(valuesinnernumber)
+					setcall err xfile_add_char((Xfile_argtype_long))
+				elseif typenumber==(integersnumber)
+					setcall err xfile_add_char((Xfile_argtype_long_int))
+				else #(stringsnumber)
+					setcall err xfile_add_char((Xfile_argtype_long_byte))
+				endelse
+			else
+				#xfile part
+				if typenumber==(constantsnumber)
+					setcall err xfile_add_char((Xfile_argtype_const))
+				elseif typenumber==(charnumber)
+					setcall err xfile_add_char((Xfile_argtype_byte))
+				elseif typenumber==(integersnumber)
+					setcall err xfile_add_char((Xfile_argtype_int))
+				else #(stringsnumber)
+					setcall err xfile_add_char((Xfile_argtype_long_byte))
+				endelse
+			endelse
+			if err!=(noerror); return err; endif
 		endelse
 		set mask 0
 	endelse
 
-	sd err
 	sd relocbool=FALSE
 	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool)
 	if err==(noerror)
@@ -133,17 +172,20 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				endif
 			endelse
 		else
-			if typenumber==(constantsnumber)
-				if sign!=(pointersigndeclare)
-					call advancecursors(pcontent,pcomsize,pcomsize#)
-					return (noerror)
-				endif
-			elseif is_expand==(TRUE)
-				if sign!=(reserveascii)
-					return "Virtual declarations can have only the reserve sign."
-				endif
-			endelseif
-			SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool,is_stack,is_expand)
+			setcall err xfile_add_string(pcontent#,valsize)
+			if err==(noerror)
+				if typenumber==(constantsnumber)
+					if sign!=(pointersigndeclare)
+						call advancecursors(pcontent,pcomsize,pcomsize#)
+						return (noerror)
+					endif
+				elseif is_expand==(TRUE)
+					if sign!=(reserveascii)
+						return "Virtual declarations can have only the reserve sign."
+					endif
+				endelseif
+				SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool,is_stack,is_expand)
+			endif
 		endelse
 	endif
 	return err
