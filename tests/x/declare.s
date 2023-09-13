@@ -7,6 +7,8 @@ data b#1
 
 value c#1
 sv d#1
+value *d#1
+value ^dd#1
 
 str e#1
 vstr f#1
