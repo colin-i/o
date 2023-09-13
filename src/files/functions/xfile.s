@@ -27,15 +27,19 @@ function xfile_add_int(sd int)
 	return (noerror)
 endfunction
 function xfile_add_char(sd type)
+	sd err;setcall err writefile_errversion(main.xfile,#type,(Xfile_sz_char))
+	return err
+endfunction
+function xfile_add_char_if(sd type)
 	if main.xfile!=(openno)
 		sd err;setcall err writefile_errversion(main.xfile,#type,(Xfile_sz_char))
 		return err
 	endif
 	return (noerror)
 endfunction
-function xfile_add_char_if(sd type)
+function xfile_add_char_ifif(sd type)
 	if main.parses==(pass_write)
-		sd err;setcall err xfile_add_char(type)
+		sd err;setcall err xfile_add_char_if(type)
 		return err
 	endif
 	return (noerror)

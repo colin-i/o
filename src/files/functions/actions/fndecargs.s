@@ -49,36 +49,36 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				set long_mask (valueslongmask)
 				set datasize (qwsz)
 			endif
-			setcall err xfile_add_char_if((Xfile_decltype_long))
+			setcall err xfile_add_char_ifif((Xfile_decltype_long))
 		else
 			if b==(TRUE)
 				set long_mask (datapointbit)
 				set datasize (qwsz)
 			endif
 			if vartype==(integersnumber)
-				setcall err xfile_add_char_if((Xfile_decltype_long_int))
+				setcall err xfile_add_char_ifif((Xfile_decltype_long_int))
 			else
 			#was vstringsnumber
-				setcall err xfile_add_char_if((Xfile_decltype_long_byte))
+				setcall err xfile_add_char_ifif((Xfile_decltype_long_byte))
 			endelse
 		endelse
 	elseif vartype==(charnumber)
 		set datasize (bsz)
-		setcall err xfile_add_char_if((Xfile_decltype_byte))
+		setcall err xfile_add_char_ifif((Xfile_decltype_byte))
 	elseif is_stack==(TRUE)
 		if vartype==(stackdatanumber)
-			setcall err xfile_add_char_if((Xfile_decltype_long_int))
+			setcall err xfile_add_char_ifif((Xfile_decltype_long_int))
 		elseif vartype==(stackstringnumber)
-			setcall err xfile_add_char_if((Xfile_decltype_long_byte))
+			setcall err xfile_add_char_ifif((Xfile_decltype_long_byte))
 		else
 		#stackvaluenumber
-			setcall err xfile_add_char_if((Xfile_decltype_long))
+			setcall err xfile_add_char_ifif((Xfile_decltype_long))
 		endelse
 	elseif vartype==(integersnumber)
-		setcall err xfile_add_char_if((Xfile_decltype_int))
+		setcall err xfile_add_char_ifif((Xfile_decltype_int))
 	else
 	#stringsnumber
-		setcall err xfile_add_char_if((Xfile_decltype_long_byte))
+		setcall err xfile_add_char_ifif((Xfile_decltype_long_byte))
 	endelse
 	If err!=noerr
 		Return err

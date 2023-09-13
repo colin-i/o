@@ -29,14 +29,14 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			if parses==(pass_init)
 				set unitsize (qwsz)
 			else
-				setcall err xfile_add_char((Xfile_decltype_long_int))
+				setcall err xfile_add_char_if((Xfile_decltype_long_int))
 				if err!=(noerror); return err; endif
 			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
 			else
-				setcall err xfile_add_char((Xfile_decltype_long_int))
+				setcall err xfile_add_char_if((Xfile_decltype_long_int))
 				if err!=(noerror); return err; endif
 			endelse
 		endelse
@@ -46,14 +46,14 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			if parses==(pass_init)
 				set unitsize (qwsz)
 			else
-				setcall err xfile_add_char((Xfile_decltype_long_byte))
+				setcall err xfile_add_char_if((Xfile_decltype_long_byte))
 				if err!=(noerror); return err; endif
 			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
 			else
-				setcall err xfile_add_char((Xfile_decltype_long_byte))
+				setcall err xfile_add_char_if((Xfile_decltype_long_byte))
 				if err!=(noerror); return err; endif
 			endelse
 		endelse
@@ -63,14 +63,14 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			if parses==(pass_init)
 				set unitsize (qwsz)
 			else
-				setcall err xfile_add_char((Xfile_decltype_long))
+				setcall err xfile_add_char_if((Xfile_decltype_long))
 				if err!=(noerror); return err; endif
 			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
 			else
-				setcall err xfile_add_char((Xfile_decltype_long))
+				setcall err xfile_add_char_if((Xfile_decltype_long))
 				if err!=(noerror); return err; endif
 			endelse
 		endelse
@@ -100,22 +100,22 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 
 				#xfile part
 				if typenumber==(valuesinnernumber)
-					setcall err xfile_add_char((Xfile_decltype_long))
+					setcall err xfile_add_char_if((Xfile_decltype_long))
 				elseif typenumber==(integersnumber)
-					setcall err xfile_add_char((Xfile_decltype_long_int))
+					setcall err xfile_add_char_if((Xfile_decltype_long_int))
 				else #(stringsnumber)
-					setcall err xfile_add_char((Xfile_decltype_long_byte))
+					setcall err xfile_add_char_if((Xfile_decltype_long_byte))
 				endelse
 			else
 				#xfile part
 				if typenumber==(constantsnumber)
-					setcall err xfile_add_char((Xfile_decltype_const))
+					setcall err xfile_add_char_if((Xfile_decltype_const))
 				elseif typenumber==(charnumber)
-					setcall err xfile_add_char((Xfile_decltype_byte))
+					setcall err xfile_add_char_if((Xfile_decltype_byte))
 				elseif typenumber==(integersnumber)
-					setcall err xfile_add_char((Xfile_decltype_int))
+					setcall err xfile_add_char_if((Xfile_decltype_int))
 				else #(stringsnumber)
-					setcall err xfile_add_char((Xfile_decltype_long_byte))
+					setcall err xfile_add_char_if((Xfile_decltype_long_byte))
 				endelse
 			endelse
 			if err!=(noerror); return err; endif
