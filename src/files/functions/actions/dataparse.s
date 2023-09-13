@@ -149,13 +149,13 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 	Set firstchar content#
 
 	If firstchar!=(unrefsign)
-		if firstchar==(asciicirc)   #throwless if on a throwing area
+		if firstchar==(throwlesssign)   #throwless if on a throwing area
 			If typenumber==(constantsnumber)
 				Return "Unexpected throwless sign ('^') at constant declaration."
 			EndIf
 			dec valsize
 			If valsize==zero
-				Return namecverr
+				Return "Name for variable expected."
 			endif
 			or mask (aftercallthrowlessbit)
 			call stepcursors(ptrcontent,ptrsize)

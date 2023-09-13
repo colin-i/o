@@ -7,12 +7,16 @@ const Xfile_declare=2
 const Xfile_sz_char=bsz
 const Xfile_sz_int=dwsz
 
-const Xfile_argtype_byte=0
-const Xfile_argtype_int=1
-const Xfile_argtype_long=2
-const Xfile_argtype_long_byte=3
-const Xfile_argtype_long_int=4
-const Xfile_argtype_const=5
+const Xfile_decltype_byte=0
+const Xfile_decltype_int=1
+const Xfile_decltype_long=2
+const Xfile_decltype_long_byte=3
+const Xfile_decltype_long_int=4
+const Xfile_decltype_const=5
+
+const Xfile_declfeature_normal=0
+const Xfile_declfeature_unref=1
+const Xfile_declfeature_throwless=2
 
 #err
 function xfile_add_int(sd int)

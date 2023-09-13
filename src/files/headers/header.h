@@ -460,6 +460,7 @@ const p_include_sec^include_sec
 const pointersigndeclare=asciicirc
 const assignsign=asciiequal
 const relsign=asciipercent
+const throwlesssign=asciicirc
 
 const call_align_no=0
 const call_align_yes_all=1

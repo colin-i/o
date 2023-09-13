@@ -61,3 +61,4 @@ Include "./functions/index.s"
 Include "./functions/short.s"
 
 Include "./functions/xfile.s"
+Include "./functions/xfile_details.s"
