@@ -1,7 +1,7 @@
 
 if [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
 
-#edb,ex(exec),win,old(for32),onlycomp
+#edb(0=also ocomp),ex(exec),win,old(for32),onlycomp
 
 comp () {
 	if [ "${edb}" = "0" ]; then

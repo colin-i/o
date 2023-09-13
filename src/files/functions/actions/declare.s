@@ -172,7 +172,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				endif
 			endelse
 		else
-			setcall err xfile_add_string(pcontent#,valsize)
+			setcall err xfile_add_string_if(pcontent#,valsize)
 			if err==(noerror)
 				if typenumber==(constantsnumber)
 					if sign!=(pointersigndeclare)
