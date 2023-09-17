@@ -1,14 +1,14 @@
 
 format elfobj64
 
-char a#1
+char a=1
 
-data b#1
+data b=2
 
-value c#1
-sv d#1
+value c%1
+sv d
 value *d#1
-value ^dd#1
+value ^dd^c
 
 str e#1
 vstr f#1
