@@ -1,11 +1,11 @@
 
+const Xfile_sz_char=bsz
+const Xfile_sz_int=dwsz
+
 const Xfile_comment=0
 const Xfile_multicomment=1
 const Xfile_functiondef=2
 const Xfile_declare=2
-
-const Xfile_sz_char=bsz
-const Xfile_sz_int=dwsz
 
 const Xfile_decltype_byte=0
 const Xfile_decltype_int=1
@@ -17,6 +17,11 @@ const Xfile_decltype_const=5
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1
 const Xfile_declfeature_throwless=2
+
+const Xfile_declsign_equal=0
+const Xfile_declsign_reloc=1
+const Xfile_declsign_reserve=2
+const Xfile_declsign_pointer=3
 
 #err
 function xfile_add_int(sd int)

@@ -411,7 +411,6 @@ const sd_as_sv_bool=0
 const sd_as_sv_get=1
 
 const commentascii=asciinumber
-const reserveascii=asciinumber
 const pointerascii=asciinumber
 const castascii=asciicirc
 
@@ -457,9 +456,15 @@ const p_exit_end^exit_end
 data include_sec#1
 const p_include_sec^include_sec
 
-const pointersigndeclare=asciicirc
+const nosign=0
 const assignsign=asciiequal
 const relsign=asciipercent
+const reservesign=asciinumber
+const pointersigndeclare=asciicirc
+const sign_not_required=-1
+#Latin Small Letter Y with diaeresis (0xff)
+
+const unrefsign=asciiast
 const throwlesssign=asciicirc
 
 const call_align_no=0
@@ -482,8 +487,6 @@ const pass_calls=2
 const pass_write0=2
 const pass_write=1
 
-const nosign=0
-
 const allow_later_sec=-2
 const allow_later=-1
 const allow_no=0
@@ -498,8 +501,6 @@ data has_debug#1
 const ptr_has_debug^has_debug
 
 const aftercall_clearstate=0
-
-const unrefsign=asciiast
 
 data xbool#1
 data xfile#1

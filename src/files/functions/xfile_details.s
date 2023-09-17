@@ -1,6 +1,6 @@
 
 #err
-function xfile_add_declare(ss content,sd size)
+function xfile_add_declare(ss content,sd size,sd sign,sd reloc)
 	if main.xfile!=(openno)
 		sd err
 		if content#==(throwlesssign)
@@ -14,23 +14,24 @@ function xfile_add_declare(ss content,sd size)
 		endelse
 		if err==(noerror)
 			setcall err xfile_add_string(content,size)
-#			if sign!=(sign_not_required)
-#				if err==(noerror)
-#					if sign==(assignsign)
-#						if reloc==(FALSE)
-#						const Xfile_declsign_equal=0
-#						else
-#						const Xfile_declsign_reloc=1
-#						endelse
-#					elseif sign==(reserveascii)
-#					const Xfile_declsign_reserve=2
-#					elseif sign==(pointersigndeclare)
-#					const Xfile_declsign_pointer=3
-#					else
-#					#if sign==(nosign) reserve
-#					endelse
-#				endif
-#			endif
+			if sign!=(sign_not_required)
+				if err==(noerror)
+					if sign==(assignsign)
+						if reloc==(FALSE)
+							setcall err xfile_add_char((Xfile_declsign_equal))
+						else
+							setcall err xfile_add_char((Xfile_declsign_reloc))
+						endelse
+					elseif sign==(reservesign)
+						setcall err xfile_add_char((Xfile_declsign_reserve))
+					elseif sign==(pointersigndeclare)
+						setcall err xfile_add_char((Xfile_declsign_pointer))
+					else
+					#if sign==(nosign) reserve
+						setcall err xfile_add_char((Xfile_declsign_reserve))
+					endelse
+				endif
+			endif
 		endif
 		return err
 	endif

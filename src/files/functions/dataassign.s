@@ -226,7 +226,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Call stepcursors(ptrcontent,ptrsize)
 			Return noerr
 		EndElse
-	ElseIf sign==(reserveascii)
+	ElseIf sign==(reservesign)
 		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask,ptr_reserve)
 		if err==(noerror)
 			if punitsize!=(NULL)

@@ -172,7 +172,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				endif
 			endelse
 		else
-			setcall err xfile_add_declare(pcontent#,valsize)
+			setcall err xfile_add_declare(pcontent#,valsize,sign,relocbool)
 			if err==(noerror)
 				if typenumber==(constantsnumber)
 					if sign!=(pointersigndeclare)
@@ -180,7 +180,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						return (noerror)
 					endif
 				elseif is_expand==(TRUE)
-					if sign!=(reserveascii)
+					if sign!=(reservesign)
 						return "Virtual declarations can have only the reserve sign."
 					endif
 				endelseif
