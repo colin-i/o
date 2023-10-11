@@ -9,6 +9,18 @@
 		margin-top:10px;
 		margin-bottom:10px;
 	}
+	.blue
+	{
+		color:blue;
+	}
+	.red
+	{
+		color:red;
+	}
+	.green
+	{
+		color:green;
+	}
 </style>
 
 <h2>O Language Documentation</h2>
@@ -41,7 +53,9 @@
 
 <h3><a href="#object">XIV. Creating object files</a></h3>
 
-<h3><a href="#otheroperations">XV. Other operations</a></h3>
+<h3><a href="#xfile">XV. X File Syntax</a></h3>
+
+<h3><a href="#otheroperations">XVI. Other operations</a></h3>
 
 
 
@@ -906,7 +920,18 @@
 	</p>
   </div>
 </p>
-<h3><a name="otheroperations">XV. Other operations</a></h3>
+<h3><a name="xfile">XV. X Syntax</a></h3>
+<p>Black = 1 byte. <span class="blue">Blue = 4 bytes = data.</span> <span class="red">Red = string = data+byte(s).</span>
+<span class="green">Green = same as before.</span></p>
+<table style="border:1px solid black">
+<tr><td>Xfile_comment</td><td class="red">comment</td></tr>
+<tr><td>Xfile_multicomment</td><td class="red">comment</td></tr>
+<tr><td>Xfile_functiondef</td><td class="red">name</td><td class="blue">nr_of_args</td>
+	<td class="green">D</td><td>Xfile_decltype_*</td><td>Xfile_declfeature_*</td><td class="red">name</td><td class="green">/</td></tr>
+<tr><td>Xfile_declare</td>
+	<td class="green">D</td><td>Xfile_declsign_*</td></tr>
+</table>
+<h3><a name="otheroperations">XVI. Other operations</a></h3>
 <p>
 	Other commands that comes with the language.
 	<br>

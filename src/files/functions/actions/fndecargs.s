@@ -41,6 +41,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	sd datasize=dwsz
 	sd long_mask=0
 	sd b;setcall b is_for_64()
+	sd xfile_decltype
 	if vartype>=(vnumbers)
 		sub vartype (vnumbers)
 		if vartype==(valuesinnernumber)
@@ -49,40 +50,37 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				set long_mask (valueslongmask)
 				set datasize (qwsz)
 			endif
-			setcall err xfile_add_char_ifif((Xfile_decltype_long))
+			set xfile_decltype (Xfile_decltype_long) #can also be an ifif
 		else
 			if b==(TRUE)
 				set long_mask (datapointbit)
 				set datasize (qwsz)
 			endif
 			if vartype==(integersnumber)
-				setcall err xfile_add_char_ifif((Xfile_decltype_long_int))
+				set xfile_decltype (Xfile_decltype_long_int)
 			else
 			#was vstringsnumber
-				setcall err xfile_add_char_ifif((Xfile_decltype_long_byte))
+				set xfile_decltype (Xfile_decltype_long_byte)
 			endelse
 		endelse
 	elseif vartype==(charnumber)
 		set datasize (bsz)
-		setcall err xfile_add_char_ifif((Xfile_decltype_byte))
+		set xfile_decltype (Xfile_decltype_byte)
 	elseif is_stack==(TRUE)
 		if vartype==(stackdatanumber)
-			setcall err xfile_add_char_ifif((Xfile_decltype_long_int))
+			set xfile_decltype (Xfile_decltype_long_int)
 		elseif vartype==(stackstringnumber)
-			setcall err xfile_add_char_ifif((Xfile_decltype_long_byte))
+			set xfile_decltype (Xfile_decltype_long_byte)
 		else
 		#stackvaluenumber
-			setcall err xfile_add_char_ifif((Xfile_decltype_long))
+			set xfile_decltype (Xfile_decltype_long)
 		endelse
 	elseif vartype==(integersnumber)
-		setcall err xfile_add_char_ifif((Xfile_decltype_int))
+		set xfile_decltype (Xfile_decltype_int)
 	else
 	#stringsnumber
-		setcall err xfile_add_char_ifif((Xfile_decltype_long_byte))
+		set xfile_decltype (Xfile_decltype_long_byte)
 	endelse
-	If err!=noerr
-		Return err
-	EndIf
 
 	vdata ptrdataSize%ptrdataSize
 
@@ -98,7 +96,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		call advancecursors(ptrcontent,ptrsize,sz)
 		return (noerror)
 	else
-		setcall err xfile_add_declare(ptrcontent#,sz,(sign_not_required))
+		setcall err xfile_add_declare(xfile_decltype,ptrcontent#,sz,(sign_not_required))
 		If err!=noerr
 			Return err
 		EndIf
