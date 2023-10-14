@@ -12,7 +12,7 @@ value ^dd^c
 
 str e#1
 vstr f#1
-ss g#1
+ss g="qweqwe"
 
 vdata h#1
 sd i#1
