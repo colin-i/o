@@ -171,6 +171,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					str bytesatints^bytesatintegers
 					return bytesatints
 				endif
+				#if punitsize==(NULL)
+				#	Xfile_declmode_string
+				#endif
 			Else
 			#=value+constant-/&...
 				if punitsize!=(NULL)
@@ -178,6 +181,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				#ss =% x is 0
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
+				#else
+				#	Xfile_declmode_value
+				#endelse
 				endif
 				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
@@ -198,6 +204,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
 				endif
+			#else
+			#	Xfile_declmode_group
+			#endelse
 			endif
 			If typenumber==constantsnr
 				Char constgroup="Group begin sign ('{') is not expected to declare a constant."
