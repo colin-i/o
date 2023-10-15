@@ -3,7 +3,7 @@ format elfobj64
 
 char a=1
 
-data b=2
+data b={2,2}
 
 value c%1
 sv d
