@@ -170,8 +170,11 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			if err==(noerror)
 				if typenumber==(constantsnumber)
 					if sign!=(pointersigndeclare)
-						call advancecursors(pcontent,pcomsize,pcomsize#)
-						return (noerror)
+						setcall err xfile_add_char_if((Xfile_declmode_value))
+						if err==(noerror)
+							call advancecursors(pcontent,pcomsize,pcomsize#)
+							return (noerror)
+						endif
 					endif
 				elseif is_expand==(TRUE)
 					if sign!=(reservesign)

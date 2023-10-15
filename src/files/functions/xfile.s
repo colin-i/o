@@ -23,6 +23,10 @@ const Xfile_declsign_reloc=1
 const Xfile_declsign_reserve=2
 const Xfile_declsign_pointer=3
 
+const Xfile_declmode_value=0
+const Xfile_declmode_string=1
+const Xfile_declmode_group=2
+
 #err
 function xfile_add_int(sd int)
 	if main.xfile!=(openno)

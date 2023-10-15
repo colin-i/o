@@ -171,9 +171,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					str bytesatints^bytesatintegers
 					return bytesatints
 				endif
-				#if punitsize==(NULL)
-				#	Xfile_declmode_string
-				#endif
+				if punitsize==(NULL)
+					setcall err xfile_add_char_if((Xfile_declmode_string))
+					If err!=noerr;Return err;EndIf
+				endif
 			Else
 			#=value+constant-/&...
 				if punitsize!=(NULL)
@@ -181,10 +182,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				#ss =% x is 0
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
-				#else
-				#	Xfile_declmode_value
-				#endelse
-				endif
+				elseif typenumber!=constantsnr ##constant=value is declared at pass_init
+					setcall err xfile_add_char_if((Xfile_declmode_value))
+					If err!=noerr;Return err;EndIf
+				endelseif
 				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
 					return err
@@ -204,10 +205,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
 				endif
-			#else
-			#	Xfile_declmode_group
-			#endelse
-			endif
+			else
+				setcall err xfile_add_char_if((Xfile_declmode_group))
+				If err!=noerr;Return err;EndIf
+			endelse
 			If typenumber==constantsnr
 				Char constgroup="Group begin sign ('{') is not expected to declare a constant."
 				Str ptrconstgroup^constgroup
