@@ -1,0 +1,2 @@
+
+OFLAGS="x_file 1" ./a $@
