@@ -27,6 +27,8 @@ const Xfile_declmode_value=0
 const Xfile_declmode_string=1
 const Xfile_declmode_group=2
 
+#numbers_prefix_open/close/neg/not/normal numbers_type_decimal/hex/constant [numbers_operation_14] [...] numbers_done
+
 #err
 function xfile_add_int(sd int)
 	if main.xfile!=(openno)
