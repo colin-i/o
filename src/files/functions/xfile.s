@@ -27,7 +27,7 @@ const Xfile_declmode_value=0
 const Xfile_declmode_string=1
 const Xfile_declmode_group=2
 
-#[numbers_parenthesis_open] numbers_prefix_neg/not/normal numbers_type_decimal/hex/constant [numbers_parenthesis_close] [numbers_operation_14] [...] numbers_done
+#[numbers_parenthesis_open] numbers_prefix_neg/not/normal numbers_type_decimal/hex/constant/long/data/vdata/sizeFunc/sizeXFunc/sizeVar/offsetVar [numbers_parenthesis_close] [numbers_operation_14] [...] numbers_done
 
 #err
 function xfile_add_int(sd int)
