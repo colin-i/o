@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 
 <style>
 	.code
@@ -21,9 +21,10 @@
 	{
 		color:green;
 	}
-	#selection_table td {
+	#selection_table td:not(.noborder) {
 		border: 1px solid black;
 	}
+	.noborder{}
 </style>
 
 <h2>O Language Documentation</h2>
@@ -929,7 +930,7 @@
 <table id="selection_table">
 <tr><td>Xfile_comment</td>     <td class="red">comment</td></tr>
 <tr><td>Xfile_multicomment</td><td class="red">comment</td></tr>
-<tr><td rowspan=2>Xfile_functiondef</td><td class="red" rowspan=2>name</td><td>Xfile_function_t*</td><td></td>                  <td class="blue" rowspan=2>nr_of_args</td><td rowspan=2 style="border:0">[<span class="green">D</span></td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td><td class="red" rowspan=2>name</td><td rowspan=2 style="border:0"><span class="green">/</span>]</td></tr>
+<tr><td rowspan=2>Xfile_functiondef</td><td class="red" rowspan=2>name</td><td>Xfile_function_t*</td><td></td>                  <td class="blue" rowspan=2>nr_of_args</td><td rowspan=2 class="noborder">[<span class="green">D</span></td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td><td class="red" rowspan=2>name</td><td rowspan=2 class="noborder"><span class="green">/</span>]</td></tr>
 <tr>                                                                       <td>Xfile_function_e*</td><td>Xfile_function_e_*</td></tr>
 <tr><td rowspan=2>Xfile_declare</td>
     <td class="green" rowspan=2>D</td><td>Xfile_declsign_pointer</td></tr>
