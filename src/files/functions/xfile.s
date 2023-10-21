@@ -29,8 +29,9 @@ const Xfile_declfeature_throwless=2
 
 const Xfile_declsign_equal=0
 const Xfile_declsign_reloc=1
-const Xfile_declsign_reserve=2
-const Xfile_declsign_pointer=3
+const Xfile_declsign_relocx=2
+const Xfile_declsign_reserve=3
+const Xfile_declsign_pointer=4
 
 const Xfile_declmode_value=0
 const Xfile_declmode_string=1

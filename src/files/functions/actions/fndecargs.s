@@ -96,7 +96,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		call advancecursors(ptrcontent,ptrsize,sz)
 		return (noerror)
 	else
-		setcall err xfile_add_declare(xfile_decltype,ptrcontent#,sz,(sign_not_required))
+		setcall err xfile_add_declare(xfile_decltype,ptrcontent#,sz,(sign_not_required)) #2 more
 		If err!=noerr
 			Return err
 		EndIf

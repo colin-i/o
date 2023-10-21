@@ -1,6 +1,6 @@
 
 #err
-function xfile_add_declare(sd decltype,ss content,sd size,sd sign,sd reloc)
+function xfile_add_declare(sd decltype,ss content,sd size,sd sign,sd reloc,sd relocx)
 	if main.xfile!=(openno)
 		sd err
 		setcall err xfile_add_char(decltype)
@@ -21,8 +21,10 @@ function xfile_add_declare(sd decltype,ss content,sd size,sd sign,sd reloc)
 						if sign==(assignsign)
 							if reloc==(FALSE)
 								setcall err xfile_add_char((Xfile_declsign_equal))
-							else
+							elseif relocx==(FALSE)
 								setcall err xfile_add_char((Xfile_declsign_reloc))
+							else
+								setcall err xfile_add_char((Xfile_declsign_relocx))
 							endelse
 						elseif sign==(reservesign)
 							setcall err xfile_add_char((Xfile_declsign_reserve))
