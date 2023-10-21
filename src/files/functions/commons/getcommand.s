@@ -481,8 +481,8 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
 		Elseif command==(cSTARTFUNCTION)
-			sd is_x;setcall is_x is_funcx_subtype(ptrsubtype#)
-			if is_x==(TRUE)
+			sd x;setcall x func_xfile(ptrsubtype#)
+			if x!=(Xfile_function_not_x)
 				Set extstr "X" #varargs
 			endif
 		elseif command==(cCALLEX)
@@ -511,11 +511,11 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 				endif
 				If command==(cSTARTFUNCTION)
 				#functionx/entry [x] , varargs
-					#allow the command at 64
-					sd for64;setcall for64 is_for_64()
-					if for64==(TRUE)
-						or ptrsubtype# (x_func_flag)
-					endif
+					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
+					#sd for64;setcall for64 is_for_64()
+					#if for64==(TRUE)
+					or ptrsubtype# (x_func_flag)
+					#endif
 				else
 				#call[ex][x]ret
 					or ptrsubtype# (call_ret_flag)

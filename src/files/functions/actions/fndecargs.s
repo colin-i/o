@@ -57,10 +57,10 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				set datasize (qwsz)
 			endif
 			if vartype==(integersnumber)
-				set xfile_decltype (Xfile_decltype_long_int)
+				set xfile_decltype (Xfile_decltype_longInt)
 			else
 			#was vstringsnumber
-				set xfile_decltype (Xfile_decltype_long_byte)
+				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
 		endelse
 	elseif vartype==(charnumber)
@@ -68,9 +68,9 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		set xfile_decltype (Xfile_decltype_byte)
 	elseif is_stack==(TRUE)
 		if vartype==(stackdatanumber)
-			set xfile_decltype (Xfile_decltype_long_int)
+			set xfile_decltype (Xfile_decltype_longInt)
 		elseif vartype==(stackstringnumber)
-			set xfile_decltype (Xfile_decltype_long_byte)
+			set xfile_decltype (Xfile_decltype_longByte)
 		else
 		#stackvaluenumber
 			set xfile_decltype (Xfile_decltype_long)
@@ -79,7 +79,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		set xfile_decltype (Xfile_decltype_int)
 	else
 	#stringsnumber
-		set xfile_decltype (Xfile_decltype_long_byte)
+		set xfile_decltype (Xfile_decltype_longByte)
 	endelse
 
 	vdata ptrdataSize%ptrdataSize

@@ -40,3 +40,25 @@ function xfile_add_declare(sd decltype,ss content,sd size,sd sign,sd reloc)
 	endif
 	return (noerror)
 endfunction
+
+#err
+function xfile_add_fndef(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_base((Xfile_functiondef),content,sz)
+		if err==(noerror)
+			setcall err xfile_add_char(fn)
+			if err==(noerror)
+				if x_or_not_x!=(Xfile_function_not_x)
+					if varargs==0
+						setcall err xfile_add_char((Xfile_function_e_normal))
+					else
+						setcall err xfile_add_char((Xfile_function_e_varargs))
+					endelse
+				endif
+			endif
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction

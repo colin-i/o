@@ -926,8 +926,8 @@
 <table style="border:1px solid black">
 <tr><td>Xfile_comment</td>     <td class="red">comment</td></tr>
 <tr><td>Xfile_multicomment</td><td class="red">comment</td></tr>
-<tr><td>Xfile_functiondef</td> <td class="red">name</td><td class="blue">nr_of_args</td>
-    <td class="green">D</td>   <td>Xfile_decltype_*</td><td>Xfile_declfeature_*</td><td class="red">name</td><td class="green">/</td></tr>
+<tr><td rowspan=2>Xfile_functiondef</td><td class="red" rowspan=2>name</td><td>Xfile_function_t*</td><td></td>                  <td class="blue" rowspan=2>nr_of_args</td><td rowspan=2>[<span class="green">D</span></td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td><td class="red" rowspan=2>name</td><td rowspan=2><span class="green">/</span>]</td></tr>
+<tr>                                                                       <td>Xfile_function_e*</td><td>Xfile_function_e_*</td></tr>
 <tr><td rowspan=2>Xfile_declare</td>
     <td class="green" rowspan=2>D</td><td>Xfile_declsign_pointer</td></tr>
 <tr>                                  <td>Xfile_declsign_*</td><td>Xfile_declmode_*</td></tr>

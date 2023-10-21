@@ -39,14 +39,14 @@ function fnimp_exists(sd content,sd size)
 	endif
 	return "Function/Import name is already defined."
 endfunction
-#b
-function is_funcx_subtype(sd subtype)
+#xf
+function func_xfile(sd subtype)
 	if subtype==(cFUNCTIONX)
-		return (TRUE)
+		return (Xfile_function_extern)
 	elseif subtype==(cENTRY)
-		return (TRUE)
+		return (Xfile_function_entry)
 	endelseif
-	return (FALSE)
+	return (Xfile_function_traw) #or Xfile_function_not_x
 endfunction
 #subtype is only when declarefn(not callfn)
 #err
@@ -87,7 +87,6 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		Data fnnr=functionsnumber
 		Data value#1
 		Data ptrvalue^value
-		sd scope64
 		if parses==(pass_init)
 			setcall err fnimp_exists(content,sz) #it is at first pass when only fns and imports are
 			if err!=(noerror)
@@ -103,8 +102,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			else
 				set mask 0
 			endelse
-			setcall scope64 is_funcx_subtype(subtype)
-			if scope64==(TRUE)
+			sd can_scope64
+			setcall can_scope64 func_xfile(subtype)
+			if can_scope64!=(Xfile_function_not_x)
 				or mask (x86_64bit)
 			endif
 			sd err_pb;setcall err_pb global_err_pBool()
@@ -170,29 +170,25 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 			if subtype==(cFUNCTION)
 				call scope64_set((FALSE))
+				setcall err xfile_add_fndef(content,sz,(Xfile_function_tintern),(Xfile_function_not_x)) #,arg
 			else
-				setcall scope64 is_funcx_subtype(subtype)
+				sd xf_fn
+				setcall xf_fn func_xfile(subtype)
 				#functionx,entry in 64 conventions
-				#entryraw has no return but has argc,aexec,a1...an
-				if scope64==(TRUE)
+				if xf_fn!=(Xfile_function_traw)
+					sd scope64
 					setcall scope64 is_for_64()
-					#if scope64==(TRUE)
-					#	setcall err function_start_64()
-					#	If err!=noerr
-					#		Return err
-					#	EndIf
-					#endif
 					call scope64_set(scope64)
 				else
 				#if subtype==(cENTRYRAW)
+				#entryraw has no return but has argc,aexec,a1...an
 					setcall err entryraw_top();if err!=noerr;Return err;EndIf
 
 					#set only to avoid at start args, else, not using, never get into getreturn here
 					call scope64_set((FALSE))
 				endelse
+				setcall err xfile_add_fndef(content,sz,xf_fn,xf_fn,varargs)
 			endelse
-
-			setcall err xfile_add_base((Xfile_functiondef),content,sz)
 			If err!=noerr
 				Return err
 			EndIf

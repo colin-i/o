@@ -29,13 +29,13 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			if parses==(pass_init)
 				set unitsize (qwsz)
 			else
-				set xfile_decltype (Xfile_decltype_long_int)
+				set xfile_decltype (Xfile_decltype_longInt)
 			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
 			else
-				set xfile_decltype (Xfile_decltype_long_int)
+				set xfile_decltype (Xfile_decltype_longInt)
 			endelse
 		endelse
 	elseif declare_typenumber==(vstringsnumber)
@@ -44,13 +44,13 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			if parses==(pass_init)
 				set unitsize (qwsz)
 			else
-				set xfile_decltype (Xfile_decltype_long_byte)
+				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
 		else;set mask 0
 			if parses==(pass_init)
 				set unitsize (dwsz)
 			else
-				set xfile_decltype (Xfile_decltype_long_byte)
+				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
 		endelse
 	elseif declare_typenumber==(valuesnumber)
@@ -96,9 +96,9 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				if typenumber==(valuesinnernumber)
 					set xfile_decltype (Xfile_decltype_long)
 				elseif typenumber==(integersnumber)
-					set xfile_decltype (Xfile_decltype_long_int)
+					set xfile_decltype (Xfile_decltype_longInt)
 				else #(stringsnumber)
-					set xfile_decltype (Xfile_decltype_long_byte)
+					set xfile_decltype (Xfile_decltype_longByte)
 				endelse
 			else
 				#xfile part
@@ -109,7 +109,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				elseif typenumber==(integersnumber)
 					set xfile_decltype (Xfile_decltype_int)
 				else #(stringsnumber)
-					set xfile_decltype (Xfile_decltype_long_byte)
+					set xfile_decltype (Xfile_decltype_longByte)
 				endelse
 			endelse
 		endelse
