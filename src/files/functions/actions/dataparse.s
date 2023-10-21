@@ -181,7 +181,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 endfunction
 
 #er
-function getsign(str content,data size,str assigntype,data ptrsz,data typenumber,data stack,data ptrrelocbool)
+function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stack,sd ptrrelocbool,sd ptrdataxrel)
 	data true=TRUE
 	data noerr=noerror
 	Data valsize#1
@@ -222,6 +222,17 @@ function getsign(str content,data size,str assigntype,data ptrsz,data typenumber
 		EndElseIf
 		Set assigntype# equalsign
 		Set ptrrelocbool# true
+		#this was moved here because of xfile, to know datax relocation
+		call advancecursors(#content,#size,valsize)
+		call stepcursors(#content,#size)
+		if size==0
+			return "Size 0 when testing for datax relocation."
+		endif
+		if content#==relsign
+			set ptrdataxrel# (TRUE)
+		else
+			set ptrdataxrel# (FALSE)
+		endelse
 		return noerr
 	endif
 

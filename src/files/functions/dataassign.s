@@ -1,7 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd relocbool,sd stack,sd is_expand)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd relocbool,sd dataxrel,sd stack,sd is_expand)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -104,26 +104,30 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	set importbittest -1
 
 	If sign==(assignsign)
-		Char byte#1
 		Set content ptrcontent#
-		Set byte content#
-		if byte==(relsign)
-			Call stepcursors(ptrcontent,ptrsize)
-			Call stepcursors(#content,#size)
-			If size==0
-				#to not set byte in vain
-				Return ptrrightsideerr
-			endIf
-			#this comparation is not for char and const is excluded at getsign
-			if relocbool!=true
-				return "Unexpected relocation sign."
+		#if byte==(relsign)
+		if relocbool==true
+			if dataxrel==true
+				Call stepcursors(ptrcontent,ptrsize)
+				Call stepcursors(#content,#size)
+				#this was moved from here because of xfile, to know datax relocation
+				#If size==0
+				#	#to not set byte in vain
+				#	Return ptrrightsideerr
+				#endIf
+				#this comparation is not for char and const is excluded at getsign
+				#if relocbool!=true
+				#	return "Unexpected relocation sign."
+				#endif
+				vdata ptr_nobits_virtual%ptr_nobits_virtual
+				if ptr_nobits_virtual#==(Yes)
+					set relocindx (dtnbind)
+				endif
+				#Set byte content#
 			endif
-			vdata ptr_nobits_virtual%ptr_nobits_virtual
-			if ptr_nobits_virtual#==(Yes)
-				set relocindx (dtnbind)
-			endif
-			Set byte content#
 		endif
+		Char byte#1
+		Set byte content#
 		Char groupstart="{"
 		If byte!=groupstart
 			char stringstart=asciidoublequote

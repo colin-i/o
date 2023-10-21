@@ -117,8 +117,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	endelse
 
 	sd err
-	sd relocbool=FALSE
-	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool)
+	sd relocbool=FALSE;sd dataxrel
+	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool,#dataxrel)
 	if err==(noerror)
 		if parses==(pass_init)
 			if typenumber==(constantsnumber)
@@ -128,7 +128,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						call advancecursors(pcontent,pcomsize,pcomsize#)
 						return (noerror)
 					endif
-					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool) #there are 2 more argument but are not used
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool) #there are 3 more argument but are not used
 					#                                                                            since %%|
 				endif
 			else
@@ -154,7 +154,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 							endif
 						endif
 					endelse
-					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,is_stack) #there is 1 more argument but is not used
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,dataxrel,is_stack) #there is 1 more argument but is not used
 					#                                                                               since %%|
 					if is_expand==(FALSE)
 						sd pdataReg%%ptr_dataReg
@@ -181,7 +181,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						return "Virtual declarations can have only the reserve sign."
 					endif
 				endelseif
-				SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool,is_stack,is_expand)
+				SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool,dataxrel,is_stack,is_expand)
 			endif
 		endelse
 	endif

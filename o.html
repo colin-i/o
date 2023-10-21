@@ -21,6 +21,9 @@
 	{
 		color:green;
 	}
+	#selection_table td {
+		border: 1px solid black;
+	}
 </style>
 
 <h2>O Language Documentation</h2>
@@ -923,10 +926,10 @@
 <h3><a name="xfile">XV. X Syntax</a></h3>
 <p>Black = 1 byte. <span class="blue">Blue = 4 bytes = data.</span> <span class="red">Red = string = data+byte(s).</span>
 <span class="green">Green = same as before.</span></p>
-<table style="border:1px solid black">
+<table id="selection_table">
 <tr><td>Xfile_comment</td>     <td class="red">comment</td></tr>
 <tr><td>Xfile_multicomment</td><td class="red">comment</td></tr>
-<tr><td rowspan=2>Xfile_functiondef</td><td class="red" rowspan=2>name</td><td>Xfile_function_t*</td><td></td>                  <td class="blue" rowspan=2>nr_of_args</td><td rowspan=2>[<span class="green">D</span></td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td><td class="red" rowspan=2>name</td><td rowspan=2><span class="green">/</span>]</td></tr>
+<tr><td rowspan=2>Xfile_functiondef</td><td class="red" rowspan=2>name</td><td>Xfile_function_t*</td><td></td>                  <td class="blue" rowspan=2>nr_of_args</td><td rowspan=2 style="border:0">[<span class="green">D</span></td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td><td class="red" rowspan=2>name</td><td rowspan=2 style="border:0"><span class="green">/</span>]</td></tr>
 <tr>                                                                       <td>Xfile_function_e*</td><td>Xfile_function_e_*</td></tr>
 <tr><td rowspan=2>Xfile_declare</td>
     <td class="green" rowspan=2>D</td><td>Xfile_declsign_pointer</td></tr>
