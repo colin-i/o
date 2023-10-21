@@ -18,3 +18,6 @@ vdata h#1
 sd i#1
 
 const j=1
+
+#value k%
+value k%%1
