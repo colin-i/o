@@ -18,10 +18,11 @@ const Xfile_function_e_varargs=1
 
 const Xfile_decltype_byte=0
 const Xfile_decltype_int=1
-const Xfile_decltype_long=2
-const Xfile_decltype_longByte=3
-const Xfile_decltype_longInt=4
-const Xfile_decltype_const=5
+const Xfile_decltype_intByte=2
+const Xfile_decltype_long=3
+const Xfile_decltype_longInt=5
+const Xfile_decltype_longByte=6
+const Xfile_decltype_const=7
 
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1

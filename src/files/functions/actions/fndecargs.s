@@ -79,7 +79,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		set xfile_decltype (Xfile_decltype_int)
 	else
 	#stringsnumber
-		set xfile_decltype (Xfile_decltype_longByte)
+		set xfile_decltype (Xfile_decltype_intByte)
 	endelse
 
 	vdata ptrdataSize%ptrdataSize

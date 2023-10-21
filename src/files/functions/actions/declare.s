@@ -109,7 +109,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				elseif typenumber==(integersnumber)
 					set xfile_decltype (Xfile_decltype_int)
 				else #(stringsnumber)
-					set xfile_decltype (Xfile_decltype_longByte)
+					set xfile_decltype (Xfile_decltype_intByte)
 				endelse
 			endelse
 		endelse
