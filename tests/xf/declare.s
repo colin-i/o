@@ -21,3 +21,5 @@ const j=1
 
 #value k%
 value k%%1
+
+valuex l=1
