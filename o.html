@@ -21,10 +21,11 @@
 	{
 		color:green;
 	}
-	#selection_table td:not(.noborder) {
+	#selection_table td {
 		border: 1px solid black;
 	}
-	.noborder{}
+	//td:not(.noborder)
+	//.noborder{}
 </style>
 
 <h2>O Language Documentation</h2>
@@ -911,7 +912,7 @@
         endif<br>
         sd returnvalue<br>
         setcall returnvalue printf("Test: ")<br>
-        call printf("long %lx,returnvalue)<br>
+        call printf("long %lx",returnvalue)<br>
         Return 0</a>
 	</p>
 	64-bit can be ignored from preferences. Cross-compiles can be made at the same option from preferences.
@@ -926,15 +927,21 @@
 </p>
 <h3><a name="xfile">XV. X Syntax</a></h3>
 <p>Black = 1 byte. <span class="blue">Blue = 4 bytes = data.</span> <span class="red">Red = string = data+byte(s).</span>
-<span class="green">Green = same as before.</span></p>
+<span class="green">Green = replacement.</span></p>
 <table id="selection_table">
-<tr><td>Xfile_comment</td>     <td class="red">comment</td></tr>
-<tr><td>Xfile_multicomment</td><td class="red">comment</td></tr>
-<tr><td rowspan=2>Xfile_functiondef</td><td class="red" rowspan=2>name</td><td>Xfile_function_t*</td><td></td>                  <td class="blue" rowspan=2>nr_of_args</td><td rowspan=2 class="noborder">[<span class="green">D</span></td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td><td class="red" rowspan=2>name</td><td rowspan=2 class="noborder"><span class="green">/</span>]</td></tr>
-<tr>                                                                       <td>Xfile_function_e*</td><td>Xfile_function_e_*</td></tr>
-<tr><td rowspan=2>Xfile_declare</td>
-    <td class="green" rowspan=2>D</td><td>Xfile_declsign_pointer</td></tr>
-<tr>                                  <td>Xfile_declsign_*</td><td>Xfile_declmode_*</td></tr>
+	<tr><td>Xfile_comment</td>     <td class="red">comment</td></tr>
+	<tr><td>Xfile_multicomment</td><td class="red">comment</td></tr>
+	<tr><td rowspan=2>Xfile_functiondef</td><td class="red" rowspan=2>name</td><td>Xfile_function_t*</td><td></td>                  <td class="blue" rowspan=2>nr_of_args</td><td class="green" rowspan=2>[D]</td></tr>
+	<tr>                                                                       <td>Xfile_function_e*</td><td>Xfile_function_e_*</td></tr>
+	<tr><td rowspan=3>Xfile_declare</td><td class="green" rowspan=3>D</td><td>Xfile_declsign_pointer</td></tr>
+	<tr>                                                                  <td>Xfile_declsign_reserve</td></tr>
+	<tr>                                                                  <td>Xfile_declsign_*</td><td>Xfile_declmode_*</td></tr>
+</table>
+Table D:
+<table id="selection_table">
+	<tr><td>Xfile_declfield_const</td><td colspan=3></td>                                                                                     <td class="red" rowspan=3>name</td></tr>
+	<tr><td>Xfile_declfield_stack</td><td></td>                      <td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td></tr>
+	<tr><td>Xfile_declfield_data</td> <td>Xfile_declfield_data_*</td></tr>
 </table>
 <h3><a name="otheroperations">XVI. Other operations</a></h3>
 <p>

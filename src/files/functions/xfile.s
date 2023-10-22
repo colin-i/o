@@ -16,13 +16,19 @@ const Xfile_function_entry=3
 const Xfile_function_e_normal=0
 const Xfile_function_e_varargs=1
 
+const Xfile_declfield_data=0
+const Xfile_declfield_stack=1
+const Xfile_declfield_const=2
+
+const Xfile_declfield_data_concrete=0
+const Xfile_declfield_data_expand=1
+
 const Xfile_decltype_byte=0
 const Xfile_decltype_int=1
 const Xfile_decltype_intByte=2
 const Xfile_decltype_long=3
 const Xfile_decltype_longInt=4
 const Xfile_decltype_longByte=5
-const Xfile_decltype_const=6
 
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1
