@@ -16,9 +16,9 @@ const Xfile_function_entry=3
 const Xfile_function_e_normal=0
 const Xfile_function_e_varargs=1
 
-const Xfile_declfield_data=0
+const Xfile_declfield_const=0
 const Xfile_declfield_stack=1
-const Xfile_declfield_const=2
+const Xfile_declfield_data=2
 
 const Xfile_declfield_data_concrete=0
 const Xfile_declfield_data_expand=1
@@ -34,17 +34,20 @@ const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1
 const Xfile_declfeature_throwless=2
 
-const Xfile_declsign_equal=0
-const Xfile_declsign_reloc=1
-const Xfile_declsign_relocx=2
-const Xfile_declsign_reserve=3
-const Xfile_declsign_pointer=4
+const Xfile_declsign_pointer=0
+const Xfile_declsign_reserve=1
+const Xfile_declsign_equal=2
+const Xfile_declsign_reloc=3
+const Xfile_declsign_relocx=4
 
 const Xfile_declmode_value=0
-const Xfile_declmode_string=1
-const Xfile_declmode_group=2
+const Xfile_declmode_group=1
+const Xfile_declmode_string=2
 
 #[numbers_parenthesis_open] numbers_prefix_neg/not/normal numbers_type_decimal/hex/constant/long/data/datax/sizeFunc/sizeXFunc/sizeVar/offsetVar [numbers_parenthesis_close] [numbers_operation_14] [...] numbers_done
+const Xfile_numbers_parenthesis_open=0
+const Xfile_numbers_parenthesis_close=1
+const Xfile_numbers_done=2
 
 #err
 function xfile_add_int(sd int)

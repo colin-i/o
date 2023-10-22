@@ -72,7 +72,10 @@ Function operation(ss content,sd size,sd inoutvalue,sd number)
 		SetCall errptr numbersconstants(content,size,ptrnewitem)
 	else
 		inc content;sub size 2
-		setcall errptr parseoperations(#content,#size,size,ptrnewitem,(FALSE))
+		setcall errptr xfile_add_char_ifif((Xfile_numbers_parenthesis_open))
+		if errptr==(noerror)
+			setcall errptr parseoperations_base(#content,#size,size,ptrnewitem,(FALSE),(Xfile_numbers_parenthesis_close))
+		endif
 	endelse
 	If errptr!=noerr;Return errptr;EndIf
 
@@ -209,6 +212,11 @@ EndFunction
 
 #err pointer
 Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments)
+	sd er;setcall er parseoperations_base(ptrcontent,ptrsize,sz,outvalue,comments,(Xfile_numbers_done))
+	return er
+EndFunction
+#err pointer
+Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments,sd xfile_numbers)
 	ss content
 	ss initial
 	sd number
@@ -284,7 +292,9 @@ Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments)
 		sub sz szz
 	endif
 	Call advancecursors(ptrcontent,ptrsize,sz)
-	Return noerr
+
+	setcall errptr xfile_add_char_ifif(xfile_numbers)
+	Return errptr
 EndFunction
 
 function doubleoperation(ss pnr,sv pcontent,sd end)
