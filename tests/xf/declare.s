@@ -1,7 +1,7 @@
 
 format elfobj64
 
-char a=1
+char a=1+(1+1)
 
 data b={2,2}
 
@@ -22,4 +22,4 @@ const j=1
 #value k%
 value k%%1
 
-valuex l=1
+valuex l#1
