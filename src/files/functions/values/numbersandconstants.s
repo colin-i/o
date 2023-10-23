@@ -401,24 +401,6 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 	endwhile
 	Return closeerr
 endfunction
-#er
-function parenthesis_all_size(ss content,sd size,sd ptr_sz)
-	data noerr=noerror
-	Char fnbegin=asciiparenthesisstart
-	if content#!=fnbegin
-		return noerr
-	endif
-	inc content
-	dec size
-	sd err
-	setcall err parenthesis_size(content,size,ptr_sz)
-	if err!=noerr
-		return err
-	endif
-	data two=2
-	add ptr_sz# two
-	return err
-endfunction
 
 #len
 function dwtomem(sd dw,ss mem)

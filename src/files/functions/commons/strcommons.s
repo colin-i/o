@@ -7,12 +7,8 @@ Function advancecursors(data ptrcontent,data ptrsize,data nr)
 	Set size ptrsize#
 	Add content nr
 
-	#backward advance
-	#take nr if nr>0 or -nr if nr<0
-	Data zero=0
-	If nr<zero
-		SetCall nr neg(nr)
-	EndIf
+	#take nr if nr>0 or -nr if nr<0. was ok in one case at enumcomma backward
+	#Data zero=0;If nr<zero;SetCall nr neg(nr);EndIf
 
 	Sub size nr
 	Set ptrcontent# content

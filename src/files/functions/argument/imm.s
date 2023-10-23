@@ -1,67 +1,9 @@
 
-
-function imm_values(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
-#parenthesis is already verified
-	call stepcursors(ptrcontent,ptrsize)
-	dec sz
-	dec sz
-	sd err
-	setcall err imm_value(ptrcontent,ptrsize,sz,outvalue)
-	return err
-endfunction
-function imm_value(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
-	sd err
-	setcall err parseoperations(ptrcontent,ptrsize,sz,outvalue,(FALSE))
-	return err
-endfunction
-
-function canbeimm_orerror(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
-#size is not 0(zero)
-	ss content
-	set content ptrcontent#
-
-	sd err
-
-	if content#!=(asciiparenthesisstart)
-		#this was the old form:
-		#setcall err numbersconstants(content,sz,outvalue)
-		#since xfile: parseoperations has xfile..done and it is better to exclude the parenthesis
-		#it is also good to have operations
-		#0+constant if want to start with a constant
-		value ff^imm_value
-		setcall err restore_cursors_onok(ptrcontent,ptrsize,ff,sz,outvalue)
-		return err
-	endif
-	value f^imm_values
-	setcall err restore_cursors_onok(ptrcontent,ptrsize,f,sz,outvalue)
-	return err
-endfunction
-
-#err
-function findimm(data ptrcontent,data ptrsize,data sz,data outvalue)
-#size is not 0(zero)
+function setimm()
 	data canhaveimm#1
 	const immpointer^canhaveimm
-	data isimm#1
-	const ptr_isimm^isimm
-
-	Data noerr=noerror
-	sd err
-	setcall err canbeimm_orerror(ptrcontent,ptrsize,sz,outvalue)
-	if err!=noerr
-		return err
-	endif
-
 	data true=1
-	set isimm true
-	return noerr
-endfunction
-
-
-function setimm()
-	data ptratimm%immpointer
-	data true=1
-	set ptratimm# true
+	set canhaveimm true
 endfunction
 function unsetimm()
 	data ptratimm%immpointer
@@ -74,6 +16,12 @@ function getimm()
 endfunction
 
 
+function setisimm()
+	data isimm#1
+	const ptr_isimm^isimm
+	data true=1
+	set isimm true
+endfunction
 function resetisimm()
 	data ptr%ptr_isimm
 	data false=0

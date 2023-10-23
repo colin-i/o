@@ -1,6 +1,4 @@
 
-
-
 function verify_syntax_end(sd ptrcontent,sd ptrsize,sd argsize,sd *data2)
 	Call advancecursors(ptrcontent,ptrsize,argsize)
 	Call spaces(ptrcontent,ptrsize)
@@ -134,7 +132,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			set prefix# 1
 		endelse
 	elseif allowdata!=(allow_later)  #exclude pass_init
-		setcall errnr arg_size(content,argsize,#argsize)
+		setcall errnr arg_size(content,argsize,#argsize)  #spc,tab
 		If errnr!=(noerror)
 			Return errnr
 		EndIf
@@ -150,19 +148,38 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					return immnothere
 				endif
 				#extend to parenthesis if found
-				sd ptr_sz^argsize
-				setcall errnr parenthesis_all_size(content,size,ptr_sz)
-				If errnr!=noerr
-					Return errnr
-				EndIf
-				#find the imm
-				setcall errnr findimm(ptrcontent,ptrsize,argsize,ptrdata)
-				If errnr!=noerr
-					Return errnr
-				EndIf
-				#
-				set ptrlow# false
+				if content#==(asciiparenthesisstart)
+					call stepcursors(ptrcontent,ptrsize)
+					setcall errnr parenthesis_size(ptrcontent#,ptrsize#,#argsize)
+					if errnr!=(noerror)
+						return errnr
+					endif
+					setcall errnr parseoperations(ptrcontent,ptrsize,argsize,ptrdata,(FALSE))
+					if errnr!=(noerror)
+						return errnr
+					endif
+					call stepcursors(ptrcontent,ptrsize)
+					if sens==(BACKWARD)
+						add argsize 2 #the recognised parenthesis
+					endif
+				else
+					setcall errnr parseoperations(ptrcontent,ptrsize,argsize,ptrdata,(FALSE))
+					if errnr!=(noerror)
+						return errnr
+					endif
+				endelse
+
+				call setisimm()
 				#sufix is not used at imm value
+				set ptrlow# false
+
+				if sens==(FORWARD)
+					return (noerror)
+				else
+					sd back=-1
+					mult back argsize
+					call advancecursors(ptrcontent,ptrsize,back)
+				endelse
 			else
 				if allowdata==(allow_yes)
 					#at last/only argument it is better to allow space before sufix to not regret later

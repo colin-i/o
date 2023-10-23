@@ -220,10 +220,9 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 				set argsize 0
 			endelse
 
-			Data negvalue#1
-			Set negvalue zero
-			Sub negvalue argsize
-			Call advancecursors(ptrcontent,ptrsize,negvalue)
+			#here, advancecursors is not ok
+			sub ptrcontent# argsize
+			sub ptrsize# argsize
 			Data ptrargsize^argsize
 			if typenumberOrparses==(pass_init)
 				setcall err getarg(ptrcontent,ptrargsize,argsize,(allow_later),sens) #there are 4 more arguments but are not used
@@ -240,7 +239,12 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 		Sub sz argsize
 		If sz!=zero
 			Dec sz
-			Call advancecursors(ptrcontent,ptrsize,sens)
+			add ptrcontent# sens
+			if sens==(FORWARD)
+				sub ptrsize# sens
+			else
+				add ptrsize# sens
+			endelse
 			Set content ptrcontent#
 		Else
 			Set csv zero
