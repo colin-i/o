@@ -172,7 +172,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 endfunction
 
 #bool
-Function signop(char byte,sd outval)
+Function signop(char byte,sv outval)
 	Data false=FALSE
 	Data true=TRUE
 
