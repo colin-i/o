@@ -6,6 +6,11 @@ function imm_values(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
 	dec sz
 	dec sz
 	sd err
+	setcall err imm_value(ptrcontent,ptrsize,sz,outvalue)
+	return err
+endfunction
+function imm_value(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
+	sd err
 	setcall err parseoperations(ptrcontent,ptrsize,sz,outvalue,(FALSE))
 	return err
 endfunction
@@ -18,10 +23,16 @@ function canbeimm_orerror(sd ptrcontent,sd ptrsize,sd sz,sd outvalue)
 	sd err
 
 	if content#!=(asciiparenthesisstart)
-		setcall err numbersconstants(content,sz,outvalue)
+		#this was the old form:
+		#setcall err numbersconstants(content,sz,outvalue)
+		#since xfile: parseoperations has xfile..done and it is better to exclude the parenthesis
+		#it is also good to have operations
+		#0+constant if want to start with a constant
+		value ff^imm_value
+		setcall err restore_cursors_onok(ptrcontent,ptrsize,ff,sz,outvalue)
 		return err
 	endif
-	data f^imm_values
+	value f^imm_values
 	setcall err restore_cursors_onok(ptrcontent,ptrsize,f,sz,outvalue)
 	return err
 endfunction

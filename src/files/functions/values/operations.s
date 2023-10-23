@@ -255,13 +255,16 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 		SetCall find signop(content#,pnr)
 		if find==true
 			If initial!=content ##to ignore -n
-				SetCall errptr oneoperation(ptrcontent,initial,content,ptrval,number)
-				If errptr!=noerr
-					Return errptr
-				EndIf
-				call doubleoperation(pnr,#content,end)
-				set number nr
-				Set bool true
+				ss test;set test content;dec test
+				if test#!=(not_number) #to ignore ~-n
+					SetCall errptr oneoperation(ptrcontent,initial,content,ptrval,number)
+					If errptr!=noerr
+						Return errptr
+					EndIf
+					call doubleoperation(pnr,#content,end)
+					set number nr
+					Set bool true
+				endif
 			EndIf
 		elseif content#==(asciiparenthesisstart)
 			inc content

@@ -73,3 +73,5 @@ const sym_with_size=dwsz
 
 const set=0
 const get=1
+
+const not_number=asciiequiv

@@ -302,51 +302,60 @@ endfunction
 #err pointer
 Function numbersconstants(str content,data size,data outval)
 	Str intconsterr="Integer(dec/hex) or constant value expected."
-	If size<=0
+	If size==0
 		Return intconsterr
 	EndIf
-	char not=asciiequiv
+
+	sd xprefixes=Xfile_numbers_prefix_none
+
+	char not=not_number
 	sd notbool=FALSE
 	if content#==not
 		set notbool (TRUE)
 		inc content
 		dec size
-		If size<=0
+		If size==0
 			Return intconsterr
 		EndIf
+		or xprefixes (Xfile_numbers_prefix_not)
 	endif
 	sd minusbool=FALSE
 	if content#==(asciiminus)
 		set minusbool (TRUE)
 		inc content
 		dec size
-		If size<=0
+		If size==0
 			Return intconsterr
 		EndIf
+		or xprefixes (Xfile_numbers_prefix_neg)
 	endif
-	sd bool
-	setcall bool is_variable_char_not_numeric(content#)
+
 	sd err
-	If bool==(FALSE)
-		setcall err numbertoint(content,size,outval,minusbool)
-	Else
-		Data constr%%ptr_constants
-		Data pointer#1
-		SetCall pointer vars(content,size,constr)
-		If pointer==0
-			Char unconst="Undefined constant name."
-			Str ptruncost^unconst
-			Return ptruncost
-		EndIf
-		Set outval# pointer#
-		set err (noerror)
-	EndElse
+	setcall err xfile_add_char_ifif(xprefixes)
 	if err==(noerror)
-		if notbool==(TRUE)
-			not outval#
-		endif
-		if minusbool==(TRUE)
-			mult outval# -1
+		sd bool
+		setcall bool is_variable_char_not_numeric(content#)
+		If bool==(FALSE)
+			setcall err numbertoint(content,size,outval,minusbool)
+		Else
+			Data constr%%ptr_constants
+			Data pointer#1
+			SetCall pointer vars(content,size,constr)
+			If pointer==0
+				Char unconst="Undefined constant name."
+				Str ptruncost^unconst
+				Return ptruncost
+			EndIf
+			Set outval# pointer#
+			set err (noerror)
+		EndElse
+		if err==(noerror)
+			if notbool==(TRUE)
+				not outval#
+			endif
+			if minusbool==(TRUE)
+				mult outval# -1
+			endif
 		endif
 	endif
 	return err

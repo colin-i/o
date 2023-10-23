@@ -6,7 +6,6 @@ const Xfile_declare=3
 
 const Xfile_function_tintern=0
 const Xfile_function_traw=1
-	const Xfile_function_not_x=Xfile_function_traw
 const Xfile_function_extern=2
 const Xfile_function_entry=3
 
@@ -41,7 +40,7 @@ const Xfile_declmode_value=0
 const Xfile_declmode_group=1
 const Xfile_declmode_string=2
 
-#numbers_prefix_neg/not/normal numbers_type_decimal/hex/constant/long/data/datax/sizeFunc/sizeXFunc/sizeVar/offsetVar
+#numbers_type_decimal/hex/constant/long/data/datax/sizeFunc/sizeXFunc/sizeVar/offsetVar
 const Xfile_numbers_parenthesis_open=0
 const Xfile_numbers_parenthesis_close=1
 const Xfile_numbers_done=2
@@ -59,3 +58,8 @@ const Xfile_numbers_operation_less=asciiless
 const Xfile_numbers_operation_greater=asciigreater
 const Xfile_numbers_operation_shl=asciicomma
 const Xfile_numbers_operation_sar=asciidot
+
+#here is ORing
+const Xfile_numbers_prefix_none=0x0
+const Xfile_numbers_prefix_not=0x1
+const Xfile_numbers_prefix_neg=0x2

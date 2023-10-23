@@ -1,6 +1,7 @@
 
 const Xfile_sz_char=bsz
 const Xfile_sz_int=dwsz
+const Xfile_function_not_x=Xfile_function_traw
 
 #err
 function xfile_add_int(sd int)
