@@ -8,6 +8,8 @@ Include "./headers/commons.h"
 Include "./headers/logs.h"
 Include "./headers/strip.h"
 
+include "./headers/xfile.h"
+
 Include "./headers/header.h"
 Include "./headers/asm.h"
 Include "./headers/pe_format.h"

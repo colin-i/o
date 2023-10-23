@@ -1,18 +1,19 @@
 
 
-Const addNumber=asciiplus
-Const subNumber=asciiminus
-Const mulNumber=asciiast
-Const divNumber=asciislash
-Const andNumber=asciiand
-Const orNumber=asciivbar
-Const xorNumber=asciicirc
-Const powNumber=asciidollar
-Const remNumber=asciipercent
-Const lessNumber=asciiless
-Const greaterNumber=asciigreater
-Const shlNumber=asciicomma
-Const sarNumber=asciidot
+Const unreadyNumber=0
+Const addNumber=Xfile_numbers_operation_add
+Const subNumber=Xfile_numbers_operation_sub
+Const mulNumber=Xfile_numbers_operation_mul
+Const divNumber=Xfile_numbers_operation_div
+Const andNumber=Xfile_numbers_operation_and
+Const orNumber=Xfile_numbers_operation_or
+Const xorNumber=Xfile_numbers_operation_xor
+Const powNumber=Xfile_numbers_operation_pow
+Const remNumber=Xfile_numbers_operation_rem
+Const lessNumber=Xfile_numbers_operation_less
+Const greaterNumber=Xfile_numbers_operation_greater
+Const shlNumber=Xfile_numbers_operation_shl
+Const sarNumber=Xfile_numbers_operation_sar
 #asciiminus and asciinot for one arg
 
 #err
@@ -195,19 +196,26 @@ EndFunction
 
 #err
 Function oneoperation(sd ptrcontent,ss initial,ss content,sd val,sd op)
-	sd size
 	sd errptr
-	Data noerr=noerror
+
+	if op==(unreadyNumber)
+		set op (addNumber)
+	else
+		setcall errptr xfile_add_char_ifif(op)
+		if errptr!=(noerror);Return errptr;endif
+	endelse
+
+	sd size
 
 	Set size content
 	Sub size initial
 
 	SetCall errptr operation(initial,size,val,op)
-	If errptr!=noerr
+	If errptr!=(noerror)
 		Set ptrcontent# initial
 		Return errptr
 	EndIf
-	Return noerr
+	Return (noerror)
 EndFunction
 
 #err pointer
@@ -229,7 +237,7 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	Set content ptrcontent#
 
 	Set initial content
-	Set number (addNumber)
+	Set number (unreadyNumber)
 	Set val zero
 
 	sd bool
@@ -246,7 +254,7 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	While content!=end
 		SetCall find signop(content#,pnr)
 		if find==true
-			If initial!=content
+			If initial!=content ##to ignore -n
 				SetCall errptr oneoperation(ptrcontent,initial,content,ptrval,number)
 				If errptr!=noerr
 					Return errptr
