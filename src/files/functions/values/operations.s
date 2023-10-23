@@ -218,6 +218,27 @@ Function oneoperation(sd ptrcontent,ss initial,ss content,sd val,sd op)
 	Return (noerror)
 EndFunction
 
+#err
+function operation_test(sv ptrcontent,sd initial,sd content,sd end,sd ptrval,sd pnumber,sd pnr,sd pbool)
+	if initial!=content ##to ignore -n
+		ss test;set test content;dec test
+		if test#==(not_number) #to ignore ~-n
+			if initial==test ##if not this, a~-b will anyway stop at a~, but this test is logic
+				return (noerror)
+			endif
+		endif
+		sd err
+		SetCall err oneoperation(ptrcontent,initial,content,ptrval,pnumber#)
+		If err==(noerror)
+			call doubleoperation(pnr,#content,end)
+			set pnumber# pnr#
+			Set pbool# (TRUE)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction
+
 #err pointer
 Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments)
 	sd er;setcall er parseoperations_base(ptrcontent,ptrsize,sz,outvalue,comments,(Xfile_numbers_done))
@@ -254,18 +275,10 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	While content!=end
 		SetCall find signop(content#,pnr)
 		if find==true
-			If initial!=content ##to ignore -n
-				ss test;set test content;dec test
-				if test#!=(not_number) #to ignore ~-n
-					SetCall errptr oneoperation(ptrcontent,initial,content,ptrval,number)
-					If errptr!=noerr
-						Return errptr
-					EndIf
-					call doubleoperation(pnr,#content,end)
-					set number nr
-					Set bool true
-				endif
-			EndIf
+			setcall errptr operation_test(ptrcontent,initial,content,end,ptrval,#number,pnr,#bool)
+			if errptr!=noerr
+				return errptr
+			endif
 		elseif content#==(asciiparenthesisstart)
 			inc content
 			sd rest_sz;set rest_sz end;sub rest_sz content
