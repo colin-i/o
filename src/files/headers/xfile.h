@@ -61,5 +61,5 @@ const Xfile_numbers_operation_sar=asciidot
 
 #here is ORing
 const Xfile_numbers_prefix_none=0x0
-const Xfile_numbers_prefix_not=0x1
-const Xfile_numbers_prefix_neg=0x2
+const Xfile_numbers_prefix_neg=0x1
+const Xfile_numbers_prefix_not=0x2
