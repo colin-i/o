@@ -161,13 +161,7 @@ Function memtohex(str content,data size,data outvalue)
 EndFunction
 
 #error
-function numbertoint(valuex ptrcontent,vdatax ptrsize,data outval,data minusbool)
-#ptr? since xfile, for outside need
-	vstrx content#1
-	set content ptrcontent#
-	datax size#1
-	set size ptrsize#
-
+function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	Data bool#1
 	#test to see if the ! sign is present
 	if content#==(asciiexclamationmark)
@@ -177,9 +171,7 @@ function numbertoint(valuex ptrcontent,vdatax ptrsize,data outval,data minusbool
 			#the current data cursor
 			setcall outval# get_img_vdata_dataReg()
 
-			set ptrsize# 0   #only for size!=0, else call advancecursors(ptrcontent,ptrsize,-1)
 			setcall err xfile_add_char_ifif((Xfile_numbers_type_idata))
-
 			return err
 		endif
 
@@ -199,19 +191,18 @@ function numbertoint(valuex ptrcontent,vdatax ptrsize,data outval,data minusbool
 				endif
 				setcall outval# get_img_vdata_dataSize()
 
-				set ptrsize# 0   #only for size!=0, else call advancecursors(ptrcontent,ptrsize,-1)
 				setcall err xfile_add_char_ifif((Xfile_numbers_type_idatax))
-
 				return err
 			endif
 			inc content
 			sub size 2
-			setcall err get_sizeoffunction(content,size,outval,(TRUE))
 
+			if p_parses#==(pass_init)
+				return "At the moment, !!func is not implemented here."  #after pass_init is the calloc for scopes
+			endif
+			setcall err xfile_add_char_if((Xfile_numbers_type_sizeXFunc))  #getarg_base can write for xfile
 			if err==(noerror)
-				set ptrcontent# content;set ptrsize# size
-				setcall err xfile_add_char_if((Xfile_numbers_type_sizeXFunc))
-				#not ifif? will already be an error if this at pass init
+				setcall err get_sizeoffunction(content,size,outval,(TRUE))
 			endif
 			return err
 		endif
@@ -228,74 +219,72 @@ function numbertoint(valuex ptrcontent,vdatax ptrsize,data outval,data minusbool
 			datax data#1;datax low#1;datax sufix#1
 			if pointer#!=(asciiexclamationmark)
 				#size of variable
-				setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
+				setcall err xfile_add_char_if((Xfile_numbers_type_sizeVar))
 				if err==(noerror)
-					if low!=0
-						set outval# (bsz)
-					else
-						set outval# (dwsz)
-						sd test;setcall test stackbit(data)
-						if test==0
-							if sufix==0
-								setcall test datapointbit(data)
-								if test!=0
-									set outval# (qwsz)
-								endif
-							else
-								setcall test pointbit(data) #it has 64 check
-								if test!=0
-									set outval# (qwsz)
-								endif
-							endelse
+					setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
+					if err==(noerror)
+						if low!=0
+							set outval# (bsz)
 						else
-							if sufix==0
-								setcall outval# stack64_enlarge(outval#)
+							set outval# (dwsz)
+							sd test;setcall test stackbit(data)
+							if test==0
+								if sufix==0
+									setcall test datapointbit(data)
+									if test!=0
+										set outval# (qwsz)
+									endif
+								else
+									setcall test pointbit(data) #it has 64 check
+									if test!=0
+										set outval# (qwsz)
+									endif
+								endelse
 							else
-								setcall test pointbit(data) #it has 64 check
-								if test!=0
-									set outval# (qwsz)
-								endif
+								if sufix==0
+									setcall outval# stack64_enlarge(outval#)
+								else
+									setcall test pointbit(data) #it has 64 check
+									if test!=0
+										set outval# (qwsz)
+									endif
+								endelse
 							endelse
 						endelse
-					endelse
 
-					if sufix==0
-						add data (maskoffset_reserve)
-						sd shortvalue;setcall shortvalue s_to_i(data)
-						if shortvalue==0
-							return "Great reserve size is not implemented yet."
+						if sufix==0
+							add data (maskoffset_reserve)
+							sd shortvalue;setcall shortvalue s_to_i(data)
+							if shortvalue==0
+								return "Great reserve size is not implemented yet."
+							endif
+							mult outval# shortvalue
 						endif
-						mult outval# shortvalue
 					endif
-
-					set ptrcontent# content;set ptrsize# size
-					setcall err xfile_add_char_if((Xfile_numbers_type_sizeVar))
-					#not ifif? will already be an error if this at pass init
 				endif
 			else
 				# !a.b! offset
 				dec size
 
-				setcall err getarg_base(content,size,dot_offset,#data,#low,#sufix,outval)
+				setcall err xfile_add_char_if((Xfile_numbers_type_offsetVar))  #getarg_base can write for xfile
 				if err==(noerror)
-					if sufix!=0
-						return "Not using offset of suffix."
+					setcall err getarg_base(content,size,dot_offset,#data,#low,#sufix,outval)
+					if err==(noerror)
+						if sufix!=0
+							return "Not using offset of suffix."
+						endif
+						sub outval# data#
+						neg outval#
 					endif
-					sub outval# data#
-					neg outval#
-
-					set ptrcontent# content;set ptrsize# size
-					setcall err xfile_add_char_if((Xfile_numbers_type_offsetVar))
-					#not ifif? will already be an error if this at pass init
 				endif
 			endelse
 		else
-			setcall err get_sizeoffunction(content,size,outval,(FALSE))
-
+			if p_parses#==(pass_init)
+				return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
+			endif
+			setcall err xfile_add_char_if((Xfile_numbers_type_sizeFunc))  #getarg_base can write for xfile
 			if err==(noerror)
-				set ptrcontent# content;set ptrsize# size
-				setcall err xfile_add_char_if((Xfile_numbers_type_sizeFunc))
-				#not ifif? will already be an error if this at pass init
+				setcall err get_sizeoffunction(content,size,outval,(FALSE))
 			endif
 		endelse
 		return err
@@ -307,9 +296,7 @@ function numbertoint(valuex ptrcontent,vdatax ptrsize,data outval,data minusbool
 		if b==(FALSE);set outval# (dwsz)
 		else;set outval# (qwsz);endelse
 
-		set ptrsize# 0   #only for size!=0, else call advancecursors(ptrcontent,ptrsize,-1)
 		setcall err xfile_add_char_ifif((Xfile_numbers_type_ilong))
-
 		return err
 	endelseif
 	#decimal or hex number
@@ -321,20 +308,16 @@ function numbertoint(valuex ptrcontent,vdatax ptrsize,data outval,data minusbool
 			Str intvallerr^_intvalerr
 			Return intvallerr
 		Else
-			setcall err xfile_add_char_ifif((Xfile_numbers_type_hex))
+			setcall err xfile_add_base_ifif((Xfile_numbers_type_thex),content,size)
 		EndElse
 	Else
-		setcall err xfile_add_char_ifif((Xfile_numbers_type_decimal))
+		setcall err xfile_add_base_ifif((Xfile_numbers_type_tdecimal),content,size)
 	EndElse
 	return err
 endfunction
 
 #size of function
 function get_sizeoffunction(sd content,sd size,sd outval,sd is_expand)
-	vdata p_parses%ptr_parses
-	if p_parses#==(pass_init)
-		return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
-	endif
 	sd err
 	sd pos
 	setcall err get_scope_pos(content,size,#pos)
@@ -381,7 +364,7 @@ Function numbersconstants(str content,data size,data outval)
 		sd bool
 		setcall bool is_variable_char_not_numeric(content#)
 		If bool==(FALSE)
-			setcall err numbertoint(#content,#size,outval,minusbool)
+			setcall err numbertoint(content,size,outval,minusbool)
 		Else
 			Data constr%%ptr_constants
 			Data pointer#1
@@ -393,7 +376,7 @@ Function numbersconstants(str content,data size,data outval)
 			EndIf
 			Set outval# pointer#
 
-			setcall err xfile_add_char_ifif((Xfile_numbers_type_constant))
+			setcall err xfile_add_base_ifif((Xfile_numbers_type_tconstant),content,size)
 		EndElse
 		if err==(noerror)
 			if notbool==(TRUE)
@@ -401,9 +384,6 @@ Function numbersconstants(str content,data size,data outval)
 			endif
 			if minusbool==(TRUE)
 				mult outval# -1
-			endif
-			if size!=0 #example: ! , for xfile, is only the type, size is reduced, here is 0
-				setcall err xfile_add_string_ifif(content,size)
 			endif
 		endif
 	endif

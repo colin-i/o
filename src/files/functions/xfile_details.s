@@ -1,6 +1,6 @@
 
 #err
-function xfile_add_declare(sd decltype,sd is_stack,sd is_expand,ss content,sd size,sd sign,sd reloc,sd relocx)
+function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,ss content,sd size,sd sign,sd reloc,sd relocx)
 	if main.xfile!=(openno)
 		sd err
 		if decltype==(Xfile_decltype_const)
@@ -62,7 +62,7 @@ function xfile_add_declare(sd decltype,sd is_stack,sd is_expand,ss content,sd si
 endfunction
 
 #err
-function xfile_add_fndef(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
+function xfile_add_fndef_if(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
 	if main.xfile!=(openno)
 		sd err
 		setcall err xfile_add_base((Xfile_functiondef),content,sz)

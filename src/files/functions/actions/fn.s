@@ -170,7 +170,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 			if subtype==(cFUNCTION)
 				call scope64_set((FALSE))
-				setcall err xfile_add_fndef(content,sz,(Xfile_function_tintern),(Xfile_function_not_x)) #,arg
+				setcall err xfile_add_fndef_if(content,sz,(Xfile_function_tintern),(Xfile_function_not_x)) #,arg
 			else
 				sd xf_fn
 				setcall xf_fn func_xfile(subtype)
@@ -187,7 +187,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 					#set only to avoid at start args, else, not using, never get into getreturn here
 					call scope64_set((FALSE))
 				endelse
-				setcall err xfile_add_fndef(content,sz,xf_fn,xf_fn,varargs)
+				setcall err xfile_add_fndef_if(content,sz,xf_fn,xf_fn,varargs)
 			endelse
 			If err!=noerr
 				Return err
@@ -229,7 +229,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				sv c;sd s;set c ptrcontent#;set s ptrsize#
 				Call enumcommas(#c,#s,sz,is_declare,fnnr,(pass_write0),#nr_of_args_for_xfile) #there are 4 more arguments but are not used
 			endif
-			setcall err xfile_add_int(nr_of_args_for_xfile)
+			setcall err xfile_add_int_if(nr_of_args_for_xfile)
 			If err!=noerr
 				Return err
 			EndIf
