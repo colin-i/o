@@ -350,11 +350,14 @@ Function numbersconstants(str content,data size,data outval)
 			set err (noerror)
 		EndElse
 		if err==(noerror)
-			if notbool==(TRUE)
-				not outval#
-			endif
-			if minusbool==(TRUE)
-				mult outval# -1
+			setcall err xfile_add_string_ifif(content,size)
+			if err==(noerror)
+				if notbool==(TRUE)
+					not outval#
+				endif
+				if minusbool==(TRUE)
+					mult outval# -1
+				endif
 			endif
 		endif
 	endif
