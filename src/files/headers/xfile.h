@@ -6,6 +6,7 @@ const Xfile_declare=3
 
 const Xfile_function_tintern=0
 const Xfile_function_traw=1
+#const Xfile_function_not_x=Xfile_function_traw
 const Xfile_function_extern=2
 const Xfile_function_entry=3
 
@@ -25,6 +26,7 @@ const Xfile_decltype_intByte=2
 const Xfile_decltype_long=3
 const Xfile_decltype_longInt=4
 const Xfile_decltype_longByte=5
+#const Xfile_decltype_const=Xfile_decltype_longByte+1
 
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1
@@ -40,7 +42,6 @@ const Xfile_declmode_value=0
 const Xfile_declmode_group=1
 const Xfile_declmode_string=2
 
-#numbers_type_decimal/hex/constant/long/data/datax/sizeFunc/sizeXFunc/sizeVar/offsetVar
 const Xfile_numbers_parenthesis_open=0
 const Xfile_numbers_parenthesis_close=1
 const Xfile_numbers_done=2
@@ -63,3 +64,14 @@ const Xfile_numbers_operation_sar=asciidot
 const Xfile_numbers_prefix_none=0x0
 const Xfile_numbers_prefix_neg=0x1
 const Xfile_numbers_prefix_not=0x2
+
+const Xfile_numbers_type_ilong=0
+const Xfile_numbers_type_idata=1
+const Xfile_numbers_type_idatax=2
+const Xfile_numbers_type_decimal=3
+const Xfile_numbers_type_hex=4
+const Xfile_numbers_type_constant=5
+const Xfile_numbers_type_sizeFunc=6
+const Xfile_numbers_type_sizeXFunc=7
+const Xfile_numbers_type_sizeVar=8
+const Xfile_numbers_type_offsetVar=9

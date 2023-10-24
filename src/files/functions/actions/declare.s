@@ -103,7 +103,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			else
 				#xfile part
 				if typenumber==(constantsnumber)
-					set xfile_decltype (Xfile_declfield_const)
+					set xfile_decltype (Xfile_decltype_const)
 				elseif typenumber==(charnumber)
 					set xfile_decltype (Xfile_decltype_byte)
 				elseif typenumber==(integersnumber)

@@ -2,6 +2,7 @@
 const Xfile_sz_char=bsz
 const Xfile_sz_int=dwsz
 const Xfile_function_not_x=Xfile_function_traw
+const Xfile_decltype_const=Xfile_decltype_longByte+1
 
 #err
 function xfile_add_int(sd int)

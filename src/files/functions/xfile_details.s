@@ -3,8 +3,8 @@
 function xfile_add_declare(sd decltype,sd is_stack,sd is_expand,ss content,sd size,sd sign,sd reloc,sd relocx)
 	if main.xfile!=(openno)
 		sd err
-		if decltype==(Xfile_declfield_const)
-			setcall err xfile_add_char(decltype)
+		if decltype==(Xfile_decltype_const)
+			setcall err xfile_add_char((Xfile_declfield_const))
 		else
 			if is_stack==(TRUE)
 				setcall err xfile_add_char((Xfile_declfield_stack))
