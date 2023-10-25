@@ -2,6 +2,11 @@
 
 #errnr
 Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad)
+	sd err;setcall err addtosecstresc_base(pcontent,psize,sz,escapes,pdest,wordpad,(NULL)) #1 more
+	return err
+endFunction
+#errnr
+Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad,sv ptrxfiledataloc,sd ptrxfiledatasz)
 	#set destination start
 	Data destReg#1
 	Data ptrdestReg^destReg
@@ -15,6 +20,9 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 	Set sizeEsc sz
 	sd end;set end sizeEsc
 	Sub sizeEsc escapes
+	if ptrxfiledataloc!=(NULL)
+		set ptrxfiledatasz# sizeEsc
+	endif
 	Inc sizeEsc
 
 	Set odd zero
@@ -39,6 +47,9 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 	Data ptrdestloc^destloc
 	Call getcont(pdest,ptrdestloc)
 	Add destloc destReg
+	if ptrxfiledataloc!=(NULL)
+		set ptrxfiledataloc# destloc
+	endif
 
 	add end pcontent#
 	While pcontent#!=end
@@ -54,5 +65,5 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 		Set destloc# zero
 	EndIf
 
-	Return noerr
+	Return (noerror)
 EndFunction

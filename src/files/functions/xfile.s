@@ -37,6 +37,14 @@ function xfile_add_string(sd text,sd size)
 	endif
 	return err
 endfunction
+function xfile_add_string_if(sd text,sd size)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_string(text,size)
+		return err
+	endif
+	return (noerror)
+endfunction
 function xfile_add_base(sd type,sd text,sd size)
 	sd err;setcall err writefile_errversion(main.xfile,#type,(Xfile_sz_char))
 	if err==(noerror)

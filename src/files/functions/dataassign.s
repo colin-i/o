@@ -413,11 +413,13 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		sd escapes
 		SetCall err quotinmem(ptrcontent,ptrsize,ptrvalue,#escapes)
 		if punitsize==(NULL)
-			SetCall err addtosecstresc(ptrcontent,ptrsize,value,escapes,ptrdatasec,(FALSE))
-			if err!=(noerror)
-				return err
+			sd xloc;sd xsize
+			SetCall err addtosecstresc_base(ptrcontent,ptrsize,value,escapes,ptrdatasec,(FALSE),#xloc,#xsize)
+			if err==(noerror)
+				Call stepcursors(ptrcontent,ptrsize)
+				setcall err xfile_add_string_if(xloc,xsize)
 			endif
-			Call stepcursors(ptrcontent,ptrsize)
+			return err
 		else
 			sub value escapes
 			add punitsize# value
