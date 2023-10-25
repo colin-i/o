@@ -1,3 +1,9 @@
+ocompiler (1-5+100) xenial; urgency=medium
+
+  * same build as before but with unused functions removed
+
+ -- bc <bc@bc-Type1ProductConfigId>  Wed, 25 Oct 2023 09:00:42 +0300
+
 ocompiler (1-5+99) xenial; urgency=medium
 
   * Segmentation fault at !a.a pass_init
