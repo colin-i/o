@@ -26,3 +26,6 @@ valuex l#1
 
 #return 1+
 return 1+1
+
+vstr *z="123"
+value *z^dd
