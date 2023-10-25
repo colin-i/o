@@ -7,6 +7,8 @@ if [ -n "$1" ]; then
 OCOMP=$1
 fi
 
+#must also use mingw-w64-i686-dev
+
 ${OCOMP} ./src/windows/obj32.s inplace_reloc 0 && \
 #argc argv? more info at obj.s. _WinMain@16
 i686-w64-mingw32-ld -s -entry=main ./src/windows/obj32.o -lmsvcrt -luser32 -lkernel32 -lcomdlg32 -lshell32 -o ./o.exe && \
