@@ -1,3 +1,9 @@
+ocompiler (1-5+99) xenial; urgency=medium
+
+  * Segmentation fault at !a.a pass_init
+
+ -- bc <bc@bc-Type1ProductConfigId>  Wed, 25 Oct 2023 08:45:12 +0300
+
 ocompiler (1-5+98) xenial; urgency=medium
 
   * can comment pref in ocompiler.conf
