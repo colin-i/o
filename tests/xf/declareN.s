@@ -18,3 +18,5 @@ char *z=!b
 char *z=!!b
 char *z=!b.a
 char *z=!b.a!
+
+vstr *y="123"
