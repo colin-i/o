@@ -372,6 +372,8 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			str unexpdp="Unexpected double pointer."
 			return unexpdp
 		endif
+		setcall err xfile_add_string_if(content,size)
+		if err!=noerr;return err;endif
 		Call advancecursors(ptrcontent,ptrsize,size)
 	EndElse
 	if skipNumberValue==false
