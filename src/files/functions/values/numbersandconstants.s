@@ -200,7 +200,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			if p_parses#==(pass_init)
 				return "At the moment, !!func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
-			setcall err xfile_add_char_if((Xfile_numbers_type_sizeXFunc))  #next in get_scope_pos
+			setcall err xfile_add_char_if((Xfile_numbers_type_fsizeX))  #next in get_scope_pos
 			if err==(noerror)
 				setcall err get_sizeoffunction(content,size,outval,(TRUE))
 			endif
@@ -282,7 +282,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			if p_parses#==(pass_init)
 				return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
-			setcall err xfile_add_char_if((Xfile_numbers_type_sizeFunc))  #next in get_scope_pos
+			setcall err xfile_add_char_if((Xfile_numbers_type_fsize))  #next in get_scope_pos
 			if err==(noerror)
 				setcall err get_sizeoffunction(content,size,outval,(FALSE))
 			endif

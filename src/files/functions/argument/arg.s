@@ -543,7 +543,8 @@ function get_scope_pos(ss content,sd sz,sv ppos)
 	sd var
 	setcall var vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
 	if var!=(NULL)
-		return (noerror)
+		sd err;setcall err xfile_add_string_if(content,sz)
+		return err
 	endif
 	return "Undefined function name."
 endfunction
