@@ -3,6 +3,8 @@ format elfobj64
 
 function b()
 char a=1
+value aa^a
+return aa#s^
 endfunction
 
 #const a=!b.a!
