@@ -3,6 +3,7 @@ const Xfile_comment=0
 const Xfile_multicomment=1
 const Xfile_functiondef=2
 const Xfile_declare=3
+const Xfile_action=4
 
 const Xfile_function_tintern=0
 const Xfile_function_traw=1
