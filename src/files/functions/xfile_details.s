@@ -82,3 +82,20 @@ function xfile_add_fndef_if(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
 	endif
 	return (noerror)
 endfunction
+
+#err
+function xfile_add_varsufix_if(sd content,sd size,sd sufix,sd cast)
+	if main.xfile!=(openno)
+		sd err;setcall err xfile_add_string(content,size)
+		if err==(noerror)
+			setcall err xfile_add_char(sufix)
+			if sufix==(Xfile_suffix_true)
+				if err==(noerror)
+					setcall err xfile_add_char(cast)
+				endif
+			endif
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction

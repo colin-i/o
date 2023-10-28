@@ -17,6 +17,10 @@ ifeq (${nobits_virtual},0)
 OFLAGS+=nobits_virtual 0
 endif
 
+ifndef OCOMP
+OCOMP=../src/o
+endif
+
 OB = ostrip
 OBJ = ${OB}.o
 OBT = ${OB}.txt
@@ -24,7 +28,6 @@ FULLOBJ = ./${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
-OCOMP=../src/o
 OUNUSED=../ounused/ounused
 
 %.o: ${FULLOBJS}

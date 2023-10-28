@@ -66,7 +66,7 @@ function xfile_add_base_ifif(sd type,sd text,sd size)
 	endif
 	return (noerror)
 endfunction
-function xfile_add_if(sd type,sd start,sd end)
+function xfile_add_base_area_if(sd type,sd start,sd end)
 	sub end start
 	sd e;setcall e xfile_add_base_if(type,start,end)
 	return e
@@ -74,7 +74,7 @@ endfunction
 function xfile_add_comment_ifif(sd start,sd end)
 	if main.parses==(pass_write)
 		inc start ##one for commentascii
-		sd e;setcall e xfile_add_if((Xfile_comment),start,end)
+		sd e;setcall e xfile_add_base_area_if((Xfile_comment),start,end)
 		return e
 	endif
 	return (noerror)
@@ -82,7 +82,7 @@ endfunction
 function xfile_add_comment_multi_ifif(sd start,sd end)
 	if main.parses==(pass_write)
 		add start 2 #one for commentascii and one for asciiexclamationmark
-		sd e;setcall e xfile_add_if((Xfile_multicomment),start,end)
+		sd e;setcall e xfile_add_base_area_if((Xfile_multicomment),start,end)
 		return e
 	endif
 	return (noerror)

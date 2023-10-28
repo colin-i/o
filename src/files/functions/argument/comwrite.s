@@ -215,7 +215,7 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	sd v_64
 	sd prefix
 	setcall v_64 sufix64(location)
-	If sufix==(TRUE)
+	If sufix==(sufix_true)
 		sd take64;set take64 v_64
 		if v_64==(val64_willbe)
 			if is_low==(TRUE)

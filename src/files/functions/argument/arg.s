@@ -126,7 +126,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			add argsize q_size
 			#set low and sufix
 			set ptrlow# (FALSE)
-			set ptrsufix# (FALSE)
+			set ptrsufix# (sufix_false)
 			#the code operation is a "prefix" like
 			setcall prefix prefix_bool()
 			set prefix# 1
@@ -239,7 +239,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 								endif
 							else
 								set ptrlow# (FALSE)
-								set ptrsufix# (FALSE)
+								set ptrsufix# (sufix_false)
 								sd var
 								setcall var function_in_code()
 								set var# 1

@@ -100,7 +100,7 @@ function is_big(sd dataarg,sd sufix)
 	if b!=0
 		setcall b pointbit(dataarg)
 		if b==0
-			if sufix==(TRUE)
+			if sufix==(sufix_true)
 				# sd# is not big
 				return (FALSE)
 			endif

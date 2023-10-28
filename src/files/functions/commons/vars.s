@@ -271,10 +271,10 @@ Function undefinedvariable()
 	Return _undefinedvar
 EndFunction
 
-const no_cast=-3
-const cast_value=asciiV
-const cast_data=asciiD
-const cast_string=asciiS
+const no_cast=Xfile_suffix_cast_none
+const cast_value=Xfile_suffix_cast_value
+const cast_data=Xfile_suffix_cast_data
+const cast_string=Xfile_suffix_cast_string
 
 #err
 Function varsufix(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
@@ -307,45 +307,48 @@ function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scop
 		SetCall err undefinedvariable()
 		Return err
 	EndIf
-	Set ptrdata# data
 
-	Data charnumber=charnumber
-	sd prefix
-	setcall prefix prefix_bool()
+	setcall err xfile_add_varsufix_if(content,size,ptrsufix#,cast)
+	if err==(noerror)
+		Set ptrdata# data
 
-	If type==charnumber
-		If ptrsufix#==true
-			Char ptrsfxerr="CHAR statement cannot have the pointer sufix."
-			Str _ptrsfxerr^ptrsfxerr
-			Return _ptrsfxerr
-		EndIf
-		if prefix#==0
-			Set ptrlow# true
-		else
-			#need all char address at prefix
-			set ptrlow# false
-		endelse
-		return (noerror)
-	endIf
+		Data charnumber=charnumber
+		sd prefix
+		setcall prefix prefix_bool()
 
-	sd is_str
-	setcall is_str cast_resolve(type,cast,ptrdata)
-
-	If is_str==false
-		Set ptrlow# false
-	Else
-	#str ss
-		If ptrsufix#==true
+		If type==charnumber
+			If ptrsufix#==(sufix_true)
+				Char ptrsfxerr="CHAR statement cannot have the pointer sufix."
+				Str _ptrsfxerr^ptrsfxerr
+				Return _ptrsfxerr
+			EndIf
 			if prefix#==0
 				Set ptrlow# true
 			else
-				Set ptrlow# false
+				#need all char address at prefix
+				set ptrlow# false
 			endelse
-		Else
-			Set ptrlow# false
-		EndElse
-	EndElse
-	return (noerror)
+		else
+			sd is_str
+			setcall is_str cast_resolve(type,cast,ptrdata)
+
+			If is_str==false
+				Set ptrlow# false
+			Else
+			#str ss
+				If ptrsufix#==(sufix_true)
+					if prefix#==0
+						Set ptrlow# true
+					else
+						Set ptrlow# false
+					endelse
+				Else
+					Set ptrlow# false
+				EndElse
+			EndElse
+		endelse
+	endif
+	return err
 EndFunction
 
 #sufix
@@ -355,16 +358,16 @@ function sufix_test(ss content,sd p_size,sd p_cast)
 	if content#!=(pointerascii)
 		if content#==(castascii)
 			setcall p_cast# cast_test(content,p_size)
-			return (TRUE)
+			return (sufix_true)
 		endif
 		set p_cast# (no_cast)
-		return (FALSE)
+		return (sufix_false)
 	endif
 	dec p_size#
 	set p_cast# (no_cast)
 	call extend_sufix_test(content,p_size)
 	#and, allow prefix and sufix same time, for fun
-	return (TRUE)
+	return (sufix_true)
 endfunction
 
 #cast

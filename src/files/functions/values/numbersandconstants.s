@@ -229,7 +229,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 							set outval# (dwsz)
 							sd test;setcall test stackbit(data)
 							if test==0
-								if sufix==0
+								if sufix==(sufix_false)
 									setcall test datapointbit(data)
 									if test!=0
 										set outval# (qwsz)
@@ -241,7 +241,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 									endif
 								endelse
 							else
-								if sufix==0
+								if sufix==(sufix_false)
 									setcall outval# stack64_enlarge(outval#)
 								else
 									setcall test pointbit(data) #it has 64 check
@@ -252,7 +252,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 							endelse
 						endelse
 
-						if sufix==0
+						if sufix==(sufix_false)
 							add data (maskoffset_reserve)
 							sd shortvalue;setcall shortvalue s_to_i(data)
 							if shortvalue==0
@@ -270,7 +270,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				if err==(noerror)
 					setcall err getarg_base(content,size,dot_offset,#data,#low,#sufix,outval)
 					if err==(noerror)
-						if sufix!=0
+						if sufix!=(sufix_false)
 							return "Not using offset of suffix."
 						endif
 						sub outval# data#

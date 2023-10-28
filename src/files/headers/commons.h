@@ -75,3 +75,5 @@ const set=0
 const get=1
 
 const not_number=asciiequiv
+const sufix_true=Xfile_suffix_true
+const sufix_false=Xfile_suffix_false
