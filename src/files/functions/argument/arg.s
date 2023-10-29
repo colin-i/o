@@ -147,27 +147,30 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					str immnothere="Unexpected numbers/constants, expecting a variable."
 					return immnothere
 				endif
-				#extend to parenthesis if found
-				if content#==(asciiparenthesisstart)
-					call stepcursors(ptrcontent,ptrsize)
-					setcall errnr parenthesis_size(ptrcontent#,ptrsize#,#argsize)
-					if errnr!=(noerror)
-						return errnr
-					endif
-					setcall errnr parseoperations(ptrcontent,ptrsize,argsize,ptrdata,(FALSE))
-					if errnr!=(noerror)
-						return errnr
-					endif
-					call stepcursors(ptrcontent,ptrsize)
-					if sens==(BACKWARD)
-						add argsize 2 #the recognised parenthesis
-					endif
-				else
-					setcall errnr parseoperations(ptrcontent,ptrsize,argsize,ptrdata,(FALSE))
-					if errnr!=(noerror)
-						return errnr
-					endif
-				endelse
+				setcall errnr xfile_add_char_if((Xfile_arg_number))
+				if errnr==(noerror)
+					#extend to parenthesis if found
+					if content#==(asciiparenthesisstart)
+						call stepcursors(ptrcontent,ptrsize)
+						setcall errnr parenthesis_size(ptrcontent#,ptrsize#,#argsize)
+						if errnr!=(noerror)
+							return errnr
+						endif
+						setcall errnr parseoperations(ptrcontent,ptrsize,argsize,ptrdata,(FALSE))
+						if errnr!=(noerror)
+							return errnr
+						endif
+						call stepcursors(ptrcontent,ptrsize)
+						if sens==(BACKWARD)
+							add argsize 2 #the recognised parenthesis
+						endif
+					else
+						setcall errnr parseoperations(ptrcontent,ptrsize,argsize,ptrdata,(FALSE))
+						if errnr!=(noerror)
+							return errnr
+						endif
+					endelse
+				endif
 
 				call setisimm()
 				#sufix is not used at imm value

@@ -82,6 +82,8 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 
 	If forwardORcallsens==forward
 		call unsetimm() #set is at returns/and at push
+
+		sd xlog
 		If subtype==(cRETURN)
 			sd termswitch
 			setcall termswitch is_linux_end() #exit from linux term
@@ -89,21 +91,26 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			If err!=(noerror)
 				Return err
 			EndIf
+			set xlog (Xfile_action_return)
 		ElseIf subtype==(cINC)
 			Char inc={0xFF}
 			Set op inc
 			set regopcode 0
+			set xlog (Xfile_action_inc)
 		ElseIf subtype==(cDEC)
 			Char dec={0xFF}
 			Char decregopcode={1}
 			Set op dec
 			Set regopcode decregopcode
+			set xlog (Xfile_action_dec)
 		ElseIf subtype<=(cDECST)
 			set op (0x83)
 			if subtype==(cINCST)
 				set regopcode 0
+				set xlog (Xfile_action_incst)
 			else
 				set regopcode 5
+				set xlog (Xfile_action_decst)
 			endelse
 			char incs_sz#1
 			sd b;setcall b is_for_64()
@@ -114,20 +121,25 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 		ElseIf subtype==(cNEG)
 			set op (0xf7)
 			set regopcode 3
+			set xlog (Xfile_action_neg)
 		ElseIf subtype==(cNOT)
 			Char not={0xF7}
 			Char notregopcode={Notregopcode}
 			Set op not
 			Set regopcode notregopcode
+			set xlog (Xfile_action_not)
 		ElseIf subtype<=(cSAR)
 			set op (0xD1)
 			If subtype==(cSHL)
 				set regopcode 4
+				set xlog (Xfile_action_shl)
 			ElseIf subtype==(cSHR)
 				set regopcode 5
+				set xlog (Xfile_action_shr)
 			Else
 			#cSAR
 				set regopcode 7
+				set xlog (Xfile_action_sar)
 			EndElse
 		Else
 		#If subtype==(cEXIT)
@@ -135,7 +147,9 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			If err!=(noerror)
 				Return err
 			EndIf
+			set xlog (Xfile_action_exit)
 		EndElse
+		setcall err xfile_add_char_if(xlog)
 	Else
 	#push imm prepare test
 		call setimm()

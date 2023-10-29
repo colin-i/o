@@ -83,3 +83,17 @@ const Xfile_suffix_cast_none=0
 const Xfile_suffix_cast_value=asciiV
 const Xfile_suffix_cast_data=asciiD
 const Xfile_suffix_cast_string=asciiS
+
+const Xfile_action_return=0
+const Xfile_action_inc=1
+const Xfile_action_incst=2
+const Xfile_action_dec=3
+const Xfile_action_decst=4
+const Xfile_action_neg=5
+const Xfile_action_not=6
+const Xfile_action_shl=7
+const Xfile_action_shr=8
+const Xfile_action_sar=9
+const Xfile_action_exit=10
+
+const Xfile_arg_number=0
