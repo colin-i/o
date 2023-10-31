@@ -91,7 +91,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			If err!=(noerror)
 				Return err
 			EndIf
-			set xlog (Xfile_action_return)
+			set xlog (Xfile_action_areturn)
 		ElseIf subtype==(cINC)
 			Char inc={0xFF}
 			Set op inc
@@ -147,9 +147,10 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			If err!=(noerror)
 				Return err
 			EndIf
-			set xlog (Xfile_action_exit)
+			set xlog (Xfile_action_aexit)
 		EndElse
 		setcall err xfile_add_char_if(xlog)
+		If err!=(noerror);Return err;EndIf
 	Else
 	#push imm prepare test
 		call setimm()
@@ -256,4 +257,19 @@ function comp_one(sd low,sd dataarg,sd sufix,sd op)
 		endelse
 	endif
 	return -1
+endfunction
+
+#err
+function argument_init(sv ptrcontent,sd ptrsize,sd subtype)
+	sd err
+	if subtype!=(cRETURN)
+		if subtype!=(cEXIT)
+			#exclude strings at inc,dec,...
+			#can't go with allow_no because, for vars, will not exclude pass init
+			setcall err getarg(ptrcontent,ptrsize,ptrsize#,(allow_later_sec),(FORWARD)) #there are 3 more arguments but are not used
+			return err
+		endif
+	endif
+	setcall err getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 3 more arguments but are not used
+	return err
 endfunction

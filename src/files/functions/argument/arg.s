@@ -109,6 +109,10 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				return "String here is useless at the moment."  #the real problem: is disturbing virtual calculation at pass_init
 			endelse
 		else
+			setcall errnr xfile_add_char_if((Xfile_arg_string))
+			If errnr!=(noerror)
+				return errnr
+			endif
 			#get entry
 			sd sec%ptrdummyEntry
 			call getcont(sec,ptrdata)
@@ -117,7 +121,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			setcall location# get_img_vdata_dataReg()
 			#set string to data
 			data ptrdatasec%%ptr_datasec
-			SetCall errnr addtosecstresc(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
+			SetCall errnr addtosecstresc_xfile(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
 			If errnr!=(noerror)
 				return errnr
 			endif

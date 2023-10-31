@@ -5,6 +5,7 @@ const Xfile_functiondef=2
 const Xfile_declare=3
 const Xfile_action=4
 
+#t from type
 const Xfile_function_tintern=0
 const Xfile_function_traw=1
 #const Xfile_function_not_x=Xfile_function_traw
@@ -66,12 +67,15 @@ const Xfile_numbers_prefix_none=0x0
 const Xfile_numbers_prefix_neg=0x1
 const Xfile_numbers_prefix_not=0x2
 
+#i from int
 const Xfile_numbers_type_ilong=0
 const Xfile_numbers_type_idata=1
 const Xfile_numbers_type_idatax=2
+#t from text
 const Xfile_numbers_type_tdecimal=3
 const Xfile_numbers_type_thex=4
 const Xfile_numbers_type_tconstant=5
+#f from function
 const Xfile_numbers_type_fsize=6
 const Xfile_numbers_type_fsizeX=7
 const Xfile_numbers_type_sizeVar=8
@@ -84,16 +88,18 @@ const Xfile_suffix_cast_value=asciiV
 const Xfile_suffix_cast_data=asciiD
 const Xfile_suffix_cast_string=asciiS
 
-const Xfile_action_return=0
-const Xfile_action_inc=1
-const Xfile_action_incst=2
-const Xfile_action_dec=3
-const Xfile_action_decst=4
-const Xfile_action_neg=5
-const Xfile_action_not=6
-const Xfile_action_shl=7
-const Xfile_action_shr=8
-const Xfile_action_sar=9
-const Xfile_action_exit=10
+#a from any
+const Xfile_action_areturn=0
+const Xfile_action_aexit=1
+const Xfile_action_inc=2
+const Xfile_action_incst=3
+const Xfile_action_dec=4
+const Xfile_action_decst=5
+const Xfile_action_neg=6
+const Xfile_action_not=7
+const Xfile_action_shl=8
+const Xfile_action_shr=9
+const Xfile_action_sar=10
 
 const Xfile_arg_number=0
+const Xfile_arg_string=1

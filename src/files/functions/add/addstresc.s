@@ -6,6 +6,11 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 	return err
 endFunction
 #errnr
+Function addtosecstresc_xfile(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad)
+	sd err;setcall err addtosecstresc_base(pcontent,psize,sz,escapes,pdest,wordpad,(TRUE))
+	return err
+endFunction
+#errnr
 Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad,sd write_to_xfile)
 	#set destination start
 	Data destReg#1
