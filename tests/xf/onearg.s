@@ -14,3 +14,4 @@ shr a
 sar a
 exit 3
 return "asdf"
+return a
