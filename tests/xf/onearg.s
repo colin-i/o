@@ -1,6 +1,6 @@
 
 format elfobj64
-data a#1
+str a="qwer"
 
 return 2
 inc a
@@ -13,3 +13,4 @@ shl a
 shr a
 sar a
 exit 3
+return "asdf"
