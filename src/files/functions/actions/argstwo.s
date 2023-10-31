@@ -163,7 +163,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
 			endelse
 		else
-			SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
+			SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no)) #if not this allow no, Xfile_arg_varfn can go in the next if, that with allow yes
 		endelse
 		If errnr!=noerr
 			Return errnr
