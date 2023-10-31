@@ -188,6 +188,14 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					call advancecursors(ptrcontent,ptrsize,back)
 				endelse
 			else
+				sd imm;setcall imm getimm()
+				if imm==(TRUE) #if is FALSE, this is the only option for xfile. also allow(string) is no
+				#then, this is a test at allow yes; also at allow no for conditions
+					setcall errnr xfile_add_char_if((Xfile_arg_varfn))
+					if errnr!=(noerror)
+						return errnr
+					endif
+				endif
 				if allowdata==(allow_yes)
 					#at last/only argument it is better to allow space before sufix to not regret later
 					#"##" will be a comment and "#" a sufix
