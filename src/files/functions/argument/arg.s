@@ -204,70 +204,80 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				sd argsize_filter
 				sd container_sz
 				if content#==(pointerascii)
-					#prefix
-					setcall prefix prefix_bool()
-					set prefix# 1
-					inc content
-					set argsize_filter argsize
-					dec argsize_filter
+					setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_yes))
+					if errnr==(noerror)
+						#prefix
+						setcall prefix prefix_bool()
+						set prefix# 1
+						inc content
+						set argsize_filter argsize
+						dec argsize_filter
 
-					#class test
-					setcall container_sz valinmem(content,argsize_filter,(asciicolon))
-					if container_sz!=argsize_filter
-						setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
-					else
-						setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
-					endelse
-					if errnr!=(noerror)
-						return errnr
-					endif
-				else
-					data ptrobject%ptrobject
-					data ptrfunctions%%ptr_functions
-
-					#class test
-					setcall container_sz valinmem(content,argsize,(asciicolon))
-					if container_sz!=argsize
-						setcall errnr getarg_colon(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
+						#class test
+						setcall container_sz valinmem(content,argsize_filter,(asciicolon))
+						if container_sz!=argsize_filter
+							setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
+						else
+							setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+						endelse
 						if errnr!=(noerror)
 							return errnr
 						endif
 					else
-						setcall container_sz valinmem(content,argsize,(asciidot))
+						return errnr
+					endelse
+				else
+					setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_no))
+					if errnr==(noerror)
+						data ptrobject%ptrobject
+						data ptrfunctions%%ptr_functions
+
+						#class test
+						setcall container_sz valinmem(content,argsize,(asciicolon))
 						if container_sz!=argsize
-							setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
+							setcall errnr getarg_colon(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
 							if errnr!=(noerror)
 								return errnr
 							endif
-						elseif ptrobject#==1
-							#verify for function
-							setcall ptrdata# vars(content,argsize,ptrfunctions)
-							if ptrdata#==0
-								SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+						else
+							setcall container_sz valinmem(content,argsize,(asciidot))
+							if container_sz!=argsize
+								setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
 								if errnr!=(noerror)
-									sd undvar_err
-									setcall undvar_err undefinedvariable()
-									if errnr==undvar_err
-										setcall errnr undefinedvar_fn()
-									endif
 									return errnr
 								endif
+							elseif ptrobject#==1
+								#verify for function
+								setcall ptrdata# vars(content,argsize,ptrfunctions)
+								if ptrdata#==0
+									SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+									if errnr!=(noerror)
+										sd undvar_err
+										setcall undvar_err undefinedvariable()
+										if errnr==undvar_err
+											setcall errnr undefinedvar_fn()
+										endif
+										return errnr
+									endif
+								else
+									set ptrlow# (FALSE)
+									set ptrsufix# (sufix_false)
+									sd var
+									setcall var function_in_code()
+									set var# 1
+									#the code operation is a "prefix" like
+									setcall prefix prefix_bool()
+									set prefix# 1
+								endelse
 							else
-								set ptrlow# (FALSE)
-								set ptrsufix# (sufix_false)
-								sd var
-								setcall var function_in_code()
-								set var# 1
-								#the code operation is a "prefix" like
-								setcall prefix prefix_bool()
-								set prefix# 1
+								SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+								if errnr!=(noerror)
+									return errnr
+								endif
 							endelse
-						else
-							SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-							if errnr!=(noerror)
-								return errnr
-							endif
 						endelse
+					else
+						return errnr
 					endelse
 				endelse
 			endelse

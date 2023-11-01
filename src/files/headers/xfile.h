@@ -104,3 +104,6 @@ const Xfile_action_sar=10
 const Xfile_arg_number=0
 const Xfile_arg_string=1
 const Xfile_arg_varfn=2
+
+const Xfile_arg_varfn_prefix_no=0
+const Xfile_arg_varfn_prefix_yes=1
