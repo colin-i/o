@@ -253,33 +253,34 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 									if errnr!=(noerror)
 										return errnr
 									endif
-								elseif ptrobject#==1
-									#verify for function
-									setcall ptrdata# vars(content,argsize,ptrfunctions)
-									if ptrdata#==0
-										SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-										if errnr!=(noerror)
-											sd undvar_err
-											setcall undvar_err undefinedvariable()
-											if errnr==undvar_err
-												setcall errnr undefinedvar_fn()
-											endif
-											return errnr
-										endif
-									else
-										set ptrlow# (FALSE)
-										set ptrsufix# (sufix_false)
-										sd var
-										setcall var function_in_code()
-										set var# 1
-										#the code operation is a "prefix" like
-										setcall prefix prefix_bool()
-										set prefix# 1
-									endelse
 								else
 									SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
 									if errnr!=(noerror)
-										return errnr
+										if ptrobject#==1
+											sd undvar_err
+											setcall undvar_err undefinedvariable()
+											if errnr==undvar_err
+												#verify for function
+												setcall ptrdata# vars(content,argsize,ptrfunctions)
+												if ptrdata#!=(NULL)
+													set ptrlow# (FALSE)
+													set ptrsufix# (sufix_false)
+													sd var
+													setcall var function_in_code()
+													set var# 1
+													#the code operation is a "prefix" like
+													setcall prefix prefix_bool()
+													set prefix# 1
+												else
+													setcall errnr undefinedvar_fn()
+													return errnr
+												endelse
+											else
+												return errnr
+											endelse
+										else
+											return errnr
+										endelse
 									endif
 								endelse
 							else
@@ -304,12 +305,15 @@ EndFunction
 #err
 function getarg_dot_any(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd errnr
-	sd scope
-	setcall errnr get_scope(#content,#argsize,container_sz,#scope)
-	if errnr!=(noerror)
-		return errnr
+	setcall errnr xfile_add_char_if((Xfile_arg_varfn_dot_yes))
+	if errnr==(noerror)
+		sd scope
+		setcall errnr get_scope(#content,#argsize,container_sz,#scope)
+		if errnr!=(noerror)
+			return errnr
+		endif
+		SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
 	endif
-	SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
 	return errnr
 endfunction
 #err
@@ -455,10 +459,15 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		sd test
 		setcall container_sz valinmem(content,argsize,(asciidot))
 		if container_sz!=argsize
-			setcall err getarg_base(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix,#subtract_base)
-			if err!=(noerror)
+			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_yes))
+			if err==(noerror)
+				setcall err getarg_base(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix,#subtract_base)
+				if err!=(noerror)
+					return err
+				endif
+			else
 				return err
-			endif
+			endelse
 		else
 			SetCall err varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
 			if err!=(noerror)

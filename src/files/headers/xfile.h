@@ -109,3 +109,5 @@ const Xfile_arg_varfn_prefix_no=0
 const Xfile_arg_varfn_prefix_yes=1
 const Xfile_arg_varfn_colon_no=0
 const Xfile_arg_varfn_colon_yes=1
+const Xfile_arg_varfn_dot_no=0
+const Xfile_arg_varfn_dot_yes=1

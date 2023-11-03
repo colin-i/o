@@ -279,7 +279,10 @@ const cast_string=Xfile_suffix_cast_string
 #err
 Function varsufix(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd err
-	setcall err varsufix_ex(content,size,ptrdata,ptrlow,ptrsufix,(NULL))
+	setcall err xfile_add_char_if((Xfile_arg_varfn_dot_no))
+	if err==(noerror)
+		setcall err varsufix_ex(content,size,ptrdata,ptrlow,ptrsufix,(NULL))
+	endif
 	return err
 endfunction
 
