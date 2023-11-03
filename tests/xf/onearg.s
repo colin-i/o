@@ -1,6 +1,11 @@
 
 format elfobj64
-str a="qwer"
+
+function b()
+data a#1
+endfunction
+
+vstr a="qwer"
 
 return 2
 inc a
@@ -14,4 +19,4 @@ shr a
 sar a
 exit 3
 return "asdf"
-return a
+return a:b.a
