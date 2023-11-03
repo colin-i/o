@@ -218,7 +218,12 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 						if container_sz!=argsize_filter
 							setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
 						else
-							setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+							setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
+							if errnr==(noerror)
+								setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+							else
+								return errnr
+							endelse
 						endelse
 						if errnr!=(noerror)
 							return errnr
@@ -240,40 +245,45 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 								return errnr
 							endif
 						else
-							setcall container_sz valinmem(content,argsize,(asciidot))
-							if container_sz!=argsize
-								setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
-								if errnr!=(noerror)
-									return errnr
-								endif
-							elseif ptrobject#==1
-								#verify for function
-								setcall ptrdata# vars(content,argsize,ptrfunctions)
-								if ptrdata#==0
-									SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+							setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
+							if errnr==(noerror)
+								setcall container_sz valinmem(content,argsize,(asciidot))
+								if container_sz!=argsize
+									setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
 									if errnr!=(noerror)
-										sd undvar_err
-										setcall undvar_err undefinedvariable()
-										if errnr==undvar_err
-											setcall errnr undefinedvar_fn()
-										endif
 										return errnr
 									endif
+								elseif ptrobject#==1
+									#verify for function
+									setcall ptrdata# vars(content,argsize,ptrfunctions)
+									if ptrdata#==0
+										SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+										if errnr!=(noerror)
+											sd undvar_err
+											setcall undvar_err undefinedvariable()
+											if errnr==undvar_err
+												setcall errnr undefinedvar_fn()
+											endif
+											return errnr
+										endif
+									else
+										set ptrlow# (FALSE)
+										set ptrsufix# (sufix_false)
+										sd var
+										setcall var function_in_code()
+										set var# 1
+										#the code operation is a "prefix" like
+										setcall prefix prefix_bool()
+										set prefix# 1
+									endelse
 								else
-									set ptrlow# (FALSE)
-									set ptrsufix# (sufix_false)
-									sd var
-									setcall var function_in_code()
-									set var# 1
-									#the code operation is a "prefix" like
-									setcall prefix prefix_bool()
-									set prefix# 1
+									SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+									if errnr!=(noerror)
+										return errnr
+									endif
 								endelse
 							else
-								SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-								if errnr!=(noerror)
-									return errnr
-								endif
+								return errnr
 							endelse
 						endelse
 					else
@@ -394,116 +404,118 @@ endfunction
 #endfunction
 #er
 function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,sd ptrsufix)
-	#first test if has runtime pointer
-	sd pointer_size=0
-	if container_sz!=0
-		# !=0? yes, example: ":"
-		ss cursor=-1
-		add cursor content
-		add cursor container_sz
-		if cursor#==(pointerascii)
-			dec container_sz
-			inc pointer_size
-		endif
-	endif
-	sd data
 	sd err
-	sd scope
-	sd is_stack
-	sd part_sz;setcall part_sz valinmem(content,container_sz,(asciidot))
-	sub argsize container_sz
-	if part_sz!=container_sz
-		setcall err get_scope(#content,#container_sz,part_sz,#scope)
-		if err!=(noerror)
-			return err
+	setcall err xfile_add_char_if((Xfile_arg_varfn_colon_yes))
+	if err==(noerror)
+		#first test if has runtime pointer
+		sd pointer_size=0
+		if container_sz!=0
+			# !=0? yes, example: ":"
+			ss cursor=-1
+			add cursor content
+			add cursor container_sz
+			if cursor#==(pointerascii)
+				dec container_sz
+				inc pointer_size
+			endif
 		endif
-		sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
-		if data==(NULL)
-			setcall err undefinedvariable()
-			return err
-		endif
-		if nr>=(totalmemvariables)
-			setcall err there_is_nothing_there()
-			return err
-		endif
-		set is_stack 0   #use later when keeping location
-	else
-		setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
-		if data==(NULL)
-			setcall err undefinedvariable()
-			return err
-		endif
-		setcall is_stack stackbit(data)
-	endelse
-	add content container_sz
-	call advancecursors(#content,#argsize,pointer_size)
-	call stepcursors(#content,#argsize)
-
-	sd subtract_base
-	sd test
-	setcall container_sz valinmem(content,argsize,(asciidot))
-	if container_sz!=argsize
-		setcall err getarg_base(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix,#subtract_base)
-		if err!=(noerror)
-			return err
-		endif
-	else
-		SetCall err varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-		if err!=(noerror)
-			return err
-		endif
-		setcall test stackbit(ptrdata#)
-		if test==0
-			sd ptrinnerfunction%globalinnerfunction
-			if ptrinnerfunction#==(TRUE)
-				sd ptrfunctionTagIndex%ptrfunctionTagIndex
-				setcall scope scopes_get_scope(ptrfunctionTagIndex#)
-				setcall subtract_base scopes_get_class_data(scope,ptrdata#)
-			else
-				setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
-			endelse
+		sd data
+		sd scope
+		sd is_stack
+		sd part_sz;setcall part_sz valinmem(content,container_sz,(asciidot))
+		sub argsize container_sz
+		if part_sz!=container_sz
+			setcall err get_scope(#content,#container_sz,part_sz,#scope)
+			if err!=(noerror)
+				return err
+			endif
+			sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
+			if data==(NULL)
+				setcall err undefinedvariable()
+				return err
+			endif
+			if nr>=(totalmemvariables)
+				setcall err there_is_nothing_there()
+				return err
+			endif
+			set is_stack 0   #use later when keeping location
 		else
-			setcall subtract_base stack64_base(ptrdata#)
+			setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
+			if data==(NULL)
+				setcall err undefinedvariable()
+				return err
+			endif
+			setcall is_stack stackbit(data)
 		endelse
-	endelse
-	char random#1
-	data *#3
-	#in case are two args
-	data d2#3
-	call tempdatapair(#random,ptrdata,#d2)
+		add content container_sz
+		call advancecursors(#content,#argsize,pointer_size)
+		call stepcursors(#content,#argsize)
 
-	sd pointer;set pointer ptrdata#
-	sub pointer# subtract_base
+		sd subtract_base
+		sd test
+		setcall container_sz valinmem(content,argsize,(asciidot))
+		if container_sz!=argsize
+			setcall err getarg_base(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix,#subtract_base)
+			if err!=(noerror)
+				return err
+			endif
+		else
+			SetCall err varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+			if err!=(noerror)
+				return err
+			endif
+			setcall test stackbit(ptrdata#)
+			if test==0
+				sd ptrinnerfunction%globalinnerfunction
+				if ptrinnerfunction#==(TRUE)
+					sd ptrfunctionTagIndex%ptrfunctionTagIndex
+					setcall scope scopes_get_scope(ptrfunctionTagIndex#)
+					setcall subtract_base scopes_get_class_data(scope,ptrdata#)
+				else
+					setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
+				endelse
+			else
+				setcall subtract_base stack64_base(ptrdata#)
+			endelse
+		endelse
+		char random#1
+		data *#3
+		#in case are two args
+		data d2#3
+		call tempdatapair(#random,ptrdata,#d2)
 
-	#keep location, will be some disturbance if combining stack with data, but if not is ok
-	sd pointer2=maskoffset;sd data2=maskoffset
-	add pointer2 pointer
-	add data2 data
-	sd location_part;sd transformation_part
-	if is_stack!=0
-		set location_part (stack_location_bits)
-		and location_part data2#
-		set transformation_part (~stack_location_bits)
-	else
-		set location_part (location_bits)
-		and location_part data2#
-		set transformation_part (~location_bits)
-	endelse
-	and pointer2# transformation_part
-	or pointer2# location_part
+		sd pointer;set pointer ptrdata#
+		sub pointer# subtract_base
 
-	#decide if add offset now or at runtime with sufix
-	if pointer_size!=0
-		#runtime
-		or pointer2# (suffixbit)
-		add pointer2 (masksize) #note that here is not on nameoffset, is on data#3 value from temp
-		set pointer2# pointer#
-		set pointer# data#
-	else
-		add pointer# data#
-	endelse
+		#keep location, will be some disturbance if combining stack with data, but if not is ok
+		sd pointer2=maskoffset;sd data2=maskoffset
+		add pointer2 pointer
+		add data2 data
+		sd location_part;sd transformation_part
+		if is_stack!=0
+			set location_part (stack_location_bits)
+			and location_part data2#
+			set transformation_part (~stack_location_bits)
+		else
+			set location_part (location_bits)
+			and location_part data2#
+			set transformation_part (~location_bits)
+		endelse
+		and pointer2# transformation_part
+		or pointer2# location_part
 
-	return (noerror)
+		#decide if add offset now or at runtime with sufix
+		if pointer_size!=0
+			#runtime
+			or pointer2# (suffixbit)
+			add pointer2 (masksize) #note that here is not on nameoffset, is on data#3 value from temp
+			set pointer2# pointer#
+			set pointer# data#
+		else
+			add pointer# data#
+		endelse
+	endif
+	return err
 endfunction
 #err
 function getarg_testdot(sd content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
