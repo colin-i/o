@@ -429,27 +429,37 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		sd part_sz;setcall part_sz valinmem(content,container_sz,(asciidot))
 		sub argsize container_sz
 		if part_sz!=container_sz
-			setcall err get_scope(#content,#container_sz,part_sz,#scope)
-			if err!=(noerror)
+			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_yes))
+			if err==(noerror)
+				setcall err get_scope(#content,#container_sz,part_sz,#scope)
+				if err!=(noerror)
+					return err
+				endif
+				sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
+				if data==(NULL)
+					setcall err undefinedvariable()
+					return err
+				endif
+				if nr>=(totalmemvariables)
+					setcall err there_is_nothing_there()
+					return err
+				endif
+				set is_stack 0   #use later when keeping location
+			else
 				return err
-			endif
-			sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
-			if data==(NULL)
-				setcall err undefinedvariable()
-				return err
-			endif
-			if nr>=(totalmemvariables)
-				setcall err there_is_nothing_there()
-				return err
-			endif
-			set is_stack 0   #use later when keeping location
+			endelse
 		else
-			setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
-			if data==(NULL)
-				setcall err undefinedvariable()
+			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_no))
+			if err==(noerror)
+				setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
+				if data==(NULL)
+					setcall err undefinedvariable()
+					return err
+				endif
+				setcall is_stack stackbit(data)
+			else
 				return err
-			endif
-			setcall is_stack stackbit(data)
+			endelse
 		endelse
 		add content container_sz
 		call advancecursors(#content,#argsize,pointer_size)
