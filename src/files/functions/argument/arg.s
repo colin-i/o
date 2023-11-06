@@ -462,6 +462,10 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			endelse
 		endelse
 		#xfile and colon part suffix
+		setcall err xfile_add_string_if(content,container_sz)
+		if err!=(noerror)
+			return err
+		endif
 		if pointer_size!=0
 			setcall err xfile_add_char_if((Xfile_suffix_true))
 		else
