@@ -22,4 +22,4 @@ sar a
 exit 3
 return "asdf"
 return a:b.a
-return main.a:b.a
+return main.a#:b.a
