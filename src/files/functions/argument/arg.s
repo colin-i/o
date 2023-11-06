@@ -461,6 +461,16 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				return err
 			endelse
 		endelse
+		#xfile and colon part suffix
+		if pointer_size!=0
+			setcall err xfile_add_char_if((Xfile_suffix_true))
+		else
+			setcall err xfile_add_char_if((Xfile_suffix_false))
+		endelse
+		if err!=(noerror)
+			return err
+		endif
+
 		add content container_sz
 		call advancecursors(#content,#argsize,pointer_size)
 		call stepcursors(#content,#argsize)
