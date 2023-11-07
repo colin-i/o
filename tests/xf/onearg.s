@@ -10,16 +10,17 @@ entry main()
 vstr a="qwer"
 
 return 2
+inc #a:b.a
 inc #a
-incst a
+incst #b.a
 dec a
 decst a
 neg a
 not a
 shl a
 shr a
-sar a
+sar b.a
 exit 3
 return "asdf"
-return a:b.a
-return main.a#:b.a
+return main.a#:a
+return b
