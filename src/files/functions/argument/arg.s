@@ -263,14 +263,19 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 												#verify for function
 												setcall ptrdata# vars(content,argsize,ptrfunctions)
 												if ptrdata#!=(NULL)
-													set ptrlow# (FALSE)
-													set ptrsufix# (sufix_false)
-													sd var
-													setcall var function_in_code()
-													set var# 1
-													#the code operation is a "prefix" like
-													setcall prefix prefix_bool()
-													set prefix# 1
+													setcall errnr xfile_add_string_if(content,argsize)
+													if errnr==(noerror)
+														set ptrlow# (FALSE)
+														set ptrsufix# (sufix_false)
+														sd var
+														setcall var function_in_code()
+														set var# 1
+														#the code operation is a "prefix" like
+														setcall prefix prefix_bool()
+														set prefix# 1
+													else
+														return errnr
+													endelse
 												else
 													setcall errnr undefinedvar_fn()
 													return errnr
