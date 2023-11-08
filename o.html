@@ -25,7 +25,6 @@
 		border: 1px solid black;
 	}
 	.noborder{}
-	.noselect{user-select:none}
 </style>
 
 <h2>O Language Documentation</h2>
@@ -977,17 +976,26 @@
 </table>
 <br>Table VF:
 <table id="selection_table">
-	<tr><td rowspan=3>Xfile_arg_varfn_prefix_*</td><td>Xfile_arg_varfn_colon_no</td>           <td colspan=4></td>             <td rowspan=3>
-<!-- it is not working simple HERE -->
-<table><tr><td rowspan=2>Xfile_arg_varfn_dot_no</td><td class="red">func</td></tr>
-<tr>                                                <td class="green" rowspan=2>DT</td><td class="noborder noselect">&nbsp;</td></tr>
-<tr>       <td>Xfile_arg_varfn_dot_yes</td></tr></table>
-<!-- HERE -->
-</td></tr>
-	<tr>                                           <td rowspan=2>Xfile_arg_varfn_colon_yes</td><td colspan=2>Xfile_arg_varfn_dot_no</td>                                          <td class="red" rowspan=2>var</td><td rowspan=2>Xfile_suffix_*</td></tr>
-	<tr>                                                                                       <td>Xfile_arg_varfn_dot_yes</td><td class="red">func<sup class="green">f</sup></td></tr>
+	<tr><td rowspan=4>Xfile_arg_varfn_prefix_no</td> <td rowspan=3>Xfile_arg_varfn_colon_no</td> <td rowspan=2>Xfile_arg_varfn_dot_no</td><td class="red">func</td></tr>
+	<tr>                                                                                                                                  <td class="green">V</td></tr>
+	<tr>                                                                                         <td class="green">VFD</tr>
+	<tr>                                             <td class="green">VFC</td></tr>
+	<tr><td rowspan=3>Xfile_arg_varfn_prefix_yes</td><td>Xfile_arg_varfn_colon_no</td>           <td class="green">VFD*</td></tr>
+	<tr>                                             <td class="green">VFC</td></tr>
 </table>
-<br><div class="green">A D DT <sup>f</sup> N <sup>s</sup> V VF</div>
+<br>Table VFC:
+<table id="selection_table">
+	<tr><td rowspan=2>Xfile_arg_varfn_colon_yes</td><td colspan=2>Xfile_arg_varfn_dot_no</td>                                                   <td class="red" rowspan=2>var</td><td rowspan=2>Xfile_suffix_*</td><td class="green" rowspan=2>VFD*</td></tr>
+	<tr>                                            <td>Xfile_arg_varfn_dot_yes</td>         <td class="red">func<sup class="green">f</sup></td></tr>
+</table>
+<br>Table VFD:
+<table id="selection_table"><tr><td>Xfile_arg_varfn_dot_yes</td><td class="green">DT</td></tr></table>
+<br>Table VFD*:
+<table id="selection_table">
+	<tr><td>Xfile_arg_varfn_dot_no</td><td class="green">V</td></tr>
+	<tr><td class="green">VFD</td></tr>
+</table>
+<br><div class="green">A D DT <sup>f</sup> N <sup>s</sup> V VF VFC VFD VFD*</div>
 <h3><a name="otheroperations">XVI. Other operations</a></h3>
 <p>
 	Other commands that comes with the language.
