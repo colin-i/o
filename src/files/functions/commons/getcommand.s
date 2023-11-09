@@ -173,6 +173,7 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cPRIMSEC
 			Data *=cXOR
 			Data *=spacereq
+		Const cCALLEX_primsec=!-cPRIMSEC_top
 	Const cONEARG=!-coms_start
 	Const cONEARG_top=!
 		Const cRETURN=!-cONEARG_top

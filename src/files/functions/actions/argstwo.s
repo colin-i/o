@@ -90,47 +90,51 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	If ptrcondition==false
 		#imm second arg can be, at conditions was already called
 		call setimm()
-		set subtype_test subtype;and subtype_test (x_call_flag)
-		if subtype_test!=0
-			xor subtype (x_call_flag)
-			Set primcalltype true
-			set subtype_test subtype;and subtype_test (x_callx_flag)
-		endif
-		if subtype==(cSET)
-			Set opprim atmemtheproc
-		ElseIf subtype==(cADD)
-			Char addprim={0x01}
-			Set opprim addprim
-		ElseIf subtype==(cSUB)
-			Char subprim={0x29}
-			Set opprim subprim
-		ElseIf subtype<=(cREM)
+
+		if subtype==(cCALLEX_primsec)
+		#the text for callexx is elsewhere
 			Set opprim atprocthemem
 			#Set regprep ecxreg
 			Set regopcode ecxreg
-			Set divmul true
-			if lowprim==(FALSE);setcall big is_big(dataargprim,sufixprim)
-			else;set big (FALSE);endelse
-			if subtype==(cREM);set rem (TRUE)
-			else;set rem (FALSE);endelse
-		ElseIf subtype<=(cXOR)
-			Set sameimportant false
-			If subtype==(cAND)
-				Char andprim={0x21}
-				Set opprim andprim
-			ElseIf subtype==(cOR)
-				Char orprim={0x09}
-				Set opprim orprim
+		else
+			set subtype_test subtype;and subtype_test (x_call_flag)
+			if subtype_test!=0
+				xor subtype (x_call_flag)
+				Set primcalltype true
+				set subtype_test subtype;and subtype_test (x_callx_flag)
+			endif
+			if subtype==(cSET)
+				Set opprim atmemtheproc
+			ElseIf subtype==(cADD)
+				Char addprim={0x01}
+				Set opprim addprim
+			ElseIf subtype==(cSUB)
+				Char subprim={0x29}
+				Set opprim subprim
+			ElseIf subtype<=(cREM)
+				Set opprim atprocthemem
+				#Set regprep ecxreg
+				Set regopcode ecxreg
+				Set divmul true
+				if lowprim==(FALSE);setcall big is_big(dataargprim,sufixprim)
+				else;set big (FALSE);endelse
+				if subtype==(cREM);set rem (TRUE)
+				else;set rem (FALSE);endelse
 			Else
-			#(cXOR)
-				Char xorprim={0x31}
-				Set opprim xorprim
+			#If subtype<=(cXOR)
+				Set sameimportant false
+				If subtype==(cAND)
+					Char andprim={0x21}
+					Set opprim andprim
+				ElseIf subtype==(cOR)
+					Char orprim={0x09}
+					Set opprim orprim
+				Else
+				#(cXOR)
+					Char xorprim={0x31}
+					Set opprim xorprim
+				EndElse
 			EndElse
-		Else
-		#(cCALLEX)
-			Set opprim atprocthemem
-			#Set regprep ecxreg
-			Set regopcode ecxreg
 		EndElse
 	Else
 		Data sz#1
@@ -157,7 +161,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 	If primcalltype==false
 		if ptrcondition==false
-			if subtype!=(cCALLEX)
+			if subtype!=(cCALLEX_primsec)
 				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_yes))
 			else
 				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
@@ -184,7 +188,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	If ptrcondition==false
 		If lowprim==true
 			Dec opprim
-			if subtype!=(cCALLEX)
+			if subtype!=(cCALLEX_primsec)
 				#at callex they can be different
 				Dec opsec
 			else
@@ -247,10 +251,10 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			#set opsec immtake
 			#if divmul==(TRUE)
 			#	add opsec 1
-			#elseif subtype==(cCALLEX)
+			#elseif subtype==(cCALLEX_primsec)
 			#	add opsec 1
 			#endelseif
-			if subtype!=(cCALLEX)
+			if subtype!=(cCALLEX_primsec)
 				SetCall errnr write_imm_trunc(dataargsec,regopcode,lowprim,dataargprim,sufixprim)
 			else
 				SetCall errnr write_imm_sign(dataargsec,regopcode)

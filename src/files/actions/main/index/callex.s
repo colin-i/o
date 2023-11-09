@@ -8,7 +8,7 @@ if errormsg==(noerror)
 	setcall errormsg prepare_function_call(pcontent,pcomsize,call_sz,#top_data,#bool_indirect,subtype)
 	if errormsg==(noerror)
 		call spaces(pcontent,pcomsize)
-		setcall errormsg twoargs(pcontent,pcomsize,(cCALLEX),(NULL))
+		setcall errormsg twoargs(pcontent,pcomsize,(cCALLEX_primsec),(NULL))
 		if errormsg==(noerror)
 			#
 			sd callex_data;sd callex_sz
