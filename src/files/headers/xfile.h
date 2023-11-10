@@ -4,6 +4,7 @@ const Xfile_multicomment=1
 const Xfile_functiondef=2
 const Xfile_declare=3
 const Xfile_action=4
+const Xfile_action2=5
 
 #t from type
 const Xfile_function_tintern=0
@@ -111,3 +112,13 @@ const Xfile_arg_varfn_colon_no=0
 const Xfile_arg_varfn_colon_yes=1
 const Xfile_arg_varfn_dot_no=0
 const Xfile_arg_varfn_dot_yes=1
+
+const Xfile_action2_set=0
+const Xfile_action2_add=1
+const Xfile_action2_sub=2
+const Xfile_action2_mult=3
+const Xfile_action2_div=4
+const Xfile_action2_rem=5
+const Xfile_action2_and=6
+const Xfile_action2_or=7
+const Xfile_action2_xor=8

@@ -103,14 +103,18 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				Set primcalltype true
 				set subtype_test subtype;and subtype_test (x_callx_flag)
 			endif
+			sd xlog
 			if subtype==(cSET)
 				Set opprim atmemtheproc
+				set xlog (Xfile_action2_set)
 			ElseIf subtype==(cADD)
 				Char addprim={0x01}
 				Set opprim addprim
+				set xlog (Xfile_action2_add)
 			ElseIf subtype==(cSUB)
 				Char subprim={0x29}
 				Set opprim subprim
+				set xlog (Xfile_action2_sub)
 			ElseIf subtype<=(cREM)
 				Set opprim atprocthemem
 				#Set regprep ecxreg
@@ -118,23 +122,39 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				Set divmul true
 				if lowprim==(FALSE);setcall big is_big(dataargprim,sufixprim)
 				else;set big (FALSE);endelse
-				if subtype==(cREM);set rem (TRUE)
-				else;set rem (FALSE);endelse
+				if subtype==(cREM)
+					set rem (TRUE)
+					set xlog (Xfile_action2_rem)
+				else
+					set rem (FALSE)
+					if subtype==(cMULT)
+						set xlog (Xfile_action2_mult)
+					else
+						set xlog (Xfile_action2_div)
+					endelse
+				endelse
 			Else
 			#If subtype<=(cXOR)
 				Set sameimportant false
 				If subtype==(cAND)
 					Char andprim={0x21}
 					Set opprim andprim
+					set xlog (Xfile_action2_and)
 				ElseIf subtype==(cOR)
 					Char orprim={0x09}
 					Set opprim orprim
+					set xlog (Xfile_action2_or)
 				Else
 				#(cXOR)
 					Char xorprim={0x31}
 					Set opprim xorprim
+					set xlog (Xfile_action2_xor)
 				EndElse
 			EndElse
+			SetCall errnr xfile_add_char_if(xlog)
+			If errnr!=noerr
+				Return errnr
+			EndIf
 		EndElse
 	Else
 		Data sz#1
