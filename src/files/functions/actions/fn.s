@@ -353,19 +353,23 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 		set p_bool_indirect# (FALSE)
 		call is_for_64_is_impX_or_fnX_set(p_data#,subtype)
 	EndElse
-	Call advancecursors(pcontent,psize,sz)
 
-	#move over the stack arguments, ebx is also shorting the first stack variable (mov rbx,rdx)
-	#mov esp,ebx
-	Data code%%ptr_codesec
 	sd err
-	#
-	setcall err rex_w_if64();if err!=(noerror);return err;endif
-	#
-	char espebx={moveatregthemodrm,0xe3}
-	Str ptrespebx^espebx
-	Data sizeespebx=2
-	SetCall err addtosec(ptrespebx,sizeespebx,code)
+	setcall err xfile_add_string_if(pcontent#,sz)
+	if err==(noerror)   #here is coming from calls and callex
+		Call advancecursors(pcontent,psize,sz)
+
+		#move over the stack arguments, ebx is also shorting the first stack variable (mov rbx,rdx)
+		#mov esp,ebx
+		Data code%%ptr_codesec
+		#
+		setcall err rex_w_if64();if err!=(noerror);return err;endif
+		#
+		char espebx={moveatregthemodrm,0xe3}
+		Str ptrespebx^espebx
+		Data sizeespebx=2
+		SetCall err addtosec(ptrespebx,sizeespebx,code)
+	endif
 	Return err
 endfunction
 

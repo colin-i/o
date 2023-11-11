@@ -25,6 +25,11 @@
 		border: 1px solid black;
 	}
 	.noborder{}
+	sup-r{
+		vertical-align: super;
+		font-size: small;
+		color:green;
+	}
 </style>
 
 <h2>O Language Documentation</h2>
@@ -940,19 +945,20 @@
 	<tr>                                                                  <td>Xfile_declsign_reserve</td>    <td class="green">N</td></tr>
 	<tr>                                                                  <td rowspan=3>Xfile_declsign_*</td><td>Xfile_declmode_value</td> <td class="green">N</td></tr>
 	<tr>                                                                                                     <td>Xfile_declmode_group</td> <td class="green">{N}</td></tr>
-	<tr>                                                                                                     <td>Xfile_declmode_string</td><td class="red">string<sup class="green">s</sup></td></tr>
+	<tr>                                                                                                     <td>Xfile_declmode_string</td><td class="red">string<sup-r>s</sup-r></td></tr>
 </table>
 <table id="selection_table">
 	<tr><td rowspan=2>Xfile_action</td><td>Xfile_action_a*</td><td class="green">A</td></tr>
 	<tr>                               <td>Xfile_action_*</td> <td class="green">VF</td></tr>
 </table>
 <table id="selection_table">
-	<tr><td>Xfile_action2</td><td class="green">VF</td><td>Xfile_action2_*</td><td class="green">A</td></tr>
+	<tr><td rowspan=2>Xfile_action2</td><td class="green" rowspan=2>VF</td><td rowspan=2>Xfile_action2_*</td><td class="green">A</td></tr>
+	<tr>                                                                                                     <td>Xfile_arg_call</td> <td class="red">var/fn<sup-r>vf</sup-r></td></tr>
 </table>
 <br>Table A:
 <table id="selection_table">
 	<tr><td>Xfile_arg_number</td><td class="green">N</td></tr>
-	<tr><td>Xfile_arg_string</td><td class="red">string<sup class="green">s</sup></td></tr>
+	<tr><td>Xfile_arg_string</td><td class="red">string<sup-r>s</sup-r></td></tr>
 	<tr><td>Xfile_arg_varfn</td> <td class="green">VF</td></tr>
 </table>
 <br>Table D:
@@ -963,13 +969,13 @@
 </table>
 <br>Table DT:
 <table id="selection_table">
-	<tr><td class="red">func<sup class="green">f</sup></td><td class="green">V</td></tr>
+	<tr><td class="red">func<sup-r>f</sup-r></td><td class="green">V</td></tr>
 </table>
 <br>Table N:
 <table id="selection_table">
 	<tr><td rowspan=4>[Xfile_numbers_parenthesis_open]</td><td rowspan=4>Xfile_numbers_prefix_*</td><td>Xfile_numbers_type_i*</td><td></td>                                          <td rowspan=4>[Xfile_numbers_parenthesis_close]</td><td rowspan=4>[Xfile_numbers_operation_*]</td><td class="green noborder" rowspan=4>{...}</td><td rowspan=4>Xfile_numbers_done</td>
 	<tr>                                                                                            <td>Xfile_numbers_type_t*</td><td class="red">text</td></tr>
-	<tr>                                                                                            <td>Xfile_numbers_type_f*</td><td class="red">func<sup class="green">f</sup></td></tr>
+	<tr>                                                                                            <td>Xfile_numbers_type_f*</td><td class="red">func<sup-r>f</sup-r></td></tr>
 	<tr>                                                                                            <td>Xfile_numbers_type_*</td> <td class="green">DT</td></tr>
 </table>
 <br>Table V:
@@ -989,7 +995,7 @@
 <br>Table VFC:
 <table id="selection_table">
 	<tr><td rowspan=2>Xfile_arg_varfn_colon_yes</td><td colspan=2>Xfile_arg_varfn_dot_no</td>                                                   <td class="red" rowspan=2>var</td><td rowspan=2>Xfile_suffix_*</td><td class="green" rowspan=2>VFD*</td></tr>
-	<tr>                                            <td>Xfile_arg_varfn_dot_yes</td>         <td class="red">func<sup class="green">f</sup></td></tr>
+	<tr>                                            <td>Xfile_arg_varfn_dot_yes</td>         <td class="red">func<sup-r>f</sup-r></td></tr>
 </table>
 <br>Table VFD:
 <table id="selection_table"><tr><td>Xfile_arg_varfn_dot_yes</td><td class="green">DT</td></tr></table>
@@ -998,7 +1004,7 @@
 	<tr><td>Xfile_arg_varfn_dot_no</td><td class="green">V</td></tr>
 	<tr><td class="green">VFD</td></tr>
 </table>
-<br><div class="green">A D DT <sup>f</sup> N <sup>s</sup> V VF VFC VFD VFD*</div>
+<br><div class="green">A D DT <sup-r>f</sup-r> N <sup-r>s</sup-r> V VF <sup-r>vf</sup-r> VFC VFD VFD*</div>
 <h3><a name="otheroperations">XVI. Other operations</a></h3>
 <p>
 	Other commands that comes with the language.

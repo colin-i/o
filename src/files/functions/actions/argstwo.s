@@ -193,10 +193,15 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			Return errnr
 		EndIf
 	Else
-		SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype_test) #there is 1 more argument but is not used
-		If errnr!=noerr
-			Return errnr
-		EndIf
+		setcall errnr xfile_add_char_if((Xfile_arg_call))
+		if errnr==(noerror)
+			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype_test) #there is 1 more argument but is not used
+			If errnr!=noerr
+				Return errnr
+			EndIf
+		else
+			return errnr
+		endelse
 	EndElse
 
 	#Data intchar#1
