@@ -63,6 +63,7 @@ Const mainscope=10*0x1000
 Const subscope=2*0x1000
 Const _open_read=_O_RDONLY|flag_O_BINARY
 Const _open_write=_O_WRONLY|flag_O_BINARY|flag_O_CREAT|_O_TRUNC
+Const _open_readwrite=_O_RDWR|flag_O_BINARY|flag_O_CREAT|_O_TRUNC
 Const shortstrsize=16
 const includesetSzData=5*dwsz
 Const includesetSz=includesetSzData+shortstrsize

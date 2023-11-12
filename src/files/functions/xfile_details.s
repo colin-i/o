@@ -99,3 +99,55 @@ function xfile_add_varsufix_if(sd content,sd size,sd sufix,sd cast)
 	endif
 	return (noerror)
 endfunction
+
+data xf_commas#1;data xf_pos#1
+#err
+function xfile_prepare_commas()
+	if main.xfile!=(openno)
+		sd err
+		setcall main.xf_pos seekfile(main.xfile,0,(SEEK_CUR),#err)
+		if main.xf_pos==-1
+			return err
+		endif
+		set main.xf_commas 0
+	endif
+	return (noerror)
+endfunction
+function xfile_inc_commas()
+	if main.xfile!=(openno)
+		inc main.xf_commas
+	endif
+endfunction
+#err
+function xfile_add_commas()
+	if main.xfile!=(openno)
+		sd err
+		sd off;setcall off seekfile(main.xfile,0,(SEEK_CUR),#err)
+		if off==-1;return err;endif
+		sub off main.xf_pos
+		sd mem
+		setcall err mem_alloc(off,#mem)
+		if err==(noerror)
+			sd sz
+			setcall sz seekfile(main.xfile,main.xf_pos,(SEEK_SET),#err)
+			if sz!=-1
+				setcall err readfile(main.xfile,mem,off)
+				if err==(noerror)
+					setcall sz seekfile(main.xfile,main.xf_pos,(SEEK_SET),#err)
+					if sz!=-1
+						call lseek(main.xfile,0,(SEEK_CUR))
+						setcall err xfile_add_int(main.xf_commas)
+						if err==(noerror)
+							call lseek(main.xfile,0,(SEEK_CUR))
+							setcall err writefile_errversion(main.xfile,mem,off)
+							call lseek(main.xfile,0,(SEEK_CUR))
+						endif
+					endif
+				endif
+			endif
+			call free(mem)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction

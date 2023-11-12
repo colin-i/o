@@ -54,7 +54,7 @@ if logbool==true
 	endif
 endif
 if xbool==true
-	setcall errormsg openfile_write_add_extension(safecurrentdirtopath,".x",#xfile)
+	setcall errormsg openfile_mode_add_extension(safecurrentdirtopath,".x",#xfile,(_open_readwrite))
 endif
 if errormsg!=noerr
 	Call msgerrexit(errormsg)

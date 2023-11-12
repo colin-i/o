@@ -158,6 +158,12 @@ EndFunction
 #err
 function openfile_write_add_extension(ss path,ss extension,sd popen)
 	sd er
+	setcall er openfile_mode_add_extension(path,extension,popen,(_open_write))
+	return er
+endfunction
+#err
+function openfile_mode_add_extension(ss path,ss extension,sd popen,sd mod)
+	sd er
 	setcall er maxpathverif(path,extension)
 	if er==(noerror)
 		ss c;set c path
@@ -165,7 +171,7 @@ function openfile_write_add_extension(ss path,ss extension,sd popen)
 		ss b;setcall b strlen(extension)
 		inc b
 		call memtomem(c,extension,b)
-		setcall er openfile(popen,path,(_open_write))
+		setcall er openfile(popen,path,mod)
 		set c# (asciinul)  #required in all cases
 	endif
 	return er
@@ -314,6 +320,24 @@ function changedir(ss path)
 	return chdirresult
 endfunction
 
+#lseek
+function seekfile(sd file,sd n,sd whence,sv perr)
+	sd p;setcall p lseek(file,n,whence)
+	if p==-1    #see the other lseek
+		set perr# "lseek error"
+	endif
+	return p
+endfunction
+
+#err
+function readfile(sd file,sd mem,sd len)
+	sd sz;setcall sz read(file,mem,len)
+	if sz!=len
+		return "File read error."
+	endif
+	return (noerror)
+endfunction
+
 #################Mixt
 #offset is when wanting to put the content at the allocation+offset
 Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
@@ -351,10 +375,9 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 			sub size offset
 			#
 
-			sd sz;setcall sz read(file,mem,size)
-			if sz!=size
+			setcall err readfile(file,mem,size)
+			if err!=(noerror)
 				call free(ptrmem#)
-				set err "File read error."
 			endif
 		EndIf
 	else

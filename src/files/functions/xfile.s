@@ -5,9 +5,14 @@ const Xfile_function_not_x=Xfile_function_traw
 const Xfile_decltype_const=Xfile_decltype_longByte+1
 
 #err
+function xfile_add_int(sd int)
+	sd err;setcall err writefile_errversion(main.xfile,#int,(Xfile_sz_int))
+	return err
+endfunction
+#err
 function xfile_add_int_if(sd int)
 	if main.xfile!=(openno)
-		sd err;setcall err writefile_errversion(main.xfile,#int,(Xfile_sz_int))
+		sd err;setcall err xfile_add_int(int)
 		return err
 	endif
 	return (noerror)

@@ -177,6 +177,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 							Return err
 						EndIf
 					endelse
+					call xfile_inc_commas()
 				else
 					add punitsizeOrparses# hexOrunitsize
 					call advancecursors(ptrcontent,ptrsize,argumentsize)

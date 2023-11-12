@@ -230,7 +230,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Return ptrgroupend
 			EndIf
 			if punitsize==(NULL)
+				setcall err xfile_prepare_commas()
+				If err!=noerr;Return err;EndIf
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool,relocindx)
+				If err!=noerr;Return err;EndIf
+				setcall err xfile_add_commas()
 				If err!=noerr;Return err;EndIf
 			else
 				sd aux;set aux punitsize#
