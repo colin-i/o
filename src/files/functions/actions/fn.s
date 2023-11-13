@@ -224,12 +224,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 	If is_declare==true
 		if parses==(pass_write)
-			sd nr_of_args_for_xfile=0
+			sd nr_of_args_tested=0
 			if sz!=zero
 				sv c;sd s;set c ptrcontent#;set s ptrsize#
-				Call enumcommas(#c,#s,sz,is_declare,fnnr,(pass_write0),#nr_of_args_for_xfile) #there are 4 more arguments but are not used
+				Call enumcommas(#c,#s,sz,is_declare,fnnr,(pass_write0),#nr_of_args_tested) #there are 4 more arguments but are not used
 			endif
-			setcall err xfile_add_int_if(nr_of_args_for_xfile)
+			setcall err xfile_add_int_if(nr_of_args_tested)
 			If err!=noerr
 				Return err
 			EndIf
@@ -241,7 +241,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 					setcall nr_of_args convdata((convdata_total))
 					setcall err function_start_64(nr_of_args)
 				else
-					setcall err function_start_64(nr_of_args_for_xfile)
+					setcall err function_start_64(nr_of_args_tested)
 				endelse
 				If err!=noerr
 					Return err
