@@ -118,6 +118,10 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Data unitsize#1   #ignored at stack
 			Data charnr=charnumber
 			if punitsizeOrparses==(NULL)
+				#here is only at decgroup and hex, and pass_write
+				setcall err xfile_prepare_commas()
+				If err!=noerr;Return err;EndIf
+
 				If typenumberOrparses==charnr
 				#ignored at stack value   grep stackfilter2  1
 					Set unitsize bSz    ##used also at hex
