@@ -291,6 +291,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				if pbool#==(FALSE)
 					if sz!=zero
 						SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
+						if err!=noerr;return err;endif
 					endif
 				else
 					setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
@@ -304,18 +305,19 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 								set ptrcontent# content
 								set ptrsize# size
 								SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
-							endif
-						endif
+							else
+								return err
+							endelse
+						else
+							return err
+						endelse
 					else
 						setcall err stack_align(0)
 					endelse
+					if err!=noerr;return err;endif
 				endelse
-				If err==noerr
-					setcall err write_function_call(ptrdata,boolindirect,(FALSE))
-				EndIf
-				if err!=noerr
-					return err
-				endif
+				setcall err write_function_call(ptrdata,boolindirect,(FALSE))
+				if err!=noerr;return err;endif
 			endelse
 		endelse
 	EndElse
