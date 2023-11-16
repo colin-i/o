@@ -158,7 +158,7 @@ function xfile_add_commas_call32_if(sd content,sd size,sd sz)
 		sd err
 		SetCall err enumcommas(#content,#size,sz,(FALSE),(pass_calls)) #there are 6 more arguments but are not used
 		if err==(noerror)
-			setcall err xfile_add_int_if(p#)
+			setcall err xfile_add_int(p#)
 		endif
 		return err
 	endif
