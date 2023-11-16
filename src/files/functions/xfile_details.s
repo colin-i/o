@@ -152,7 +152,7 @@ function xfile_add_commas_if()
 	return (noerror)
 endfunction
 #err
-function xfile_add_commas_call32_if(sd content,sd size,sd sz)
+function xfile_add_commas_interncall_if(sd content,sd size,sd sz)
 	if main.xfile!=(openno)
 		sd p;setcall p nr_of_args_64need_p_get();set p# 0
 		sd err

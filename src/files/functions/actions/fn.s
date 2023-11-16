@@ -291,7 +291,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 				if pbool#==(FALSE)
 					if sz!=zero
-						setcall err xfile_add_commas_call32_if(ptrcontent#,ptrsize#,sz)
+						setcall err xfile_add_commas_interncall_if(ptrcontent#,ptrsize#,sz)
 						if err==(noerror)
 							SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
 							if err!=noerr;return err;endif
