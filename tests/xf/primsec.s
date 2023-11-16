@@ -11,4 +11,5 @@ div a 5
 rem a 6
 and a 7
 or a 8
-xorcall a a()
+xorcall a a(a,a)
+xorcallx a a(a,a)
