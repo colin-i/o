@@ -367,7 +367,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 	EndElse
 
 	sd err
-	setcall err xfile_add_string_if(pcontent#,sz)
+	setcall err xfile_add_call_if(pcontent#,sz,subtype)
 	if err==(noerror)   #here is coming from calls and callex
 		Call advancecursors(pcontent,psize,sz)
 

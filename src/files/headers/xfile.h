@@ -114,6 +114,9 @@ const Xfile_arg_varfn_colon_yes=1
 const Xfile_arg_varfn_dot_no=0
 const Xfile_arg_varfn_dot_yes=1
 
+const Xfile_arg_call_normal=0
+const Xfile_arg_call_extern=1
+
 const Xfile_action2_set=0
 const Xfile_action2_add=1
 const Xfile_action2_sub=2

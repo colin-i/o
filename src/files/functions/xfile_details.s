@@ -164,3 +164,21 @@ function xfile_add_commas_interncall_if(sd content,sd size,sd sz)
 	endif
 	return (noerror)
 endfunction
+
+#err
+function xfile_add_call_if(sd content,sd size,sd subtype)
+	if main.xfile!=(openno)
+		sd err
+		setcall subtype callx_flag(subtype)  #this is tested if 64 in the normal place
+		if subtype==0
+			setcall err xfile_add_char((Xfile_arg_call_normal)) #not forced extern
+		else
+			setcall err xfile_add_char((Xfile_arg_call_extern)) #forced extern
+		endelse
+		if err==(noerror)
+			setcall err xfile_add_string(content,size)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction
