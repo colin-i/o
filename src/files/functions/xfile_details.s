@@ -102,7 +102,7 @@ endfunction
 
 data xf_commas#1;data xf_pos#1
 #err
-function xfile_prepare_commas()
+function xfile_prepare_commas_if()
 	if main.xfile!=(openno)
 		sd err
 		setcall main.xf_pos seekfile(main.xfile,0,(SEEK_CUR),#err)
@@ -113,13 +113,13 @@ function xfile_prepare_commas()
 	endif
 	return (noerror)
 endfunction
-function xfile_inc_commas()
+function xfile_inc_commas_if()
 	if main.xfile!=(openno)
 		inc main.xf_commas
 	endif
 endfunction
 #err
-function xfile_add_commas()
+function xfile_add_commas_if()
 	if main.xfile!=(openno)
 		sd err
 		sd off;setcall off seekfile(main.xfile,0,(SEEK_CUR),#err)
@@ -146,6 +146,19 @@ function xfile_add_commas()
 				endif
 			endif
 			call free(mem)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction
+#err
+function xfile_add_commas_call32_if(sd content,sd size,sd sz)
+	if main.xfile!=(openno)
+		sd p;setcall p nr_of_args_64need_p_get();set p# 0
+		sd err
+		SetCall err enumcommas(#content,#size,sz,(FALSE),(pass_calls)) #there are 6 more arguments but are not used
+		if err==(noerror)
+			setcall err xfile_add_int_if(p#)
 		endif
 		return err
 	endif

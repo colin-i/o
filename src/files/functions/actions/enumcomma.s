@@ -119,7 +119,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Data charnr=charnumber
 			if punitsizeOrparses==(NULL)
 				#here is only at decgroup and hex, and pass_write
-				setcall err xfile_prepare_commas()
+				setcall err xfile_prepare_commas_if()
 				If err!=noerr;Return err;EndIf
 
 				If typenumberOrparses==charnr
@@ -181,7 +181,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 							Return err
 						EndIf
 					endelse
-					call xfile_inc_commas()
+					call xfile_inc_commas_if()
 				else
 					add punitsizeOrparses# hexOrunitsize
 					call advancecursors(ptrcontent,ptrsize,argumentsize)

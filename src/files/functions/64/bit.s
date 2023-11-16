@@ -71,10 +71,13 @@ endfunction
 #get
 function nr_of_args_64need_p_get();data n#1;return #n;endfunction
 function nr_of_args_64need_count()
-	sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
-	if p_b#==(TRUE)
-		sd p;setcall p nr_of_args_64need_p_get();inc p#
-	endif
+	#sd p_b;setcall p_b is_for_64_is_impX_or_fnX_p_get()
+	#if p_b#==(TRUE)
+
+	#the check was good, but at xfile is needing the number of args at any function
+	sd p;setcall p nr_of_args_64need_p_get();inc p#
+
+	#endif
 endfunction
 
 ##REX_W

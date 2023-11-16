@@ -288,23 +288,32 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				endelse
 			else
 				#pass_write
+
 				if pbool#==(FALSE)
 					if sz!=zero
-						SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
-						if err!=noerr;return err;endif
+						setcall err xfile_add_commas_call32_if(ptrcontent#,ptrsize#,sz)
+						if err==(noerror)
+							SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
+							if err!=noerr;return err;endif
+						else
+							return err
+						endelse
 					endif
 				else
 					setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
 					if sz!=zero
 						set content ptrcontent#
 						set size ptrsize#
-						SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,(pass_calls)) #there are 6 more arguments but are not used
+						SetCall err enumcommas(#content,#size,sz,is_declare,(pass_calls)) #there are 6 more arguments but are not used
 						if err==noerr
 							setcall err stack_align(p#)
 							if err==noerr
-								set ptrcontent# content
-								set ptrsize# size
-								SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
+								setcall err xfile_add_int_if(p#)
+								if err==noerr
+									SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
+								else
+									return err
+								endelse
 							else
 								return err
 							endelse
@@ -316,6 +325,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 					endelse
 					if err!=noerr;return err;endif
 				endelse
+
 				setcall err write_function_call(ptrdata,boolindirect,(FALSE))
 				if err!=noerr;return err;endif
 			endelse
