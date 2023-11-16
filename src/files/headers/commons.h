@@ -10,12 +10,10 @@ const nonzero=-1
 
 #files
  #open
-Const _O_RDONLY=0
-
 Const openno=negative
+Const _O_RDONLY=0
 Const _O_WRONLY=0x0001
-#this is at x86_64-w64-mingw32-gcc-win32, on linux is 02
-Const _O_RDWR=0x0002
+Const _O_RDWR=0x0002   #this is at x86_64 w64 mingw32 gcc win32, on linux is 02
 Const _O_TRUNC=0x0200
 
  #seek
