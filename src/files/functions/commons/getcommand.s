@@ -425,6 +425,8 @@ const x_func_flag=0x80000000   #at def, varargs
 const call_ret_flag=0x80000000 #at call
 const x_callx_flag=0x40000000 ;#at call and setcall..., call a variable/function/import like functionx/importx
 
+const primsec_flags=x_call_flag|x_callx_flag
+
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
 #these numbers will be used at getstruct directly
