@@ -126,3 +126,6 @@ const Xfile_action2_rem=5
 const Xfile_action2_and=6
 const Xfile_action2_or=7
 const Xfile_action2_xor=8
+
+const Xfile_call_normal=0
+const Xfile_call_ret=1

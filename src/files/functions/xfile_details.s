@@ -182,3 +182,27 @@ function xfile_add_call_if(sd content,sd size,sd subtype)
 	endif
 	return (noerror)
 endfunction
+#err
+function xfile_add_callret_if(sd subtype)
+#this can go also with primsec with a test against CALL_primsec, add that flag at getcommand, but still there is a wrong cosmetic at subtype_test=0 and not subtype_test=CALL_primsec in a case
+	if main.xfile!=(openno)
+		setcall subtype callret_flag(subtype)
+		sd err
+		if subtype==0
+			setcall err xfile_add_char((Xfile_call_normal))
+		else
+			setcall err xfile_add_char((Xfile_call_ret))
+		endelse
+		return err
+	endif
+	return (noerror)
+endfunction
+#err
+function xfile_add_callret_ifif(sd subtype)
+	if main.parses==(pass_write)
+		sd err
+		setcall err xfile_add_callret_if(subtype)
+		return err
+	endif
+	return (noerror)
+endfunction

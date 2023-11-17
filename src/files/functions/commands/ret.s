@@ -19,9 +19,14 @@ function writeret()
 	return err
 endfunction
 
+function callret_flag(sd subtype)
+	and subtype (call_ret_flag)
+	return subtype
+endfunction
+
 #err
 function after_after_call(sd subtype)
-	and subtype (call_ret_flag)
+	setcall subtype callret_flag(subtype)
 	if subtype!=0
 		sd err
 		setcall err writeret()
