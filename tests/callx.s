@@ -10,4 +10,5 @@ hex 144;call a(1)
 hex 144;call b(1)
 hex 144;callx a(1)
 hex 144;callx b(1)
+hex 144;setcallx a b(2)
 i3
