@@ -48,7 +48,6 @@ function func_xfile(sd subtype)
 	endelseif
 	return (Xfile_function_traw) #or Xfile_function_not_x
 endfunction
-#subtype is only when declarefn(not callfn)
 #err
 Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,sd el_or_e,sd varargs)
 	Data true=TRUE

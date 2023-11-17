@@ -48,7 +48,7 @@ function is_for_64_is_impX_or_fnX_set(sd ptrdata,sd subtype)
 			endif
 		endelse
 	endif
-	#is this required anymore? set p_b# (FALSE)
+	#set p_b# (FALSE)   #is set FALSE after it is used
 endfunction
 function is_for_64_is_impX_or_fnX_set_force(sd subtype)
 	sd b
