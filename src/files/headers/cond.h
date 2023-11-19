@@ -1,21 +1,9 @@
 
 
 Const ifinscribe=-1
-Const ifnumber=0
-Const elsenumber=1
-Const whilenumber=2
-Const breaknumber=3
-
-#Const condmiscs=whilenumber+1
-
-#Const elseifnumber=condmiscs+0
-
-#Const condends=elseifnumber+1
-
-#Const endifnumber=condends+ifnumber
-#Const endelsenumber=condends+elsenumber
-#Const endwhilenumber=condends+whilenumber
-
-#Const endelseifnumber=condends+elseifnumber
+Const ifnumber=Xfile_if
+Const elsenumber=Xfile_else
+Const whilenumber=Xfile_while
+Const breaknumber=Xfile_break
 
 Const nocondnumber=-1

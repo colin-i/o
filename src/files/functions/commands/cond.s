@@ -40,12 +40,15 @@ Function condbegin(data ptrcontent,data ptrsize,data condnumber)
 	Data err#1
 	Data noerr=noerror
 
-	SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
-	If err!=noerr
-		Return err
-	EndIf
+	setcall err xfile_add_char_if(condnumber)
+	if err==(noerror)
+		SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
+		If err!=noerr
+			Return err
+		EndIf
 
-	SetCall err condbeginwrite(condnumber)
+		SetCall err condbeginwrite(condnumber)
+	endif
 	Return err
 EndFunction
 
@@ -217,51 +220,54 @@ Function conditionscondend(data close1,data close2)
 	Data err#1
 	Data noerr=noerror
 
-	Data loop#1
-	Data loopini=1
-	Data loopstop=0
-	Set loop loopini
+	setcall err xfile_add_char_if((Xfile_condend))
+	if err==(noerror)
+		Data loop#1
+		Data loopini=1
+		Data loopstop=0
+		Set loop loopini
 
-	Data number#1
-	Set number close1
+		Data number#1
+		Set number close1
 
-	Data ifnr=ifnumber
-	Data elsenr=elsenumber
-	Data structure%%ptr_conditionsloops
-	Data dsz=dwsz
+		Data ifnr=ifnumber
+		Data elsenr=elsenumber
+		Data structure%%ptr_conditionsloops
+		Data dsz=dwsz
 
-	While loop==loopini
-		SetCall err condend(number)
-		If err!=noerr
-			Return err
-		EndIf
-		sd c
-		If number==ifnr
-			If close2==elsenr
-				Set number elsenr
+		While loop==loopini
+			SetCall err condend(number)
+			If err!=noerr
+				Return err
+			EndIf
+			sd c
+			If number==ifnr
+				If close2==elsenr
+					Set number elsenr
+					setcall c prevcond()
+					if c==(ifinscribe)
+						call Message("Warning: ENDELSEIF not matching IF")
+					endif
+				Else
+					Set loop loopstop
+				EndElse
+			EndIf
+			If number==elsenr
 				setcall c prevcond()
 				if c==(ifinscribe)
-					call Message("Warning: ENDELSEIF not matching IF")
+					Set loop loopstop
 				endif
-			Else
-				Set loop loopstop
-			EndElse
-		EndIf
-		If number==elsenr
-			setcall c prevcond()
-			if c==(ifinscribe)
-				Set loop loopstop
-			endif
-		EndIf
-	EndWhile
+			EndIf
+		EndWhile
 
-	Data ptrReg#1
-	Data ptrptrReg^ptrReg
-	Call getptrcontReg(structure,ptrptrReg)
-	Data Reg#1
-	Set Reg ptrReg#
-	Sub Reg dsz
-	Set ptrReg# Reg
+		Data ptrReg#1
+		Data ptrptrReg^ptrReg
+		Call getptrcontReg(structure,ptrptrReg)
+		Data Reg#1
+		Set Reg ptrReg#
+		Sub Reg dsz
+		Set ptrReg# Reg
+	endif
 	Return err
 EndFunction
 function prevcond()
@@ -286,8 +292,12 @@ Function closeifopenelse()
 	If err!=noerr
 		Return err
 	EndIf
-	Data elsenr=elsenumber
-	SetCall err condbeginwrite(elsenr)
+
+	setcall err xfile_add_char_if((Xfile_else))
+	if err==(noerror)
+		Data elsenr=elsenumber
+		SetCall err condbeginwrite(elsenr)
+	endif
 	Return err
 EndFunction
 

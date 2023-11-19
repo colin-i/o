@@ -3,6 +3,8 @@ if [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
 
 #edb(0=also ocomp),ex(exec),win,old(for32),onlycomp
 
+OFLAGS+=" nul_res_pref 1"
+
 comp () {
 	if [ "${edb}" = "0" ]; then
 		edb --run ${OCOMP} ${1}.s ${OFLAGS} || exit 1
@@ -14,7 +16,7 @@ if [ -z "${ex}" ]; then
 	if [ -z "${OLINK}" ]; then OLINK=../ounused/ounused; fi
 
 	if [ -n "${win}" ]; then
-		OFLAGS+="inplace_reloc 0"
+		OFLAGS+=" inplace_reloc 0"
 		if [ -z "${old}" ]; then OFLAGS+=" conv_64 2"; fi
 	#else underscore_pref 1
 	fi

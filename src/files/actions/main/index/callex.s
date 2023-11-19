@@ -1,5 +1,5 @@
 
-setcall errormsg xfile_add_callret_if(subtype)
+setcall errormsg xfile_add_callret_if((Xfile_callex),subtype)
 if errormsg==(noerror)
 	sd call_sz
 	setcall errormsg arg_size(pcontent#,pcomsize#,#call_sz)

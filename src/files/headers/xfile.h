@@ -5,6 +5,17 @@ const Xfile_functiondef=2
 const Xfile_declare=3
 const Xfile_action=4
 const Xfile_action2=5
+const Xfile_call=6
+const Xfile_callex=7
+#
+#Const ifinscribe=-1
+#Const nocondnumber=-1
+const Xfile_if=8
+const Xfile_else=9
+const Xfile_while=10
+const Xfile_break=11
+const Xfile_continue=12
+const Xfile_condend=13
 
 #t from type
 const Xfile_function_tintern=0

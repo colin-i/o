@@ -29,10 +29,19 @@ ElseIf subtype==(cWHILE)
 		SetCall errormsg condbegin(pcontent,pcomsize,(whilenumber))
 	EndIf
 ElseIf subtype==(cENDWHILE)
-	SetCall errormsg condend((whilenumber))
+	setcall errormsg xfile_add_char_if((Xfile_condend))
+	If errormsg==noerr
+		SetCall errormsg condend((whilenumber))
+	EndIf
 ElseIf subtype==(cBREAK)
-	setcall errormsg break()
+	setcall errormsg xfile_add_char_if((Xfile_break))
+	If errormsg==noerr
+		setcall errormsg break()
+	EndIf
 Else
 #cCONTINUE
-	setcall errormsg continue()
+	setcall errormsg xfile_add_char_if((Xfile_continue))
+	If errormsg==noerr
+		setcall errormsg continue()
+	EndIf
 EndElse

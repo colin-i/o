@@ -953,7 +953,13 @@
 </table>
 <table id="selection_table">
 	<tr><td rowspan=2>Xfile_action2</td><td class="green" rowspan=2>VF</td><td rowspan=2>Xfile_action2_*</td><td class="green">A</td></tr>
-	<tr>                                                                                                     <td>Xfile_arg_call</td> <td class="green">C</td><td class="blue">nr_of_args</td><td class="green">{A}</td></tr>
+	<tr>                                                                                                     <td>Xfile_arg_call</td><td class="green">CL</td></tr>
+</table>
+<table id="selection_table">
+	<tr><td>Xfile_call</td><td>Xfile_call_*</td><td class="green">CL</td></tr>
+</table>
+<table id="selection_table">
+	<tr><td>Xfile_callex</td><td>Xfile_call_*</td><td class="green">C</td><td class="green">VF</td><td class="green">A</td></tr>
 </table>
 <br>Table A:
 <table id="selection_table">
@@ -965,9 +971,9 @@
 <table id="selection_table">
 	<tr><td>Xfile_arg_call_*</td><td class="red">var/fn</td></tr>
 </table>
-<br>Table CR:
+<br>Table CL:
 <table id="selection_table">
-	<tr><td>Xfile_call_*</td><td class="green">C</td></tr>
+	<tr><td class="green">C</td><td class="blue">nr_of_args</td><td class="green">{A}</td></tr>
 </table>
 <br>Table D:
 <table id="selection_table">
@@ -1012,7 +1018,7 @@
 	<tr><td>Xfile_arg_varfn_dot_no</td><td class="green">V</td></tr>
 	<tr><td class="green">VFD</td></tr>
 </table>
-<br><div class="green">A C CR D DT <sup-r>f</sup-r> N <sup-r>s</sup-r> V VF VFC VFD VFD*</div>
+<br><div class="green">A C CL D DT <sup-r>f</sup-r> N <sup-r>s</sup-r> V VF VFC VFD VFD*</div>
 <h3><a name="otheroperations">XVI. Other operations</a></h3>
 <p>
 	Other commands that comes with the language.
