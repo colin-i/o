@@ -30,7 +30,7 @@ else
 	str pathstr="PATH"
 	set scriptfullname null
 	setcall envpath getenv(pathstr)
-	if envpath==null
+	if envpath=null
 		str enverr="Getenv error on PATH."
 		call Message(enverr)
 	else
@@ -49,7 +49,7 @@ else
 			add sizetocreate argumentssize
 			inc sizetocreate
 			setcall scriptfullname memalloc(sizetocreate)
-			if scriptfullname==null
+			if scriptfullname=null
 				set sizeofpath zero
 			else
 				#do not work on null PATH parts
@@ -74,7 +74,7 @@ else
 					data runaccess=X_OK
 					setcall accessresult access(scriptfullname,runaccess)
 				endif
-				if accessresult==zero
+				if accessresult=zero
 					#continue with this path to preferences
 					set sizeofpath zero
 				else
@@ -82,7 +82,7 @@ else
 					set scriptfullname null
 					add envpath sizeoffolder
 					sub sizeofpath sizeoffolder
-					if envpath#==pathdelim
+					if envpath#=pathdelim
 						inc envpath
 						dec sizeofpath
 					endif
@@ -92,7 +92,7 @@ else
 	endelse
 endelse
 
-if scriptfullname==null
+if scriptfullname=null
 	str patherr="Pathfind error."
 	call Message(patherr)
 else

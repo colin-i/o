@@ -7,10 +7,10 @@ Function entryvarsfns(data content,data size)
 	SetCall pointer strinvars_ignoreref(content,size,notype)
 	Data noerr=noerror
 	Data zero=0
-	If pointer==zero
+	If pointer=zero
 		Data fns%%ptr_functions
 		SetCall pointer vars_ignoreref(content,size,fns)
-		If pointer==zero
+		If pointer=zero
 			Return noerr
 		EndIf
 	EndIf
@@ -43,7 +43,7 @@ function get_dataSize()
 	vdata ptrdataSize%ptrdataSize
 	sd reg;set reg ptrdataSize#
 	vdata ptr_nobits_virtual%ptr_nobits_virtual
-	if ptr_nobits_virtual#==(Yes)
+	if ptr_nobits_virtual#=(Yes)
 		#this is here because this function is called from fndecargs and from simple declare add reference
 		vdata ptr_nobitsDataStart%ptr_nobitsDataStart
 		sub reg ptr_nobitsDataStart#
@@ -83,8 +83,8 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 		data stack#1
 		data ptrS^stack
 		call stackfilter(typenumber,ptrS)
-		if stack==false
-			if is_expand==(TRUE)
+		if stack=false
+			if is_expand=(TRUE)
 				setcall value get_img_vdata_dataSize()
 
 				#commented was before expandbit at class scopes
@@ -96,7 +96,7 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 				setcall value get_img_vdata_dataReg()
 			endelse
 		else
-			if stackoffset==zero
+			if stackoffset=zero
 				#stack free declared
 				setcall value getramp_ebxrel()
 				#data ebx_relative=ebxregnumber*tostack_relative
@@ -109,8 +109,8 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 			endelse
 			or mask (stackbit)
 			sd vbool
-			if typenumber==(stackvaluenumber);set vbool (TRUE);else;setcall vbool sd_as_sv((sd_as_sv_bool),typenumber);endelse
-			if vbool==(TRUE)
+			if typenumber=(stackvaluenumber);set vbool (TRUE);else;setcall vbool sd_as_sv((sd_as_sv_bool),typenumber);endelse
+			if vbool=(TRUE)
 				or mask (pointbit)
 			endif
 		endelse
@@ -137,7 +137,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 	data noerr=noerror
 
 	Data zero=0
-	If valsize==zero
+	If valsize=zero
 		Char _namecverr="Name for variable/constant expected."
 		vStr namecverr^_namecverr
 		Return namecverr
@@ -149,19 +149,19 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 	Set firstchar content#
 
 	If firstchar!=(unrefsign)
-		if firstchar==(throwlesssign)   #throwless if on a throwing area
-			If typenumber==(constantsnumber)
+		if firstchar=(throwlesssign)   #throwless if on a throwing area
+			If typenumber=(constantsnumber)
 				Return "Unexpected throwless sign ('^') at constant declaration."
 			EndIf
 			dec valsize
-			If valsize==zero
+			If valsize=zero
 				Return "Name for variable expected."
 			endif
 			or mask (aftercallthrowlessbit)
 			call stepcursors(ptrcontent,ptrsize)
 		elseIf typenumber!=(constantsnumber)
 			sd global_err_pB;setcall global_err_pB global_err_pBool()
-			if global_err_pB#==(FALSE)
+			if global_err_pB#=(FALSE)
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif
@@ -170,7 +170,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 			Return err
 		EndIf
 	Else
-		If typenumber==(constantsnumber)
+		If typenumber=(constantsnumber)
 			Char unrefconstant="Unexpected unreference sign ('*') at constant declaration."
 			vStr ptrunrefconstant^unrefconstant
 			Return ptrunrefconstant
@@ -197,7 +197,7 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 	SetCall valsize valinmem_pipes(content,size,reservesign,ptrsz)
 	If valsize!=size
 		Data constnr=constantsnumber
-		If typenumber==constnr
+		If typenumber=constnr
 			Char constreserveerr="Unexpected reserve sign ('#') at constant declaration."
 			Str ptrconstreserveerr^constreserveerr
 			Return ptrconstreserveerr
@@ -212,12 +212,12 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 	If valsize!=size
 		Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
 		Str ptrptrrelchar^ptrrelchar
-		If typenumber==charnr
+		If typenumber=charnr
 			#stackfilter2   grep5
-			if stack==(FALSE)
+			if stack=(FALSE)
 				Return ptrptrrelchar
 			endif
-		ElseIf typenumber==constnr
+		ElseIf typenumber=constnr
 			Return ptrptrrelchar
 		EndElseIf
 		Set assigntype# equalsign
@@ -225,10 +225,10 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 		#this was moved here because of xfile, to know datax relocation
 		call advancecursors(#content,#size,valsize)
 		call stepcursors(#content,#size)
-		if size==0
+		if size=0
 			return "Size 0 when testing for datax relocation."
 		endif
-		if content#==relsign
+		if content#=relsign
 			set ptrdataxrel# (TRUE)
 		else
 			set ptrdataxrel# (FALSE)
@@ -239,21 +239,21 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 	Char pointersign=pointersigndeclare
 	SetCall valsize valinmem(content,size,pointersign)
 	If valsize!=size
-		If typenumber==charnr
+		If typenumber=charnr
 			#grep    stackfilter2 4
-			if stack==(FALSE)
+			if stack=(FALSE)
 				Char ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
 				Str ptrptrchar^ptrchar
 				Return ptrptrchar
 			endif
 		EndIf
 
-		if valsize==0
+		if valsize=0
 			#throwless ^name^
 			#If typenumber==constnr error is elsewhere also for another signs
 			inc content;dec size
 			SetCall valsize valinmem(content,size,pointersign)
-			If valsize==size
+			If valsize=size
 				return "Throwless without a sign."   #at another sign there is this check at addvar...
 			endif
 			inc valsize ##put throwless at size for later recons
@@ -267,7 +267,7 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 		return noerr
 	endif
 
-	if stack==true
+	if stack=true
 		char nosign=nosign
 		Set assigntype# nosign
 		return noerr

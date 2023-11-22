@@ -25,11 +25,11 @@ function const_security(sd item)
 	if item#>=maximum     ##don't use unsigned ^ comparation, item# is already positive, will be extra code in source
 	#                            , at this commit time was not a technical/extra problem in compilation
 		sd p%p_over_pref
-		if p#==(TRUE)
+		if p#=(TRUE)
 			vstr err="Overflow at constants."
 			call Message(err)
 			sd w%p_w_as_e
-			if w#==(TRUE)
+			if w#=(TRUE)
 				return err
 			endif
 		endif
@@ -74,7 +74,7 @@ Function operation(ss content,sd size,sd inoutvalue,sd number)
 	else
 		inc content;sub size 2
 		setcall errptr xfile_add_char_ifif((Xfile_numbers_parenthesis_open))
-		if errptr==(noerror)
+		if errptr=(noerror)
 			setcall errptr parseoperations_base(#content,#size,size,ptrnewitem,(FALSE),(Xfile_numbers_parenthesis_close))
 		endif
 	endelse
@@ -89,38 +89,38 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 	sd errptr
 	sd currentitem
 	Set currentitem inoutvalue#
-	If number==(addNumber)
+	If number=(addNumber)
 		Add currentitem newitem
-	ElseIf number==(subNumber)
+	ElseIf number=(subNumber)
 		Sub currentitem newitem
-	ElseIf number==(mulNumber)
+	ElseIf number=(mulNumber)
 		Mult currentitem newitem
-	ElseIf number==(divNumber)
+	ElseIf number=(divNumber)
 		Data zero=0
-		If newitem==zero
+		If newitem=zero
 			Char zerodiv="Division by 0 error."
 			Str ptrzerodiv^zerodiv
 			Return ptrzerodiv
 		EndIf
 		Div currentitem newitem
-	ElseIf number==(andNumber)
+	ElseIf number=(andNumber)
 		And currentitem newitem
-	ElseIf number==(orNumber)
+	ElseIf number=(orNumber)
 		Or currentitem newitem
-	ElseIf number==(xorNumber)
+	ElseIf number=(xorNumber)
 		Xor currentitem newitem
-	ElseIf number==(powNumber)
+	ElseIf number=(powNumber)
 		if newitem<0
-			if currentitem==0
+			if currentitem=0
 				#is 1/(0 power n)
 				Return ptrzerodiv
-			elseif currentitem==1
+			elseif currentitem=1
 				#is 1/(1 power n)
 			else
 				#is 1/(>1)
 				set currentitem 0
 			endelse
-		elseif newitem==0
+		elseif newitem=0
 			set currentitem 1
 		else
 			SetCall errptr const_security(#newitem)
@@ -131,12 +131,12 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 				dec newitem
 			endwhile
 		endelse
-	ElseIf number==(remNumber)
-		If newitem==zero
+	ElseIf number=(remNumber)
+		If newitem=zero
 			Return ptrzerodiv
 		EndIf
 		Rem currentitem newitem
-	ElseIf number==(shlNumber)
+	ElseIf number=(shlNumber)
 		if newitem<0
 			neg newitem
 			SetCall errptr shift_right(#currentitem,newitem)
@@ -144,7 +144,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			SetCall errptr shift_left(#currentitem,newitem)
 		endelse
 		If errptr!=(noerror);return errptr;endif
-	ElseIf number==(sarNumber)
+	ElseIf number=(sarNumber)
 		if newitem<0
 			neg newitem
 			SetCall errptr shift_left(#currentitem,newitem)
@@ -152,7 +152,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			SetCall errptr shift_right(#currentitem,newitem)
 		endelse
 		If errptr!=(noerror);return errptr;endif
-	ElseIf number==(lessNumber)
+	ElseIf number=(lessNumber)
 		if currentitem<newitem
 			set currentitem (TRUE)
 		else
@@ -176,17 +176,17 @@ Function signop(char byte,sv outval)
 	Data false=FALSE
 	Data true=TRUE
 
-	If byte==(addNumber)
-	ElseIf byte==(subNumber)
-	ElseIf byte==(mulNumber)
-	ElseIf byte==(divNumber)
-	ElseIf byte==(andNumber)
-	ElseIf byte==(orNumber)
-	ElseIf byte==(xorNumber)
-	ElseIf byte==(powNumber)
-	ElseIf byte==(remNumber)
-	ElseIf byte==(lessNumber)
-	ElseIf byte==(greaterNumber)
+	If byte=(addNumber)
+	ElseIf byte=(subNumber)
+	ElseIf byte=(mulNumber)
+	ElseIf byte=(divNumber)
+	ElseIf byte=(andNumber)
+	ElseIf byte=(orNumber)
+	ElseIf byte=(xorNumber)
+	ElseIf byte=(powNumber)
+	ElseIf byte=(remNumber)
+	ElseIf byte=(lessNumber)
+	ElseIf byte=(greaterNumber)
 	Else
 		return false
 	EndElse
@@ -198,7 +198,7 @@ EndFunction
 Function oneoperation(sd ptrcontent,ss initial,ss content,sd val,sd op)
 	sd errptr
 
-	if op==(unreadyNumber)
+	if op=(unreadyNumber)
 		set op (addNumber)
 	else
 		setcall errptr xfile_add_char_ifif(op)
@@ -222,14 +222,14 @@ EndFunction
 function operation_test(sv ptrcontent,sd initial,sd content,sd end,sd ptrval,sd pnumber,sd pnr,sd pbool)
 	if initial!=content ##to ignore -n
 		ss test;set test content;dec test
-		if test#==(not_number) #to ignore ~-n
-			if initial==test ##if not this, a~-b will anyway stop at a~, but this test is logic
+		if test#=(not_number) #to ignore ~-n
+			if initial=test ##if not this, a~-b will anyway stop at a~, but this test is logic
 				return (noerror)
 			endif
 		endif
 		sd err
 		SetCall err oneoperation(ptrcontent,initial,content,ptrval,pnumber#)
-		If err==(noerror)
+		If err=(noerror)
 			call doubleoperation(pnr,#content,end)
 			set pnumber# pnr#
 			Set pbool# (TRUE)
@@ -274,12 +274,12 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	#<end?maybe unsigned cursor
 	While content!=end
 		SetCall find signop(content#,pnr)
-		if find==true
+		if find=true
 			setcall errptr operation_test(ptrcontent,initial,content,end,ptrval,#number,pnr,#bool)
 			if errptr!=noerr
 				return errptr
 			endif
-		elseif content#==(asciiparenthesisstart)
+		elseif content#=(asciiparenthesisstart)
 			inc content
 			sd rest_sz;set rest_sz end;sub rest_sz content
 			sd insz
@@ -289,7 +289,7 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 		endelseif
 
 		Inc content
-		If bool==true
+		If bool=true
 			setcall content mem_spaces(content,end)
 			Set initial content
 			Set bool false
@@ -297,7 +297,7 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	EndWhile
 
 	#allow line end comment
-	if comments==(TRUE)
+	if comments=(TRUE)
 		sd szz
 		set szz end;sub szz initial
 		sd size
@@ -312,7 +312,7 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	EndIf
 	Set outvalue# val
 
-	if comments==(TRUE)
+	if comments=(TRUE)
 		sub sz szz
 	endif
 	Call advancecursors(ptrcontent,ptrsize,sz)
@@ -330,18 +330,18 @@ function doubleoperation(ss pnr,sv pcontent,sd end)
 	endif
 	ss content;set content pcontent#
 	inc content
-	if content==end
+	if content=end
 		ret  #error is catched how was before
 	endif
-	if content#==(lessNumber)
-		if nr==(lessNumber)
+	if content#=(lessNumber)
+		if nr=(lessNumber)
 			set pnr# (shlNumber)
 			inc pcontent#
 			ret
 		endif
 	endif
-	if content#==(greaterNumber)
-		if nr==(greaterNumber)
+	if content#=(greaterNumber)
+		if nr=(greaterNumber)
 			set pnr# (sarNumber)
 			inc pcontent#
 		endif

@@ -8,7 +8,7 @@ Data pcontent^content
 Data pcomsize^comsize
 
 Str textlinestart#1
-if dot_comma_end==0
+if dot_comma_end=0
 	Set textlinestart content
 endif
 
@@ -26,26 +26,26 @@ ss pointer
 sd is_comment;sd is_comment_multiline
 
 setcall pointer command_start(#is_comment,#is_comment_multiline,#cursor_start,#content,last)
-while loop==2
-	if pointer==last
+while loop=2
+	if pointer=last
 		set loop 1
 		if is_comment!=0
-			if is_comment_multiline==0
+			if is_comment_multiline=0
 				setcall errormsg xfile_add_comment_ifif(content,pointer)
 			else
 				setcall errormsg xfile_add_comment_multi_ifif(content,pointer)
 			endelse
 		endif
-	elseif pointer#==newline
+	elseif pointer#=newline
 		set dot_comma_end 0   #a multiline comment can also be in a commands line
-		if is_comment_multiline==0
+		if is_comment_multiline=0
 			set loop 1
 			if pointer!=content
 				Char carriage=asciicarriage
 				ss testcontent
 				set testcontent pointer
 				dec testcontent
-				If testcontent#==carriage
+				If testcontent#=carriage
 					#Dec comsize
 					set pointer testcontent
 					Inc linebreaksize
@@ -62,7 +62,7 @@ while loop==2
 			if pointer!=last
 				setcall pointer mem_spaces(pointer,last)
 				if pointer!=last
-					if pointer#==(asciiexclamationmark)
+					if pointer#=(asciiexclamationmark)
 						setcall errormsg xfile_add_comment_multi_ifif(content,pointer)
 						if errormsg!=(noerror)
 							set loop 1
@@ -75,15 +75,15 @@ while loop==2
 				endif
 			endif
 		endelse
-	elseif is_comment==0
-		if pointer#==(asciidoublequote)
+	elseif is_comment=0
+		if pointer#=(asciidoublequote)
 			setcall errormsg quotes_forward(#pointer,last,#newlines,#textlinestart)
 			if errormsg!=(noerror)
 				set loop 1
 			else
 				add totalnewlines newlines
 			endelse
-		elseif pointer#==(asciisemicolon)
+		elseif pointer#=(asciisemicolon)
 			set loop 1
 			set dot_comma_end 1
 		else
@@ -93,7 +93,7 @@ while loop==2
 		inc pointer
 	endelse
 endwhile
-if errormsg==(noerror)
+if errormsg=(noerror)
 	set comsize pointer
 	sub comsize content
 	#\r\n case begin
@@ -105,102 +105,102 @@ if errormsg==(noerror)
 	If comsize!=0
 		Data pointtosearchat%compointersloc
 		SetCall commandset getcommand(pcontent,pcomsize,ptrsubtype,_errormsg,pointtosearchat)
-		If errormsg==noerr
+		If errormsg=noerr
 			if parses!=(pass_write)
 				if commandset!=(cCOMMENT)
-					if parses==(pass_init)
+					if parses=(pass_init)
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
-						if formatdefined==0
+						if formatdefined=0
 							if commandset!=(cFORMAT)
 								set nobits_virtual (No)     #this is default pe_exe format, same behavior for nobits
 								call backup_pref(#formatdefined)
 							endif
 						endif
 						#needing to find virtual start
-						if commandset==(cDECLARE)
-						ElseIf commandset==(cPRIMSEC)
-						ElseIf commandset==(cONEARG)
-						Elseif commandset==(cCALL)
+						if commandset=(cDECLARE)
+						ElseIf commandset=(cPRIMSEC)
+						ElseIf commandset=(cONEARG)
+						Elseif commandset=(cCALL)
 						#before .dtnb: at object is difficult, there is no virtual, ostrip is in the project
-						elseIf commandset==(cIMPORTLINK) #needing importx here
-						elseif commandset==(cSTARTFUNCTION);elseif commandset==(cENDFUNCTION)
-						ElseIf commandset==(cLIBRARY)
-						elseif commandset==(cINCLUDELINK)
-						Elseif commandset==(cFORMAT)
-						Elseif commandset==(cDECLAREAFTERCALL)  #and import
-						elseif commandset==(cORPHAN)    #for addaref
-						elseif commandset==(cOVERRIDE)   #example underscore_pref
+						elseIf commandset=(cIMPORTLINK) #needing importx here
+						elseif commandset=(cSTARTFUNCTION);elseif commandset=(cENDFUNCTION)
+						ElseIf commandset=(cLIBRARY)
+						elseif commandset=(cINCLUDELINK)
+						Elseif commandset=(cFORMAT)
+						Elseif commandset=(cDECLAREAFTERCALL)  #and import
+						elseif commandset=(cORPHAN)    #for addaref
+						elseif commandset=(cOVERRIDE)   #example underscore_pref
 						else;set commandset (cCOMMENT);endelse
 					else
 					#pass_calls
-						If commandset==(cPRIMSEC);elseif commandset==(cCALL)
-						elseif commandset==(cINCLUDELINK);elseif commandset==(cENDFUNCTION)
-						elseif commandset==(cOVERRIDE)   #example call_align
+						If commandset=(cPRIMSEC);elseif commandset=(cCALL)
+						elseif commandset=(cINCLUDELINK);elseif commandset=(cENDFUNCTION)
+						elseif commandset=(cOVERRIDE)   #example call_align
 						else;set commandset (cCOMMENT);endelse
 					endelse
 				endif
 			endif
-			if commandset==(cCOMMENT)
+			if commandset=(cCOMMENT)
 				Call advancecursors(pcontent,pcomsize,comsize)
 				#1 is last
-				if parses==(pass_write) #at init and calls cCOMMENT istead of many commands
+				if parses=(pass_write) #at init and calls cCOMMENT istead of many commands
 					set was_whitespaces content;dec was_whitespaces;setcall was_whitespaces is_whitespace(was_whitespaces#)
-					if was_whitespaces==(TRUE)
+					if was_whitespaces=(TRUE)
 					#this is comment ending in whitespace
 						setcall errormsg warn_hidden_whitespaces(cursorforincludes) #includes,nameofstoffile)
 					endif
 				endif
-			ElseIf commandset==(cDECLARE)
+			ElseIf commandset=(cDECLARE)
 				setcall errormsg xfile_add_char_ifif((Xfile_declare))
-				If errormsg==(noerror)
+				If errormsg=(noerror)
 					setcall errormsg declare(pcontent,pcomsize,p_is_for_64_value#,subtype,parses)
 				endIf
-			ElseIf commandset==(cPRIMSEC)
+			ElseIf commandset=(cPRIMSEC)
 				Include "./index/primsec.s"
-			ElseIf commandset==(cONEARG)
+			ElseIf commandset=(cONEARG)
 				Include "./index/onearg.s"
-			ElseIf commandset==(cCALL)
-				if parses==(pass_write)
+			ElseIf commandset=(cCALL)
+				if parses=(pass_write)
 		call entryscope_verify_code()
 				endif
 				Include "./index/call.s"
-			ElseIf commandset==(cCONDITIONS)
+			ElseIf commandset=(cCONDITIONS)
 		call entryscope_verify_code()
 				Include "./index/conditions.s"
-			ElseIf commandset==(cIMPORTLINK)
-				if parses==(pass_init);Include "./index/import.s"
+			ElseIf commandset=(cIMPORTLINK)
+				if parses=(pass_init);Include "./index/import.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
-			ElseIf commandset==(cSTARTFUNCTION)
+			ElseIf commandset=(cSTARTFUNCTION)
 				Include "./index/function.s"
-			ElseIf commandset==(cENDFUNCTION)
+			ElseIf commandset=(cENDFUNCTION)
 				Include "./index/endfunction.s"
-			ElseIf commandset==(cRET)
+			ElseIf commandset=(cRET)
 		call entryscope_verify_code()
 				setcall errormsg writeret()
-			ElseIf commandset==(cINCLUDELINK)
+			ElseIf commandset=(cINCLUDELINK)
 				Include "./index/include.s"
-			ElseIf commandset==(cFORMAT)
-				if parses==(pass_init);Include "./index/format.s"
+			ElseIf commandset=(cFORMAT)
+				if parses=(pass_init);Include "./index/format.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
-			ElseIf commandset==(cDECLAREAFTERCALL)
-				if parses==(pass_write);Include "./index/aftercall.s";
-				else;if subtype==(cAFTERCALL);add datasecReg (aftercalldeclaresize);endif
+			ElseIf commandset=(cDECLAREAFTERCALL)
+				if parses=(pass_write);Include "./index/aftercall.s";
+				else;if subtype=(cAFTERCALL);add datasecReg (aftercalldeclaresize);endif
 					Call advancecursors(pcontent,pcomsize,comsize);endelse
 				set g_e_b_p# (TRUE)
-			ElseIf commandset==(cMANIPULATEAFTERCALL)
+			ElseIf commandset=(cMANIPULATEAFTERCALL)
 				Include "./index/aftercallmanipulate.s"
-			ElseIf commandset==(cORPHAN)
+			ElseIf commandset=(cORPHAN)
 				Include "./index/warning.s"
-			ElseIf commandset==(cCALLEX)
+			ElseIf commandset=(cCALLEX)
 		call entryscope_verify_code()
 				Include "./index/callex.s"
-			ElseIf commandset==(cOVERRIDE)
+			ElseIf commandset=(cOVERRIDE)
 				#is at all, example at write hidden_pref
 				setcall errormsg override_com(#content,#comsize)
-			ElseIf commandset==(cLIBRARY)
-				if parses==(pass_init);Include "./index/library.s"
+			ElseIf commandset=(cLIBRARY)
+				if parses=(pass_init);Include "./index/library.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
-			ElseIf commandset==(cHEX)
+			ElseIf commandset=(cHEX)
 		call entryscope_verify_code()
 				Include "./index/hex.s"
 			Else
@@ -208,10 +208,10 @@ if errormsg==(noerror)
 		call entryscope_verify_code()
 				Include "./index/i3.s"
 			EndElse
-			If errormsg==(noerror)
+			If errormsg=(noerror)
 				#set when code started
 				#this can be at line 0
-				If fnavailable==two
+				If fnavailable=two
 					#retain the file and line where the main scope was started for functions separated from main code
 					#fnavailable two was set by code detectors
 
@@ -241,11 +241,11 @@ if errormsg==(noerror)
 								set xfile_sharp_comment 0
 							endif
 							setcall errormsg xfile_add_comment_ifif(content,pointer)
-							if errormsg==(noerror)
+							if errormsg=(noerror)
 								Call advancecursors(pcontent,pcomsize,comsize)
 							endif
 						endelse
-					elseIf was_whitespaces==(TRUE)
+					elseIf was_whitespaces=(TRUE)
 						#mostly parses (pass_write), example: at cCALL is at all parses
 						#this is whitespace after command
 						#if parses==(pass_write) can be at init commands only, or write commands only, if all parses then extra code for wrongers (only at not w_as_e)
@@ -262,21 +262,21 @@ if errormsg==(noerror)
 		#endif
 	Endelseif
 
-	If errormsg==noerr
+	If errormsg=noerr
 		add lineoffile totalnewlines
 		#parse the line termination,then is the include that will retain the next line and advance to the next file
 		Data lineincrease#1
 		Set lineincrease zero
 		If content!=last
 			Add content linebreaksize
-			if dot_comma_end==0
+			if dot_comma_end=0
 				Set lineincrease one
 			endif
 		EndIf
 		Add lineoffile lineincrease
 
 		#include next file
-		If includebool==one
+		If includebool=one
 			Data inccursor#1
 			Set inccursor includes
 			Add inccursor includesReg

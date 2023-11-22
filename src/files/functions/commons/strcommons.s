@@ -37,7 +37,7 @@ Function strinmem(str content,data size,str match)
 	Data b#1
 	While sz>=nrsz
 		SetCall b memcmp(cnt,match,nrsz)
-		If b==zero
+		If b=zero
 			Set nrsz sz
 			Inc nrsz
 		EndIf
@@ -46,7 +46,7 @@ Function strinmem(str content,data size,str match)
 			Dec sz
 		EndIf
 	EndWhile
-	If b==zero
+	If b=zero
 		Sub cnt content
 		return cnt
 	EndIf
@@ -103,7 +103,7 @@ EndFunction
 function mem_spaces(ss content,ss last)
 	while content!=last
 		sd bool;setcall bool is_whitespace(content#)
-		if bool==(FALSE)
+		if bool=(FALSE)
 			return content
 		endif
 		inc content
@@ -117,13 +117,13 @@ function find_whitespaceORcomment(ss content,sd size)
 	ss start;set start content
 	while content!=end
 		char b#1;set b content#
-		if b==(commentascii)
+		if b=(commentascii)
 			sub content start
 			return content
 		endif
 		sd bool
 		setcall bool is_whitespace(b)
-		if bool==(TRUE)
+		if bool=(TRUE)
 			sub content start
 			return content
 		endif
@@ -134,10 +134,10 @@ function find_whitespaceORcomment(ss content,sd size)
 endfunction
 #bool
 function is_whitespace(char c)
-	if c==(asciispace)
+	if c=(asciispace)
 		return (TRUE)
 	endif
-	if c==(asciitab)
+	if c=(asciitab)
 		return (TRUE)
 	endif
 	return (FALSE)
@@ -147,9 +147,9 @@ const warn_hidden_whitespaces_times_p^warn_hidden_whitespaces_times
 #err
 function warn_hidden_whitespaces(sd inc)
 	sd p%p_hidden_pref
-	if p#==(TRUE)
+	if p#=(TRUE)
 		data warn_hidden_whitespaces_times_p%warn_hidden_whitespaces_times_p
-		if warn_hidden_whitespaces_times_p#==0
+		if warn_hidden_whitespaces_times_p#=0
 		#show once
 			sd goodwrongstring
 			setcall goodwrongstring errorDefOut("Hidden whitespaces at :",inc)
@@ -157,7 +157,7 @@ function warn_hidden_whitespaces(sd inc)
 			inc warn_hidden_whitespaces_times_p#
 		endif
 		sd w%p_w_as_e
-		if w#==(TRUE)
+		if w#=(TRUE)
 			return ""
 		endif
 	endif
@@ -165,7 +165,7 @@ function warn_hidden_whitespaces(sd inc)
 endfunction
 #err
 function warn_hidden_whitespaces_after(sd inc,sd dot_comma_end)
-	if dot_comma_end==0
+	if dot_comma_end=0
 		sd er;setcall er warn_hidden_whitespaces(inc)
 		return er
 	endif
@@ -177,7 +177,7 @@ Function spaces_helper(ss cursor,sd size)
 	while cursor!=end
 		sd b
 		setcall b is_whitespace(cursor#)
-		if b==(TRUE)
+		if b=(TRUE)
 			inc cursor
 		else
 			return cursor
@@ -189,7 +189,7 @@ endfunction
 Function spaces(sd pcontent,sd psize)
 	sd start;set start pcontent#
 	setcall pcontent# spaces_helper(pcontent#,psize#)
-	if pcontent#==start
+	if pcontent#=start
 		return (FALSE)
 	endif
 	sub start pcontent#
@@ -210,22 +210,22 @@ Function stringsatmemspc(data pcontent,data psize,str match,data spacereq,str ex
 	Set content pcontent#
 	Set size psize#
 	SetCall bool stratmem(tocontent,tosize,match)
-	If bool==zero
+	If bool=zero
 		Return zero
 	EndIf
 
 	If extstr!=zero
 		SetCall extbool# stratmem(tocontent,tosize,extstr)
-		if extbool#==(TRUE)
+		if extbool#=(TRUE)
 			#to work around ...callx, and ok in other cases
 			Set pcontent# content
 			Set psize# size
 		endif
 	EndIf
 
-	If spacereq==nonzero
+	If spacereq=nonzero
 		SetCall bool spaces(tocontent,tosize)
-		IF bool==zero
+		IF bool=zero
 			Return zero
 		EndIf
 	EndIf
@@ -257,7 +257,7 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	EndIf
 	Set size psize#
 	Dec size
-	If size==zero
+	If size=zero
 		Return byte
 	EndIf
 
@@ -270,11 +270,11 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 		Return byte   ##quotation/null/another are relevant here
 	EndIf
 
-	if byte==(asciin)
+	if byte=(asciin)
 		return (asciireturn)
-	elseif byte==(asciir)
+	elseif byte=(asciir)
 		return (asciicarriage)
-	elseif byte==(asciit)
+	elseif byte=(asciit)
 		return (asciitab)
 	endelseif
 	return byte
@@ -289,7 +289,7 @@ Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
 	Data nonzero=1
 
 	SetCall intnr stratmem(ptrcontent,ptrsize,pquotation)
-	If intnr==zero
+	If intnr=zero
 		Return zero
 	EndIf
 
@@ -309,16 +309,16 @@ Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
 	While length!=zero
 		Set escbefore pescapes#
 		SetCall byte quotescaped(ptrdata,ptrlength,pescapes)
-		If byte==quotation
+		If byte=quotation
 			Set escafter pescapes#
-			If escbefore==escafter
+			If escbefore=escafter
 				Str datastart#1
 				Set datastart ptrcontent#
 				Sub data datastart
 				Set pquotsz# data
 				Return nonzero
 			EndIf
-		ElseIf byte==bnull
+		ElseIf byte=bnull
 			Return zero
 		EndElseIf
 		Inc data
@@ -332,7 +332,7 @@ Function quotinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
 	Data bool#1
 	SetCall bool quotientinmem(ptrcontent,ptrsize,pquotsz,pescapes)
 	Data false=FALSE
-	If bool==false
+	If bool=false
 		Char strerr="Expecting string delimited by quotations and with the backslash the escape character."
 		Str ptrstrerr^strerr
 		Return ptrstrerr
@@ -364,38 +364,38 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 	str unend="end string (\") expected"
 	sd escapes=0
 	inc content
-	if content==last
+	if content=last
 		return unend
 	endif
 	sd newlines=0
 	while content#!=delim
 		char escape_c=asciibs
-		while content#==escape_c
-			if escapes==0
+		while content#=escape_c
+			if escapes=0
 				set escapes 1
 			else
 				set escapes 0
 			endelse
 			inc content
-			if content==last
+			if content=last
 				return unend
 			endif
 		endwhile
 		char newline=asciireturn
-		if content#==newline
+		if content#=newline
 			if p_newlines!=0
 				inc newlines
 				set p_lastlinestart# content
 				inc p_lastlinestart#
 			endif
 		endif
-		if escapes==1
+		if escapes=1
 			inc content
 			set escapes 0
 		elseif content#!=delim
 			inc content
 		endelseif
-		if content==last
+		if content=last
 			return unend
 		endif
 	endwhile

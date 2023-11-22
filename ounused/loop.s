@@ -30,14 +30,14 @@ function log_file(ss file)
 			else
 				sd e
 				setcall e feof(f)
-				if e==0
+				if e=0
 					call erExit("get line error")
 				endif
 			endelse
 		endwhile
 		call uconst_miniresolve()
 		call logclose()
-		if link==(TRUE)
+		if link=(TRUE)
 			call printlink(file)
 		endif
 		ret
@@ -51,49 +51,49 @@ function log_line(ss s,sd sz,sd plink)
 	set type s#
 	inc s;dec sz
 	sd skip
-	if plink#==(TRUE)
-		if type==(log_offset)
+	if plink#=(TRUE)
+		if type=(log_offset)
 			setcall skip skip_test()
-			if skip==(FALSE)
+			if skip=(FALSE)
 				call constant_add(s,sz) #same as with const, except it has a dot
 			endif
 			ret
-		elseif type==(log_declare)
+		elseif type=(log_declare)
 			setcall skip skip_test() #skip same included file
-			if skip==(FALSE)
+			if skip=(FALSE)
 				call constant_add(s,sz)
 			endif
 			ret
-		elseif type==(log_import)
+		elseif type=(log_import)
 			setcall skip skip_test()
-			if skip==(FALSE)
+			if skip=(FALSE)
 				call import_add(s,sz)
 			endif
 			ret
-		elseif type==(log_constant)
+		elseif type=(log_constant)
 			call uconst_add(s,sz)
 			ret
-		elseif type==(log_function)
+		elseif type=(log_function)
 			sv fns%fn_mem_p
 			call addtocont(fns,s,sz)
 			ret
-		elseif type==(log_variable)
+		elseif type=(log_variable)
 			call uconst_add(s,sz)
 			ret
 		endelseif
 	endif
-	if type==(log_pathname)
+	if type=(log_pathname)
 		call filesplus()
 		setcall skip skip_test()
-		if skip==(FALSE)
+		if skip=(FALSE)
 			call fileentry(s,sz)
 		endif
-	elseif type==(log_pathfolder)
+	elseif type=(log_pathfolder)
 		setcall skip skip_test()
-		if skip==(FALSE)
+		if skip=(FALSE)
 			call incrementdir(s,sz)
 		endif
-	elseif type==(log_fileend)
+	elseif type=(log_fileend)
 		setcall skip filesminus()
 		if skip<=0
 			call decrementdir()
@@ -101,12 +101,12 @@ function log_line(ss s,sd sz,sd plink)
 				call decrementfiles()
 			endif
 		endif
-	elseif type==(log_fileend_old)
+	elseif type=(log_fileend_old)
 		setcall skip filesminus()
 		if skip<0
 			call decrementfiles()
 		endif
-	elseif type==(log_reusable)
+	elseif type=(log_reusable)
 		set plink# (FALSE)
 	endelseif
 endfunction
@@ -115,7 +115,7 @@ function import_add(sd s,sd sz)
 	sv imps%imp_mem_p
 	sd p
 	setcall p pos_in_cont(imps,s,sz)
-	if p==-1
+	if p=-1
 		call addtocont(imps,s,sz)
 	endif
 endfunction
@@ -161,10 +161,10 @@ function printlink(sd file)
 	vstr ers="printlink problems with log file name extension."
 	while back!=file
 		dec back
-		if back#==(asciiperiod)
+		if back#=(asciiperiod)
 			while back!=file
 				dec back
-				if back#==(asciiperiod)
+				if back#=(asciiperiod)
 					inc back
 					if back#!=(NULL)
 						set back# (asciio)
@@ -173,10 +173,10 @@ function printlink(sd file)
 						sv st^stdout
 						sd len
 						setCall len fprintf(st#," ")
-						if len==1
+						if len=1
 							setCall len fprintf(st#,file)
 							sub back file
-							if len==back
+							if len=back
 								ret
 							endif
 						endif

@@ -19,7 +19,7 @@ function offsetoffile_value()
 	set offsetoffl null
 	data ptrincludedir%ptrincludedir
 	data flag_max_path=flag_MAX_PATH
-	if ptrincludedir#==true
+	if ptrincludedir#=true
 		add offsetoffl flag_max_path
 	endif
 	return offsetoffl
@@ -48,10 +48,10 @@ Function include(ss path,sd both,sd subtype)
 
 	setcall offsetoffl offsetoffile_value()
 
-	if subtype==(cEINCLUDE)
+	if subtype=(cEINCLUDE)
 		vData warningsboolptr%ptrwarningsbool
 		set mask warningsboolptr#
-		if mask==(TRUE)
+		if mask=(TRUE)
 			set warningsboolptr# (FALSE)
 		endif
 	else
@@ -67,10 +67,10 @@ Function include(ss path,sd both,sd subtype)
 	SetCall folders endoffolders(path)
 
 	data ptrincludedir%ptrincludedir
-	if ptrincludedir#==(TRUE)
+	if ptrincludedir#=(TRUE)
 		data charpointer#1
 		setcall charpointer getcwd(pcontentoffl#,(flag_MAX_PATH))
-		if charpointer==(NULL)
+		if charpointer=(NULL)
 			str getcwderr="Getcdw error."
 			return getcwderr
 		endif
@@ -125,7 +125,7 @@ Function include(ss path,sd both,sd subtype)
 	Call memtomem(dest,folders,fnamesize)
 
 	Add dest fnamesize
-	If moresize==one
+	If moresize=one
 		Char morestr="~"
 		Set dest# morestr
 		Add dest one
@@ -166,11 +166,11 @@ function include_sec_skip(sv pcontent,sd pcomsize)
 	ss content;set content pcontent#
 	sd size;set size pcomsize#
 	call spaces(#content,#size)
-	if content#==(asciidoublequote)
+	if content#=(asciidoublequote)
 		sd err
 		sd s;sd dummy
 		SetCall err quotinmem(#content,#size,#s,#dummy)
-		if err==(noerror)
+		if err=(noerror)
 			add content s;sub size s
 			call stepcursors(#content,#size)
 			set pcontent# content;set pcomsize# size

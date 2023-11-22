@@ -71,7 +71,7 @@ setcall convention_64 p_neg_is_for_64()
 #setcall init_argmasks argmasks()
 #set init_argmasks# 0
 
-if includedir==(TRUE)
+if includedir=(TRUE)
 	set fileendchar (log_fileend)
 else
 	set fileendchar (log_fileend_old)

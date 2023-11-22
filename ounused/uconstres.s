@@ -14,7 +14,7 @@ function uconstres_spin(sd f,sd is_new)
 	add f (size_cont)
 	call uconstres_search(f,is_new)
 	#
-	if is_new==(FALSE)
+	if is_new=(FALSE)
 		#resolve doubleunuseds
 		add f (size_cont)
 		sd double

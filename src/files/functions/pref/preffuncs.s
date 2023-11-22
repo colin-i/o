@@ -10,19 +10,19 @@ Function warnings(sd p_err,sd has_named_entry)
 	Data warningsboolptr%ptrwarningsbool
 	Data warningsbool#1
 	Set warningsbool warningsboolptr#
-	If warningsbool==(TRUE)
+	If warningsbool=(TRUE)
 		sd fn_name
 		sd var
 		setcall var scopes_searchinvars(p_err,#fn_name)
-		If var==(NULL)
-			if has_named_entry==(FALSE)
+		If var=(NULL)
+			if has_named_entry=(FALSE)
 				call vars_log_reset()
 				SetCall var searchinvars((NULL),0,(NULL),p_err) #,setref unused
 				if var!=(NULL)
 					set fn_name "(entry)"
 				endif
 			endif
-			if var==(NULL)
+			if var=(NULL)
 				data ptrcodeFnObj%ptrcodeFnObj
 				if ptrcodeFnObj#!=(ignore_warn)
 					Data functionsptr%%ptr_functions
@@ -31,7 +31,7 @@ Function warnings(sd p_err,sd has_named_entry)
 						set fn_name "(function)"
 					endif
 				endif
-				if var==(NULL)
+				if var=(NULL)
 					sd cb;setcall cb constants_bool((const_warn_get))
 					if cb!=(ignore_warn)
 						data constantsptr%%ptr_constants
@@ -44,7 +44,7 @@ Function warnings(sd p_err,sd has_named_entry)
 			EndIf
 		EndIf
 		If var!=(NULL)
-			if p_err#==(noerror)
+			if p_err#=(noerror)
 				Char unrefformat="Unreferenced variable/function/constant: %s. Parent: %s."
 				Str ptrunrefformat^unrefformat
 
@@ -59,7 +59,7 @@ Function warnings(sd p_err,sd has_named_entry)
 				EndIf
 				Call safeMessage(printbuffer)
 				sd w%p_w_as_e
-				if w#==(TRUE)
+				if w#=(TRUE)
 					set p_err# ""
 					return (FALSE)
 				endif
@@ -96,7 +96,7 @@ function parsepreferences(sd ptrcontent,sd ptrsize)
 				Sub backp# (asciizero)
 			endIf
 		else
-			if is_comment==(FALSE)
+			if is_comment=(FALSE)
 				call Message("Unrecognized preference")
 			endif
 		endelse
@@ -117,7 +117,7 @@ function parsepreferences_back(sd sizeback,ss content,sd p_is_comment)
 			ss e;set e s;add e i
 			sd b
 			setcall b parsepreferences_back_helper(content,e,s,sizeback,i,p_is_comment)
-			if b==(TRUE)
+			if b=(TRUE)
 				#and put this to last because it is not expected to get same preference more than one time
 				sv test;sv test2
 				set test2 strs_pointers;sub test2 (nr_of_prefs_jumper)
@@ -147,7 +147,7 @@ function parsepreferences_back(sd sizeback,ss content,sd p_is_comment)
 
 				set test# store
 				return return
-			elseif p_is_comment#==(TRUE)
+			elseif p_is_comment#=(TRUE)
 				#this is a recognized preference but it is commented, stop comparing characters
 				return (NULL)
 			endelseif
@@ -170,7 +170,7 @@ function parsepreferences_back_helper(ss content,ss e,ss s,sd sizeback,sd i,sd p
 		dec content
 		if content#!=(asciireturn)
 			if content#!=(asciicarriage)
-				if content#==(asciinumber)
+				if content#=(asciinumber)
 					set p_is_comment# (TRUE)
 				endif
 				return (FALSE)
@@ -289,12 +289,12 @@ function setpreferences(vstr scrpath)
 			Call safeMessage(err)
 		EndIf
 	endif
-	If err==noerr
+	If err=noerr
 		Data freepreferences#1
 		Set freepreferences preferencescontent
 
 		sd b=TRUE
-		while b==(TRUE)
+		while b=(TRUE)
 			setcall b parsepreferences(ptrpreferencescontent,ptrpreferencessize)
 		endwhile
 
@@ -305,7 +305,7 @@ EndFunction
 
 function constants_bool(sd direction)
 	data bool#1
-	if direction==(const_warn_get)
+	if direction=(const_warn_get)
 		return bool
 	endif
 	return #bool
@@ -313,7 +313,7 @@ endfunction
 
 function inplace_reloc(sd p_addend)
 	sd p_inplace_reloc_pref%p_inplace_reloc_pref
-	if p_inplace_reloc_pref#==(zero_reloc)
+	if p_inplace_reloc_pref#=(zero_reloc)
 		set p_addend# (i386_obj_default_reloc)
 	endif
 endfunction

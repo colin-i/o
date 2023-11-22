@@ -9,7 +9,7 @@ function allocs()
 	#
 	sv cwd%cwd_p
 	setcall cwd# get_current_dir_name()
-	if cwd#==(NULL)
+	if cwd#=(NULL)
 		call erExit("get_current_dir_name error")
 	endif
 	sd size=:

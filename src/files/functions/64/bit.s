@@ -33,11 +33,11 @@ function is_for_64_is_impX_or_fnX_set(sd ptrdata,sd subtype)
 	sd b
 	setcall b is_for_64()
 	#importX and functionX used to have a test with is_for_64 outside of this, but at log need to know the type
-	if b==(TRUE)
+	if b=(TRUE)
 		add ptrdata (maskoffset)
 		sd val;set val ptrdata#;and val (x86_64bit)
 		sd p_b
-		if val==(x86_64bit)
+		if val=(x86_64bit)
 			setcall p_b is_for_64_is_impX_or_fnX_p_get()
 			set p_b# (TRUE)
 		else
@@ -53,7 +53,7 @@ endfunction
 function is_for_64_is_impX_or_fnX_set_force(sd subtype)
 	sd b
 	setcall b is_for_64()
-	if b==(TRUE)
+	if b=(TRUE)
 		setcall subtype callx_flag(subtype)
 		if subtype!=0
 			sd p_b
@@ -89,7 +89,7 @@ endfunction
 #er
 function rex_w_if64()
 	sd b;setcall b is_for_64()
-	if b==(FALSE)
+	if b=(FALSE)
 		return (noerror)
 	endif
 	sd err
@@ -102,8 +102,8 @@ function is_big(sd dataarg,sd sufix)
 	sd b;setcall b bigbits(dataarg)
 	if b!=0
 		setcall b pointbit(dataarg)
-		if b==0
-			if sufix==(sufix_true)
+		if b=0
+			if sufix=(sufix_true)
 				# sd# is not big
 				return (FALSE)
 			endif
@@ -117,7 +117,7 @@ endfunction
 function bigbits(sd data)
 	sd test
 	setcall test stackbit(data)
-	if test==0
+	if test=0
 		setcall test datapointbit(data)
 	endif
 	return test
@@ -148,14 +148,14 @@ endfunction
 
 function stack64_enlarge(sd val)
 	sd b;setcall b is_for_64()
-	if b==(TRUE)
+	if b=(TRUE)
 		mult val 2
 	endif
 	return val
 endfunction
 function stack64_base(sv data)
 	sd is_arg;setcall is_arg stackrelativebit(data)
-	if is_arg==0
+	if is_arg=0
 		return 0
 	endif
 	sd val;setcall val stack64_enlarge((stackinitpush+dwsz))  #ebp/ebx+return
@@ -172,10 +172,10 @@ function val64_p_get()
 endfunction
 
 function convdata(sd type,sd dest,sd fnargs)
-	if type==(convdata_total)
+	if type=(convdata_total)
 		data nr_of_args#1
 		return nr_of_args   ##ms_convention or lin
-	elseif type==(convdata_call)
+	elseif type=(convdata_call)
 		#rdi
 		char hex_1={REX_Operand_64,moveatprocthemem,ediregnumber*toregopcode|espregnumber,0x24,0}
 		#rsi
@@ -188,7 +188,7 @@ function convdata(sd type,sd dest,sd fnargs)
 		char hex_5={REX_R8_15,moveatprocthemem,0x44,0x24};char c5o#1
 		#r9,rsp+
 		char hex_6={REX_R8_15,moveatprocthemem,0x4C,0x24};char c6o#1
-		if nr_of_args==(lin_convention)
+		if nr_of_args=(lin_convention)
 			set dest# #hex_1
 			incst dest;set dest# #hex_2
 			incst dest
@@ -198,7 +198,7 @@ function convdata(sd type,sd dest,sd fnargs)
 		incst dest;set dest# #hex_5
 		incst dest;set dest# #hex_6
 		ret
-	elseif type==(convdata_fn)
+	elseif type=(convdata_fn)
 		const functionxlin_start=!
 		#pop a
 		char functionxlin_code=0x58
@@ -233,31 +233,31 @@ function convdata(sd type,sd dest,sd fnargs)
 		#mov [rsp+(20h/30h)],r9
 		char *={REX_R8_15,moveatmemtheproc,0x4C,0x24};char f6o#1
 
-		if nr_of_args==(ms_convention)
-			if fnargs==0
+		if nr_of_args=(ms_convention)
+			if fnargs=0
 				set dest# 0
-			elseif fnargs==1
+			elseif fnargs=1
 				set dest# (conv_fn_a1)
-			elseif fnargs==2
+			elseif fnargs=2
 				set dest# (conv_fn_a2)
-			elseif fnargs==3
+			elseif fnargs=3
 				set dest# (conv_fn_a3)
 			else
 				set dest# (!-functionx_start)
 			endelse
 			return #functionx_code
 		endif
-		if fnargs==0
+		if fnargs=0
 			set dest# (functionxlin_shadow)
-		elseif fnargs==1
+		elseif fnargs=1
 			set dest# (conv_fn_b1)
-		elseif fnargs==2
+		elseif fnargs=2
 			set dest# (conv_fn_b2)
-		elseif fnargs==3
+		elseif fnargs=3
 			set dest# (conv_fn_b3)
-		elseif fnargs==4
+		elseif fnargs=4
 			set dest# (conv_fn_b4)
-		elseif fnargs==5
+		elseif fnargs=5
 			set dest# (conv_fn_b5)
 		else
 			set dest# (!-functionxlin_start)
@@ -265,7 +265,7 @@ function convdata(sd type,sd dest,sd fnargs)
 		return #functionxlin_code
 	endelseif
 	set nr_of_args dest
-	if nr_of_args==(ms_convention)
+	if nr_of_args=(ms_convention)
 		set c3 0x0C;set c3o 0
 		set c4 0x54;set c4o 8
 		set c5o 16;set c6o 24
@@ -292,7 +292,7 @@ function function_call_64fm(sd nr_of_args,sd hex_n,sd conv,sd code)
 				incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
 				if nr_of_args>3
 					incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
-					if conv==(lin_convention)
+					if conv=(lin_convention)
 						if nr_of_args>4
 							incst hex_n;SetCall err addtosec(hex_n#,5,code);If err!=(noerror);Return err;EndIf
 							if nr_of_args>5
@@ -312,8 +312,8 @@ function function_call_64f(sd hex_n,sd conv,sd code)
 	set nr_of_args nr_of_args#
 	#
 	setcall err function_call_64fm(nr_of_args,hex_n,conv,code)
-	If err==(noerror)
-		if conv==(ms_convention)
+	If err=(noerror)
+		if conv=(ms_convention)
 			if nr_of_args<conv
 				#shadow space
 				#sub esp,x;default 4 args stack space convention
@@ -339,7 +339,7 @@ function function_call_64(sd is_callex)
 	sd hex_1;sd hex_2;sd hex_3;sd hex_4;sd hex_5;sd hex_6
 	call convdata((convdata_call),#hex_1)
 	#
-	if is_callex==(FALSE)
+	if is_callex=(FALSE)
 		setcall err function_call_64f(#hex_1,conv,code)
 		Return err
 	endif
@@ -383,7 +383,7 @@ function function_call_64(sd is_callex)
 	set j_off 25
 	SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
 	SetCall err addtosec(#callex_conv,25,code);If err!=(noerror);Return err;EndIf
-	if conv==(lin_convention)
+	if conv=(lin_convention)
 		SetCall err addtosec(hex_6,5,code);If err!=(noerror);Return err;EndIf
 		SetCall err addtosec(hex_5,5,code);If err!=(noerror);Return err;EndIf
 	endif
@@ -395,7 +395,7 @@ function function_call_64(sd is_callex)
 	xor rspwithoffset# (disp8mod)
 	#
 	#shadow space
-	if conv==(ms_convention)
+	if conv=(ms_convention)
 		#neg al
 		char callex_shadow={0xf6,3*toregopcode|regregmod}
 		#add al conv-1

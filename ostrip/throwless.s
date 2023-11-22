@@ -68,8 +68,8 @@ function verbose(sd action)
 	datax a#1
 	const ptrverbose^a
 	data n=0     ;#only in one ocomp section
-	if a==0
-		if action==(verbose_count)
+	if a=0
+		if action=(verbose_count)
 			inc n
 		else
 		#if action==(verbose_flush)
@@ -88,7 +88,7 @@ function shnames_find(ss mem,sd end,sd str)
 	sd start;set start mem
 	while mem!=end
 		sd cmp;setcall cmp strcmp(mem,str)
-		if cmp==0
+		if cmp=0
 			sub mem start
 			return mem
 		endif

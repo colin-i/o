@@ -1,5 +1,5 @@
 
-If object==false
+If object=false
 	#data
 	Set elf32_phdr_p_filesz_data datasecReg
 	Set elf32_phdr_p_memsz_data datasecReg
@@ -38,7 +38,7 @@ If object==false
 	Set sizefileheaders elf_fileheaders_size
 	#commons#
 
-	if implibsstarted==false
+	if implibsstarted=false
 		call memtomem(ptrelf32_ehd_e_shnum,#one,wordsize)
 		#######
 		call memtomem(ptrelf32_ehd_e_shstrndx,ptrnull,wordsize)
@@ -98,7 +98,7 @@ If object==false
 		div test1 page_sectionalignment
 		set test2 elf32_phdr_p_vaddr_dyn
 		div test2 page_sectionalignment
-		if test2==test1
+		if test2=test1
 			add elf32_phdr_p_vaddr_dyn page_sectionalignment
 		endif
 		#recent tests (after some years have passed):
@@ -309,7 +309,7 @@ Else
 
 	sd symind=symind
 
-	if nobits_virtual==(Yes)
+	if nobits_virtual=(Yes)
 		SetCall errormsg elfaddsecs(dtnbstrtab,(SHT_NOBITS),elf_sec_flags_data,elf_sec_fileoff,datasecSize,(elf_sec_obj_align))
 		If errormsg!=noerr
 			Call msgerrexit(errormsg)
@@ -318,7 +318,7 @@ Else
 		inc symind
 	endif
 
-	if has_debug==(Yes)
+	if has_debug=(Yes)
 		#SHT_NULL will not reach linker output
 		SetCall errormsg elfaddstrsec(".debug",(SHT_PROGBITS),0,elf_sec_fileoff,ptrdebug,0,0,(bsz),0)
 		If errormsg!=noerr
@@ -331,7 +331,7 @@ Else
 
 	add elf_sec_strtab_nr elf_sec_nr
 	sd syment;sd relent
-	if p_is_for_64_value#==(TRUE)
+	if p_is_for_64_value#=(TRUE)
 		Set elf64_ehd_e_shoff (elf64_fileheaders_size)
 		call memtomem(#elf64_ehd_e_shnum,ptrelf_sec_nr,wordsize)
 		call memtomem(#elf64_ehd_e_shstrndx,ptrelf_sec_strtab_nr,wordsize)

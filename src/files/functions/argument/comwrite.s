@@ -58,7 +58,7 @@ endfunction
 #er
 function datatake_reloc(sd takeindex,sd take_loc)
 	data p_is_object%ptrobject
-	if p_is_object#==(TRUE)
+	if p_is_object#=(TRUE)
 		sd relocoff
 		setcall relocoff reloc64_offset(1)
 		sd errnr
@@ -83,7 +83,7 @@ function adddirectrel_base_inplace(sd relocoff,sd p_take_loc,sd sectionind)
 	Data ptrextra%%ptr_extra
 	sd errnr
 	SetCall errnr adddirectrel_base(ptrextra,relocoff,sectionind,p_take_loc#)
-	If errnr==(noerror)
+	If errnr=(noerror)
 		call inplace_reloc(p_take_loc)
 	EndIf
 	Return errnr
@@ -94,15 +94,15 @@ function writetake(sd takeindex,sd entry)
 	sd take_loc;set take_loc entry#
 	sd stack
 	setcall stack stackbit(entry)
-	if stack==0
+	if stack=0
 		data p_is_object%ptrobject
-		if p_is_object#==(TRUE)
+		if p_is_object#=(TRUE)
 			Data ptrextra%%ptr_extra
 			data relocoff#1
 			setcall relocoff reloc64_offset(1)
 			sd var
 			setcall var function_in_code()
-			if var#==0
+			if var#=0
 				sd sectionind
 				sd expand;setcall expand expandbit_wrap(entry)
 				if expand!=0
@@ -129,7 +129,7 @@ function writetake(sd takeindex,sd entry)
 				If errnr!=(noerror)
 					Return errnr
 				EndIf
-				if impbit==0
+				if impbit=0
 					setcall errnr unresReloc(ptrextra)
 					If errnr!=(noerror);Return errnr;EndIf
 					setcall errnr inplace_reloc_unres(#take_loc,relocoff)
@@ -160,7 +160,7 @@ endfunction
 #er
 function writetake_offset(sd takeindex,sd entry)
 	sd er;setcall er writetake(takeindex,entry)
-	if er==(noerror)
+	if er=(noerror)
 		sd test;setcall test suffixbit(entry)
 		if test!=0
 			char op#1
@@ -173,16 +173,16 @@ function writetake_offset(sd takeindex,sd entry)
 				return "The displacement for this value is not implemented at the moment."
 			endif
 			setcall er rex_w_if64()
-			if er==(noerror)
+			if er=(noerror)
 				#need to take further
 				char take=moveatprocthemem
 				char tmodrm#1
 				setcall tmodrm formmodrm((mod_0),takeindex,takeindex)
 				value ptrcodesec%%ptr_codesec
 				SetCall er addtosec(#take,2,ptrcodesec)
-				if er==(noerror)
+				if er=(noerror)
 					setcall er rex_w_if64()
-					if er==(noerror)
+					if er=(noerror)
 						setcall modrm formmodrm((RegReg),0,takeindex)
 						sd sz
 						if disp32<0x80
@@ -215,18 +215,18 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 	sd v_64
 	sd prefix
 	setcall v_64 sufix64(location)
-	If sufix==(sufix_true)
+	If sufix=(sufix_true)
 		sd take64;set take64 v_64
-		if v_64==(val64_willbe)
-			if is_low==(TRUE)
+		if v_64=(val64_willbe)
+			if is_low=(TRUE)
 			#not ss, rex.w op r/m8 is ok but is useless
 				set v_64 (val64_no)
 			else
 				sd pbit;setcall pbit pointbit(location)
-				if pbit==0
+				if pbit=0
 					#not needed at sd#
 					setcall prefix prefix_bool()
-					if prefix#==0
+					if prefix#=0
 					#but keep at prefix, this is a #a# case,the logic is fragile
 						set v_64 (val64_no)
 					endif
@@ -236,7 +236,7 @@ Function writeoperation_take(sd p_errnr,sd location,sd sufix,sd takeindex,sd is_
 		setcall p_errnr# sufix_take(takeindex,take64)
 	Else
 		sd for_64;setcall for_64 is_for_64()
-		if for_64==(TRUE)
+		if for_64=(TRUE)
 			setcall prefix prefix_bool()
 			if prefix#!=0
 			#set here (example: return #data), this can be thinked to be wrote at writeoperation_op
@@ -250,7 +250,7 @@ EndFunction
 #er
 function sufix_take(sd takeindex,sd take64)
 	sd err
-	if take64==(val64_willbe)
+	if take64=(val64_willbe)
 		call rex_w(#err)
 		if err!=(noerror)
 			return err;endif
@@ -288,7 +288,7 @@ Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd take
 	Data sz2=bsz+bsz
 
 	sd v64;setcall v64 val64_p_get()
-	if v64#==(val64_willbe)
+	if v64#=(val64_willbe)
 		call rex_w(#errnr);if errnr!=(noerror);return errnr;endif
 		set v64# (val64_no)
 	endif
@@ -296,7 +296,7 @@ Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd take
 	sd mod=mod_0
 
 	#if is like was xor prepare,prepare
-	If is_prepare==(TRUE)
+	If is_prepare=(TRUE)
 	# !=(noregnumber)
 		#Char comprepare1={0x33}
 		#Char comprepare2#1
@@ -354,7 +354,7 @@ EndFunction
 function writeopera(sd location,sd operationopcode,sd regopcode,sd takeindex)
 	sd err
 	setcall err writetake(takeindex,location)
-	if err==(noerror)
+	if err=(noerror)
 		setcall err writeoperation_op(operationopcode,(FALSE),regopcode,takeindex)
 	endif
 	return err

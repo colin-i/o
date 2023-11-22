@@ -18,7 +18,7 @@ Add ofnfiltersize filter2sz
 Add ofnfiltersize bytesize
 Add ofnfiltersize bytesize
 SetCall ofnfiltermemvalue memalloc(ofnfiltersize)
-If ofnfiltermemvalue==null
+If ofnfiltermemvalue=null
 	Call errexit()
 EndIf
 Str cursor#1

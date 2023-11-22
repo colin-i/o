@@ -30,7 +30,7 @@ if errormsg!=noerr
 endif
 
 SetCall safecurrentdirtopath memalloc(flag_max_path)
-If safecurrentdirtopath==null
+If safecurrentdirtopath=null
 	Call errexit()
 EndIf
 Call memtomem(safecurrentdirtopath,safedir,wordsize)
@@ -39,12 +39,12 @@ Set safecurrentdirloc safecurrentdirtopath
 Add safecurrentdirloc wordsize
 Call memtomem(safecurrentdirloc,filenameloc,movesize)
 
-if logbool==true
+if logbool=true
 	setcall errormsg openfile_write_add_extension(safecurrentdirtopath,".log",ptrlogfile)
-	if errormsg==noerr
+	if errormsg=noerr
 		sd log_main_folder
 		setcall log_main_folder getcwd((NULL),0)
-		if log_main_folder==(NULL)
+		if log_main_folder=(NULL)
 			char getcwd_first="first getcwd error"
 			set errormsg #getcwd_first
 		else
@@ -53,7 +53,7 @@ if logbool==true
 		endelse
 	endif
 endif
-if xbool==true
+if xbool=true
 	setcall errormsg openfile_mode_add_extension(safecurrentdirtopath,".x",#xfile,(_open_readwrite))
 endif
 if errormsg!=noerr

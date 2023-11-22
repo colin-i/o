@@ -82,7 +82,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Data err#1
 	#is false at inits, no worry about only at object
 	sd e64;setcall e64 is_for_64()
-	if e64==(TRUE)
+	if e64=(TRUE)
 		Set sh64_name stringname;Set sh64_type type;Set sh64_flags flags;set sh64_addr addr;Set sh64_offset fileoffset
 		set sh64_size bsize;Set sh64_link link;Set sh64_info info;Set sh64_addralign align;Set sh64_entsize entsize
 		setcall err addtosec(#sh64_name,(elf64_section_size),ptrbag)
@@ -122,7 +122,7 @@ Function elfaddstrsec(data stringofname,data type,data flags,data fileoffset,dat
 	sd regnr#1
 	sd ptrregnr^regnr
 	SetCall err addtonames(stringofname,ptrregnr)
-	If err==(noerror)
+	If err=(noerror)
 		setcall err elfaddsec(regnr,type,flags,fileoffset,seccont,link,info,align,entsize)
 	endif
 	return err
@@ -141,7 +141,7 @@ const elf_sym_st_info_tohibyte=16
 
 	sd err
 	sd x;setcall x is_for_64()
-	if x==(TRUE)
+	if x=(TRUE)
 		Data elf64_sym_st_name#1
 	#const elf64_sym_st_info_offset=dwsz
 		Char elf64_sym_st_info#1
@@ -197,7 +197,7 @@ Function elfaddstrszsym(data stringstroff,data sz,data value,data size,char type
 	Data err#1
 	Data noerr=noerror
 	SetCall err addtonamessized(stringstroff,sz,ptrregnr)
-	If err==noerr
+	If err=noerr
 		SetCall err elfaddsym(regnr,value,size,type,bind,index,struct)
 	EndIf
 	Return err
@@ -246,7 +246,7 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 
 	sd err
 	sd x;setcall x is_for_64()
-	if x==(TRUE)
+	if x=(TRUE)
 		Data elf64_r_offset#1;data *=0
 		data elf64_r_info_type#1
 	const p_elf64_r_info_type^elf64_r_info_type
@@ -297,7 +297,7 @@ Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
 	Data ptrcodesec%%ptr_codesec
 	Data ptraddresses%%ptr_addresses
 	Data struct#1
-	If relsec==ptraddresses
+	If relsec=ptraddresses
 		Set struct ptrdatasec
 	Else
 		Set struct ptrcodesec

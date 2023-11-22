@@ -156,7 +156,7 @@ if argc>=(1+3)  #0 is all the time
 		if frees.execdynsym!=(NULL)
 			sd bool;setcall bool aftercall_replace(#frees.execdynsym,#frees.execdynstr,acall,datavaddr)
 			#it is not in all cases here (even at shared)
-			if bool==(TRUE)
+			if bool=(TRUE)
 				call write_sec(".dynsym",frees.execdynsym,frees.execdynsymsize)
 			endif
 		endif

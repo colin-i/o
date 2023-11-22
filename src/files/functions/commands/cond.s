@@ -41,7 +41,7 @@ Function condbegin(data ptrcontent,data ptrsize,data condnumber)
 	Data noerr=noerror
 
 	setcall err xfile_add_char_if(condnumber)
-	if err==(noerror)
+	if err=(noerror)
 		SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
 		If err!=noerr
 			Return err
@@ -94,7 +94,7 @@ Function condend(data number)
 	Data ptrptrcReg^ptrcReg
 
 	Call getptrcontReg(condloop,ptrptrcReg)
-	If ptrcReg#==0
+	If ptrcReg#=0
 		Char uncloseerr="Unexpected condition/loop close command."
 		Str _uncloseerr^uncloseerr
 		Return _uncloseerr
@@ -108,7 +108,7 @@ Function condend(data number)
 	Data ptrstructure^structure
 
 	Call getcontReg(codesec,ptrcodeoff)
-	If number==whilenr
+	If number=whilenr
 		Add codeoffset (backjumpsize)
 	EndIf
 	Call getcont(condloop,ptrstructure)
@@ -116,8 +116,8 @@ Function condend(data number)
 	sd reg;set reg structure
 
 	sd err;setcall err condendtest(#structure,number,codeoffset)
-	if err==(noerror)
-		If number==whilenr
+	if err=(noerror)
+		If number=whilenr
 			setcall err jumpback(codeoffset,structure)
 			If err!=(noerror)
 				Return err
@@ -140,15 +140,15 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 	#for breaks inside conditions
 	sd last;set last conds
 
-	while 1==1
+	while 1=1
 		Data lastcondition#1
 
 		sub conds (dwsz)
 		Set lastcondition conds#
 		sub conds (dwsz)
 
-		if lastcondition==(breaknumber)
-			if number==(whilenumber)
+		if lastcondition=(breaknumber)
+			if number=(whilenumber)
 				call condendwrite(conds,codeoffset)
 			endif
 		elseIf lastcondition!=number
@@ -167,7 +167,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 					sd cursor;set cursor conds
 					sub cursor (dwsz)
 					sd size
-					if cursor#==(ifinscribe)
+					if cursor#=(ifinscribe)
 						set size (2*dwsz)
 					else
 						set size (dwsz)
@@ -221,7 +221,7 @@ Function conditionscondend(data close1,data close2)
 	Data noerr=noerror
 
 	setcall err xfile_add_char_if((Xfile_condend))
-	if err==(noerror)
+	if err=(noerror)
 		Data loop#1
 		Data loopini=1
 		Data loopstop=0
@@ -235,26 +235,26 @@ Function conditionscondend(data close1,data close2)
 		Data structure%%ptr_conditionsloops
 		Data dsz=dwsz
 
-		While loop==loopini
+		While loop=loopini
 			SetCall err condend(number)
 			If err!=noerr
 				Return err
 			EndIf
 			sd c
-			If number==ifnr
-				If close2==elsenr
+			If number=ifnr
+				If close2=elsenr
 					Set number elsenr
 					setcall c prevcond()
-					if c==(ifinscribe)
+					if c=(ifinscribe)
 						call Message("Warning: ENDELSEIF not matching IF")
 					endif
 				Else
 					Set loop loopstop
 				EndElse
 			EndIf
-			If number==elsenr
+			If number=elsenr
 				setcall c prevcond()
-				if c==(ifinscribe)
+				if c=(ifinscribe)
 					Set loop loopstop
 				endif
 			EndIf
@@ -294,7 +294,7 @@ Function closeifopenelse()
 	EndIf
 
 	setcall err xfile_add_char_if((Xfile_else))
-	if err==(noerror)
+	if err=(noerror)
 		Data elsenr=elsenumber
 		SetCall err condbeginwrite(elsenr)
 	endif
@@ -316,7 +316,7 @@ function continue()
 			set type structure#
 			if type!=(ifinscribe)
 				sub structure (dwsz)
-				if type==(whilenumber)
+				if type=(whilenumber)
 					vdata ptrcodesec%%ptr_codesec
 					sd codeoffset
 					call getcontReg(ptrcodesec,#codeoffset)
@@ -345,10 +345,10 @@ function break()
 			set type structure#
 			if type!=(ifinscribe)
 				sub structure (dwsz)
-				if type==(whilenumber)
+				if type=(whilenumber)
 					sd err
 					SetCall err condjump(0)
-					if err==(noerror)
+					if err=(noerror)
 						SetCall err condbeginwrite((breaknumber))
 					endif
 					Return err

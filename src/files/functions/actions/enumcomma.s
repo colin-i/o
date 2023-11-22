@@ -9,17 +9,17 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 
 	sd for_64
 
-	if stack==false
+	if stack=false
 		data ptrdatasec%%ptr_datasec
-		if ptrobject#==1
-			If relocbool==true
+		if ptrobject#=1
+			If relocbool=true
 				#data
 				Data ptraddresses%%ptr_addresses
 				Data relocoff=0
 
 				SetCall err adddirectrel_base(ptraddresses,relocoff,relindex,ptrvalue#)
 				If err!=noerr;Return err;EndIf
-				if relindex==(codeind)
+				if relindex=(codeind)
 					#data^functionReloc
 					#this is at relocs not at data
 					setcall err unresReloc(ptraddresses)
@@ -33,7 +33,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 
 				#endif
 				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec)
-				If err==(noerror)
+				If err=(noerror)
 					setcall err reloc64_post_base(ptrdatasec)
 				EndIf
 				return err
@@ -49,15 +49,15 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	endif
 
 	setcall for_64 is_for_64()
-	if ptrobject#==1
-		If relocbool==true
+	if ptrobject#=1
+		If relocbool=true
 			#code
 			sd stackoff
 			setcall stackoff reloc64_offset((rampadd_value_off))
 			data ptrextra%%ptr_extra
 			setcall err adddirectrel_base(ptrextra,stackoff,relindex,ptrvalue#)
 			If err!=noerr;Return err;EndIf
-			if relindex==(codeind)
+			if relindex=(codeind)
 				#s^fn
 				setcall err unresReloc(ptrextra)
 				If err!=noerr;Return err;EndIf
@@ -75,7 +75,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 		#s=consts
 		sd test=~0x7fFFffFF
 		and test ptrvalue#
-		if test==0
+		if test=0
 			setcall err addtocodefordata(ptrvalue#,for_64,0)
 		else
 			#keep sign, for comparations
@@ -107,8 +107,8 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 	Set content ptrcontent#
 
 	Data fnnr=functionsnumber
-	If fndecandgroupOrpush==true
-		If typenumberOrparses==fnnr
+	If fndecandgroupOrpush=true
+		If typenumberOrparses=fnnr
 			Data stackoffset#1
 			Set stackoffset zero
 			Data ptrstackoffset^stackoffset
@@ -117,12 +117,12 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Data dwSz=dwsz
 			Data unitsize#1   #ignored at stack
 			Data charnr=charnumber
-			if punitsizeOrparses==(NULL)
+			if punitsizeOrparses=(NULL)
 				#here is only at decgroup and hex, and pass_write
 				setcall err xfile_prepare_commas_if()
 				If err!=noerr;Return err;EndIf
 
-				If typenumberOrparses==charnr
+				If typenumberOrparses=charnr
 				#ignored at stack value   grep stackfilter2  1
 					Set unitsize bSz    ##used also at hex
 				Else
@@ -138,8 +138,8 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 		Set storecontent content
 		Set sens backward
 	EndElse
-	While csv==csvloop
-		If fndecandgroupOrpush==true
+	While csv=csvloop
+		If fndecandgroupOrpush=true
 			SetCall argsize valinmemsens(content,sz,comma,sens)
 			#allow (x,    y,   z) spaces
 			sd sizeaux
@@ -150,7 +150,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			set argumentsize argsize
 			sub argumentsize sizeaux
 			#
-			If typenumberOrparses==fnnr
+			If typenumberOrparses=fnnr
 				if punitsizeOrparses!=(pass_write0)
 					#pass_init/pass_write
 					SetCall err fndecargs(ptrcontent,ptrsize,argumentsize,ptrstackoffset,punitsizeOrparses)
@@ -162,14 +162,14 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					call advancecursors(ptrcontent,ptrsize,argumentsize)
 				endelse
 			Else
-				if punitsizeOrparses==(NULL)
+				if punitsizeOrparses=(NULL)
 					Data value#1
 					Data ptrvalue^value
 					SetCall err parseoperations(ptrcontent,ptrsize,argumentsize,ptrvalue,(FALSE))
 					If err!=noerr
 						Return err
 					EndIf
-					if hexOrunitsize==(not_hexenum)
+					if hexOrunitsize=(not_hexenum)
 						setcall err writevar(ptrvalue,unitsize,relocindx,stack,zero,long_mask,relocbool)
 						If err!=noerr
 							Return err
@@ -189,7 +189,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			EndElse
 		Else
 			#push
-			if typenumberOrparses==(pass_calls) #for regs at call   and shadow space
+			if typenumberOrparses=(pass_calls) #for regs at call   and shadow space
 				call nr_of_args_64need_count()
 			endif
 
@@ -197,14 +197,14 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 				set argsize content
 				dec argsize
 				char d_quot=asciidoublequote
-				if argsize#==d_quot
+				if argsize#=d_quot
 					#look later at escapes, here only at the margins
 					#here the string ".." is in a good condition when quotes_forward was called at fn(...)
 					sd last;set last content
 					sub last sz
 					dec argsize
 					while argsize!=last
-						if argsize#==d_quot
+						if argsize#=d_quot
 							dec argsize
 							if argsize#!=(asciibs)
 								inc argsize
@@ -229,12 +229,12 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			sub ptrcontent# argsize
 			sub ptrsize# argsize
 			Data ptrargsize^argsize
-			if typenumberOrparses==(pass_init)
+			if typenumberOrparses=(pass_init)
 				setcall err getarg(ptrcontent,ptrargsize,argsize,(allow_later),sens) #there are 4 more arguments but are not used
 				If err!=noerr
 					Return err
 				EndIf
-			elseif typenumberOrparses==(pass_write)
+			elseif typenumberOrparses=(pass_write)
 				SetCall err argument(ptrcontent,ptrargsize,backward) #there is 1 more argument but is not used
 				If err!=noerr
 					Return err
@@ -245,7 +245,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 		If sz!=zero
 			Dec sz
 			add ptrcontent# sens
-			if sens==(FORWARD)
+			if sens=(FORWARD)
 				sub ptrsize# sens
 			else
 				add ptrsize# sens
@@ -255,7 +255,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			Set csv zero
 		EndElse
 	EndWhile
-	If fndecandgroupOrpush==false
+	If fndecandgroupOrpush=false
 		Set ptrcontent# storecontent
 	EndIf
 	Return noerr

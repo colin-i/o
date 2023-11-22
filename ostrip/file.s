@@ -50,12 +50,12 @@ function get_file(sd name,sv p_file,sv secN,sv p_secN,sd pnrsec,sd psecond_sec,s
 		sd sz=4
 		sd sign;call read(file,#sign,sz)
 		sd c;setcall c memcmp(#sign,#elf64_ehd_e_ident_sign,sz)
-		if c==0
+		if c=0
 			call seekc(file,(after_sign_to_machine))
 			sd wsz=2
 			sd w;call read(file,#w,wsz)
 			setcall c memcmp(#w,#elf64_ehd_e_machine,wsz)
-			if c==0
+			if c=0
 				call seekc(file,(after_machine_to_shoff))
 				sd offset;call read(file,#offset,:)
 				call seekc(file,(after_shoff_to_shentsize))
@@ -104,7 +104,7 @@ function get_file(sd name,sv p_file,sv secN,sv p_secN,sd pnrsec,sd psecond_sec,s
 					#next at frees
 					set p_secN# (NULL)  #this is extra only at first
 					setcall size get_section_many(file,offset,end,shentsize,pnrsec#,p_secN)
-					if p_secN#==(NULL)
+					if p_secN#=(NULL)
 						return return_value
 					endif
 					add secN :
@@ -192,7 +192,7 @@ function get_section_many(sd file,sd offset,sd end,sd shentsize,sd nrsec,sv p_se
 	while offset!=end
 		#the sh64_name is first
 		datax offs#1;call read(file,#offs,(datasize))
-		if offs==nrsec
+		if offs=nrsec
 			sd sz;setcall sz get_section(file,offset,p_sec)
 			return sz   ##it's in use at rels,syms and can verify errors at data/text . and also at data/text
 		endif
@@ -217,7 +217,7 @@ function get_section(sd file,sd offset,sv pmem)
 	call seeks(file,off)
 	sd mem;setcall mem alloc(size)
 	sd readed;setcall readed fread(mem,1,size,file)
-	if readed==size
+	if readed=size
 		set pmem# mem
 		return size
 	endif
@@ -231,7 +231,7 @@ function get_section_item(sd file,sd offset,sd end,sv p_in_out,sd itemoff,sd she
 	while offset!=end
 		#the sh64_name is first
 		datax offs#1;call read(file,#offs,(datasize))
-		if offs==p_in_out#d^
+		if offs=p_in_out#d^
 			set p_in_out# itemoff
 			call get_section_loc(file,offset,p_in_out)
 			ret

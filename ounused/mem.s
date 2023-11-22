@@ -4,7 +4,7 @@ const dword=4
 function alloc(sd p)
 	sd er
 	setcall er alloc_throwless(p)
-	if er==(NULL)
+	if er=(NULL)
 		ret
 	endif
 	call erExit(er)
@@ -13,7 +13,7 @@ endfunction
 function ralloc(sv p,sd sz)
 	sd er
 	setcall er ralloc_throwless(p,sz)
-	if er==(NULL)
+	if er=(NULL)
 		ret
 	endif
 	call erExit(er)

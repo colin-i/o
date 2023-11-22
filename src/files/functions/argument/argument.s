@@ -2,9 +2,9 @@
 #sz
 function getreturn(data ptrptrcontinuation)
 	sd b;setcall b scope64_get()
-	if b==(TRUE)
+	if b=(TRUE)
 		sd conv;setcall conv convdata((convdata_total))
-		if conv==(lin_convention)
+		if conv=(lin_convention)
 			char lin64_return={0xc9,0x5b}
 			#pop c;add rsp,8*conv;push c
 			char *={0x59,REX_Operand_64,0x83,regregmod|espregnumber,lin_convention*qwsz,0x51}
@@ -46,7 +46,7 @@ function argument_return(sd termswitch,ss pop,sd pregprepare_bool,sv pptrcontinu
 	Set pop# (moveatprocthemem)
 	Set pregprepare_bool# (TRUE)
 
-	if termswitch==(TRUE)
+	if termswitch=(TRUE)
 		data ebxregnumber=ebxregnumber
 		set pregopcode# ebxregnumber
 		sd err
@@ -80,11 +80,11 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 	Set regprepare_bool false
 	Set sizeofcontinuation zero
 
-	If forwardORcallsens==forward
+	If forwardORcallsens=forward
 		call unsetimm() #set is at returns/and at push
 
 		sd xlog
-		If subtype==(cRETURN)
+		If subtype=(cRETURN)
 			sd termswitch
 			setcall termswitch is_linux_end() #exit from linux term
 			setcall err argument_return(termswitch,#op,#regprepare_bool,#ptrcontinuation,#sizeofcontinuation,#regopcode)
@@ -92,12 +92,12 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 				Return err
 			EndIf
 			set xlog (Xfile_action_areturn)
-		ElseIf subtype==(cINC)
+		ElseIf subtype=(cINC)
 			Char inc={0xFF}
 			Set op inc
 			set regopcode 0
 			set xlog (Xfile_action_inc)
-		ElseIf subtype==(cDEC)
+		ElseIf subtype=(cDEC)
 			Char dec={0xFF}
 			Char decregopcode={1}
 			Set op dec
@@ -105,7 +105,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			set xlog (Xfile_action_dec)
 		ElseIf subtype<=(cDECST)
 			set op (0x83)
-			if subtype==(cINCST)
+			if subtype=(cINCST)
 				set regopcode 0
 				set xlog (Xfile_action_incst)
 			else
@@ -114,15 +114,15 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			endelse
 			char incs_sz#1
 			sd b;setcall b is_for_64()
-			if b==(FALSE);set incs_sz (dwsz)
+			if b=(FALSE);set incs_sz (dwsz)
 			else;set incs_sz (qwsz);endelse
 			set ptrcontinuation #incs_sz
 			set sizeofcontinuation (bsz)
-		ElseIf subtype==(cNEG)
+		ElseIf subtype=(cNEG)
 			set op (0xf7)
 			set regopcode 3
 			set xlog (Xfile_action_neg)
-		ElseIf subtype==(cNOT)
+		ElseIf subtype=(cNOT)
 			Char not={0xF7}
 			Char notregopcode={Notregopcode}
 			Set op not
@@ -130,10 +130,10 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			set xlog (Xfile_action_not)
 		ElseIf subtype<=(cSAR)
 			set op (0xD1)
-			If subtype==(cSHL)
+			If subtype=(cSHL)
 				set regopcode 4
 				set xlog (Xfile_action_shl)
-			ElseIf subtype==(cSHR)
+			ElseIf subtype=(cSHR)
 				set regopcode 5
 				set xlog (Xfile_action_shr)
 			Else
@@ -170,7 +170,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 
 	sd imm
 	setcall imm getisimm()
-	if imm==false
+	if imm=false
 		#Data noreg=noregnumber
 		#Data eaxreg=eaxregnumber
 		#Data intchar#1
@@ -199,9 +199,9 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			Set ptrcontinuation ptrpushcontinuation
 			set sizeofcontinuation pushcontinuationsize
 			#EndElse
-		ElseIf lowbyte==true
+		ElseIf lowbyte=true
 		#imm don't use one byte at the moment
-			if regprepare_bool==false
+			if regprepare_bool=false
 				Dec op
 			endif
 		#Else;Set intchar regopcode
@@ -232,15 +232,15 @@ endfunction
 
 #same as comp_sec
 function comp_one(sd low,sd dataarg,sd sufix,sd op)
-	if op==(moveatprocthemem)
+	if op=(moveatprocthemem)
 		sd p
-		if low==(FALSE)
+		if low=(FALSE)
 			setcall p prefix_bool() #can't touch functions
-			if p#==0
+			if p#=0
 				sd big;setcall big is_big(dataarg,sufix)
-				if big==(FALSE)
+				if big=(FALSE)
 					sd for64;setcall for64 is_for_64()
-					if for64==(TRUE)
+					if for64=(TRUE)
 						#is medium but with sign
 						return 1
 					endif
@@ -248,7 +248,7 @@ function comp_one(sd low,sd dataarg,sd sufix,sd op)
 			endif
 		else
 			sd b;setcall b is_for_64()
-			if b==(TRUE)
+			if b=(TRUE)
 			#return all r64; take all; is from the time when was set that data, waiting outside, can have a char extended with zeros
 				setcall p val64_p_get()
 				set p# (val64_willbe)

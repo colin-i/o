@@ -23,7 +23,7 @@ function filesminus()
 	sd nr
 	set nr f#
 	dec f#
-	if nr==s#
+	if nr=s#
 		call skip_reset()
 		return 0
 	elseif nr<s#

@@ -72,7 +72,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 	#if has_named_entry==(FALSE)
 	#	sub i :
 	#endif
-	if has_named_entry==(TRUE)
+	if has_named_entry=(TRUE)
 		inc i
 	endif
 	mult i :
@@ -85,7 +85,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 		set s# i
 		sv pointer;set pointer start
 		add pointer i
-		if has_named_entry==(TRUE)
+		if has_named_entry=(TRUE)
 			#entry tag is, and is last, entry. define global variable, use in function is practical
 			sub pointer :
 			sd scps%%ptr_scopes
@@ -95,7 +95,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 		while start!=pointer
 			sub pointer :
 			setcall pointer# memcalloc((sizeofscope+sizeofclassinfo)) #is calloc, needing reg 0, in case it is searched , and at freeings, and at size (grab future)
-			if pointer#==(NULL)
+			if pointer#=(NULL)
 				return (error)
 			endif
 		endwhile
@@ -167,7 +167,7 @@ function scopes_searchinvars(sd p_err,sv p_name)
 		sd ibit;setcall ibit importbit(fns)
 		add fns (nameoffset)
 		sd size;setcall size strlen(fns)
-		if ibit==0
+		if ibit=0
 			sd data
 			sd scope
 			setcall scope scopes_get_scope(i)
@@ -212,8 +212,8 @@ function get_scope_data_size(sd pos,sd is_expand)
 	sd size
 	sd scope;setcall scope scopes_get_scope(pos)
 	if scope!=entrybags
-		if ptrfunctionTagIndex#==pos
-			if ptrinnerfunction#==(TRUE)
+		if ptrfunctionTagIndex#=pos
+			if ptrinnerfunction#=(TRUE)
 				add scope (sizeofscope)
 				if is_expand!=0
 					add scope (classinfostartdatax)
@@ -234,7 +234,7 @@ function get_scope_data_size(sd pos,sd is_expand)
 		return scope# #calloc at bigger
 	endif
 	#entry
-	if ptrinnerfunction#==(TRUE)
+	if ptrinnerfunction#=(TRUE)
 		setcall scope scopes_get_scope(ptrfunctionTagIndex#)
 		add scope (sizeofscope)
 		if is_expand!=0

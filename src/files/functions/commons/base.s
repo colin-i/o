@@ -65,7 +65,7 @@ Function getstructcont(data typenumber)
 	Data true=TRUE
 	Data scopeindependent=afterscopes
 
-	If fnbool==true
+	If fnbool=true
 		If typenumber<scopeindependent
 			Data nrofvars=numberofvars
 			Add typenumber nrofvars
@@ -159,7 +159,7 @@ function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
 	#this compare only at first chdir is extra
 		sd err
 		setcall err writefile_errversion(handle,#type,1)
-		if err==(noerror)
+		if err=(noerror)
 			setcall err addtolog_handle(content,size,handle)
 		endif
 		return err
@@ -187,7 +187,7 @@ function addtolog_array_withchar(sv array,sd type)
 	if ptrfilehandle#!=-1
 		sd err
 		setcall err writefile_errversion(ptrfilehandle#,#type,1)
-		if err==(noerror)
+		if err=(noerror)
 			while array#!=(NULL)
 				sd val;set val array#
 				incst array
@@ -204,11 +204,11 @@ endfunction
 #err
 function addtolog_withchar_parses(ss content,sd type,sd both)
 	sd err
-	if both==(FALSE)
+	if both=(FALSE)
 		sd ptrparses%ptr_parses
-		if ptrparses#==(pass_init)
+		if ptrparses#=(pass_init)
 			setcall err addtolog_withchar(content,type)
-		elseif ptrparses#==(pass_write)
+		elseif ptrparses#=(pass_write)
 			setcall err addtodebug_withchar(content,type)
 		else
 		#skip pass_calls
@@ -217,7 +217,7 @@ function addtolog_withchar_parses(ss content,sd type,sd both)
 		return err
 	endif
 	setcall err addtolog_withchar(content,type)
-	if err==(noerror)
+	if err=(noerror)
 		setcall err addtodebug_withchar(content,type)
 	endif
 	return err
@@ -225,7 +225,7 @@ endfunction
 #err
 function addtolog_withchar_ex_atunused(ss content,sd size,sd type)
 	data ptrobject%ptrobject
-	if ptrobject#==(TRUE)
+	if ptrobject#=(TRUE)
 		sd err
 		setcall err addtolog_withchar_ex(content,size,type)
 		return err
@@ -235,7 +235,7 @@ endfunction
 #err
 function addtolog_withchar_ex_atunused_handle(ss content,sd size,sd type,sd filehandle)
 	data ptrobject%ptrobject
-	if ptrobject#==(TRUE)
+	if ptrobject#=(TRUE)
 		sd err
 		setcall err addtolog_withchar_handle(content,size,type,filehandle)
 		return err
@@ -258,7 +258,7 @@ function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data1,sd da
 	sd err
 	data noerr=noerror
 	setcall err forward(ptrcontent,ptrsize,data1,data2)
-	if err==noerr
+	if err=noerr
 		set ptrcontent# c
 		set ptrsize# s
 	endif

@@ -55,9 +55,9 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj,sd soffset)
 
 		sv cursor;set cursor pointer
 		incst cursor
-		if cursor#d^==(R_X86_64_64)
+		if cursor#d^=(R_X86_64_64)
 			add cursor (datasize)
-			if cursor#d^==(dataind)
+			if cursor#d^=(dataind)
 				add cursor (datasize)
 				sv addend;set addend cursor#
 				if addend>=voffset_obj
@@ -83,9 +83,9 @@ function reloc_item(sv object,sd index,sv replacement,sd soffset)
 	while pointer!=end
 		sv cursor;set cursor pointer
 		incst cursor
-		if cursor#d^==(R_X86_64_64)
+		if cursor#d^=(R_X86_64_64)
 			add cursor (datasize)
-			if cursor#d^==index
+			if cursor#d^=index
 				sv rel_offset;set rel_offset pointer#
 				add rel_offset soffset
 				set rel_offset# replacement

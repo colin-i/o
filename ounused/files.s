@@ -12,12 +12,12 @@ function fileentry_add(sd full,sd len)
 	sd ent
 	add size len
 	setcall er malloc_throwless(#ent,size)
-	if er==(NULL)
+	if er=(NULL)
 		sd init
 		set init ent
 		#
 		setcall er fileentry_init(ent)
-		if er==(NULL)
+		if er=(NULL)
 			add ent (size_conts)
 			set ent# len
 			add ent (dword)
@@ -27,7 +27,7 @@ function fileentry_add(sd full,sd len)
 			sd previous_file
 			setcall previous_file incrementfiles()
 			setcall er ralloc_throwless(fls,:)
-			if er==(NULL)
+			if er=(NULL)
 				sd offset=-:
 				sd mem%files_dp
 				add offset mem#
@@ -79,7 +79,7 @@ function fileentry_exists(sd s)
 	while p!=fls
 		sd b
 		setcall b fileentry_compare(p#,s,sz)
-		if b==0
+		if b=0
 			call skip_set()
 			#add to previous declared
 			sd wf;setcall wf working_file()

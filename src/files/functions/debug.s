@@ -12,31 +12,31 @@ function debug_lines(sd reg,sd line,sd content,sd last)
 		#set line
 		set aux prevLine;set prevLine line
 		set test (TRUE)
-	elseif content==last  #but last line with no new line must be verified
+	elseif content=last  #but last line with no new line must be verified
 		set aux prevLine;set prevLine line
 		set test (TRUE)
 	else
 		set test (FALSE)
 	endelse
-	if test==(TRUE)
+	if test=(TRUE)
 		if reg!=codeRegD
 			sv ptrdebug%%ptr_debug
 			char a=log_line
 			sd err
 			setcall err addtosec(#a,(bsz),ptrdebug)
-			if err==(noerror)
+			if err=(noerror)
 				charx buf#dw_char_0
 				sd len
 				inc aux
 				setcall len dwtomem(aux,#buf)
 				setcall err addtosec(#buf,len,ptrdebug)
-				if err==(noerror)
+				if err=(noerror)
 					char b=asciispace
 					setcall err addtosec(#b,(bsz),ptrdebug)
-					if err==(noerror)
+					if err=(noerror)
 						setcall len dwtomem(codeRegD,#buf)
 						setcall err addtosec(#buf,len,ptrdebug)
-						if err==(noerror)
+						if err=(noerror)
 							sd t;sd sz;setcall t log_term(#sz)
 							setcall err addtosec(t,sz,ptrdebug)
 							#set codeReg
@@ -54,16 +54,16 @@ endfunction
 #err
 function addtodebug_withchar(ss content,sd char)
 	sd ptr_has_debug%ptr_has_debug
-	if ptr_has_debug#==(Yes)
+	if ptr_has_debug#=(Yes)
 	#at exec formats will add for no one
 	#if blocking at exe , care to remove if dst==debugsec from addtosec
 		sv ptrdebug%%ptr_debug
 		sd err
 		setcall err addtosec(#char,(bsz),ptrdebug)
-		if err==(noerror)
+		if err=(noerror)
 			sd ln;setcall ln strlen(content)
 			setcall err addtosec(content,ln,ptrdebug)
-			if err==(noerror)
+			if err=(noerror)
 				sd t;sd sz;setcall t log_term(#sz)
 				setcall err addtosec(t,sz,ptrdebug)
 			endif

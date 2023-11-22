@@ -45,20 +45,20 @@ Function addtosec(str content,data size,data dst)
 		Data true=TRUE
 		Data sectionexpand#1
 		Set sectionexpand false
-		If ptrfileformat#==elf_unix
+		If ptrfileformat#=elf_unix
 			Set sectionexpand true
 		Else
-			If dst==datasec
+			If dst=datasec
 				Set sectionexpand true
-			ElseIf dst==codesec
+			ElseIf dst=codesec
 				Set sectionexpand true
-			ElseIf dst==debugsec
+			ElseIf dst=debugsec
 			#this is only because there is no blocking at writefile_errversion_debug for speed reasons
 			#this is also called before format is defined
 				Set sectionexpand true
 			EndElseIf
 		EndElse
-		If sectionexpand==false
+		If sectionexpand=false
 			Char _memerr="Memory space error."
 			Str memerr^_memerr
 			Return memerr

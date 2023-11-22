@@ -30,8 +30,8 @@ function stack_align(sd nr)
 	if final_nr!=0
 		and final_nr 1
 		sd type;setcall type align_type()
-		if type==(even_align)
-			if final_nr==0
+		if type=(even_align)
+			if final_nr=0
 				return (noerror)
 			endif
 		elseif   final_nr!=0
@@ -53,8 +53,8 @@ function pref_call_align(sd nr)
 	if type!=(call_align_no)
 		sd conv;setcall conv convdata((convdata_total))
 		if nr<=conv
-			if conv==(lin_convention)
-				if type==(call_align_yes_all)
+			if conv=(lin_convention)
+				if type=(call_align_yes_all)
 					return 2 #to align at no args
 				endif
 			else
@@ -86,7 +86,7 @@ function align_ante(sd arguments)
 		setcall pointer align_ptype()
 		sd test=1;and test arguments
 		sd test2=0xffFF
-		if test==0
+		if test=0
 		#even, put on low word
 			inc pointer#
 			and test2 pointer#
@@ -167,7 +167,7 @@ function align_entryscope()
 		char bt={twobytesinstruction_byte1,bt_instruction,bt_reg_imm8|ebxregnumber,3}
 		#j(c|nc);sub rbx,8
 		char jump#1;char *=4;char *={REX_Operand_64,0x83,RegReg*tomod|(5*toregopcode)|ebxregnumber,8}
-		if type==(even_align)
+		if type=(even_align)
 			#there are more even calls to align
 			#Jump short if not carry
 			set jump (jnc_instruction)

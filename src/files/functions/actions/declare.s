@@ -23,46 +23,46 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	#endif
 
 	sd xfile_decltype
-	if declare_typenumber==(vintegersnumber)
+	if declare_typenumber=(vintegersnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
-		if bool_64==(TRUE);set mask (datapointbit)
-			if parses==(pass_init)
+		if bool_64=(TRUE);set mask (datapointbit)
+			if parses=(pass_init)
 				set unitsize (qwsz)
 			else
 				set xfile_decltype (Xfile_decltype_longInt)
 			endelse
 		else;set mask 0
-			if parses==(pass_init)
+			if parses=(pass_init)
 				set unitsize (dwsz)
 			else
 				set xfile_decltype (Xfile_decltype_longInt)
 			endelse
 		endelse
-	elseif declare_typenumber==(vstringsnumber)
+	elseif declare_typenumber=(vstringsnumber)
 		set is_stack (FALSE);set typenumber (stringsnumber)
-		if bool_64==(TRUE);set mask (datapointbit)
-			if parses==(pass_init)
+		if bool_64=(TRUE);set mask (datapointbit)
+			if parses=(pass_init)
 				set unitsize (qwsz)
 			else
 				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
 		else;set mask 0
-			if parses==(pass_init)
+			if parses=(pass_init)
 				set unitsize (dwsz)
 			else
 				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
 		endelse
-	elseif declare_typenumber==(valuesnumber)
+	elseif declare_typenumber=(valuesnumber)
 		set is_stack (FALSE);set typenumber (integersnumber)
-		if bool_64==(TRUE);set mask (valueslongmask)
-			if parses==(pass_init)
+		if bool_64=(TRUE);set mask (valueslongmask)
+			if parses=(pass_init)
 				set unitsize (qwsz)
 			else
 				set xfile_decltype (Xfile_decltype_long)
 			endelse
 		else;set mask 0
-			if parses==(pass_init)
+			if parses=(pass_init)
 				set unitsize (dwsz)
 			else
 				set xfile_decltype (Xfile_decltype_long)
@@ -70,9 +70,9 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 		endelse
 	else
 		setcall typenumber stackfilter(declare_typenumber,#is_stack)
-		if parses==(pass_init)
-			if is_stack==(TRUE)
-				if typenumber==(stringsnumber)
+		if parses=(pass_init)
+			if is_stack=(TRUE)
+				if typenumber=(stringsnumber)
 					set unitsize 0
 				else
 					call advancecursors(pcontent,pcomsize,pcomsize#)
@@ -88,25 +88,25 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				endelse
 			endelse
 		else
-			if is_stack==(TRUE)
+			if is_stack=(TRUE)
 				#must be at the start
 				call entryscope_verify_code()
 
 				#xfile part
-				if typenumber==(valuesinnernumber)
+				if typenumber=(valuesinnernumber)
 					set xfile_decltype (Xfile_decltype_long)
-				elseif typenumber==(integersnumber)
+				elseif typenumber=(integersnumber)
 					set xfile_decltype (Xfile_decltype_longInt)
 				else #(stringsnumber)
 					set xfile_decltype (Xfile_decltype_longByte)
 				endelse
 			else
 				#xfile part
-				if typenumber==(constantsnumber)
+				if typenumber=(constantsnumber)
 					set xfile_decltype (Xfile_decltype_const)
-				elseif typenumber==(charnumber)
+				elseif typenumber=(charnumber)
 					set xfile_decltype (Xfile_decltype_byte)
-				elseif typenumber==(integersnumber)
+				elseif typenumber=(integersnumber)
 					set xfile_decltype (Xfile_decltype_int)
 				else #(stringsnumber)
 					set xfile_decltype (Xfile_decltype_intByte)
@@ -119,12 +119,12 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	sd err
 	sd relocbool=FALSE;sd dataxrel
 	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool,#dataxrel)
-	if err==(noerror)
-		if parses==(pass_init)
-			if typenumber==(constantsnumber)
+	if err=(noerror)
+		if parses=(pass_init)
+			if typenumber=(constantsnumber)
 				setcall err addtolog_withchar_ex_atunused(pcontent#,valsize,(log_declare))
-				if err==(noerror)
-					if sign==(pointersigndeclare)
+				if err=(noerror)
+					if sign=(pointersigndeclare)
 						call advancecursors(pcontent,pcomsize,pcomsize#)
 						return (noerror)
 					endif
@@ -133,8 +133,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				endif
 			else
 				setcall err vars_log_prepare(pcontent#,valsize)
-				if err==(noerror)
-					if unitsize==0
+				if err=(noerror)
+					if unitsize=0
 					#ss?
 						if sign!=(assignsign)
 							call advancecursors(pcontent,pcomsize,pcomsize#)
@@ -143,12 +143,12 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 						#ss =% ""/x/{}
 					else
 					#search for data%  with R_X86_64_64
-						if relocbool==(TRUE)
-							if mask==0
+						if relocbool=(TRUE)
+							if mask=0
 							#data str
 							#strs are without ""
 								vdata is_64_and_pref_is_rx866464%p_elf64_r_info_type
-								if is_64_and_pref_is_rx866464#==(R_X86_64_64)
+								if is_64_and_pref_is_rx866464#=(R_X86_64_64)
 									set unitsize (qwsz)
 								endif
 							endif
@@ -156,7 +156,7 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 					endelse
 					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,dataxrel,is_stack) #there is 1 more argument but is not used
 					#                                                                               since %%|
-					if is_expand==(FALSE)
+					if is_expand=(FALSE)
 						sd pdataReg%%ptr_dataReg
 						add pdataReg# unitsize
 					else
@@ -167,16 +167,16 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 			endelse
 		else
 			setcall err xfile_add_declare_if(xfile_decltype,is_stack,is_expand,pcontent#,valsize,sign,relocbool,dataxrel)
-			if err==(noerror)
-				if typenumber==(constantsnumber)
+			if err=(noerror)
+				if typenumber=(constantsnumber)
 					if sign!=(pointersigndeclare)
 						setcall err xfile_add_char_if((Xfile_declmode_value))
-						if err==(noerror)
+						if err=(noerror)
 							call advancecursors(pcontent,pcomsize,pcomsize#)
 							return (noerror)
 						endif
 					endif
-				elseif is_expand==(TRUE)
+				elseif is_expand=(TRUE)
 					if sign!=(reservesign)
 						return "Virtual declarations can have only the reserve sign."
 					endif

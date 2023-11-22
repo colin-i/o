@@ -13,7 +13,7 @@ Function unresolvedcallsfn(data struct,data inneroffset,data atend,data valuedat
 	Data true=TRUE
 	Data ptrobject%ptrobject
 
-	If ptrobject#==true
+	If ptrobject#=true
 		Data ptrextra%%ptr_extra
 		SetCall err addrel_base(offset,valuedata,atend,ptrextra)
 	Else
@@ -34,16 +34,16 @@ EndFunction
 function fnimp_exists(sd content,sd size)
 	sd fns%%ptr_functions
 	sd d;setcall d vars_ignoreref(content,size,fns)
-	if d==0
+	if d=0
 		return (noerror)
 	endif
 	return "Function/Import name is already defined."
 endfunction
 #xf
 function func_xfile(sd subtype)
-	if subtype==(cFUNCTIONX)
+	if subtype=(cFUNCTIONX)
 		return (Xfile_function_extern)
-	elseif subtype==(cENTRY)
+	elseif subtype=(cENTRY)
 		return (Xfile_function_entry)
 	endelseif
 	return (Xfile_function_traw) #or Xfile_function_not_x
@@ -68,12 +68,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 	Set size ptrsize#
 
 	SetCall sz valinmem(content,size,(asciiparenthesisstart))
-	If sz==zero
+	If sz=zero
 		Char funnameexp="Function name expected."
 		Str fnerr^funnameexp
 		Return fnerr
 	EndIf
-	If sz==size
+	If sz=size
 		Char startfnexp="Open parenthesis sign ('(') expected."
 		Str starterr^startfnexp
 		Return starterr
@@ -82,11 +82,11 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 	vdata p_parses%ptr_parses
 	sd parses;set parses p_parses#
 
-	If is_declare==true
+	If is_declare=true
 		Data fnnr=functionsnumber
 		Data value#1
 		Data ptrvalue^value
-		if parses==(pass_init)
+		if parses=(pass_init)
 			setcall err fnimp_exists(content,sz) #it is at first pass when only fns and imports are
 			if err!=(noerror)
 				return err
@@ -96,7 +96,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 			Data mask#1
 			#Data ptrobjfnmask%ptrobjfnmask
-			if el_or_e==(TRUE)
+			if el_or_e=(TRUE)
 				Set mask (referencebit)
 			else
 				set mask 0
@@ -107,7 +107,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				or mask (x86_64bit)
 			endif
 			sd err_pb;setcall err_pb global_err_pBool()
-			if err_pb#==(FALSE)
+			if err_pb#=(FALSE)
 				or mask (aftercallthrowlessbit)
 			endif
 
@@ -122,7 +122,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			#
 			#return noerr
 		else
-			if el_or_e==(FALSE)
+			if el_or_e=(FALSE)
 				call scopes_store_class()
 			endif
 
@@ -134,7 +134,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			#add the function name to the code section if the option is set
 			sd fn_text
 			setcall fn_text fn_text_info()
-			if fn_text#==1
+			if fn_text#=1
 				sd fn_name
 				set fn_name pointer
 				add fn_name (nameoffset)
@@ -152,7 +152,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 			#resolve the previous calls at this value
 			Data ptrobject%ptrobject
-			If ptrobject#==true
+			If ptrobject#=true
 				Data STT_FUNC=STT_FUNC
 				Data codeind=codeind
 				Data ptrtable%%ptr_table
@@ -167,7 +167,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				EndIf
 			EndIf
 
-			if subtype==(cFUNCTION)
+			if subtype=(cFUNCTION)
 				call scope64_set((FALSE))
 				setcall err xfile_add_fndef_if(content,sz,(Xfile_function_tintern),(Xfile_function_not_x)) #,arg
 			else
@@ -194,9 +194,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		endelse
 	Else
 		Data ptrdata#1
-		if parses==(pass_init)
+		if parses=(pass_init)
 			call advancecursors(ptrcontent,ptrsize,sz)
-		elseif parses==(pass_calls)
+		elseif parses=(pass_calls)
 			SetCall ptrdata vars_ignoreref(content,sz,fns)
 			if ptrdata!=0
 				call is_for_64_is_impX_or_fnX_set(ptrdata,subtype)
@@ -221,8 +221,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		return err
 	endif
 
-	If is_declare==true
-		if parses==(pass_write)
+	If is_declare=true
+		if parses=(pass_write)
 			sd nr_of_args_tested=0
 			if sz!=zero
 				sv c;sd s;set c ptrcontent#;set s ptrsize#
@@ -234,7 +234,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			EndIf
 
 			sd b;setcall b scope64_get()
-			if b==(TRUE)
+			if b=(TRUE)
 				if varargs!=0
 					sd nr_of_args
 					setcall nr_of_args convdata((convdata_total))
@@ -253,11 +253,11 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				return err
 			endif
 		EndIf
-		if parses==(pass_write)
+		if parses=(pass_write)
 			call entryscope()
 		endif
 	Else
-		if parses==(pass_init)
+		if parses=(pass_init)
 			if sz!=zero
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
 				if err!=noerr
@@ -267,14 +267,14 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		else
 			sd p
 			sd pbool;setcall pbool is_for_64_is_impX_or_fnX_p_get()
-			if parses==(pass_calls)
-				if pbool#==(FALSE)
+			if parses=(pass_calls)
+				if pbool#=(FALSE)
 					call advancecursors(ptrcontent,ptrsize,sz)
 				else
 					if sz!=zero
 						setcall p nr_of_args_64need_p_get();set p# 0
 						SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
-						if err==noerr
+						if err=noerr
 							setcall err align_ante(p#)
 						endif
 					else
@@ -288,10 +288,10 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			else
 				#pass_write
 
-				if pbool#==(FALSE)
+				if pbool#=(FALSE)
 					if sz!=zero
 						setcall err xfile_add_commas_interncall_if(ptrcontent#,ptrsize#,sz)
-						if err==(noerror)
+						if err=(noerror)
 							SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
 							if err!=noerr;return err;endif
 						else
@@ -304,11 +304,11 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 						set content ptrcontent#
 						set size ptrsize#
 						SetCall err enumcommas(#content,#size,sz,is_declare,(pass_calls)) #there are 6 more arguments but are not used
-						if err==noerr
+						if err=noerr
 							setcall err stack_align(p#)
-							if err==noerr
+							if err=noerr
 								setcall err xfile_add_int_if(p#)
-								if err==noerr
+								if err=noerr
 									SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
 								else
 									return err
@@ -344,13 +344,13 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 	Data fns%%ptr_functions
 
 	SetCall p_data# vars(pcontent#,sz,fns)
-	If p_data#==0
+	If p_data#=0
 		setcall p_data# vars_number(pcontent#,sz,(integersnumber))
-		If p_data#==0
+		If p_data#=0
 			setcall p_data# vars_number(pcontent#,sz,(stackdatanumber))
-			If p_data#==0
+			If p_data#=0
 				setcall p_data# vars_number(pcontent#,sz,(stackvaluenumber))
-				If p_data#==0
+				If p_data#=0
 					Char unfndeferr="Undefined function/data call."
 					Str ptrunfndef^unfndeferr
 					Return ptrunfndef
@@ -367,7 +367,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 
 	sd err
 	setcall err xfile_add_call_if(pcontent#,sz,subtype)
-	if err==(noerror)   #here is coming from calls and callex
+	if err=(noerror)   #here is coming from calls and callex
 		Call advancecursors(pcontent,psize,sz)
 
 		#move over the stack arguments, ebx is also shorting the first stack variable (mov rbx,rdx)
@@ -390,7 +390,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	Data code%%ptr_codesec
 
 	sd pb;setcall pb is_for_64_is_impX_or_fnX_p_get()
-	if pb#==(TRUE)
+	if pb#=(TRUE)
 		setcall err function_call_64(is_callex)
 		If err!=(noerror);Return err;EndIf
 		set pb# (FALSE) #reset the flag
@@ -409,13 +409,13 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	And idatamask idatafn
 
 	sd is_valuedata_call;set is_valuedata_call boolindirect
-	If ptrobject#==(FALSE)
-		If idatamask==idatafn
+	If ptrobject#=(FALSE)
+		If idatamask=idatafn
 			Set boolindirect (TRUE)
 		EndIf
 	EndIf
 
-	If boolindirect==(FALSE)
+	If boolindirect=(FALSE)
 		Char directcall#1
 		Data directcalloff#1
 
@@ -443,7 +443,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		EndElse
 	Else
 		#this at object is call data() but the reloc is outside of this function
-		if idatamask==idatafn
+		if idatamask=idatafn
 			data ptrvirtualimportsoffset%ptrvirtualimportsoffset
 			SetCall err unresolvedcallsfn(code,1,ptrvirtualimportsoffset) #,ptrdata#
 			If err!=(noerror);Return err;EndIf
@@ -462,18 +462,18 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 	#afterbit throwless is at fns imps if before aftercall; at values is throwless after aftercall if sign set
 	sd tless=aftercallthrowlessbit
 	and tless mask
-	if tless==0
-		if is_valuedata_call==(FALSE)
+	if tless=0
+		if is_valuedata_call=(FALSE)
 			sd global_err_pB;setcall global_err_pB global_err_pBool()
-			if global_err_pB#==(FALSE)
+			if global_err_pB#=(FALSE)
 				set tless -1    #don't want to throw before aftercall
 			endif
 		endif
 	endif
-	if tless==0
+	if tless=0
 		sd global_err_ptr;setcall global_err_ptr global_err_p()
 		Data ptrextra%%ptr_extra
-		If ptrobject#==(FALSE)
+		If ptrobject#=(FALSE)
 		#absolute
 			const global_err_ex_start=!
 			#mov ecx,imm32
@@ -505,7 +505,7 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		#
 		ss ret_end_p
 		sd is_linux_term;setcall is_linux_term is_linux_end()
-		if is_linux_term==(TRUE)
+		if is_linux_term=(TRUE)
 			#int 0x80, sys_exit, eax 1,ebx the return number
 			const g_err_sys_start=!
 			char g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
@@ -540,7 +540,7 @@ endfunction
 #bool
 function is_linux_end()
 	sd ptrfnavailable%ptrfnavailable
-	if ptrfnavailable#==0  #one is default, two from multiple entry start detectors and from entry tags
+	if ptrfnavailable#=0  #one is default, two from multiple entry start detectors and from entry tags
 	#here innerfunction is also practical, but that is more for data offsets
 		sd p_exit_end%p_exit_end
 		return p_exit_end#
@@ -564,7 +564,7 @@ function aftercall_manipulate(sd acall_val)
 	vData code%%ptr_codesec
 	sd global_err_ptr;setcall global_err_ptr global_err_p()
 
-	If ptrobject#==(FALSE)
+	If ptrobject#=(FALSE)
 	#absolute
 		#mov [disp32],imm8 /0
 		char a=0xc6;char *=disp32regnumber;data b#1;char c#1

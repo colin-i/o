@@ -24,11 +24,11 @@ function wide_to_ansi(ss in)
 	set out in
 	dec out
 	char n=0;char x#1
-	while 0==0
+	while 0=0
 		inc out
 		set x in#
 		set out# x
-		if x==n
+		if x=n
 			ret
 		endif
 		add in 2

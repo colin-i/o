@@ -3,10 +3,10 @@
 #same or zero
 function warn_or_log(sd type,sd return_value,ss symbolname,sd log_option,sd p_err,sd size)
 	data ptrobject%ptrobject
-	if ptrobject#==(TRUE)
-		if log_option==(log_warn)
+	if ptrobject#=(TRUE)
+		if log_option=(log_warn)
 			setcall p_err# addtolog_withchar_ex(symbolname,size,type) #is not calling atunused version, that will return noerror at object false
-			if p_err#==(noerror)
+			if p_err#=(noerror)
 				return 0
 			endif
 		endif
@@ -16,12 +16,12 @@ endfunction
 #same function, except the array
 function warn_or_log_vars(sd return_value,ss symbolname,sd p_err,sd size)
 	data ptrobject%ptrobject
-	if ptrobject#==(TRUE)
+	if ptrobject#=(TRUE)
 		data p_o_w%%p_offset_warn
-		if p_o_w#==(log_warn)
+		if p_o_w#=(log_warn)
 			sd vals;setcall vals vars_log((get),symbolname,size)
 			setcall p_err# addtolog_array_withchar(vals,(log_variable))
-			if p_err#==(noerror)
+			if p_err#=(noerror)
 				return 0
 			endif
 		endif
@@ -36,7 +36,7 @@ function vars_log(sd type,sd val,sd sz)
 	value *^dot;data *=1
 	value c#1;data cs#1
 	value *=NULL
-	if type==(set)
+	if type=(set)
 		set a val
 		set as sz
 	else
@@ -51,7 +51,7 @@ endfunction
 #err
 function vars_log_prepare(ss content,sd size)
 	data ptrobject%ptrobject
-	if ptrobject#==(TRUE)
+	if ptrobject#=(TRUE)
 		sd vals;setcall vals vars_log((get),content,size)
 		sd err
 		setcall err addtolog_array_withchar(vals,(log_offset))
@@ -95,18 +95,18 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 			Set checkvalue pmask#
 			And checkvalue ReferenceBit
 			data ptrconstants%%ptr_constants;sd cb
-			If checkvalue==zero
+			If checkvalue=zero
 				data returnvalue#1
 				set returnvalue entrypoint
 				#
 				data ptrfunctions%%ptr_functions
-				if ptrfunctions==ptrstructure
+				if ptrfunctions=ptrstructure
 					Set checkvalue pmask#
 					sd against_idata=idatabitfunction
 					and against_idata checkvalue
-					if against_idata==0
+					if against_idata=0
 						and checkvalue (x86_64bit)
-						if checkvalue==0
+						if checkvalue=0
 							data ptrcodeFnObj%ptrcodeFnObj
 							setcall returnvalue warn_or_log((log_function),returnvalue,container,ptrcodeFnObj#,warningssearch,varsize)
 						else
@@ -114,7 +114,7 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 							set returnvalue 0
 						endelse
 					endif
-				elseif ptrconstants==ptrstructure
+				elseif ptrconstants=ptrstructure
 					setcall cb constants_bool((const_warn_get))
 					setcall returnvalue warn_or_log((log_constant),returnvalue,container,cb,warningssearch,varsize)
 				else
@@ -127,12 +127,12 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 			#elseIf ptrconstants==ptrstructure 0x72
 		Else
 			SetCall varsize strlen(container)
-			If varsize==size
+			If varsize=size
 				Data cmpret#1
 				SetCall cmpret memcmp(container,content,size)
-				If cmpret==zero
+				If cmpret=zero
 					#if set the reference is true
-					if setref==1
+					if setref=1
 						#go back from string to mask
 						#Sub container dwlen
 
@@ -150,7 +150,7 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 				#are mixed with imports
 				sd against=idatabitfunction
 				and against pmask#
-				if against==0
+				if against=0
 					inc position_pointer#
 				endif
 			endif
@@ -207,7 +207,7 @@ Function searchinvars(str content,data size,data ptrtype,data warningssearch,sd 
 		SetCall ptrcontainer getstructcont(i)
 		SetCall data vars_core_ref(content,size,ptrcontainer,warningssearch,setref)
 		If data!=null
-			If warningssearch==null
+			If warningssearch=null
 				If ptrtype!=null
 					Set ptrtype# i
 				EndIf
@@ -280,7 +280,7 @@ const cast_string=Xfile_suffix_cast_string
 Function varsufix(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd err
 	setcall err xfile_add_char_if((Xfile_arg_varfn_dot_no))
-	if err==(noerror)
+	if err=(noerror)
 		setcall err varsufix_ex(content,size,ptrdata,ptrlow,ptrsufix,(NULL))
 	endif
 	return err
@@ -301,31 +301,31 @@ function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scop
 	Data null=NULL
 	Data data#1
 
-	if scope==(NULL)
+	if scope=(NULL)
 		SetCall data strinvars(content,size,ptrtype)
 	else
 		setcall data searchinvars_scope(content,size,ptrtype,scope)
 	endelse
-	If data==null
+	If data=null
 		SetCall err undefinedvariable()
 		Return err
 	EndIf
 
 	setcall err xfile_add_varsufix_if(content,size,ptrsufix#,cast)
-	if err==(noerror)
+	if err=(noerror)
 		Set ptrdata# data
 
 		Data charnumber=charnumber
 		sd prefix
 		setcall prefix prefix_bool()
 
-		If type==charnumber
-			If ptrsufix#==(sufix_true)
+		If type=charnumber
+			If ptrsufix#=(sufix_true)
 				Char ptrsfxerr="CHAR statement cannot have the pointer sufix."
 				Str _ptrsfxerr^ptrsfxerr
 				Return _ptrsfxerr
 			EndIf
-			if prefix#==0
+			if prefix#=0
 				Set ptrlow# true
 			else
 				#need all char address at prefix
@@ -335,12 +335,12 @@ function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scop
 			sd is_str
 			setcall is_str cast_resolve(type,cast,ptrdata)
 
-			If is_str==false
+			If is_str=false
 				Set ptrlow# false
 			Else
 			#str ss
-				If ptrsufix#==(sufix_true)
-					if prefix#==0
+				If ptrsufix#=(sufix_true)
+					if prefix#=0
 						Set ptrlow# true
 					else
 						Set ptrlow# false
@@ -359,7 +359,7 @@ function sufix_test(ss content,sd p_size,sd p_cast)
 	add content p_size#
 	dec content
 	if content#!=(pointerascii)
-		if content#==(castascii)
+		if content#=(castascii)
 			setcall p_cast# cast_test(content,p_size)
 			return (sufix_true)
 		endif
@@ -382,15 +382,15 @@ function cast_test(ss content,sd p_size)
 		if c>=(a_from_az)
 			sub c (AZ_to_az)
 		endif
-		if c==(cast_value)
-		elseif c==(cast_data)
-		elseif c==(cast_string)
+		if c=(cast_value)
+		elseif c=(cast_data)
+		elseif c=(cast_string)
 		else
 			set c (no_cast)
 		endelse
 		if c!=(no_cast)
 			dec content
-			if content#==(pointerascii)
+			if content#=(pointerascii)
 				sub p_size# 3
 				call extend_sufix_test(content,p_size)
 				return c
@@ -403,7 +403,7 @@ endfunction
 function tempdatapair(ss p_trick,sv ptrdata,sd data2)
 	xor p_trick# 1
 	sd test=1;and test p_trick#
-	if test==0
+	if test=0
 		set p_trick data2
 		#add p_trick (location_and_mask)
 	else
@@ -418,12 +418,12 @@ endfunction
 
 #bool is_string
 function cast_resolve(sd number,sd cast,sv ptrdata)
-	if cast==(no_cast)
+	if cast=(no_cast)
 		Data stringsnumber=stringsnumber
 		Data stackstringnumber=stackstringnumber
-		if number==stringsnumber
+		if number=stringsnumber
 			return (TRUE)
-		elseif number==stackstringnumber
+		elseif number=stackstringnumber
 			return (TRUE)
 		endelseif
 		return (FALSE)
@@ -441,7 +441,7 @@ function cast_resolve(sd number,sd cast,sv ptrdata)
 		sd data;set data ptrdata#
 		add data (maskoffset)
 
-		if cast==(cast_data)
+		if cast=(cast_data)
 			and data# (~pointbit)
 		else
 		#cast==(cast_value)

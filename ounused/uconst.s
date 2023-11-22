@@ -15,17 +15,17 @@ function uconst_spin(sd f,sd s,sd sz,sd is_new)
 	#search in includes declared in other logs
 	add f (size_cont)
 	setcall found uconst_search(f,s,sz,(FALSE))
-	if found==(FALSE)
+	if found=(FALSE)
 		#search in includes declared this log
 		add f (size_cont)
 		setcall found uconst_search(f,s,sz,is_new)
-		if found==(FALSE)
+		if found=(FALSE)
 			#search in constants declared in this file, with respect to is_new
 			sd ofs
 			setcall ofs pos_in_cont(const_cont,s,sz)
 			if ofs!=-1
 				add f (size_cont)
-				if is_new==(FALSE)
+				if is_new=(FALSE)
 					#if is in unused move it to doubleunused
 					call uconst_unused(f,ofs)
 				else
@@ -52,7 +52,7 @@ function uconst_search(sv fs,sd s,sd sz,sd is_new)
 		add pointer cursor#
 		sd found
 		setcall found uconst_spin(pointer#,s,sz,is_new)
-		if found==(TRUE)
+		if found=(TRUE)
 			return (TRUE)
 		endif
 		add cursor (dword)
@@ -77,7 +77,7 @@ function uconst_unused(sv cont,sd ofs)
 		#if offset<=ofs
 		#this is not ordered since mixing const and variables
 
-		if offset==ofs
+		if offset=ofs
 			#move to doubleunused
 			call adddwordtocont(cont,offset)
 			sub end (dword)

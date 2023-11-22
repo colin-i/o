@@ -17,7 +17,7 @@ function resolve(sd j)
 		add p (dword)
 		sd pos
 		setcall pos pos_in_cont(imps,p,len)
-		if pos==-1
+		if pos=-1
 			call wrongExit(f,p,len)
 		endif
 		add p len

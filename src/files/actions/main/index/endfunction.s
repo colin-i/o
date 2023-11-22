@@ -1,7 +1,7 @@
 
 
-if parses==(pass_init)
-	if innerfunction==false
+if parses=(pass_init)
+	if innerfunction=false
 		Char unexef="Unexpected ENDFUNCTION command."
 		Str unexeferr^unexef
 		Set errormsg unexeferr
@@ -10,18 +10,18 @@ if parses==(pass_init)
 		call vars_log_reset() #to let next variables be ".var"
 	endelse
 else
-	if parses==(pass_write)
+	if parses=(pass_write)
 		SetCall errormsg checkcondloopclose()
-		If errormsg==noerr
+		If errormsg=noerr
 			data ptrreturn#1
 			data sizereturn#1
 			data ptrptrreturn^ptrreturn
 			setcall sizereturn getreturn(ptrptrreturn)
 
 			SetCall errormsg addtoCode_set_programentrypoint(ptrreturn,sizereturn)
-			If errormsg==noerr
+			If errormsg=noerr
 				setcall errormsg scopes_store(functionTagIndex)
-				If errormsg==noerr
+				If errormsg=noerr
 					Set i zero
 					While i!=(numberofvars)
 						Data containertoclear#1

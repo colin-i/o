@@ -121,7 +121,7 @@
 	<br>
 	<a class="code">
 	Const TRUE=1<br>
-	if 20==(ConstantValue+11)<br>
+	if 20=(ConstantValue+11)<br>
 &emsp;	set	x	20<br>
 	endif<br>
 	Const x=3$2<br>
@@ -762,7 +762,7 @@
 	The language has <b>if-elseif-else</b> conditions that must by closed with <b>endif-endelseif-endelse</b> commands.
 	The condition operators are:
 	<br>
-	Equal: ==
+	Equal: =
 	<br>
 	Not Equal: !=
 	<br>
@@ -792,7 +792,7 @@
         If a&#62;=b<br>
 &emsp;			Set c a<br>
 &emsp;			#This will not be executed<br>
-        ElseIf a==b<br>
+        ElseIf a=b<br>
 &emsp;			Set c a<br>
 &emsp;			#This will not be executed<br>
         Else<br>
@@ -821,7 +821,7 @@
 	sd b=0<br>
 	while b&lt;a<br>
 &emsp;	inc b<br>
-&emsp;	if b==1<br>
+&emsp;	if b=1<br>
 &emsp;&emsp;	continue<br>
 &emsp;	endif<br>
 &emsp;	break<br>

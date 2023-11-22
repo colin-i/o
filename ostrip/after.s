@@ -22,10 +22,10 @@ const sym__to_shndx=datasize+charize+charize
 			add sym (sym__to_shndx)
 			char d={dataind,0}
 			sd cmp;setcall cmp memcmp(sym,#d,2)
-			if cmp==0
+			if cmp=0
 				sub sym (charize+charize)
 				char info=STB_GLOBAL*0x10|STT_NOTYPE   ;#global seems to always be here but there is too much code to separate
-				if info==sym#
+				if info=sym#
 				#this is the aftercall,get string pointer from strtab
 					sub sym (datasize)
 					incst obj
@@ -62,7 +62,7 @@ function aftercall_replace(sv psym,sv pstr,ss astr,sv aoffset)
 		add end sec
 		while sec!=end
 			#name pos is first
-			if sec#==pos
+			if sec#=pos
 				add sec (sym__to_value)
 				set sec#v^ aoffset
 				call verbose((verbose_count))
@@ -92,7 +92,7 @@ function aftercall_in_objects(sv objects,ss astr,sv aoffset,sd textinneroffset)
 			set end end#
 			add end sympos
 			while sympos!=end
-				if sympos#==pos
+				if sympos#=pos
 					break
 				endif
 				add sympos (sym_size)

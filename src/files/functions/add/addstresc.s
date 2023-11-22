@@ -25,7 +25,7 @@ Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd w
 	Set sizeEsc sz
 	sd end;set end sizeEsc
 	Sub sizeEsc escapes
-	if write_to_xfile==(TRUE)
+	if write_to_xfile=(TRUE)
 		sd xfilesz;set xfilesz sizeEsc
 	endif
 	Inc sizeEsc
@@ -52,7 +52,7 @@ Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd w
 	Data ptrdestloc^destloc
 	Call getcont(pdest,ptrdestloc)
 	Add destloc destReg
-	if write_to_xfile==(TRUE)
+	if write_to_xfile=(TRUE)
 		sd xfileloc;set xfileloc destloc
 	endif
 
@@ -70,7 +70,7 @@ Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd w
 		Set destloc# zero
 	EndIf
 
-	if write_to_xfile==(TRUE)
+	if write_to_xfile=(TRUE)
 		setcall errnr xfile_add_string_if(xfileloc,xfilesz)
 		return errnr
 	endif

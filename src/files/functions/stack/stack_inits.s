@@ -34,7 +34,7 @@ function expandbit(sd pointer)
 endfunction
 function expandbit_wrap(sd pointer)
 	vdata ptr_nobits_virtual%ptr_nobits_virtual
-	if ptr_nobits_virtual#==(Yes)
+	if ptr_nobits_virtual#=(Yes)
 		sd bit
 		setcall bit data_get_maskbit(pointer,(expandbit))
 		return bit
@@ -58,7 +58,7 @@ function stack_get_relative(sd location)
 	add mask (maskoffset)
 	set mask mask#
 	and mask (stackrelativebit)
-	if mask==0
+	if mask=0
 		return (ebxregnumber)
 	endif
 	return (ebpregnumber)

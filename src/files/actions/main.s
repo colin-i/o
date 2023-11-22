@@ -22,8 +22,8 @@ While includesReg!=null
 	Sub cursorforincludes sizeofincludeset
 
 	Set contentoffile cursorforincludes#
-	If errormsg==noerr
-		if includemask==(TRUE)
+	If errormsg=noerr
+		if includemask=(TRUE)
 			set warningsbool (TRUE)
 		#else was not einclude or warns was off
 		endif
@@ -44,9 +44,9 @@ While includesReg!=null
 
 		While content!=last
 			Include "./main/index.s"
-			If errormsg==noerr
-				if parses==(pass_write)
-					if has_debug==(Yes)
+			If errormsg=noerr
+				if parses=(pass_write)
+					if has_debug=(Yes)
 						setcall errormsg debug_lines(codesecReg,lineoffile,content,last)
 					endif
 				endif
@@ -65,13 +65,13 @@ While includesReg!=null
 
 				Data printbuffer#1
 
-				if totalnewlines==0
+				if totalnewlines=0
 					setcall printbuffer printbuf("%s File %s, Row %u, Column %u",errormsg,cursorforincludes,2,lineoffile,columnoffile)
 				else
 				#first textlinestart is lost at multilines command
 					setcall printbuffer printbuf("%s File %s, Row %u",errormsg,cursorforincludes,1,lineoffile)
 				endelse
-				If printbuffer==null
+				If printbuffer=null
 					Call errexit()
 				EndIf
 				Call Message(printbuffer)
@@ -79,11 +79,11 @@ While includesReg!=null
 				Set content last
 			EndIf
 		EndWhile
-		If errormsg==noerr
+		If errormsg=noerr
 			setcall errormsg addtolog_withchar_parses("",fileendchar,(FALSE)) #also ok on win
 			if errormsg!=(noerror)
 				Call Message(errormsg)
-			elseif includedir==true
+			elseif includedir=true
 				data int#1
 				setcall int chdir(contentoffile)
 				#0 success
@@ -101,19 +101,19 @@ While includesReg!=null
 
 	data skipfree#1
 	set skipfree 0
-	if includesReg==0
+	if includesReg=0
 		if parses!=(pass_write)
-			if errormsg==(noerror)
-				If innerfunction==true
+			if errormsg=(noerror)
+				If innerfunction=true
 					Str endfnexp="ENDFUNCTION command expected to close the opened FUNCTION."
 					set errormsg endfnexp
 					Call Message(errormsg)
 				Else
-					if formatdefined==1
+					if formatdefined=1
 					# a file with only comments, but cCOMMENT whitespaces is at pass write
 						call pref_restore()
 					endif
-					if parses==(pass_init)
+					if parses=(pass_init)
 						set g_e_b_p# (FALSE)  #in case was set, for writes
 
 						set datasecSize datasecReg
@@ -131,7 +131,7 @@ While includesReg!=null
 						setcall errormsg scopes_alloc(el_or_e,functionTagIndex)
 						set parses (pass_write)
 					endelse
-					if errormsg==(noerror)
+					if errormsg=(noerror)
 						#used when having multiple includes
 						data includescursor#1
 						set includescursor includes
@@ -153,7 +153,7 @@ While includesReg!=null
 			endif
 		endif
 	endif
-	if skipfree==0
+	if skipfree=0
 		Call free(contentoffile)
 	endif
 EndWhile

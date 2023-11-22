@@ -33,7 +33,7 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		Char byte#1
 		Set byte content#
 		SetCall bool numeric(byte)
-		If bool==(FALSE)
+		If bool=(FALSE)
 			Return (FALSE)
 		EndIf
 		Sub byte (asciizero)
@@ -43,7 +43,7 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		const bil_2=2*bil_1
 		const max_int=0x80*0x100*0x100*0x100
 		const max_int_bil_2_rest=max_int-bil_2
-		if multx==(bil_1)
+		if multx=(bil_1)
 			if size!=0
 				#(...)x xxx xxx xxx
 				while size!=0
@@ -56,12 +56,12 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 			if number>2
 				#3 xxx xxx xxx-9 xxx xxx xxx
 				return (FALSE)
-			elseif number==2
+			elseif number=2
 				if value>(max_int_bil_2_rest)
 					#2 147 483 649-2 999 999 999
 					return (FALSE)
-				elseif value==(max_int_bil_2_rest)
-					if minusbool==(FALSE)
+				elseif value=(max_int_bil_2_rest)
+					if minusbool=(FALSE)
 						#2 147 483 648 is the first positive overflow
 						return (FALSE)
 					endif
@@ -139,7 +139,7 @@ Function memtohex(str content,data size,data outvalue)
 
 	Set multp initialmultp
 	SetCall bool stratmem(pc,ps,"0X")
-	If bool==false
+	If bool=false
 		Return false
 	EndIf
 	Add content size
@@ -148,7 +148,7 @@ Function memtohex(str content,data size,data outvalue)
 		Dec size
 		Set byte content#
 		SetCall nr hexnr(byte)
-		If nr==(nothex_value)
+		If nr=(nothex_value)
 			Return false
 		EndIf
 		Mult nr multp
@@ -164,10 +164,10 @@ EndFunction
 function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	Data bool#1
 	#test to see if the ! sign is present
-	if content#==(asciiexclamationmark)
+	if content#=(asciiexclamationmark)
 		sd err
 
-		if size==1
+		if size=1
 			#the current data cursor
 			setcall outval# get_img_vdata_dataReg()
 
@@ -179,13 +179,13 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		inc content
 		charx against#1
 		set against content#
-		if against==(asciiexclamationmark)
-			if size==2
+		if against=(asciiexclamationmark)
+			if size=2
 				#the current virtual data cursor
 				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain/main or (NULL)
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
-				if ptr_nobits_virtual#==(No)
-					if p_parses#==(pass_init)
+				if ptr_nobits_virtual#=(No)
+					if p_parses#=(pass_init)
 						return "At the moment, !! is not implemented here."
 					endif
 				endif
@@ -197,11 +197,11 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			inc content
 			sub size 2
 
-			if p_parses#==(pass_init)
+			if p_parses#=(pass_init)
 				return "At the moment, !!func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
 			setcall err xfile_add_char_if((Xfile_numbers_type_fsizeX))  #next in get_scope_pos
-			if err==(noerror)
+			if err=(noerror)
 				setcall err get_sizeoffunction(content,size,outval,(TRUE))
 			endif
 			return err
@@ -210,7 +210,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		dec size
 		sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
 		if dot_offset!=size
-			if p_parses#==(pass_init)
+			if p_parses#=(pass_init)
 				return "At the moment, !a.b or !a.b! are not implemented here."  #after pass_init is the calloc for scopes
 			endif
 			#suffixed,casted, nobody is stopping them (casted will not reach here, will be xor)
@@ -220,16 +220,16 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			if pointer#!=(asciiexclamationmark)
 				#size of variable
 				setcall err xfile_add_char_if((Xfile_numbers_type_sizeVar))
-				if err==(noerror)
+				if err=(noerror)
 					setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
-					if err==(noerror)
+					if err=(noerror)
 						if low!=0
 							set outval# (bsz)
 						else
 							set outval# (dwsz)
 							sd test;setcall test stackbit(data)
-							if test==0
-								if sufix==(sufix_false)
+							if test=0
+								if sufix=(sufix_false)
 									setcall test datapointbit(data)
 									if test!=0
 										set outval# (qwsz)
@@ -241,7 +241,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 									endif
 								endelse
 							else
-								if sufix==(sufix_false)
+								if sufix=(sufix_false)
 									setcall outval# stack64_enlarge(outval#)
 								else
 									setcall test pointbit(data) #it has 64 check
@@ -252,10 +252,10 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 							endelse
 						endelse
 
-						if sufix==(sufix_false)
+						if sufix=(sufix_false)
 							add data (maskoffset_reserve)
 							sd shortvalue;setcall shortvalue s_to_i(data)
-							if shortvalue==0
+							if shortvalue=0
 								return "Great reserve size is not implemented yet."
 							endif
 							mult outval# shortvalue
@@ -267,9 +267,9 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				dec size
 
 				setcall err xfile_add_char_if((Xfile_numbers_type_offsetVar))  #next in get_scope_pos
-				if err==(noerror)
+				if err=(noerror)
 					setcall err getarg_base(content,size,dot_offset,#data,#low,#sufix,outval)
-					if err==(noerror)
+					if err=(noerror)
 						if sufix!=(sufix_false)
 							return "Not using offset of suffix."
 						endif
@@ -279,21 +279,21 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				endif
 			endelse
 		else
-			if p_parses#==(pass_init)
+			if p_parses#=(pass_init)
 				return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
 			setcall err xfile_add_char_if((Xfile_numbers_type_fsize))  #next in get_scope_pos
-			if err==(noerror)
+			if err=(noerror)
 				setcall err get_sizeoffunction(content,size,outval,(FALSE))
 			endif
 		endelse
 		return err
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
 	char int_size=asciicolon
-	elseif content#==int_size
+	elseif content#=int_size
 		if size!=1;return "The text after the size of an integer sign isn't recognized.";endif
 		sd b;setcall b is_for_64()
-		if b==(FALSE);set outval# (dwsz)
+		if b=(FALSE);set outval# (dwsz)
 		else;set outval# (qwsz);endelse
 
 		setcall err xfile_add_char_ifif((Xfile_numbers_type_ilong))
@@ -301,9 +301,9 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	endelseif
 	#decimal or hex number
 	SetCall bool memtoint(content,size,outval,minusbool)
-	If bool==0
+	If bool=0
 		SetCall bool memtohex(content,size,outval)
-		If bool==0
+		If bool=0
 			Char _intvalerr="Integer(dec/hex) value not recognized."
 			Str intvallerr^_intvalerr
 			Return intvallerr
@@ -321,7 +321,7 @@ function get_sizeoffunction(sd content,sd size,sd outval,sd is_expand)
 	sd err
 	sd pos
 	setcall err get_scope_pos(content,size,#pos)
-	if err==(noerror)
+	if err=(noerror)
 		setcall outval# get_scope_data_size(pos,is_expand)
 	endif
 	return err
@@ -330,7 +330,7 @@ endfunction
 #err pointer
 Function numbersconstants(str content,data size,data outval)
 	Str intconsterr="Integer(dec/hex) or constant value expected."
-	If size==0
+	If size=0
 		Return intconsterr
 	EndIf
 
@@ -338,21 +338,21 @@ Function numbersconstants(str content,data size,data outval)
 
 	char not=not_number
 	sd notbool=FALSE
-	if content#==not
+	if content#=not
 		set notbool (TRUE)
 		inc content
 		dec size
-		If size==0
+		If size=0
 			Return intconsterr
 		EndIf
 		or xprefixes (Xfile_numbers_prefix_not)
 	endif
 	sd minusbool=FALSE
-	if content#==(asciiminus)
+	if content#=(asciiminus)
 		set minusbool (TRUE)
 		inc content
 		dec size
-		If size==0
+		If size=0
 			Return intconsterr
 		EndIf
 		or xprefixes (Xfile_numbers_prefix_neg)
@@ -360,16 +360,16 @@ Function numbersconstants(str content,data size,data outval)
 
 	sd err
 	setcall err xfile_add_char_ifif(xprefixes)
-	if err==(noerror)
+	if err=(noerror)
 		sd bool
 		setcall bool is_variable_char_not_numeric(content#)
-		If bool==(FALSE)
+		If bool=(FALSE)
 			setcall err numbertoint(content,size,outval,minusbool)
 		Else
 			Data constr%%ptr_constants
 			Data pointer#1
 			SetCall pointer vars(content,size,constr)
-			If pointer==0
+			If pointer=0
 				Char unconst="Undefined constant name."
 				Str ptruncost^unconst
 				Return ptruncost
@@ -378,11 +378,11 @@ Function numbersconstants(str content,data size,data outval)
 
 			setcall err xfile_add_base_ifif((Xfile_numbers_type_tconstant),content,size)
 		EndElse
-		if err==(noerror)
-			if notbool==(TRUE)
+		if err=(noerror)
+			if notbool=(TRUE)
 				not outval#
 			endif
-			if minusbool==(TRUE)
+			if minusbool=(TRUE)
 				mult outval# -1
 			endif
 		endif
@@ -404,26 +404,26 @@ function parenthesis_size(ss content,sd size,sd ptr_sz)
 	set last content
 	add last size
 	while content!=last
-		if content#==(asciidoublequote)
+		if content#=(asciidoublequote)
 			sd er
 			setcall er quotes_forward(#content,last,0)
 			if er!=(noerror)
 				return er
 			endif
 		endif
-		if content==last
+		if content=last
 			return closeerr
 		endif
 		Char fnbegin=asciiparenthesisstart
 		Char fnend=asciiparenthesisend
-		if content#==fnend
+		if content#=fnend
 			dec opens
-			if opens==z
+			if opens=z
 				sub content mark
 				set ptr_sz# content
 				return noerr
 			endif
-		elseif content#==fnbegin
+		elseif content#=fnbegin
 			inc opens
 		endelseif
 		inc content

@@ -430,7 +430,7 @@ const primsec_flags=x_call_flag|x_callx_flag
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
 #these numbers will be used at getstruct directly
-	if subtype==(cCONST)
+	if subtype=(cCONST)
 		return (constantsnumber)
 	endif
 	div subtype (com_size)
@@ -478,41 +478,41 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		sd extbooldata=FALSE
 		sv extbool^extbooldata
 
-		If command==(cPRIMSEC)
+		If command=(cPRIMSEC)
 			Set extstr call
-		elseif command==(cCALL)
+		elseif command=(cCALL)
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
-		Elseif command==(cSTARTFUNCTION)
+		Elseif command=(cSTARTFUNCTION)
 			sd x;setcall x func_xfile(ptrsubtype#)
 			if x!=(Xfile_function_not_x)
 				Set extstr "X" #varargs
 			endif
-		elseif command==(cCALLEX)
+		elseif command=(cCALLEX)
 			set extstr call_ret_str
 		endElseif
 
 		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool)
-		If extbooldata==true
+		If extbooldata=true
 		#here firstAndSecond part was recognized
-			If command==(cPRIMSEC)
+			If command=(cPRIMSEC)
 				#or first byte at subcommand to recognize the xcall at two args
 				or ptrsubtype# (x_call_flag)
-				if result==(FALSE)
+				if result=(FALSE)
 				#here there was not a space
 					setcall result stratmemspc(pcontent,psize,"X",spacebool)
-					if result==(TRUE)
+					if result=(TRUE)
 						or ptrsubtype# (x_callx_flag)
 					else
 						break
 					endelse
 				endif
 			Else
-				if result==(FALSE)
+				if result=(FALSE)
 				#here there was not a space
 					break
 				endif
-				If command==(cSTARTFUNCTION)
+				If command=(cSTARTFUNCTION)
 				#functionx/entry [x] , varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
 					#sd for64;setcall for64 is_for_64()
@@ -525,7 +525,7 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 				endelse
 			endElse
 			return command
-		elseIf result==true
+		elseIf result=true
 			Return command
 		endelseIf
 		Add pointercommands dsz

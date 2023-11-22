@@ -22,7 +22,7 @@ function comline_parse(sd argc,sv argv)
 			sd name
 			set name argv#
 			incst argv
-			if argv==argc
+			if argv=argc
 				return "missing value for command line argument"
 			endif
 			sd value
@@ -43,7 +43,7 @@ function comline_value(ss v,sd p)
 	if input!=0
 		if input>=(asciizero)
 			inc v
-			if v#==0
+			if v#=0
 				sub input (asciizero)
 				if input<=(last_call_align_input)
 					set p# input
@@ -68,10 +68,10 @@ function comline_pointer(ss a,sd p_p)
 		ss b;set b t#
 		sd b_len
 		setcall b_len strlen(b)
-		if a_len==b_len
+		if a_len=b_len
 			sd c
 			setcall c memcmp(a,b,a_len)
-			if c==0
+			if c=0
 				sub t (nr_of_prefs_jumper)  #this will subtract from strings and will be straight on the pointers
 				set p_p# t#
 				return (noerror)

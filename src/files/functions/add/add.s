@@ -15,13 +15,13 @@ EndFunction
 
 #bool
 function is_variable_char_not_numeric(sd in_byte)
-	if in_byte==(asciiaround)
+	if in_byte=(asciiaround)
 		return (TRUE)
 	elseif in_byte<(asciiA)
 		return (FALSE)
 	elseif in_byte<=(asciiZ)
 		return (TRUE)
-	elseif in_byte==(asciiunderscore)
+	elseif in_byte=(asciiunderscore)
 		return (TRUE)
 	elseif in_byte<(asciia)
 		return (FALSE)
@@ -51,7 +51,7 @@ Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumb
 	While content!=end
 		Set byte content#
 		SetCall bool is_variable_char(byte)
-		If bool==false
+		If bool=false
 			Return _err
 		EndIf
 		Inc content
@@ -59,7 +59,7 @@ Function addaref(data value,data ptrcontent,data ptrsize,data size,data typenumb
 
 	#set the referenced bit if warnings are off
 	Data warningsboolptr%ptrwarningsbool
-	if warningsboolptr#==(FALSE)
+	if warningsboolptr#=(FALSE)
 		or mask (referencebit)
 	endif
 

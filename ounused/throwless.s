@@ -11,7 +11,7 @@ endfunction
 function alloc_throwless(sd p)
 	sd er
 	setcall er malloc_throwless(p,0)
-	if er==(NULL)
+	if er=(NULL)
 		add p :
 		set p# 0
 		return (NULL)
@@ -31,7 +31,7 @@ function ralloc_throwless(sv p,sd sz)
 			return (NULL)
 		endif
 		return "realloc error"
-	elseif sz==0  #equal 0 discovered at decrementfiles, since C23 the behaviour is undefined
+	elseif sz=0  #equal 0 discovered at decrementfiles, since C23 the behaviour is undefined
 	#using this quirk, lvs[0] will be used at constants at end, when size is 0
 		#set p# 0
 		set cursor# 0
@@ -53,10 +53,10 @@ function pos_in_cont(sv cont,ss s,sd sz)
 		sd len
 		set len p#
 		add p (dword)
-		if len==sz
+		if len=sz
 			sd c
 			setcall c memcmp(s,p,sz)
-			if c==0
+			if c=0
 				sub p cont#
 				sub p (dword)
 				return p
@@ -98,9 +98,9 @@ endfunction
 
 function uconst_resolved(sd t,sd size)
 	data nr#1
-	if t==0
+	if t=0
 		set nr 0
-	elseif t==1
+	elseif t=1
 		div size (dword)
 		add nr size
 	else

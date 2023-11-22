@@ -3,7 +3,7 @@
 Set path_nofree (NULL)
 Include "./wingetfile/getfilefromcommand.s"
 set path_free (NULL)
-If path_nofree==null
+If path_nofree=null
 	#open file name
 	Include "./wingetfile/getfilefromopenfilename.s"
 	set path_nofree path_free

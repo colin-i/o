@@ -29,7 +29,7 @@ function localResolve(sd unrLc,sd unrLcReg)
 
 		add unrLc 4
 
-		if unrLc#==1
+		if unrLc#=1
 			add offset 4
 			sub offset value
 			setcall offset neg(offset)
@@ -93,7 +93,7 @@ function unresReloc(sd section)
 	sd for_64
 	sd err
 	setcall for_64 is_for_64()
-	if for_64==(TRUE)
+	if for_64=(TRUE)
 		setcall err unresLc((-qwsz),section,0)
 	else
 		setcall err unresLc((-dwsz),section,0)

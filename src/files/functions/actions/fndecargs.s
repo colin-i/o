@@ -1,7 +1,7 @@
 
 
 Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
-	If sz==0
+	If sz=0
 		Char szexp="Variable declaration expected."
 		Str szexpptr^szexp
 		Return szexpptr
@@ -44,38 +44,38 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	sd xfile_decltype
 	if vartype>=(vnumbers)
 		sub vartype (vnumbers)
-		if vartype==(valuesinnernumber)
+		if vartype=(valuesinnernumber)
 			set vartype (integersnumber)
-			if b==(TRUE)
+			if b=(TRUE)
 				set long_mask (valueslongmask)
 				set datasize (qwsz)
 			endif
 			set xfile_decltype (Xfile_decltype_long) #can also be an ifif
 		else
-			if b==(TRUE)
+			if b=(TRUE)
 				set long_mask (datapointbit)
 				set datasize (qwsz)
 			endif
-			if vartype==(integersnumber)
+			if vartype=(integersnumber)
 				set xfile_decltype (Xfile_decltype_longInt)
 			else
 			#was vstringsnumber
 				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
 		endelse
-	elseif vartype==(charnumber)
+	elseif vartype=(charnumber)
 		set datasize (bsz)
 		set xfile_decltype (Xfile_decltype_byte)
-	elseif is_stack==(TRUE)
-		if vartype==(stackdatanumber)
+	elseif is_stack=(TRUE)
+		if vartype=(stackdatanumber)
 			set xfile_decltype (Xfile_decltype_longInt)
-		elseif vartype==(stackstringnumber)
+		elseif vartype=(stackstringnumber)
 			set xfile_decltype (Xfile_decltype_longByte)
 		else
 		#stackvaluenumber
 			set xfile_decltype (Xfile_decltype_long)
 		endelse
-	elseif vartype==(integersnumber)
+	elseif vartype=(integersnumber)
 		set xfile_decltype (Xfile_decltype_int)
 	else
 	#stringsnumber
@@ -84,9 +84,9 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 
 	vdata ptrdataSize%ptrdataSize
 
-	if parses==(pass_init)
-		if is_stack==(FALSE)
-			if is_expand==(FALSE)
+	if parses=(pass_init)
+		if is_stack=(FALSE)
+			if is_expand=(FALSE)
 				vdata ptrdataReg%%ptr_dataReg
 				add ptrdataReg# datasize
 			else
@@ -126,16 +126,16 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		Return err
 	EndIf
 
-	if is_stack==(TRUE)
+	if is_stack=(TRUE)
 		return noerr
 	endif
 
 	sd sectionind=dataind
-	if is_expand==(TRUE)
+	if is_expand=(TRUE)
 		setcall memoff get_img_vdata_dataSize()
 		add ptrdataSize# datasize
 		sd ptr_nobits_virtual%ptr_nobits_virtual
-		if ptr_nobits_virtual#==(Yes)
+		if ptr_nobits_virtual#=(Yes)
 			set sectionind (dtnbind)
 		endif
 	else
@@ -155,7 +155,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	Set stacktransfer1 stackt1ini
 	Set stacktransfer2 stackt2ini
 
-	If datasize==(bsz)
+	If datasize=(bsz)
 	#char
 		Dec stacktransfer1
 		Dec stacktransfer2
@@ -166,7 +166,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	endelseif
 
 	data p_is_object%ptrobject
-	if p_is_object#==(TRUE)
+	if p_is_object#=(TRUE)
 		Const fndecargs_offend^memoff
 		Const fndecargs_offstart^stacktransfer1
 		Data ptrextra%%ptr_extra
@@ -190,7 +190,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	endif
 	SetCall err addtosec(#stacktransfer2,(bsz+dwsz),_codesec);If err!=noerr;Return err;EndIf
 
-	if b==(TRUE)
+	if b=(TRUE)
 		#at 64 code:
 		#A3 XX.XX.XX.XX_XX.XX.XX.XX
 		sd z=i386_obj_default_reloc_rah

@@ -45,11 +45,11 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 	sd subtype_test
 
-	if allowdata==(allow_later_sec)
+	if allowdata=(allow_later_sec)
 		#pass_init or pass_calls
 		set subtype_test subtype;and subtype_test (x_call_flag)
-		if subtype_test==0
-			if parses==(pass_init)
+		if subtype_test=0
+			if parses=(pass_init)
 				setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
 				return errnr
 			else
@@ -87,11 +87,11 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	Set primcalltype false
 
 	sd big;sd rem
-	If ptrcondition==false
+	If ptrcondition=false
 		#imm second arg can be, at conditions was already called
 		call setimm()
 
-		if subtype==(cCALLEX_primsec)
+		if subtype=(cCALLEX_primsec)
 		#the text for callexx is elsewhere
 			Set opprim atprocthemem
 			#Set regprep ecxreg
@@ -105,14 +105,14 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				and subtype ~primsec_flags
 			endif
 			sd xlog
-			if subtype==(cSET)
+			if subtype=(cSET)
 				Set opprim atmemtheproc
 				set xlog (Xfile_action2_set)
-			ElseIf subtype==(cADD)
+			ElseIf subtype=(cADD)
 				Char addprim={0x01}
 				Set opprim addprim
 				set xlog (Xfile_action2_add)
-			ElseIf subtype==(cSUB)
+			ElseIf subtype=(cSUB)
 				Char subprim={0x29}
 				Set opprim subprim
 				set xlog (Xfile_action2_sub)
@@ -121,14 +121,14 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				#Set regprep ecxreg
 				Set regopcode ecxreg
 				Set divmul true
-				if lowprim==(FALSE);setcall big is_big(dataargprim,sufixprim)
+				if lowprim=(FALSE);setcall big is_big(dataargprim,sufixprim)
 				else;set big (FALSE);endelse
-				if subtype==(cREM)
+				if subtype=(cREM)
 					set rem (TRUE)
 					set xlog (Xfile_action2_rem)
 				else
 					set rem (FALSE)
-					if subtype==(cMULT)
+					if subtype=(cMULT)
 						set xlog (Xfile_action2_mult)
 					else
 						set xlog (Xfile_action2_div)
@@ -137,11 +137,11 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			Else
 			#If subtype<=(cXOR)
 				Set sameimportant false
-				If subtype==(cAND)
+				If subtype=(cAND)
 					Char andprim={0x21}
 					Set opprim andprim
 					set xlog (Xfile_action2_and)
-				ElseIf subtype==(cOR)
+				ElseIf subtype=(cOR)
 					Char orprim={0x09}
 					Set opprim orprim
 					set xlog (Xfile_action2_or)
@@ -185,8 +185,8 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		endif
 	EndElse
 
-	If primcalltype==false
-		if ptrcondition==false
+	If primcalltype=false
+		if ptrcondition=false
 			if subtype!=(cCALLEX_primsec)
 				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_yes))
 			else
@@ -200,7 +200,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		EndIf
 	Else
 		setcall errnr xfile_add_char_if((Xfile_arg_call))
-		if errnr==(noerror)
+		if errnr=(noerror)
 			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype_test) #there is 1 more argument but is not used
 			If errnr!=noerr
 				Return errnr
@@ -216,8 +216,8 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 	#Set intchar noreg
 	Set opsec atprocthemem
 
-	If ptrcondition==false
-		If lowprim==true
+	If ptrcondition=false
+		If lowprim=true
 			Dec opprim
 			if subtype!=(cCALLEX_primsec)
 				#at callex they can be different
@@ -227,9 +227,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				#it is not possible to push from ff...al and scalar push using full rcx*8 at normal (therefor same for ff...cl)
 				return "Second argument at CALLEX must not be one byte."
 			endelse
-		ElseIf lowsec==true
+		ElseIf lowsec=true
 			#Dec opsec
-			If sameimportant==true
+			If sameimportant=true
 				#Set intchar regprep
 				set is_prepare (TRUE)
 			Else
@@ -239,14 +239,14 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		EndElseIf
 	Else
 		sd store_big;set store_big (FALSE)
-		If lowprim==lowsec
-			If lowprim==true
+		If lowprim=lowsec
+			If lowprim=true
 				Dec opprim
 				Dec opsec
 			else
 			#this code with the rex promotes, if this near comp later,undefined dataargsec(1==1)will go wrong in is_big, viol
 				setcall imm getisimm()
-				if imm==false
+				if imm=false
 				#it is 1==big/medium
 					setcall store_big is_big(dataargsec,sufixsec)
 				endif
@@ -255,7 +255,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			#Dec opsec
 			#Set intchar eaxreg
 			set is_prepare (TRUE)
-			If lowprim==true
+			If lowprim=true
 				#case compare low vs high, then: get low on all eax compare with high but op from mem vs proc becomes proc vs mem
 				Add opprim two
 				add compimmop two
@@ -275,9 +275,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 	Data codeptr%%ptr_codesec
 
-	If primcalltype==false
+	If primcalltype=false
 		setcall imm getisimm()
-		if imm==true
+		if imm=true
 			#char immtake=0xB8
 			#set opsec immtake
 			#if divmul==(TRUE)
@@ -291,7 +291,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				SetCall errnr write_imm_sign(dataargsec,regopcode)
 			endelse
 		else
-			if p_prefix#==(FALSE)
+			if p_prefix#=(FALSE)
 				sd comp_at_bigs
 				setcall comp_at_bigs comp_sec(lowsec,dataargprim,sufixprim,dataargsec,sufixsec,sameimportant,is_prepare)
 				setcall errnr writeop_promotes(dataargsec,opsec,sufixsec,regopcode,lowsec,comp_at_bigs)
@@ -306,12 +306,12 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		If errnr!=noerr
 			Return errnr
 		EndIf
-	Elseif divmul==(TRUE)
+	Elseif divmul=(TRUE)
 		#only at multcall and divcall
 		char transferreturntoecx={0x89,0xc1}
 		str ptrcall^transferreturntoecx
 		data calltransfersize=2
-		if big==(TRUE)
+		if big=(TRUE)
 			call rex_w(#errnr)
 			If errnr!=noerr;Return errnr;EndIf
 		endif
@@ -327,7 +327,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 	#setcall imm getfirst_isimm() can be this but needing to deactivate imm slot
 	setcall imm getisimm()
-	if imm==true
+	if imm=true
 		#first argument imm are comparations
 		#first value is imm, or second value is imm (switched)
 		SetCall errnr write_imm_sign(dataargprim,(ecxregnumber)) #0xb8+
@@ -338,14 +338,14 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		Return errnr
 	EndIf
 
-	If divmul==true
+	If divmul=true
 		Data regreg=RegReg
 
 		Char regopcodemult={5}
 		#If you don't care about the upper half, you can use either mul or imul
 		Char regopcodeex#1
 
-		If subtype==(cMULT)
+		If subtype=(cMULT)
 			Set regopcodeex regopcodemult
 		Else
 			setcall errnr div_prepare(lowprim,big,#regopcodeex)
@@ -362,7 +362,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		Set opcodeex opcodexini
 		Set storeex atmemtheproc
 
-		If lowprim==true
+		If lowprim=true
 			Dec opcodeex
 			Dec storeex
 		EndIf
@@ -370,7 +370,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		SetCall modrmex formmodrm(regreg,regopcodeex,ecxreg)
 		Set regopcodeex modrmex
 
-		if big==(TRUE)
+		if big=(TRUE)
 			call rex_w(#errnr)
 			If errnr!=noerr;Return errnr;EndIf
 		endif
@@ -379,24 +379,24 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			Return errnr
 		EndIf
 
-		if lowprim==(TRUE)
+		if lowprim=(TRUE)
 		# str# ss# char
 		#rdx is ready
-			if rem==(FALSE)
+			if rem=(FALSE)
 				setcall storeexrm formmodrm((mod_0),eaxreg,(edxregnumber))
 			else
 				setcall storeexrm formmodrm((mod_0),(ahregnumber),(edxregnumber))
 			endelse
 			setcall errnr addtosec(#storeex,2,codeptr)
 		else
-			if rem==(FALSE)
+			if rem=(FALSE)
 				SetCall errnr writeop(dataargprim,storeex,sufixprim,eaxreg,lowprim)
 			else
 				SetCall errnr writeoperation(dataargprim,storeex,sufixprim,(edxregnumber),ecxreg,lowprim)
 			endelse
 		endelse
 	ElseIf ptrcondition!=false
-		if imm==true
+		if imm=true
 			#first imm true only at comparations
 			#continue to write the imm comparation(first is imm, second doesnt care)ex: 1(constant)==1(constant)->cmp ecx,eax (eax,ecx can be if switch)
 			char immcompdata#1
@@ -404,7 +404,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			char *immcompdatamodrm=0xc1
 			str immcomp^immcompdata
 			data immcompsz=2
-			if store_big==(TRUE)
+			if store_big=(TRUE)
 				call rex_w(#errnr)
 				If errnr!=noerr;Return errnr;EndIf
 			endif
@@ -433,21 +433,21 @@ EndFunction
 #-1 normal, 0 unpromote, 1 sign extend, 2 zero extend
 function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixsec,sd sameimportant,sd is_prepare)
 	sd prim
-	if lowsec==(FALSE)
+	if lowsec=(FALSE)
 		setcall prim is_big_imm(dataargprim,sufixprim)
 		sd sec;setcall sec is_big(dataargsec,sufixsec)
 		if prim!=sec
-			if sec==(TRUE)
+			if sec=(TRUE)
 				#first is low/medium, don't promote the big second
 				return 0
-			elseif sameimportant==(TRUE)
+			elseif sameimportant=(TRUE)
 				#first is big, second is medium, keep sign for second
 				return 1
 			endelseif
 		endif
-	elseif is_prepare==(TRUE)
+	elseif is_prepare=(TRUE)
 		setcall prim is_big_imm(dataargprim,sufixprim)
-		if prim==(TRUE)
+		if prim=(TRUE)
 			#zero extend all r64
 			sd p;setcall p val64_p_get()
 			set p# (val64_willbe)
@@ -461,7 +461,7 @@ endfunction
 function is_big_imm(sd data,sd sufix)
 	sd immprim
 	setcall immprim getfirst_isimm()
-	if immprim==(FALSE)
+	if immprim=(FALSE)
 		sd b
 		setcall b is_big(data,sufix)
 		return b
@@ -472,8 +472,8 @@ endfunction
 function writeoper(sd takeindex,sd location,sd sufix)
 	sd err
 	setcall err writetake_offset(takeindex,location)
-	If err==(noerror)
-		if sufix==(sufix_true)
+	If err=(noerror)
+		if sufix=(sufix_true)
 			sd t;setcall t sufix64(location)
 			setcall err sufix_take(takeindex,t)
 		endif
@@ -483,8 +483,8 @@ endfunction
 
 function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameimportant,sd lowsec)
 	sd err
-	if sameimportant==(FALSE)
-		if lowsec==(TRUE)
+	if sameimportant=(FALSE)
+		if lowsec=(TRUE)
 			#this is and/or... at sd low not needing to write rex
 			setcall err writeoper((edxregnumber),dataargprim,sufixprim)
 			if err!=(noerror);return err;endif
@@ -499,17 +499,17 @@ endfunction
 #err
 function writeop_promotes(sd dataarg,sd op,sd sufix,sd regopcode,sd low,sd comp_at_bigs)
 	sd err
-	if comp_at_bigs==-1
+	if comp_at_bigs=-1
 		SetCall err writeop(dataarg,op,sufix,regopcode,low)
 	else #0-2
 		setcall err writeoper((edxregnumber),dataarg,sufix) #no val64 recordings
-		if err==(noerror)
-			if comp_at_bigs==1 #these are all 64
+		if err=(noerror)
+			if comp_at_bigs=1 #these are all 64
 				# sd    data    must take signextended data at 64
 				set op (moveatprocthemem_sign)
 				sd p;setcall p val64_p_get()
 				set p# (val64_willbe)
-			elseif comp_at_bigs==2
+			elseif comp_at_bigs=2
 				#2 for zero extend; these are all low
 				set op 0xb6
 			endelseif
@@ -569,14 +569,14 @@ function div_prepare(sd low,sd big,ss p_regopcode)
 	vData codeptr%%ptr_codesec
 	Char regopcodeidiv={7}
 	sd errnr
-	if big==(TRUE)
+	if big=(TRUE)
 	#bt rax,63;jc,;mov 0,edx;jmp,;mov -1,rdx
 	#In x64, any operation on a 32-bit register clears the top 32 bits of the corresponding 64-bit register too, so there's no need to use mov 0,rax (and xor rax, rax)
 		const div_prepare_high=!
 		char high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,jnc_instruction,9,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
 		SetCall errnr addtosec(#high,(!-div_prepare_high),codeptr)
 		set p_regopcode# regopcodeidiv
-	elseif low==(FALSE)
+	elseif low=(FALSE)
 	#bt eax,31;jc,;mov 0,edx;jmp,;mov -1,edx
 		const div_prepare_mediu=!
 		char mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,jnc_instruction,7,atedximm,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}

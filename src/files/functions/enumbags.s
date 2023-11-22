@@ -7,7 +7,7 @@ Function enumbags(data is_declare)
 	set cursor cursor#
 	add cursor pointer
 	While pointer!=cursor
-		If is_declare==(TRUE)
+		If is_declare=(TRUE)
 			sd err;setcall err enumbags_alloc(pointer)
 			If err!=(noerror)
 				Return err

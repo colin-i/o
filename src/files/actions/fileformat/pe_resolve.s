@@ -59,7 +59,7 @@ add virtuallocalsoffset imagebaseoffset
 
 Data directoriesaddress^directoryentries
 Data destdir#1
-If implibsstarted==true
+If implibsstarted=true
 	##############################################
 	Set iVirtualAddress SizeOfImage
 	#######################

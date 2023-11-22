@@ -4,7 +4,7 @@
 function ramp_index(data mode,data container)
 	data reg#1
 	data set=0
-	if mode==set
+	if mode=set
 		data ptrreg^reg
 		#const ramppointer^reg
 		call getcontReg(container,ptrreg)
@@ -88,7 +88,7 @@ function entryscope()
 	setcall err addtosec(#scope3,(scope3_sz),container);if err!=(noerror);return err;endif
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
 	setcall err addtosec(#scope4,(scope4_sz),container);if err!=(noerror);return err;endif
-	if err==(noerror)
+	if err=(noerror)
 		data set=0;call ramp_index(set,container)
 		setcall err align_entryscope()
 	endif
@@ -99,7 +99,7 @@ endfunction
 function entryscope_verify_code()
 	data ptrfnavailable%ptrfnavailable
 	data one=1
-	if ptrfnavailable#==one
+	if ptrfnavailable#=one
 		data ptrinnerfunction%globalinnerfunction
 		if ptrinnerfunction#!=(TRUE)
 			data two=2
@@ -120,13 +120,13 @@ function addtocode_decstack(sd for_64)
 	vdata ptrcodesec%%ptr_codesec
 
 	sd err
-	if for_64==(TRUE)
+	if for_64=(TRUE)
 		call rex_w(#err);if err!=(noerror);return err;endif
 	endif
 
 	setcall rampindex addramp(#err)
 	#is with sub now     neg rampindex
-	if err==(noerror)
+	if err=(noerror)
 		sd size
 		if rampindex<^0x80    #disp8 is signed
 			setcall modrm formmodrm((disp8),0,(ebxregnumber))

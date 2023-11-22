@@ -146,7 +146,7 @@ function write_symtab_offset(sd file,sd offset,sd end,sd shentsize,sd pnr)
 		while offset!=end
 			#the sh64_name is first
 			datax offs#1;call read(file,#offs,(datasize))
-			if offs==nr
+			if offs=nr
 				sd off=sh64_addr_to_offset
 				call get_section_loc(file,offset,#off)
 				sd fout;setcall fout fopen(#main.s3o,"wb")

@@ -6,9 +6,9 @@ function writeret()
 	sd continuation
 	sd continuationsize
 	setcall termswitch is_linux_end()
-	if termswitch==(TRUE)
+	if termswitch=(TRUE)
 		setcall err getexit(#continuation,#continuationsize)
-		if err==(noerror)
+		if err=(noerror)
 			Data ptrcodesec%%ptr_codesec
 			setcall err addtosec(continuation,continuationsize,ptrcodesec)
 		endif

@@ -10,7 +10,7 @@ function incrementfiles()
 	sd cursor%levels_dp
 	set cursor cursor#
 	sd pf
-	if cursor==0
+	if cursor=0
 		set pf (NULL)
 	else
 		setcall pf working_file()

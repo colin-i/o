@@ -1,7 +1,7 @@
 
 
 
-If openfilenamemethod==true
+If openfilenamemethod=true
 	Data timeatend#1
 	SetCall timeatend GetTickCount()
 	Sub timeatend timeatbegin

@@ -4,13 +4,13 @@ function override_com(sd pcontent,sd psize)
 	sd name
 	sd namesize
 	setcall namesize valinmem(pcontent#,psize#,(asciispace))
-	if namesize==0
+	if namesize=0
 		return "first argument is missing at override"
 	endif
 	set name pcontent#
 	call advancecursors(pcontent,psize,namesize)
 	call spaces(pcontent,psize)
-	if psize#==0
+	if psize#=0
 		return "second argument is missing at override"
 	endif
 	#work can be done do allow line comment here
@@ -22,7 +22,7 @@ function override_com(sd pcontent,sd psize)
 	sd allocsize=1+1;add allocsize valuesize
 	add allocsize namesize
 	setcall err memoryalloc(allocsize,#mem)
-	if err==(noerror)
+	if err=(noerror)
 		ss p;set p mem
 		call memtomem(p,name,namesize);add p namesize
 		set p# 0;inc p
@@ -30,7 +30,7 @@ function override_com(sd pcontent,sd psize)
 		call memtomem(p,pcontent#,valuesize);add p valuesize
 		set p# 0
 		setcall err prefs_set(mem,value)
-		if err==(noerror)
+		if err=(noerror)
 			call advancecursors(pcontent,psize,valuesize)
 		endif
 		call free(mem)

@@ -24,7 +24,7 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 	Else
 		Set p_argsize# szargtab
 	EndElse
-	if p_argsize#==0
+	if p_argsize#=0
 		return "Expecting argument name."
 	endif
 	return (noerror)
@@ -41,10 +41,10 @@ function extend_arg_size(ss content,sd sizetoverify,sd p_argsize)
 				set marker content
 				call spaces(#content,#sizetoverify)
 				if sizetoverify!=0
-					if content#==(pointerascii)
+					if content#=(pointerascii)
 						call stepcursors(#content,#sizetoverify)
 						if sizetoverify!=0
-							if content#==(pointerascii)
+							if content#=(pointerascii)
 								#this " ##" is the only line end comment after sufix and allowing spaces
 								set main.xfile_sharp_comment (nonzero)   #and notify for xfile
 								ret
@@ -65,7 +65,7 @@ function extend_sufix_test(ss content,sd p_size)
 	while p_size#!=0
 		dec content
 		sd b;setcall b is_whitespace(content#)
-		if b==(FALSE)
+		if b=(FALSE)
 			ret
 		endif
 		dec p_size#
@@ -80,7 +80,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 
 	char d_q=getarg_str
 
-	if argsize==0
+	if argsize=0
 		return "Argument name expected."
 	endif
 
@@ -91,7 +91,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 	set size ptrsize#
 
 	sd prefix
-	if content#==d_q
+	if content#=d_q
 		sd q_size
 		sd escapes
 		SetCall errnr quotinmem(#content,#size,#q_size,#escapes)
@@ -99,7 +99,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			return errnr
 		endif
 		if allowdata!=(allow_yes)
-			if allowdata==(allow_later)
+			if allowdata=(allow_later)
 				vdata ptrdataReg%%ptr_dataReg
 				sub q_size escapes
 				add ptrdataReg# q_size
@@ -143,18 +143,18 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 		if allowdata!=(allow_later_sec)
 			sd bool
 			setcall bool is_constant_related_ascii(content#)
-			if bool==(TRUE)
+			if bool=(TRUE)
 				#verify if imm is ok
 				sd canhaveimm
 				setcall canhaveimm getimm()
-				if canhaveimm==false
+				if canhaveimm=false
 					str immnothere="Unexpected numbers/constants, expecting a variable."
 					return immnothere
 				endif
 				setcall errnr xfile_add_char_if((Xfile_arg_number))
-				if errnr==(noerror)
+				if errnr=(noerror)
 					#extend to parenthesis if found
-					if content#==(asciiparenthesisstart)
+					if content#=(asciiparenthesisstart)
 						call stepcursors(ptrcontent,ptrsize)
 						setcall errnr parenthesis_size(ptrcontent#,ptrsize#,#argsize)
 						if errnr!=(noerror)
@@ -165,7 +165,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 							return errnr
 						endif
 						call stepcursors(ptrcontent,ptrsize)
-						if sens==(BACKWARD)
+						if sens=(BACKWARD)
 							add argsize 2 #the recognised parenthesis
 						endif
 					else
@@ -180,7 +180,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				#sufix is not used at imm value
 				set ptrlow# false
 
-				if sens==(FORWARD)
+				if sens=(FORWARD)
 					return (noerror)
 				else
 					sd back=-1
@@ -189,23 +189,23 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				endelse
 			else
 				sd imm;setcall imm getimm()
-				if imm==(TRUE) #if is FALSE, this is the only option for xfile. also allow(string) is no
+				if imm=(TRUE) #if is FALSE, this is the only option for xfile. also allow(string) is no
 				#then, this is a test at allow yes; also at allow no for conditions
 					setcall errnr xfile_add_char_if((Xfile_arg_varfn))
 					if errnr!=(noerror)
 						return errnr
 					endif
 				endif
-				if allowdata==(allow_yes)
+				if allowdata=(allow_yes)
 					#at last/only argument it is better to allow space before sufix to not regret later
 					#"##" will be a comment and "#" a sufix
 					call extend_arg_size(content,size,#argsize)
 				endif
 				sd argsize_filter
 				sd container_sz
-				if content#==(pointerascii)
+				if content#=(pointerascii)
 					setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_yes))
-					if errnr==(noerror)
+					if errnr=(noerror)
 						#prefix
 						setcall prefix prefix_bool()
 						set prefix# 1
@@ -219,7 +219,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 							setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
 						else
 							setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
-							if errnr==(noerror)
+							if errnr=(noerror)
 								setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
 							else
 								return errnr
@@ -233,7 +233,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					endelse
 				else
 					setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_no))
-					if errnr==(noerror)
+					if errnr=(noerror)
 						data ptrobject%ptrobject
 						data ptrfunctions%%ptr_functions
 
@@ -246,7 +246,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 							endif
 						else
 							setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
-							if errnr==(noerror)
+							if errnr=(noerror)
 								setcall container_sz valinmem(content,argsize,(asciidot))
 								if container_sz!=argsize
 									setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
@@ -256,15 +256,15 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 								else
 									SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
 									if errnr!=(noerror)
-										if ptrobject#==1
+										if ptrobject#=1
 											sd undvar_err
 											setcall undvar_err undefinedvariable()
-											if errnr==undvar_err
+											if errnr=undvar_err
 												#verify for function
 												setcall ptrdata# vars(content,argsize,ptrfunctions)
 												if ptrdata#!=(NULL)
 													setcall errnr xfile_add_string_if(content,argsize)
-													if errnr==(noerror)
+													if errnr=(noerror)
 														set ptrlow# (FALSE)
 														set ptrsufix# (sufix_false)
 														sd var
@@ -299,7 +299,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			endelse
 		endif
 	endelseif
-	If sens==(FORWARD)
+	If sens=(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
 		Return noerr
 	endIf
@@ -311,7 +311,7 @@ EndFunction
 function getarg_dot_any(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd errnr
 	setcall errnr xfile_add_char_if((Xfile_arg_varfn_dot_yes))
-	if errnr==(noerror)
+	if errnr=(noerror)
 		sd scope
 		setcall errnr get_scope(#content,#argsize,container_sz,#scope)
 		if errnr!=(noerror)
@@ -329,7 +329,7 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 		return errnr
 	endif
 	sd test;setcall test stackbit(ptrdata#)
-	if test==0
+	if test=0
 		return (noerror)
 	endif
 	setcall errnr there_is_nothing_there()
@@ -415,7 +415,7 @@ endfunction
 function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,sd ptrsufix)
 	sd err
 	setcall err xfile_add_char_if((Xfile_arg_varfn_colon_yes))
-	if err==(noerror)
+	if err=(noerror)
 		#first test if has runtime pointer
 		sd pointer_size=0
 		if container_sz!=0
@@ -423,7 +423,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			ss cursor=-1
 			add cursor content
 			add cursor container_sz
-			if cursor#==(pointerascii)
+			if cursor#=(pointerascii)
 				dec container_sz
 				inc pointer_size
 			endif
@@ -435,13 +435,13 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		sub argsize container_sz
 		if part_sz!=container_sz
 			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_yes))
-			if err==(noerror)
+			if err=(noerror)
 				setcall err get_scope(#content,#container_sz,part_sz,#scope)
 				if err!=(noerror)
 					return err
 				endif
 				sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
-				if data==(NULL)
+				if data=(NULL)
 					setcall err undefinedvariable()
 					return err
 				endif
@@ -455,9 +455,9 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			endelse
 		else
 			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_no))
-			if err==(noerror)
+			if err=(noerror)
 				setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
-				if data==(NULL)
+				if data=(NULL)
 					setcall err undefinedvariable()
 					return err
 				endif
@@ -489,7 +489,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		setcall container_sz valinmem(content,argsize,(asciidot))
 		if container_sz!=argsize
 			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_yes))
-			if err==(noerror)
+			if err=(noerror)
 				setcall err getarg_base(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix,#subtract_base)
 				if err!=(noerror)
 					return err
@@ -503,9 +503,9 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				return err
 			endif
 			setcall test stackbit(ptrdata#)
-			if test==0
+			if test=0
 				sd ptrinnerfunction%globalinnerfunction
-				if ptrinnerfunction#==(TRUE)
+				if ptrinnerfunction#=(TRUE)
 					sd ptrfunctionTagIndex%ptrfunctionTagIndex
 					setcall scope scopes_get_scope(ptrfunctionTagIndex#)
 					setcall subtract_base scopes_get_class_data(scope,ptrdata#)
@@ -582,7 +582,7 @@ function getarg_base(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,
 	endif
 	sd test
 	setcall test stackbit(ptrdata#)
-	if test==0
+	if test=0
 		sd entrybags%%ptr_scopes
 		if scope!=entrybags
 			#stored class info
@@ -604,7 +604,7 @@ endfunction
 function get_scope(sv pcontent,sd psize,sd sz,sv pscope)
 	sd pos
 	sd err;setcall err get_scope_pos(pcontent#,sz,#pos)
-	if err==(noerror)
+	if err=(noerror)
 		inc sz
 		call advancecursors(pcontent,psize,sz)
 		setcall pscope# scopes_get_scope(pos)
@@ -631,22 +631,22 @@ endfunction
 
 function is_constant_related_ascii(sd in_byte)
 # ! data cursor
-	if in_byte==(asciiexclamationmark)
+	if in_byte=(asciiexclamationmark)
 		return (TRUE)
-	elseif in_byte==(asciiparenthesisstart)
+	elseif in_byte=(asciiparenthesisstart)
 		return (TRUE)
 #negative number
-	elseif in_byte==(asciiminus)
+	elseif in_byte=(asciiminus)
 		return (TRUE)
 	elseif in_byte<(asciizero)
 		return (FALSE)
 	elseif in_byte<=(asciinine)
 		return (TRUE)
 # : size of integer
-	elseif in_byte==(asciicolon)
+	elseif in_byte=(asciicolon)
 		return (TRUE)
 # not,~
-	elseif in_byte==(asciiequiv)
+	elseif in_byte=(asciiequiv)
 		return (TRUE)
 	endelseif
 	return (FALSE)
@@ -666,7 +666,7 @@ EndFunction
 Function argfilters(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd allowdata)
 	sd err
 	setcall err argfilters_helper(ptrcondition,ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,allowdata)
-	if err==(noerror)
+	if err=(noerror)
 		#this is only at first arg
 		call spaces(ptrcontent,ptrsize)
 	endif
@@ -678,7 +678,7 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Data err#1
 	Data forward=FORWARD
 
-	If ptrcondition==null
+	If ptrcondition=null
 		call unsetimm()
 		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward,allowdata)
 		Return err
@@ -692,14 +692,14 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Data argsz#1
 
 	#and same rule like getcommand like elseif then else
-	Char firstcomp="==";Data *jne=Xfile_cond_equal
-	Char *="!=";        Data *je=Xfile_cond_notequal
+	Char firstcomp="!=";Data *je=Xfile_cond_notequal
 	Char *="<=^";       Data *ja=Xfile_cond_lessequalunsign
 	Char *=">=^";       Data *jb=Xfile_cond_greatequalunsign
 	Char *="<=";        Data *jg=Xfile_cond_lessequal
 	Char *=">=";        Data *jl=Xfile_cond_greatequal
 	Char *="<^";        Data *jae=Xfile_cond_lessunsign   #wanted cast before but will problem with arg cast that was after to continue at suffix
 	Char *=">^";        Data *jbe=Xfile_cond_greatunsign
+	Char *="=";         Data *jne=Xfile_cond_equal
 	Char *="<";         Data *jge=Xfile_cond_less
 	Char *=">";         Data *jle=Xfile_cond_great
 	Char term={0}

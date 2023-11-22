@@ -7,8 +7,8 @@ If errormsg!=noerr
 EndIf
 
 #close the last LIBRARY
-If fileformat==pe_exec
-	If implibsstarted==true
+If fileformat=pe_exec
+	If implibsstarted=true
 		SetCall errormsg closelib()
 		If errormsg!=noerr
 			Call msgerrexit(errormsg)
@@ -20,7 +20,7 @@ EndIf
 sd err_bool
 setCall err_bool warnings(#errormsg,el_or_e)
 If errormsg!=noerr
-	if err_bool==(TRUE)
+	if err_bool=(TRUE)
 		Call msgerrexit(errormsg)
 	endif
 	call errexit()

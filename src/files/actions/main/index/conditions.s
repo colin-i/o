@@ -5,43 +5,43 @@ Data ptrifinscribe^ifinscribe
 
 Data nocond=nocondnumber
 
-If subtype==(cIF)
+If subtype=(cIF)
 	SetCall errormsg addtosec(ptrifinscribe,dwordsize,ptrconditionsloops)
-	If errormsg==noerr
+	If errormsg=noerr
 		SetCall errormsg condbegin(pcontent,pcomsize,(ifnumber))
 	EndIf
-ElseIf subtype==(cENDIF)
+ElseIf subtype=(cENDIF)
 	SetCall errormsg conditionscondend((ifnumber),nocond)
-ElseIf subtype==(cELSE)
+ElseIf subtype=(cELSE)
 	SetCall errormsg closeifopenelse()
-ElseIf subtype==(cENDELSE)
+ElseIf subtype=(cENDELSE)
 	SetCall errormsg conditionscondend((elsenumber),nocond)
-ElseIf subtype==(cELSEIF)
+ElseIf subtype=(cELSEIF)
 	SetCall errormsg closeifopenelse()
-	If errormsg==noerr
+	If errormsg=noerr
 		SetCall errormsg condbegin(pcontent,pcomsize,(ifnumber))
 	EndIf
-ElseIf subtype==(cENDELSEIF)
+ElseIf subtype=(cENDELSEIF)
 	SetCall errormsg conditionscondend((ifnumber),(elsenumber))
-ElseIf subtype==(cWHILE)
+ElseIf subtype=(cWHILE)
 	SetCall errormsg coderegtocondloop()
-	If errormsg==noerr
+	If errormsg=noerr
 		SetCall errormsg condbegin(pcontent,pcomsize,(whilenumber))
 	EndIf
-ElseIf subtype==(cENDWHILE)
+ElseIf subtype=(cENDWHILE)
 	setcall errormsg xfile_add_char_if((Xfile_condend))
-	If errormsg==noerr
+	If errormsg=noerr
 		SetCall errormsg condend((whilenumber))
 	EndIf
-ElseIf subtype==(cBREAK)
+ElseIf subtype=(cBREAK)
 	setcall errormsg xfile_add_char_if((Xfile_break))
-	If errormsg==noerr
+	If errormsg=noerr
 		setcall errormsg break()
 	EndIf
 Else
 #cCONTINUE
 	setcall errormsg xfile_add_char_if((Xfile_continue))
-	If errormsg==noerr
+	If errormsg=noerr
 		setcall errormsg continue()
 	EndIf
 EndElse

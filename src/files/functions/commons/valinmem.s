@@ -9,11 +9,11 @@ Function valinmemsens(str content,data size,char delim,data sens)
 	Char byte#1
 	Data zero=0
 
-	If size==zero
+	If size=zero
 		Return size
 	EndIf
 	Data backward=BACKWARD
-	If sens==backward
+	If sens=backward
 		Dec content
 	EndIf
 	Set byte content#
@@ -24,7 +24,7 @@ Function valinmemsens(str content,data size,char delim,data sens)
 			Dec content
 		EndElse
 		Dec size
-		If size==zero
+		If size=zero
 			Set byte delim
 		Else
 			Set byte content#

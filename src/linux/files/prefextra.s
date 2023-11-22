@@ -25,14 +25,14 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 		sd s1;sd s3=2
 		setcall s1 strlen(envhome);add s3 s1;add s3 s2
 		setcall err memoryalloc(s3,#mem)
-		if err==(noerror)
+		if err=(noerror)
 			call memtomem(mem,envhome,s1)
 			ss p;set p mem;add p s1;set p# (asciislash);inc p
 			call memtomem(p,prefpath,s2);add p s2;set p# (NULL)
 			setcall a access(mem,(F_OK))
-			if a==0
+			if a=0
 				SetCall err file_get_content_ofs(mem,ptrpreferencessize,ptrpreferencescontent,(NULL))
-				if err==(noerror)
+				if err=(noerror)
 					call free(mem)
 					return (noerror)
 				endif
@@ -55,14 +55,14 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 		add test size
 		sub test etchelper
 		sd cmp;setcall cmp memcmp(etc_helper,test,etchelper) #an example when testing from src folder, is not usr/bin/o / bin/o
-		if cmp==0
+		if cmp=0
 			sub size etchelper
 			sd sz=3+1+1
 			sd allsize;set allsize size
 			add allsize sz
 			add allsize s2
 			setcall err memoryalloc(allsize,#mem)
-			if err==(noerror)
+			if err=(noerror)
 				call memtomem(mem,scrpath,size)
 				set scrpath mem
 				add scrpath size
@@ -72,9 +72,9 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 				add scrpath s2
 				set scrpath# (NULL)
 				setcall a access(mem,(F_OK))
-				if a==0
+				if a=0
 					SetCall err file_get_content_ofs(mem,ptrpreferencessize,ptrpreferencescontent,(NULL)) #openfile has alloc err msg
-					if err==(noerror)
+					if err=(noerror)
 						call free(mem)
 						return (noerror)
 					endif

@@ -4,15 +4,15 @@ Data libescapes#1
 Data ptrlibquotsz^libquotsz
 Data ptrlibescapes^libescapes
 
-If fileformat==pe_exec
-	If implibsstarted==true
+If fileformat=pe_exec
+	If implibsstarted=true
 		SetCall errormsg closelib()
 	EndIf
-	If errormsg==noerr
+	If errormsg=noerr
 		SetCall errormsg openlib()
 	EndIf
 Else
-	If object==false
+	If object=false
 		#Name of needed library offset
 		Data DT_NEEDED=1
 		Data d_un#1
@@ -26,11 +26,11 @@ Else
 	EndElse
 EndElse
 
-If errormsg==noerr
+If errormsg=noerr
 	SetCall errormsg quotinmem(pcontent,pcomsize,ptrlibquotsz,ptrlibescapes)
-	If errormsg==noerr
+	If errormsg=noerr
 		SetCall errormsg addtosecstresc(pcontent,pcomsize,libquotsz,libescapes,ptrnames,true)
-		If errormsg==noerr
+		If errormsg=noerr
 			Call stepcursors(pcontent,pcomsize)
 			Set implibsstarted true
 		EndIf

@@ -7,7 +7,7 @@ Function memrealloc(data ptrpointer,data size)
 	Set oldpointer ptrpointer#
 	SetCall newpointer realloc(oldpointer,size)
 	Data null=NULL
-	If newpointer==null
+	If newpointer=null
 		Char newmem="Memory allocation error."
 		Data pnewmem^newmem
 		Return pnewmem
@@ -44,7 +44,7 @@ Function memalloc(data pathsize)
 	SetCall errmsg memoryalloc(pathsize,memptr)
 	Data null=NULL
 	Data noerr=noerror
-	If errmsg==noerr
+	If errmsg=noerr
 		Return mem
 	Else
 		Call Message(errmsg)
@@ -58,7 +58,7 @@ Function memcalloc(data pathsize)
 	Data path=0
 	Data null=NULL
 	SetCall path memalloc(pathsize)
-	If path==null
+	If path=null
 		Return null
 	EndIf
 	Call memset(path,null,pathsize)
@@ -119,7 +119,7 @@ Function printbuf(sd format,sd message,sd s1,sd nr,sd n1,sd n2)
 	Str buf#1
 	SetCall buf memalloc(bufsize)
 	Data null=NULL
-	If buf==null
+	If buf=null
 		Return null
 	EndIf
 	call sprintf(buf,format,message,s1,n1,n2)
@@ -132,7 +132,7 @@ function errorDefOut(str str1,str str2)
 	data ptrallocerrormsg%ptrallocerrormsg
 	SetCall ptrallocerrormsg# printbuf(format,str1,str2,0)
 	data null=NULL
-	If ptrallocerrormsg#==null
+	If ptrallocerrormsg#=null
 		return str1
 	EndIf
 	return ptrallocerrormsg#
@@ -146,7 +146,7 @@ Function openfile(data pfile,str path,data oflag)
 		set permission (pmode_mode);endif
 	Data openfalse=openno
 	SetCall pfile# open(path,oflag,permission)
-	If pfile#==openfalse
+	If pfile#=openfalse
 		str errorreturn#1
 		Str fileOpenErr="Cannot open a file:"
 		setcall errorreturn errorDefOut(fileOpenErr,path)
@@ -165,7 +165,7 @@ endfunction
 function openfile_mode_add_extension(ss path,ss extension,sd popen,sd mod)
 	sd er
 	setcall er maxpathverif(path,extension)
-	if er==(noerror)
+	if er=(noerror)
 		ss c;set c path
 		addcall c strlen(path)
 		ss b;setcall b strlen(extension)
@@ -210,7 +210,7 @@ Function requiredpad(data value,data pad)
 	Sub value integers
 
 	Data zero=0
-	If value==zero
+	If value=zero
 		return zero
 	EndIf
 	Sub pad value
@@ -223,7 +223,7 @@ Function padwrite(data hfile,data size)
 	Data null=NULL
 	Data writefalse=writeno
 	SetCall padmem memcalloc(size)
-	If padmem==null
+	If padmem=null
 		return writefalse
 	EndIf
 	Data writeres#1
@@ -238,7 +238,7 @@ Function paddedwrite(data hfile,str buf,data ln,data pad)
 	Data padvalue#1
 	Set padvalue pad
 	Div padvalue padvalue
-	If padvalue==pad
+	If padvalue=pad
 		Set padvalue zero
 	Else
 		Set padvalue pad
@@ -247,12 +247,12 @@ Function paddedwrite(data hfile,str buf,data ln,data pad)
 	If ln!=zero
 		Data writefalse=writeno
 		SetCall writeres writefile(hfile,buf,ln)
-		If writeres==writefalse
+		If writeres=writefalse
 			Return writefalse
 		EndIf
 
 		SetCall padvalue requiredpad(ln,pad)
-		If padvalue==zero
+		If padvalue=zero
 			Return writeres
 		EndIf
 	EndIf
@@ -275,10 +275,10 @@ Function filepathdelims(char chr)
 	Char slash=asciislash
 	Data true=TRUE
 	Data false=FALSE
-	If chr==bslash
+	If chr=bslash
 		Return true
 	EndIf
-	If chr==slash
+	If chr=slash
 		Return true
 	EndIf
 	Return false
@@ -296,7 +296,7 @@ Function endoffolders(ss path)
         dec cursor
         sd bool
         setcall bool filepathdelims(cursor#)
-        if bool==(TRUE)
+        if bool=(TRUE)
 			inc cursor
             return cursor
         endif
@@ -313,7 +313,7 @@ function changedir(ss path)
 	data chdirresult#1
 
 	setcall testsamefolder strlen(path)
-	if testsamefolder==null
+	if testsamefolder=null
 		return chdirok
 	endif
 	SetCall chdirresult chdir(path)
@@ -323,7 +323,7 @@ endfunction
 #lseek
 function seekfile(sd file,sd n,sd whence,sv perr)
 	sd p;setcall p lseek(file,n,whence)
-	if p==-1    #see the other lseek
+	if p=-1    #see the other lseek
 		set perr# "lseek error"
 	endif
 	return p
@@ -365,7 +365,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 		add size offset       ##this is only with MAX_PATH more on a int file size
 		#setcall err addfull(offset,#size)
 		SetCall err memoryalloc(size,ptrmem)
-		If err==noerr
+		If err=noerr
 			value mem#1
 			Set mem ptrmem#
 

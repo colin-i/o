@@ -5,7 +5,7 @@ if parses!=(pass_write)
 else
 	call entryscope_verify_code()
 	SetCall errormsg xfile_add_char_if((Xfile_action2))
-	if errormsg==(noerror)
+	if errormsg=(noerror)
 		SetCall errormsg twoargs(pcontent,pcomsize,subtype,null)
 	endif
 endelse

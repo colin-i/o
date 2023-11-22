@@ -53,7 +53,7 @@ function switchimm()
 	data ptr%ptr_isimm
 	data true=1
 	#first was false was low at comparations low vs high
-	if ptr#==true
+	if ptr#=true
 		data first%ptr_first_isimm
 		set first# true
 		data false=0
@@ -81,10 +81,10 @@ function write_imm_sign(sd dataarg,sd regopcode)
 	vData codeptr%%ptr_codesec
 	sd err
 	setcall err rex_w_if64()
-	if err==(noerror)
+	if err=(noerror)
 		char movs_imm=mov_imm_to_rm
 		SetCall err addtosec(#movs_imm,1,codeptr)
-		if err==(noerror)
+		if err=(noerror)
 			sd op
 			SetCall op formmodrm((RegReg),0,regopcode)
 			setcall err write_imm(dataarg,op)
@@ -95,9 +95,9 @@ endfunction
 #err
 function write_imm_trunc(sd value,sd reg,sd low,sd data,sd sufix)
 	sd err
-	if low==(FALSE)
+	if low=(FALSE)
 		sd bool;setcall bool is_big_imm(data,sufix)
-		if bool==(FALSE)
+		if bool=(FALSE)
 			#mediu
 			add reg (ateaximm)
 			setcall err write_imm(value,reg)

@@ -7,11 +7,11 @@ function command_start(sv p_is_comment,sv p_is_comment_multiline,sv p_cursor_sta
 	set p_is_comment_multiline# 0
 	ss pointer;set pointer p_content#
 	if pointer!=last
-		if pointer#==(commentascii)
+		if pointer#=(commentascii)
 			set p_is_comment# 1
 			inc pointer
 			if pointer!=last
-				if pointer#==(asciiexclamationmark)
+				if pointer#=(asciiexclamationmark)
 					set p_is_comment_multiline# 1
 					inc pointer
 				endif

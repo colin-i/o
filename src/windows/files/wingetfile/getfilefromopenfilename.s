@@ -8,7 +8,7 @@ Const ofnFlags=OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST
 Str ofnfiltermemvalue#1
 
 setcall path_free memalloc(flag_max_path)
-if path_free==(NULL)
+if path_free=(NULL)
 	#memalloc has message
 	call errexit()
 endif
@@ -57,6 +57,6 @@ SetCall openfilenameresult GetOpenFileName(OFNfile)
 
 Call free(ofnfiltermem)
 
-If openfilenameresult==zero
+If openfilenameresult=zero
 	Call msgerrexit("No file selected or an error occurs.")
 EndIf
