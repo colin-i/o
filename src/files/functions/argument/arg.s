@@ -692,16 +692,16 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Data argsz#1
 
 	#and same rule like getcommand like elseif then else
-	Char firstcomp="==";Data *jne=0x85
-	Char *="!=";        Data *je=0x84
-	Char *="<=^";       Data *ja=0x87
-	Char *=">=^";       Data *jb=0x82
-	Char *="<=";        Data *jg=0x8F
-	Char *=">=";        Data *jl=0x8C
-	Char *="<^";        Data *jae=0x83   #wanted cast before but will problem with arg cast that was after to continue at sufix
-	Char *=">^";        Data *jbe=0x86
-	Char *="<";         Data *jge=0x8D
-	Char *=">";         Data *jle=0x8E
+	Char firstcomp="==";Data *jne=Xfile_cond_equal
+	Char *="!=";        Data *je=Xfile_cond_notequal
+	Char *="<=^";       Data *ja=Xfile_cond_lessequalunsign
+	Char *=">=^";       Data *jb=Xfile_cond_greatequalunsign
+	Char *="<=";        Data *jg=Xfile_cond_lessequal
+	Char *=">=";        Data *jl=Xfile_cond_greatequal
+	Char *="<^";        Data *jae=Xfile_cond_lessunsign   #wanted cast before but will problem with arg cast that was after to continue at suffix
+	Char *=">^";        Data *jbe=Xfile_cond_greatunsign
+	Char *="<";         Data *jge=Xfile_cond_less
+	Char *=">";         Data *jle=Xfile_cond_great
 	Char term={0}
 
 	Data ptr#1

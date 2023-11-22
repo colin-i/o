@@ -140,3 +140,14 @@ const Xfile_action2_xor=8
 
 const Xfile_call_normal=0
 const Xfile_call_ret=1
+
+const Xfile_cond_equal=0x85
+const Xfile_cond_notequal=0x84
+const Xfile_cond_lessequalunsign=0x87
+const Xfile_cond_greatequalunsign=0x82
+const Xfile_cond_lessequal=0x8F
+const Xfile_cond_greatequal=0x8C
+const Xfile_cond_lessunsign=0x83
+const Xfile_cond_greatunsign=0x86
+const Xfile_cond_less=0x8D
+const Xfile_cond_great=0x8E

@@ -168,9 +168,6 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		Data one=1
 		Add condition one
 
-		Data conditionmodrm#1
-		Set conditionmodrm condition#
-
 		Char compare=0x39
 		Set opprim compare
 
@@ -178,6 +175,14 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		char compimminitial={0x39}
 		char compimmop#1
 		set compimmop compimminitial
+
+		Data conditionmodrm#1
+		Set conditionmodrm condition#
+
+		setcall errnr xfile_add_char_if(conditionmodrm)
+		if errnr!=(noerror)
+			return errnr
+		endif
 	EndElse
 
 	If primcalltype==false
