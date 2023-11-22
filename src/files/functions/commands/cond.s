@@ -40,15 +40,15 @@ Function condbegin(data ptrcontent,data ptrsize,data condnumber)
 	Data err#1
 	Data noerr=noerror
 
-	setcall err xfile_add_char_if(condnumber)
-	if err=(noerror)
+	if main.parses=(pass_write)
+		setcall err xfile_add_char_if(condnumber)
+		If err!=noerr;Return err;EndIf
 		SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
-		If err!=noerr
-			Return err
-		EndIf
-
-		SetCall err condbeginwrite(condnumber)
-	endif
+		If err!=noerr;Return err;EndIf
+	else
+		call advancecursors(ptrcontent,ptrsize,ptrsize#)
+	endelse
+	SetCall err condbeginwrite(condnumber)
 	Return err
 EndFunction
 
@@ -71,20 +71,23 @@ EndFunction
 Const backjumpsize=5
 #err
 Function condjump(data size)
-	Char jump={0xe9}
-	Data jsize#1
-	Data bjsz=backjumpsize
+	if main.parses=(pass_write)
+		Char jump={0xe9}
+		Data jsize#1
+		Data bjsz=backjumpsize
 
-	Data pjsize^jsize
+		Data pjsize^jsize
 
-	Set pjsize# size
+		Set pjsize# size
 
-	Data pjump^jump
+		Data pjump^jump
 
-	Data err#1
-	Data code%%ptr_codesec
-	SetCall err addtosec(pjump,bjsz,code)
-	Return err
+		Data err#1
+		Data code%%ptr_codesec
+		SetCall err addtosec(pjump,bjsz,code)
+		Return err
+	endif
+	return (noerror)
 EndFunction
 
 #err
@@ -125,7 +128,9 @@ Function condend(data number)
 			add reg (dwsz)   #to match for ptrcReg
 		EndIf
 
-		call condendwrite(structure,codeoffset)
+		if main.parses=(pass_write)
+			call condendwrite(structure,codeoffset)
+		endif
 
 		sub reg structure
 		Sub ptrcReg# reg
@@ -220,7 +225,7 @@ Function conditionscondend(data close1,data close2)
 	Data err#1
 	Data noerr=noerror
 
-	setcall err xfile_add_char_if((Xfile_condend))
+	setcall err xfile_add_end_ifif()
 	if err=(noerror)
 		Data loop#1
 		Data loopini=1
@@ -293,7 +298,7 @@ Function closeifopenelse()
 		Return err
 	EndIf
 
-	setcall err xfile_add_char_if((Xfile_else))
+	setcall err xfile_add_char_ifif((Xfile_else))
 	if err=(noerror)
 		Data elsenr=elsenumber
 		SetCall err condbeginwrite(elsenr)
@@ -357,4 +362,42 @@ function break()
 		endwhile
 	endif
 	return "There is no loop to break."
+endfunction
+
+#err
+function whileend()
+	sd err;setcall err xfile_add_end_ifif()
+	If err=(noerror)
+		SetCall err condend((whilenumber))
+	EndIf
+	return err
+endfunction
+
+#err
+function prev_cond(sd psecond)
+	sd structure
+	vData condloop%%ptr_conditionsloops
+	call getcontReg(condloop,#structure)
+	if structure=0
+		return (nocondnumber) #function
+	endif
+	call getcontplusReg(condloop,#structure)
+	sub structure (dwsz)
+	while structure#=(breaknumber)
+		sub structure (2*dwsz)
+	endwhile
+	if structure#=(whilenumber)
+		return (whilenumber)
+	endif
+	if structure#=(elsenumber)
+		set psecond# (nocondnumber)
+		return (elsenumber)
+	endif
+	sub structure (2*dwsz)
+	if structure#=(ifinscribe)
+		set psecond# (nocondnumber)
+	else
+		set psecond# (elsenumber)
+	endelse
+	return (ifnumber) #if,elseif
 endfunction

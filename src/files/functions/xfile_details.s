@@ -217,3 +217,15 @@ function xfile_add_callret_ifif(sd action,sd subtype)
 	endif
 	return (noerror)
 endfunction
+
+#err
+function xfile_add_end_if()
+	sd err;setcall err xfile_add_char_if((Xfile_condend));return err
+endfunction
+#err
+function xfile_add_end_ifif()
+	if main.parses=(pass_write)
+		sd err;setcall err xfile_add_end_if();return err
+	endif
+	return (noerror)
+endfunction

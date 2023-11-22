@@ -123,6 +123,7 @@ if errormsg=(noerror)
 						Elseif commandset=(cCALL)
 						#before .dtnb: at object is difficult, there is no virtual, ostrip is in the project
 						elseIf commandset=(cIMPORTLINK) #needing importx here
+						elseif commandset=(cEND);ElseIf commandset=(cCONDITIONS)  #conditions to differ END at ENDFUNCTION or ENDcondition
 						elseif commandset=(cSTARTFUNCTION);elseif commandset=(cENDFUNCTION)
 						ElseIf commandset=(cLIBRARY)
 						elseif commandset=(cINCLUDELINK)
@@ -134,6 +135,7 @@ if errormsg=(noerror)
 					else
 					#pass_calls
 						If commandset=(cPRIMSEC);elseif commandset=(cCALL)
+						elseif commandset=(cEND);ElseIf commandset=(cCONDITIONS)  #same as init
 						elseif commandset=(cINCLUDELINK);elseif commandset=(cENDFUNCTION)
 						elseif commandset=(cOVERRIDE)   #example call_align
 						else;set commandset (cCOMMENT);endelse
@@ -164,8 +166,12 @@ if errormsg=(noerror)
 		call entryscope_verify_code()
 				endif
 				Include "./index/call.s"
+			ElseIf commandset=(cEND)
+				Include "./index/end.s"
 			ElseIf commandset=(cCONDITIONS)
+				if parses=(pass_write)
 		call entryscope_verify_code()
+				endif
 				Include "./index/conditions.s"
 			ElseIf commandset=(cIMPORTLINK)
 				if parses=(pass_init);Include "./index/import.s"
@@ -173,7 +179,7 @@ if errormsg=(noerror)
 			ElseIf commandset=(cSTARTFUNCTION)
 				Include "./index/function.s"
 			ElseIf commandset=(cENDFUNCTION)
-				Include "./index/endfunction.s"
+				setcall errormsg endfunction(parses)
 			ElseIf commandset=(cRET)
 		call entryscope_verify_code()
 				setcall errormsg writeret()

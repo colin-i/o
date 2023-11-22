@@ -27,6 +27,7 @@ Include "./functions/argument/argument.s"
 Include "./functions/stack/stack.s"
 
 Include "./functions/global/funcs.s"
+Include "./functions/global/end.s"
 
 Include "./functions/actions/dataparse.s"
 Include "./functions/actions/fndecargs.s"
@@ -53,11 +54,8 @@ Include "./functions/enumbags.s"
 Include "./functions/import.s"
 Include "./functions/override.s"
 Include "./functions/scopes.s"
-
 Include "./functions/debug.s"
-
 Include "./functions/index.s"
-
 Include "./functions/short.s"
 
 Include "./functions/xfile.s"

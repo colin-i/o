@@ -18,6 +18,7 @@ Char cIF_c="IF";Char cENDIF_c="ENDIF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE
 Char cIMPORT_c="IMPORT";Char cIMPORTX_c="IMPORTX"
 Char cFUNCTION_c="FUNCTION";Char cFUNCTIONX_c="FUNCTIONX";Char cENTRYRAW_c="ENTRYRAW";Char cENTRY_c="ENTRY"
 Char cENDFUNCTION_c="ENDFUNCTION"
+Char cEND_c="END"
 Char cRET_c="RET"
 Char cINCLUDE_c="INCLUDE";Char cEINCLUDE_c="EINCLUDE"
 Char cFORMAT_c="FORMAT"
@@ -329,6 +330,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 	Const cENDFUNCTION=!-coms_start
 		data *^cENDFUNCTION_c
 		Data *=cENDFUNCTION
+		Data *#1
+		Data *=spacenotreq
+	Const cEND=!-coms_start
+		data *^cEND_c
+		Data *=cEND
 		Data *#1
 		Data *=spacenotreq
 	Const cRET=!-coms_start

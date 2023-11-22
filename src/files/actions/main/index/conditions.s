@@ -1,5 +1,4 @@
 
-
 Data ifinscribe=ifinscribe
 Data ptrifinscribe^ifinscribe
 
@@ -29,19 +28,18 @@ ElseIf subtype=(cWHILE)
 		SetCall errormsg condbegin(pcontent,pcomsize,(whilenumber))
 	EndIf
 ElseIf subtype=(cENDWHILE)
-	setcall errormsg xfile_add_char_if((Xfile_condend))
-	If errormsg=noerr
-		SetCall errormsg condend((whilenumber))
-	EndIf
-ElseIf subtype=(cBREAK)
-	setcall errormsg xfile_add_char_if((Xfile_break))
-	If errormsg=noerr
-		setcall errormsg break()
-	EndIf
-Else
-#cCONTINUE
-	setcall errormsg xfile_add_char_if((Xfile_continue))
-	If errormsg=noerr
-		setcall errormsg continue()
-	EndIf
-EndElse
+	setcall errormsg whileend()
+Elseif parses=(pass_write)
+	If subtype=(cBREAK)
+		setcall errormsg xfile_add_char_if((Xfile_break))
+		If errormsg=noerr
+			setcall errormsg break()
+		EndIf
+	Else
+	#cCONTINUE
+		setcall errormsg xfile_add_char_if((Xfile_continue))
+		If errormsg=noerr
+			setcall errormsg continue()
+		EndIf
+	EndElse
+endelseif
