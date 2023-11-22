@@ -25,7 +25,7 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 		Set p_argsize# szargtab
 	EndElse
 	if p_argsize#=0
-		return "Expecting argument name."
+		return "Expecting argument name."  #this is good only at: call a( , )
 	endif
 	return (noerror)
 endfunction
@@ -685,7 +685,7 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	EndIf
 	call setimm()
 
-	Data content#1
+	vstr content#1
 	Data size#1
 	Set content ptrcontent#
 	Set size ptrsize#
@@ -707,15 +707,38 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Data ptr#1
 	Data ptrini^firstcomp
 	Char byte#1
+	Data sz#1
+	Data errnr#1
 
 	Set ptr ptrini
 	Set byte ptr#
 
+	if size>0
+		if content#=(asciiparenthesisstart)
+	#let a possibility for example for (a<<b)!=c , there are: include "a a" "b b"
+			SetCall errnr getarg(ptrcontent,ptrsize,ptrsize#,allowdata,forward,ptrdata,ptrlow,ptrsufix)
+			if errnr!=(noerror)
+				Return errnr
+			endif
+			Set content ptrcontent#
+			Set size ptrsize#
+			While byte!=term
+				SetCall argsz stringatmem(content,size,ptr)
+				If argsz!=size
+					Set ptrcondition# ptr
+					return (noerror)
+				endif
+				SetCall sz strlen(ptr)
+				Add ptr sz
+				Add ptr (1+4)
+				Set byte ptr#
+			endwhile
+		endif
+	endif
 	While byte!=term
-		SetCall argsz strinmem(content,size,ptr)
+		SetCall argsz stringinmem(content,size,ptr)
 		If argsz!=size
 			Set ptrcondition# ptr
-			Data errnr#1
 			sd verifyafter
 			set verifyafter content
 			add verifyafter argsz
@@ -730,7 +753,6 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 			endif
 			return noerrnr
 		EndIf
-		Data sz#1
 		SetCall sz strlen(ptr)
 		Add ptr sz
 		Add ptr (1+4)

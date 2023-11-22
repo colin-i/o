@@ -219,7 +219,8 @@ Function oneoperation(sd ptrcontent,ss initial,ss content,sd val,sd op)
 EndFunction
 
 #err
-function operation_test(sv ptrcontent,sd initial,sd content,sd end,sd ptrval,sd pnumber,sd pnr,sd pbool)
+function operation_test(sv ptrcontent,sd initial,sv ptrcursor,sd end,sd ptrval,sd pnumber,sd pnr,sd pbool)
+	ss content;set content ptrcursor#
 	if initial!=content ##to ignore -n
 		ss test;set test content;dec test
 		if test#=(not_number) #to ignore ~-n
@@ -230,7 +231,7 @@ function operation_test(sv ptrcontent,sd initial,sd content,sd end,sd ptrval,sd 
 		sd err
 		SetCall err oneoperation(ptrcontent,initial,content,ptrval,pnumber#)
 		If err=(noerror)
-			call doubleoperation(pnr,#content,end)
+			call doubleoperation(pnr,ptrcursor,end)
 			set pnumber# pnr#
 			Set pbool# (TRUE)
 		endif
@@ -275,7 +276,7 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	While content!=end
 		SetCall find signop(content#,pnr)
 		if find=true
-			setcall errptr operation_test(ptrcontent,initial,content,end,ptrval,#number,pnr,#bool)
+			setcall errptr operation_test(ptrcontent,initial,#content,end,ptrval,#number,pnr,#bool)
 			if errptr!=noerr
 				return errptr
 			endif

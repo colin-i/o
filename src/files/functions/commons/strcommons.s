@@ -23,7 +23,7 @@ EndFunction
 
 
 #String in mem; return size(if string is not),size before string(if string is)
-Function strinmem(str content,data size,str match)
+Function stringinmem(str content,data size,str match)
 	Data zero=0
 	Data nrsz#1
 	SetCall nrsz strlen(match)
@@ -51,6 +51,24 @@ Function strinmem(str content,data size,str match)
 		return cnt
 	EndIf
 	Return size
+EndFunction
+#and this same logic, +1, -1, like there are no 32bit asm instructions
+Function stringatmem(ss content,sd size,ss match)
+	sd nrsz
+	SetCall nrsz strlen(match)
+	If size<nrsz
+		Return size
+	EndIf
+	sd sz;set sz nrsz
+	while nrsz>0
+		if content#!=match#
+			return size
+		endif
+		dec nrsz
+		inc content
+		inc match
+	endwhile
+	return sz
 EndFunction
 
 #bool
