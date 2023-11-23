@@ -91,8 +91,9 @@ const Xfile_numbers_type_tconstant=5
 #f from function
 const Xfile_numbers_type_fsize=6
 const Xfile_numbers_type_fsizeX=7
-const Xfile_numbers_type_sizeVar=8
-const Xfile_numbers_type_offsetVar=9
+#v from var
+const Xfile_numbers_type_vsizeVar=8
+const Xfile_numbers_type_voffsetVar=9
 
 const Xfile_suffix_true=1
 const Xfile_suffix_false=0
@@ -101,18 +102,18 @@ const Xfile_suffix_cast_value=asciiV
 const Xfile_suffix_cast_data=asciiD
 const Xfile_suffix_cast_string=asciiS
 
-#a from any
+#a from any, t from type
 const Xfile_action_areturn=0
 const Xfile_action_aexit=1
-const Xfile_action_inc=2
-const Xfile_action_incst=3
-const Xfile_action_dec=4
-const Xfile_action_decst=5
-const Xfile_action_neg=6
-const Xfile_action_not=7
-const Xfile_action_shl=8
-const Xfile_action_shr=9
-const Xfile_action_sar=10
+const Xfile_action_tinc=2
+const Xfile_action_tincst=3
+const Xfile_action_tdec=4
+const Xfile_action_tdecst=5
+const Xfile_action_tneg=6
+const Xfile_action_tnot=7
+const Xfile_action_tshl=8
+const Xfile_action_tshr=9
+const Xfile_action_tsar=10
 
 const Xfile_arg_number=0
 const Xfile_arg_string=1

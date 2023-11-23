@@ -219,7 +219,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			datax data#1;datax low#1;datax sufix#1
 			if pointer#!=(asciiexclamationmark)
 				#size of variable
-				setcall err xfile_add_char_if((Xfile_numbers_type_sizeVar))
+				setcall err xfile_add_char_if((Xfile_numbers_type_vsizeVar))
 				if err=(noerror)
 					setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
 					if err=(noerror)
@@ -266,7 +266,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				# !a.b! offset
 				dec size
 
-				setcall err xfile_add_char_if((Xfile_numbers_type_offsetVar))  #next in get_scope_pos
+				setcall err xfile_add_char_if((Xfile_numbers_type_voffsetVar))  #next in get_scope_pos
 				if err=(noerror)
 					setcall err getarg_base(content,size,dot_offset,#data,#low,#sufix,outval)
 					if err=(noerror)

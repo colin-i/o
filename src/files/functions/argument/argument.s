@@ -96,21 +96,21 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			Char inc={0xFF}
 			Set op inc
 			set regopcode 0
-			set xlog (Xfile_action_inc)
+			set xlog (Xfile_action_tinc)
 		ElseIf subtype=(cDEC)
 			Char dec={0xFF}
 			Char decregopcode={1}
 			Set op dec
 			Set regopcode decregopcode
-			set xlog (Xfile_action_dec)
+			set xlog (Xfile_action_tdec)
 		ElseIf subtype<=(cDECST)
 			set op (0x83)
 			if subtype=(cINCST)
 				set regopcode 0
-				set xlog (Xfile_action_incst)
+				set xlog (Xfile_action_tincst)
 			else
 				set regopcode 5
-				set xlog (Xfile_action_decst)
+				set xlog (Xfile_action_tdecst)
 			endelse
 			char incs_sz#1
 			sd b;setcall b is_for_64()
@@ -121,25 +121,25 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 		ElseIf subtype=(cNEG)
 			set op (0xf7)
 			set regopcode 3
-			set xlog (Xfile_action_neg)
+			set xlog (Xfile_action_tneg)
 		ElseIf subtype=(cNOT)
 			Char not={0xF7}
 			Char notregopcode={Notregopcode}
 			Set op not
 			Set regopcode notregopcode
-			set xlog (Xfile_action_not)
+			set xlog (Xfile_action_tnot)
 		ElseIf subtype<=(cSAR)
 			set op (0xD1)
 			If subtype=(cSHL)
 				set regopcode 4
-				set xlog (Xfile_action_shl)
+				set xlog (Xfile_action_tshl)
 			ElseIf subtype=(cSHR)
 				set regopcode 5
-				set xlog (Xfile_action_shr)
+				set xlog (Xfile_action_tshr)
 			Else
 			#cSAR
 				set regopcode 7
-				set xlog (Xfile_action_sar)
+				set xlog (Xfile_action_tsar)
 			EndElse
 		Else
 		#If subtype==(cEXIT)
