@@ -47,7 +47,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 	if allowdata=(allow_later_sec)
 		#pass_init or pass_calls
-		set subtype_test subtype;and subtype_test (x_call_flag)
+		setcall subtype_test x_call_test(subtype,ptrcontent#,ptrsize#)
 		if subtype_test=0
 			if parses=(pass_init)
 				setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
@@ -97,7 +97,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			#Set regprep ecxreg
 			Set regopcode ecxreg
 		else
-			set subtype_test subtype;and subtype_test (x_call_flag)
+			setcall subtype_test x_call_test(subtype,ptrcontent#,ptrsize#)
 			if subtype_test!=0
 				Set primcalltype true
 				set subtype_test subtype
@@ -597,4 +597,26 @@ function div_prepare(sd low,sd big,ss p_regopcode)
 	#33D2 4885c0 7903 48f7d2
 	#32E4 84c0   7902 f6d4
 	#33D2 85c0   7902 f7d2
+endfunction
+
+#subtype
+function x_call_test(sd subtype,ss content,sd size)
+	and subtype (x_call_flag)
+	if subtype!=0
+		return subtype
+	endif
+	if size!=0 #getarg is erroring here
+		if content#!=(getarg_str)
+			sd bool
+			setcall bool is_constant_related_ascii(content#)
+			if bool=(FALSE)
+				sd sz
+				setcall sz valinmem(content,size,(asciiparenthesisstart)) #to do for comments if required
+				if sz!=size
+					return (x_call_flag)
+				endif
+			endif
+		endif
+	endif
+	return subtype
 endfunction
