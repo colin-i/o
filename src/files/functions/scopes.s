@@ -154,6 +154,8 @@ function scopes_store(sv scope)
 endfunction
 
 function scopes_searchinvars(sd p_err,sv p_name)
+	value entrybags%%ptr_scopes
+
 	sd psz%scopesbag_size_ptr
 	#now at three pass the fns are mixed with imports
 	sd sz;set sz psz#
@@ -171,7 +173,11 @@ function scopes_searchinvars(sd p_err,sv p_name)
 			sd data
 			sd scope
 			setcall scope scopes_get_scope(i)
-			call vars_log((set),fns,size)
+			if scope!=entrybags ##calloc was for every scope
+				call vars_log_set(fns,size) #more at the function
+			else
+				call vars_log_reset()
+			endelse
 			setcall data searchinvars_scope_warn(p_err,scope)
 			if data!=(NULL)
 				set p_name# fns

@@ -92,13 +92,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				return err
 			endif
 
-			call vars_log((set),content,sz)
-
 			Data mask#1
 			#Data ptrobjfnmask%ptrobjfnmask
 			if el_or_e=(TRUE)
 				Set mask (referencebit)
 			else
+				call vars_log_set(content,sz) #more at the function
 				set mask 0
 			endelse
 			sd can_scope64

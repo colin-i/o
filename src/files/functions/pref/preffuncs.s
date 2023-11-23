@@ -16,7 +16,9 @@ Function warnings(sd p_err,sd has_named_entry)
 		setcall var scopes_searchinvars(p_err,#fn_name)
 		If var=(NULL)
 			if has_named_entry=(FALSE)
-				call vars_log_reset()
+				#call vars_log_reset()
+				#why this? init/endfunction is already doing this.
+
 				SetCall var searchinvars((NULL),0,(NULL),p_err) #,setref unused
 				if var!=(NULL)
 					set fn_name "(entry)"

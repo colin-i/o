@@ -48,10 +48,22 @@ endfunction
 function vars_log_reset()
 	call vars_log((set),"",0)
 endfunction
+function vars_log_set(sd a,sd b)
+#preferring to log .var even at main.var to be recognized at ounused(before entry is o.var and vmain.var at the end)
+#                                        and .var is united with a realpath so in a file can be main1.var, in another file can be main2.var
+	call vars_log((set),a,b)
+endfunction
 #err
 function vars_log_prepare(ss content,sd size)
 	data ptrobject%ptrobject
 	if ptrobject#=(TRUE)
+		if size>0  #addvarref..orunref is erroring there for getsign and fndecargs
+			if content#=(unrefsign)
+				return (noerror)
+			elseif content#=(throwlesssign)
+				inc content;dec size
+			endelseif
+		endif
 		sd vals;setcall vals vars_log((get),content,size)
 		sd err
 		setcall err addtolog_array_withchar(vals,(log_offset))
