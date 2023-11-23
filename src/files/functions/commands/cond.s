@@ -71,23 +71,20 @@ EndFunction
 Const backjumpsize=5
 #err
 Function condjump(data size)
-	if main.parses=(pass_write)
-		Char jump={0xe9}
-		Data jsize#1
-		Data bjsz=backjumpsize
+	Char jump={0xe9}
+	Data jsize#1
+	Data bjsz=backjumpsize
 
-		Data pjsize^jsize
+	Data pjsize^jsize
 
-		Set pjsize# size
+	Set pjsize# size
 
-		Data pjump^jump
+	Data pjump^jump
 
-		Data err#1
-		Data code%%ptr_codesec
-		SetCall err addtosec(pjump,bjsz,code)
-		Return err
-	endif
-	return (noerror)
+	Data err#1
+	Data code%%ptr_codesec
+	SetCall err addtosec(pjump,bjsz,code)
+	Return err
 EndFunction
 
 #err
@@ -121,10 +118,12 @@ Function condend(data number)
 	sd err;setcall err condendtest(#structure,number,codeoffset)
 	if err=(noerror)
 		If number=whilenr
-			setcall err jumpback(codeoffset,structure)
-			If err!=(noerror)
-				Return err
-			EndIf
+			if main.parses=(pass_write)
+				setcall err jumpback(codeoffset,structure)
+				If err!=(noerror)
+					Return err
+				EndIf
+			endif
 			add reg (dwsz)   #to match for ptrcReg
 		EndIf
 
@@ -287,11 +286,13 @@ Function closeifopenelse()
 	Data err#1
 	Data noerr=noerror
 
-	Data number=0
-	SetCall err condjump(number)
-	If err!=noerr
-		Return err
-	EndIf
+	if main.parses=(pass_write)
+		Data number=0
+		SetCall err condjump(number)
+		If err!=noerr
+			Return err
+		EndIf
+	endif
 	Data ifnr=ifnumber
 	SetCall err condend(ifnr)
 	If err!=noerr
