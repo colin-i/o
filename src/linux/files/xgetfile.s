@@ -36,7 +36,7 @@ else
 	else
 		data sizeofpath#1
 		setcall sizeofpath strlen(envpath)
-		set accessresult negative
+		set accessresult (negative)
 		while sizeofpath!=zero
 			char pathdelim=":"
 			data sizeoffolder#1

@@ -62,7 +62,6 @@ Data zero=0
 Data one=1
 data two=2
 data three=3
-Data negative=negative
 Char dot="."
 
 const dw_char=10
