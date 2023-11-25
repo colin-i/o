@@ -41,9 +41,9 @@ function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,ss content,sd
 						if reloc=(FALSE)
 							setcall err xfile_add_char((Xfile_declsign_equal))
 						elseif relocx=(FALSE)
-							setcall err xfile_add_char((Xfile_declsign_reloc))
+							setcall err xfile_add_char((Xfile_declsign_ereloc))
 						else
-							setcall err xfile_add_char((Xfile_declsign_relocx))
+							setcall err xfile_add_char((Xfile_declsign_erelocx))
 						endelse
 					elseif sign=(reservesign)
 						setcall err xfile_add_char((Xfile_declsign_reserve))

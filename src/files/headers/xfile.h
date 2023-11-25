@@ -50,8 +50,8 @@ const Xfile_declfeature_throwless=2
 const Xfile_declsign_pointer=0
 const Xfile_declsign_reserve=1
 const Xfile_declsign_equal=2
-const Xfile_declsign_reloc=3
-const Xfile_declsign_relocx=4
+const Xfile_declsign_ereloc=3
+const Xfile_declsign_erelocx=4
 
 const Xfile_declmode_value=0
 const Xfile_declmode_group=1

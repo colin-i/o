@@ -453,7 +453,7 @@ function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
 	return subtype
 endfunction
 #set errormsg to pointer error or return the find
-Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,data pointercommands)
+Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,data pointercommands)
 	Data zero=0
 	Data command#1
 	Data result#1
@@ -475,9 +475,10 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		Add cursor dsz
 		Set spacebool cursor#
 
-		#implement for SetCall...
+		#implement for Set[X]Call
 		Char calldata="CALL"
-		Str call^calldata
+		vStr call^calldata
+		vstr xstr="X"
 
 		ss extstr=NULL
 
@@ -485,33 +486,32 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 		sv extbool^extbooldata
 
 		If command=(cPRIMSEC)
-			Set extstr call
+			Set extstr xstr
 		elseif command=(cCALL)
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
 		Elseif command=(cSTARTFUNCTION)
 			sd x;setcall x func_xfile(ptrsubtype#)
 			if x!=(Xfile_function_not_x)
-				Set extstr "X" #varargs
+				Set extstr xstr ##varargs
 			endif
 		elseif command=(cCALLEX)
 			set extstr call_ret_str
 		endElseif
 
+		sd test;set test pcontent#
 		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool)
 		If extbooldata=true
 		#here firstAndSecond part was recognized
 			If command=(cPRIMSEC)
 				#or first byte at subcommand to recognize the xcall at two args
-				or ptrsubtype# (x_call_flag)
+				or ptrsubtype# (primsec_flags)
 				if result=(FALSE)
-				#here there was not a space
-					setcall result stratmemspc(pcontent,psize,"X",spacebool)
-					if result=(TRUE)
-						or ptrsubtype# (x_callx_flag)
-					else
+				#here there was not a space, maybe is the deprecated ..xcall
+					setcall result stratmemspc(pcontent,psize,call,spacebool)
+					if result=(FALSE)
 						break
-					endelse
+					endif
 				endif
 			Else
 				if result=(FALSE)
@@ -532,7 +532,19 @@ Function getcommand(data pcontent,data psize,data ptrsubtype,data ptrerrormsg,da
 			endElse
 			return command
 		elseIf result=true
+		#here first+-space was ok
 			Return command
+		elseif test!=pcontent#
+		#here first was ok but not the space
+			If command=(cPRIMSEC)
+				#here there was not extra x, maybe is the deprecated ..xcall
+				setcall result stratmemspc(pcontent,psize,call,spacebool)
+				if result=(TRUE)
+					or ptrsubtype# (x_call_flag)
+					Return command
+				endif
+			endif
+			break
 		endelseIf
 		Add pointercommands dsz
 		Set cursor pointercommands#

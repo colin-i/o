@@ -199,7 +199,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 				char d_quot=asciidoublequote
 				if argsize#=d_quot
 					#look later at escapes, here only at the margins
-					#here the string ".." is in a good condition when quotes_forward was called at fn(...)
+					#here the string ".." is in a good condition when quotes_forward was called at parenthesis_size
 					sd last;set last content
 					sub last sz
 					dec argsize
