@@ -36,28 +36,10 @@ endfunction
 
 #no return
 Function freeclose()
-	Data value#1
+	call platform_free()
+
 	Data zero=0
-
 	Call enumbags(zero)
-
-	Data negative=openno
-
-	Data ptrfileout%ptrfileout
-	Set value ptrfileout#
-	If value!=negative
-		Call close(value)
-	EndIf
-
-	data ptrlogfile%ptrlogfile
-	Set value ptrlogfile#
-	If value!=negative
-		Call close(value)
-	EndIf
-
-	if main.xfile!=negative
-		call close(main.xfile)
-	endif
 
 	#here if allocerrormsg was a submessage(included in sprintf)
 	#here at some main msgerrexits
@@ -66,12 +48,28 @@ Function freeclose()
 	sd p_safecurrentdirtopath%p_safecurrentdirtopath
 	if p_safecurrentdirtopath#!=(NULL)
 		call free(p_safecurrentdirtopath#)
+
+		Data value#1
+		Data negative=openno
+
+		data ptrlogfile%ptrlogfile
+		Set value ptrlogfile#
+		If value!=negative
+			Call close(value)
+		EndIf
+		if main.xfile!=negative
+			call close(main.xfile)
+		endif
+
+		call align_free()
+		call scopes_free()
+
+		Data ptrfileout%ptrfileout
+		Set value ptrfileout#
+		If value!=negative
+			Call close(value)
+		EndIf
 	endif
-
-	call platform_free()
-
-	call align_free()
-	call scopes_free()
 EndFunction
 
 Function msgerrexit(data msg)

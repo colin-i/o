@@ -1,10 +1,5 @@
 
 
-#files
-Set fileout (openno)
-set logfile (openno)
-set xfile (openno)
-
 #containers initialisations
 Data containersptr%%containersbegin
 #Data containerssize=containerssize
@@ -17,6 +12,3 @@ Set allocerrormsg null
 set safecurrentdirtopath (NULL)
 
 call initpreferences()
-
-set stackalign (NULL)
-set scopesbag (NULL)

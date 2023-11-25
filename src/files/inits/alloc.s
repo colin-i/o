@@ -49,7 +49,7 @@ Set extraMax subscope
 Set unresLocalMax mainscope
 
 set debugsecMax 0    #(subscope)
-
+set tempdataMax 0
 
 SetCall errormsg enumbags(true)
 #here is the start of mem worries for linux

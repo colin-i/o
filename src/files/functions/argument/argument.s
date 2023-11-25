@@ -162,72 +162,70 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 	Data ptrdataarg^dataarg
 	Data sufix#1
 	Data ptrsufix^sufix
+	data tempdata_mark#1
 
+	set tempdata_mark main.tempdataReg
 	SetCall err arg(ptrcontent,ptrsize,ptrdataarg,ptrlowbyte,ptrsufix,forwardORcallsens,(allow_yes))
-	If err!=(noerror)
-		Return err
-	EndIf
+	If err=(noerror)
+		sd imm
+		setcall imm getisimm()
+		if imm=false
+			#Data noreg=noregnumber
+			#Data eaxreg=eaxregnumber
+			#Data intchar#1
+			#Set intchar noreg
+			If forwardORcallsens!=forward
+			#push
+				#If lowbyte==false
+				#since with 64 push data will push quad even without rex
+				#	Char push={0xff}
+				#	Char pushopcode={6}
+				#	Set op push
+				#	Set regopcode pushopcode
+				#	call stack64_op_set()
+				#Else
+				#If lowbyte==true
+				#	#prepare for eax for al
+				#	Set intchar eaxreg
+				#EndIf
+				Char pushaction={moveatprocthemem}
+				Set op pushaction
+				set regopcode (eaxregnumber)
 
-	sd imm
-	setcall imm getisimm()
-	if imm=false
-		#Data noreg=noregnumber
-		#Data eaxreg=eaxregnumber
-		#Data intchar#1
-		#Set intchar noreg
-		If forwardORcallsens!=forward
-		#push
-			#If lowbyte==false
-			#since with 64 push data will push quad even without rex
-			#	Char push={0xff}
-			#	Char pushopcode={6}
-			#	Set op push
-			#	Set regopcode pushopcode
-			#	call stack64_op_set()
-			#Else
-			#If lowbyte==true
-			#	#prepare for eax for al
-			#	Set intchar eaxreg
-			#EndIf
-			Char pushaction={moveatprocthemem}
-			Set op pushaction
-			set regopcode (eaxregnumber)
-
-			char pushadvance={0x50}
-			data pushcontinuationsize=1
-			data ptrpushcontinuation^pushadvance
-			Set ptrcontinuation ptrpushcontinuation
-			set sizeofcontinuation pushcontinuationsize
-			#EndElse
-		ElseIf lowbyte=true
-		#imm don't use one byte at the moment
-			if regprepare_bool=false
-				Dec op
-			endif
-		#Else;Set intchar regopcode
-		EndElseIf
-		sd comp_at_bigs;setcall comp_at_bigs comp_one(lowbyte,dataarg,sufix,op)
-		setcall err writeop_promotes(dataarg,op,sufix,regopcode,lowbyte,comp_at_bigs)
-		#call restore_argmask() #before this there is no err!=noerr: it is not a must, only less space
-	Else
-	#imm
-		If forwardORcallsens!=forward
-		#push
-			setcall err write_imm(dataarg,(0x68))
-		else
-		#return/exit
-			setcall err write_imm_sign(dataarg,regopcode)
-		endelse
-	EndElse
-	If err!=(noerror)
-		Return err
-	EndIf
-	If sizeofcontinuation!=zero
-		#return / exit / (only at noimm):incst/push
-		SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
-		return err
-	EndIf
-	Return (noerror)
+				char pushadvance={0x50}
+				data pushcontinuationsize=1
+				data ptrpushcontinuation^pushadvance
+				Set ptrcontinuation ptrpushcontinuation
+				set sizeofcontinuation pushcontinuationsize
+				#EndElse
+			ElseIf lowbyte=true
+			#imm don't use one byte at the moment
+				if regprepare_bool=false
+					Dec op
+				endif
+			#Else;Set intchar regopcode
+			EndElseIf
+			sd comp_at_bigs;setcall comp_at_bigs comp_one(lowbyte,dataarg,sufix,op)
+			setcall err writeop_promotes(dataarg,op,sufix,regopcode,lowbyte,comp_at_bigs)
+		Else
+		#imm
+			If forwardORcallsens!=forward
+			#push
+				setcall err write_imm(dataarg,(0x68))
+			else
+			#return/exit
+				setcall err write_imm_sign(dataarg,regopcode)
+			endelse
+		EndElse
+		If err=(noerror)
+			If sizeofcontinuation!=zero
+				#return / exit / (only at noimm):incst/push
+				SetCall err addtosec(ptrcontinuation,sizeofcontinuation,codeptr)
+			EndIf
+		EndIf
+	endif
+	set main.tempdataReg tempdata_mark ##in arg can alloc ok, then an error in arg, free here for the second case
+	return err
 endfunction
 
 #same as comp_sec

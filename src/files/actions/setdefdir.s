@@ -33,6 +33,16 @@ SetCall safecurrentdirtopath memalloc(flag_max_path)
 If safecurrentdirtopath=null
 	Call errexit()
 EndIf
+
+#files
+Set fileout (openno)
+set logfile (openno)
+set xfile (openno)
+
+#scopes and pass_calls
+set stackalign (NULL)
+set scopesbag (NULL)
+
 Call memtomem(safecurrentdirtopath,safedir,wordsize)
 Data safecurrentdirloc#1
 Set safecurrentdirloc safecurrentdirtopath

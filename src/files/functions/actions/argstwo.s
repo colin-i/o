@@ -2,6 +2,7 @@
 #err
 Function twoargs(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition)
 	sd err;setcall err twoargs_ex(ptrcontent,ptrsize,subtype,ptrcondition,(allow_no)) #there are 2 more arguments but are not used
+	set main.tempdataReg 0 #this must be after primwrite and/or divmul, and at pass_write
 	return err
 endfunction
 
@@ -426,7 +427,6 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 		SetCall errnr addtosec(jumpcond,conddatasz,codeptr)
 	EndElseIf
-	#call restore_argmask() #this must be after primwrite and/or divmul
 	Return errnr
 EndFunction
 

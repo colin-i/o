@@ -232,9 +232,14 @@ Datax debugsec#1
 Datax debugsecReg#1
 Const ptr_debug^debugsecMax
 
+datax tempdataMax#1
+datax tempdata#1
+datax tempdataReg#1
+Const ptr_tempdata^tempdataMax
+
 #not yet at simple exec Const containerssize=!!-containersbegin
 const containersbegin^includesMax
-const containersalmostend^debugsecReg
+const containersalmostend^tempdataReg
 data containerssize=containersalmostend+dwsz-containersbegin
 const containerssize^containerssize
 

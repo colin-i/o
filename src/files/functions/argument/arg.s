@@ -516,42 +516,39 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				setcall subtract_base stack64_base(ptrdata#)
 			endelse
 		endelse
-		char random#1
-		data *#3
-		#in case are two args
-		data d2#3
-		call tempdatapair(#random,ptrdata,#d2)
+		setcall err tempdataadd(ptrdata)
+		if err=(noerror)
+			sd pointer;set pointer ptrdata#
+			sub pointer# subtract_base
 
-		sd pointer;set pointer ptrdata#
-		sub pointer# subtract_base
+			#keep location, will be some disturbance if combining stack with data, but if not is ok
+			sd pointer2=maskoffset;sd data2=maskoffset
+			add pointer2 pointer
+			add data2 data
+			sd location_part;sd transformation_part
+			if is_stack!=0
+				set location_part (stack_location_bits)
+				and location_part data2#
+				set transformation_part (~stack_location_bits)
+			else
+				set location_part (location_bits)
+				and location_part data2#
+				set transformation_part (~location_bits)
+			endelse
+			and pointer2# transformation_part
+			or pointer2# location_part
 
-		#keep location, will be some disturbance if combining stack with data, but if not is ok
-		sd pointer2=maskoffset;sd data2=maskoffset
-		add pointer2 pointer
-		add data2 data
-		sd location_part;sd transformation_part
-		if is_stack!=0
-			set location_part (stack_location_bits)
-			and location_part data2#
-			set transformation_part (~stack_location_bits)
-		else
-			set location_part (location_bits)
-			and location_part data2#
-			set transformation_part (~location_bits)
-		endelse
-		and pointer2# transformation_part
-		or pointer2# location_part
-
-		#decide if add offset now or at runtime with sufix
-		if pointer_size!=0
-			#runtime
-			or pointer2# (suffixbit)
-			add pointer2 (masksize) #note that here is not on nameoffset, is on data#3 value from temp
-			set pointer2# pointer#
-			set pointer# data#
-		else
-			add pointer# data#
-		endelse
+			#decide if add offset now or at runtime with sufix
+			if pointer_size!=0
+				#runtime
+				or pointer2# (suffixbit)
+				add pointer2 (masksize) #note that here is not on nameoffset, is on data#3 value from temp
+				set pointer2# pointer#
+				set pointer# data#
+			else
+				add pointer# data#
+			endelse
+		endif
 	endif
 	return err
 endfunction

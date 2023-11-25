@@ -345,22 +345,23 @@ function varsufix_ex(ss content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix,sd scop
 			endelse
 		else
 			sd is_str
-			setcall is_str cast_resolve(type,cast,ptrdata)
-
-			If is_str=false
-				Set ptrlow# false
-			Else
-			#str ss
-				If ptrsufix#=(sufix_true)
-					if prefix#=0
-						Set ptrlow# true
-					else
-						Set ptrlow# false
-					endelse
-				Else
+			setcall is_str cast_resolve(type,cast,ptrdata,#err)
+			if err=(noerror)
+				If is_str=false
 					Set ptrlow# false
+				Else
+				#str ss
+					If ptrsufix#=(sufix_true)
+						if prefix#=0
+							Set ptrlow# true
+						else
+							Set ptrlow# false
+						endelse
+					Else
+						Set ptrlow# false
+					EndElse
 				EndElse
-			EndElse
+			endif
 		endelse
 	endif
 	return err
@@ -412,24 +413,21 @@ function cast_test(ss content,sd p_size)
 	return (no_cast)
 endfunction
 
-function tempdatapair(ss p_trick,sv ptrdata,sd data2)
-	xor p_trick# 1
-	sd test=1;and test p_trick#
-	if test=0
-		set p_trick data2
-		#add p_trick (location_and_mask)
-	else
-		inc p_trick
-	endelse
-	sd val;set val ptrdata#
-	set ptrdata# p_trick
-	set p_trick#d^ val#
-	add p_trick (maskoffset);add val (maskoffset)
-	set p_trick#d^ val#
+function tempdataadd(sv ptrdata)
+	sd err
+	sv original;set original ptrdata#
+	sv t%%ptr_tempdata
+	setcall err addtosec(original,(location_and_mask),t)
+	if err=(noerror)
+		call getcontplusReg(t,ptrdata)
+		sub ptrdata# (location_and_mask)
+		call memtomem(ptrdata#,original,(location_and_mask))
+	endif
+	return err
 endfunction
 
 #bool is_string
-function cast_resolve(sd number,sd cast,sv ptrdata)
+function cast_resolve(sd number,sd cast,sv ptrdata,sv p_error)
 	if cast=(no_cast)
 		Data stringsnumber=stringsnumber
 		Data stackstringnumber=stackstringnumber
@@ -441,15 +439,8 @@ function cast_resolve(sd number,sd cast,sv ptrdata)
 		return (FALSE)
 	endif
 	if cast!=(cast_string)
+		setcall p_error# tempdataadd(ptrdata)
 
-		#call store_argmask(data)
-
-		char random#1
-		data *#2    #ignore name
-		#in case are two args
-		data data2#2    #ignore name
-
-		call tempdatapair(#random,ptrdata,#data2)
 		sd data;set data ptrdata#
 		add data (maskoffset)
 
