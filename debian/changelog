@@ -1,3 +1,9 @@
+ocompiler (1-5+106) xenial; urgency=medium
+
+  * fix triple cast
+
+ -- bc <bc@bc-Type1ProductConfigId>  Sat, 25 Nov 2023 14:49:56 +0200
+
 ocompiler (1-5+105) xenial; urgency=medium
 
   * set a b()
