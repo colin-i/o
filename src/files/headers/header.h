@@ -233,7 +233,7 @@ Datax debugsecReg#1
 Const ptr_debug^debugsecMax
 
 datax tempdataMax#1
-datax tempdata#1
+datax *tempdata#1
 datax tempdataReg#1
 Const ptr_tempdata^tempdataMax
 
