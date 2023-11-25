@@ -532,7 +532,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			endElse
 			return command
 		elseIf result=true
-		#here first+-space was ok
+		#here (first/onlyone)+-space was ok
 			Return command
 		elseif test!=pcontent#
 		#here first was ok but not the space
