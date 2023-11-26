@@ -703,7 +703,7 @@
 	All functions can be used in combinations like <b>AddCall</b>, <b>OrCall</b>, <b>XorCall</b>, etc (<i>set a b()</i> is same as <i>setcall a b()</i>).
 	<br>
 	<b>CallEx</b> is for prepared calls. This is a 3 argument operation. The first argument is the function name, the second argument is the arguments pointer and the third argument is the number of arguments. The arguments are passed forward respecting the size of the integer(4 bytes on 32-bits app, 8 on 64). One usage can be when there is a call with a number of arguments detected at run-time and want to pass them all to another call.
-	A "SetCallEx" trick is to wrap <b>CallEx</b> in a function and to <b>SetCall</b> that function.
+	<b>CallExRet</b> (like <b>CallRet</b>, or <b>CallXRet</b>) can return from a function.
 	<br>
 	<b>CallX</b>, <b>...XCall</b>, <b>CallExX</b> will call like a <b>FunctionX</b>/<b>ImportX</b>.
 	<p>
@@ -1074,6 +1074,7 @@
 	When the option function_name from the ocompiler.conf file is set to Yes(1), the name is wrote in the code section above the function, for debugging asm code.<br>
 	The preferences file can be placed in HOME folder on linux.<br>
 	Lines are ended with new line(0xa),carriage return and new line(0xd,0xa) or semicolon(0x3B).<br>
-	The command line options are detailed at some point on the linux console std. On windows there some dialogs instead of console std.
+	The command line options are detailed at some point on the linux console std. On windows there some dialogs instead of console std.<br>
+	<i>has_debug</i> option will add a .debug section at objects that acts like the log file for files hierarchy and another log,  <i>log_line</i>, A,B format, where A is the line number and B is the code section offset where it starts.
 	</p>
 </p>
