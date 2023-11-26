@@ -484,9 +484,13 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 
 		sd extbooldata=FALSE
 		sv extbool^extbooldata
+		sd intercursors=NULL
 
 		If command=(cPRIMSEC)
 			Set extstr xstr
+			value pointer#1;data sz#1
+			set intercursors #pointer
+			set pointer pcontent#
 		elseif command=(cCALL)
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
@@ -499,25 +503,26 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			set extstr call_ret_str
 		endElseif
 
-		sd test;set test pcontent#
-		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool)
+		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool,intercursors)
 		If extbooldata=true
 		#here firstAndSecond part was recognized
 			If command=(cPRIMSEC)
-				#or first byte at subcommand to recognize the xcall at two args
-				or ptrsubtype# (primsec_flags)
 				if result=(FALSE)
 				#here there was not a space, maybe is the deprecated ..xcall
-					setcall result stratmemspc(pcontent,psize,call,spacebool)
-					if result=(FALSE)
-						break
+					setcall result stratmemspc(#pointer,#sz,call,spacebool)
+					if result=(TRUE)
+						#or first byte at subcommand to recognize the xcall at two args
+						or ptrsubtype# (primsec_flags)
+						set pcontent# pointer
+						set psize# sz
+						Return command
 					endif
-				endif
-			Else
-				if result=(FALSE)
-				#here there was not a space
-					break
-				endif
+				else
+				#setx
+					or ptrsubtype# (primsec_flags)
+					Return command
+				endelse
+			Elseif result=(TRUE)
 				If command=(cSTARTFUNCTION)
 				#functionx/entry [x] , varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
@@ -525,26 +530,29 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					#if for64==(TRUE)
 					or ptrsubtype# (x_func_flag)
 					#endif
+					return command
 				else
 				#call[ex][x]ret
 					or ptrsubtype# (call_ret_flag)
+					return command
 				endelse
-			endElse
-			return command
+			endElseif
 		elseIf result=true
 		#here (first/onlyone)+-space was ok
 			Return command
-		elseif test!=pcontent#
+		elseif command=(cPRIMSEC)
 		#here first was ok but not the space
-			If command=(cPRIMSEC)
-				#here there was not extra x, maybe is the deprecated ..xcall
-				setcall result stratmemspc(pcontent,psize,call,spacebool)
+			if pcontent#!=pointer
+				#here there was not extra x, maybe is the deprecated ..call
+				setcall result stratmemspc(#pointer,#sz,call,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_call_flag)
+					set pcontent# pointer
+					set psize# sz
 					Return command
 				endif
+				#break #don't want to remember this when having something like addend command, and who will wrong here?
 			endif
-			break
 		endelseIf
 		Add pointercommands dsz
 		Set cursor pointercommands#

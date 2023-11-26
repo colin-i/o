@@ -22,7 +22,7 @@ else
 			Str ptrelfobjformat^elfobjformat
 			Data elfobjformresp#1
 
-			SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_value)
+			SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_value,(NULL))
 			If elfobjformresp=true
 				sd is_so
 				setcall is_so stratmemspc(pcontent,pcomsize,"SO",false)

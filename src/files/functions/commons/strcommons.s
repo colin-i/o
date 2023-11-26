@@ -216,7 +216,8 @@ Function spaces(sd pcontent,sd psize)
 EndFunction
 
 #bool;return 1 or 0
-Function stringsatmemspc(data pcontent,data psize,str match,data spacereq,str extstr,data extbool)
+Function stringsatmemspc(sv pcontent,sd psize,ss match,sd spacereq,ss extstr,sd extbool,sv intercursors)
+#												    attention here there is a sd but not working on entire long, so sd is ok
 	Data content#1
 	Data size#1
 	Data bool#1
@@ -234,9 +235,12 @@ Function stringsatmemspc(data pcontent,data psize,str match,data spacereq,str ex
 
 	If extstr!=zero
 		SetCall extbool# stratmem(tocontent,tosize,extstr)
-		#to work around ...xcall, and ok in other cases
-		Set pcontent# content
-		Set psize# size
+		if intercursors!=(NULL)
+			#to work around ...xcall
+			Set intercursors# content
+			add intercursors :
+			set intercursors#d^ size
+		endif
 	EndIf
 
 	If spacereq=nonzero
@@ -254,7 +258,7 @@ EndFunction
 Function stratmemspc(data pcontent,data psize,str match,data spacereq)
 	Data null=NULL
 	Data bool#1
-	SetCall bool stringsatmemspc(pcontent,psize,match,spacereq,null,null)
+	SetCall bool stringsatmemspc(pcontent,psize,match,spacereq,null,null,null)
 	Return bool
 EndFunction
 
