@@ -1076,5 +1076,7 @@
 	Lines are ended with new line(0xa),carriage return and new line(0xd,0xa) or semicolon(0x3B).<br>
 	The command line options are detailed at some point on the linux console std. On windows there some dialogs instead of console std.<br>
 	<i>has_debug</i> option will add a .debug section at objects that acts like the log file for files hierarchy and another log,  <i>log_line</i>, A,B format, where A is the line number and B is the code section offset where it starts.
+		To see the content, for example, run
+		<br>&emsp;<i>objcopy -O binary --only-section=.debug --set-section-flags .debug=alloc file.o file.txt</i>
 	</p>
 </p>
