@@ -163,20 +163,23 @@ EndFunction
 
 #er
 function include_sec_skip(sv pcontent,sd pcomsize)
+	call spaces(pcontent,pcomsize)
 	ss content;set content pcontent#
-	sd size;set size pcomsize#
-	call spaces(#content,#size)
 	if content#=(asciidoublequote)
+		sd size;set size pcomsize#
 		sd err
 		sd s;sd dummy
 		SetCall err quotinmem(#content,#size,#s,#dummy)
 		if err=(noerror)
-			add content s;sub size s
-			call stepcursors(#content,#size)
-			set pcontent# content;set pcomsize# size
-			return (noerror)
+			setcall err xfile_add_base_ifif((Xfile_include_alternative_yes),content,s)
+			if err=(noerror)
+				add content s;sub size s
+				call stepcursors(#content,#size)
+				set pcontent# content;set pcomsize# size
+			endif
 		endif
-		return err
-	endif
-	return (noerror)
+	else
+		setcall err xfile_add_char_ifif((Xfile_include_alternative_no))
+	endelse
+	return err
 endfunction

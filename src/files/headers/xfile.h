@@ -3,7 +3,7 @@ const Xfile_comment=0
 const Xfile_commentmulti=1
 const Xfile_commentlineend=2
 const Xfile_format=3
-#const Xfile_include=4
+const Xfile_include=4
 const Xfile_functiondef=5
 const Xfile_declare=6
 const Xfile_action=7
@@ -170,3 +170,9 @@ const Xfile_format_elfobj=2
 const Xfile_format_elfobj64=3
 const Xfile_format_elfobjig=4
 const Xfile_format_elfobj64ig=5
+
+const Xfile_include_normal=0
+const Xfile_include_extern=1
+
+const Xfile_include_alternative_no=0
+const Xfile_include_alternative_yes=1

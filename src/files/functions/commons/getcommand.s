@@ -343,13 +343,12 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *#1
 		Data *=spacenotreq
 	Const cINCLUDELINK=!-coms_start
-	Const cINCLUDELINK_top=!
-		Const cINCLUDE=!-cINCLUDELINK_top
+		Const cINCLUDE=Xfile_include_normal
 			data *^cINCLUDE_c
 			Data *=cINCLUDELINK
 			Data *=cINCLUDE
 			Data *=spacereq
-		Const cEINCLUDE=!-cINCLUDELINK_top
+		Const cEINCLUDE=Xfile_include_extern
 			data *^cEINCLUDE_c
 			Data *=cINCLUDELINK
 			Data *=cEINCLUDE
