@@ -3,7 +3,7 @@
 Const spacereq=1
 Const spacenotreq=0
 
-#with caution like elseif before else for getcommand comparations
+#with caution like elseif before else for getcommand comparations, only at space not required (elseif/else, endelseif/endelse, end../end, return/ret)
 
 Char cCOMMENT_c={commentascii,0}
 Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cSD_c="SD";Char cSS_c="SS";Char cSV_c="SV"
@@ -12,11 +12,11 @@ Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cSD_c="SD";Char c
 	Char cVDATAX_c="VDATAX";Char cVSTRX_c="VSTRX";Char cVALUEX_c="VALUEX"
 	Char cCONST_c="CONST"
 Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cREM_c="REM";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
-Char cRETURN_c="RETURN";Char cINCST_c="INCST";Char cINC_c="INC";Char cDECST_c="DECST";Char cDEC_c="DEC";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cSHL_c="SHL";Char cSHR_c="SHR";Char cSAR_c="SAR";Char cEXIT_c="EXIT"
-Char cCALLX_c="CALLX";Char cCALL_c="CALL"
-Char cIF_c="IF";Char cENDIF_c="ENDIF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE";Char cENDELSEIF_c="ENDELSEIF";Char cENDELSE_c="ENDELSE";Char cWHILE_c="WHILE";Char cENDWHILE_c="ENDWHILE";Char cBREAK_c="BREAK";Char cCONTINUE_c="CONTINUE"
+Char cRETURN_c="RETURN";Char cINC_c="INC";Char cDEC_c="DEC";Char cINCST_c="INCST";Char cDECST_c="DECST";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cSHL_c="SHL";Char cSHR_c="SHR";Char cSAR_c="SAR";Char cEXIT_c="EXIT"
+Char cCALL_c="CALL";Char cCALLX_c="CALLX"
+Char cIF_c="IF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE";Char cENDIF_c="ENDIF";Char cENDELSEIF_c="ENDELSEIF";Char cENDELSE_c="ENDELSE";Char cWHILE_c="WHILE";Char cENDWHILE_c="ENDWHILE";Char cBREAK_c="BREAK";Char cCONTINUE_c="CONTINUE"
 Char cIMPORT_c="IMPORT";Char cIMPORTX_c="IMPORTX"
-Char cFUNCTION_c="FUNCTION";Char cFUNCTIONX_c="FUNCTIONX";Char cENTRYRAW_c="ENTRYRAW";Char cENTRY_c="ENTRY"
+Char cFUNCTION_c="FUNCTION";Char cFUNCTIONX_c="FUNCTIONX";Char cENTRY_c="ENTRY";Char cENTRYRAW_c="ENTRYRAW"
 Char cENDFUNCTION_c="ENDFUNCTION"
 Char cEND_c="END"
 Char cRET_c="RET"
@@ -24,11 +24,11 @@ Char cINCLUDE_c="INCLUDE";Char cEINCLUDE_c="EINCLUDE"
 Char cFORMAT_c="FORMAT"
 Char cIMPORTAFTERCALL_c="IMPORTAFTERCALL";Char cAFTERCALL_c="AFTERCALL"
 Char cAFTERCALLACTIVATE_c="AFTERCALLACTIVATE";Char cAFTERCALLCLEAR_c="AFTERCALLCLEAR"
-Char cORPHAN_c="ORPHAN"
-Char cCALLEXX_c="CALLEXX";Char cCALLEX_c="CALLEX"
-Char cOVERRIDE_c="OVERRIDE"
+Char cCALLEX_c="CALLEX";Char cCALLEXX_c="CALLEXX"
 Char cLIBRARY_c="LIBRARY"
 Char cHEX_c="HEX"
+Char cOVERRIDE_c="OVERRIDE"
+Char cORPHAN_c="ORPHAN"
 Char cI3_c="I3"
 
 const not_a_subtype=-1
@@ -182,25 +182,25 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cONEARG
 			Data *=cRETURN
 			Data *=spacereq
-		Const cINCST=!-cONEARG_top
-			data *^cINCST_c
-			Data *=cONEARG
-			Data *=cINCST
-			Data *=spacereq
 		Const cINC=!-cONEARG_top
 			data *^cINC_c
 			Data *=cONEARG
 			Data *=cINC
 			Data *=spacereq
-		Const cDECST=!-cONEARG_top
-			data *^cDECST_c
-			Data *=cONEARG
-			Data *=cDECST
-			Data *=spacereq
 		Const cDEC=!-cONEARG_top
 			data *^cDEC_c
 			Data *=cONEARG
 			Data *=cDEC
+			Data *=spacereq
+		Const cINCST=!-cONEARG_top
+			data *^cINCST_c
+			Data *=cONEARG
+			Data *=cINCST
+			Data *=spacereq
+		Const cDECST=!-cONEARG_top
+			data *^cDECST_c
+			Data *=cONEARG
+			Data *=cDECST
 			Data *=spacereq
 		Const cNEG=!-cONEARG_top
 			data *^cNEG_c
@@ -233,13 +233,13 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cEXIT
 			Data *=spacereq
 	Const cCALL=!-coms_start
-		data *^cCALLX_c
-		Data *=cCALL
-		Data *=x_callx_flag
-		Data *=spacereq
 		data *^cCALL_c
 		Data *=cCALL
 		Data *=0
+		Data *=spacereq
+		data *^cCALLX_c
+		Data *=cCALL
+		Data *=x_callx_flag
 		Data *=spacereq
 	Const cCONDITIONS=!-coms_start
 	Const cCONDITIONS_top=!
@@ -248,11 +248,6 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cCONDITIONS
 			Data *=cIF
 			Data *=spacereq
-		Const cENDIF=!-cCONDITIONS_top
-			data *^cENDIF_c
-			Data *=cCONDITIONS
-			Data *=cENDIF
-			Data *=spacenotreq
 		Const cELSEIF=!-cCONDITIONS_top
 			data *^cELSEIF_c
 			Data *=cCONDITIONS
@@ -262,6 +257,11 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			data *^cELSE_c
 			Data *=cCONDITIONS
 			Data *=cELSE
+			Data *=spacenotreq
+		Const cENDIF=!-cCONDITIONS_top
+			data *^cENDIF_c
+			Data *=cCONDITIONS
+			Data *=cENDIF
 			Data *=spacenotreq
 		Const cENDELSEIF=!-cCONDITIONS_top
 			data *^cENDELSEIF_c
@@ -317,15 +317,15 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cSTARTFUNCTION
 			Data *=cFUNCTIONX
 			Data *=spacereq
-		Const cENTRYRAW=!-cSTARTFUNCTION_top
-			data *^cENTRYRAW_c
-			Data *=cSTARTFUNCTION
-			Data *=cENTRYRAW
-			Data *=spacereq
 		Const cENTRY=!-cSTARTFUNCTION_top
 			data *^cENTRY_c
 			Data *=cSTARTFUNCTION
 			Data *=cENTRY
+			Data *=spacereq
+		Const cENTRYRAW=!-cSTARTFUNCTION_top
+			data *^cENTRYRAW_c
+			Data *=cSTARTFUNCTION
+			Data *=cENTRYRAW
 			Data *=spacereq
 	Const cENDFUNCTION=!-coms_start
 		data *^cENDFUNCTION_c
@@ -384,24 +384,14 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cMANIPULATEAFTERCALL
 			Data *=cAFTERCALLCLEAR
 			Data *=spacenotreq
-	Const cORPHAN=!-coms_start
-		data *^cORPHAN_c
-		Data *=cORPHAN
-		Data *#1
-		Data *=spacereq
 	Const cCALLEX=!-coms_start
-		data *^cCALLEXX_c
-		Data *=cCALLEX
-		Data *=x_callx_flag
-		Data *=spacereq
 		data *^cCALLEX_c
 		Data *=cCALLEX
 		Data *=0
 		Data *=spacereq
-	Const cOVERRIDE=!-coms_start
-		data *^cOVERRIDE_c
-		Data *=cOVERRIDE
-		Data *#1
+		data *^cCALLEXX_c
+		Data *=cCALLEX
+		Data *=x_callx_flag
 		Data *=spacereq
 	Const cLIBRARY=!-coms_start
 		data *^cLIBRARY_c
@@ -411,6 +401,16 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 	Const cHEX=!-coms_start
 		data *^cHEX_c
 		Data *=cHEX
+		Data *#1
+		Data *=spacereq
+	Const cOVERRIDE=!-coms_start
+		data *^cOVERRIDE_c
+		Data *=cOVERRIDE
+		Data *#1
+		Data *=spacereq
+	Const cORPHAN=!-coms_start
+		data *^cORPHAN_c
+		Data *=cORPHAN
 		Data *#1
 		Data *=spacereq
 	Const cI3=!-coms_start

@@ -25,9 +25,11 @@ else
 			SetCall elfobjformresp stringsatmemspc(pcontent,pcomsize,ptrelfobjformat,false,"64",p_is_for_64_value,(NULL))
 			If elfobjformresp=true
 				sd is_so
+				set ignore (FALSE)
 				setcall is_so stratmemspc(pcontent,pcomsize,"SO",false)
 				if is_so=true
 					if ignore_format_so=(No)
+						set ignore (TRUE)
 						setcall errormsg addtolog_char((log_reusable),logfile)
 					endif
 				endif

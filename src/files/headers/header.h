@@ -273,6 +273,7 @@ Const elf_unix=1
 Data pe_exec=pe_exec
 Data elf_unix=elf_unix
 Data formatdefined#1
+datax ignore#1
 
 ##section alignment for mem realloc and section padding
 Const page_sectionalignment=0x1000

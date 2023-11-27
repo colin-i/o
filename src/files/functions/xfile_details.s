@@ -220,12 +220,47 @@ endfunction
 
 #err
 function xfile_add_end_if()
-	sd err;setcall err xfile_add_char_if((Xfile_condend));return err
+	sd err;setcall err xfile_add_char_if((Xfile_end));return err
 endfunction
 #err
 function xfile_add_end_ifif()
 	if main.parses=(pass_write)
 		sd err;setcall err xfile_add_end_if();return err
+	endif
+	return (noerror)
+endfunction
+
+#err
+function xfile_add_format_if(sd format,sd ignore)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_char((Xfile_format))
+		if err=(noerror)
+			if format=(elf_unix)
+				sd ptrobject%ptrobject
+				if ptrobject#=(TRUE)
+					sd b;setcall b is_for_64()
+					if b=(TRUE)
+						if ignore=(FALSE)
+							setcall err xfile_add_char((Xfile_format_elfobj64))
+						else
+							setcall err xfile_add_char((Xfile_format_elfobj64ig))
+						endelse
+					else
+						if ignore=(FALSE)
+							setcall err xfile_add_char((Xfile_format_elfobj))
+						else
+							setcall err xfile_add_char((Xfile_format_elfobjig))
+						endelse
+					endelse
+				else
+					setcall err xfile_add_char((Xfile_format_elf))
+				endelse
+			else
+				setcall err xfile_add_char((Xfile_format_exe))
+			endelse
+		endif
+		return err
 	endif
 	return (noerror)
 endfunction

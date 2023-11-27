@@ -129,8 +129,8 @@ if errormsg=(noerror)
 						elseif commandset=(cINCLUDELINK)
 						Elseif commandset=(cFORMAT)
 						Elseif commandset=(cDECLAREAFTERCALL)  #and import
-						elseif commandset=(cORPHAN)    #for addaref
 						elseif commandset=(cOVERRIDE)   #example underscore_pref
+						elseif commandset=(cORPHAN)    #for addaref
 						else;set commandset (cCOMMENT);endelse
 					else
 					#pass_calls
@@ -187,7 +187,10 @@ if errormsg=(noerror)
 				Include "./index/include.s"
 			ElseIf commandset=(cFORMAT)
 				if parses=(pass_init);Include "./index/format.s"
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+				else
+					Call advancecursors(pcontent,pcomsize,comsize)
+					setcall errormsg xfile_add_format_if(fileformat,ignore)
+				endelse
 			ElseIf commandset=(cDECLAREAFTERCALL)
 				if parses=(pass_write);Include "./index/aftercall.s";
 				else;if subtype=(cAFTERCALL);add datasecReg (aftercalldeclaresize);endif
@@ -195,20 +198,20 @@ if errormsg=(noerror)
 				set g_e_b_p# (TRUE)
 			ElseIf commandset=(cMANIPULATEAFTERCALL)
 				Include "./index/aftercallmanipulate.s"
-			ElseIf commandset=(cORPHAN)
-				Include "./index/warning.s"
 			ElseIf commandset=(cCALLEX)
 		call entryscope_verify_code()
 				Include "./index/callex.s"
-			ElseIf commandset=(cOVERRIDE)
-				#is at all, example at write hidden_pref
-				setcall errormsg override_com(#content,#comsize)
 			ElseIf commandset=(cLIBRARY)
 				if parses=(pass_init);Include "./index/library.s"
 				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
 			ElseIf commandset=(cHEX)
 		call entryscope_verify_code()
 				Include "./index/hex.s"
+			ElseIf commandset=(cOVERRIDE)
+				#is at all, example at write hidden_pref
+				setcall errormsg override_com(#content,#comsize)
+			ElseIf commandset=(cORPHAN)
+				Include "./index/warning.s"
 			Else
 			#If commandset==(cI3)
 		call entryscope_verify_code()
