@@ -22,7 +22,7 @@ const Xfile_end=16
 #const Xfile_ret=17
 #const Xfile_library=18
 #const Xfile_import=19
-#const Xfile_aftercall=20
+const Xfile_aftercall=20
 #const Xfile_hex=21
 #const Xfile_override=22
 #const Xfile_orphan=23
@@ -176,3 +176,6 @@ const Xfile_include_extern=1
 
 const Xfile_include_alternative_no=0
 const Xfile_include_alternative_yes=1
+
+const Xfile_aftercall_declare=0
+const Xfile_aftercall_import=1
