@@ -7,13 +7,13 @@ if comsize=0;set errormsg "AfterCall variable name expected."
 else
 	setcall errormsg xfile_add_char_if((Xfile_aftercall))
 	if errormsg=(noerror)
-		vstr ac_store_content#1;data ac_store_size#1
-		set ac_store_content content;set ac_store_size comsize
+		vstr ac_store_c#1;data ac_store_s#1
 		data acsym_value#1;data acsym_size#1;data acsym_shndx#1
 		sd g_e_p;setcall g_e_p global_err_p()
 		if subtype=(cIMPORTAFTERCALL)
 			If object=(FALSE);set errormsg "ImportAfterCall is used at objects."
 			else
+				set ac_store_c content;set ac_store_s comsize
 				set acsym_value 0;set acsym_size (sym_with_size);set acsym_shndx (NULL)
 				setcall errormsg xfile_add_base_if((Xfile_aftercall_import),content,comsize)
 				call advancecursors(pcontent,pcomsize,comsize)
@@ -37,13 +37,14 @@ else
 						if errormsg=(noerror)
 							setcall errormsg xfile_add_base_if((Xfile_declfeature_normal),content,comsize)
 							if errormsg=(noerror)
+								set ac_store_c content;set ac_store_s comsize
 								SetCall errormsg addaref(ac_current_data,pcontent,pcomsize,comsize,(charnumber),(dummy_mask))
 							endif
 						endif
 					else
 						#since aftercall(activate/clear)
 						call stepcursors(pcontent,pcomsize)
-						set ac_store_content "";set ac_store_size 0
+						set ac_store_c "";set ac_store_s 0
 						setcall errormsg xfile_add_base_if((Xfile_declfeature_unref),content,comsize)
 						call advancecursors(pcontent,pcomsize,comsize)
 					endelse
@@ -60,7 +61,7 @@ else
 					div g_e_p# elf32_dyn_d_val_syment
 				endelse
 				#adding at current names reg the content lenghting comsize
-				SetCall errormsg elfaddstrszsym(ac_store_content,ac_store_size,acsym_value,acsym_size,(STT_NOTYPE),(STB_GLOBAL),acsym_shndx,ptrtable)
+				SetCall errormsg elfaddstrszsym(ac_store_c,ac_store_s,acsym_value,acsym_size,(STT_NOTYPE),(STB_GLOBAL),acsym_shndx,ptrtable)
 				#can be weak at linux but windows needs global and we agreed imports are global
 			endif
 		endif
