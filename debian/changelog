@@ -1,3 +1,9 @@
+ocompiler (1-5+109) xenial; urgency=medium
+
+  * aftercallenable/disable
+
+ -- bc <bc@bc-Type1ProductConfigId>  Wed, 29 Nov 2023 15:15:31 +0200
+
 ocompiler (1-5+108) xenial; urgency=medium
 
   * fix stringsatmemspc and getcommand
