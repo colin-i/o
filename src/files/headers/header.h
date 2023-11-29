@@ -507,7 +507,7 @@ const ptr_nobits_virtual^nobits_virtual
 data has_debug#1
 const ptr_has_debug^has_debug
 
-const aftercall_clearstate=0
+const aftercall_disable=0
 
 data xbool#1
 data xfile#1

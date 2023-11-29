@@ -20,7 +20,7 @@ entry main()
 value ^e^a
 #i3
 call e()
-aftercallactivate
+aftercallenable
 call e()
-aftercallclear
+aftercalldisable
 call e()
