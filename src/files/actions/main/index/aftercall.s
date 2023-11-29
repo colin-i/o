@@ -44,7 +44,8 @@ else
 					else
 						#since aftercall(activate/clear)
 						call stepcursors(pcontent,pcomsize)
-						set ac_store_c "";set ac_store_s 0
+						set ac_store_c (NULL);set ac_store_s 0
+						#              ok not "", is content!=null once and inside that libc memcpy
 						setcall errormsg xfile_add_base_if((Xfile_declfeature_unref),content,comsize)
 						call advancecursors(pcontent,pcomsize,comsize)
 					endelse
