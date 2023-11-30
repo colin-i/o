@@ -87,7 +87,7 @@ else
 			EndElse
 		EndIf
 	Else
-		set nobits_virtual (No)  #.dtnb is not yet at exe format
+		setcall errormsg pe_init()
 	EndElse
 
 	If errormsg=noerr

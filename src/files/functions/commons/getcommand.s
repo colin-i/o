@@ -418,6 +418,7 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *#1
 		Data *=spacenotreq
 Const numberofcommands=(!-coms_start)/com_size
+Const Error=!-coms_start
 
 Data pointers#numberofcommands+1
 Const compointersloc^pointers

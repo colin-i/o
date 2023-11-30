@@ -59,7 +59,7 @@ Const ptrfileout^fileout
 Data ptrfileout%ptrfileout
 
 #alloc.o
-Const mainscope=10*0x1000
+#Const mainscope=10*0x1000
 Const subscope=2*0x1000
 Const _open_read=_O_RDONLY|flag_O_BINARY
 Const _open_write=_O_WRONLY|flag_O_BINARY|flag_O_CREAT|_O_TRUNC
@@ -73,7 +73,7 @@ Const containersdataoffset=4
 Const containersdataRegoffset=8
 Const sizeofcontainer=3*dwsz
 #base containers
-Const includesSize=50*includesetSz
+#Const includesSize=50*includesetSz
 #includesSize
 
 #this, not yet at simple exec Const containersbegin=!!
@@ -89,7 +89,7 @@ Datax miscbag#1
 Datax miscbagReg#1
 Const ptr_miscbag^miscbagMax
 
-Const conditionssize=200*dwsz
+#Const conditionssize=200*dwsz
 #conditionssize
 Datax conditionsloopsMax#1
 Datax *conditionsloops#1
@@ -105,38 +105,38 @@ Const ptr_unresolvedcalls^unresolvedcallsMax
 Datax integerMax#1
 Datax *#1
 Datax *#1
-Datax stringMax#1
+Datax *stringMax#1
 Datax *#1
 Datax *#1
-Datax charMax#1
+Datax *charMax#1
 Datax *#1
 Datax *#1
-Datax sdMax#1
+Datax *sdMax#1
 Datax *#1
 Datax *#1
-Datax ssMax#1
+Datax *ssMax#1
 Datax *#1
 Datax *#1
-Datax svMax#1
+Datax *svMax#1
 Datax *#1
 Datax *#1
 
 Datax integerfnscopeMax#1
 Datax *#1
 Datax *#1
-Datax stringfnscopeMax#1
+Datax *stringfnscopeMax#1
 Datax *#1
 Datax *#1
-Datax charfnscopeMax#1
+Datax *charfnscopeMax#1
 Datax *#1
 Datax *#1
-Datax sdfnMax#1
+Datax *sdfnMax#1
 Datax *#1
 Datax *#1
-Datax ssfnMax#1
+Datax *ssfnMax#1
 Datax *#1
 Datax *#1
-Datax svfnMax#1
+Datax *svfnMax#1
 Datax *#1
 Datax *#1
 
@@ -165,7 +165,7 @@ Const afterscopes=numberofvars*2
 	Const functionsnumber=afterscopes+1
 const sizeofscope=sizeofcontainer*numberofvars
 
-Const constantssize=10*mainscope
+#Const constantssize=10*mainscope
 #constantssize
 Datax constantsMax#1
 Datax *constants#1

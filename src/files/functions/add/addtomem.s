@@ -36,65 +36,50 @@ Function addtosec(str content,data size,data dst)
 	Set avail destMax
 	Sub avail destData
 	If avail<size
-		Data datasec%%ptr_datasec
-		Data codesec%%ptr_codesec
-		Data debugsec%%ptr_debug
-		Data tempsec%%ptr_tempdata
 		Data ptrfileformat%ptrfileformat
-		Data elf_unix=elf_unix
-		Data false=FALSE
-		Data true=TRUE
-		Data sectionexpand#1
-		Set sectionexpand false
-		If ptrfileformat#=elf_unix
-			Set sectionexpand true
-		Else
-			If dst=datasec
-				Set sectionexpand true
-			ElseIf dst=codesec
-				Set sectionexpand true
-			ElseIf dst=debugsec
-			#this is only because there is no blocking at writefile_errversion_debug for speed reasons
-			#this is also called before format is defined
-				Set sectionexpand true
-			elseif dst=tempsec
-				Set sectionexpand true
-			EndElseIf
-		EndElse
-		If sectionexpand=false
+		Data pe_exec=pe_exec
+		If ptrfileformat#=pe_exec
 			Char _memerr="Memory space error."
-			Str memerr^_memerr
-			Return memerr
-		Else
-			Data value#1
-			sd err
+			vStr memerr^_memerr
+			Value ptrtable%%ptr_table
+			Value ptrnames%%ptr_names
+			Value ptraddresses%%ptr_addresses
+			If dst=ptrtable
+				Return memerr
+			ElseIf dst=ptrnames
+				Return memerr
+			ElseIf dst=ptraddresses
+				Return memerr
+			EndElseIf
+		Endif
+		Data value#1
+		sd err
 
-			Set value destData
-			setcall err maxsectioncheck(size,#value)
-			If err!=noerr
-				Return err
-			EndIf
-			Data pad#1
-			Data ptrsecalign%ptrpage_sectionalignment
-			Data secalign#1
-			Set secalign ptrsecalign#
-			SetCall pad requiredpad(value,secalign)
-			setcall err maxsectioncheck(pad,#value)
-			If err!=noerr
-				Return err
-			EndIf
+		Set value destData
+		setcall err maxsectioncheck(size,#value)
+		If err!=noerr
+			Return err
+		EndIf
+		Data pad#1
+		Data ptrsecalign%ptrpage_sectionalignment
+		Data secalign#1
+		Set secalign ptrsecalign#
+		SetCall pad requiredpad(value,secalign)
+		setcall err maxsectioncheck(pad,#value)
+		If err!=noerr
+			Return err
+		EndIf
 
-			Data contoffset=containersdataoffset
-			Data container#1
-			Set container dst
-			Add container contoffset
+		Data contoffset=containersdataoffset
+		Data container#1
+		Set container dst
+		Add container contoffset
 
-			SetCall err memrealloc(container,value)
-			If err!=noerr
-				Return err
-			EndIf
-			Set dst# value
-		EndElse
+		SetCall err memrealloc(container,value)
+		If err!=noerr
+			Return err
+		EndIf
+		Set dst# value
 	EndIf
 	If content!=null
 		Str destloc#1

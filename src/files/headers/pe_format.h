@@ -34,7 +34,7 @@ Data *SizeOfUninitializedData=0
 ####completed later
 Data AddressOfEntryPoint#1
 ####virtual base code section
-Data BaseOfCode=0x3000
+Data BaseOfCode=0x3000          #this is moved if required
 ####virtual base data section
 Data *BaseOfData=0x1000
 #NT additional fields.

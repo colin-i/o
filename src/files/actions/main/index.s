@@ -112,8 +112,12 @@ if errormsg=(noerror)
 						#tested at function gather; FORMAT is here starting with FUNCTIONX to set the mask knowing the format
 						if formatdefined=0
 							if commandset!=(cFORMAT)
-								set nobits_virtual (No)     #this is default pe_exe format, same behavior for nobits
-								call backup_pref(#formatdefined)
+								setcall errormsg pe_init()
+								if errormsg=(noerror)
+									call backup_pref(#formatdefined)
+								else
+									set commandset (Error)
+								endelse
 							endif
 						endif
 						#needing to find virtual start
@@ -212,11 +216,11 @@ if errormsg=(noerror)
 				setcall errormsg override_com(#content,#comsize)
 			ElseIf commandset=(cORPHAN)
 				Include "./index/warning.s"
-			Else
-			#If commandset==(cI3)
+			ElseIf commandset=(cI3)
 		call entryscope_verify_code()
 				Include "./index/i3.s"
-			EndElse
+			EndElseIf
+			#else commandset==(Error)
 			If errormsg=(noerror)
 				#set when code started
 				#this can be at line 0

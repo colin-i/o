@@ -81,3 +81,24 @@ function comline_pointer(ss a,sd p_p)
 	endwhile
 	return "command line argument not found"
 endfunction
+
+#err
+function pe_init()
+	sd ptr_nobits_virtual%ptr_nobits_virtual
+	set ptr_nobits_virtual# (No)  #.dtnb is not yet at exe format
+	#this is default pe_exe format, same behavior for nobits
+
+	vdata ptrdatasec%%ptr_datasec
+	vdata ptrcodesec%%ptr_codesec
+	vdata ptrtable%%ptr_table
+	vdata ptraddresses%%ptr_addresses
+	vdata ptrnames%%ptr_names
+
+	sd err
+	set ptrdatasec# (page_sectionalignment);setcall err enumbags_alloc(ptrdatasec);if err!=(noerror);Return err;EndIf
+	set ptrcodesec# (page_sectionalignment);setcall err enumbags_alloc(ptrcodesec);if err!=(noerror);Return err;EndIf
+	set ptrtable# (sizeofiedataparts);setcall err enumbags_alloc(ptrtable);if err!=(noerror);Return err;EndIf
+	set ptraddresses# (iaddressessize);setcall err enumbags_alloc(ptraddresses);if err!=(noerror);Return err;EndIf
+	set ptrnames# (sizeofienames);setcall err enumbags_alloc(ptrnames)
+	return err
+endfunction

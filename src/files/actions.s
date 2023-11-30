@@ -1,6 +1,10 @@
 
 #inits needed on top then some allocs at openfilename then frees needing inits, then these allocs
-Include "./inits/alloc.s"
+SetCall errormsg enumbags(true)
+#here is the start of mem worries for linux
+If errormsg!=noerr
+	Call msgerrexit(errormsg)
+EndIf
 
 Include "./actions/setdefdir.s"
 
