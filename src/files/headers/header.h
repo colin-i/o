@@ -208,6 +208,7 @@ Datax addressesMax#1
 Datax addresses#1
 Datax addressesReg#1
 Const ptr_addresses^addressesMax
+#data relocs at object
 
 Const sizeofienames=sizeofsecdata-iaddressessize-itablesize
 #Const inamessize=sizeofienames
@@ -221,6 +222,7 @@ Datax extraMax#1
 Datax extra#1
 Datax extraReg#1
 Const ptr_extra^extraMax
+#code relocs at object
 
 Datax unresLocalMax#1
 Datax unresLocal#1
@@ -318,6 +320,7 @@ Value ptraddresses%%ptr_addresses
 Value ptrextra%%ptr_extra
 Value ptrconditionsloops%%ptr_conditionsloops
 Value ptrdebug%%ptr_debug
+Value ptrtempdata%%ptr_tempdata
 Value ptrnull^null
 
 Data allocerrormsg#1

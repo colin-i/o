@@ -9,7 +9,7 @@ SetCall errormsg xfile_add_char_ifif((Xfile_include))
 if errormsg=noerr
 	SetCall errormsg quotinmem(pcontent,pcomsize,pquotsz,pescapes)
 	if errormsg=noerr
-		SetCall errormsg xfile_add_base_ifif(subtype,content,quotsz)
+		SetCall errormsg xfile_add_char_ifif(subtype)
 		if errormsg=noerr
 			if include_sec=(TRUE)
 				ss include_test
@@ -19,12 +19,15 @@ if errormsg=noerr
 				setcall include_test mem_spaces(include_test,pointer)
 				if include_test!=pointer
 					if include_test#=(asciidoublequote)
-						sub include_test content
-						sub comsize include_test
-						add content include_test
-						SetCall errormsg quotinmem(pcontent,pcomsize,pquotsz,pescapes)
+						SetCall errormsg addtosecstresc_xfile(pcontent,pcomsize,quotsz,escapes,ptrtempdata) #is ok with casts, at misc if set must set reg 0
 						if errormsg=noerr
-							SetCall errormsg xfile_add_base_ifif((Xfile_include_alternative_yes),content,quotsz)
+							sub include_test content
+							sub comsize include_test
+							add content include_test
+							SetCall errormsg quotinmem(pcontent,pcomsize,pquotsz,pescapes)
+							if errormsg=noerr
+								SetCall errormsg xfile_add_char_ifif((Xfile_include_alternative_yes))
+							endif
 						endif
 					else
 						setcall errormsg xfile_add_char_ifif((Xfile_include_alternative_no))
@@ -32,7 +35,7 @@ if errormsg=noerr
 				endif
 			endif
 			if errormsg=noerr
-				SetCall errormsg addtosecstresc(pcontent,pcomsize,quotsz,escapes,ptrmiscbag,zero)
+				SetCall errormsg addtosecstresc_xfile(pcontent,pcomsize,quotsz,escapes,ptrmiscbag)
 				If errormsg=noerr
 					Call stepcursors(pcontent,pcomsize)
 					Set includebool one

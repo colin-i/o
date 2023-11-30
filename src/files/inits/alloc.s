@@ -14,6 +14,7 @@ Set conditionsloopsMax conditionssize
 Set unresolvedcallsMax mainscope
 
 ##variables, constants and functions containers
+
 Data constantssize=constantssize
 Set integerMax mainscope
 Set stringMax mainscope
@@ -33,6 +34,7 @@ Set constantsMax constantssize
 Set functionsMax mainscope
 
 ##file containers
+
 Data ienamessize=sizeofienames
 
 Set datasecMax page_sectionalignment
@@ -44,12 +46,13 @@ Set tableMax itablesize
 Set addressesMax iaddressessize
 Set namesMax ienamessize
 
+#more
 Set extraMax subscope
-
 Set unresLocalMax mainscope
 
-set debugsecMax 0    #(subscope)
-set tempdataMax 0
+#this was calloc'ed
+#set debugsecMax 0    #(subscope)
+#set tempdataMax 0
 
 SetCall errormsg enumbags(true)
 #here is the start of mem worries for linux

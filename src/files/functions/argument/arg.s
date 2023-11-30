@@ -121,7 +121,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			setcall location# get_img_vdata_dataReg()
 			#set string to data
 			data ptrdatasec%%ptr_datasec
-			SetCall errnr addtosecstresc_xfile(#content,#size,q_size,escapes,ptrdatasec,(FALSE))
+			SetCall errnr addtosecstresc_xfile(#content,#size,q_size,escapes,ptrdatasec)
 			If errnr!=(noerror)
 				return errnr
 			endif

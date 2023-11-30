@@ -264,3 +264,13 @@ function xfile_add_format_if(sd format,sd ignore)
 	endif
 	return (noerror)
 endfunction
+
+#err
+#function xfile_add_import_if(sv pcontent,sd psize)
+#	if main.xfile!=(openno)
+#		Datax impquotsz#1
+#		Datax impescapes#1
+#		#the spelling errors were at pass init
+#		Call quotinmem(pcontent,psize,#impquotsz,#impescapes)
+#	return (noerror)
+#endfunction

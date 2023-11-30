@@ -6,8 +6,8 @@ Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpa
 	return err
 endFunction
 #errnr
-Function addtosecstresc_xfile(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad)
-	sd err;setcall err addtosecstresc_base(pcontent,psize,sz,escapes,pdest,wordpad,(TRUE))
+Function addtosecstresc_xfile(sd pcontent,sd psize,sd sz,sd escapes,sd pdest)
+	sd err;setcall err addtosecstresc_base(pcontent,psize,sz,escapes,pdest,(FALSE),(TRUE))
 	return err
 endFunction
 #errnr
@@ -71,7 +71,8 @@ Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd w
 	EndIf
 
 	if write_to_xfile=(TRUE)
-		setcall errnr xfile_add_string_if(xfileloc,xfilesz)
+		#ifif only for include tag
+		setcall errnr xfile_add_string_ifif(xfileloc,xfilesz)
 		return errnr
 	endif
 

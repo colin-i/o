@@ -166,16 +166,15 @@ function include_sec_skip(sv pcontent,sd pcomsize)
 	call spaces(pcontent,pcomsize)
 	ss content;set content pcontent#
 	if content#=(asciidoublequote)
-		sd size;set size pcomsize#
+		sd sz;sd escapes
 		sd err
-		sd s;sd dummy
-		SetCall err quotinmem(#content,#size,#s,#dummy)
+		SetCall err quotinmem(pcontent,pcomsize,#sz,#escapes)
 		if err=(noerror)
-			setcall err xfile_add_base_ifif((Xfile_include_alternative_yes),content,s)
+			setcall err xfile_add_char_ifif((Xfile_include_alternative_yes))
 			if err=(noerror)
-				add content s;sub size s
-				call stepcursors(#content,#size)
-				set pcontent# content;set pcomsize# size
+				Value ptrtemp%%ptr_tempdata
+				setcall err addtosecstresc_xfile(pcontent,pcomsize,sz,escapes,ptrtemp) #misc has first include file, and is ok with casts
+				call stepcursors(pcontent,pcomsize) #only mem/file write errors
 			endif
 		endif
 	else
