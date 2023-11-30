@@ -135,11 +135,11 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			#the code operation is a "prefix" like
 			setcall prefix prefix_bool()
 			set prefix# 1
-			if sens=(BACKWARD)
-				setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
-			else
+			if sens=(FORWARD)
 				Call advancecursors(ptrcontent,ptrsize,argsize)
-			endelse
+				return (noerror)
+			endif
+			setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
 			return errnr
 		endelse
 	elseif allowdata!=(allow_later)  #exclude pass_init
@@ -305,17 +305,16 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					return errnr
 				endelse
 			endelse
-			if sens=(BACKWARD)
-				setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
-			else
+			if sens=(FORWARD)
 				Call advancecursors(ptrcontent,ptrsize,argsize)
-			endelse
+				return (noerror)
+			endif
+			setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
 			return errnr
 		endif
 	endelseif
 	If sens=(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
-		Return noerr
 	endIf
 	return (noerror)
 EndFunction
