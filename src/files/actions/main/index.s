@@ -179,7 +179,7 @@ if errormsg=(noerror)
 				Include "./index/conditions.s"
 			ElseIf commandset=(cIMPORTLINK)
 				if parses=(pass_init);Include "./index/import.s"
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+				else;setcall errormsg xfile_add_import_if(pcontent,pcomsize);endelse
 			ElseIf commandset=(cSTARTFUNCTION)
 				Include "./index/function.s"
 			ElseIf commandset=(cENDFUNCTION)
