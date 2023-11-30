@@ -295,12 +295,12 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=spacenotreq
 	Const cIMPORTLINK=!-coms_start
 	Const cIMPORTLINK_top=!
-		const cIMPORT=!-cIMPORTLINK_top
+		const cIMPORT=Xfile_import_normal
 			data *^cIMPORT_c
 			Data *=cIMPORTLINK
 			Data *=cIMPORT
 			Data *=spacereq
-		const cIMPORTX=!-cIMPORTLINK_top
+		const cIMPORTX=Xfile_import_extern
 			data *^cIMPORTX_c
 			Data *=cIMPORTLINK
 			Data *=cIMPORTX

@@ -266,22 +266,25 @@ function xfile_add_format_if(sd format,sd ignore)
 endfunction
 
 #err
-function xfile_add_import_if(sv pcontent,sd psize)
+function xfile_add_import_if(sv pcontent,sd psize,sd subtype)
 	if main.xfile!=(openno)
 		sd err
 		setcall err xfile_add_char((Xfile_import))
 		if err=(noerror)
-			Datax impquotsz#1
-			Datax impescapes#1
-			#the spelling errors were at pass init
-			Call quotinmem(pcontent,psize,#impquotsz,#impescapes)
-			setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
+			setcall err xfile_add_char(subtype)
 			if err=(noerror)
-				Call stepcursors(pcontent,psize)
-				Call spaces(pcontent,psize)
-				sd imp_size;setcall imp_size find_whitespaceORcomment(pcontent#,psize#)
-				setcall err xfile_add_string(pcontent#,imp_size)
-				call advancecursors(pcontent,psize,imp_size)
+				Datax impquotsz#1
+				Datax impescapes#1
+				#the spelling errors were at pass init
+				Call quotinmem(pcontent,psize,#impquotsz,#impescapes)
+				setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
+				if err=(noerror)
+					Call stepcursors(pcontent,psize)
+					Call spaces(pcontent,psize)
+					sd imp_size;setcall imp_size find_whitespaceORcomment(pcontent#,psize#)
+					setcall err xfile_add_string(pcontent#,imp_size)
+					call advancecursors(pcontent,psize,imp_size)
+				endif
 			endif
 		endif
 		return err
