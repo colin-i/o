@@ -250,14 +250,14 @@ function addtolog_natural(sd number)
 	return err
 endfunction
 
-function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data1,sd data2)
+function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data)
 	sd c
 	sd s
 	set c ptrcontent#
 	set s ptrsize#
 	sd err
 	data noerr=noerror
-	setcall err forward(ptrcontent,ptrsize,data1,data2)
+	setcall err forward(ptrcontent,ptrsize,data)
 	if err=noerr
 		set ptrcontent# c
 		set ptrsize# s

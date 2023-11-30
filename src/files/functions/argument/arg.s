@@ -1,5 +1,5 @@
 
-function verify_syntax_end(sd ptrcontent,sd ptrsize,sd argsize,sd *data2)
+function verify_syntax_end(sd ptrcontent,sd ptrsize,sd argsize)
 	Call advancecursors(ptrcontent,ptrsize,argsize)
 	Call spaces(ptrcontent,ptrsize)
 	data z=0
@@ -86,15 +86,16 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 
 	Data noerr=noerror
 	data false=0
+	data f^verify_syntax_end
 
 	Set content ptrcontent#
-	set size ptrsize#
 
 	sd prefix
 	if content#=d_q
 		sd q_size
 		sd escapes
-		SetCall errnr quotinmem(#content,#size,#q_size,#escapes)
+		set size ptrsize#
+		SetCall errnr quotinmem(#content,#size,#q_size,#escapes) #this has a stepcursors
 		If errnr!=(noerror)
 			return errnr
 		endif
@@ -134,6 +135,12 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			#the code operation is a "prefix" like
 			setcall prefix prefix_bool()
 			set prefix# 1
+			if sens=(BACKWARD)
+				setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
+			else
+				Call advancecursors(ptrcontent,ptrsize,argsize)
+			endelse
+			return errnr
 		endelse
 	elseif allowdata!=(allow_later)  #exclude pass_init
 		setcall errnr arg_size(content,argsize,#argsize)  #spc,tab
@@ -182,130 +189,135 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 
 				if sens=(FORWARD)
 					return (noerror)
-				else
-					sd back=-1
-					mult back argsize
-					call advancecursors(ptrcontent,ptrsize,back)
-				endelse
-			else
-				sd imm;setcall imm getimm()
-				if imm=(TRUE) #if is FALSE, this is the only option for xfile. also allow(string) is no
-				#then, this is a test at allow yes; also at allow no for conditions
-					setcall errnr xfile_add_char_if((Xfile_arg_varfn))
+				endif
+				sd back=-1
+				mult back argsize
+				call advancecursors(ptrcontent,ptrsize,back)
+				setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
+				return errnr
+			endif
+			sd imm;setcall imm getimm()
+			if imm=(TRUE) #if is FALSE, this is the only option for xfile. also allow(string) is no
+			#then, this is a test at allow yes; also at allow no for conditions
+				setcall errnr xfile_add_char_if((Xfile_arg_varfn))
+				if errnr!=(noerror)
+					return errnr
+				endif
+			endif
+			if allowdata=(allow_yes)
+				#at last/only argument it is better to allow space before sufix to not regret later
+				#"##" will be a comment and "#" a sufix
+				set size ptrsize#
+				call extend_arg_size(content,size,#argsize)
+			endif
+			sd argsize_filter
+			sd container_sz
+			if content#=(pointerascii)
+				setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_yes))
+				if errnr=(noerror)
+					#prefix
+					setcall prefix prefix_bool()
+					set prefix# 1
+					inc content
+					set argsize_filter argsize
+					dec argsize_filter
+
+					#class test
+					setcall container_sz valinmem(content,argsize_filter,(asciicolon))
+					if container_sz!=argsize_filter
+						setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
+					else
+						setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
+						if errnr=(noerror)
+							setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
+						else
+							return errnr
+						endelse
+					endelse
 					if errnr!=(noerror)
 						return errnr
 					endif
-				endif
-				if allowdata=(allow_yes)
-					#at last/only argument it is better to allow space before sufix to not regret later
-					#"##" will be a comment and "#" a sufix
-					call extend_arg_size(content,size,#argsize)
-				endif
-				sd argsize_filter
-				sd container_sz
-				if content#=(pointerascii)
-					setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_yes))
-					if errnr=(noerror)
-						#prefix
-						setcall prefix prefix_bool()
-						set prefix# 1
-						inc content
-						set argsize_filter argsize
-						dec argsize_filter
+				else
+					return errnr
+				endelse
+			else
+				setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_no))
+				if errnr=(noerror)
+					data ptrobject%ptrobject
+					data ptrfunctions%%ptr_functions
 
-						#class test
-						setcall container_sz valinmem(content,argsize_filter,(asciicolon))
-						if container_sz!=argsize_filter
-							setcall errnr getarg_colon(content,argsize_filter,container_sz,ptrdata,ptrlow,ptrsufix)
-						else
-							setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
-							if errnr=(noerror)
-								setcall errnr getarg_testdot(content,argsize_filter,ptrdata,ptrlow,ptrsufix)
-							else
-								return errnr
-							endelse
-						endelse
+					#class test
+					setcall container_sz valinmem(content,argsize,(asciicolon))
+					if container_sz!=argsize
+						setcall errnr getarg_colon(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
 						if errnr!=(noerror)
 							return errnr
 						endif
 					else
-						return errnr
-					endelse
-				else
-					setcall errnr xfile_add_char_if((Xfile_arg_varfn_prefix_no))
-					if errnr=(noerror)
-						data ptrobject%ptrobject
-						data ptrfunctions%%ptr_functions
-
-						#class test
-						setcall container_sz valinmem(content,argsize,(asciicolon))
-						if container_sz!=argsize
-							setcall errnr getarg_colon(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
-							if errnr!=(noerror)
-								return errnr
-							endif
-						else
-							setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
-							if errnr=(noerror)
-								setcall container_sz valinmem(content,argsize,(asciidot))
-								if container_sz!=argsize
-									setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
-									if errnr!=(noerror)
-										return errnr
-									endif
-								else
-									SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
-									if errnr!=(noerror)
-										if ptrobject#=1
-											sd undvar_err
-											setcall undvar_err undefinedvariable()
-											if errnr=undvar_err
-												#verify for function
-												setcall ptrdata# vars(content,argsize,ptrfunctions)
-												if ptrdata#!=(NULL)
-													setcall errnr xfile_add_string_if(content,argsize)
-													if errnr=(noerror)
-														set ptrlow# (FALSE)
-														set ptrsufix# (sufix_false)
-														sd var
-														setcall var function_in_code()
-														set var# 1
-														#the code operation is a "prefix" like
-														setcall prefix prefix_bool()
-														set prefix# 1
-													else
-														return errnr
-													endelse
+						setcall errnr xfile_add_char_if((Xfile_arg_varfn_colon_no))
+						if errnr=(noerror)
+							setcall container_sz valinmem(content,argsize,(asciidot))
+							if container_sz!=argsize
+								setcall errnr getarg_dot(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
+								if errnr!=(noerror)
+									return errnr
+								endif
+							else
+								SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+								if errnr!=(noerror)
+									if ptrobject#=1
+										sd undvar_err
+										setcall undvar_err undefinedvariable()
+										if errnr=undvar_err
+											#verify for function
+											setcall ptrdata# vars(content,argsize,ptrfunctions)
+											if ptrdata#!=(NULL)
+												setcall errnr xfile_add_string_if(content,argsize)
+												if errnr=(noerror)
+													set ptrlow# (FALSE)
+													set ptrsufix# (sufix_false)
+													sd var
+													setcall var function_in_code()
+													set var# 1
+													#the code operation is a "prefix" like
+													setcall prefix prefix_bool()
+													set prefix# 1
 												else
-													setcall errnr undefinedvar_fn()
 													return errnr
 												endelse
 											else
+												setcall errnr undefinedvar_fn()
 												return errnr
 											endelse
 										else
 											return errnr
 										endelse
-									endif
-								endelse
-							else
-								return errnr
+									else
+										return errnr
+									endelse
+								endif
 							endelse
+						else
+							return errnr
 						endelse
-					else
-						return errnr
 					endelse
+				else
+					return errnr
 				endelse
 			endelse
+			if sens=(BACKWARD)
+				setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
+			else
+				Call advancecursors(ptrcontent,ptrsize,argsize)
+			endelse
+			return errnr
 		endif
 	endelseif
 	If sens=(FORWARD)
 		Call advancecursors(ptrcontent,ptrsize,argsize)
 		Return noerr
 	endIf
-	data f^verify_syntax_end
-	setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
-	return errnr
+	return (noerror)
 EndFunction
 #err
 function getarg_dot_any(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)

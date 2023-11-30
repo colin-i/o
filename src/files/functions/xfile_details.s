@@ -286,5 +286,6 @@ function xfile_add_import_if(sv pcontent,sd psize)
 		endif
 		return err
 	endif
+	call advancecursors(pcontent,psize,psize#)
 	return (noerror)
 endfunction
