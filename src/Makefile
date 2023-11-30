@@ -98,7 +98,8 @@ uninstall:
 test:
 	echo "test"
 	cd linux; ../o o.s nul_res_pref 1; mv o z; ${linker} ./z o.s nul_res_pref 1; diff o z
-#/home/bc/Desktop/out/libc6-i386.AppImage /home/bc/o/ocompiler-1/src/linux/z /home/bc/o/ocompiler-1/src/linux/o.s nul_res_pref 1
+#/home/bc/Desktop/out/libc6/lib32/ld-linux.so.2 /home/bc/o/ocompiler-1/src/linux/z /home/bc/o/ocompiler-1/src/linux/o.s nul_res_pref 1
+#/home/bc/Desktop/out/libc6-i386.AppImage
 #2.36-0ubuntu4 (jammy) was ok, backportpackage is working for esm packages (tested)
 #DEB_BUILD_OPTIONS=nocheck debuild -us -uc
 
