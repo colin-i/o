@@ -1,8 +1,8 @@
 
 vdata *=0
 
-aftercall test
-#aftercall *test
+#aftercall test
+aftercall *test
 
 function a()
 	call b()
