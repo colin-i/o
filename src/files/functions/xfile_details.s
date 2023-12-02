@@ -292,3 +292,23 @@ function xfile_add_import_if(sv pcontent,sd psize,sd subtype)
 	call advancecursors(pcontent,psize,psize#)
 	return (noerror)
 endfunction
+
+#err
+function xfile_add_library_if(sv pcontent,sd psize)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_char((Xfile_library))
+		if err=(noerror)
+			Datax impquotsz#1
+			Datax impescapes#1
+			#the spelling errors were at pass init
+			Call quotinmem(pcontent,psize,#impquotsz,#impescapes)
+			setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
+			#here a low chances error, not a spelling error
+			Call stepcursors(pcontent,psize)
+		endif
+		return err
+	endif
+	call advancecursors(pcontent,psize,psize#)
+	return (noerror)
+endfunction

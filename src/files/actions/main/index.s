@@ -207,7 +207,7 @@ if errormsg=(noerror)
 				Include "./index/callex.s"
 			ElseIf commandset=(cLIBRARY)
 				if parses=(pass_init);Include "./index/library.s"
-				else;Call advancecursors(pcontent,pcomsize,comsize);endelse
+				else;setcall errormsg xfile_add_library_if(pcontent,pcomsize);endelse
 			ElseIf commandset=(cHEX)
 		call entryscope_verify_code()
 				Include "./index/hex.s"
