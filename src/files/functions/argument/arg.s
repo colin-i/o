@@ -1,14 +1,21 @@
 
-function verify_syntax_end(sd ptrcontent,sd ptrsize,sd argsize)
-	Call advancecursors(ptrcontent,ptrsize,argsize)
+function verify_syntax_end_and_restore(sv ptrcontent,sd ptrsize,sd argsize)
+	sd c
+	sd s
+	set c ptrcontent#
+	set s ptrsize#
+
 	Call spaces(ptrcontent,ptrsize)
 	data z=0
 	if ptrsize#!=z
 		str er="Unrecognized inner text."
 		return er
 	endif
-	data noer=noerror
-	return noer
+	sub c argsize
+	add s argsize
+	set ptrcontent# c
+	set ptrsize# s
+	return (noerror)
 endfunction
 
 #err
@@ -86,7 +93,6 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 
 	Data noerr=noerror
 	data false=0
-	data f^verify_syntax_end
 
 	Set content ptrcontent#
 
@@ -126,23 +132,25 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			If errnr!=(noerror)
 				return errnr
 			endif
-			#argsize for advancing
-			set argsize 2
-			add argsize q_size
 			#set low and sufix
 			set ptrlow# (FALSE)
 			set ptrsufix# (sufix_false)
 			#the code operation is a "prefix" like
 			setcall prefix prefix_bool()
 			set prefix# 1
+
+			#argsize for advancing
+			call stepcursors(#content,#size)
+			set ptrcontent# content
+			set ptrsize# size
 			if sens=(FORWARD)
-				Call advancecursors(ptrcontent,ptrsize,argsize)
 				return (noerror)
 			endif
-			setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
+			add q_size 2
+			setcall errnr verify_syntax_end_and_restore(ptrcontent,ptrsize,q_size)
 			return errnr
 		endelse
-	elseif allowdata!=(allow_later)  #exclude pass_init
+	elseif allowdata!=(allow_later)  #exclude pass_init, but even there jump over first arg
 		setcall errnr arg_size(content,argsize,#argsize)  #spc,tab
 		If errnr!=(noerror)
 			Return errnr
@@ -190,10 +198,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				if sens=(FORWARD)
 					return (noerror)
 				endif
-				sd back=-1
-				mult back argsize
-				call advancecursors(ptrcontent,ptrsize,back)
-				setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
+				setcall errnr verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
 				return errnr
 			endif
 			sd imm;setcall imm getimm()
@@ -305,11 +310,11 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 					return errnr
 				endelse
 			endelse
+			Call advancecursors(ptrcontent,ptrsize,argsize)
 			if sens=(FORWARD)
-				Call advancecursors(ptrcontent,ptrsize,argsize)
 				return (noerror)
 			endif
-			setcall errnr restore_cursors_onok(ptrcontent,ptrsize,f,argsize)
+			setcall errnr verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
 			return errnr
 		endif
 	endelseif

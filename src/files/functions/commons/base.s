@@ -249,18 +249,3 @@ function addtolog_natural(sd number)
 	sd err;setcall err addtolog_withchar(#buf,(log_expand))
 	return err
 endfunction
-
-function restore_cursors_onok(sd ptrcontent,sd ptrsize,sd forward,sd data)
-	sd c
-	sd s
-	set c ptrcontent#
-	set s ptrsize#
-	sd err
-	data noerr=noerror
-	setcall err forward(ptrcontent,ptrsize,data)
-	if err=noerr
-		set ptrcontent# c
-		set ptrsize# s
-	endif
-	return err
-endfunction
