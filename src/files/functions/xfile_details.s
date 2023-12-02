@@ -282,8 +282,8 @@ function xfile_add_import_if(sv pcontent,sd psize,sd subtype)
 					Call stepcursors(pcontent,psize)
 					Call spaces(pcontent,psize)
 					sd imp_size;setcall imp_size find_whitespaceORcomment(pcontent#,psize#)
-					setcall err xfile_add_string(pcontent#,imp_size)
-					call advancecursors(pcontent,psize,imp_size)
+					setcall err xfile_add_string(pcontent#,imp_size) #not a spelling error
+					call advancecursors(pcontent,psize,psize#) #,imp_size  spelling was at pass_init
 				endif
 			endif
 		endif
@@ -304,8 +304,8 @@ function xfile_add_library_if(sv pcontent,sd psize)
 			#the spelling errors were at pass init
 			Call quotinmem(pcontent,psize,#impquotsz,#impescapes)
 			setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
-			#here a low chances error, not a spelling error
-			Call stepcursors(pcontent,psize)
+			#here a low chances error, not a spelling error, spelling was at pass init
+			call advancecursors(pcontent,psize,psize#) #Call stepcursors(pcontent,psize)
 		endif
 		return err
 	endif
