@@ -117,17 +117,6 @@ Function stratmem(data pcontent,data psize,str match)
 	Return one
 EndFunction
 
-#pointer
-function mem_spaces(ss content,ss last)
-	while content!=last
-		sd bool;setcall bool is_whitespace(content#)
-		if bool=(FALSE)
-			return content
-		endif
-		inc content
-	endwhile
-	return content
-endfunction
 #new size
 function find_whitespaceORcomment(ss content,sd size)
 #size is greater than zero but this is not a problem here
@@ -190,6 +179,17 @@ function warn_hidden_whitespaces_after(sd inc,sd dot_comma_end)
 	return (noerror)
 endfunction
 
+#pointer
+function mem_spaces(ss content,ss last)
+	while content!=last
+		sd bool;setcall bool is_whitespace(content#)
+		if bool=(FALSE)
+			return content
+		endif
+		inc content
+	endwhile
+	return content
+endfunction
 Function spaces_helper(ss cursor,sd size)
 	sd end;set end cursor;add end size
 	while cursor!=end

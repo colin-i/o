@@ -193,6 +193,8 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 				call nr_of_args_64need_count()
 			endif
 
+			sd size_aux
+			sd mark
 			if sz!=0
 				set argsize content
 				dec argsize
@@ -216,19 +218,32 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 							dec argsize
 						endelse
 					endwhile
+					set mark argsize
 					sub argsize content
 					neg argsize
+					set size_aux sz
+					sub size_aux argsize
+					setcall size_aux valinmemsens(mark,size_aux,comma,sens) #better than set size_aux 0
 				else
 					SetCall argsize valinmemsens(content,sz,comma,sens)
+					#and don't let ( ) at getarg, there let only something(exlcuding spaces)/nothing like in all cases
+					set size_aux content
+					sub size_aux argsize
+					set mark size_aux
+					setcall size_aux mem_spaces(size_aux,content)
+					sub size_aux mark
+					sub argsize size_aux
 				endelse
 			else
+			#(,a)
 				set argsize 0
+				#this will be error, don't bother. set size_aux 0
 			endelse
 
 			#here, advancecursors is not ok
 			sub ptrcontent# argsize
 			sub ptrsize# argsize
-			Data ptrargsize^argsize
+			vData ptrargsize^argsize
 			if typenumberOrparses=(pass_init)
 				setcall err getarg(ptrcontent,ptrargsize,argsize,(allow_later),sens) #there are 4 more arguments but are not used
 				If err!=noerr
@@ -240,6 +255,9 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					Return err
 				EndIf
 			endelseif
+			sub ptrcontent# size_aux
+			sub ptrsize# size_aux
+			add argsize size_aux
 		EndElse
 		Sub sz argsize
 		If sz!=zero

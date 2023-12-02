@@ -31,9 +31,9 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 	Else
 		Set p_argsize# szargtab
 	EndElse
-	if p_argsize#=0
-		return "Expecting argument name."  #this is good at BACKWARD, call a( )
-	endif
+	#was resolved at push enumcomma. if p_argsize#=0
+	#	return "Expecting argument name."  #this is good at BACKWARD, call a( )
+	#endif
 	return (noerror)
 endfunction
 
