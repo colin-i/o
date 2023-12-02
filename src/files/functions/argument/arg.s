@@ -32,7 +32,7 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 		Set p_argsize# szargtab
 	EndElse
 	if p_argsize#=0
-		return "Expecting argument name."  #this is good only at: call a( , )
+		return "Expecting argument name."  #this is good at BACKWARD, call a( )
 	endif
 	return (noerror)
 endfunction
