@@ -126,9 +126,12 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			sd location
 			set location ptrdata#
 			setcall location# get_img_vdata_dataReg()
+
 			#set string to data
 			data ptrdatasec%%ptr_datasec
-			SetCall errnr addtosecstresc_xfile(#content,#size,q_size,escapes,ptrdatasec)
+			set ptrcontent# content
+			set ptrsize# size
+			SetCall errnr addtosecstresc_xfile(ptrcontent,ptrsize,q_size,escapes,ptrdatasec)
 			If errnr!=(noerror)
 				return errnr
 			endif
@@ -139,10 +142,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			setcall prefix prefix_bool()
 			set prefix# 1
 
-			#argsize for advancing
-			call stepcursors(#content,#size)
-			set ptrcontent# content
-			set ptrsize# size
+			#advancing
 			if sens=(FORWARD)
 				return (noerror)
 			endif

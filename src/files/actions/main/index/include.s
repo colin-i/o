@@ -37,7 +37,6 @@ if errormsg=noerr
 			if errormsg=noerr
 				SetCall errormsg addtosecstresc_xfile(pcontent,pcomsize,quotsz,escapes,ptrmiscbag)
 				If errormsg=noerr
-					Call stepcursors(pcontent,pcomsize)
 					Set includebool one
 					if include_sec=(FALSE)
 						SetCall errormsg include_sec_skip(pcontent,pcomsize)

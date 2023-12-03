@@ -31,7 +31,6 @@ If errormsg=noerr
 	If errormsg=noerr
 		SetCall errormsg addtosecstresc(pcontent,pcomsize,libquotsz,libescapes,ptrnames,true)
 		If errormsg=noerr
-			Call stepcursors(pcontent,pcomsize)
 			Set implibsstarted true
 		EndIf
 		#endif

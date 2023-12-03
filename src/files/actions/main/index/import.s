@@ -54,7 +54,6 @@ If errormsg=noerr
 				sd imp_mark;set imp_mark namesReg ##this is because the null at end makes code harder
 				SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames,true)
 				If errormsg=noerr
-					Call stepcursors(pcontent,pcomsize)
 					Call spaces(pcontent,pcomsize)
 					#after this will find var in vars/fns and if not add a new
 					sd imp_size;setcall imp_size find_whitespaceORcomment(content,comsize)

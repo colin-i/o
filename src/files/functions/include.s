@@ -174,7 +174,6 @@ function include_sec_skip(sv pcontent,sd pcomsize)
 			if err=(noerror)
 				Value ptrtemp%%ptr_tempdata
 				setcall err addtosecstresc_xfile(pcontent,pcomsize,sz,escapes,ptrtemp) #misc has first include file, and is ok with casts
-				call stepcursors(pcontent,pcomsize) #only mem/file write errors
 			endif
 		endif
 	else

@@ -69,7 +69,9 @@ Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd w
 		Inc destloc
 		Set destloc# zero
 	EndIf
-	#not spaces here because of arg call that adds 2 there, then argsize at forward or restore cursors, when inner text error is checked
+
+	call stepcursors(pcontent,psize)
+
 	if write_to_xfile=(TRUE)
 		#ifif only for include tag
 		setcall errnr xfile_add_string_ifif(xfileloc,xfilesz)

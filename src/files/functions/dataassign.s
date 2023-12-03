@@ -418,9 +418,6 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		SetCall err quotinmem(ptrcontent,ptrsize,ptrvalue,#escapes)
 		if punitsize=(NULL)
 			SetCall err addtosecstresc_xfile(ptrcontent,ptrsize,value,escapes,ptrdatasec)
-			if err=(noerror)
-				Call stepcursors(ptrcontent,ptrsize)
-			endif
 			return err
 		else
 			sub value escapes
