@@ -311,3 +311,16 @@ function xfile_add_library_if(sv pcontent,sd psize)
 	call advancecursors(pcontent,psize,psize#)
 	return (noerror)
 endfunction
+
+#err
+function xfile_add_override_if(sd name,sd size,sd value)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_base((Xfile_override),name,size)
+		if err=(noerror)
+			setcall err xfile_add_char(value)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction

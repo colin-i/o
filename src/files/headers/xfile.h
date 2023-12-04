@@ -19,14 +19,14 @@ const Xfile_while=13
 const Xfile_break=14
 const Xfile_continue=15
 const Xfile_end=16
-#const Xfile_ret=17
+const Xfile_ret=17
 const Xfile_library=18
 const Xfile_import=19
 const Xfile_aftercall=20
 const Xfile_hex=21
-#const Xfile_override=22
-#const Xfile_orphan=23
-#const Xfile_interrupt=24
+const Xfile_override=22
+const Xfile_orphan=23
+const Xfile_interrupt=24
 
 #t from type
 const Xfile_function_tintern=0
@@ -184,3 +184,6 @@ const Xfile_aftercall_disable=3
 
 const Xfile_import_normal=0
 const Xfile_import_extern=1
+
+const Xfile_orphan_no=0
+const Xfile_orphan_yes=1

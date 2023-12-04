@@ -1,14 +1,13 @@
 
 
 #err
-function prefs_set(ss name,ss value)
+function prefs_set(ss name,ss value,sv p_p)
 	sd err
-	sd p
-	setcall err comline_pointer(name,#p)
+	setcall err comline_pointer(name,p_p)
 	if err!=(noerror)
 		return err
 	endif
-	setcall err comline_value(value,p)
+	setcall err comline_value(value,p_p#)
 	return err
 endfunction
 #err
@@ -27,7 +26,7 @@ function comline_parse(sd argc,sv argv)
 			endif
 			sd value
 			set value argv#
-			setcall err prefs_set(name,value)
+			sd p;setcall err prefs_set(name,value,#p) #p here is not required but at xfile is, and is faster this way
 			if err!=(noerror)
 				return err
 			endif
@@ -49,7 +48,7 @@ function comline_value(ss v,sd p)
 					set p# input
 					return (noerror)
 				endif
-				return "a command line value can have only 0,1,2 or 3"
+				return "a command line value can have only 0,1,2 or 3" #also connected to xfile output
 			endif
 			return "command line value must have only one digit"
 		endif

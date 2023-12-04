@@ -1,6 +1,6 @@
 
 #err
-function override_com(sd pcontent,sd psize)
+function override_com(sd pcontent,sd psize,sd parses)
 	sd name
 	sd namesize
 	setcall namesize valinmem(pcontent#,psize#,(asciispace))
@@ -29,9 +29,12 @@ function override_com(sd pcontent,sd psize)
 		ss value;set value p
 		call memtomem(p,pcontent#,valuesize);add p valuesize
 		set p# 0
-		setcall err prefs_set(mem,value)
+		ss pointer;setcall err prefs_set(mem,value,#pointer) #pointer here is not required but at xfile is, and is faster this way
 		if err=(noerror)
 			call advancecursors(pcontent,psize,valuesize)
+			if parses=(pass_write)
+				setcall err xfile_add_override_if(mem,namesize,pointer#)
+			endif
 		endif
 		call free(mem)
 	endif

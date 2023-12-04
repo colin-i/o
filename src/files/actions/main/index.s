@@ -186,7 +186,8 @@ if errormsg=(noerror)
 				setcall errormsg endfunction(parses)
 			ElseIf commandset=(cRET)
 		call entryscope_verify_code()
-				setcall errormsg writeret()
+				setcall errormsg xfile_add_char_if((Xfile_ret));if errormsg=(noerror)
+					setcall errormsg writeret();endif
 			ElseIf commandset=(cINCLUDELINK)
 				Include "./index/include.s"
 			ElseIf commandset=(cFORMAT)
@@ -213,7 +214,7 @@ if errormsg=(noerror)
 				Include "./index/hex.s"
 			ElseIf commandset=(cOVERRIDE)
 				#is at all, example at write hidden_pref
-				setcall errormsg override_com(#content,#comsize)
+				setcall errormsg override_com(#content,#comsize,parses)
 			ElseIf commandset=(cORPHAN)
 				Include "./index/warning.s"
 			ElseIf commandset=(cI3)
