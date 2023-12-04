@@ -1,5 +1,7 @@
 
-all: ostrip
+OB = ostrip
+
+all: ${OB}
 
 ifndef nobits_virtual
 nobits_virtual=1
@@ -21,7 +23,6 @@ ifndef OCOMP
 OCOMP=../src/o
 endif
 
-OB = ostrip
 OBJ = ${OB}.o
 OBT = ${OB}.txt
 FULLOBJ = ./${OB}
@@ -35,7 +36,7 @@ OUNUSED=../ounused/ounused
 
 ATCCCOM = $(CC) ${linkerflags} -o ${OB}
 
-ostrip: ${OBJ}
+${OB}: ${OBJ}
 	${OUNUSED} ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
@@ -52,8 +53,8 @@ ostrip: ${OBJ}
 #xenial do wrong access somehow, bionic and focal do extra code at text and need to extra code at realoffset for .text
 
 install: all
-	install -D ostrip \
-		$(DESTDIR)$(prefix)/bin/ostrip
+	install -D ${OB} \
+		$(DESTDIR)$(prefix)/bin/${OB}
 
 clean-compile:
 	-rm -f ${FULLOBJO}
@@ -65,7 +66,7 @@ clean-compile:
 	-rm -f .symtab_offset
 
 clean-link:
-	-rm -f ostrip
+	-rm -f ${OB}
 
 clean-test:
 	-rm -f z
@@ -74,7 +75,7 @@ clean: clean-compile clean-link clean-test
 distclean: clean
 
 uninstall:
-	-rm -f $(DESTDIR)$(prefix)/bin/ostrip
+	-rm -f $(DESTDIR)$(prefix)/bin/${OB}
 
 test:
 	if [ "${nobits_virtual}" != "1" ]; then \
