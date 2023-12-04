@@ -2,8 +2,11 @@
 #1 msg
 
 last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_name -r` && echo ${last} && \
-no_sync=1 ~/test/debinit2 "${1}" && \
 ~/test/keyring2 && \
+~/test/arh2 ${last} && \
+~/test/arhpub ${last} && \
+#here must arh fast to push changelog + old file same time and then test/rel is asking remote for changelog
+~/test/debinit2 "${1}" && \
 ~/test/deb && \
 ~/test/publp && \
 ~/test/ai && \
@@ -19,10 +22,7 @@ no_sync=1 ~/test/debinit2 "${1}" && \
 ~/test/pub2 && \
 ~/test/publp2 && \
 ~/test/lp && \
-~/test/lp x && \
-~/test/keyring && \
-~/test/arh2 ${last} && \
-~/test/arhpub ${last}
+~/test/lp x
 
 # && \
 #sed -i '1s/jammy/bionic/' debian/changelog && \
