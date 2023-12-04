@@ -91,7 +91,6 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 		return "Argument name expected."
 	endif
 
-	Data noerr=noerror
 	data false=0
 
 	Set content ptrcontent#

@@ -294,7 +294,6 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cCONTINUE
 			Data *=spacenotreq
 	Const cIMPORTLINK=!-coms_start
-	Const cIMPORTLINK_top=!
 		const cIMPORT=Xfile_import_normal
 			data *^cIMPORT_c
 			Data *=cIMPORTLINK
