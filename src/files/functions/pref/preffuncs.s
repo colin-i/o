@@ -230,7 +230,7 @@ function initpreferences()
 	set p_include_sec# false
 	set p_ignore_format_so# (No)
 	set ptr_call_align# (call_align_yes_all)
-	set ptr_call_align# (Yes)
+	set ptr_nobits_virtual# (No)
 	set ptr_has_debug# (No)
 	set main.xbool (No)
 
