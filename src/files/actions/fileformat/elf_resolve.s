@@ -263,7 +263,7 @@ If object=false
 	sd sections_start=elf32_ehd_e_phentsize
 	mult sections_start elf32_ehd_e_phnum
 	add sections_start elf_fileheaders_size
-	call memtomem(ptrelf32_ehd_e_shoff,#sections_start,wordsize)
+	set elf32_ehd_e_shoff sections_start ##memtomem depends on nul_res_pref
 Else
 	#######
 	Data ET_REL=ET_REL

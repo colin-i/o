@@ -81,7 +81,6 @@ Data elf_fileheaders%elf_fileheaders_start
 Data elf_fileheaders_size=elf_fileheaders_end-elf_fileheaders_start
 
 Data ptrelf32_ehd_e_type^elf32_ehd_e_type
-data ptrelf32_ehd_e_shoff^elf32_ehd_e_shoff
 data ptrelf32_ehd_e_phnum^elf32_ehd_e_phnum
 data ptrelf32_ehd_e_shnum^elf32_ehd_e_shnum
 data ptrelf32_ehd_e_shstrndx^elf32_ehd_e_shstrndx
