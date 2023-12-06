@@ -1,6 +1,6 @@
 
 #err
-function override_com(sd pcontent,sd psize,sd parses)
+function override_com(sv pcontent,sd psize,sd parses)
 	sd name
 	sd namesize
 	setcall namesize valinmem(pcontent#,psize#,(asciispace))
@@ -13,11 +13,10 @@ function override_com(sd pcontent,sd psize,sd parses)
 	if psize#=0
 		return "second argument is missing at override"
 	endif
-	#work can be done do allow line comment here
 
 	sd err
 	ss mem
-	sd valuesize;set valuesize psize#
+	sd valuesize;setcall valuesize find_whitespaceORcomment(pcontent#,psize#)
 
 	sd allocsize=1+1;add allocsize valuesize
 	add allocsize namesize
