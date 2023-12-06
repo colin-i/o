@@ -1,7 +1,7 @@
 
 format elfobj
 
-orphan off
+orphan off #test
 
 function inner()
 ret
@@ -11,6 +11,6 @@ entry main()
 ret
 override exit_end 1
 ret
-override exit_end 0
+override exit_end 0 #test
 ret
 exit 2

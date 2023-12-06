@@ -1,4 +1,4 @@
 
 format elfobj64
 
-importaftercall test
+importaftercall test #com
