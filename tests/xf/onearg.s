@@ -17,9 +17,9 @@ dec a
 decst a
 neg a
 not a
-shl a
-shr a
-sar b.a
+shl1 a
+shr1 a
+sar1 b.a
 exit 3
 return "asdf"
 return main.a#:a
