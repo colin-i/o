@@ -148,43 +148,27 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			Return ptrzerodiv
 		EndIf
 		Rem currentitem newitem
-	ElseIf number=(shlNumber)
-		if newitem<0
-			neg newitem
-			SetCall errptr shift_uright(#currentitem,newitem)
-		else
-			SetCall errptr shift_left(#currentitem,newitem)
-		endelse
-		If errptr!=(noerror);return errptr;endif
-	ElseIf number=(sarNumber)
-		if newitem<0
-			neg newitem
-			SetCall errptr shift_left(#currentitem,newitem)
-		else
-			SetCall errptr shift_right(#currentitem,newitem)
-		endelse
-		If errptr!=(noerror);return errptr;endif
-	ElseIf number=(shrNumber)
-		if newitem<0
-			neg newitem
-			SetCall errptr shift_left(#currentitem,newitem)
-		else
-			SetCall errptr shift_uright(#currentitem,newitem)
-		endelse
-		If errptr!=(noerror);return errptr;endif
 	ElseIf number=(lessNumber)
 		if currentitem<newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
 		endelse
-	Else
-	#If number==(greaterNumber)
+	ElseIf number=(greaterNumber)
 		if currentitem>newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
 		endelse
+	Else
+		If number=(shlNumber)
+			SetCall errptr shift_left(#currentitem,newitem)
+		ElseIf number=(sarNumber)
+			SetCall errptr shift_right(#currentitem,newitem)
+		else #If number=(shrNumber)
+			SetCall errptr shift_uright(#currentitem,newitem)
+		endelse
+		If errptr!=(noerror);return errptr;endif
 	EndElse
 
 	Set inoutvalue# currentitem
