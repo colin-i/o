@@ -18,57 +18,65 @@ Const shrNumber=Xfile_numbers_operation_shr
 #asciiminus and asciinot for one arg
 
 #err
-function const_security(sd item)
-	#2$31 is last one
-	#at 64? 1 shl 63 is last one
-	#only <32? yes, else is 0/-1 at constants
-	sd maximum=dwsz*8
-	if item#>=maximum     ##don't use unsigned ^ comparation, item# is already positive, will be extra code in source
-	#                            , at this commit time was not a technical/extra problem in compilation
-		sd p%p_over_pref
-		if p#=(TRUE)
-			vstr err="Overflow at constants."
-			call Message(err)
-			sd w%p_w_as_e
-			if w#=(TRUE)
-				return err
-			endif
+function const_security()
+	sd p%p_over_pref
+	if p#=(TRUE)
+		vstr err="Overflow at constants."
+		call Message(err)
+		sd w%p_w_as_e
+		if w#=(TRUE)
+			return err
 		endif
-		#it is ok with the overflow
-		set item# maximum
+	endif
+	return (noerror)
+endfunction
+#err
+function const_security_ex(sd p_once)
+	if p_once#=0
+		sd err;setcall err const_security()
+		set p_once# 1
 	endif
 	return (noerror)
 endfunction
 #err
 function shift_right(sd a,sd n)
-	sd err
-	setcall err const_security(#n)
-	If err!=(noerror);return err;endif
-	while n>0
-		dec n
-		sar1 a#
-	endwhile
-	return (noerror)
+	#at 64? 1 shl 63 is last one
+	if n>31
+		if a<0
+			set a# -1
+		else
+			set a# 0   #here is clear that 30 is maximum but will be hardcoded
+		endelse
+	else
+		while n>0
+			sar1 a#
+			dec n
+		endwhile
+	endelse
 endfunction
 #err
 function shift_uright(sd a,sd n)
-	sd err
-	setcall err const_security(#n)
-	If err!=(noerror);return err;endif
-	while n>0
-		dec n
-		shr1 a#
-	endwhile
-	return (noerror)
+	if n>31
+		set a# 0
+	else
+		while n>0
+			shr1 a#
+			dec n
+		endwhile
+	endelse
 endfunction
 #err
 function shift_left(sd a,sd n)
-	sd err
-	setcall err const_security(#n)
-	If err!=(noerror);return err;endif
+	sd once=0
 	while n>0
-		dec n
+		sd how_was;set how_was a#
 		shl1 a#
+		if a#<^how_was
+			sd err
+			setcall err const_security_ex(#once)
+			If err!=(noerror);return err;endif
+		endif
+		dec n
 	endwhile
 	return (noerror)
 endfunction
@@ -100,13 +108,27 @@ EndFunction
 function operation_core(sd inoutvalue,sd number,sd newitem)
 	sd errptr
 	sd currentitem
+	sd how_was
+	sd how_is
 	Set currentitem inoutvalue#
 	If number=(addNumber)
+		set how_was currentitem
 		Add currentitem newitem
+		if currentitem<^how_was
+			setcall errptr const_security()
+			if errptr!=(noerror);return errptr;endif
+		endif
 	ElseIf number=(subNumber)
 		Sub currentitem newitem
 	ElseIf number=(mulNumber)
+		set how_was currentitem
 		Mult currentitem newitem
+		set how_is currentitem
+		div how_is newitem
+		if how_was!=how_is
+			setcall errptr const_security()
+			if errptr!=(noerror);return errptr;endif
+		endif
 	ElseIf number=(divNumber)
 		Data zero=0
 		If newitem=zero
@@ -135,11 +157,17 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		elseif newitem=0
 			set currentitem 1
 		else
-			SetCall errptr const_security(#newitem)
-			If errptr!=(noerror);return errptr;endif
+			sd once=0
 			sd item;set item currentitem
 			while newitem!=1
+				set how_was currentitem
 				mult currentitem item
+				set how_is currentitem
+				div how_is item
+				if how_was!=how_is
+					SetCall errptr const_security_ex(#once)
+					If errptr!=(noerror);return errptr;endif
+				endif
 				dec newitem
 			endwhile
 		endelse
@@ -148,27 +176,26 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			Return ptrzerodiv
 		EndIf
 		Rem currentitem newitem
+	ElseIf number=(shlNumber)
+		SetCall errptr shift_left(#currentitem,newitem)
+		If errptr!=(noerror);return errptr;endif
+	ElseIf number=(sarNumber)
+		Call shift_right(#currentitem,newitem)
+	elseIf number=(shrNumber)
+		Call shift_uright(#currentitem,newitem)
 	ElseIf number=(lessNumber)
 		if currentitem<newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
 		endelse
-	ElseIf number=(greaterNumber)
+	Else
+	#If number=(greaterNumber)
 		if currentitem>newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
 		endelse
-	Else
-		If number=(shlNumber)
-			SetCall errptr shift_left(#currentitem,newitem)
-		ElseIf number=(sarNumber)
-			SetCall errptr shift_right(#currentitem,newitem)
-		else #If number=(shrNumber)
-			SetCall errptr shift_uright(#currentitem,newitem)
-		endelse
-		If errptr!=(noerror);return errptr;endif
 	EndElse
 
 	Set inoutvalue# currentitem
