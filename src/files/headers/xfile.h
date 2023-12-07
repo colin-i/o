@@ -122,9 +122,9 @@ const Xfile_action_tdec=4
 const Xfile_action_tdecst=5
 const Xfile_action_tneg=6
 const Xfile_action_tnot=7
-const Xfile_action_tshl=8
-const Xfile_action_tshr=9
-const Xfile_action_tsar=10
+const Xfile_action_tshl1=8
+const Xfile_action_tshr1=9
+const Xfile_action_tsar1=10
 
 const Xfile_arg_number=0
 const Xfile_arg_string=1

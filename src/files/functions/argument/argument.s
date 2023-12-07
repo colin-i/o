@@ -128,18 +128,18 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			Set op not
 			Set regopcode notregopcode
 			set xlog (Xfile_action_tnot)
-		ElseIf subtype<=(cSAR)
+		ElseIf subtype<=(cSAR1)
 			set op (0xD1)
-			If subtype=(cSHL)
+			If subtype=(cSHL1)
 				set regopcode 4
-				set xlog (Xfile_action_tshl)
-			ElseIf subtype=(cSHR)
+				set xlog (Xfile_action_tshl1)
+			ElseIf subtype=(cSHR1)
 				set regopcode 5
-				set xlog (Xfile_action_tshr)
+				set xlog (Xfile_action_tshr1)
 			Else
-			#cSAR
+			#cSAR1
 				set regopcode 7
-				set xlog (Xfile_action_tsar)
+				set xlog (Xfile_action_tsar1)
 			EndElse
 		Else
 		#If subtype==(cEXIT)

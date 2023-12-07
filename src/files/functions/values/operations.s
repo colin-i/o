@@ -46,7 +46,7 @@ function shift_right(sd a,sd n)
 	If err!=(noerror);return err;endif
 	while n>0
 		dec n
-		sar a#
+		sar1 a#
 	endwhile
 	return (noerror)
 endfunction
@@ -57,7 +57,7 @@ function shift_uright(sd a,sd n)
 	If err!=(noerror);return err;endif
 	while n>0
 		dec n
-		shr a#
+		shr1 a#
 	endwhile
 	return (noerror)
 endfunction
@@ -68,7 +68,7 @@ function shift_left(sd a,sd n)
 	If err!=(noerror);return err;endif
 	while n>0
 		dec n
-		shl a#
+		shl1 a#
 	endwhile
 	return (noerror)
 endfunction

@@ -12,7 +12,7 @@ Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cSD_c="SD";Char c
 	Char cVDATAX_c="VDATAX";Char cVSTRX_c="VSTRX";Char cVALUEX_c="VALUEX"
 	Char cCONST_c="CONST"
 Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cREM_c="REM";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
-Char cRETURN_c="RETURN";Char cINC_c="INC";Char cDEC_c="DEC";Char cINCST_c="INCST";Char cDECST_c="DECST";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cSHL_c="SHL";Char cSHR_c="SHR";Char cSAR_c="SAR";Char cEXIT_c="EXIT"
+Char cRETURN_c="RETURN";Char cINC_c="INC";Char cDEC_c="DEC";Char cINCST_c="INCST";Char cDECST_c="DECST";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cSHL1_c="SHL1";Char cSHR1_c="SHR1";Char cSAR1_c="SAR1";Char cEXIT_c="EXIT"
 Char cCALL_c="CALL";Char cCALLX_c="CALLX"
 Char cIF_c="IF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE";Char cENDIF_c="ENDIF";Char cENDELSEIF_c="ENDELSEIF";Char cENDELSE_c="ENDELSE";Char cWHILE_c="WHILE";Char cENDWHILE_c="ENDWHILE";Char cBREAK_c="BREAK";Char cCONTINUE_c="CONTINUE"
 Char cIMPORT_c="IMPORT";Char cIMPORTX_c="IMPORTX"
@@ -212,20 +212,20 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cONEARG
 			Data *=cNOT
 			Data *=spacereq
-		Const cSHL=!-cONEARG_top
-			data *^cSHL_c
+		Const cSHL1=!-cONEARG_top
+			data *^cSHL1_c
 			Data *=cONEARG
-			Data *=cSHL
+			Data *=cSHL1
 			Data *=spacereq
-		Const cSHR=!-cONEARG_top
-			data *^cSHR_c
+		Const cSHR1=!-cONEARG_top
+			data *^cSHR1_c
 			Data *=cONEARG
-			Data *=cSHR
+			Data *=cSHR1
 			Data *=spacereq
-		Const cSAR=!-cONEARG_top
-			data *^cSAR_c
+		Const cSAR1=!-cONEARG_top
+			data *^cSAR1_c
 			Data *=cONEARG
-			Data *=cSAR
+			Data *=cSAR1
 			Data *=spacereq
 		Const cEXIT=!-cONEARG_top
 			data *^cEXIT_c
