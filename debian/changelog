@@ -1,3 +1,9 @@
+ocompiler (1-5+118) xenial; urgency=medium
+
+  * shl1 shr1 sar1
+
+ -- bc <bc@bc-Type1ProductConfigId>  Thu, 07 Dec 2023 16:02:05 +0200
+
 ocompiler (1-5+117) xenial; urgency=medium
 
   * >>>
