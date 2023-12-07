@@ -4,6 +4,7 @@ Const spacereq=1
 Const spacenotreq=0
 
 #with caution like elseif before else for getcommand comparations, only at space not required (elseif/else, endelseif/endelse, end../end, return/ret)
+#and shl1,i3,... are ok, only AZ are going to az
 
 Char cCOMMENT_c={commentascii,0}
 Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cSD_c="SD";Char cSS_c="SS";Char cSV_c="SV"
