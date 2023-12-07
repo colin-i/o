@@ -84,6 +84,7 @@ const Xfile_numbers_operation_less=asciiless
 const Xfile_numbers_operation_greater=asciigreater
 const Xfile_numbers_operation_shl=asciicomma
 const Xfile_numbers_operation_sar=asciidot
+const Xfile_numbers_operation_shr=asciisemicolon
 
 #here is ORing
 const Xfile_numbers_prefix_none=0x0

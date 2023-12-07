@@ -14,6 +14,7 @@ Const lessNumber=Xfile_numbers_operation_less
 Const greaterNumber=Xfile_numbers_operation_greater
 Const shlNumber=Xfile_numbers_operation_shl
 Const sarNumber=Xfile_numbers_operation_sar
+Const shrNumber=Xfile_numbers_operation_shr
 #asciiminus and asciinot for one arg
 
 #err
@@ -46,6 +47,17 @@ function shift_right(sd a,sd n)
 	while n>0
 		dec n
 		sar a#
+	endwhile
+	return (noerror)
+endfunction
+#err
+function shift_uright(sd a,sd n)
+	sd err
+	setcall err const_security(#n)
+	If err!=(noerror);return err;endif
+	while n>0
+		dec n
+		shr a#
 	endwhile
 	return (noerror)
 endfunction
@@ -139,7 +151,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 	ElseIf number=(shlNumber)
 		if newitem<0
 			neg newitem
-			SetCall errptr shift_right(#currentitem,newitem)
+			SetCall errptr shift_uright(#currentitem,newitem)
 		else
 			SetCall errptr shift_left(#currentitem,newitem)
 		endelse
@@ -150,6 +162,14 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			SetCall errptr shift_left(#currentitem,newitem)
 		else
 			SetCall errptr shift_right(#currentitem,newitem)
+		endelse
+		If errptr!=(noerror);return errptr;endif
+	ElseIf number=(shrNumber)
+		if newitem<0
+			neg newitem
+			SetCall errptr shift_left(#currentitem,newitem)
+		else
+			SetCall errptr shift_uright(#currentitem,newitem)
 		endelse
 		If errptr!=(noerror);return errptr;endif
 	ElseIf number=(lessNumber)
@@ -231,7 +251,7 @@ function operation_test(sv ptrcontent,sd initial,sv ptrcursor,sd end,sd ptrval,s
 		sd err
 		SetCall err oneoperation(ptrcontent,initial,content,ptrval,pnumber#)
 		If err=(noerror)
-			call doubleoperation(pnr,ptrcursor,end)
+			call multisignoperation(pnr,ptrcursor,end)
 			set pnumber# pnr#
 			Set pbool# (TRUE)
 		endif
@@ -322,29 +342,37 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	Return errptr
 EndFunction
 
-function doubleoperation(ss pnr,sv pcontent,sd end)
+function multisignoperation(ss pnr,sv pcontent,sd end)
 	sd nr;set nr pnr#
+	ss content
 	if nr!=(lessNumber)
 		if nr!=(greaterNumber)
 			ret
+		else
+			set content pcontent#
+			inc content
+			if content!=end ##error is catched how was before
+				if content#=(greaterNumber)
+					set pnr# (sarNumber)
+					set pcontent# content
+					inc content
+					if content!=end ##error is catched how was before
+						if content#=(greaterNumber)
+							set pnr# (shrNumber)
+							set pcontent# content
+						endif
+					endif
+				endif
+			endif
+		endelse
+	else
+		set content pcontent#
+		inc content
+		if content!=end ##error is catched how was before
+			if content#=(lessNumber)
+				set pnr# (shlNumber)
+				set pcontent# content
+			endif
 		endif
-	endif
-	ss content;set content pcontent#
-	inc content
-	if content=end
-		ret  #error is catched how was before
-	endif
-	if content#=(lessNumber)
-		if nr=(lessNumber)
-			set pnr# (shlNumber)
-			inc pcontent#
-			ret
-		endif
-	endif
-	if content#=(greaterNumber)
-		if nr=(greaterNumber)
-			set pnr# (sarNumber)
-			inc pcontent#
-		endif
-	endif
+	endelse
 endfunction
