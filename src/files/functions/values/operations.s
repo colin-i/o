@@ -41,7 +41,7 @@ endfunction
 #err
 function shift_right(sd a,sd n)
 	#at 64? 1 shl 63 is last one
-	if n>31
+	if n>^31
 		if a<0
 			set a# -1
 		else
@@ -56,7 +56,7 @@ function shift_right(sd a,sd n)
 endfunction
 #err
 function shift_uright(sd a,sd n)
-	if n>31
+	if n>^31
 		set a# 0
 	else
 		while n>0
@@ -67,17 +67,19 @@ function shift_uright(sd a,sd n)
 endfunction
 #err
 function shift_left(sd a,sd n)
-	sd once=0
-	while n>0
-		sd how_was;set how_was a#
-		shl1 a#
-		if a#<^how_was
-			sd err
-			setcall err const_security_ex(#once)
-			If err!=(noerror);return err;endif
-		endif
-		dec n
-	endwhile
+	if a#!=0 #a can be 0 and how_was can't catch there
+		sd once=0
+		while n>^0
+			sd how_was;set how_was a#
+			shl1 a#
+			if a#<^how_was
+				sd err
+				setcall err const_security_ex(#once)
+				If err!=(noerror);return err;endif
+			endif
+			dec n
+		endwhile
+	endif
 	return (noerror)
 endfunction
 
@@ -133,7 +135,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		Data zero=0
 		If newitem=zero
 			Char zerodiv="Division by 0 error."
-			Str ptrzerodiv^zerodiv
+			vStr ptrzerodiv^zerodiv
 			Return ptrzerodiv
 		EndIf
 		Div currentitem newitem
@@ -144,18 +146,18 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 	ElseIf number=(xorNumber)
 		Xor currentitem newitem
 	ElseIf number=(powNumber)
-		if newitem<0
-			if currentitem=0
-				#is 1/(0 power n)
-				Return ptrzerodiv
-			elseif currentitem=1
-				#is 1/(1 power n)
-			else
-				#is 1/(>1)
-				set currentitem 0
-			endelse
+	#unsigned newitem/currentitem is the first step i think
+		if currentitem=1
+			#1/(1 power n) and positive, currentitem unchanged
+		elseif currentitem=0
+			if newitem=0
+				return "0 pow 0 is undefined."
+			endif
+			#if newitem<0 #	#is 1/(0 power n) #	Return ptrzerodiv #endif #currentitem unchanged
+		#elseif newitem<0 #	#is 1/(>1) #	set currentitem 0
 		elseif newitem=0
 			set currentitem 1
+		#elseif newitem=1 #currentitem unchanged
 		else
 			sd once=0
 			sd item;set item currentitem
