@@ -12,6 +12,7 @@ data *=2$31           #80   overflow
 data *=2$32           #0    1 overflow message
 data *=1<<31          #80..
 data *=1<<32          #0    overflow
+data *=0<<1111        #0    direct
 data *=0x80000000>>31 #ff..
 data *=0x80000000>>32 #ff.. direct
 data *=0x40000000>>31 #0    direct
