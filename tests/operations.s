@@ -2,9 +2,9 @@
 format elfobj
 
 const a=1
-#               add sub mul div   rem   pow and or  xor shl1 sar1  shr1   less greater neg not
-char *examples={3+2,6-4,5*5,32/10,32%10,3$2,7&2,5|2,7^2,2<<2,8>>3,-1>>>25,2<3, 2>3,    -a, ~0}
-#hex:           5   2   19  3     2     9   2   7   5   8    1    7f      1    0       ff  ff
+#               add sub mul div   divu           rem   remu     pow and or  xor shl1 sar1  shr1   less greater neg not
+char *examples={3+2,6-4,5*5,32/10,-1//0x10000000,32%10,-1%%0x10,3$2,7&2,5|2,7^2,2<<2,8>>3,-1>>>25,2<3, 2>3,    -a, ~0}
+#hex:           5   2   19  3     f              2     f        9     2   7   5   8    1    7f  1       0       ff  ff
 
 override w_as_e 0
 data *overflows=2$31  #80..
