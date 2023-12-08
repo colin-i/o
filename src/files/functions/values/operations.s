@@ -5,11 +5,13 @@ Const addNumber=Xfile_numbers_operation_add
 Const subNumber=Xfile_numbers_operation_sub
 Const mulNumber=Xfile_numbers_operation_mul
 Const divNumber=Xfile_numbers_operation_div
+Const divuNumber=Xfile_numbers_operation_divu
 Const andNumber=Xfile_numbers_operation_and
 Const orNumber=Xfile_numbers_operation_or
 Const xorNumber=Xfile_numbers_operation_xor
 Const powNumber=Xfile_numbers_operation_pow
 Const remNumber=Xfile_numbers_operation_rem
+Const remuNumber=Xfile_numbers_operation_remu
 Const lessNumber=Xfile_numbers_operation_less
 Const greaterNumber=Xfile_numbers_operation_greater
 Const shlNumber=Xfile_numbers_operation_shl
@@ -126,19 +128,23 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		set how_was currentitem
 		Mult currentitem newitem
 		set how_is currentitem
-		div how_is newitem
+		divu how_is newitem
 		if how_was!=how_is
 			setcall errptr const_security()
 			if errptr!=(noerror);return errptr;endif
 		endif
 	ElseIf number=(divNumber)
-		Data zero=0
-		If newitem=zero
+		If newitem=0
 			Char zerodiv="Division by 0 error."
 			vStr ptrzerodiv^zerodiv
 			Return ptrzerodiv
 		EndIf
 		Div currentitem newitem
+	ElseIf number=(divuNumber)
+		If newitem=0
+			Return ptrzerodiv
+		EndIf
+		Divu currentitem newitem
 	ElseIf number=(andNumber)
 		And currentitem newitem
 	ElseIf number=(orNumber)
@@ -165,7 +171,7 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 				set how_was currentitem
 				mult currentitem item
 				set how_is currentitem
-				div how_is item
+				divu how_is item
 				if how_was!=how_is
 					SetCall errptr const_security_ex(#once)
 					If errptr!=(noerror);return errptr;endif
@@ -174,10 +180,15 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 			endwhile
 		endelse
 	ElseIf number=(remNumber)
-		If newitem=zero
+		If newitem=0
 			Return ptrzerodiv
 		EndIf
 		Rem currentitem newitem
+	ElseIf number=(remuNumber)
+		If newitem=0
+			Return ptrzerodiv
+		EndIf
+		Remu currentitem newitem
 	ElseIf number=(shlNumber)
 		SetCall errptr shift_left(#currentitem,newitem)
 		If errptr!=(noerror);return errptr;endif
@@ -360,7 +371,28 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 	ss content
 	if nr!=(lessNumber)
 		if nr!=(greaterNumber)
-			ret
+			if nr!=(divNumber)
+				if nr!=(remNumber)
+					ret
+				endif
+				set content pcontent#
+				inc content
+				if content!=end ##error is catched how was before
+					if content#=(remNumber)
+						set pnr# (remuNumber)
+						set pcontent# content
+					endif
+				endif
+			else
+				set content pcontent#
+				inc content
+				if content!=end ##error is catched how was before
+					if content#=(divNumber)
+						set pnr# (divuNumber)
+						set pcontent# content
+					endif
+				endif
+			endelse
 		else
 			set content pcontent#
 			inc content
