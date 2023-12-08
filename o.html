@@ -485,19 +485,20 @@
         #the valueA will be 600</a>
 	</p>
 	<p>
-	4. Division (signed 4/8, unsigned 1)
+	4. Division
 	<br>
-	Language command: <b>Div</b> <b>Rem</b>
+	Language command: <b>Div</b> <b>Rem</b> <b>DivU</b> <b>RemU</b>
 	<br>
 	Example:
 	<br>
 	<a class="code">
-        Data valueA=465<br>
-        Data valueB=20<br>
-        Div valueA valueB<br>
-        #the valueA will be 23<br>
-        Rem valueA valueB<br>
-        #the valueA will be 3</a>
+		Data valueA=465<br>
+		Data valueB=20<br>
+		Div valueA valueB<br>
+		#the valueA will be 23<br>
+		Rem valueA valueB<br>
+		#the valueA will be 3<br>
+		#unsigned division (divu) and unsigned reminder (remu) is similar with constant operations presented at declaring data</a>
 	</p>
 	<p>
 	5. Incrementation
@@ -525,7 +526,7 @@
 	<p>
 	6. Decrementation
 	<br>
-	Language command: <b>Dec</b>
+	Language command: <b>Dec</b> <b>DecSt</b>
 	<br>
 	The decrementation command subtracts one from the value.
 	<br>
@@ -598,26 +599,26 @@
         #the valueA will be 0xF0f0F0f0</a>
 	</p>
 	<p>
-	5. ShL
+	5. ShL1
 	<br>
 	Example:
 	<br>
 	<a class="code">
         sd shift_left_once=2<br>
-        shl shift_left_once<br>
+        shl1 shift_left_once<br>
         #the value will be 4</a>
 	</p>
 	<p>
-	6. ShR SaR
+	6. ShR1 SaR1
 	<br>
 	Example:
 	<br>
 	<a class="code">
         sd shift_right_once=0x10<br>
-        SHR shift_right_once<br>
+        SHR1 shift_right_once<br>
         #the value will be 8</a>
         sd shift_right_signed_once=-2<br>
-        SaR shift_right_signed_once<br>
+        SaR1 shift_right_signed_once<br>
         #the value will be -1</a>
 	</p>
 </p>
