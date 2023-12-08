@@ -318,7 +318,7 @@ function function_call_64f(sd hex_n,sd conv,sd code)
 				#shadow space
 				#sub esp,x;default 4 args stack space convention
 				char hex_w={REX_Operand_64,0x83,0xEC};char argspush#1
-				set argspush nr_of_args;sub argspush conv;mult argspush (-1*qwsz)
+				set argspush nr_of_args;sub argspush conv;mult argspush ~qwszbits #minus 1 mult qwsz
 				SetCall err addtosec(#hex_w,4,code)
 			endif
 		elseif nr_of_args>0

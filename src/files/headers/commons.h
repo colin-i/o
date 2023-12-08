@@ -31,6 +31,7 @@ Const bsz=1
 Const wsz=2
 Const dwsz=4
 Const qwsz=8
+const qwszbits=qwsz-1
 
 const wmax=0xffFF
 
