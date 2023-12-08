@@ -87,7 +87,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 	Set primcalltype false
 
-	sd big;sd rem
+	sd big
 	If ptrcondition=false
 		#imm second arg can be, at conditions was already called
 		call setimm()
@@ -117,22 +117,36 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				Char subprim={0x29}
 				Set opprim subprim
 				set xlog (Xfile_action2_sub)
-			ElseIf subtype<=(cREM)
+			ElseIf subtype<=(cREMU)
 				Set opprim atprocthemem
 				#Set regprep ecxreg
 				Set regopcode ecxreg
 				Set divmul true
 				if lowprim=(FALSE);setcall big is_big(dataargprim,sufixprim)
 				else;set big (FALSE);endelse
-				if subtype=(cREM)
-					set rem (TRUE)
-					set xlog (Xfile_action2_rem)
-				else
+				sd rem
+				if subtype=(cMULT)
 					set rem (FALSE)
-					if subtype=(cMULT)
-						set xlog (Xfile_action2_mult)
-					else
+					set xlog (Xfile_action2_mult)
+				else
+					sd is_signed
+					if subtype=(cDIV)
+						set rem (FALSE)
+						set is_signed (TRUE)
 						set xlog (Xfile_action2_div)
+					elseif subtype=(cDIVU)
+						set rem (FALSE)
+						set is_signed (FALSE)
+						set xlog (Xfile_action2_divu)
+					elseif subtype=(cREM)
+						set rem (TRUE)
+						set is_signed (TRUE)
+						set xlog (Xfile_action2_rem)
+					else
+					#if subtype=(cREMU)
+						set rem (TRUE)
+						set is_signed (FALSE)
+						set xlog (Xfile_action2_remu)
 					endelse
 				endelse
 			Else
@@ -349,7 +363,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		If subtype=(cMULT)
 			Set regopcodeex regopcodemult
 		Else
-			setcall errnr div_prepare(lowprim,big,#regopcodeex)
+			setcall errnr div_prepare(lowprim,big,#regopcodeex,is_signed)
 		EndElse
 
 		Char opcodexini={0xF7}
@@ -564,32 +578,52 @@ endfunction
 
 
 #err
-function div_prepare(sd low,sd big,ss p_regopcode)
+function div_prepare(sd low,sd big,ss p_regopcode,sd is_signed)
 	const bt_atdiv=bt_reg_imm8|eaxregnumber
 	vData codeptr%%ptr_codesec
 	Char regopcodeidiv={7}
 	sd errnr
 	if big=(TRUE)
-	#bt rax,63;jc,;mov 0,edx;jmp,;mov -1,rdx
-	#In x64, any operation on a 32-bit register clears the top 32 bits of the corresponding 64-bit register too, so there's no need to use mov 0,rax (and xor rax, rax)
+	#bt rax,63;jnc,;mov -1,rdx;jmp,
 		const div_prepare_high=!
-		char high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,jnc_instruction,9,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
-		SetCall errnr addtosec(#high,(!-div_prepare_high),codeptr)
+		char high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,jnc_instruction,9,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1,jmp_rel8,5}
+	#In x64, any operation on a 32-bit register clears the top 32 bits of the corresponding 64-bit register too, so there's no need to use mov 0,rax (and xor rax, rax)
+	#mov 0,edx
+		const div_prepare_high_unsigned=!
+		char highu={atedximm,0,0,0,0}
+		if is_signed=(TRUE)
+			SetCall errnr addtosec(#high,(!-div_prepare_high),codeptr)
+		else
+			SetCall errnr addtosec(#highu,(!-div_prepare_high_unsigned),codeptr)
+		endelse
 		set p_regopcode# regopcodeidiv
 	elseif low=(FALSE)
-	#bt eax,31;jc,;mov 0,edx;jmp,;mov -1,edx
+	#bt eax,31;jnc,;mov -1,edx;jmp,
 		const div_prepare_mediu=!
-		char mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,jnc_instruction,7,atedximm,-1,-1,-1,-1,jmp_rel8,5,atedximm,0,0,0,0}
-		SetCall errnr addtosec(#mediu,(!-div_prepare_mediu),codeptr)
+		char mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,jnc_instruction,7,atedximm,-1,-1,-1,-1,jmp_rel8,5}
+	#mov 0,edx
+		const div_prepare_mediu_unsigned=!
+		char mediuu={atedximm,0,0,0,0}
+		if is_signed=(TRUE)
+			SetCall errnr addtosec(#mediu,(!-div_prepare_mediu),codeptr)
+		else
+			SetCall errnr addtosec(#mediuu,(!-div_prepare_mediu_unsigned),codeptr)
+		endelse
 		set p_regopcode# regopcodeidiv
 	else
-	#like the zero extension, this remains zero
 		const div_prepare_low=!
-	#bt eax,15;jc,;mov ah,0;jmp,;mov ah,-1
-	#	char small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,jnc_instruction,5,0xc6,regregmod|ahregnumber,-1,jmp_rel8,3,0xc6,regregmod|ahregnumber,0}
-		char small={0xc6,regregmod|ahregnumber,0}
-		SetCall errnr addtosec(#small,(!-div_prepare_low),codeptr)
-		set p_regopcode# 6    #otherwise, 255/-1 idiv -255 exception (-128 to 127 allowed)
+	#bt eax,7;jnc,;mov ah,-1;jmp,
+		char small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,jnc_instruction,5,0xc6,regregmod|ahregnumber,-1,jmp_rel8,3}
+	#mov ah,0
+		const div_prepare_low_unsigned=!
+		char smallu={0xc6,regregmod|ahregnumber,0}
+		if is_signed=(TRUE)
+		#255/-1 idiv -255 debugger exception (-128 to 127 allowed)
+			SetCall errnr addtosec(#small,(!-div_prepare_low),codeptr)
+		else
+			SetCall errnr addtosec(#smallu,(!-div_prepare_low_unsigned),codeptr)
+		endelse
+		set p_regopcode# 6
 	endelse
 	return errnr
 	#before

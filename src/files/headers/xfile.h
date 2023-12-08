@@ -146,10 +146,12 @@ const Xfile_action2_add=1
 const Xfile_action2_sub=2
 const Xfile_action2_mult=3
 const Xfile_action2_div=4
-const Xfile_action2_rem=5
-const Xfile_action2_and=6
-const Xfile_action2_or=7
-const Xfile_action2_xor=8
+const Xfile_action2_divu=5
+const Xfile_action2_rem=6
+const Xfile_action2_remu=7
+const Xfile_action2_and=8
+const Xfile_action2_or=9
+const Xfile_action2_xor=10
 
 const Xfile_call_normal=0
 const Xfile_call_ret=1

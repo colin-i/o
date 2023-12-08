@@ -12,7 +12,7 @@ Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cSD_c="SD";Char c
 	Char cDATAX_c="DATAX";Char cSTRX_c="STRX";Char cCHARX_c="CHARX"
 	Char cVDATAX_c="VDATAX";Char cVSTRX_c="VSTRX";Char cVALUEX_c="VALUEX"
 	Char cCONST_c="CONST"
-Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cREM_c="REM";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
+Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cDIVU_c="DIVU";Char cREM_c="REM";Char cREMU_c="REMU";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
 Char cRETURN_c="RETURN";Char cINC_c="INC";Char cDEC_c="DEC";Char cINCST_c="INCST";Char cDECST_c="DECST";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cSHL1_c="SHL1";Char cSHR1_c="SHR1";Char cSAR1_c="SAR1";Char cEXIT_c="EXIT"
 Char cCALL_c="CALL";Char cCALLX_c="CALLX"
 Char cIF_c="IF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE";Char cENDIF_c="ENDIF";Char cENDELSEIF_c="ENDELSEIF";Char cENDELSE_c="ENDELSE";Char cWHILE_c="WHILE";Char cENDWHILE_c="ENDWHILE";Char cBREAK_c="BREAK";Char cCONTINUE_c="CONTINUE"
@@ -155,10 +155,20 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cPRIMSEC
 			Data *=cDIV
 			Data *=spacereq
+		Const cDIVU=!-cPRIMSEC_top
+			data *^cDIVU_c
+			Data *=cPRIMSEC
+			Data *=cDIVU
+			Data *=spacereq
 		Const cREM=!-cPRIMSEC_top
 			data *^cREM_c
 			Data *=cPRIMSEC
 			Data *=cREM
+			Data *=spacereq
+		Const cREMU=!-cPRIMSEC_top
+			data *^cREMU_c
+			Data *=cPRIMSEC
+			Data *=cREMU
 			Data *=spacereq
 		Const cAND=!-cPRIMSEC_top
 			data *^cAND_c
