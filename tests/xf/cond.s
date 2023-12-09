@@ -1,6 +1,6 @@
 
 format elfobj64
-
+entry main()
 if 1=1
 elseif 1=1
 endelseif
@@ -20,3 +20,7 @@ elseif 1<1
 elseif 1>1
 elseif 1<=1
 endelseif
+if 4!1
+end
+if 2!!1
+end
