@@ -71,19 +71,25 @@ const Xfile_numbers_parenthesis_open=0
 const Xfile_numbers_parenthesis_close=1
 const Xfile_numbers_done=2
 
-const Xfile_numbers_operation_add=asciiplus
-const Xfile_numbers_operation_sub=asciiminus
-const Xfile_numbers_operation_mul=asciiast
-const Xfile_numbers_operation_div=asciislash
+# $ % ^ & * - +
+# ;: \|
+# ,< .> /
+#=!
+#uU
+#PpLlGg
+const Xfile_numbers_operation_add=asciiplus        #parsed at spelling
+const Xfile_numbers_operation_sub=asciiminus       #parsed at spelling
+const Xfile_numbers_operation_mul=asciiast         #parsed at spelling
+const Xfile_numbers_operation_div=asciislash       #parsed at spelling
 const Xfile_numbers_operation_divu=asciibs
-const Xfile_numbers_operation_and=asciiand
-const Xfile_numbers_operation_or=asciivbar
-const Xfile_numbers_operation_xor=asciicirc
-const Xfile_numbers_operation_pow=asciidollar
-const Xfile_numbers_operation_rem=asciipercent
+const Xfile_numbers_operation_and=asciiand         #parsed at spelling
+const Xfile_numbers_operation_or=asciivbar         #parsed at spelling
+const Xfile_numbers_operation_xor=asciicirc        #parsed at spelling
+const Xfile_numbers_operation_pow=asciidollar      #parsed at spelling
+const Xfile_numbers_operation_rem=asciipercent     #parsed at spelling
 const Xfile_numbers_operation_remu=asciicolon
-const Xfile_numbers_operation_less=asciiless
-const Xfile_numbers_operation_greater=asciigreater
+const Xfile_numbers_operation_less=asciiless       #parsed at spelling
+const Xfile_numbers_operation_greater=asciigreater #parsed at spelling
 const Xfile_numbers_operation_shl=asciicomma
 const Xfile_numbers_operation_sar=asciidot
 const Xfile_numbers_operation_shr=asciisemicolon
@@ -158,16 +164,18 @@ const Xfile_action2_xor=10
 const Xfile_call_normal=0
 const Xfile_call_ret=1
 
-const Xfile_cond_equal=0x85
-const Xfile_cond_notequal=0x84
-const Xfile_cond_lessequalunsign=0x87
 const Xfile_cond_greatequalunsign=0x82
-const Xfile_cond_lessequal=0x8F
-const Xfile_cond_greatequal=0x8C
 const Xfile_cond_lessunsign=0x83
+const Xfile_cond_notequal=0x84
+const Xfile_cond_equal=0x85
 const Xfile_cond_greatunsign=0x86
+const Xfile_cond_lessequalunsign=0x87
+const Xfile_cond_notparity=0x8A
+const Xfile_cond_parity=0x8B
+const Xfile_cond_greatequal=0x8C
 const Xfile_cond_less=0x8D
 const Xfile_cond_great=0x8E
+const Xfile_cond_lessequal=0x8F
 
 const Xfile_format_exe=0
 const Xfile_format_elf=1

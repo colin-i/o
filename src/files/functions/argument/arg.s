@@ -714,6 +714,8 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Char *="=";         Data *jne=Xfile_cond_equal
 	Char *="<";         Data *jge=Xfile_cond_less
 	Char *=">";         Data *jle=Xfile_cond_great
+	Char *="!!";        Data *jp=Xfile_cond_notparity     #example: if 1 (2!1) or if 0x7f..f
+	Char *="!";         Data *jnp=Xfile_cond_parity       #example: if 3 (4!1) or if 0xff..f
 	Char term={0}
 
 	Data ptr#1
@@ -727,7 +729,7 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 
 	if size>0
 		if content#=(asciiparenthesisstart)
-	#let a possibility for example for (a<<b)!=c , there are: include "a a" "b b"
+	#let a possibility for example for (a<<b)!=c
 			SetCall errnr getarg(ptrcontent,ptrsize,ptrsize#,allowdata,forward,ptrdata,ptrlow,ptrsufix)
 			if errnr!=(noerror)
 				Return errnr

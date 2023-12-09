@@ -7,7 +7,7 @@ Data pescapes^escapes
 
 SetCall errormsg xfile_add_char_ifif((Xfile_include))
 if errormsg=noerr
-	SetCall errormsg quotinmem(pcontent,pcomsize,pquotsz,pescapes)
+	SetCall errormsg quotinmem(pcontent,pcomsize,pquotsz,pescapes) #there are: include "a a" "b b"
 	if errormsg=noerr
 		SetCall errormsg xfile_add_char_ifif(subtype)
 		if errormsg=noerr
