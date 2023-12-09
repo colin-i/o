@@ -12,11 +12,12 @@ Const xorNumber=Xfile_numbers_operation_xor
 Const powNumber=Xfile_numbers_operation_pow
 Const remNumber=Xfile_numbers_operation_rem
 Const remuNumber=Xfile_numbers_operation_remu
-Const lessNumber=Xfile_numbers_operation_less
-Const greaterNumber=Xfile_numbers_operation_greater
 Const shlNumber=Xfile_numbers_operation_shl
 Const sarNumber=Xfile_numbers_operation_sar
 Const shrNumber=Xfile_numbers_operation_shr
+Const equalNumber=Xfile_numbers_operation_equal
+Const lessNumber=Xfile_numbers_operation_less
+Const greaterNumber=Xfile_numbers_operation_greater
 #asciiminus and asciinot for one arg
 
 #err
@@ -196,6 +197,12 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		Call shift_right(#currentitem,newitem)
 	elseIf number=(shrNumber)
 		Call shift_uright(#currentitem,newitem)
+	ElseIf number=(equalNumber)
+		if currentitem=newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
 	ElseIf number=(lessNumber)
 		if currentitem<newitem
 			set currentitem (TRUE)
@@ -231,6 +238,7 @@ Function signop(char byte,sv outval)
 	ElseIf byte=(remNumber)
 	ElseIf byte=(lessNumber)
 	ElseIf byte=(greaterNumber)
+	ElseIf byte=(equalNumber)
 	Else
 		return false
 	EndElse
