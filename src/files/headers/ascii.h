@@ -36,7 +36,9 @@ Const asciiL=0x4c
 Const asciiS=0x53
 Const asciiV=0x56
 Const asciiZ=0x5A
+Const asciileftsquareBracket=0x5B
 Const asciibs=0x5C
+Const asciirightsquareBracket=0x5D
 Const asciicirc=0x5E
 Const asciiunderscore=0x5F
 Const asciia=0x61
@@ -48,5 +50,5 @@ Const asciit=0x74
 Const asciiz=0x7A
 #7b left curly bracket {
 Const asciivbar=0x7C
-#7d }
+Const asciirightcurlyBracket=0x7D
 Const asciiequiv=0x7E

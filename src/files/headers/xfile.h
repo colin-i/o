@@ -72,8 +72,8 @@ const Xfile_numbers_parenthesis_close=1
 const Xfile_numbers_done=2
 
 # $ % ^ & * - +
-# ;: \|
-# ,< .> /
+# : \|
+# < > /
 #=!
 #uU
 #PpLlGg
@@ -90,9 +90,9 @@ const Xfile_numbers_operation_rem=asciipercent     #parsed at spelling
 const Xfile_numbers_operation_remu=asciicolon
 const Xfile_numbers_operation_less=asciiless       #parsed at spelling
 const Xfile_numbers_operation_greater=asciigreater #parsed at spelling
-const Xfile_numbers_operation_shl=asciicomma
-const Xfile_numbers_operation_sar=asciidot
-const Xfile_numbers_operation_shr=asciisemicolon
+const Xfile_numbers_operation_shl=asciileftsquareBracket
+const Xfile_numbers_operation_sar=asciirightsquareBracket
+const Xfile_numbers_operation_shr=asciirightcurlyBracket
 
 #here is ORing
 const Xfile_numbers_prefix_none=0x0
