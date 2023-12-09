@@ -160,11 +160,12 @@ Function memtohex(str content,data size,data outvalue)
 	Return true
 EndFunction
 
+const calculationmark=asciibs
 #error
 function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	Data bool#1
 	#test to see if the ! sign is present
-	if content#=(asciiexclamationmark)
+	if content#=(calculationmark)
 		sd err
 
 		if size=1
@@ -179,7 +180,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		inc content
 		charx against#1
 		set against content#
-		if against=(asciiexclamationmark)
+		if against=(calculationmark)
 			if size=2
 				#the current virtual data cursor
 				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain/main or (NULL)
@@ -217,7 +218,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			#	and suffix+0 at def, else is a comment;at code is ok
 			ss pointer=-1;add pointer content;add pointer size
 			datax data#1;datax low#1;datax sufix#1
-			if pointer#!=(asciiexclamationmark)
+			if pointer#!=(calculationmark)
 				#size of variable
 				setcall err xfile_add_char_if((Xfile_numbers_type_vsizeVar))
 				if err=(noerror)
