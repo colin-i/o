@@ -90,7 +90,7 @@ const fndecandgroup=1
 Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrparses,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool,sd relocindx)
 	Data zero=0
 	vstrx argsize#1
-	Char comma=","
+	Char comma=asciicomma
 	Data err#1
 	Data noerr=noerror
 	datax content#1
