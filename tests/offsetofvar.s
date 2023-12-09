@@ -19,9 +19,9 @@ importx "printf" printf
 
 vstr info="%d\n"
 
-call printf(info,(!a.b!))    #12
-call printf(info,(!a.c!))    #20
-call printf(info,(!a.d!))    #8
-call printf(info,(!main.b!)) #28
+call printf(info,(\a.b\))    #12
+call printf(info,(\a.c\))    #20
+call printf(info,(\a.d\))    #8
+call printf(info,(\main.b\)) #28
 
 return 0
