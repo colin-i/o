@@ -585,43 +585,43 @@ function div_prepare(sd low,sd big,ss p_regopcode,sd is_signed)
 	sd errnr
 	if big=(TRUE)
 	#bt rax,63;jnc,;mov -1,rdx;jmp,
-		const div_prepare_high=!
+		const div_prepare_high=\
 		char high={REX_Operand_64,twobytesinstruction_byte1,bt_instruction,bt_atdiv,63,jnc_instruction,9,REX_Operand_64,mov_imm_to_rm,regregmod|edxregnumber,-1,-1,-1,-1,jmp_rel8,5}
 	#In x64, any operation on a 32-bit register clears the top 32 bits of the corresponding 64-bit register too, so there's no need to use mov 0,rax (and xor rax, rax)
 	#mov 0,edx
-		const div_prepare_high_unsigned=!
+		const div_prepare_high_unsigned=\
 		char highu={atedximm,0,0,0,0}
 		if is_signed=(TRUE)
-			SetCall errnr addtosec(#high,(!-div_prepare_high),codeptr)
+			SetCall errnr addtosec(#high,(\-div_prepare_high),codeptr)
 		else
-			SetCall errnr addtosec(#highu,(!-div_prepare_high_unsigned),codeptr)
+			SetCall errnr addtosec(#highu,(\-div_prepare_high_unsigned),codeptr)
 		endelse
 		set p_regopcode# regopcodeidiv
 	elseif low=(FALSE)
 	#bt eax,31;jnc,;mov -1,edx;jmp,
-		const div_prepare_mediu=!
+		const div_prepare_mediu=\
 		char mediu={twobytesinstruction_byte1,bt_instruction,bt_atdiv,31,jnc_instruction,7,atedximm,-1,-1,-1,-1,jmp_rel8,5}
 	#mov 0,edx
-		const div_prepare_mediu_unsigned=!
+		const div_prepare_mediu_unsigned=\
 		char mediuu={atedximm,0,0,0,0}
 		if is_signed=(TRUE)
-			SetCall errnr addtosec(#mediu,(!-div_prepare_mediu),codeptr)
+			SetCall errnr addtosec(#mediu,(\-div_prepare_mediu),codeptr)
 		else
-			SetCall errnr addtosec(#mediuu,(!-div_prepare_mediu_unsigned),codeptr)
+			SetCall errnr addtosec(#mediuu,(\-div_prepare_mediu_unsigned),codeptr)
 		endelse
 		set p_regopcode# regopcodeidiv
 	else
-		const div_prepare_low=!
+		const div_prepare_low=\
 	#bt eax,7;jnc,;mov ah,-1;jmp,
 		char small={twobytesinstruction_byte1,bt_instruction,bt_atdiv,7,jnc_instruction,5,0xc6,regregmod|ahregnumber,-1,jmp_rel8,3}
 	#mov ah,0
-		const div_prepare_low_unsigned=!
+		const div_prepare_low_unsigned=\
 		char smallu={0xc6,regregmod|ahregnumber,0}
 		if is_signed=(TRUE)
 		#255/-1 idiv -255 debugger exception (-128 to 127 allowed)
-			SetCall errnr addtosec(#small,(!-div_prepare_low),codeptr)
+			SetCall errnr addtosec(#small,(\-div_prepare_low),codeptr)
 		else
-			SetCall errnr addtosec(#smallu,(!-div_prepare_low_unsigned),codeptr)
+			SetCall errnr addtosec(#smallu,(\-div_prepare_low_unsigned),codeptr)
 		endelse
 		set p_regopcode# 6
 	endelse

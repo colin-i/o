@@ -9,7 +9,7 @@
 Const dossize=0x1e*wsz+dwsz
 #Const alldossize=dossize+0x40
 
-Const pe_fileheadersstart=!
+Const pe_fileheadersstart=\
 
 Char dos_header#dossize
 Const stublength=0x40
@@ -110,9 +110,9 @@ Data cPointerToRawData#1
 Data *moreatcode={0,0,0}
 Data *codesectionCharacteristics=IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ
 
-Const sizefileheadercodedata=!
+Const sizefileheadercodedata=\
 
-Const idatasectionstart=!
+Const idatasectionstart=\
 
 Char *idatasection=".idata"
 Char *alignmenttoEight_idata_name={0}
@@ -123,4 +123,4 @@ Data iPointerToRawData#1
 Data *moreatidata={0,0,0}
 Data *idatasectionCharacteristics=IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_READ
 
-Const idatasectionend=!
+Const idatasectionend=\

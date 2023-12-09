@@ -164,7 +164,7 @@ const calculationmark=asciibs
 #error
 function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	Data bool#1
-	#test to see if the ! sign is present
+	#test to see if the calculationmark sign is present
 	if content#=(calculationmark)
 		sd err
 
@@ -187,7 +187,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
 				if ptr_nobits_virtual#=(No)
 					if p_parses#=(pass_init)
-						return "At the moment, !! is not implemented here."
+						return "At the moment, \\\\ is not implemented here."
 					endif
 				endif
 				setcall outval# get_img_vdata_dataSize()
@@ -199,7 +199,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			sub size 2
 
 			if p_parses#=(pass_init)
-				return "At the moment, !!func is not implemented here."  #after pass_init is the calloc for scopes
+				return "At the moment, \\\\func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
 			setcall err xfile_add_char_if((Xfile_numbers_type_fsizeX))  #next in get_scope_pos
 			if err=(noerror)
@@ -212,7 +212,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		sd dot_offset;setcall dot_offset valinmem(content,size,(asciidot))
 		if dot_offset!=size
 			if p_parses#=(pass_init)
-				return "At the moment, !a.b or !a.b! are not implemented here."  #after pass_init is the calloc for scopes
+				return "At the moment, \\a.b or \\a.b\\ are not implemented here."  #after pass_init is the calloc for scopes
 			endif
 			#suffixed,casted, nobody is stopping them (casted will not reach here, will be xor)
 			#	and suffix+0 at def, else is a comment;at code is ok
@@ -264,7 +264,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 					endif
 				endif
 			else
-				# !a.b! offset
+				# [calculation]a.b[calculation] offset
 				dec size
 
 				setcall err xfile_add_char_if((Xfile_numbers_type_voffsetVar))  #next in get_scope_pos
@@ -281,7 +281,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			endelse
 		else
 			if p_parses#=(pass_init)
-				return "At the moment, !func is not implemented here."  #after pass_init is the calloc for scopes
+				return "At the moment, \\func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
 			setcall err xfile_add_char_if((Xfile_numbers_type_fsize))  #next in get_scope_pos
 			if err=(noerror)

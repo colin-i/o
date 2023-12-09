@@ -21,13 +21,13 @@ if errormsg=(noerror)
 						setcall errormsg callex64_call()
 					endif
 					if errormsg=(noerror)
-						const callex_x86_64_start=!
+						const callex_x86_64_start=\
 						#same but with 2 rex, inc je, -2 jmp, and 3* at sib
 						char callex_x86_64={REX_Operand_64,0x81,0xf9,0,0,0,0,0x74,8,REX_Operand_64,0xFF,1*toregopcode|ecxregnumber|regregmod,0xff,6*toregopcode|espregnumber,3*tomod|callex_regopcode,0xEB,0xef}
-						set callex_sz (!-callex_x86_64_start);set callex_data #callex_x86_64
+						set callex_sz (\-callex_x86_64_start);set callex_data #callex_x86_64
 					endif
 				else
-					const callex_start=!
+					const callex_start=\
 					# ## cmp ecx,0
 					char callex_i386={0x81,0xf9};data *=0
 					#je ###
@@ -39,7 +39,7 @@ if errormsg=(noerror)
 					#jmp ##
 					char *=0xEB;char *callex_jmp=0xf1
 					#
-					set callex_sz (!-callex_start);set callex_data #callex_i386
+					set callex_sz (\-callex_start);set callex_data #callex_i386
 				endelse
 				#
 				if errormsg=(noerror)

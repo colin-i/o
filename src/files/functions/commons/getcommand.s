@@ -34,216 +34,216 @@ Char cI3_c="I3"
 
 const not_a_subtype=-1
 
-const coms_start=!
-	Const cCOMMENT=!-coms_start
+const coms_start=\
+	Const cCOMMENT=\-coms_start
 		data cCOMMENT_s^cCOMMENT_c
 Const comsloc^cCOMMENT_s
 		Data *=cCOMMENT
 		Data *#1
 		Data *=spacenotreq
-const commandsvars_start=!
-	Const cDECLARE=!-coms_start
-	Const cDECLARE_top=!
-		Const cDATA=!-cDECLARE_top
+const commandsvars_start=\
+	Const cDECLARE=\-coms_start
+	Const cDECLARE_top=\
+		Const cDATA=\-cDECLARE_top
 			data cDATA_s^cDATA_c
 Const cdataloc^cDATA_s
 			Data *=cDECLARE
 			Data *=cDATA
 			Data *=spacereq
-		Const cSTR=!-cDECLARE_top
+		Const cSTR=\-cDECLARE_top
 Const com_size=cSTR-cDATA
 			data *^cSTR_c
 			Data *=cDECLARE
 			Data *=cSTR
 			Data *=spacereq
-		Const cCHAR=!-cDECLARE_top
+		Const cCHAR=\-cDECLARE_top
 			data *^cCHAR_c
 			Data *=cDECLARE
 			Data *=cCHAR
 			Data *=spacereq
-		Const cSD=!-cDECLARE_top
+		Const cSD=\-cDECLARE_top
 			data *^cSD_c
 			Data *=cDECLARE
 			Data *=cSD
 			Data *=spacereq
-		Const cSS=!-cDECLARE_top
+		Const cSS=\-cDECLARE_top
 			data *^cSS_c
 			Data *=cDECLARE
 			Data *=cSS
 			Data *=spacereq
-		Const cSV=!-cDECLARE_top
+		Const cSV=\-cDECLARE_top
 			data *^cSV_c
 			Data *=cDECLARE
 			Data *=cSV
 			Data *=spacereq
-		Const cVDATA=!-cDECLARE_top
+		Const cVDATA=\-cDECLARE_top
 			data *^cVDATA_c
 			Data *=cDECLARE
 			Data *=cVDATA
 			Data *=spacereq
-		Const cVSTR=!-cDECLARE_top
+		Const cVSTR=\-cDECLARE_top
 			data *^cVSTR_c
 			Data *=cDECLARE
 			Data *=cVSTR
 			Data *=spacereq
-		Const cVALUE=!-cDECLARE_top
+		Const cVALUE=\-cDECLARE_top
 			data *^cVALUE_c
 			Data *=cDECLARE
 			Data *=cVALUE
 			Data *=spacereq
-		Const cDATAX=!-cDECLARE_top
+		Const cDATAX=\-cDECLARE_top
 			data *^cDATAX_c
 			Data *=cDECLARE
 			Data *=cDATAX
 			Data *=spacereq
-		Const cSTRX=!-cDECLARE_top
+		Const cSTRX=\-cDECLARE_top
 			data *^cSTRX_c
 			Data *=cDECLARE
 			Data *=cSTRX
 			Data *=spacereq
-		Const cCHARX=!-cDECLARE_top
+		Const cCHARX=\-cDECLARE_top
 			data *^cCHARX_c
 			Data *=cDECLARE
 			Data *=cCHARX
 			Data *=spacereq
-		Const cVDATAX=!-cDECLARE_top
+		Const cVDATAX=\-cDECLARE_top
 			data *^cVDATAX_c
 			Data *=cDECLARE
 			Data *=cVDATAX
 			Data *=spacereq
-		Const cVSTRX=!-cDECLARE_top
+		Const cVSTRX=\-cDECLARE_top
 			data *^cVSTRX_c
 			Data *=cDECLARE
 			Data *=cVSTRX
 			Data *=spacereq
-		Const cVALUEX=!-cDECLARE_top
+		Const cVALUEX=\-cDECLARE_top
 			data *^cVALUEX_c
 			Data *=cDECLARE
 			Data *=cVALUEX
 			Data *=spacereq
 #numberofcommandsvars to set these commands to search for them at function parameter declare
-Const numberofcommandsvars=(!-commandsvars_start)/com_size
-		Const cCONST=!-cDECLARE_top
+Const numberofcommandsvars=(\-commandsvars_start)/com_size
+		Const cCONST=\-cDECLARE_top
 			data *^cCONST_c
 			Data *=cDECLARE
 			Data *=cCONST
 			Data *=spacereq
-	Const cPRIMSEC=!-coms_start
-	Const cPRIMSEC_top=!
-		Const cSET=!-cPRIMSEC_top
+	Const cPRIMSEC=\-coms_start
+	Const cPRIMSEC_top=\
+		Const cSET=\-cPRIMSEC_top
 			data *^cSET_c
 			Data *=cPRIMSEC
 			Data *=cSET
 			Data *=spacereq
-		Const cADD=!-cPRIMSEC_top
+		Const cADD=\-cPRIMSEC_top
 			data *^cADD_c
 			Data *=cPRIMSEC
 			Data *=cADD
 			Data *=spacereq
-		Const cSUB=!-cPRIMSEC_top
+		Const cSUB=\-cPRIMSEC_top
 			data *^cSUB_c
 			Data *=cPRIMSEC
 			Data *=cSUB
 			Data *=spacereq
-		Const cMULT=!-cPRIMSEC_top
+		Const cMULT=\-cPRIMSEC_top
 			data *^cMULT_c
 			Data *=cPRIMSEC
 			Data *=cMULT
 			Data *=spacereq
-		Const cDIV=!-cPRIMSEC_top
+		Const cDIV=\-cPRIMSEC_top
 			data *^cDIV_c
 			Data *=cPRIMSEC
 			Data *=cDIV
 			Data *=spacereq
-		Const cDIVU=!-cPRIMSEC_top
+		Const cDIVU=\-cPRIMSEC_top
 			data *^cDIVU_c
 			Data *=cPRIMSEC
 			Data *=cDIVU
 			Data *=spacereq
-		Const cREM=!-cPRIMSEC_top
+		Const cREM=\-cPRIMSEC_top
 			data *^cREM_c
 			Data *=cPRIMSEC
 			Data *=cREM
 			Data *=spacereq
-		Const cREMU=!-cPRIMSEC_top
+		Const cREMU=\-cPRIMSEC_top
 			data *^cREMU_c
 			Data *=cPRIMSEC
 			Data *=cREMU
 			Data *=spacereq
-		Const cAND=!-cPRIMSEC_top
+		Const cAND=\-cPRIMSEC_top
 			data *^cAND_c
 			Data *=cPRIMSEC
 			Data *=cAND
 			Data *=spacereq
-		Const cOR=!-cPRIMSEC_top
+		Const cOR=\-cPRIMSEC_top
 			data *^cOR_c
 			Data *=cPRIMSEC
 			Data *=cOR
 			Data *=spacereq
-		Const cXOR=!-cPRIMSEC_top
+		Const cXOR=\-cPRIMSEC_top
 			data *^cXOR_c
 			Data *=cPRIMSEC
 			Data *=cXOR
 			Data *=spacereq
-		Const cCALLEX_primsec=!-cPRIMSEC_top
-	Const cONEARG=!-coms_start
-	Const cONEARG_top=!
-		Const cRETURN=!-cONEARG_top
+		Const cCALLEX_primsec=\-cPRIMSEC_top
+	Const cONEARG=\-coms_start
+	Const cONEARG_top=\
+		Const cRETURN=\-cONEARG_top
 			data *^cRETURN_c
 			Data *=cONEARG
 			Data *=cRETURN
 			Data *=spacereq
-		Const cINC=!-cONEARG_top
+		Const cINC=\-cONEARG_top
 			data *^cINC_c
 			Data *=cONEARG
 			Data *=cINC
 			Data *=spacereq
-		Const cDEC=!-cONEARG_top
+		Const cDEC=\-cONEARG_top
 			data *^cDEC_c
 			Data *=cONEARG
 			Data *=cDEC
 			Data *=spacereq
-		Const cINCST=!-cONEARG_top
+		Const cINCST=\-cONEARG_top
 			data *^cINCST_c
 			Data *=cONEARG
 			Data *=cINCST
 			Data *=spacereq
-		Const cDECST=!-cONEARG_top
+		Const cDECST=\-cONEARG_top
 			data *^cDECST_c
 			Data *=cONEARG
 			Data *=cDECST
 			Data *=spacereq
-		Const cNEG=!-cONEARG_top
+		Const cNEG=\-cONEARG_top
 			data *^cNEG_c
 			Data *=cONEARG
 			Data *=cNEG
 			Data *=spacereq
-		Const cNOT=!-cONEARG_top
+		Const cNOT=\-cONEARG_top
 			data *^cNOT_c
 			Data *=cONEARG
 			Data *=cNOT
 			Data *=spacereq
-		Const cSHL1=!-cONEARG_top
+		Const cSHL1=\-cONEARG_top
 			data *^cSHL1_c
 			Data *=cONEARG
 			Data *=cSHL1
 			Data *=spacereq
-		Const cSHR1=!-cONEARG_top
+		Const cSHR1=\-cONEARG_top
 			data *^cSHR1_c
 			Data *=cONEARG
 			Data *=cSHR1
 			Data *=spacereq
-		Const cSAR1=!-cONEARG_top
+		Const cSAR1=\-cONEARG_top
 			data *^cSAR1_c
 			Data *=cONEARG
 			Data *=cSAR1
 			Data *=spacereq
-		Const cEXIT=!-cONEARG_top
+		Const cEXIT=\-cONEARG_top
 			data *^cEXIT_c
 			Data *=cONEARG
 			Data *=cEXIT
 			Data *=spacereq
-	Const cCALL=!-coms_start
+	Const cCALL=\-coms_start
 		data *^cCALL_c
 		Data *=cCALL
 		Data *=0
@@ -252,59 +252,59 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *=cCALL
 		Data *=x_callx_flag
 		Data *=spacereq
-	Const cCONDITIONS=!-coms_start
-	Const cCONDITIONS_top=!
-		Const cIF=!-cCONDITIONS_top
+	Const cCONDITIONS=\-coms_start
+	Const cCONDITIONS_top=\
+		Const cIF=\-cCONDITIONS_top
 			data *^cIF_c
 			Data *=cCONDITIONS
 			Data *=cIF
 			Data *=spacereq
-		Const cELSEIF=!-cCONDITIONS_top
+		Const cELSEIF=\-cCONDITIONS_top
 			data *^cELSEIF_c
 			Data *=cCONDITIONS
 			Data *=cELSEIF
 			Data *=spacereq
-		Const cELSE=!-cCONDITIONS_top
+		Const cELSE=\-cCONDITIONS_top
 			data *^cELSE_c
 			Data *=cCONDITIONS
 			Data *=cELSE
 			Data *=spacenotreq
-		Const cENDIF=!-cCONDITIONS_top
+		Const cENDIF=\-cCONDITIONS_top
 			data *^cENDIF_c
 			Data *=cCONDITIONS
 			Data *=cENDIF
 			Data *=spacenotreq
-		Const cENDELSEIF=!-cCONDITIONS_top
+		Const cENDELSEIF=\-cCONDITIONS_top
 			data *^cENDELSEIF_c
 			Data *=cCONDITIONS
 			Data *=cENDELSEIF
 			Data *=spacenotreq
-		Const cENDELSE=!-cCONDITIONS_top
+		Const cENDELSE=\-cCONDITIONS_top
 			data *^cENDELSE_c
 			Data *=cCONDITIONS
 			Data *=cENDELSE
 			Data *=spacenotreq
-		Const cWHILE=!-cCONDITIONS_top
+		Const cWHILE=\-cCONDITIONS_top
 			data *^cWHILE_c
 			Data *=cCONDITIONS
 			Data *=cWHILE
 			Data *=spacereq
-		Const cENDWHILE=!-cCONDITIONS_top
+		Const cENDWHILE=\-cCONDITIONS_top
 			data *^cENDWHILE_c
 			Data *=cCONDITIONS
 			Data *=cENDWHILE
 			Data *=spacenotreq
-		Const cBREAK=!-cCONDITIONS_top
+		Const cBREAK=\-cCONDITIONS_top
 			data *^cBREAK_c
 			Data *=cCONDITIONS
 			Data *=cBREAK
 			Data *=spacenotreq
-		Const cCONTINUE=!-cCONDITIONS_top
+		Const cCONTINUE=\-cCONDITIONS_top
 			data *^cCONTINUE_c
 			Data *=cCONDITIONS
 			Data *=cCONTINUE
 			Data *=spacenotreq
-	Const cIMPORTLINK=!-coms_start
+	Const cIMPORTLINK=\-coms_start
 		const cIMPORT=Xfile_import_normal
 			data *^cIMPORT_c
 			Data *=cIMPORTLINK
@@ -315,44 +315,44 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cIMPORTLINK
 			Data *=cIMPORTX
 			Data *=spacereq
-	Const cSTARTFUNCTION=!-coms_start
-	Const cSTARTFUNCTION_top=!
-		Const cFUNCTION=!-cSTARTFUNCTION_top
+	Const cSTARTFUNCTION=\-coms_start
+	Const cSTARTFUNCTION_top=\
+		Const cFUNCTION=\-cSTARTFUNCTION_top
 			data *^cFUNCTION_c
 			Data *=cSTARTFUNCTION
 			Data *=cFUNCTION
 			Data *=spacereq
-		Const cFUNCTIONX=!-cSTARTFUNCTION_top
+		Const cFUNCTIONX=\-cSTARTFUNCTION_top
 			data *^cFUNCTIONX_c
 			Data *=cSTARTFUNCTION
 			Data *=cFUNCTIONX
 			Data *=spacereq
-		Const cENTRY=!-cSTARTFUNCTION_top
+		Const cENTRY=\-cSTARTFUNCTION_top
 			data *^cENTRY_c
 			Data *=cSTARTFUNCTION
 			Data *=cENTRY
 			Data *=spacereq
-		Const cENTRYRAW=!-cSTARTFUNCTION_top
+		Const cENTRYRAW=\-cSTARTFUNCTION_top
 			data *^cENTRYRAW_c
 			Data *=cSTARTFUNCTION
 			Data *=cENTRYRAW
 			Data *=spacereq
-	Const cENDFUNCTION=!-coms_start
+	Const cENDFUNCTION=\-coms_start
 		data *^cENDFUNCTION_c
 		Data *=cENDFUNCTION
 		Data *#1
 		Data *=spacenotreq
-	Const cEND=!-coms_start
+	Const cEND=\-coms_start
 		data *^cEND_c
 		Data *=cEND
 		Data *#1
 		Data *=spacenotreq
-	Const cRET=!-coms_start
+	Const cRET=\-coms_start
 		data *^cRET_c
 		Data *=cRET
 		Data *#1
 		Data *=spacenotreq
-	Const cINCLUDELINK=!-coms_start
+	Const cINCLUDELINK=\-coms_start
 		Const cINCLUDE=Xfile_include_normal
 			data *^cINCLUDE_c
 			Data *=cINCLUDELINK
@@ -363,37 +363,37 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 			Data *=cINCLUDELINK
 			Data *=cEINCLUDE
 			Data *=spacereq
-	Const cFORMAT=!-coms_start
+	Const cFORMAT=\-coms_start
 		data *^cFORMAT_c
 		Data *=cFORMAT
 		Data *#1
 		Data *=spacereq
 #aftercall can be at function parameters but the get_img_vdata_dataReg() is set inside and codding must be done for not a big deal
-	Const cDECLAREAFTERCALL=!-coms_start
-	Const cDECLAREAFTERCALL_top=!
-		Const cIMPORTAFTERCALL=!-cDECLAREAFTERCALL_top
+	Const cDECLAREAFTERCALL=\-coms_start
+	Const cDECLAREAFTERCALL_top=\
+		Const cIMPORTAFTERCALL=\-cDECLAREAFTERCALL_top
 			data *^cIMPORTAFTERCALL_c
 			Data *=cDECLAREAFTERCALL
 			Data *=cIMPORTAFTERCALL
 			Data *=spacereq
-		Const cAFTERCALL=!-cDECLAREAFTERCALL_top
+		Const cAFTERCALL=\-cDECLAREAFTERCALL_top
 			data *^cAFTERCALL_c
 			Data *=cDECLAREAFTERCALL
 			Data *=cAFTERCALL
 			Data *=spacereq
-	Const cMANIPULATEAFTERCALL=!-coms_start
-	Const cMANIPULATEAFTERCALL_top=!
-		Const cAFTERCALLENABLE=!-cMANIPULATEAFTERCALL_top
+	Const cMANIPULATEAFTERCALL=\-coms_start
+	Const cMANIPULATEAFTERCALL_top=\
+		Const cAFTERCALLENABLE=\-cMANIPULATEAFTERCALL_top
 			data *^cAFTERCALLENABLE_c
 			Data *=cMANIPULATEAFTERCALL
 			Data *=cAFTERCALLENABLE
 			Data *=spacenotreq
-		Const cAFTERCALLDISABLE=!-cMANIPULATEAFTERCALL_top
+		Const cAFTERCALLDISABLE=\-cMANIPULATEAFTERCALL_top
 			data *^cAFTERCALLDISABLE_c
 			Data *=cMANIPULATEAFTERCALL
 			Data *=cAFTERCALLDISABLE
 			Data *=spacenotreq
-	Const cCALLEX=!-coms_start
+	Const cCALLEX=\-coms_start
 		data *^cCALLEX_c
 		Data *=cCALLEX
 		Data *=0
@@ -402,33 +402,33 @@ Const numberofcommandsvars=(!-commandsvars_start)/com_size
 		Data *=cCALLEX
 		Data *=x_callx_flag
 		Data *=spacereq
-	Const cLIBRARY=!-coms_start
+	Const cLIBRARY=\-coms_start
 		data *^cLIBRARY_c
 		Data *=cLIBRARY
 		Data *#1
 		Data *=spacereq
-	Const cHEX=!-coms_start
+	Const cHEX=\-coms_start
 		data *^cHEX_c
 		Data *=cHEX
 		Data *#1
 		Data *=spacereq
-	Const cOVERRIDE=!-coms_start
+	Const cOVERRIDE=\-coms_start
 		data *^cOVERRIDE_c
 		Data *=cOVERRIDE
 		Data *#1
 		Data *=spacereq
-	Const cORPHAN=!-coms_start
+	Const cORPHAN=\-coms_start
 		data *^cORPHAN_c
 		Data *=cORPHAN
 		Data *#1
 		Data *=spacereq
-	Const cI3=!-coms_start
+	Const cI3=\-coms_start
 		data *^cI3_c
 		Data *=cI3
 		Data *#1
 		Data *=spacenotreq
-Const numberofcommands=(!-coms_start)/com_size
-Const Error=!-coms_start
+Const numberofcommands=(\-coms_start)/com_size
+Const Error=\-coms_start
 
 Data pointers#numberofcommands+1
 Const compointersloc^pointers

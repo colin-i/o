@@ -17,7 +17,7 @@ const EM_386=3
 const EM_X86_64=62
 const ET_REL=1
 
-Const elf_fileheaders_start=!
+Const elf_fileheaders_start=\
 
 char *elf32_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
 
@@ -72,7 +72,7 @@ char elf32_ehd_e_shnum#2
 #Section header string table index
 char elf32_ehd_e_shstrndx#2
 
-Const elf_fileheaders_end=!
+Const elf_fileheaders_end=\
 
 #Const elf_fileheaders_start^elf32_ehd_e_ident_sign
 #Const elf_fileheaders_lastdata^elf32_ehd_e_shstrndx
@@ -87,7 +87,7 @@ data ptrelf32_ehd_e_shstrndx^elf32_ehd_e_shstrndx
 
 
 #64 bit objects
-Const elf64_fileheaders_start=!
+Const elf64_fileheaders_start=\
 char elf64_ehd_e_ident_sign={ELFMAG0,ELFMAG1,ELFMAG2,ELFMAG3}
 char *elf64_ehd_e_ident_class={ELFCLASS64}
 char *elf64_ehd_e_ident_data={ELFDATA2LSB}
@@ -109,7 +109,7 @@ char *elf64_ehd_e_shentsize={64,0}
 char elf64_ehd_e_shnum#2
 char elf64_ehd_e_shstrndx#2
 char *pad={0,0}
-Const elf64_fileheaders_size=!-elf64_fileheaders_start
+Const elf64_fileheaders_size=\-elf64_fileheaders_start
 
 
 #program headers
@@ -120,7 +120,7 @@ const PF_R=4
 const PT_LOAD=1
 
 
-Const elf_progdeffileheaders_start=!
+Const elf_progdeffileheaders_start=\
 
 #Program data section
 const elf_data_voff=elf_imagebase+elf_startofdata
@@ -157,7 +157,7 @@ data *elf32_phdr_p_flags_code=PF_X|PF_R
 #Segment align
 data *elf32_phdr_p_align_code=page_sectionalignment
 
-Const elf_progdeffileheaders_end=!
+Const elf_progdeffileheaders_end=\
 
 #Const elf_progdeffileheaders_start^elf32_phdr_p_type_data
 #Const elf_progdeffileheaders_lastdata^elf32_phdr_p_align_code
@@ -169,7 +169,7 @@ Data elf_progdeffileheaders_size=elf_progdeffileheaders_end-elf_progdeffileheade
 const PT_DYNAMIC=2
 const PT_INTERP=3
 
-Const elf_importfileheaders=!
+Const elf_importfileheaders=\
 
 #Interpreter section
 data *elf32_phdr_p_type_interp=PT_INTERP
@@ -222,7 +222,7 @@ data *elf32_phdr_p_flags_lib=PF_R|PF_W
 #Segment align
 data *elf32_phdr_p_align_lib=page_sectionalignment
 
-Const elf_importfileheaders_end=!
+Const elf_importfileheaders_end=\
 
 #Const elf_importfileheaders^elf32_phdr_p_type_interp
 #Const elf_importfileheaders_lastdata^elf32_phdr_p_align_lib
@@ -235,7 +235,7 @@ Char interpreter="/lib/ld-linux.so.2"
 Str ptrinterpreter^interpreter
 Data interpretersize#1
 
-Const elf_dynfix_start=!
+Const elf_dynfix_start=\
 
 Data *DT_HASH=0x4
 Data elf32_dyn_d_ptr_hash#1
@@ -258,20 +258,20 @@ Data elf32_dyn_d_val_relent=elf32_dyn_d_val_relent
 Data *DT_NULL=0
 Data *elf32_dyn_d_val_null=0
 
-Const elf_dynfix_end=!
+Const elf_dynfix_end=\
 
 #Const elf_dynfix_start^DT_HASH
 #Const elf_dynfix_lastdata^elf32_dyn_d_val_null
 #Const elf_dynfix_end=elf_dynfix_lastdata+dwsz
 Data elf_dynfix_size=elf_dynfix_end-elf_dynfix_start
 
-Const elf_hash_start=!
+Const elf_hash_start=\
 
 Data *sizeofbucket=1
 Data sizeofchain#1
 Data *fakebucket=0
 
-Const elf_hash_end=!
+Const elf_hash_end=\
 
 #Const elf_hash_start^sizeofbucket
 #Const elf_hash_lastdata^fakebucket

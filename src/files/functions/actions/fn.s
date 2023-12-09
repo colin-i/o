@@ -474,12 +474,12 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		Data ptrextra%%ptr_extra
 		If ptrobject#=(FALSE)
 		#absolute
-			const global_err_ex_start=!
+			const global_err_ex_start=\
 			#mov ecx,imm32
 			char g_err_mov=0xb8+ecxregnumber;data g_err_mov_disp32#1
 			#cmp byte[ecx],0
 			char *={0x80,7*toregopcode|ecxregnumber};char *=aftercall_disable
-			const global_err_ex_sz=!-global_err_ex_start
+			const global_err_ex_sz=\-global_err_ex_start
 			#add rel,1 is (b8+ecx), one byte
 			set g_err_mov_disp32 global_err_ptr#
 			#
@@ -506,11 +506,11 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		sd is_linux_term;setcall is_linux_term is_linux_end()
 		if is_linux_term=(TRUE)
 			#int 0x80, sys_exit, eax 1,ebx the return number
-			const g_err_sys_start=!
+			const g_err_sys_start=\
 			char g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
 			char *={0xb8,1,0,0,0}
 			Char *={intimm8,0x80}
-			const g_err_sys_size=!-g_err_sys_start
+			const g_err_sys_size=\-g_err_sys_start
 			set ret_end_sz (g_err_sys_size)
 			set ret_end_p #g_err_sys
 		else

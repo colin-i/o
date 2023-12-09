@@ -19,7 +19,7 @@ EndFunction
 
 #err
 function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd link,sd info,sd align,sd entsize,sd addr,sd ptrbag)
-	Const elf_section=!
+	Const elf_section=\
 	#Section header
 	#Section name (string tbl index)
 	Data sh_name#1
@@ -41,9 +41,9 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Data sh_addralign#1
 	#Entry size if section holds table
 	Data sh_entsize#1
-	Const elf_section_size=!-elf_section
+	Const elf_section_size=\-elf_section
 
-	Const elf64_section=!
+	Const elf64_section=\
 	Data sh64_name#1
 	Data sh64_type#1
 	Data sh64_flags#1;data *=0
@@ -54,7 +54,7 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	Data sh64_info#1
 	Data sh64_addralign#1;data *=0
 	Data sh64_entsize#1;data *=0
-	Const elf64_section_size=!-elf64_section
+	Const elf64_section_size=\-elf64_section
 
 	Const SHT_NULL=0
 	Const SHT_PROGBITS=1
@@ -157,7 +157,7 @@ const elf_sym_st_info_tohibyte=16
 		Call memtomem(#elf64_sym_st_shndx,ptrndxsrc,wsz)
 
 		Const elf64_sym_start^elf64_sym_st_name
-		SetCall err addtosec(#elf64_sym_st_name,(!-elf64_sym_start),struct)
+		SetCall err addtosec(#elf64_sym_st_name,(\-elf64_sym_start),struct)
 	else
 		#Symbol table entry
 		#Symbol name (string tbl index)
@@ -185,7 +185,7 @@ const elf_sym_st_info_tohibyte=16
 		Call memtomem(#elf32_sym_st_shndx,ptrndxsrc,wsz)
 
 		Const elf_sym_start^elf32_sym_st_name
-		SetCall err addtosec(#elf32_sym_st_name,(!-elf_sym_start),struct)
+		SetCall err addtosec(#elf32_sym_st_name,(\-elf_sym_start),struct)
 	endelse
 
 	Return err

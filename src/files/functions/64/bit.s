@@ -199,36 +199,36 @@ function convdata(sd type,sd dest,sd fnargs)
 		incst dest;set dest# #hex_6
 		ret
 	elseif type=(convdata_fn)
-		const functionxlin_start=!
+		const functionxlin_start=\
 		#pop a
 		char functionxlin_code=0x58
 		#sub esp,conv8
 		char *={REX_Operand_64,0x83,5*toregopcode|regregmod|espregnumber};char *=lin_convention*qwsz
 		#push a
 		char *=0x50
-		const functionxlin_shadow=!-functionxlin_start
+		const functionxlin_shadow=\-functionxlin_start
 
 		char *={REX_Operand_64,moveatmemtheproc,ediregnumber*toregopcode|disp8mod|espregnumber,0x24,8}
-		const conv_fn_b1=!-functionxlin_start
+		const conv_fn_b1=\-functionxlin_start
 
 		char *={REX_Operand_64,moveatmemtheproc,esiregnumber*toregopcode|disp8mod|espregnumber,0x24,16}
-		const functionx_start=!
-		const conv_fn_b2=!-functionxlin_start
+		const functionx_start=\
+		const conv_fn_b2=\-functionxlin_start
 
 		#mov [rsp+(8h/18h)],rcx/rdx
 		char functionx_code={REX_Operand_64,moveatmemtheproc};char f3#1;char *=0x24;char f3o#1
-		const conv_fn_a1=!-functionx_start
-		const conv_fn_b3=!-functionxlin_start
+		const conv_fn_a1=\-functionx_start
+		const conv_fn_b3=\-functionxlin_start
 
 		#mov [rsp+(10h/20h)],rdx/rcx
 		char *={REX_Operand_64,moveatmemtheproc};char f4#1;char *=0x24;char f4o#1
-		const conv_fn_a2=!-functionx_start
-		const conv_fn_b4=!-functionxlin_start
+		const conv_fn_a2=\-functionx_start
+		const conv_fn_b4=\-functionxlin_start
 
 		#mov [rsp+(18h/28h)],r8
 		char *={REX_R8_15,moveatmemtheproc,0x44,0x24};char f5o#1
-		const conv_fn_a3=!-functionx_start
-		const conv_fn_b5=!-functionxlin_start
+		const conv_fn_a3=\-functionx_start
+		const conv_fn_b5=\-functionxlin_start
 
 		#mov [rsp+(20h/30h)],r9
 		char *={REX_R8_15,moveatmemtheproc,0x4C,0x24};char f6o#1
@@ -243,7 +243,7 @@ function convdata(sd type,sd dest,sd fnargs)
 			elseif fnargs=3
 				set dest# (conv_fn_a3)
 			else
-				set dest# (!-functionx_start)
+				set dest# (\-functionx_start)
 			endelse
 			return #functionx_code
 		endif
@@ -260,7 +260,7 @@ function convdata(sd type,sd dest,sd fnargs)
 		elseif fnargs=5
 			set dest# (conv_fn_b5)
 		else
-			set dest# (!-functionxlin_start)
+			set dest# (\-functionxlin_start)
 		endelse
 		return #functionxlin_code
 	endelseif
@@ -444,7 +444,7 @@ endfunction
 function callex64_call()
 	sd conv;setcall conv convdata((convdata_total))
 	#Stack aligned on 16 bytes.
-	const callex64_start=!
+	const callex64_start=\
 	#bt esp,3 (bit offset 3)        rsp for 3 bits is useless
 	char callex64_code={0x0F,0xBA,bt_reg_imm8|espregnumber,3}
 	#jc @ (jump when rsp=....8)
@@ -477,6 +477,6 @@ function callex64_call()
 	char *keep_nr_args={REX_Operand_64,0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
 	sd ptrcodesec%%ptr_codesec
 	sd err
-	SetCall err addtosec(#callex64_code,(!-callex64_start),ptrcodesec)
+	SetCall err addtosec(#callex64_code,(\-callex64_start),ptrcodesec)
 	return err
 endfunction

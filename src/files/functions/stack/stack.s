@@ -71,15 +71,15 @@ function entryscope()
 	data container%%ptr_codesec
 	sd err
 	#push ebx,push ebp
-	const scope1_start=!;char scope1={0x53,0x55};const scope1_sz=!-scope1_start
+	const scope1_start=\;char scope1={0x53,0x55};const scope1_sz=\-scope1_start
 	const stackinitpush=2*dwsz
 	#mov e(r)bp e(r)sp
-	const scope2_start=!;char scope2={moveatregthemodrm,0xec};const scope2_sz=!-scope2_start
+	const scope2_start=\;char scope2={moveatregthemodrm,0xec};const scope2_sz=\-scope2_start
 	#mov e(r)bx e(r)sp
-	const scope3_start=!;char scope3={moveatregthemodrm,0xdc};const scope3_sz=!-scope3_start
+	const scope3_start=\;char scope3={moveatregthemodrm,0xdc};const scope3_sz=\-scope3_start
 	#sub e(r)bx dword
-	const scope4_start=!;char scope4={0x81,0xeb}
-	data *scopestack=0;const scope4_sz=!-scope4_start
+	const scope4_start=\;char scope4={0x81,0xeb}
+	data *scopestack=0;const scope4_sz=\-scope4_start
 
 	setcall err addtosec(#scope1,(scope1_sz),container);if err!=(noerror);return err;endif
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
