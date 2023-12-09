@@ -4,9 +4,8 @@ del () {
 	rm -f ./*.log
 	rm -f ./*.x
 	rm -f ./*.exe    #by ocomp
+	rm -f ./a.out
 }
-rm -f ./a.out
-del
 
 a=( `ls` )
 for var in "${a[@]}"; do
@@ -16,3 +15,5 @@ for var in "${a[@]}"; do
 		cd ..
 	fi
 done
+
+del

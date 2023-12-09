@@ -72,24 +72,25 @@ const Xfile_numbers_parenthesis_close=1
 const Xfile_numbers_done=2
 
 # $ % ^ & * - +
+# [ ]}
 # : \|
 # < > /
 #=!
 #uU
 #PpLlGg
-const Xfile_numbers_operation_add=asciiplus        #parsed at spelling
-const Xfile_numbers_operation_sub=asciiminus       #parsed at spelling
-const Xfile_numbers_operation_mul=asciiast         #parsed at spelling
-const Xfile_numbers_operation_div=asciislash       #parsed at spelling
+const Xfile_numbers_operation_add=asciiplus               #parsed at spelling
+const Xfile_numbers_operation_sub=asciiminus              #parsed at spelling
+const Xfile_numbers_operation_mul=asciiast                #parsed at spelling
+const Xfile_numbers_operation_div=asciislash              #parsed at spelling
 const Xfile_numbers_operation_divu=asciibs
-const Xfile_numbers_operation_and=asciiand         #parsed at spelling
-const Xfile_numbers_operation_or=asciivbar         #parsed at spelling
-const Xfile_numbers_operation_xor=asciicirc        #parsed at spelling
-const Xfile_numbers_operation_pow=asciidollar      #parsed at spelling
-const Xfile_numbers_operation_rem=asciipercent     #parsed at spelling
+const Xfile_numbers_operation_and=asciiand                #parsed at spelling
+const Xfile_numbers_operation_or=asciivbar                #parsed at spelling
+const Xfile_numbers_operation_xor=asciicirc               #parsed at spelling
+const Xfile_numbers_operation_pow=asciidollar             #parsed at spelling
+const Xfile_numbers_operation_rem=asciipercent            #parsed at spelling
 const Xfile_numbers_operation_remu=asciicolon
-const Xfile_numbers_operation_less=asciiless       #parsed at spelling
-const Xfile_numbers_operation_greater=asciigreater #parsed at spelling
+const Xfile_numbers_operation_less=asciiless              #parsed at spelling
+const Xfile_numbers_operation_greater=asciigreater        #parsed at spelling
 const Xfile_numbers_operation_shl=asciileftsquareBracket
 const Xfile_numbers_operation_sar=asciirightsquareBracket
 const Xfile_numbers_operation_shr=asciirightcurlyBracket
