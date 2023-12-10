@@ -18,6 +18,7 @@ Const shrNumber=Xfile_numbers_operation_shr
 Const equalNumber=Xfile_numbers_operation_equal
 Const lessNumber=Xfile_numbers_operation_less
 Const greaterNumber=Xfile_numbers_operation_greater
+Const parityNumber=Xfile_numbers_operation_parity
 #asciiminus and asciinot for one arg
 
 #err
@@ -209,9 +210,15 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		else
 			set currentitem (FALSE)
 		endelse
-	Else
-	#If number=(greaterNumber)
+	ElseIf number=(greaterNumber)
 		if currentitem>newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	Else
+	#If number=(parityNumber)
+		if currentitem!newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
@@ -238,6 +245,7 @@ Function signop(char byte,sv outval)
 	ElseIf byte=(remNumber)
 	ElseIf byte=(lessNumber)
 	ElseIf byte=(greaterNumber)
+	ElseIf byte=(parityNumber)
 	ElseIf byte=(equalNumber)
 	Else
 		return false

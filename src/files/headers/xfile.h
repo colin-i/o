@@ -27,6 +27,7 @@ const Xfile_hex=21
 const Xfile_override=22
 const Xfile_orphan=23
 const Xfile_interrupt=24
+const Xfile_line=25
 
 #t from type
 const Xfile_function_tintern=0
@@ -71,13 +72,11 @@ const Xfile_numbers_parenthesis_open=0
 const Xfile_numbers_parenthesis_close=1
 const Xfile_numbers_done=2
 
-# $ % ^ & * - =+
+# ! $ % ^ & * - =+
 # [ ]}
 # : \|
 # < > /
-# !
-#uU
-#PpLlGg
+#epLlGguU
 #Const unreadyNumber=0
 const Xfile_numbers_operation_add=asciiplus               #parsed at spelling
 const Xfile_numbers_operation_sub=asciiminus              #parsed at spelling
@@ -96,6 +95,7 @@ const Xfile_numbers_operation_shr=asciirightcurlyBracket
 const Xfile_numbers_operation_equal=asciiequal            #parsed at spelling
 const Xfile_numbers_operation_less=asciiless              #parsed at spelling
 const Xfile_numbers_operation_greater=asciigreater        #parsed at spelling
+const Xfile_numbers_operation_parity=asciiexclamationmark #parsed at spelling
 
 #here is ORing
 const Xfile_numbers_prefix_none=0x0

@@ -285,44 +285,48 @@ if errormsg=(noerror)
 			Add content linebreaksize
 			if dot_comma_end=0
 				Set lineincrease one
-			endif
+			else
+				setcall errormsg xfile_add_char_ifif((Xfile_line))
+			endelse
 		EndIf
-		Add lineoffile lineincrease
+		If errormsg=noerr
+			Add lineoffile lineincrease
 
-		#include next file
-		If includebool=one
-			Data inccursor#1
-			Set inccursor includes
-			Add inccursor includesReg
+			#include next file
+			If includebool=one
+				Data inccursor#1
+				Set inccursor includes
+				Add inccursor includesReg
 
-			Sub inccursor sizeofincludeset
+				Sub inccursor sizeofincludeset
 
-			Add inccursor contentoffsetinclude
-			Data contentoffset#1
-			Set contentoffset content
-			Sub contentoffset contentoffile
-			Set inccursor# contentoffset
-			Add inccursor dwordsize
+				Add inccursor contentoffsetinclude
+				Data contentoffset#1
+				Set contentoffset content
+				Sub contentoffset contentoffile
+				Set inccursor# contentoffset
+				Add inccursor dwordsize
 
-			Set inccursor# lineoffile
-			SetCall errormsg include(miscbag,(FALSE),subtype)
-			If errormsg!=noerr
-				Set content textlinestart
-				Sub lineoffile lineincrease
-			Else
-				set ptrprevLineD# 0    #here 0, at main set back
-				Set content contentoffile
-				Set last content
-				Add content offsetoffile
-				Add last sizeoffile
-				Set miscbagReg zero
-				Set includebool zero
+				Set inccursor# lineoffile
+				SetCall errormsg include(miscbag,(FALSE),subtype)
+				If errormsg!=noerr
+					Set content textlinestart
+					Sub lineoffile lineincrease
+				Else
+					set ptrprevLineD# 0    #here 0, at main set back
+					Set content contentoffile
+					Set last content
+					Add content offsetoffile
+					Add last sizeoffile
+					Set miscbagReg zero
+					Set includebool zero
 
-				#and set for error informations
-				set cursorforincludes includes
-				add cursorforincludes includesReg
-				sub cursorforincludes (shortstrsize)
-			EndElse
-		EndIf
+					#and set for error informations
+					set cursorforincludes includes
+					add cursorforincludes includesReg
+					sub cursorforincludes (shortstrsize)
+				EndElse
+			EndIf
+		endif
 	EndIf
 endif
