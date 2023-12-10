@@ -16,8 +16,11 @@ Const shlNumber=Xfile_numbers_operation_shl
 Const sarNumber=Xfile_numbers_operation_sar
 Const shrNumber=Xfile_numbers_operation_shr
 Const equalNumber=Xfile_numbers_operation_equal
+Const inequalNumber=Xfile_numbers_operation_inequal
 Const lessNumber=Xfile_numbers_operation_less
 Const greaterNumber=Xfile_numbers_operation_greater
+Const unsignedlessNumber=Xfile_numbers_operation_unsignedless
+Const unsignedgreaterNumber=Xfile_numbers_operation_unsignedgreater
 Const parityNumber=Xfile_numbers_operation_parity
 #asciiminus and asciinot for one arg
 
@@ -204,6 +207,12 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		else
 			set currentitem (FALSE)
 		endelse
+	ElseIf number=(inequalNumber)
+		if currentitem!=newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
 	ElseIf number=(lessNumber)
 		if currentitem<newitem
 			set currentitem (TRUE)
@@ -212,6 +221,18 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		endelse
 	ElseIf number=(greaterNumber)
 		if currentitem>newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	ElseIf number=(unsignedlessNumber)
+		if currentitem<^newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	ElseIf number=(unsignedgreaterNumber)
+		if currentitem>^newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
@@ -389,20 +410,31 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 		if nr!=(greaterNumber)
 			if nr!=(divNumber)
 				if nr!=(remNumber)
-					ret
-				endif
-				set content pcontent#
-				inc content
-				if content!=end ##error is catched how was before
-					if content#=(remNumber)
-						set pnr# (remuNumber)
-						set pcontent# content
+					if nr!=(parityNumber)
+						ret
 					endif
-				endif
+					set content pcontent#
+					inc content
+					if content!=end ##error is catched how was before
+						if content#=(equalNumber)
+							set pnr# (inequalNumber)
+							set pcontent# content
+						endif
+					endif
+				else
+					set content pcontent#
+					inc content
+					if content!=end
+						if content#=(remNumber)
+							set pnr# (remuNumber)
+							set pcontent# content
+						endif
+					endif
+				endelse
 			else
 				set content pcontent#
 				inc content
-				if content!=end ##error is catched how was before
+				if content!=end
 					if content#=(divNumber)
 						set pnr# (divuNumber)
 						set pcontent# content
@@ -412,28 +444,34 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 		else
 			set content pcontent#
 			inc content
-			if content!=end ##error is catched how was before
+			if content!=end
 				if content#=(greaterNumber)
 					set pnr# (sarNumber)
 					set pcontent# content
 					inc content
-					if content!=end ##error is catched how was before
+					if content!=end
 						if content#=(greaterNumber)
 							set pnr# (shrNumber)
 							set pcontent# content
 						endif
 					endif
-				endif
+				elseif content#=(castascii)
+					set pnr# (unsignedgreaterNumber)
+					set pcontent# content
+				endelseif
 			endif
 		endelse
 	else
 		set content pcontent#
 		inc content
-		if content!=end ##error is catched how was before
+		if content!=end
 			if content#=(lessNumber)
 				set pnr# (shlNumber)
 				set pcontent# content
-			endif
+			elseif content#=(castascii)
+				set pnr# (unsignedlessNumber)
+				set pcontent# content
+			endelseif
 		endif
 	endelse
 endfunction
