@@ -74,9 +74,8 @@ const Xfile_numbers_done=2
 
 # ! $ % ^ & * - =+
 # e uU p [ ]}
-# : \|
+# gG lL : \|
 # < > /
-#LlGg
 #Const unreadyNumber=0
 const Xfile_numbers_operation_add=asciiplus               #parsed at spelling
 const Xfile_numbers_operation_sub=asciiminus              #parsed at spelling
@@ -96,8 +95,12 @@ const Xfile_numbers_operation_equal=asciiequal            #parsed at spelling
 const Xfile_numbers_operation_inequal=asciie
 const Xfile_numbers_operation_less=asciiless              #parsed at spelling
 const Xfile_numbers_operation_greater=asciigreater        #parsed at spelling
+const Xfile_numbers_operation_lessequal=asciiL
+const Xfile_numbers_operation_greaterequal=asciiG
 const Xfile_numbers_operation_unsignedless=asciiu
 const Xfile_numbers_operation_unsignedgreater=asciiU
+const Xfile_numbers_operation_unsignedlessequal=asciil
+const Xfile_numbers_operation_unsignedgreaterequal=asciig
 const Xfile_numbers_operation_parity=asciiexclamationmark #parsed at spelling
 const Xfile_numbers_operation_odd=asciip
 

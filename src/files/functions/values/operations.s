@@ -19,8 +19,12 @@ Const equalNumber=Xfile_numbers_operation_equal
 Const inequalNumber=Xfile_numbers_operation_inequal
 Const lessNumber=Xfile_numbers_operation_less
 Const greaterNumber=Xfile_numbers_operation_greater
+Const lessequalNumber=Xfile_numbers_operation_lessequal
+Const greaterequalNumber=Xfile_numbers_operation_greaterequal
 Const unsignedlessNumber=Xfile_numbers_operation_unsignedless
 Const unsignedgreaterNumber=Xfile_numbers_operation_unsignedgreater
+Const unsignedlessequalNumber=Xfile_numbers_operation_unsignedlessequal
+Const unsignedgreaterequalNumber=Xfile_numbers_operation_unsignedgreaterequal
 Const parityNumber=Xfile_numbers_operation_parity
 Const oddNumber=Xfile_numbers_operation_odd
 #asciiminus and asciinot for one arg
@@ -226,6 +230,18 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		else
 			set currentitem (FALSE)
 		endelse
+	ElseIf number=(lessequalNumber)
+		if currentitem<=newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	ElseIf number=(greaterequalNumber)
+		if currentitem>=newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
 	ElseIf number=(unsignedlessNumber)
 		if currentitem<^newitem
 			set currentitem (TRUE)
@@ -234,6 +250,18 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		endelse
 	ElseIf number=(unsignedgreaterNumber)
 		if currentitem>^newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	ElseIf number=(unsignedlessequalNumber)
+		if currentitem<=^newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	ElseIf number=(unsignedgreaterequalNumber)
+		if currentitem>=^newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
@@ -456,14 +484,26 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 			inc content
 			if content!=end
 				if content#=(greaterNumber)
-					set pnr# (sarNumber)
 					set pcontent# content
 					inc content
 					if content!=end
-						if content#=(greaterNumber)
+						if content#!=(greaterNumber)
+							set pnr# (sarNumber)
+						else
 							set pnr# (shrNumber)
 							set pcontent# content
-						endif
+						endelse
+					endif
+				elseif content#=(equalNumber)
+					set pcontent# content
+					inc content
+					if content!=end
+						if content#!=(castascii)
+							set pnr# (greaterequalNumber)
+						else
+							set pnr# (unsignedgreaterequalNumber)
+							set pcontent# content
+						endelse
 					endif
 				elseif content#=(castascii)
 					set pnr# (unsignedgreaterNumber)
@@ -478,6 +518,17 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 			if content#=(lessNumber)
 				set pnr# (shlNumber)
 				set pcontent# content
+			elseif content#=(equalNumber)
+				set pcontent# content
+				inc content
+				if content!=end
+					if content#!=(castascii)
+						set pnr# (lessequalNumber)
+					else
+						set pnr# (unsignedlessequalNumber)
+						set pcontent# content
+					endelse
+				endif
 			elseif content#=(castascii)
 				set pnr# (unsignedlessNumber)
 				set pcontent# content

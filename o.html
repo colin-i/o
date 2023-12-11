@@ -326,15 +326,15 @@
 	</p>
 <br>
 	<p>
-	Operations can be performed at declarations with arithmetic (+,-,*,/,//,%,%%,$), bitwise (&,|,^,~,&lt;&lt;,&gt;&gt;,&gt;&gt;&gt;) and logical (=,!=,&lt;,&gt;,&lt;^,&gt;^,!,!!) signs. - and ~ can prefix a number/constant.
+	Operations can be performed at declarations with arithmetic (+,-,*,/,//,%,%%,$), bitwise (&,|,^,~,&lt;&lt;,&gt;&gt;,&gt;&gt;&gt;) and logical (=,!=,&lt;,&gt;,&lt;=,&gt;=,&lt;^,&gt;^,&lt;=^,&gt;=^,!,!!) signs. - and ~ can prefix a number/constant.
 	<br>
 	Example:
 	<br>
 <table class="code" style="white-space:nowrap">
 <tr><td>const a=1</td></tr>
-<tr><td>#</td>               <td>add</td> <td>sub</td> <td>mul</td> <td>div</td>   <td>divu</td>           <td>rem</td>   <td>remu</td>     <td>pow</td> <td>and</td> <td>or</td>  <td>xor</td> <td>not</td><td>shl1</td> <td>sar1</td> <td>shr1</td>    <td>equal</td><td>inequal</td><td>less</td><td>greater</td><td>unsignedLess</td>  <td>unsignedGreater</td><td>parity</td><td>odd</td>  <td>neg</td></tr>
-<tr><td>char *examples={</td><td>3+2,</td><td>6-4,</td><td>5*5,</td><td>32/10,</td><td>-1//0x10000000,</td><td>32%10,</td><td>-1%%0x10,</td><td>3$2,</td><td>7&2,</td><td>5|2,</td><td>7^2,</td><td>~0,</td><td>2<<2,</td><td>8>>3,</td><td>-1>>>25,</td><td>7=7,</td> <td>7!=7,</td>  <td>2<3,</td><td>2>3,</td>   <td>1<^0xffFFffFF,</td><td>1>^0xffFFffFF,</td> <td>4!1,</td>  <td>2!!1,</td><td>-a}</td></tr>
-<tr><td>#hex:</td>           <td>5</td>   <td>2</td>   <td>19</td>  <td>3</td>     <td>f</td>              <td>2</td>     <td>f</td>        <td>9</td>   <td>2</td>   <td>7</td>   <td>5</td>   <td>ff</td> <td>8</td>    <td>1</td>    <td>7f</td>      <td>1</td>    <td>0</td>      <td>1</td>   <td>0</td>      <td>1</td>             <td>0</td>              <td>1</td>     <td>1</td>    <td>ff</td></tr>
+<tr><td>#</td>               <td>add</td> <td>sub</td> <td>mul</td> <td>div</td>   <td>divu</td>           <td>rem</td>   <td>remu</td>     <td>pow</td> <td>and</td> <td>or</td>  <td>xor</td> <td>not</td><td>shl1</td> <td>sar1</td> <td>shr1</td>    <td>equal</td><td>inequal</td><td>less</td><td>greater</td><td>lessEqual</td><td>greaterEqual</td><td>unsignedLess</td>  <td>unsignedGreater</td><td>unsignedLessEqual</td><td>unsignedGreaterEqual</td><td>parity</td><td>odd</td>  <td>neg</td></tr>
+<tr><td>char *examples={</td><td>3+2,</td><td>6-4,</td><td>5*5,</td><td>32/10,</td><td>-1//0x10000000,</td><td>32%10,</td><td>-1%%0x10,</td><td>3$2,</td><td>7&2,</td><td>5|2,</td><td>7^2,</td><td>~0,</td><td>2<<2,</td><td>8>>3,</td><td>-1>>>25,</td><td>7=7,</td> <td>7!=7,</td>  <td>2<3,</td><td>2>3,</td>   <td>9<=9,</td>    <td>9>=9,</td>       <td>1<^0xffFFffFF,</td><td>1>^0xffFFffFF,</td> <td>-1<=^-2,</td>         <td>-1>=^0,</td>             <td>4!1,</td>  <td>2!!1,</td><td>-a}</td></tr>
+<tr><td>#hex:</td>           <td>5</td>   <td>2</td>   <td>19</td>  <td>3</td>     <td>f</td>              <td>2</td>     <td>f</td>        <td>9</td>   <td>2</td>   <td>7</td>   <td>5</td>   <td>ff</td> <td>8</td>    <td>1</td>    <td>7f</td>      <td>1</td>    <td>0</td>      <td>1</td>   <td>0</td>      <td>1</td>        <td>1</td>           <td>1</td>             <td>0</td>              <td>0</td>                <td>1</td>                   <td>1</td>     <td>1</td>    <td>ff</td></tr>
 </table>
 	<a class="code">
 	 const a=3*(1+2)<br>
