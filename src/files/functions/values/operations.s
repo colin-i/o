@@ -486,7 +486,7 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 				if content#=(greaterNumber)
 					set pcontent# content
 					inc content
-					if content!=end
+					if content!=end ##else is an error and 'set pnr#' is not important
 						if content#!=(greaterNumber)
 							set pnr# (sarNumber)
 						else
