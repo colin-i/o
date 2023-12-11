@@ -96,7 +96,9 @@ function shift_left(sd a,sd n)
 endfunction
 
 #err pointer
-Function operation(ss content,sd size,sd inoutvalue,sd number)
+Function operation(sv ptrcontent,sd size,sd inoutvalue,sd number)
+	ss content
+	set content ptrcontent#
 	sd newitem
 	sd ptrnewitem^newitem
 	sd errptr
@@ -112,7 +114,10 @@ Function operation(ss content,sd size,sd inoutvalue,sd number)
 			setcall errptr parseoperations_base(#content,#size,size,ptrnewitem,(FALSE),(Xfile_numbers_parenthesis_close))
 		endif
 	endelse
-	If errptr!=noerr;Return errptr;EndIf
+	If errptr!=noerr
+		set ptrcontent# content
+		Return errptr
+	EndIf
 
 	setcall errptr operation_core(inoutvalue,number,newitem)
 	return errptr
@@ -326,7 +331,8 @@ Function oneoperation(sd ptrcontent,ss initial,ss content,sd val,sd op)
 	Set size content
 	Sub size initial
 
-	SetCall errptr operation(initial,size,val,op)
+	#with cursor adjuster for errors
+	SetCall errptr operation(#initial,size,val,op)
 	If errptr!=(noerror)
 		Set ptrcontent# initial
 		Return errptr
@@ -401,7 +407,10 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 			sd rest_sz;set rest_sz end;sub rest_sz content
 			sd insz
 			setcall errptr parenthesis_size(content,rest_sz,#insz)
-			if errptr!=(noerror);return errptr;endif
+			if errptr!=(noerror)
+				set ptrcontent# content  ##for error marker
+				return errptr
+			endif
 			add content insz
 		endelseif
 
