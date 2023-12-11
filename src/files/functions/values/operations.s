@@ -22,6 +22,7 @@ Const greaterNumber=Xfile_numbers_operation_greater
 Const unsignedlessNumber=Xfile_numbers_operation_unsignedless
 Const unsignedgreaterNumber=Xfile_numbers_operation_unsignedgreater
 Const parityNumber=Xfile_numbers_operation_parity
+Const oddNumber=Xfile_numbers_operation_odd
 #asciiminus and asciinot for one arg
 
 #err
@@ -237,9 +238,15 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		else
 			set currentitem (FALSE)
 		endelse
-	Else
-	#If number=(parityNumber)
+	ElseIf number=(parityNumber)
 		if currentitem!newitem
+			set currentitem (TRUE)
+		else
+			set currentitem (FALSE)
+		endelse
+	Else
+	#If number=(oddNumber)
+		if currentitem!!newitem
 			set currentitem (TRUE)
 		else
 			set currentitem (FALSE)
@@ -419,7 +426,10 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 						if content#=(equalNumber)
 							set pnr# (inequalNumber)
 							set pcontent# content
-						endif
+						elseif content#=(parityNumber)
+							set pnr# (oddNumber)
+							set pcontent# content
+						endelseif
 					endif
 				else
 					set content pcontent#

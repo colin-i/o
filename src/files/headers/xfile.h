@@ -73,10 +73,10 @@ const Xfile_numbers_parenthesis_close=1
 const Xfile_numbers_done=2
 
 # ! $ % ^ & * - =+
-# e uU [ ]}
+# e uU p [ ]}
 # : \|
 # < > /
-#pLlGg
+#LlGg
 #Const unreadyNumber=0
 const Xfile_numbers_operation_add=asciiplus               #parsed at spelling
 const Xfile_numbers_operation_sub=asciiminus              #parsed at spelling
@@ -99,6 +99,7 @@ const Xfile_numbers_operation_greater=asciigreater        #parsed at spelling
 const Xfile_numbers_operation_unsignedless=asciiu
 const Xfile_numbers_operation_unsignedgreater=asciiU
 const Xfile_numbers_operation_parity=asciiexclamationmark #parsed at spelling
+const Xfile_numbers_operation_odd=asciip
 
 #here is ORing
 const Xfile_numbers_prefix_none=0x0

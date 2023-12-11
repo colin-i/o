@@ -46,6 +46,7 @@ Const asciia=0x61
 Const asciie=0x65
 Const asciif=0x66
 Const asciin=0x6E
+Const asciip=0x70
 Const asciir=0x72
 Const asciit=0x74
 Const asciiu=0x75
