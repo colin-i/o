@@ -21,6 +21,7 @@ Const lessNumber=Xfile_numbers_operation_less
 Const greaterNumber=Xfile_numbers_operation_greater
 Const lessequalNumber=Xfile_numbers_operation_lessequal
 Const greaterequalNumber=Xfile_numbers_operation_greaterequal
+Const andlogicalNumber=Xfile_numbers_operation_logicaland
 Const unsignedlessNumber=Xfile_numbers_operation_unsignedless
 Const unsignedgreaterNumber=Xfile_numbers_operation_unsignedgreater
 Const unsignedlessequalNumber=Xfile_numbers_operation_unsignedlessequal
@@ -247,6 +248,14 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 		else
 			set currentitem (FALSE)
 		endelse
+	ElseIf number=(andlogicalNumber)
+		if currentitem!=(FALSE)
+			if newitem!=(FALSE)
+				set currentitem (TRUE)  #example: is 7 will be 1
+			else
+				set currentitem (FALSE)
+			endelse
+		endif
 	ElseIf number=(unsignedlessNumber)
 		if currentitem<^newitem
 			set currentitem (TRUE)
@@ -455,19 +464,34 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 			if nr!=(divNumber)
 				if nr!=(remNumber)
 					if nr!=(parityNumber)
-						ret
-					endif
-					set content pcontent#
-					inc content
-					if content!=end ##error is catched how was before
-						if content#=(equalNumber)
-							set pnr# (inequalNumber)
-							set pcontent# content
-						elseif content#=(parityNumber)
-							set pnr# (oddNumber)
-							set pcontent# content
-						endelseif
-					endif
+						#Why does && (AND) have higher priority over || (OR) operator?
+						#C++ does it that way because C did it that way.
+						#and is somehow like multiplication
+						#or is somehow like addition
+						if nr!=(andNumber)
+							ret
+						endif
+						set content pcontent#
+						inc content
+						if content!=end ##error is catched how was before
+							if content#=(andNumber)
+								set pnr# (andlogicalNumber)
+								set pcontent# content
+							endif
+						endif
+					else
+						set content pcontent#
+						inc content
+						if content!=end
+							if content#=(equalNumber)
+								set pnr# (inequalNumber)
+								set pcontent# content
+							elseif content#=(parityNumber)
+								set pnr# (oddNumber)
+								set pcontent# content
+							endelseif
+						endif
+					endelse
 				else
 					set content pcontent#
 					inc content
