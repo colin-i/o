@@ -1,3 +1,9 @@
+ocompiler (1-5+124) xenial; urgency=medium
+
+  * more logical operations and xfile line
+
+ -- bc <bc@bc-Type1ProductConfigId>  Tue, 12 Dec 2023 11:39:33 +0200
+
 ocompiler (1-5+123) xenial; urgency=medium
 
   * comma
