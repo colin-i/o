@@ -22,6 +22,7 @@ Const greaterNumber=Xfile_numbers_operation_greater
 Const lessequalNumber=Xfile_numbers_operation_lessequal
 Const greaterequalNumber=Xfile_numbers_operation_greaterequal
 Const andlogicalNumber=Xfile_numbers_operation_logicaland
+Const orlogicalNumber=Xfile_numbers_operation_logicalor
 Const unsignedlessNumber=Xfile_numbers_operation_unsignedless
 Const unsignedgreaterNumber=Xfile_numbers_operation_unsignedgreater
 Const unsignedlessequalNumber=Xfile_numbers_operation_unsignedlessequal
@@ -256,6 +257,12 @@ function operation_core(sd inoutvalue,sd number,sd newitem)
 				set currentitem (FALSE)
 			endelse
 		endif
+	ElseIf number=(orlogicalNumber)
+		if currentitem!=(FALSE)
+			set currentitem (TRUE)
+		elseif newitem!=(FALSE)
+			set currentitem (TRUE)
+		endelseif
 	ElseIf number=(unsignedlessNumber)
 		if currentitem<^newitem
 			set currentitem (TRUE)
@@ -469,16 +476,27 @@ function multisignoperation(ss pnr,sv pcontent,sd end)
 						#and is somehow like multiplication
 						#or is somehow like addition
 						if nr!=(andNumber)
-							ret
-						endif
-						set content pcontent#
-						inc content
-						if content!=end ##error is catched how was before
-							if content#=(andNumber)
-								set pnr# (andlogicalNumber)
-								set pcontent# content
+							if nr!=(orNumber)
+								ret
 							endif
-						endif
+							set content pcontent#
+							inc content
+							if content!=end ##error is catched how was before
+								if content#=(orNumber)
+									set pnr# (orlogicalNumber)
+									set pcontent# content
+								endif
+							endif
+						else
+							set content pcontent#
+							inc content
+							if content!=end
+								if content#=(andNumber)
+									set pnr# (andlogicalNumber)
+									set pcontent# content
+								endif
+							endif
+						endelse
 					else
 						set content pcontent#
 						inc content
