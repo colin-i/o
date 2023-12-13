@@ -12,18 +12,27 @@ endif
 ifndef OUNUSED
 OUNUSED=../ounused/ounused
 endif
+ifndef conv_64
+conv_64=0
+endif
 
 OBJ = ${prog}.o
 FULLOBJ = ./${prog}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
-#OFLAGS=
+
+ifeq (${conv_64},0)
+ATCCCOM = $(CC) ${linkerflags} -o ${prog}
+else
+ATCCCOM = $(CC) -m32 ${linkerflags} -o ${prog}
+OFLAGS=conv_64 1
+endif
+
+OFLAGS+=${OFLAGSEXTRA}
 
 %.o: ${FULLOBJS}
 	${OCOMP} $< ${OFLAGS}
-
-ATCCCOM = $(CC) ${linkerflags} -o ${prog}
 
 ${prog}: ${OBJ}
 	${OUNUSED} ${FULLOBJLOG}
