@@ -1,3 +1,9 @@
+ocompiler (1-5+125) xenial; urgency=medium
+
+  * x_file strict
+
+ -- bc <bc@bc-Type1ProductConfigId>  Thu, 14 Dec 2023 15:22:41 +0200
+
 ocompiler (1-5+124) xenial; urgency=medium
 
   * more logical operations and xfile line
