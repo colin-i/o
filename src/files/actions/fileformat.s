@@ -1,9 +1,4 @@
 
-setcall errormsg addtolog_natural(datasecReg)
-if errormsg!=(noerror)
-	call msgerrexit(errormsg)
-endif
-
 #also needed at dtnb and old
 sub datasecSize datasecReg
 

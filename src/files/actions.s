@@ -18,8 +18,18 @@ include "./inits/inits.s"
 
 Include "./actions/main.s"
 
+Include "./actions/terminations.s"
+
 if xbool!=(Yes_strict)
-	Include "./actions/terminations.s"
+	#close the last LIBRARY
+	If fileformat=pe_exec
+		If implibsstarted=true
+			SetCall errormsg closelib()
+			If errormsg!=noerr
+				Call msgerrexit(errormsg)
+			EndIf
+		EndIf
+	EndIf
 	Include "./actions/pathout.s"
 	Include "./actions/fileformat.s"
 	Include "./actions/resolve.s" #call to resolve local or imported functions

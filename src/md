@@ -1,5 +1,5 @@
 
-OFLAGS="function_name 1 nul_res_pref 1" make linkerflags= $@
+OFLAGS+=" function_name 1 nul_res_pref 1" make linkerflags= $@
 
 #last working glibc linker: 2.36
 #linker=/home/bc/arh/libc6-i386/lib32/ld-linux.so.2 make test

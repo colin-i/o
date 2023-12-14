@@ -6,16 +6,6 @@ If errormsg!=noerr
 	Call msgerrexit(errormsg)
 EndIf
 
-#close the last LIBRARY
-If fileformat=pe_exec
-	If implibsstarted=true
-		SetCall errormsg closelib()
-		If errormsg!=noerr
-			Call msgerrexit(errormsg)
-		EndIf
-	EndIf
-EndIf
-
 #verify preferences
 sd err_bool
 setCall err_bool warnings(#errormsg,el_or_e)
@@ -25,3 +15,9 @@ If errormsg!=noerr
 	endif
 	call errexit()
 EndIf
+
+#last entry for log file
+setcall errormsg addtolog_natural(datasecReg)
+if errormsg!=(noerror)
+	call msgerrexit(errormsg)
+endif
