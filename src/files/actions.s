@@ -18,15 +18,12 @@ include "./inits/inits.s"
 
 Include "./actions/main.s"
 
-Include "./actions/terminations.s"
-
-Include "./actions/pathout.s"
-
-Include "./actions/fileformat.s"
-
-#call to resolve local or imported functions
-Include "./actions/resolve.s"
-
-Include "./actions/write.s"
+if xbool!=(Yes_strict)
+	Include "./actions/terminations.s"
+	Include "./actions/pathout.s"
+	Include "./actions/fileformat.s"
+	Include "./actions/resolve.s" #call to resolve local or imported functions
+	Include "./actions/write.s"
+endif
 
 Call freeclose()

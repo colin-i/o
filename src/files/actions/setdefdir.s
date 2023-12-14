@@ -63,7 +63,7 @@ if logbool=true
 		endelse
 	endif
 endif
-if xbool=true
+if xbool!=(No)
 	setcall errormsg openfile_mode_add_extension(safecurrentdirtopath,".x",#xfile,(_open_readwrite))
 endif
 if errormsg!=noerr

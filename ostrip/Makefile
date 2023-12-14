@@ -29,7 +29,7 @@ FULLOBJ = ./${OB}
 FULLOBJS = ${FULLOBJ}.s
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
-OUNUSED=../ounused/ounused
+OLINK=../ounused/ounused
 
 %.o: ${FULLOBJS}
 	${OCOMP} $< ${OFLAGS}
@@ -37,7 +37,7 @@ OUNUSED=../ounused/ounused
 ATCCCOM = $(CC) ${linkerflags} -o ${OB}
 
 ${OB}: ${OBJ}
-	${OUNUSED} ${FULLOBJLOG}
+	${OLINK} ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
 	if [ "${nobits_virtual}" != "1" ]; then \

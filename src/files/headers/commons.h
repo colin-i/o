@@ -5,6 +5,7 @@ Const FALSE=0
 Const NULL=0
 Const No=FALSE
 Const Yes=TRUE
+Const Yes_strict=2
 const negative=-1
 const nonzero=-1
 

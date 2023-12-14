@@ -9,8 +9,8 @@ endif
 ifndef OCOMP
 OCOMP=../src/o
 endif
-ifndef OUNUSED
-OUNUSED=../ounused/ounused
+ifndef OLINK
+OLINK=../ounused/ounused
 endif
 ifndef conv_64
 conv_64=0
@@ -35,7 +35,7 @@ OFLAGS+=${OFLAGSEXTRA}
 	${OCOMP} $< ${OFLAGS}
 
 ${prog}: ${OBJ}
-	${OUNUSED} ${FULLOBJLOG}
+	${OLINK} ${FULLOBJLOG}
 	@echo
 	${ATCCCOM} ${FULLOBJO}
 
