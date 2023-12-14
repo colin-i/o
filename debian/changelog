@@ -1,3 +1,9 @@
+ocompiler (1-5+126) xenial; urgency=medium
+
+  * log file entirely fix
+
+ -- bc <bc@bc-Type1ProductConfigId>  Thu, 14 Dec 2023 23:21:45 +0200
+
 ocompiler (1-5+125) xenial; urgency=medium
 
   * x_file strict
