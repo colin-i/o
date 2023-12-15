@@ -14,6 +14,8 @@ importx "fopen" fopen
 importx "fclose" fclose
 importx "strrchr" strrchr
 
+include "loop.s"
+
 function out_file(sd in)
 	ss p;set p strrchr(in,(asciidot))
 	if p!=(NULL)
@@ -44,6 +46,7 @@ entry main(sd argc,sv argv)
 			sd out;set out out_file(s)
 			sd exit=EXIT_SUCCESS
 			if out!=(NULL)
+				call loop(f)
 				call fclose(out)
 			else
 				set exit (EXIT_FAILURE)
