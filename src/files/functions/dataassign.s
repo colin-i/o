@@ -510,16 +510,20 @@ endfunction
 function set_reserve(sd value)
 	vData ptrdatasec%%ptr_datasec
 	sd p_nul_res_pref%p_nul_res_pref
-	if p_nul_res_pref#=(TRUE)
+	if p_nul_res_pref#!=(FALSE)
 		sd reg;call getcontReg(ptrdatasec,#reg)
 	endif
 	sd err
 	SetCall err addtosec(0,value,ptrdatasec)
 	If err=(noerror)
-		if p_nul_res_pref#=(TRUE)
+		if p_nul_res_pref#!=(FALSE)
 			sd cont;call getcont(ptrdatasec,#cont)
 			add cont reg
-			call memset(cont,0,value)
+			if p_nul_res_pref#=(TRUE)
+				call memset(cont,0,value)
+			else
+				call memset(cont,~0,value)
+			endelse
 		endif
 	EndIf
 	Return err
