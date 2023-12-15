@@ -1,2 +1,2 @@
 
-OCOMP=o OUNUSED=ounused OFLAGSEXTRA="function_name 1 nul_res_pref 1" make linkerflags= $@
+OCOMP=o OLINK=ounused OFLAGSEXTRA="function_name 1 nul_res_pref 1" make linkerflags= $@
