@@ -1,16 +1,26 @@
 
-importx "getline" getline
+importx "fseek" fseek
+importx "ftell" ftell
+importx "rewind" rewind
+importx "malloc" malloc
+importx "fread" fread
 importx "free" free
 
-function loop(sd input)
-	sd buffer=NULL
-	#This buffer should be freed by the user program even if getline() failed
-	#On error, malloc returns NULL
-	#free, If ptr is NULL, no operation is performed
-	sd size=0
+const SEEK_END=2
 
-	while size!=-1
-		set size getline(#buffer,#size,input)
+function loop(sd input)
+	sd a;set a fseek(input,0,(SEEK_END))
+	if a=0
+		sd size;set size ftell(input)
+		if size!=-1
+			call rewind(input)
+			sd buffer;set buffer malloc(size)
+			if buffer!=(NULL)
+				sd r;set r fread(buffer,size,1,input)
+				if r=1
+				end
+				call free(buffer)
+			end
+		end
 	end
-	call free(buffer)
 end
