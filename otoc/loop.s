@@ -16,7 +16,7 @@ function loop(sd input)
 		sd pointer;set pointer ftell(input) #is still same place if file deleted in parallel
 		#if pointer!=-1  #lseek and same result (remark fileno)
 		call rewind(input)
-		ss buffer;set buffer malloc(size)
+		ss buffer;set buffer malloc(pointer)
 		if buffer!=(NULL)
 			sd r;set r fread(buffer,pointer,1,input)
 			if r=1

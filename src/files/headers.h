@@ -1,7 +1,5 @@
 
 
-Include "./headers/ascii.h"
-
 include "./headers/xfile.h"
 Include "./headers/logs.h"
 Include "./headers/strip.h"

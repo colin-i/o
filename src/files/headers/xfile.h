@@ -1,4 +1,6 @@
 
+Include "./ascii.h"
+
 const Xfile_comment=0
 const Xfile_commentmulti=1
 const Xfile_commentlineend=2

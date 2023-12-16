@@ -5,9 +5,7 @@ const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
 const NULL=0
 
-const asciinull=0
-const asciidot=46
-const asciic=99
+Const asciic=0x63
 
 importx "puts" puts
 importx "fopen" fopen
@@ -26,7 +24,7 @@ function out_file(sd in)
 			inc p
 			set p# (asciic)
 			inc p
-			set p# (asciinull)
+			set p# (asciinul)
 			sd f;set f fopen(in,"wb")
 			if f!=(NULL)
 				return f
