@@ -5,6 +5,8 @@ const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
 const NULL=0
 
+Const asciinul=0x0
+Const asciidot=0x2E
 Const asciic=0x63
 
 importx "puts" puts

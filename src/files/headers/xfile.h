@@ -1,5 +1,5 @@
 
-Include "./ascii.h"
+Include "./xfileascii.h"
 
 const Xfile_comment=0
 const Xfile_commentmulti=1
