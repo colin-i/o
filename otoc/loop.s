@@ -8,7 +8,7 @@ importx "free" free
 
 const SEEK_END=2
 
-einclude "../src/files/headers/xfile.h" "/usr/include/ocompiler/xfile.h"
+include "../src/files/headers/xfile.h" "/usr/include/ocompiler/xfile.h"
 
 function loop(sd input)
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
