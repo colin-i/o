@@ -1,14 +1,16 @@
 TOPTARGETS := all install clean distclean uninstall test
 
 ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), amd64)
-SUBDIRS := src ounused ostrip
+SUBDIRS := src ounused otoc ostrip
+conv_64=0
 else
 SUBDIRS := src ounused
+conv_64=1
 endif
 
 $(TOPTARGETS): $(SUBDIRS)
 $(SUBDIRS):
-	$(MAKE) -C $@ $(MAKECMDGOALS)
+	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
 .PHONY: $(TOPTARGETS) $(SUBDIRS)
 
 

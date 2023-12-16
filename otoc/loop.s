@@ -8,16 +8,23 @@ importx "free" free
 
 const SEEK_END=2
 
+einclude "/usr/include/ocompiler/xfile.h"
+
 function loop(sd input)
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
 	if a=0
-		sd size;set size ftell(input) #is still same place if file deleted in parallel
-		#if size!=-1  #lseek and same result (remark fileno)
+		sd pointer;set pointer ftell(input) #is still same place if file deleted in parallel
+		#if pointer!=-1  #lseek and same result (remark fileno)
 		call rewind(input)
-		sd buffer;set buffer malloc(size)
+		ss buffer;set buffer malloc(size)
 		if buffer!=(NULL)
-			sd r;set r fread(buffer,size,1,input)
+			sd r;set r fread(buffer,pointer,1,input)
 			if r=1
+				add pointer buffer
+				while buffer!=pointer
+					sd command;set command buffer#
+					inc buffer
+				end
 			end
 			call free(buffer)
 		end
