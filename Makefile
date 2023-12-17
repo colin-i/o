@@ -1,7 +1,7 @@
 TOPTARGETS := all install clean distclean uninstall test
 
 ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), amd64)
-SUBDIRS := src ounused otoc ostrip
+SUBDIRS := src ounused ostrip
 conv_64=0
 else
 SUBDIRS := src ounused

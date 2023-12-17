@@ -8,7 +8,8 @@ nobits_virtual=1
 endif
 
 ifndef linkerflags
-linkerflags=-O1 -s
+linkerflags=-O3 -s
+#             1
 endif
 
 strippy=ostriputil

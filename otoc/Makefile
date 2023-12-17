@@ -4,7 +4,7 @@ prog=otoc
 all: ${prog}
 
 ifndef linkerflags
-linkerflags=-O1 -s
+linkerflags=-O3 -s
 endif
 ifndef OCOMP
 OCOMP=../src/o
