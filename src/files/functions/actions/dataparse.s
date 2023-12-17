@@ -197,7 +197,7 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 	Data constnr=constantsnumber
 
 	Char pointersign=pointersigndeclare
-	SetCall valsize valinmem(content,size,pointersign)
+	SetCall valsize valinmem_pipes(content,size,pointersign,ptrsz)
 	If valsize!=size
 		If typenumber=charnr
 			#grep    stackfilter2 4
