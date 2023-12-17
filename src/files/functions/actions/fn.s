@@ -41,12 +41,10 @@ function fnimp_exists(sd content,sd size)
 endfunction
 #xf
 function func_xfile(sd subtype)
-	if subtype=(cFUNCTIONX)
-		return (Xfile_function_extern)
-	elseif subtype=(cENTRY)
-		return (Xfile_function_entry)
-	endelseif
-	return (Xfile_function_traw) #or Xfile_function_not_x
+	if subtype=(cFUNCTION) #Xfile_function_tintern
+		return (Xfile_function_not_x)
+	endif
+	return subtype ##Xfile_function_traw Xfile_function_extern Xfile_function_entry
 endfunction
 #err
 Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,sd el_or_e,sd varargs)
@@ -170,10 +168,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				call scope64_set((FALSE))
 				setcall err xfile_add_fndef_if(content,sz,(Xfile_function_tintern),(Xfile_function_not_x)) #,arg
 			else
-				sd xf_fn
-				setcall xf_fn func_xfile(subtype)
 				#functionx,entry in 64 conventions
-				if xf_fn!=(Xfile_function_traw)
+				if subtype!=(Xfile_function_traw)
 					sd scope64
 					setcall scope64 is_for_64()
 					call scope64_set(scope64)
@@ -185,7 +181,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 					#set only to avoid at start args, else, not using, never get into getreturn here
 					call scope64_set((FALSE))
 				endelse
-				setcall err xfile_add_fndef_if(content,sz,xf_fn,xf_fn,varargs)
+				setcall err xfile_add_fndef_if(content,sz,subtype,subtype,varargs)
 			endelse
 			If err!=noerr
 				Return err

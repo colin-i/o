@@ -15,16 +15,17 @@ const Xfile_last_command=Xfile_line
 function loop(sd input)
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
 	if a=0
-		sd pointer;set pointer ftell(input) #is still same place if file deleted in parallel
-		#if pointer!=-1  #lseek and same result (remark fileno)
+		sd delim;set delim ftell(input) #is still same place if file deleted in parallel
+		#if delim!=-1  #lseek and same result (remark fileno)
 		call rewind(input)
-		ss buffer;set buffer malloc(pointer)
+		sd buffer;set buffer malloc(delim)
 		if buffer!=(NULL)
-			sd r;set r fread(buffer,pointer,1,input)
+			sd r;set r fread(buffer,delim,1,input)
 			if r=1
-				add pointer buffer
-				while buffer!=pointer
-					charx command#1;call get_char(#buffer,#command)
+				ss pointer;set pointer buffer
+				add delim buffer
+				while pointer!=delim
+					charx command#1;call get_char(#pointer,#command)
 					if command>(Xfile_last_command)
 						break
 					end
@@ -56,18 +57,13 @@ function loop(sd input)
 					value *Xfile_line^line
 					mult command :
 					sv dest^Xfile_comment;add dest command
-					call dest(#buffer)
+					set dest dest#
+					call dest(#pointer)
 				end
 			end
 			call free(buffer)
 		end
 	end
-end
-
-function get_char(sv pbuffer,ss pcommand)
-	ss buffer;set buffer pbuffer#
-	set pcommand# buffer#
-	inc pbuffer#
 end
 
 function comment(sv *pbuffer)
@@ -76,11 +72,25 @@ function commentmulti(sv *pbuffer)
 end
 function commentlineend(sv *pbuffer)
 end
-function format(sv *pbuffer)
+function format(sv pbuffer)
+	charx fmt#1;call get_char(pbuffer,#fmt)
 end
 function include(sv *pbuffer)
 end
-function functiondef(sv *pbuffer)
+include "function.s"
+function functiondef(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+
+	value intern^functiondef_intern
+	value *raw^functiondef_intern       #functiondef_raw
+	value *extern^functiondef_extern
+	value *entry^functiondef_extern     #functiondef_entry
+	charx type#1;call get_char(pbuffer,#type)
+	mult type :
+	sv dest^intern;add dest type
+	set dest dest#
+	call dest(pbuffer)
 end
 function declare(sv *pbuffer)
 end
@@ -121,4 +131,22 @@ end
 function interrupt(sv *pbuffer)
 end
 function line(sv *pbuffer)
+end
+
+function get_char(sv pbuffer,ss pchar)
+	ss buffer;set buffer pbuffer#
+	set pchar# buffer#
+	inc pbuffer#
+end
+
+function get_data(sv pbuffer,sd pdata)
+	sd buffer;set buffer pbuffer#
+	set pdata# buffer#
+	add pbuffer# 4
+end
+
+function get_string(sv pbuffer,sd psize,sv ppointer)
+	call get_data(pbuffer,psize)
+	set ppointer# pbuffer#
+	add pbuffer# psize#
 end

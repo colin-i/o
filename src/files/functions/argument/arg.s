@@ -18,7 +18,6 @@ function verify_syntax_end_and_restore(sv ptrcontent,sd ptrsize,sd argsize)
 	return (noerror)
 endfunction
 
-#err
 function arg_size(ss content,sd sizetoverify,sd p_argsize)
 	Char spc=asciispace
 	Char tab=asciitab
@@ -34,7 +33,7 @@ function arg_size(ss content,sd sizetoverify,sd p_argsize)
 	#was resolved at push enumcomma. if p_argsize#=0
 	#	return "Expecting argument name."  #this is good at BACKWARD, call a( )
 	#endif
-	return (noerror)
+	#at callex (going to undefined at varsize=size) and at declare^ is ok
 endfunction
 
 function extend_arg_size(ss content,sd sizetoverify,sd p_argsize)
@@ -150,10 +149,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			return errnr
 		endelse
 	elseif allowdata!=(allow_later)  #exclude pass_init, but even there jump over first arg
-		setcall errnr arg_size(content,argsize,#argsize)  #spc,tab
-		If errnr!=(noerror)
-			Return errnr
-		EndIf
+		call arg_size(content,argsize,#argsize)  #spc,tab
 		if allowdata!=(allow_later_sec)
 			sd bool
 			setcall bool is_constant_related_ascii(content#)

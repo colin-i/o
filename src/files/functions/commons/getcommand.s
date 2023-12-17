@@ -316,23 +316,22 @@ Const numberofcommandsvars=(\-commandsvars_start)/com_size
 			Data *=cIMPORTX
 			Data *=spacereq
 	Const cSTARTFUNCTION=\-coms_start
-	Const cSTARTFUNCTION_top=\
-		Const cFUNCTION=\-cSTARTFUNCTION_top
+		Const cFUNCTION=Xfile_function_tintern
 			data *^cFUNCTION_c
 			Data *=cSTARTFUNCTION
 			Data *=cFUNCTION
 			Data *=spacereq
-		Const cFUNCTIONX=\-cSTARTFUNCTION_top
+		Const cFUNCTIONX=Xfile_function_extern
 			data *^cFUNCTIONX_c
 			Data *=cSTARTFUNCTION
 			Data *=cFUNCTIONX
 			Data *=spacereq
-		Const cENTRY=\-cSTARTFUNCTION_top
+		Const cENTRY=Xfile_function_entry
 			data *^cENTRY_c
 			Data *=cSTARTFUNCTION
 			Data *=cENTRY
 			Data *=spacereq
-		Const cENTRYRAW=\-cSTARTFUNCTION_top
+		Const cENTRYRAW=Xfile_function_traw
 			data *^cENTRYRAW_c
 			Data *=cSTARTFUNCTION
 			Data *=cENTRYRAW
@@ -505,8 +504,8 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
 		Elseif command=(cSTARTFUNCTION)
-			sd x;setcall x func_xfile(ptrsubtype#)
-			if x!=(Xfile_function_not_x)
+			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
+			if x_fn!=(Xfile_function_not_x)
 				Set extstr xstr ##varargs
 			endif
 		elseif command=(cCALLEX)

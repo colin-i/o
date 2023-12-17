@@ -193,48 +193,8 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 		return noerr
 	endif
 
-	Char reservesign=reservesign
-	SetCall valsize valinmem_pipes(content,size,reservesign,ptrsz)
-	If valsize!=size
-		Data constnr=constantsnumber
-		If typenumber=constnr
-			Char constreserveerr="Unexpected reserve sign ('#') at constant declaration."
-			Str ptrconstreserveerr^constreserveerr
-			Return ptrconstreserveerr
-		EndIf
-		Set assigntype# reservesign
-		return noerr
-	endif
-
 	Data charnr=charnumber
-	Char relsign=relsign
-	SetCall valsize valinmem_pipes(content,size,relsign,ptrsz)
-	If valsize!=size
-		Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
-		Str ptrptrrelchar^ptrrelchar
-		If typenumber=charnr
-			#stackfilter2   grep5
-			if stack=(FALSE)
-				Return ptrptrrelchar
-			endif
-		ElseIf typenumber=constnr
-			Return ptrptrrelchar
-		EndElseIf
-		Set assigntype# equalsign
-		Set ptrrelocbool# true
-		#this was moved here because of xfile, to know datax relocation
-		call advancecursors(#content,#size,valsize)
-		call stepcursors(#content,#size)
-		if size=0
-			return "Size 0 when testing for datax relocation."
-		endif
-		if content#=relsign
-			set ptrdataxrel# (TRUE)
-		else
-			set ptrdataxrel# (FALSE)
-		endelse
-		return noerr
-	endif
+	Data constnr=constantsnumber
 
 	Char pointersign=pointersigndeclare
 	SetCall valsize valinmem(content,size,pointersign)
@@ -264,6 +224,48 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 		If typenumber!=constnr
 			Set ptrrelocbool# true
 		EndIf
+		return noerr
+	endif
+
+	Char relsign=relsign
+	SetCall valsize valinmem_pipes(content,size,relsign,ptrsz)
+	If valsize!=size
+		Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
+		Str ptrptrrelchar^ptrrelchar
+		If typenumber=charnr
+			#stackfilter2   grep5
+			if stack=(FALSE)
+				Return ptrptrrelchar
+			endif
+		ElseIf typenumber=constnr
+			Return ptrptrrelchar
+		EndElseIf
+		Set assigntype# equalsign
+		Set ptrrelocbool# true
+		#this was moved here because of xfile, to know datax relocation
+		call advancecursors(#content,#size,valsize)
+		call stepcursors(#content,#size)
+		if size=0
+			return "Size 0 when testing for datax relocation."
+		endif
+		if content#=relsign
+			set ptrdataxrel# (TRUE)
+		else
+			set ptrdataxrel# (FALSE)
+		endelse
+		return noerr
+	endif
+
+	#let reserve sign last sign, in this way can comment(#) on signs before reserve(#)
+	Char reservesign=reservesign
+	SetCall valsize valinmem_pipes(content,size,reservesign,ptrsz)
+	If valsize!=size
+		If typenumber=constnr
+			Char constreserveerr="Unexpected reserve sign ('#') at constant declaration."
+			Str ptrconstreserveerr^constreserveerr
+			Return ptrconstreserveerr
+		EndIf
+		Set assigntype# reservesign
 		return noerr
 	endif
 

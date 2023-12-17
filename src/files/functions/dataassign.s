@@ -278,6 +278,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		endif
 		Data tp=notype
 		Data pointer#1
+		call arg_size(content,size,#size)
 		SetCall pointer strinvars(content,size,tp)
 		If pointer!=zero
 			data rightstackbit#1
