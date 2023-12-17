@@ -151,7 +151,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 	If firstchar!=(unrefsign)
 		if firstchar=(throwlesssign)   #throwless if on a throwing area
 			If typenumber=(constantsnumber)
-				Return "Unexpected throwless sign ('^') at constant declaration."
+				Return "Unexpected throwless sign ('&') at constant declaration."
 			EndIf
 			dec valsize
 			If valsize=zero
@@ -208,17 +208,18 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 			endif
 		EndIf
 
-		if valsize=0
-			#throwless ^name^
-			#If typenumber==constnr error is elsewhere also for another signs
-			inc content;dec size
-			SetCall valsize valinmem(content,size,pointersign)
-			If valsize=size
-				return "Throwless without a sign."   #at another sign there is this check at addvar...
-			endif
-			inc valsize ##put throwless at size for later recons
-		endif
-		set ptrsz# valsize
+		#since 5+128 throwless is & not ^
+		#if valsize=0
+		#	#throwless ^name^
+		#	#If typenumber==constnr error is elsewhere also for another signs
+		#	inc content;dec size
+		#	SetCall valsize valinmem(content,size,pointersign)
+		#	If valsize=size
+		#		return "Throwless without a sign."   #at another sign there is this check at addvar...
+		#	endif
+		#	inc valsize ##put throwless at size for later recons
+		#endif
+		#set ptrsz# valsize
 
 		Set assigntype# pointersign
 		If typenumber!=constnr

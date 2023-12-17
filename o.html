@@ -377,7 +377,7 @@
 	<br>
 	<b>AfterCallEnable</b>/<b>AfterCallDisable</b> automation commands (name is not used; if not imported, aftercall can be defined with unrefsign(*)).
 	<br>
-	<b>^</b> sign will create throwless variables.
+	<b>&</b> sign will create throwless variables.
 	<br>
 	<a class="code">
 	function pre_test()<br>
@@ -391,7 +391,7 @@
 	set interrupt 1<br>
 	call pre_test()<br>
 	#it is still going on<br>
-	value ^throwless^test<br>
+	value &throwless^test<br>
 	call throwless()<br>
 	#it is still going on<br>
 	call test()<br>

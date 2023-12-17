@@ -475,7 +475,7 @@ const sign_not_required=-1
 #Latin Small Letter Y with diaeresis (0xff)
 
 const unrefsign=asciiast
-const throwlesssign=asciicirc
+const throwlesssign=asciiand
 
 const call_align_no=0
 const call_align_yes_all=1
