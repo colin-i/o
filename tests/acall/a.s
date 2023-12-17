@@ -17,7 +17,7 @@ function c()
 endfunction
 
 entry main()
-value ^e^a
+value &e^a
 #i3
 call e()
 aftercallenable

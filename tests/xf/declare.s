@@ -8,7 +8,7 @@ data b={2,2}
 value c%1
 sv d
 value *d#1
-value ^dd^c
+value &dd^c
 
 str e#1
 vstr f#1
