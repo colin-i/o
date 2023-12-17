@@ -30,6 +30,8 @@ const Xfile_override=22
 const Xfile_orphan=23
 const Xfile_interrupt=24
 const Xfile_line=25
+#const Xfile_last_command=Xfile_line
+#at the moment Xfile_last_command*: <= 0xff, then Xfile_last_command<=27
 
 #t from type
 const Xfile_function_tintern=0
