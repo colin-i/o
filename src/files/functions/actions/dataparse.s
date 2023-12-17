@@ -182,101 +182,115 @@ endfunction
 
 #er
 function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stack,sd ptrrelocbool,sd ptrdataxrel)
-	data true=TRUE
-	data noerr=noerror
-	Data valsize#1
-	Char equalsign=assignsign
-
-	SetCall valsize valinmem_pipes(content,size,equalsign,ptrsz)
-	If valsize!=size
-		Set assigntype# equalsign
-		return noerr
-	endif
-
-	Data charnr=charnumber
-	Data constnr=constantsnumber
-
-	Char pointersign=pointersigndeclare
-	SetCall valsize valinmem_pipes(content,size,pointersign,ptrsz)
-	If valsize!=size
-		If typenumber=charnr
-			#grep    stackfilter2 4
-			if stack=(FALSE)
-				Char ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
-				Str ptrptrchar^ptrchar
-				Return ptrptrchar
-			endif
-		EndIf
-
-		#since 5+128 throwless is & not ^
-		#if valsize=0
-		#	#throwless ^name^
-		#	#If typenumber==constnr error is elsewhere also for another signs
-		#	inc content;dec size
-		#	SetCall valsize valinmem(content,size,pointersign)
-		#	If valsize=size
-		#		return "Throwless without a sign."   #at another sign there is this check at addvar...
-		#	endif
-		#	inc valsize ##put throwless at size for later recons
-		#endif
-		#set ptrsz# valsize
-
-		Set assigntype# pointersign
-		If typenumber!=constnr
-			Set ptrrelocbool# true
-		EndIf
-		return noerr
-	endif
-
-	Char relsign=relsign
-	SetCall valsize valinmem_pipes(content,size,relsign,ptrsz)
-	If valsize!=size
-		Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
-		Str ptrptrrelchar^ptrrelchar
-		If typenumber=charnr
-			#stackfilter2   grep5
-			if stack=(FALSE)
-				Return ptrptrrelchar
-			endif
-		ElseIf typenumber=constnr
-			Return ptrptrrelchar
-		EndElseIf
-		Set assigntype# equalsign
-		Set ptrrelocbool# true
-		#this was moved here because of xfile, to know datax relocation
-		call advancecursors(#content,#size,valsize)
-		call stepcursors(#content,#size)
-		if size=0
-			return "Size 0 when testing for datax relocation."
-		endif
-		if content#=relsign
-			set ptrdataxrel# (TRUE)
+	if size>0
+		sd start;set start content
+		if content#=(unrefsign)
+			call stepcursors(#content,#size)
+			add size content
+			while content!=size
+				if content#!=(assignsign)
+					if content#!=(reservesign)
+						if content#!=(pointersigndeclare)
+							if content#!=(relsign)
+								inc content
+								continue
+							endif
+						endif
+					endif
+				endif
+				break
+			endwhile
 		else
-			set ptrdataxrel# (FALSE)
+			if content#=(throwlesssign)
+				call stepcursors(#content,#size)
+			endif
+			add size content
+			while content!=size
+				sd bool;setcall bool is_variable_char(content#)
+				if bool=(FALSE)
+					break
+				endif
+				inc content
+			endwhile
 		endelse
-		return noerr
-	endif
+		if content=size
+			if stack=(TRUE)
+				Set assigntype# (nosign)
 
-	#let reserve sign last sign, in this way can comment(#) on signs before reserve(#)
-	Char reservesign=reservesign
-	SetCall valsize valinmem_pipes(content,size,reservesign,ptrsz)
-	If valsize!=size
-		If typenumber=constnr
-			Char constreserveerr="Unexpected reserve sign ('#') at constant declaration."
-			Str ptrconstreserveerr^constreserveerr
-			Return ptrconstreserveerr
-		EndIf
-		Set assigntype# reservesign
-		return noerr
-	endif
+				sub content start
+				set ptrsz# content
+				return (noerror)
+			endif
+		else
+			if content#=(assignsign)
+				Set assigntype# (assignsign)
 
-	if stack=true
-		char nosign=nosign
-		Set assigntype# nosign
-		return noerr
-	endif
+				sub content start
+				set ptrsz# content
+				return (noerror)
+			elseif content#=(reservesign)
+				If typenumber=(constantsnumber)
+					Char constreserveerr="Unexpected reserve sign ('#') at constant declaration."
+					Str ptrconstreserveerr^constreserveerr
+					Return ptrconstreserveerr
+				EndIf
+				Set assigntype# (reservesign)
 
+				sub content start
+				set ptrsz# content
+				return (noerror)
+			elseif content#=(pointersigndeclare)
+				If typenumber=(charnumber)
+					#grep    stackfilter2 4
+					if stack=(FALSE)
+						Char ptrchar="Incorrect pointer sign ('^') used at CHAR declaration."
+						vStr ptrptrchar^ptrchar
+						Return ptrptrchar
+					endif
+				EndIf
+				Set assigntype# (pointersigndeclare)
+				If typenumber!=(constantsnumber)
+					Set ptrrelocbool# (TRUE)
+				EndIf
+
+				sub content start
+				set ptrsz# content
+				return (noerror)
+			elseif content#=(relsign)
+				Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
+				vStr ptrptrrelchar^ptrrelchar
+				If typenumber=(charnumber)
+					#stackfilter2   grep5
+					if stack=(FALSE)
+						Return ptrptrrelchar
+					endif
+				ElseIf typenumber=(constantsnumber)
+					Return ptrptrrelchar
+				EndElseIf
+				Set assigntype# (assignsign)
+				Set ptrrelocbool# (TRUE)
+
+				#call advancecursors(#content,#size,valsize)
+				#call stepcursors(#content,#size)
+				ss pointer=1;add pointer content
+
+				if pointer=size
+					return "Size 0 when testing for datax relocation."
+				endif
+				#this was moved here because of xfile, to know datax relocation
+				if pointer#=(relsign)
+					set ptrdataxrel# (TRUE)
+				else
+					set ptrdataxrel# (FALSE)
+				endelse
+
+				sub content start
+				set ptrsz# content
+				return (noerror)
+			endelseif
+		endelse
+	endif
 	Char _assignoperatorerr="One from the assign operators expected."
-	Str assignoperatorerr^_assignoperatorerr
+	vStr assignoperatorerr^_assignoperatorerr
 	Return assignoperatorerr
 endfunction

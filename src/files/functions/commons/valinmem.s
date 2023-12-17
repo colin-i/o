@@ -41,10 +41,3 @@ Function valinmem(str content,data size,char delim)
 	SetCall returnvalue valinmemsens(content,size,delim,forward)
 	Return returnvalue
 EndFunction
-
-function valinmem_pipes(str content,data size,char delim,data pipe)
-	data sz#1
-	setcall sz valinmem(content,size,delim)
-	set pipe# sz
-	return sz
-endfunction
