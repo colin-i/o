@@ -9,16 +9,17 @@ last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_n
 ~/test/debinit2 "${1}" && \
 ~/test/deb && \
 ~/test/publp && \
-~/test/ai && \
-~/test/pub appimage && \
 ./makewin32 && \
 ~/test/del && \
 ~/test/rel && \
 ~/test/pub rel && \
-~/test/rpm && \
-~/test/upapp && \
 ~/test/up && \
-~/test/pub upapp rpm && \
+~/test/rpm && \
+~/test/pub rpm && \
+~/test/ai && \
+~/test/pub appimage && \
+~/test/upapp && \
+~/test/pub upapp && \
 ~/test/pub2 && \
 ~/test/publp2 && \
 ~/test/lp && \
