@@ -1,3 +1,9 @@
+ocompiler (1-5+131) xenial; urgency=medium
+
+  * getsign with spaces
+
+ -- bc <bc@bc-Type1ProductConfigId>  Mon, 18 Dec 2023 15:29:24 +0200
+
 ocompiler (1-5+130) xenial; urgency=medium
 
   * declare signs not mixing with same operations signs or comment
