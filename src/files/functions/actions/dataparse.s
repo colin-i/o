@@ -166,24 +166,31 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 			endif
 		endelseif
 		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
-		If err!=noerr
-			Return err
-		EndIf
-	Else
-		If typenumber=(constantsnumber)
-			Char unrefconstant="Unexpected unreference sign ('*') at constant declaration."
-			vStr ptrunrefconstant^unrefconstant
-			Return ptrunrefconstant
-		EndIf
-		Call advancecursors(ptrcontent,ptrsize,valsize)
-		Return noerr
-	EndElse
+		Return err
+	EndIf
+	If typenumber=(constantsnumber)
+		Char unrefconstant="Unexpected unreference sign ('*') at constant declaration."
+		vStr ptrunrefconstant^unrefconstant
+		Return ptrunrefconstant
+	EndIf
+	Call advancecursors(ptrcontent,ptrsize,valsize)
+	Return noerr
 endfunction
 
+function getsign_size(sd start,sd last,sd mark,sd pdest) #mark is if was ended by a sign or whitespaces
+	if start!=mark
+		sub mark start
+		set pdest# mark
+		ret
+	endif
+	sub last start
+	set pdest# last
+endfunction
 #er
 function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stack,sd ptrrelocbool,sd ptrdataxrel)
 	if size>0
 		sd start;set start content
+		sd size_mark;set size_mark start
 		if content#=(unrefsign)
 			call stepcursors(#content,#size)
 			add size content
@@ -198,35 +205,45 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 						endif
 					endif
 				endif
+				set size_mark content
 				break
 			endwhile
 		else
-			if content#=(throwlesssign)
-				call stepcursors(#content,#size)
-			endif
 			add size content
 			while content!=size
-				sd bool;setcall bool is_variable_char(content#)
-				if bool=(FALSE)
-					break
+				if content#!=(assignsign)
+					if content#!=(reservesign)
+						if content#!=(pointersigndeclare)
+							if content#!=(relsign)
+								if content#=(asciispace)
+									set size_mark content
+									setcall content mem_spaces(content,size)
+									break
+								elseif content#=(asciitab)
+									set size_mark content
+									setcall content mem_spaces(content,size)
+									break
+								endelseif
+								inc content
+								continue
+							endif
+						endif
+					endif
 				endif
-				inc content
+				set size_mark content
+				break
 			endwhile
 		endelse
 		if content=size
 			if stack=(TRUE)
+				call getsign_size(start,content,size_mark,ptrsz)
 				Set assigntype# (nosign)
-
-				sub content start
-				set ptrsz# content
 				return (noerror)
 			endif
 		else
+			call getsign_size(start,content,size_mark,ptrsz)
 			if content#=(assignsign)
 				Set assigntype# (assignsign)
-
-				sub content start
-				set ptrsz# content
 				return (noerror)
 			elseif content#=(reservesign)
 				If typenumber=(constantsnumber)
@@ -235,9 +252,6 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 					Return ptrconstreserveerr
 				EndIf
 				Set assigntype# (reservesign)
-
-				sub content start
-				set ptrsz# content
 				return (noerror)
 			elseif content#=(pointersigndeclare)
 				If typenumber=(charnumber)
@@ -253,8 +267,6 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 					Set ptrrelocbool# (TRUE)
 				EndIf
 
-				sub content start
-				set ptrsz# content
 				return (noerror)
 			elseif content#=(relsign)
 				Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
@@ -272,20 +284,17 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 
 				#call advancecursors(#content,#size,valsize)
 				#call stepcursors(#content,#size)
-				ss pointer=1;add pointer content
+				inc content
 
-				if pointer=size
+				if content=size
 					return "Size 0 when testing for datax relocation."
 				endif
 				#this was moved here because of xfile, to know datax relocation
-				if pointer#=(relsign)
+				if content#=(relsign)
 					set ptrdataxrel# (TRUE)
 				else
 					set ptrdataxrel# (FALSE)
 				endelse
-
-				sub content start
-				set ptrsz# content
 				return (noerror)
 			endelseif
 		endelse

@@ -63,6 +63,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		call advancecursors(ptrcontent,ptrsize,valsize)
 	endelse
 
+	call spaces(ptrcontent,ptrsize) #since 5 131
 	Call stepcursors(ptrcontent,ptrsize)
 
 	Data size#1
