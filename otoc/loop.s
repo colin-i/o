@@ -12,7 +12,9 @@ einclude "../src/files/headers/xfile.h" "/usr/include/ocompiler/xfile.h"
 #einclude? will use all constants in the header. yes, but some are used without touching them, like in this next function
 const Xfile_last_command=Xfile_line
 
-function loop(sd input)
+charx result#1
+
+function loop(sd input,sd output)
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
 	if a=0
 		sd delim;set delim ftell(input) #is still same place if file deleted in parallel
@@ -24,6 +26,7 @@ function loop(sd input)
 			if r=1
 				ss pointer;set pointer buffer
 				add delim buffer
+				set main.result -1
 				while pointer!=delim
 					charx command#1;call get_char(#pointer,#command)
 					if command>(Xfile_last_command)
@@ -58,7 +61,8 @@ function loop(sd input)
 					mult command :
 					sv dest^Xfile_comment;add dest command
 					set dest dest#
-					call dest(#pointer)
+					call dest(#pointer,output)
+					if main.result=0;break;end
 				end
 			end
 			call free(buffer)
@@ -112,7 +116,8 @@ function break(sv *pbuffer)
 end
 function continue(sv *pbuffer)
 end
-function end(sv *pbuffer)
+function end(sv *pbuffer,sd outfile)
+	call write(outfile,"}")
 end
 function ret(sv *pbuffer)
 end
@@ -149,4 +154,19 @@ function get_string(sv pbuffer,sd psize,sv ppointer)
 	call get_data(pbuffer,psize)
 	set ppointer# pbuffer#
 	add pbuffer# psize#
+end
+
+importx "strlen" strlen
+importx "fwrite" fwrite
+
+function write(sd outfile,ss string)
+	sd sz;set sz strlen(string)
+	sd items;set items fwrite(string,sz,1,outfile)
+	if items!=1
+		set main.result 0
+	end
+	set items fwrite("\n",1,1,outfile)
+	if items!=1
+		set main.result 0
+	end
 end
