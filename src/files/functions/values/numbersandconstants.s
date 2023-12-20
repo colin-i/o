@@ -116,6 +116,8 @@ Function memtohex(vstr content,data size,data outvalue)
 
 	SetCall bool stratmem(pc,ps,"0X")
 	If bool=(TRUE)
+		Data val#1
+		Set val 0
 		if size>0
 			While content#=(asciizero)
 				inc content
@@ -128,10 +130,9 @@ Function memtohex(vstr content,data size,data outvalue)
 				Char byte#1
 				Data nr#1
 				Data multp#1
-				Data val#1
-				Add content size
-				Set val 0
+
 				Set multp 1
+				Add content size
 				While size!=0
 					Dec content
 					Dec size
@@ -145,10 +146,12 @@ Function memtohex(vstr content,data size,data outvalue)
 					Data hextimes=16
 					Mult multp hextimes
 				EndWhile
-				Set outvalue# val
-				Return (TRUE)
-			endif
+			else
+				return (FALSE)
+			endelse
 		endif
+		Set outvalue# val
+		Return (TRUE)
 	EndIf
 	return (FALSE)
 EndFunction
