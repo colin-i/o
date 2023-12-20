@@ -46,21 +46,23 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		if multx=(bil_1)
 			if size>^1
 				return (FALSE)
-			elseif number=2
-				if value>=(max_int_bil_2_rest)
-					if value=(max_int_bil_2_rest)
-						if minusbool=(FALSE)
-							#2 147 483 648 is the first positive overflow
+			elseif number>=2
+				if number=2
+					if value>=(max_int_bil_2_rest)
+						if value=(max_int_bil_2_rest)
+							if minusbool=(FALSE)
+								#2 147 483 648 is the first positive overflow
+								return (FALSE)
+							endif
+						elseif value>(max_int_bil_2_rest)
+							#2 147 483 649-2 999 999 999
 							return (FALSE)
-						endif
-					elseif value>(max_int_bil_2_rest)
-						#2 147 483 649-2 999 999 999
-						return (FALSE)
-					endelseif
-				endif
-			elseif number>2
-				#3 xxx xxx xxx-9 xxx xxx xxx
-				return (FALSE)
+						endelseif
+					endif
+				else
+					#3 xxx xxx xxx-9 xxx xxx xxx
+					return (FALSE)
+				endelse
 			endelseif
 		endif
 
