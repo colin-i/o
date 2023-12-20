@@ -44,7 +44,7 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		const max_int=0x80<<8<<8<<8
 		const max_int_bil_2_rest=max_int-bil_2   #147 483 648
 		if multx=(bil_1)
-			if size>^1
+			if size>1   #not using alloc on sign bit (see at addtosec)
 				return (FALSE)
 			elseif number>=2
 				if number=2
@@ -164,35 +164,35 @@ function memtooct(ss content,sd size,sd outvalue)
 			endif
 		endwhile
 		#32/3=10+2/3 10 digits on 30 bits and 1 or 3 on the last 2 bits
-		if size=11
-			if content#!=(asciione)
-				if content#!=(asciithree)
-					return (FALSE)
+		if size<=11
+			if size=11
+				if content#!=(asciione)
+					if content#!=(asciithree)
+						return (FALSE)
+					endif
 				endif
 			endif
-		elseif size>11
-			return (FALSE)
-		endelseif
-		sd val=0
-		sd mult=1
-		add content size
-		while size!=0
-			dec content
-			sd b;set b content#
-			if b<=(asciieight)
-				if b>=(asciizero)
-					sub b (asciizero)
-					mult b mult
-					add val b
-					mult mult 8
-					dec size
-					continue
+			sd val=0
+			sd mult=1
+			add content size
+			while size!=0
+				dec content
+				sd b;set b content#
+				if b<=(asciieight)
+					if b>=(asciizero)
+						sub b (asciizero)
+						mult b mult
+						add val b
+						mult mult 8
+						dec size
+						continue
+					endif
 				endif
-			endif
-			return (FALSE)
-		endwhile
-		Set outvalue# val
-		return (TRUE)
+				return (FALSE)
+			endwhile
+			Set outvalue# val
+			return (TRUE)
+		endif
 	endif
 	return (FALSE)
 endfunction
