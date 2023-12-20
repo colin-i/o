@@ -44,27 +44,21 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		const max_int=0x80<<8<<8<<8
 		const max_int_bil_2_rest=max_int-bil_2   #147 483 648
 		if multx=(bil_1)
-			if size>1   #not using alloc on sign bit (see at addtosec)
+			if size!=1    #0 is not
 				return (FALSE)
-			elseif number>=2
-				if number=2
-					if value>=(max_int_bil_2_rest)
-						if value=(max_int_bil_2_rest)
-							if minusbool=(FALSE)
-								#2 147 483 648 is the first positive overflow
-								return (FALSE)
-							endif
-						else
-						#if value>(max_int_bil_2_rest)
-							#2 147 483 649-2 999 999 999
-							return (FALSE)
-						endelse
+			elseif number=2
+				if value=(max_int_bil_2_rest)
+					if minusbool=(FALSE)
+						#2 147 483 648 is the first positive overflow
+						return (FALSE)
 					endif
-				else
-				#if number>2
-					#3 xxx xxx xxx-9 xxx xxx xxx
+				elseif value>(max_int_bil_2_rest)
+					#2 147 483 649-2 999 999 999
 					return (FALSE)
-				endelse
+				endelseif
+			elseif number>2
+				#3 xxx xxx xxx-9 xxx xxx xxx
+				return (FALSE)
 			endelseif
 		endif
 
@@ -118,7 +112,7 @@ Function memtohex(vstr content,data size,data outvalue)
 	If bool=(TRUE)
 		Data val#1
 		Set val 0
-		if size>0
+		if size!=0
 			While content#=(asciizero)
 				inc content
 				dec size
@@ -126,7 +120,7 @@ Function memtohex(vstr content,data size,data outvalue)
 					break  #no return. set outval is required
 				endif
 			endwhile
-			if size>8
+			if size>8  #signed compare? not using alloc on sign bit (see at addtosec)
 				return (FALSE)
 			endif
 			Char byte#1
@@ -166,35 +160,35 @@ function memtooct(ss content,sd size,sd outvalue)
 			endif
 		endwhile
 		#32/3=10+2/3 10 digits on 30 bits and 1 or 3 on the last 2 bits
-		if size<=11
-			if size=11
-				if content#!=(asciione)
-					if content#!=(asciithree)
-						return (FALSE)
-					endif
+		if size=11
+			if content#!=(asciione)
+				if content#!=(asciithree)
+					return (FALSE)
 				endif
 			endif
-			sd val=0
-			sd mult=1
-			add content size
-			while size!=0
-				dec content
-				sd b;set b content#
-				if b<=(asciieight)
-					if b>=(asciizero)
-						sub b (asciizero)
-						mult b mult
-						add val b
-						mult mult 8
-						dec size
-						continue
-					endif
+		elseif size>11   #same signed compare
+			return (FALSE)
+		endelseif
+		sd val=0
+		sd mult=1
+		add content size
+		while size!=0
+			dec content
+			sd b;set b content#
+			if b<=(asciieight)
+				if b>=(asciizero)
+					sub b (asciizero)
+					mult b mult
+					add val b
+					mult mult 8
+					dec size
+					continue
 				endif
-				return (FALSE)
-			endwhile
-			Set outvalue# val
-			return (TRUE)
-		endif
+			endif
+			return (FALSE)
+		endwhile
+		Set outvalue# val
+		return (TRUE)
 	endif
 	return (FALSE)
 endfunction
