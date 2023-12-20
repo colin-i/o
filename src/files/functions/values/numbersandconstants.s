@@ -1,7 +1,7 @@
 
 
 #bool numeric
-Function numeric(char c)
+Function is_numeric(char c)
 	Char zero={asciizero}
 	Char nine={asciinine}
 	Data false=FALSE
@@ -27,12 +27,12 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 
 	Add content size
 	While size!=0
-		Dec content;Dec size
-
 		Data bool#1
 		Char byte#1
+
+		Dec content
 		Set byte content#
-		SetCall bool numeric(byte)
+		SetCall bool is_numeric(byte)
 		If bool=(FALSE)
 			Return (FALSE)
 		EndIf
@@ -42,35 +42,32 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		const bil_1=1000*1000*1000
 		const bil_2=2*bil_1
 		const max_int=0x80<<8<<8<<8
-		const max_int_bil_2_rest=max_int-bil_2
+		const max_int_bil_2_rest=max_int-bil_2   #147 483 648
 		if multx=(bil_1)
-			if size!=0
-				#(...)x xxx xxx xxx
-				while size!=0
-					Dec content;Dec size
-					if content#!=(asciizero)
+			if number=2
+				if value>=(max_int_bil_2_rest)
+					if value=(max_int_bil_2_rest)
+						if minusbool=(FALSE)
+							#2 147 483 648 is the first positive overflow
+							return (FALSE)
+						endif
+					elseif value>(max_int_bil_2_rest)
+						#2 147 483 649-2 999 999 999
 						return (FALSE)
-					endif
-				endwhile
-			endif
-			if number>2
+					endelseif
+				endif
+			elseif number>2
 				#3 xxx xxx xxx-9 xxx xxx xxx
 				return (FALSE)
-			elseif number=2
-				if value>(max_int_bil_2_rest)
-					#2 147 483 649-2 999 999 999
-					return (FALSE)
-				elseif value=(max_int_bil_2_rest)
-					if minusbool=(FALSE)
-						#2 147 483 648 is the first positive overflow
-						return (FALSE)
-					endif
-				endelseif
+			elseif size!=1
+				return (FALSE)
 			endelseif
 		endif
 
-		mult number multx;mult multx 10
+		mult number multx
 		Add value number
+		mult multx 10
+		Dec size
 	EndWhile
 	Set outvalue# value
 	Return (TRUE)
@@ -108,42 +105,36 @@ Function hexnr(char byte)
 EndFunction
 
 #bool
-Function memtohex(str content,data size,data outvalue)
-	Data initialval=0
-	Data initiallimit=3
-	Data val#1
-	Data limit#1
+Function memtohex(vstr content,data size,data outvalue)
 	Data false=FALSE
-	Data true=TRUE
-	Data seven=7
-
-	Set val initialval
-	Set limit initiallimit
-
-	If size<limit
-		Return false
-	EndIf
-	Add limit seven
-	If limit<size
-		Return false
-	EndIf
-
-	Str pc^content
+	Data bool#1
+	vStr pc^content
 	Data ps^size
-	Data bool=0
-	Data zero=0
-	Char byte#1
-	Data nr#1
-	Data initialmultp=1
-	Data multp#1
 
-	Set multp initialmultp
 	SetCall bool stratmem(pc,ps,"0X")
 	If bool=false
 		Return false
 	EndIf
+	While content#=(asciizero)
+		inc content
+		dec size
+		if size=0
+			break  #no return. set outval is required
+		endif
+	endwhile
+	If size>8
+		Return false
+	EndIf
+
+	Char byte#1
+	Data nr#1
+	Data multp#1
+	Data val#1
+
 	Add content size
-	While size!=zero
+	Set val 0
+	Set multp 1
+	While size!=0
 		Dec content
 		Dec size
 		Set byte content#
@@ -157,8 +148,52 @@ Function memtohex(str content,data size,data outvalue)
 		Mult multp hextimes
 	EndWhile
 	Set outvalue# val
-	Return true
+	Return (TRUE)
 EndFunction
+
+#bool
+function memtooct(ss content,sd size,sd outvalue)
+	if content#=(asciizero)
+		while content#=(asciizero)
+			inc content
+			dec size
+			if size=0
+				break  #no return. set outval is required
+			endif
+		endwhile
+		#32/3=10+2/3 10 digits on 30 bits and 1 or 3 on the last 2 bits
+		if size=11
+			if content#!=(asciione)
+				if content#!=(asciithree)
+					return (FALSE)
+				endif
+			endif
+		elseif size>11
+			return (FALSE)
+		endelseif
+		sd val=0
+		sd mult=1
+		add content size
+		while size!=0
+			dec content
+			sd b;set b content#
+			if b<=(asciieight)
+				if b>=(asciizero)
+					sub b (asciizero)
+					mult b mult
+					add val b
+					mult mult 8
+					dec size
+					continue
+				endif
+			endif
+			return (FALSE)
+		endwhile
+		Set outvalue# val
+		return (TRUE)
+	endif
+	return (FALSE)
+endfunction
 
 const calculationmark=asciibs
 #error
@@ -302,19 +337,23 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	endelseif
 	#decimal or hex number
 	SetCall bool memtoint(content,size,outval,minusbool)
-	If bool=0
-		SetCall bool memtohex(content,size,outval)
-		If bool=0
-			Char _intvalerr="Integer(dec/hex) value not recognized."
-			Str intvallerr^_intvalerr
-			Return intvallerr
-		Else
-			setcall err xfile_add_base_ifif((Xfile_numbers_type_thex),content,size)
-		EndElse
-	Else
+	If bool=(TRUE)
 		setcall err xfile_add_base_ifif((Xfile_numbers_type_tdecimal),content,size)
-	EndElse
-	return err
+		return err
+	endif
+	SetCall bool memtohex(content,size,outval)
+	If bool=(TRUE)
+		setcall err xfile_add_base_ifif((Xfile_numbers_type_thex),content,size)
+		return err
+	endif
+	SetCall bool memtooct(content,size,outval)
+	If bool=(TRUE)
+		setcall err xfile_add_base_ifif((Xfile_numbers_type_toct),content,size)
+		return err
+	endif
+	Char _intvalerr="Integer(dec/oct/hex) value not recognized."
+	vStr intvallerr^_intvalerr
+	Return intvallerr
 endfunction
 
 #size of function

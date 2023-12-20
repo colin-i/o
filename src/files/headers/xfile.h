@@ -121,17 +121,18 @@ const Xfile_numbers_type_idata=1
 const Xfile_numbers_type_idatax=2
 #t from text
 const Xfile_numbers_type_tdecimal=3
-const Xfile_numbers_type_thex=4
-const Xfile_numbers_type_tconstant=5
+const Xfile_numbers_type_toct=4
+const Xfile_numbers_type_thex=5
+const Xfile_numbers_type_tconstant=6
 #f from function
-const Xfile_numbers_type_fsize=6
-const Xfile_numbers_type_fsizeX=7
+const Xfile_numbers_type_fsize=7
+const Xfile_numbers_type_fsizeX=8
 #v from var
-const Xfile_numbers_type_vsizeVar=8
-const Xfile_numbers_type_voffsetVar=9
+const Xfile_numbers_type_vsizeVar=9
+const Xfile_numbers_type_voffsetVar=10
 
-const Xfile_suffix_true=1
 const Xfile_suffix_false=0
+const Xfile_suffix_true=1
 const Xfile_suffix_cast_none=0
 const Xfile_suffix_cast_value=asciiV
 const Xfile_suffix_cast_data=asciiD

@@ -208,6 +208,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no))
 			endelse
 		else
+			call resetisimm() #the first imm is stored, isimm is only set, and if is not will not unset it
 			SetCall errnr arg(ptrcontent,ptrsize,ptrdataargsec,ptrlowsec,ptrsufixsec,true,(allow_no)) #if not this allow no, Xfile_arg_varfn can go in the next if, that with allow yes
 		endelse
 		If errnr!=noerr
