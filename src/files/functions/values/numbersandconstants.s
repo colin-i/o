@@ -126,29 +126,28 @@ Function memtohex(vstr content,data size,data outvalue)
 					break  #no return. set outval is required
 				endif
 			endwhile
-			if size<=8
-				Char byte#1
-				Data nr#1
-				Data multp#1
-
-				Set multp 1
-				Add content size
-				While size!=0
-					Dec content
-					Dec size
-					Set byte content#
-					SetCall nr hexnr(byte)
-					If nr=(nothex_value)
-						Return (FALSE)
-					EndIf
-					Mult nr multp
-					Add val nr
-					Data hextimes=16
-					Mult multp hextimes
-				EndWhile
-			else
+			if size>8
 				return (FALSE)
-			endelse
+			endif
+			Char byte#1
+			Data nr#1
+			Data multp#1
+
+			Set multp 1
+			Add content size
+			While size!=0
+				Dec content
+				Dec size
+				Set byte content#
+				SetCall nr hexnr(byte)
+				If nr=(nothex_value)
+					Return (FALSE)
+				EndIf
+				Mult nr multp
+				Add val nr
+				Data hextimes=16
+				Mult multp hextimes
+			EndWhile
 		endif
 		Set outvalue# val
 		Return (TRUE)
