@@ -54,12 +54,14 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 								#2 147 483 648 is the first positive overflow
 								return (FALSE)
 							endif
-						elseif value>(max_int_bil_2_rest)
+						else
+						#if value>(max_int_bil_2_rest)
 							#2 147 483 649-2 999 999 999
 							return (FALSE)
-						endelseif
+						endelse
 					endif
 				else
+				#if number>2
 					#3 xxx xxx xxx-9 xxx xxx xxx
 					return (FALSE)
 				endelse
