@@ -44,7 +44,9 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		const max_int=0x80<<8<<8<<8
 		const max_int_bil_2_rest=max_int-bil_2   #147 483 648
 		if multx=(bil_1)
-			if number=2
+			if size>^1
+				return (FALSE)
+			elseif number=2
 				if value>=(max_int_bil_2_rest)
 					if value=(max_int_bil_2_rest)
 						if minusbool=(FALSE)
@@ -58,8 +60,6 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 				endif
 			elseif number>2
 				#3 xxx xxx xxx-9 xxx xxx xxx
-				return (FALSE)
-			elseif size!=1
 				return (FALSE)
 			endelseif
 		endif
@@ -106,49 +106,47 @@ EndFunction
 
 #bool
 Function memtohex(vstr content,data size,data outvalue)
-	Data false=FALSE
 	Data bool#1
 	vStr pc^content
 	Data ps^size
 
 	SetCall bool stratmem(pc,ps,"0X")
-	If bool=false
-		Return false
-	EndIf
-	While content#=(asciizero)
-		inc content
-		dec size
-		if size=0
-			break  #no return. set outval is required
+	If bool=(TRUE)
+		if size>0
+			While content#=(asciizero)
+				inc content
+				dec size
+				if size=0
+					break  #no return. set outval is required
+				endif
+			endwhile
+			if size<=8
+				Char byte#1
+				Data nr#1
+				Data multp#1
+				Data val#1
+				Add content size
+				Set val 0
+				Set multp 1
+				While size!=0
+					Dec content
+					Dec size
+					Set byte content#
+					SetCall nr hexnr(byte)
+					If nr=(nothex_value)
+						Return (FALSE)
+					EndIf
+					Mult nr multp
+					Add val nr
+					Data hextimes=16
+					Mult multp hextimes
+				EndWhile
+				Set outvalue# val
+				Return (TRUE)
+			endif
 		endif
-	endwhile
-	If size>8
-		Return false
 	EndIf
-
-	Char byte#1
-	Data nr#1
-	Data multp#1
-	Data val#1
-
-	Add content size
-	Set val 0
-	Set multp 1
-	While size!=0
-		Dec content
-		Dec size
-		Set byte content#
-		SetCall nr hexnr(byte)
-		If nr=(nothex_value)
-			Return false
-		EndIf
-		Mult nr multp
-		Add val nr
-		Data hextimes=16
-		Mult multp hextimes
-	EndWhile
-	Set outvalue# val
-	Return (TRUE)
+	return (FALSE)
 EndFunction
 
 #bool
