@@ -335,20 +335,22 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		setcall err xfile_add_char_ifif((Xfile_numbers_type_ilong))
 		return err
 	endelseif
-	#decimal or hex number
-	SetCall bool memtoint(content,size,outval,minusbool)
-	If bool=(TRUE)
-		setcall err xfile_add_base_ifif((Xfile_numbers_type_tdecimal),content,size)
-		return err
-	endif
+	#0X ?
 	SetCall bool memtohex(content,size,outval)
 	If bool=(TRUE)
 		setcall err xfile_add_base_ifif((Xfile_numbers_type_thex),content,size)
 		return err
 	endif
+	#0 ?
 	SetCall bool memtooct(content,size,outval)
 	If bool=(TRUE)
 		setcall err xfile_add_base_ifif((Xfile_numbers_type_toct),content,size)
+		return err
+	endif
+	#decimal number
+	SetCall bool memtoint(content,size,outval,minusbool)
+	If bool=(TRUE)
+		setcall err xfile_add_base_ifif((Xfile_numbers_type_tdecimal),content,size)
 		return err
 	endif
 	Char _intvalerr="Integer(dec/oct/hex) value not recognized."
