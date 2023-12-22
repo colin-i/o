@@ -1,7 +1,7 @@
 
 format elfobj64
 
-char a=~-1+(~1+-1)
+char a=~-1-(~1+1)
 
 data b={2,2}
 
@@ -29,3 +29,7 @@ return 1+1
 
 vstr *z="123"
 value *z^dd
+
+word w^a
+vword ww^a
+sw www^a
