@@ -99,7 +99,7 @@
 	<br>
 	The commands are from i386 with extension for x86-64 (but with the HEX macro anything can be wrote to code section).
 	<br>
-	All 4/8 bytes variables are sign extended. 1 byte variables are zero extended.
+	All 4 bytes variables are sign extended on 64. 1 byte variables are zero extended.
 </p>
 
 <h3><a name="declaringdata">II. Declaring data</a></h3>
@@ -284,7 +284,7 @@
 	3. Pointer sign ('^')
 	<br>
 	Right side can have variables and at object format, when left side is not constant, can have functions.
-	Variables that point to a function can be called like a function. At the executables format (ex: not elfobj), when pointing to an import function the supported manner is with double pointer(^^); all cases, except this one, use the normal pointer(^).
+	Variables (value and sv) that point to a function can be called like a function. At the executables format (ex: not elfobj), when pointing to an import function the supported manner is with double pointer(^^); all cases, except this one, use the normal pointer(^).
 	<br>
 	Example:
 	<br>
