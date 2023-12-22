@@ -340,17 +340,19 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 
 	SetCall p_data# vars(pcontent#,sz,fns)
 	If p_data#=0
-		setcall p_data# vars_number(pcontent#,sz,(integersnumber))
+		data calls={integernumber,stackdatanumber,stackvaluenumber,stackwordnumber,notanumber}
+		sd callables^calls
+		while callables#!=(notanumber)
+			setcall p_data# vars_number(pcontent#,sz,callables#)
+			If p_data#!=0
+				break
+			endif
+			incst callables
+		endwhile
 		If p_data#=0
-			setcall p_data# vars_number(pcontent#,sz,(stackdatanumber))
-			If p_data#=0
-				setcall p_data# vars_number(pcontent#,sz,(stackvaluenumber))
-				If p_data#=0
-					Char unfndeferr="Undefined function/data call."
-					Str ptrunfndef^unfndeferr
-					Return ptrunfndef
-				EndIf
-			EndIf
+			Char unfndeferr="Undefined function/data call."
+			vStr ptrunfndef^unfndeferr
+			Return ptrunfndef
 		EndIf
 		set p_bool_indirect# (TRUE)
 		call is_for_64_is_impX_or_fnX_set_force(subtype)

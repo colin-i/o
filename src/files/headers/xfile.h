@@ -1,4 +1,7 @@
 
+const Xfile_sz_char=1
+const Xfile_sz_int=4
+
 Include "./xfileascii.h"
 
 const Xfile_comment=0
@@ -51,12 +54,14 @@ const Xfile_declfield_data_concrete=0
 const Xfile_declfield_data_expand=1
 
 const Xfile_decltype_byte=0
-const Xfile_decltype_int=1
-const Xfile_decltype_intByte=2
-const Xfile_decltype_long=3
-const Xfile_decltype_longInt=4
+const Xfile_decltype_word=1
+const Xfile_decltype_int=2
+const Xfile_decltype_intByte=3
+const Xfile_decltype_long=4
 const Xfile_decltype_longByte=5
-#const Xfile_decltype_const=Xfile_decltype_longByte+1
+const Xfile_decltype_longWord=6
+const Xfile_decltype_longInt=7
+#const Xfile_decltype_const=Xfile_decltype_longInt+1  #here will be used Xfile_declfield_const
 
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1

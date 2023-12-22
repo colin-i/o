@@ -111,6 +111,9 @@ Datax *#1
 Datax *charMax#1
 Datax *#1
 Datax *#1
+Datax *wordMax#1
+Datax *#1
+Datax *#1
 Datax *sdMax#1
 Datax *#1
 Datax *#1
@@ -118,6 +121,9 @@ Datax *ssMax#1
 Datax *#1
 Datax *#1
 Datax *svMax#1
+Datax *#1
+Datax *#1
+Datax *swMax#1
 Datax *#1
 Datax *#1
 
@@ -130,6 +136,9 @@ Datax *#1
 Datax *charfnscopeMax#1
 Datax *#1
 Datax *#1
+Datax *wordfnscopeMax#1
+Datax *#1
+Datax *#1
 Datax *sdfnMax#1
 Datax *#1
 Datax *#1
@@ -139,24 +148,31 @@ Datax *#1
 Datax *svfnMax#1
 Datax *#1
 Datax *#1
+Datax *swfnMax#1
+Datax *#1
+Datax *#1
 
+const notanumber=-1
 Const memvariablesnumber=0
-	Const integersnumber=memvariablesnumber+0
-	Const stringsnumber=memvariablesnumber+1
+	Const integernumber=memvariablesnumber+0
+	Const stringnumber=memvariablesnumber+1
 	Const charnumber=memvariablesnumber+2
-	const valuesinnernumber=charnumber
-Const totalmemvariables=charnumber+1
-	Const stackdatanumber=totalmemvariables+integersnumber
-	Const stackstringnumber=totalmemvariables+stringsnumber
+		const valuesinnernumber=charnumber
+	Const wordnumber=memvariablesnumber+3
+Const totalmemvariables=wordnumber+1
+	Const stackdatanumber=totalmemvariables+integernumber
+	Const stackstringnumber=totalmemvariables+stringnumber
 	Const stackvaluenumber=totalmemvariables+valuesinnernumber
-	#that was +charnumber because it is compared against 2. and more reasons
-Const numberofvars=stackvaluenumber+1
+		#that was +charnumber because it is compared against 2. and more reasons
+	Const stackwordnumber=totalmemvariables+wordnumber
+Const numberofvars=stackwordnumber+1
 
 const vnumbers=numberofvars
-	const vintegersnumber=vnumbers+integersnumber
-	const vstringsnumber=vnumbers+stringsnumber
-	const valuesnumber=vnumbers+valuesinnernumber
-const xnumbers=valuesnumber+1
+	const vintegernumber=vnumbers+integernumber
+	const vstringnumber=vnumbers+stringnumber
+	const valuenumber=vnumbers+valuesinnernumber
+	const vwordnumber=vnumbers+wordnumber
+const xnumbers=vwordnumber+1
 const xvnumbers=xnumbers+totalmemvariables
 
 #from numberofvars to afterscopes comes inner function local scopes

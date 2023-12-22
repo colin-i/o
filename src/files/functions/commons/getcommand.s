@@ -7,10 +7,10 @@ Const spacenotreq=0
 #and shl1,i3,... are ok, only AZ are going to az
 
 Char cCOMMENT_c={commentascii,0}
-Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cSD_c="SD";Char cSS_c="SS";Char cSV_c="SV"
-	Char cVDATA_c="VDATA";Char cVSTR_c="VSTR";Char cVALUE_c="VALUE"
-	Char cDATAX_c="DATAX";Char cSTRX_c="STRX";Char cCHARX_c="CHARX"
-	Char cVDATAX_c="VDATAX";Char cVSTRX_c="VSTRX";Char cVALUEX_c="VALUEX"
+Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cWORD_c="WORD";Char cSD_c="SD";Char cSS_c="SS";Char cSV_c="SV";Char cSW_c="SW"
+	Char cVDATA_c="VDATA";Char cVSTR_c="VSTR";Char cVALUE_c="VALUE";Char cVWORD_c="VWORD"
+	Char cDATAX_c="DATAX";Char cSTRX_c="STRX";Char cCHARX_c="CHARX";Char cWORDX_c="WORDX"
+	Char cVDATAX_c="VDATAX";Char cVSTRX_c="VSTRX";Char cVALUEX_c="VALUEX";Char cVWORDX_c="VWORDX"
 	Char cCONST_c="CONST"
 Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cDIVU_c="DIVU";Char cREM_c="REM";Char cREMU_c="REMU";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
 Char cRETURN_c="RETURN";Char cINC_c="INC";Char cDEC_c="DEC";Char cINCST_c="INCST";Char cDECST_c="DECST";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cSHL1_c="SHL1";Char cSHR1_c="SHR1";Char cSAR1_c="SAR1";Char cEXIT_c="EXIT"
@@ -61,6 +61,11 @@ Const com_size=cSTR-cDATA
 			Data *=cDECLARE
 			Data *=cCHAR
 			Data *=spacereq
+		Const cWORD=\-cDECLARE_top
+			data *^cWORD_c
+			Data *=cDECLARE
+			Data *=cWORD
+			Data *=spacereq
 		Const cSD=\-cDECLARE_top
 			data *^cSD_c
 			Data *=cDECLARE
@@ -75,6 +80,11 @@ Const com_size=cSTR-cDATA
 			data *^cSV_c
 			Data *=cDECLARE
 			Data *=cSV
+			Data *=spacereq
+		Const cSW=\-cDECLARE_top
+			data *^cSW_c
+			Data *=cDECLARE
+			Data *=cSW
 			Data *=spacereq
 		Const cVDATA=\-cDECLARE_top
 			data *^cVDATA_c
@@ -91,6 +101,11 @@ Const com_size=cSTR-cDATA
 			Data *=cDECLARE
 			Data *=cVALUE
 			Data *=spacereq
+		Const cVWORD=\-cDECLARE_top
+			data *^cVWORD_c
+			Data *=cDECLARE
+			Data *=cVWORD
+			Data *=spacereq
 		Const cDATAX=\-cDECLARE_top
 			data *^cDATAX_c
 			Data *=cDECLARE
@@ -106,6 +121,11 @@ Const com_size=cSTR-cDATA
 			Data *=cDECLARE
 			Data *=cCHARX
 			Data *=spacereq
+		Const cWORDX=\-cDECLARE_top
+			data *^cWORDX_c
+			Data *=cDECLARE
+			Data *=cWORDX
+			Data *=spacereq
 		Const cVDATAX=\-cDECLARE_top
 			data *^cVDATAX_c
 			Data *=cDECLARE
@@ -120,6 +140,11 @@ Const com_size=cSTR-cDATA
 			data *^cVALUEX_c
 			Data *=cDECLARE
 			Data *=cVALUEX
+			Data *=spacereq
+		Const cVWORDX=\-cDECLARE_top
+			data *^cVWORDX_c
+			Data *=cDECLARE
+			Data *=cVWORDX
 			Data *=spacereq
 #numberofcommandsvars to set these commands to search for them at function parameter declare
 Const numberofcommandsvars=(\-commandsvars_start)/com_size

@@ -39,53 +39,19 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	call stackfilter(vartype,ptrstack)
 
 	sd datasize=dwsz
-	sd long_mask=0
 	sd b;setcall b is_for_64()
-	sd xfile_decltype
-	if vartype>=(vnumbers)
-		sub vartype (vnumbers)
-		if vartype=(valuesinnernumber)
-			set vartype (integersnumber)
-			if b=(TRUE)
-				set long_mask (valueslongmask)
-				set datasize (qwsz)
-			endif
-			set xfile_decltype (Xfile_decltype_long) #can also be an ifif
-		else
-			if b=(TRUE)
-				set long_mask (datapointbit)
-				set datasize (qwsz)
-			endif
-			if vartype=(integersnumber)
-				set xfile_decltype (Xfile_decltype_longInt)
-			else
-			#was vstringsnumber
-				set xfile_decltype (Xfile_decltype_longByte)
-			endelse
-		endelse
-	elseif vartype=(charnumber)
-		set datasize (bsz)
-		set xfile_decltype (Xfile_decltype_byte)
-	elseif is_stack=(TRUE)
-		if vartype=(stackdatanumber)
-			set xfile_decltype (Xfile_decltype_longInt)
-		elseif vartype=(stackstringnumber)
-			set xfile_decltype (Xfile_decltype_longByte)
-		else
-		#stackvaluenumber
-			set xfile_decltype (Xfile_decltype_long)
-		endelse
-	elseif vartype=(integersnumber)
-		set xfile_decltype (Xfile_decltype_int)
-	else
-	#stringsnumber
-		set xfile_decltype (Xfile_decltype_intByte)
-	endelse
 
 	vdata ptrdataSize%ptrdataSize
 
 	if parses=(pass_init)
 		if is_stack=(FALSE)
+			if vartype>=(vnumbers)
+				if b=(TRUE)
+					set datasize (qwsz)
+				endif
+			elseif vartype=(charnumber)
+				set datasize (bsz)
+			endelseif
 			if is_expand=(FALSE)
 				vdata ptrdataReg%%ptr_dataReg
 				add ptrdataReg# datasize
@@ -95,12 +61,61 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		endif
 		call advancecursors(ptrcontent,ptrsize,sz)
 		return (noerror)
+	endif
+
+	sd xfile_decltype
+	sd long_mask=0
+	if is_stack=(TRUE)
+		if vartype=(stackdatanumber)
+			set xfile_decltype (Xfile_decltype_longInt)
+		elseif vartype=(stackstringnumber)
+			set xfile_decltype (Xfile_decltype_longByte)
+		elseif vartype=(stackvaluenumber)
+			set xfile_decltype (Xfile_decltype_long)
+		else
+		#if vartype=(stackwordnumber)
+			set xfile_decltype (Xfile_decltype_longWord)
+		endelse
 	else
-		setcall err xfile_add_declare_if(xfile_decltype,is_stack,is_expand,ptrcontent#,sz,(sign_not_required)) #2 more
-		If err!=noerr
-			Return err
-		EndIf
+		if vartype>=(vnumbers)
+			sub vartype (vnumbers)
+			if vartype=(valuesinnernumber)
+				set vartype (integernumber)
+				if b=(TRUE)
+					set long_mask (valueslongmask)
+					set datasize (qwsz)
+				endif
+				set xfile_decltype (Xfile_decltype_long)
+			else
+				if b=(TRUE)
+					set long_mask (datapointbit)
+					set datasize (qwsz)
+				endif
+				if vartype=(integernumber)
+					set xfile_decltype (Xfile_decltype_longInt)
+				elseif vartype=(stringnumber)
+					set xfile_decltype (Xfile_decltype_longByte)
+				else
+				#if vartype=(wordnumber)
+					set xfile_decltype (Xfile_decltype_longWord)
+				endelse
+			endelse
+		elseif vartype=(charnumber)
+			set datasize (bsz)
+			set xfile_decltype (Xfile_decltype_byte)
+		elseif vartype=(integernumber)
+			set xfile_decltype (Xfile_decltype_int)
+		elseif vartype=(stringnumber)
+			set xfile_decltype (Xfile_decltype_intByte)
+		else
+		#if vartype=(wordnumber)
+			set xfile_decltype (Xfile_decltype_word)
+		endelse
 	endelse
+	setcall err xfile_add_declare_if(xfile_decltype,is_stack,is_expand,ptrcontent#,sz,(sign_not_required)) #2 more
+	If err!=noerr
+		Return err
+	EndIf
 
 	#this is a write to sec for old data args, careful with stackoff
 	Char stacktransfer1#1;char *={0x84,0x24}

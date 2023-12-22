@@ -141,13 +141,13 @@ end
 function get_char(sv pbuffer,ss pchar)
 	ss buffer;set buffer pbuffer#
 	set pchar# buffer#
-	inc pbuffer#
+	add pbuffer# (Xfile_sz_char)
 end
 
 function get_data(sv pbuffer,sd pdata)
 	sd buffer;set buffer pbuffer#
 	set pdata# buffer#
-	add pbuffer# 4
+	add pbuffer# (Xfile_sz_int)
 end
 
 function get_string(sv pbuffer,sd psize,sv ppointer)

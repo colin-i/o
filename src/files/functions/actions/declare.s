@@ -23,8 +23,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	#endif
 
 	sd xfile_decltype
-	if declare_typenumber=(vintegersnumber)
-		set is_stack (FALSE);set typenumber (integersnumber)
+	if declare_typenumber=(vintegernumber)
+		set is_stack (FALSE);set typenumber (integernumber)
 		if bool_64=(TRUE);set mask (datapointbit)
 			if parses=(pass_init)
 				set unitsize (qwsz)
@@ -38,8 +38,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				set xfile_decltype (Xfile_decltype_longInt)
 			endelse
 		endelse
-	elseif declare_typenumber=(vstringsnumber)
-		set is_stack (FALSE);set typenumber (stringsnumber)
+	elseif declare_typenumber=(vstringnumber)
+		set is_stack (FALSE);set typenumber (stringnumber)
 		if bool_64=(TRUE);set mask (datapointbit)
 			if parses=(pass_init)
 				set unitsize (qwsz)
@@ -53,8 +53,8 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
 		endelse
-	elseif declare_typenumber=(valuesnumber)
-		set is_stack (FALSE);set typenumber (integersnumber)
+	elseif declare_typenumber=(valuenumber)
+		set is_stack (FALSE);set typenumber (integernumber)
 		if bool_64=(TRUE);set mask (valueslongmask)
 			if parses=(pass_init)
 				set unitsize (qwsz)
@@ -68,11 +68,26 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				set xfile_decltype (Xfile_decltype_long)
 			endelse
 		endelse
+	elseif declare_typenumber=(vwordnumber)
+		set is_stack (FALSE);set typenumber (integernumber) #place them at integers so they can be callable, "word" are still going to words section, the 2 bytes size is not here, is only at the x file at the moment
+		if bool_64=(TRUE);set mask (datapointbit)
+			if parses=(pass_init)
+				set unitsize (qwsz)
+			else
+				set xfile_decltype (Xfile_decltype_longWord)
+			endelse
+		else;set mask 0
+			if parses=(pass_init)
+				set unitsize (dwsz)
+			else
+				set xfile_decltype (Xfile_decltype_longWord)
+			endelse
+		endelse
 	else
 		setcall typenumber stackfilter(declare_typenumber,#is_stack)
 		if parses=(pass_init)
 			if is_stack=(TRUE)
-				if typenumber=(stringsnumber)
+				if typenumber=(stringnumber)
 					set unitsize 0
 				else
 					call advancecursors(pcontent,pcomsize,pcomsize#)
@@ -95,10 +110,13 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 				#xfile part
 				if typenumber=(valuesinnernumber)
 					set xfile_decltype (Xfile_decltype_long)
-				elseif typenumber=(integersnumber)
+				elseif typenumber=(integernumber)
 					set xfile_decltype (Xfile_decltype_longInt)
-				else #(stringsnumber)
+				elseif typenumber=(stringnumber)
 					set xfile_decltype (Xfile_decltype_longByte)
+				else
+				#if typenumber=(wordnumber)
+					set xfile_decltype (Xfile_decltype_longWord)
 				endelse
 			else
 				#xfile part
@@ -106,10 +124,13 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 					set xfile_decltype (Xfile_decltype_const)
 				elseif typenumber=(charnumber)
 					set xfile_decltype (Xfile_decltype_byte)
-				elseif typenumber=(integersnumber)
+				elseif typenumber=(integernumber)
 					set xfile_decltype (Xfile_decltype_int)
-				else #(stringsnumber)
+				elseif typenumber=(stringnumber)
 					set xfile_decltype (Xfile_decltype_intByte)
+				else
+				#if typenumber=(wordnumber)
+					set xfile_decltype (Xfile_decltype_word)
 				endelse
 			endelse
 		endelse

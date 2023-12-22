@@ -10,7 +10,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 
 	Data constantsnr=constantsnumber
 	Data charnr=charnumber
-	Data stringsnr=stringsnumber
+	Data stringsnr=stringnumber
 
 	data offset_const#1
 	Data ptroffset_const^offset_const

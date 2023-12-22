@@ -429,7 +429,7 @@ endfunction
 #bool is_string
 function cast_resolve(sd number,sd cast,sv ptrdata,sv p_error)
 	if cast=(no_cast)
-		Data stringsnumber=stringsnumber
+		Data stringsnumber=stringnumber
 		Data stackstringnumber=stackstringnumber
 		if number=stringsnumber
 			return (TRUE)
