@@ -337,44 +337,19 @@ endfunction
 
 #err
 function callable_var(ss content,sd sz,sd p_data)
-	#why not keep sv and value only?
-	Char unfndeferr="Undefined function/data call."
-	vStr ptrunfndef^unfndeferr
-	sd b
-	setcall b is_for_64()
-	if b=(TRUE)
-		data calls={stackvaluenumber,stackdatanumber,stackstringnumber,stackwordnumber,notanumber}   #longs
-		sd callables^calls
-		while callables#!=(notanumber)
-			setcall p_data# vars_number(content,sz,callables#)
-			If p_data#!=0
-				return (noerror) #stacks are longs
+	setcall p_data# vars_number(content,sz,(integernumber))
+	if p_data#!=0
+		sd b
+		setcall b is_for_64()
+		if b=(TRUE)
+			sd test;setcall test pointbit(p_data#)
+			if test=0
+				set p_data# 0
 			endif
-			incst callables
-		endwhile
-		setcall p_data# vars_number(content,sz,(integernumber))
-		if p_data#=0
-			setcall p_data# vars_number(content,sz,(stringnumber))
 		endif
-		if p_data#!=0
-			sd test;setcall test datapointbit(p_data#)
-			if test!=0
-				return (noerror) #longs
-			endif
-			#Return ptrunfndef   ##int
-		endif
-		Return ptrunfndef   ##int or less
+		ret
 	endif
-	data calls32={integernumber,stackvaluenumber,stackdatanumber,stackstringnumber,stackwordnumber,stringnumber,notanumber} #longs
-	sd callables32^calls32
-	while callables32#!=(notanumber)
-		setcall p_data# vars_number(content,sz,callables32#)
-		If p_data#!=0
-			return (noerror)
-		endif
-		incst callables32
-	endwhile
-	Return ptrunfndef         ##less than int
+	setcall p_data# vars_number(content,sz,(stackvaluenumber))
 endfunction
 #err
 function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect,sd subtype)
@@ -384,8 +359,9 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 	SetCall p_data# vars(pcontent#,sz,fns)
 	If p_data#=0
 		setcall err callable_var(pcontent#,sz,p_data)
-		if err!=(noerror)
-			return err
+		if p_data#=0
+			Char unfndeferr="Undefined function/data call."
+			return #unfndeferr
 		endif
 		set p_bool_indirect# (TRUE)
 		call is_for_64_is_impX_or_fnX_set_force(subtype)
