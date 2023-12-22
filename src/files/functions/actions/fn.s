@@ -337,30 +337,43 @@ endfunction
 
 #err
 function callable_var(ss content,sd sz,sd p_data)
-	data calls={stackdatanumber,stackstringnumber,stackvaluenumber,stackwordnumber,notanumber}
-	sd callables^calls
-	while callables#!=(notanumber)
-		setcall p_data# vars_number(content,sz,callables#)
-		If p_data#!=0
-			return (noerror) #stacks are longs
-		endif
-		incst callables
-	endwhile
+	#why not keep sv and value only?
 	Char unfndeferr="Undefined function/data call."
 	vStr ptrunfndef^unfndeferr
-	setcall p_data# vars_number(content,sz,(integernumber))
-	If p_data#!=0
-		sd b
-		setcall b is_for_64()
-		if b=(TRUE)
+	sd b
+	setcall b is_for_64()
+	if b=(TRUE)
+		data calls={stackdatanumber,stackstringnumber,stackvaluenumber,stackwordnumber,notanumber}   #longs
+		sd callables^calls
+		while callables#!=(notanumber)
+			setcall p_data# vars_number(content,sz,callables#)
+			If p_data#!=0
+				return (noerror) #stacks are longs
+			endif
+			incst callables
+		endwhile
+		setcall p_data# vars_number(content,sz,(integernumber))
+		if p_data#=0
+			setcall p_data# vars_number(content,sz,(stringnumber))
+		endif
+		if p_data#!=0
 			sd test;setcall test datapointbit(p_data#)
-			if test=0
-				Return ptrunfndef   ##int is 32 on 64
+			if test!=0
+				return (noerror) #another longs
 			endif
 		endif
-		return (noerror) #int on 32  and rest of the longs
+		Return ptrunfndef   ##int or less
 	endif
-	Return ptrunfndef
+	data calls32={stackdatanumber,stackstringnumber,stackvaluenumber,stackwordnumber,integernumber,stringnumber,notanumber} #longs
+	sd callables32^calls32
+	while callables32#!=(notanumber)
+		setcall p_data# vars_number(content,sz,callables32#)
+		If p_data#!=0
+			return (noerror)
+		endif
+		incst callables32
+	endwhile
+	Return ptrunfndef         ##less than int
 endfunction
 #err
 function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect,sd subtype)
