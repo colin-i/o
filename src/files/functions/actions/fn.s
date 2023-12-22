@@ -343,7 +343,17 @@ function callable_var(ss content,sd sz,sd p_data)
 	sd b
 	setcall b is_for_64()
 	if b=(TRUE)
-		data calls={stackdatanumber,stackstringnumber,stackvaluenumber,stackwordnumber,notanumber}   #longs
+		setcall p_data# vars_number(content,sz,(integernumber))
+		if p_data#=0
+			setcall p_data# vars_number(content,sz,(stringnumber))
+		endif
+		if p_data#!=0
+			sd test;setcall test datapointbit(p_data#)
+			if test!=0
+				return (noerror) #longs
+			endif
+		endif
+		data calls={stackvaluenumber,stackdatanumber,stackstringnumber,stackwordnumber,notanumber}   #longs
 		sd callables^calls
 		while callables#!=(notanumber)
 			setcall p_data# vars_number(content,sz,callables#)
@@ -352,19 +362,9 @@ function callable_var(ss content,sd sz,sd p_data)
 			endif
 			incst callables
 		endwhile
-		setcall p_data# vars_number(content,sz,(integernumber))
-		if p_data#=0
-			setcall p_data# vars_number(content,sz,(stringnumber))
-		endif
-		if p_data#!=0
-			sd test;setcall test datapointbit(p_data#)
-			if test!=0
-				return (noerror) #another longs
-			endif
-		endif
 		Return ptrunfndef   ##int or less
 	endif
-	data calls32={stackdatanumber,stackstringnumber,stackvaluenumber,stackwordnumber,integernumber,stringnumber,notanumber} #longs
+	data calls32={integernumber,stackvaluenumber,stackdatanumber,stackstringnumber,stackwordnumber,stringnumber,notanumber} #longs
 	sd callables32^calls32
 	while callables32#!=(notanumber)
 		setcall p_data# vars_number(content,sz,callables32#)
