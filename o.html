@@ -150,9 +150,10 @@
 	Example:
 	<br>
 	<a class="code">
-    Char chardata="Text"<br>
-    Str string^chardata<br>
-    Str text="Text data"</a>
+	#for compatibility, on 64 reloc_64 pref is 1, if was 0 must use vstr mostly<br>
+	Char chardata="Text"<br>
+	Str string^chardata<br>
+	Str text="Text data"</a>
 	</p>
 
 	<p>
@@ -251,7 +252,7 @@
         Const fruits=20<br>
         Data value=-70<br>
         Char text="The quick brown fox jumps over the laxy dog."<br>
-        Str stringASM=0x401000</a>
+        vStr stringASM=0x401000</a>
 	</p>
 	<p>
 	Second method is with '{}' signs.
@@ -261,7 +262,7 @@
 	<a class="code">
         Data values={1,3,900}<br>
         Char bytes={1,4,100}<br>
-        Str pointers={0x401010,0x401020}</a>
+        vStr pointers={0x401010,0x401020}</a>
 	</p>
 	</p>
 
@@ -275,7 +276,7 @@
         #the data section will have 40 bytes reserved<br>
         Char reserveCHAR#10<br>
         #the data section will have 10 bytes reserved<br>
-        Str reservePointers#10<br>
+        vStr reservePointers#10<br>
         #the data section will have 40 bytes reserved</a>
 	</p>
 
@@ -291,7 +292,7 @@
         Data value=1<br>
         Data pointervalue^value<br>
         Char bytes="Raw text data declaration."<br>
-        Str text^bytes</a>
+        vStr text^bytes</a>
 	</p>
 
 	<p>
@@ -350,7 +351,7 @@
 	<a class="code">
         Data struct=3<br>
         Data *structValue=1000<br>
-        Data structures^struct<br>
+        vData structures^struct<br>
         #the "structures" variable can be used in the program as a pointer<br>
         Entry event(data *widget,data signal)<br>
         return signal<br>
@@ -639,7 +640,7 @@
 
 	<p>
         Char data="ABC"<br>
-        Str string^data<br>
+        vStr string^data<br>
         Char c1#1<br>
         Set c1 string#<br>
         #the c1 will be A</p>
@@ -749,9 +750,9 @@
         Library "user32.dll"<br>
         Import "MessageBoxA" Message<br>
         Char program="Program"<br>
-        Str title^program<br>
+        vStr title^program<br>
         Char data="Hello World"<br>
-        Str text^data<br>
+        vStr text^data<br>
         Data null=0<br>
         Call Message(null,text,title,null)<br>
         #a message will be displayed with the "Hello World" text and the title "Program"<br>
@@ -875,10 +876,10 @@
         #at first library, the interpretor is created: "lib/ld-linux.so.2"<br>
         Import "printf" printf<br>
         char newlinedata={0xa,0}<br>
-        str newline^newlinedata<br>
+        vstr newline^newlinedata<br>
         call printf(newline)<br>
         char hello="Hello World!"<br>
-        str helloworld^hello<br>
+        vstr helloworld^hello<br>
         call printf(helloworld)<br>
         call printf(newline)<br>
         data one=1;return one<br>
