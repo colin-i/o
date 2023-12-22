@@ -152,7 +152,6 @@ Datax *swfnMax#1
 Datax *#1
 Datax *#1
 
-const notanumber=-1
 Const memvariablesnumber=0
 	Const integernumber=memvariablesnumber+0
 	Const stringnumber=memvariablesnumber+1
