@@ -334,26 +334,45 @@ function fn_text_info()
 	return #text_info
 endfunction
 
+
+#err
+function callable_var(ss content,sd sz,sd p_data)
+	data calls={stackdatanumber,stackstringnumber,stackvaluenumber,stackwordnumber,notanumber}
+	sd callables^calls
+	while callables#!=(notanumber)
+		setcall p_data# vars_number(content,sz,callables#)
+		If p_data#!=0
+			return (noerror) #stacks are longs
+		endif
+		incst callables
+	endwhile
+	Char unfndeferr="Undefined function/data call."
+	vStr ptrunfndef^unfndeferr
+	setcall p_data# vars_number(content,sz,(integernumber))
+	If p_data#!=0
+		sd b
+		setcall b is_for_64()
+		if b=(TRUE)
+			sd test;setcall test datapointbit(p_data#)
+			if test=0
+				Return ptrunfndef   ##int is 32 on 64
+			endif
+		endif
+		return (noerror) #int on 32  and rest of the longs
+	endif
+	Return ptrunfndef
+endfunction
 #err
 function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect,sd subtype)
 	Data fns%%ptr_functions
+	sd err
 
 	SetCall p_data# vars(pcontent#,sz,fns)
 	If p_data#=0
-		data calls={integernumber,stackdatanumber,stackvaluenumber,stackwordnumber,notanumber}
-		sd callables^calls
-		while callables#!=(notanumber)
-			setcall p_data# vars_number(pcontent#,sz,callables#)
-			If p_data#!=0
-				break
-			endif
-			incst callables
-		endwhile
-		If p_data#=0
-			Char unfndeferr="Undefined function/data call."
-			vStr ptrunfndef^unfndeferr
-			Return ptrunfndef
-		EndIf
+		setcall err callable_var(pcontent#,sz,p_data)
+		if err!=(noerror)
+			return err
+		endif
 		set p_bool_indirect# (TRUE)
 		call is_for_64_is_impX_or_fnX_set_force(subtype)
 	Else
@@ -362,7 +381,6 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 		call is_for_64_is_impX_or_fnX_set(p_data#,subtype)
 	EndElse
 
-	sd err
 	setcall err xfile_add_call_if(pcontent#,sz,subtype)
 	if err=(noerror)   #here is coming from calls and callex
 		Call advancecursors(pcontent,psize,sz)
