@@ -609,15 +609,8 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					Return command
 				endif
 				#break #don't want to remember this when having something like addend command, and who will wrong here?
-			elseif command=(cCALL)
-				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
-				if result=(TRUE)
-					or ptrsubtype# (x_callg_flag)
-					set pcontent# pointer
-					set psize# sz
-					Return command
-				endif
 			else
+			#if command=(cCALL)
 			#if command=(cCALLEX)  #cSTARTFUNCTION is not coming here with intercursors=NULL
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
