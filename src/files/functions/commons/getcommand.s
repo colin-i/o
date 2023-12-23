@@ -501,6 +501,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 
 	Data dsz=dwsz
 
+	valuex start#1;set start pcontent#
 	Set cursor pointercommands#
 	While cursor!=zero
 		Data offset#1
@@ -526,16 +527,15 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		sd extbooldata=FALSE
 		sv extbool^extbooldata
 		sd intercursors=NULL
+		set pointer start
 
 		If command=(cPRIMSEC)
 			Set extstr xstr
 			set intercursors #pointer
-			set pointer pcontent#
 		elseif command=(cCALL)
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
 			set intercursors #pointer
-			set pointer pcontent#
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)
@@ -544,14 +544,17 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		elseif command=(cCALLEX)
 			set extstr call_ret_str
 			set intercursors #pointer
-			set pointer pcontent#
 		endElseif
 
 		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool,intercursors)
 		If extbooldata=true
 		#here firstAndSecond part was recognized
 			If command=(cPRIMSEC)
-				if result=(FALSE)
+				if result=(TRUE)
+				#setx
+					or ptrsubtype# (x_call_flag|x_callx_flag)
+					Return command
+				else
 					#here there was not a space
 					setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 					if result=(TRUE)
@@ -569,10 +572,6 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 						set psize# sz
 						Return command
 					endif
-				else
-				#setx
-					or ptrsubtype# (x_call_flag|x_callx_flag)
-					Return command
 				endelse
 			Elseif result=(TRUE)
 				If command=(cSTARTFUNCTION)
@@ -592,8 +591,8 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		elseIf result=true
 		#here (first/onlyone)+-space was ok
 			Return command
-		elseif command=(cPRIMSEC)
-			if pcontent#!=pointer  ##here first was ok, but not extra x
+		elseif start!=pointer  ##here first was ok, but not extra part
+			if command=(cPRIMSEC)
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_call_flag|x_callg_flag)
@@ -610,9 +609,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					Return command
 				endif
 				#break #don't want to remember this when having something like addend command, and who will wrong here?
-			endif
-		elseif command=(cCALL)
-			if pcontent#!=pointer  ##here first was ok, but not extra ret
+			elseif command=(cCALL)
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_callg_flag)
@@ -620,9 +617,8 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					set psize# sz
 					Return command
 				endif
-			endif
-		elseif command=(cCALLEX)
-			if pcontent#!=pointer  ##here first was ok, but not extra ret
+			else
+			#if command=(cCALLEX)  #cSTARTFUNCTION is not coming here with intercursors=NULL
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_callg_flag)
@@ -630,7 +626,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					set psize# sz
 					Return command
 				endif
-			endif
+			endelse
 		endelseIf
 		Add pointercommands dsz
 		Set cursor pointercommands#
