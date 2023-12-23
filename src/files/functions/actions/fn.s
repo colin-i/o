@@ -334,35 +334,25 @@ function fn_text_info()
 	return #text_info
 endfunction
 
-
 #err
-function callable_var(ss content,sd sz,sd p_data)
-	setcall p_data# vars_number(content,sz,(integernumber))
-	if p_data#!=0
-		#sd b
-		#setcall b is_for_64()
-		#if b=(TRUE) there will be no pointbit on 32
-		sd test;setcall test pointbit(p_data#)
-		if test=0
-			set p_data# 0
-		endif
-		#endif
-		ret
-	endif
-	setcall p_data# vars_number(content,sz,(stackvaluenumber))
-endfunction
-#err
-function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect,sd subtype)
+function prepare_function_call(sv pcontent,sd psize,sd sz,sd p_data,sd p_bool_indirect,sd subtype)
 	Data fns%%ptr_functions
-	sd err
+	Char unfndeferr="Undefined function/data call."
 
 	SetCall p_data# vars(pcontent#,sz,fns)
 	If p_data#=0
-		setcall err callable_var(pcontent#,sz,p_data)
+		setcall p_data# vars_number(pcontent#,sz,(integernumber))
 		if p_data#=0
-			Char unfndeferr="Undefined function/data call."
-			return #unfndeferr
-		endif
+			setcall p_data# vars_number(pcontent#,sz,(stackvaluenumber))
+			if p_data#=0
+				return #unfndeferr
+			endif
+		else
+			sd test;setcall test pointbit(p_data#)
+			if test=0     #there will be no pointbit on 32
+				return #unfndeferr
+			endif
+		endelse
 		set p_bool_indirect# (TRUE)
 		call is_for_64_is_impX_or_fnX_set_force(subtype)
 	Else
@@ -371,6 +361,7 @@ function prepare_function_call(sd pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 		call is_for_64_is_impX_or_fnX_set(p_data#,subtype)
 	EndElse
 
+	sd err
 	setcall err xfile_add_call_if(pcontent#,sz,subtype)
 	if err=(noerror)   #here is coming from calls and callex
 		Call advancecursors(pcontent,psize,sz)
