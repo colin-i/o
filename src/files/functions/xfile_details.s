@@ -169,11 +169,16 @@ endfunction
 function xfile_add_call_if(sd content,sd size,sd subtype)
 	if main.xfile!=(openno)
 		sd err
-		setcall subtype callx_flag(subtype)  #this is tested if 64 in the normal place
+		and subtype (x_callx_flag|x_callg_flag)
 		if subtype=0
 			setcall err xfile_add_char((Xfile_arg_call_normal)) #not forced extern
-		else
+		elseif subtype=(x_callx_flag)
 			setcall err xfile_add_char((Xfile_arg_call_extern)) #forced extern
+		elseif subtype=(x_callg_flag)
+			setcall err xfile_add_char((Xfile_arg_call_skipaftercall))
+		else
+		#if subtype!0
+			setcall err xfile_add_char((Xfile_arg_call_extern|Xfile_arg_call_skipaftercall))
 		endelse
 		if err=(noerror)
 			setcall err xfile_add_string(content,size)

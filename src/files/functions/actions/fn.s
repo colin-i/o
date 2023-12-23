@@ -466,8 +466,8 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex,sd subtype)
 					return (noerror)
 				endif
 			endif
-			setcall subtype callret_flag(subtype)
-			if subtype=0  #is useless if a RET will come
+			and subtype (call_ret_flag|x_callg_flag)
+			if subtype=0  #is useless if a RET will come  , or if was set to not throw
 				sd global_err_ptr;setcall global_err_ptr global_err_p()
 				Data ptrextra%%ptr_extra
 				If ptrobject#=(FALSE)

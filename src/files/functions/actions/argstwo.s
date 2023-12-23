@@ -101,9 +101,8 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			setcall subtype_test x_call_test(subtype,ptrcontent#,ptrsize#)
 			if subtype_test!=0
 				Set primcalltype true
-				set subtype_test subtype
-				#and subtype_test (x_callx_flag)  #call and callex are testing without and
-				and subtype ~primsec_flags
+				set subtype_test subtype  ##two more flags at parsefunc
+				and subtype ~x_call_flags
 			endif
 			sd xlog
 			if subtype=(cSET)

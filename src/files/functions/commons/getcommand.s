@@ -460,13 +460,17 @@ Const compointersloc^pointers
 Data pointersvars#numberofcommandsvars+1
 Const compointersvarsloc^pointersvars
 
+#at fn
 const x_func_flag=0x80000000   #at def, varargs
 
-const call_ret_flag=0x80000000 #at call
-const x_callx_flag=0x40000000  ;#at call and setcall..., call a variable/function/import like functionx/importx
-const x_call_flag=0x20000000   #at setcall... ,this can be 0x8.. why not 0x8 then? at write_func is asking about callret and anyway this comes And ~primsec_flags at that point
+#at ...call...
+const x_callx_flag=0x80000000  #call a variable function import like functionx importx
+const x_callg_flag=0x40000000  #skip aftercall
 
-const primsec_flags=x_call_flag|x_callx_flag
+const call_ret_flag=0x20000000 #at call
+const x_call_flag=0x10000000   #at setcall... . attention that at write_func is asking about callret and setcall does not have that
+
+const x_call_flags=x_call_flag|x_callx_flag|x_callg_flag
 
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
@@ -514,6 +518,8 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		Char calldata="CALL"
 		vStr call^calldata
 		vstr xstr="X"
+		vstr skipaftercall="G"
+		value pointer#1;data sz#1
 
 		ss extstr=NULL
 
@@ -523,12 +529,13 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 
 		If command=(cPRIMSEC)
 			Set extstr xstr
-			value pointer#1;data sz#1
 			set intercursors #pointer
 			set pointer pcontent#
 		elseif command=(cCALL)
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
+			set intercursors #pointer
+			set pointer pcontent#
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)
@@ -536,6 +543,8 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			endif
 		elseif command=(cCALLEX)
 			set extstr call_ret_str
+			set intercursors #pointer
+			set pointer pcontent#
 		endElseif
 
 		SetCall result stringsatmemspc(pcontent,psize,offset,spacebool,extstr,extbool,intercursors)
@@ -543,18 +552,28 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#here firstAndSecond part was recognized
 			If command=(cPRIMSEC)
 				if result=(FALSE)
-				#here there was not a space, maybe is the deprecated ..xcall
-					setcall result stratmemspc(#pointer,#sz,call,spacebool)
-					if result=(TRUE)
-						#or first byte at subcommand to recognize the xcall at two args
-						or ptrsubtype# (primsec_flags)
-						set pcontent# pointer
-						set psize# sz
-						Return command
+					if pcontent#!=pointer
+					#here there was not a space
+						setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+						if result=(TRUE)
+							or ptrsubtype# (x_call_flag|x_callx_flag|x_callg_flag)
+							set pcontent# pointer
+							set psize# sz
+							Return command
+						endif
+						#maybe is the deprecated ..xcall
+						setcall result stratmemspc(#pointer,#sz,call,spacebool)
+						if result=(TRUE)
+							#or first byte at subcommand to recognize the xcall at two args
+							or ptrsubtype# (x_call_flag|x_callx_flag)
+							set pcontent# pointer
+							set psize# sz
+							Return command
+						endif
 					endif
 				else
 				#setx
-					or ptrsubtype# (primsec_flags)
+					or ptrsubtype# (x_call_flag|x_callx_flag)
 					Return command
 				endelse
 			Elseif result=(TRUE)
@@ -578,7 +597,15 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		elseif command=(cPRIMSEC)
 		#here first was ok but not the space
 			if pcontent#!=pointer
-				#here there was not extra x, maybe is the deprecated ..call
+				#here there was not extra x
+				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+				if result=(TRUE)
+					or ptrsubtype# (x_call_flag|x_callg_flag)
+					set pcontent# pointer
+					set psize# sz
+					Return command
+				endif
+				#maybe is the deprecated ..call
 				setcall result stratmemspc(#pointer,#sz,call,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_call_flag)
@@ -588,13 +615,33 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				endif
 				#break #don't want to remember this when having something like addend command, and who will wrong here?
 			endif
+		elseif command=(cCALL)
+			if pcontent#!=pointer
+				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+				if result=(TRUE)
+					or ptrsubtype# (x_callg_flag)
+					set pcontent# pointer
+					set psize# sz
+					Return command
+				endif
+			endif
+		elseif command=(cCALLEX)
+			if pcontent#!=pointer
+				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+				if result=(TRUE)
+					or ptrsubtype# (x_callg_flag)
+					set pcontent# pointer
+					set psize# sz
+					Return command
+				endif
+			endif
 		endelseIf
 		Add pointercommands dsz
 		Set cursor pointercommands#
 	EndWhile
 
 	Char _unrecCom="Unrecognized command/declaration name."
-	Str unrecCom^_unrecCom
+	vStr unrecCom^_unrecCom
 	Set ptrerrormsg# unrecCom
 EndFunction
 
