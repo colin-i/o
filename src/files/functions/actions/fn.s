@@ -339,14 +339,14 @@ endfunction
 function callable_var(ss content,sd sz,sd p_data)
 	setcall p_data# vars_number(content,sz,(integernumber))
 	if p_data#!=0
-		sd b
-		setcall b is_for_64()
-		if b=(TRUE)
-			sd test;setcall test pointbit(p_data#)
-			if test=0
-				set p_data# 0
-			endif
+		#sd b
+		#setcall b is_for_64()
+		#if b=(TRUE) there will be no pointbit on 32
+		sd test;setcall test pointbit(p_data#)
+		if test=0
+			set p_data# 0
 		endif
+		#endif
 		ret
 	endif
 	setcall p_data# vars_number(content,sz,(stackvaluenumber))
