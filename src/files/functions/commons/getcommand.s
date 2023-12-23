@@ -552,24 +552,22 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#here firstAndSecond part was recognized
 			If command=(cPRIMSEC)
 				if result=(FALSE)
-					if pcontent#!=pointer
 					#here there was not a space
-						setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
-						if result=(TRUE)
-							or ptrsubtype# (x_call_flag|x_callx_flag|x_callg_flag)
-							set pcontent# pointer
-							set psize# sz
-							Return command
-						endif
-						#maybe is the deprecated ..xcall
-						setcall result stratmemspc(#pointer,#sz,call,spacebool)
-						if result=(TRUE)
-							#or first byte at subcommand to recognize the xcall at two args
-							or ptrsubtype# (x_call_flag|x_callx_flag)
-							set pcontent# pointer
-							set psize# sz
-							Return command
-						endif
+					setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+					if result=(TRUE)
+						or ptrsubtype# (x_call_flag|x_callx_flag|x_callg_flag)
+						set pcontent# pointer
+						set psize# sz
+						Return command
+					endif
+					#maybe is the deprecated ..xcall
+					setcall result stratmemspc(#pointer,#sz,call,spacebool)
+					if result=(TRUE)
+						#or first byte at subcommand to recognize the xcall at two args
+						or ptrsubtype# (x_call_flag|x_callx_flag)
+						set pcontent# pointer
+						set psize# sz
+						Return command
 					endif
 				else
 				#setx
@@ -595,9 +593,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#here (first/onlyone)+-space was ok
 			Return command
 		elseif command=(cPRIMSEC)
-		#here first was ok but not the space
-			if pcontent#!=pointer
-				#here there was not extra x
+			if pcontent#!=pointer  ##here first was ok, but not extra x
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_call_flag|x_callg_flag)
@@ -616,7 +612,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				#break #don't want to remember this when having something like addend command, and who will wrong here?
 			endif
 		elseif command=(cCALL)
-			if pcontent#!=pointer
+			if pcontent#!=pointer  ##here first was ok, but not extra ret
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_callg_flag)
@@ -626,7 +622,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				endif
 			endif
 		elseif command=(cCALLEX)
-			if pcontent#!=pointer
+			if pcontent#!=pointer  ##here first was ok, but not extra ret
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
 					or ptrsubtype# (x_callg_flag)
