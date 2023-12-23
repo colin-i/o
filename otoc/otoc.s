@@ -46,7 +46,7 @@ entry main(sd argc,sv argv)
 			sd out;set out out_file(s)
 			sd exit=EXIT_SUCCESS
 			if out!=(NULL)
-				call loop(f,out)
+				set exit loop(f,out)
 				call fclose(out)
 			else
 				set exit (EXIT_FAILURE)

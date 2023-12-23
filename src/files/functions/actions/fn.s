@@ -320,7 +320,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 					if err!=noerr;return err;endif
 				endelse
 
-				setcall err write_function_call(ptrdata,boolindirect,(FALSE))
+				setcall err write_function_call(ptrdata,boolindirect,(FALSE),subtype)
 				if err!=noerr;return err;endif
 			endelse
 		endelse
@@ -349,8 +349,11 @@ function prepare_function_call(sv pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 			endif
 		else
 			sd test;setcall test pointbit(p_data#)
-			if test=0     #there will be no pointbit on 32
-				return #unfndeferr
+			if test=0
+				sd b;setcall b is_for_64() #there will be no pointbit on 32
+				if b=(TRUE)
+					return #unfndeferr
+				endif
 			endif
 		endelse
 		set p_bool_indirect# (TRUE)
@@ -381,7 +384,7 @@ function prepare_function_call(sv pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 endfunction
 
 #err
-function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
+function write_function_call(sd ptrdata,sd boolindirect,sd is_callex,sd subtype)
 	sd err
 	Data code%%ptr_codesec
 
@@ -451,74 +454,73 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex)
 		#call stack64_op_set()
 		SetCall err writeopera(ptrdata,callaction,callactionopcode,eaxregnumber) #no sufix was
 	EndElse
-	If err!=(noerror)
-		Return err
-	EndIf
-
-	#afterbit throwless is at fns imps if before aftercall; at values is throwless after aftercall if sign set
-	sd tless=aftercallthrowlessbit
-	and tless mask
-	if tless=0
-		if is_valuedata_call=(FALSE)
-			sd global_err_pB;setcall global_err_pB global_err_pBool()
-			if global_err_pB#=(FALSE)
-				set tless -1    #don't want to throw before aftercall
+	If err=(noerror)
+		#afterbit throwless is at fns imps if before aftercall; at values is throwless after aftercall if sign set
+		sd tless=aftercallthrowlessbit
+		and tless mask
+		if tless=0
+			if is_valuedata_call=(FALSE)
+				sd global_err_pB;setcall global_err_pB global_err_pBool()
+				if global_err_pB#=(FALSE)
+					#we are before aftercall and calling a fn/imp from after aftercall
+					return (noerror)
+				endif
+			endif
+			setcall subtype callret_flag(subtype)
+			if subtype=0  #is useless if a RET will come
+				sd global_err_ptr;setcall global_err_ptr global_err_p()
+				Data ptrextra%%ptr_extra
+				If ptrobject#=(FALSE)
+				#absolute
+					const global_err_ex_start=\
+					#mov ecx,imm32
+					char g_err_mov=0xb8+ecxregnumber;data g_err_mov_disp32#1
+					#cmp byte[ecx],0
+					char *={0x80,7*toregopcode|ecxregnumber};char *=aftercall_disable
+					const global_err_ex_sz=\-global_err_ex_start
+					#add rel,1 is (b8+ecx), one byte
+					set g_err_mov_disp32 global_err_ptr#
+					#
+					SetCall err addtosec(#g_err_mov,(global_err_ex_sz),code)
+				Else
+					#mov to ecx is reseting the high part of the rcx
+					char g_err=0xb9
+					data *rel=0
+					#
+					sd af_relof
+					setcall af_relof reloc64_offset((bsz))
+					setcall err adddirectrel_base(ptrextra,af_relof,global_err_ptr#,0);If err!=(noerror);Return err;EndIf
+					setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
+					SetCall err addtosec(#g_err,5,code);If err!=(noerror);Return err;EndIf
+					setcall err reloc64_post();If err!=(noerror);Return err;EndIf
+					char g_cmp={0x80,7*toregopcode|ecxregnumber,0}
+					SetCall err addtosec(#g_cmp,3,code)
+				EndElse
+				If err!=(noerror);Return err;EndIf
+				#jz
+				char g_err_jz=0x74;char ret_end_sz#1
+				#
+				ss ret_end_p
+				sd is_linux_term;setcall is_linux_term is_linux_end()
+				if is_linux_term=(TRUE)
+					#int 0x80, sys_exit, eax 1,ebx the return number
+					const g_err_sys_start=\
+					char g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
+					char *={0xb8,1,0,0,0}
+					Char *={intimm8,0x80}
+					const g_err_sys_size=\-g_err_sys_start
+					set ret_end_sz (g_err_sys_size)
+					set ret_end_p #g_err_sys
+				else
+					setcall ret_end_sz getreturn(#ret_end_p)
+				endelse
+				SetCall err addtosec(#g_err_jz,(bsz+bsz),code);If err!=(noerror);Return err;EndIf
+				#return
+				SetCall err addtosec(ret_end_p,ret_end_sz,code)
+				#;If err!=(noerror);Return err;EndIf
 			endif
 		endif
 	endif
-	if tless=0
-		sd global_err_ptr;setcall global_err_ptr global_err_p()
-		Data ptrextra%%ptr_extra
-		If ptrobject#=(FALSE)
-		#absolute
-			const global_err_ex_start=\
-			#mov ecx,imm32
-			char g_err_mov=0xb8+ecxregnumber;data g_err_mov_disp32#1
-			#cmp byte[ecx],0
-			char *={0x80,7*toregopcode|ecxregnumber};char *=aftercall_disable
-			const global_err_ex_sz=\-global_err_ex_start
-			#add rel,1 is (b8+ecx), one byte
-			set g_err_mov_disp32 global_err_ptr#
-			#
-			SetCall err addtosec(#g_err_mov,(global_err_ex_sz),code)
-		Else
-			#mov to ecx is reseting the high part of the rcx
-			char g_err=0xb9
-			data *rel=0
-			#
-			sd af_relof
-			setcall af_relof reloc64_offset((bsz))
-			setcall err adddirectrel_base(ptrextra,af_relof,global_err_ptr#,0);If err!=(noerror);Return err;EndIf
-			setcall err reloc64_ante();If err!=(noerror);Return err;EndIf
-			SetCall err addtosec(#g_err,5,code);If err!=(noerror);Return err;EndIf
-			setcall err reloc64_post();If err!=(noerror);Return err;EndIf
-			char g_cmp={0x80,7*toregopcode|ecxregnumber,0}
-			SetCall err addtosec(#g_cmp,3,code)
-		EndElse
-		If err!=(noerror);Return err;EndIf
-		#jz
-		char g_err_jz=0x74;char ret_end_sz#1
-		#
-		ss ret_end_p
-		sd is_linux_term;setcall is_linux_term is_linux_end()
-		if is_linux_term=(TRUE)
-			#int 0x80, sys_exit, eax 1,ebx the return number
-			const g_err_sys_start=\
-			char g_err_sys={0x8b,ebxregnumber*toregopcode|0xc0|eaxregnumber}
-			char *={0xb8,1,0,0,0}
-			Char *={intimm8,0x80}
-			const g_err_sys_size=\-g_err_sys_start
-			set ret_end_sz (g_err_sys_size)
-			set ret_end_p #g_err_sys
-		else
-			setcall ret_end_sz getreturn(#ret_end_p)
-		endelse
-		SetCall err addtosec(#g_err_jz,(bsz+bsz),code);If err!=(noerror);Return err;EndIf
-		#return
-		SetCall err addtosec(ret_end_p,ret_end_sz,code)
-		#;If err!=(noerror);Return err;EndIf
-	endif
-
 	return err
 endfunction
 

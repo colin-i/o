@@ -460,10 +460,11 @@ Const compointersloc^pointers
 Data pointersvars#numberofcommandsvars+1
 Const compointersvarsloc^pointersvars
 
-const x_call_flag=0x80000000   #at setcall...
 const x_func_flag=0x80000000   #at def, varargs
+
 const call_ret_flag=0x80000000 #at call
-const x_callx_flag=0x40000000 ;#at call and setcall..., call a variable/function/import like functionx/importx
+const x_callx_flag=0x40000000  ;#at call and setcall..., call a variable/function/import like functionx/importx
+const x_call_flag=0x20000000   #at setcall... ,this can be 0x8.. why not 0x8 then? at write_func is asking about callret and anyway this comes And ~primsec_flags at that point
 
 const primsec_flags=x_call_flag|x_callx_flag
 

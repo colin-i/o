@@ -14,7 +14,9 @@ const Xfile_last_command=Xfile_line
 
 charx result#1
 
+#exit
 function loop(sd input,sd output)
+	set main.result (EXIT_FAILURE)
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
 	if a=0
 		sd delim;set delim ftell(input) #is still same place if file deleted in parallel
@@ -26,7 +28,7 @@ function loop(sd input,sd output)
 			if r=1
 				ss pointer;set pointer buffer
 				add delim buffer
-				set main.result -1
+				set main.result (EXIT_SUCCESS)
 				while pointer!=delim
 					charx command#1;call get_char(#pointer,#command)
 					if command>(Xfile_last_command)
@@ -62,12 +64,13 @@ function loop(sd input,sd output)
 					sv dest^Xfile_comment;add dest command
 					set dest dest#
 					call dest(#pointer,output)
-					if main.result=0;break;end
+					if main.result=(EXIT_FAILURE);break;end
 				end
 			end
 			call free(buffer)
 		end
 	end
+	return main.result
 end
 
 function comment(sv *pbuffer)
@@ -117,7 +120,7 @@ end
 function continue(sv *pbuffer)
 end
 function end(sv *pbuffer,sd outfile)
-	call write(outfile,"}")
+	call writen(outfile,"}",1)
 end
 function ret(sv *pbuffer)
 end
@@ -159,14 +162,14 @@ end
 importx "strlen" strlen
 importx "fwrite" fwrite
 
-function write(sd outfile,ss string)
-	sd sz;set sz strlen(string)
-	sd items;set items fwrite(string,sz,1,outfile)
+function writen(sd outfile,ss buf,sd sz)
+	sd items;set items fwrite(buf,sz,1,outfile)
 	if items!=1
-		set main.result 0
+		set main.result (EXIT_FAILURE)
+		ret
 	end
 	set items fwrite("\n",1,1,outfile)
 	if items!=1
-		set main.result 0
+		set main.result (EXIT_FAILURE)
 	end
 end
