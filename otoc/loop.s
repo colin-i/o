@@ -12,7 +12,7 @@ einclude "../src/files/headers/xfile.h" "/usr/include/ocompiler/xfile.h"
 #einclude? will use all constants in the header. yes, but some are used without touching them, like in this next function
 const Xfile_last_command=Xfile_line
 
-charx result#1
+datax result#1
 
 #exit
 function loop(sd input,sd output)
