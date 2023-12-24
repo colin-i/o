@@ -23,7 +23,7 @@ Char cEND_c="END"
 Char cRET_c="RET"
 Char cINCLUDE_c="INCLUDE";Char cEINCLUDE_c="EINCLUDE"
 Char cFORMAT_c="FORMAT"
-Char cIMPORTAFTERCALL_c="IMPORTAFTERCALL";Char cAFTERCALL_c="AFTERCALL"
+Char cAFTERCALLIMPORT_c="AFTERCALLIMPORT";Char cAFTERCALL_c="AFTERCALL"
 Char cAFTERCALLENABLE_c="AFTERCALLENABLE";Char cAFTERCALLDISABLE_c="AFTERCALLDISABLE"
 Char cCALLEX_c="CALLEX";Char cCALLEXX_c="CALLEXX"
 Char cLIBRARY_c="LIBRARY"
@@ -395,10 +395,10 @@ Const numberofcommandsvars=(\-commandsvars_start)/com_size
 #aftercall can be at function parameters but the get_img_vdata_dataReg() is set inside and codding must be done for not a big deal
 	Const cDECLAREAFTERCALL=\-coms_start
 	Const cDECLAREAFTERCALL_top=\
-		Const cIMPORTAFTERCALL=\-cDECLAREAFTERCALL_top
-			data *^cIMPORTAFTERCALL_c
+		Const cAFTERCALLIMPORT=\-cDECLAREAFTERCALL_top
+			data *^cAFTERCALLIMPORT_c
 			Data *=cDECLAREAFTERCALL
-			Data *=cIMPORTAFTERCALL
+			Data *=cAFTERCALLIMPORT
 			Data *=spacereq
 		Const cAFTERCALL=\-cDECLAREAFTERCALL_top
 			data *^cAFTERCALL_c

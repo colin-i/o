@@ -10,8 +10,8 @@ else
 		vstr ac_store_c#1;data ac_store_s#1
 		data acsym_value#1;data acsym_size#1;data acsym_shndx#1
 		sd g_e_p;setcall g_e_p global_err_p()
-		if subtype=(cIMPORTAFTERCALL)
-			If object=(FALSE);set errormsg "ImportAfterCall is used at objects."
+		if subtype=(cAFTERCALLIMPORT)
+			If object=(FALSE);set errormsg "AfterCallImport is used at objects."
 			else
 				set ac_store_c content;set ac_store_s comsize
 				set acsym_value 0;set acsym_size (sym_with_size);set acsym_shndx (NULL)
