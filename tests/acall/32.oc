@@ -1,0 +1,8 @@
+
+format elfobj
+
+importx "printf" printf
+
+include "a.oc"
+
+exit 0

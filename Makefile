@@ -16,7 +16,7 @@ $(SUBDIRS):
 
 all:
 	#if ! [ -s ./src/obj.txt ];then
-	cd ./src; ../ounused/ounused ./linux/obj.s.log
+	cd ./src; ../ounused/ounused ./linux/obj.oc.log
 	#; fi
 	@echo
 

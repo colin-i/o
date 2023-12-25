@@ -7,9 +7,9 @@ OFLAGS+=" nul_res_pref 1"
 
 comp () {
 	if [ "${edb}" = "0" ]; then
-		edb --run ${OCOMP} ${1}.s ${OFLAGS} || exit 1
+		edb --run ${OCOMP} ${1}.oc ${OFLAGS} || exit 1
 	else
-		${OCOMP} ${1}.s ${OFLAGS} || exit 1
+		${OCOMP} ${1}.oc ${OFLAGS} || exit 1
 	fi
 }
 if [ -z "${ex}" ]; then
@@ -25,7 +25,7 @@ if [ -z "${ex}" ]; then
 	objs=
 	for f in "${@}"; do
 		comp ${f}
-		logs+=" ${f}.s.log"
+		logs+=" ${f}.oc.log"
 		objs+=" ${f}.o"
 	done
 	${OLINK} ${logs} || exit 1

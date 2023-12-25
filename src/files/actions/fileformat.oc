@@ -1,0 +1,19 @@
+
+#also needed at dtnb and old
+sub datasecSize datasecReg
+
+if nobits_virtual=(No)
+	#in case old style virtual
+	setcall errormsg set_reserve(datasecSize)
+	#setcall errormsg set_reserve(nobitssecReg)
+	if errormsg!=(noerror)
+		Call msgerrexit(errormsg)
+	endif
+endif
+
+If fileformat=pe_exec
+	Include "./fileformat/pe_struct.oc"
+	Include "./fileformat/pe_resolve.oc"
+Else
+	Include "./fileformat/elf_resolve.oc"
+EndElse

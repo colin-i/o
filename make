@@ -2,7 +2,7 @@
 #use Makefile
 exit
 
-./o "./src/linux/o.s"
+./o "./src/linux/o.oc"
 
 mkdir ./build
 mv ./src/linux/o ./build/

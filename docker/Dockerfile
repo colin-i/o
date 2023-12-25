@@ -9,5 +9,5 @@ WORKDIR o/src/linux
 RUN add-apt-repository -y ppa:colin-i/ppa
 RUN apt-get update -y
 RUN apt-get install -y ocompiler
-RUN o obj.s
+RUN o obj.oc
 RUN base64 obj.o > ../obj.txt

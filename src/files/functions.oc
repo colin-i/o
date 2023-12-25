@@ -1,0 +1,62 @@
+
+Include "./functions/inits.oc"
+
+Include "./functions/commons/comfn.oc"
+Include "./functions/commons/base.oc"
+Include "./functions/commons/vars.oc"
+Include "./functions/commons/strcommons.oc"
+Include "./functions/commons/valinmem.oc"
+Include "./functions/commons/getcommand.oc"
+
+Include "./functions/add/addtomem.oc"
+Include "./functions/add/add.oc"
+Include "./functions/add/addstresc.oc"
+
+Include "./functions/values/numbersandconstants.oc"
+Include "./functions/values/operations.oc"
+
+Include "./functions/elf/elf.oc"
+
+Include "./functions/stack/stack_inits.oc"
+
+Include "./functions/argument/comwrite.oc"
+Include "./functions/argument/imm.oc"
+Include "./functions/argument/arg.oc"
+Include "./functions/argument/argument.oc"
+
+Include "./functions/stack/stack.oc"
+
+Include "./functions/global/funcs.oc"
+Include "./functions/global/end.oc"
+
+Include "./functions/actions/dataparse.oc"
+Include "./functions/actions/fndecargs.oc"
+Include "./functions/actions/enumcomma.oc"
+Include "./functions/actions/fn.oc"
+Include "./functions/actions/argstwo.oc"
+Include "./functions/actions/declare.oc"
+
+Include "./functions/commands/cond.oc"
+Include "./functions/commands/lib.oc"
+Include "./functions/commands/ret.oc"
+
+Include "./functions/pref/preffuncs.oc"
+Include "./functions/pref/sdsv.oc"
+Include "./functions/pref/backup.oc"
+
+Include "./functions/64/bit.oc"
+Include "./functions/64/reloc.oc"
+Include "./functions/64/align.oc"
+
+Include "./functions/include.oc"
+Include "./functions/dataassign.oc"
+Include "./functions/enumbags.oc"
+Include "./functions/import.oc"
+Include "./functions/override.oc"
+Include "./functions/scopes.oc"
+Include "./functions/debug.oc"
+Include "./functions/index.oc"
+Include "./functions/short.oc"
+
+Include "./functions/xfile.oc"
+Include "./functions/xfile_details.oc"

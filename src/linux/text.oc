@@ -1,0 +1,16 @@
+
+EntryRaw main(sd argc,ss argv0,ss argv1)
+
+#main
+Include "../files/inits_top.oc"
+
+Include "./files/xgetfile.oc"
+
+setcall errormsg comline_parse(argc,#argv0)
+if errormsg!=(noerror)
+	call exitMessage(errormsg)
+endif
+
+Include "../files/actions.oc"
+
+Exit zero

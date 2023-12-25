@@ -27,7 +27,7 @@ endif
 OBJ = ${OB}.o
 OBT = ${OB}.txt
 FULLOBJ = ./${OB}
-FULLOBJS = ${FULLOBJ}.s
+FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 OLINK=../ounused/ounused

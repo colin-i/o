@@ -6,7 +6,7 @@ all: ${projname}
 OB = obj
 OBJ = ${OB}.o
 FULLOBJ = ./linux/${OB}
-FULLOBJS = ${FULLOBJ}.s
+FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 OBT = ${OB}.txt
 
@@ -43,12 +43,13 @@ else
 	etchelper=5
 	etc_helper=bin/o
 endif
-etcinclude=etcinclude.s
+etcinclude=etcinclude.oc
 #debian/ocompiler.install is forcing to usr/ / etc/
 
 #OFLAGS=
 
 ${FULLOBJS}: ${etcinclude}
+	echo something or is not working
 
 %.o: ${FULLOBJS}
 	if [ -s ${OBT} ];then \
@@ -86,7 +87,7 @@ clean-link:
 
 clean-test:
 	-rm -f ./linux/o
-	-rm -f ./linux/o.s.log
+	-rm -f ./linux/o.oc.log
 	-rm -f ./linux/z
 
 clean: clean-compile clean-link clean-test
@@ -98,9 +99,9 @@ uninstall:
 
 test:
 	echo "test"
-	cd linux; ../o o.s nul_res_pref 1; mv o z; ${linker} ./z o.s nul_res_pref 1; diff o z
+	cd linux; ../o o.oc nul_res_pref 1; mv o z; ${linker} ./z o.oc nul_res_pref 1; diff o z
 # linker=/home/bc/Desktop/out/libc6/lib32/ld-linux.so.2 make test
-#/home/bc/Desktop/out/libc6-i386.AppImage /home/bc/o/ocompiler-1/src/linux/z /home/bc/o/ocompiler-1/src/linux/o.s nul_res_pref 1
+#/home/bc/Desktop/out/libc6-i386.AppImage /home/bc/o/ocompiler-1/src/linux/z /home/bc/o/ocompiler-1/src/linux/o.oc nul_res_pref 1
 #2.36-0ubuntu4 (jammy) was ok, backportpackage is working for esm packages (tested)
 #DEB_BUILD_OPTIONS=nocheck debuild -us -uc
 

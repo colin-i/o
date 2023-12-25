@@ -1,0 +1,23 @@
+
+
+#main
+
+Include "../files/inits_top.oc"
+
+set argv (NULL)
+Data openfilenamemethod#1
+Set openfilenamemethod false
+Include "./files/wingetfile.oc"
+
+if argv!=(NULL)
+	setcall errormsg comline_parse(argc,argv)
+	if errormsg!=(noerror)
+		call msgerrexit(errormsg)
+	endif
+endif
+
+Include "../files/actions.oc"
+
+Include "./files/winend.oc"
+
+Call exit(zero)

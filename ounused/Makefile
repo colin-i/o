@@ -5,7 +5,7 @@ all: ${OB}
 
 OBJ = ${OB}.o
 FULLOBJ = ./${OB}
-FULLOBJS = ${FULLOBJ}.s
+FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 

@@ -18,7 +18,7 @@ endif
 
 OBJ = ${prog}.o
 FULLOBJ = ./${prog}
-FULLOBJS = ${FULLOBJ}.s
+FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 

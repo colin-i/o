@@ -1,0 +1,12 @@
+
+
+#windows exe build
+
+Format Exe
+
+Include "./files/winimports.h"
+
+Include "./head.h"
+
+entry main() #more at obj.oc
+Include "./text.oc"
