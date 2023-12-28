@@ -1,3 +1,9 @@
+ocompiler (1-5+140) xenial; urgency=medium
+
+  * start/end function optimizations
+
+ -- bc <bc@bc-Type1ProductConfigId>  Thu, 28 Dec 2023 15:08:22 +0200
+
 ocompiler (1-5+139) xenial; urgency=medium
 
   * aftercallimport
