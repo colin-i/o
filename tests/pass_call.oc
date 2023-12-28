@@ -1,0 +1,17 @@
+
+format elfobj64
+
+importx "q" q
+
+function a()
+call q(q,q,q,q,q,q,q)
+call q(q,q,q,q,q,q,q)
+call q(q,q,q,q,q,q,q,q)
+endfunction
+
+function b()
+sv test
+call q()
+endfunction
+
+entry main()
