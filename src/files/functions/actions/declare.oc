@@ -1,6 +1,6 @@
 
 #err
-function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
+function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 	Data valsize#1
 	Char sign#1
 	#below also at virtual at get_reserve (with mask there)
@@ -13,6 +13,16 @@ function declare(sv pcontent,sd pcomsize,sd bool_64,sd subtype,sd parses)
 	sd declare_typenumber
 	sd is_expand
 	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
+
+	if parses=(pass_calls)
+		setcall typenumber stackfilter(declare_typenumber,#is_stack)
+		if is_stack=(TRUE)
+			ss a_s_p;setcall a_s_p align_pstack()
+			set a_s_p# (TRUE)
+		endif
+		call advancecursors(pcontent,pcomsize,pcomsize#)
+		return (noerror)
+	endif
 
 	#still can be ok at nobits=No, let natural selection because pnobitsReg is implemented instead of datasecSize at writes for simplicity
 	#if is_expand==(TRUE)

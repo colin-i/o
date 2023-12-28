@@ -48,7 +48,7 @@ function growramp(sd value,sv perr)
 	vdata ptrramp#1
 	setcall ptrramp getptrramp()
 	sd ret;set ret ptrramp#
-	setcall perr# maxsectioncheck(value,ptrramp)
+	setcall perr# maxsectioncheck(value,ptrramp)  #we are adding a dword( sub ebx dword ), at 64 can go further, there are reserves declarations, a check is required
 	return ret
 endfunction
 #ind(before)
@@ -86,12 +86,15 @@ function entryscope()
 	setcall err addtosec(#scope2,(scope2_sz),container);if err!=(noerror);return err;endif
 	setcall err rex_w_if64();if err!=(noerror);return err;endif
 	setcall err addtosec(#scope3,(scope3_sz),container);if err!=(noerror);return err;endif
-	setcall err rex_w_if64();if err!=(noerror);return err;endif
-	setcall err addtosec(#scope4,(scope4_sz),container);if err!=(noerror);return err;endif
-	if err=(noerror)
-		data set=0;call ramp_index(set,container)
-		setcall err align_entryscope()
+
+	sd bool;setcall bool align_stack()
+	if bool=(TRUE)
+		setcall err rex_w_if64();if err!=(noerror);return err;endif
+		setcall err addtosec(#scope4,(scope4_sz),container);if err!=(noerror);return err;endif
+		data set=0;call ramp_index(set,container) #here is storing the sum when stackvariables(ebx) is required
 	endif
+
+	setcall err align_entryscope()
 	return err
 endfunction
 

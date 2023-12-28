@@ -494,9 +494,8 @@ const throwlesssign=asciiand
 
 const call_align_no=0
 const call_align_yes_all=1
-#const call_align_yes_arg_sha=2
-const call_align_yes_arg=3
-const last_call_align_input=call_align_yes_arg
+const call_align_yes_pushedArgs=2
+const maximum_conf_digit=call_align_yes_pushedArgs  #7 cases when maximum is 2
 data call_align#1
 const ptr_call_align^call_align
 

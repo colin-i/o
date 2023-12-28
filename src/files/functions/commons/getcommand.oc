@@ -392,7 +392,7 @@ Const numberofcommandsvars=(\-commandsvars_start)/com_size
 		Data *=cFORMAT
 		Data *#1
 		Data *=spacereq
-#aftercall can be at function parameters but the get_img_vdata_dataReg() is set inside and codding must be done for not a big deal
+# aftercall can be at function parameters but the get_img_vdata_dataReg() is set inside and codding must be done for not a big deal
 	Const cDECLAREAFTERCALL=\-coms_start
 	Const cDECLAREAFTERCALL_top=\
 		Const cAFTERCALLIMPORT=\-cDECLAREAFTERCALL_top

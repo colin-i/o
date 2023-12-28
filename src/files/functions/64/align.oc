@@ -2,13 +2,16 @@
 value stackalign#1
 data *stackalign_size#1
 const ptrstackalign^stackalign
+
+const align_calculation_size=dwsz
+const function_calculation_sz=align_calculation_size+1   #1 for has stack variables
+
 #er
 function align_alloc(sd sz)
 	inc sz   ##for entry
-	mult sz (dwsz)
+	mult sz (function_calculation_sz)
 	sv s%ptrstackalign
 	setcall s# memcalloc(sz) #need 0 by default
-	sv start;set start s#
 	if s#!=(NULL)
 		add s :
 		set s#d^ sz
@@ -46,24 +49,24 @@ function stack_align(sd nr)
 	endif
 	return (noerror)
 endfunction
-#nr
+#0/2/nr
 function pref_call_align(sd nr)
 	data ptr_call_align%ptr_call_align
 	sd type;set type ptr_call_align#
 	if type!=(call_align_no)
+	#1. was a debate at "yes for args and shadow", the point was to ignore shadow and align only the pushed args at next option "yes for args", example:
+	#    1 pushed, counting shadow will align like 5 odd arguments, not counting shadow like 1 odd argument
+	#    2 pushed, 6 even arguments, 2 even arguments
+	#   is same with or without this option because shadow is even
+	#2. another debate can be at no pushed args and shadow odd but is not the case
 		sd conv;setcall conv convdata((convdata_total))
 		if nr<=conv
-			if conv=(lin_convention)
-				if type=(call_align_yes_all)
-					return 2 #to align at no args
-				endif
-			else
-				if type!=(call_align_yes_arg)
-					return conv
-				endif
-			endelse
+			if type=(call_align_yes_all)
+				return 2             #0 will not align, to align even, lin 6 even, win 4(also here is the shadow that is same, 4), args are on regs. was tested for <=conv
+			endif
+			#call_align_yes_pushedArgs
 		else
-			return nr
+			return nr                  ##convs are even, so nr-=conv is same
 		endelse
 	endif
 	return 0
@@ -97,10 +100,10 @@ function align_ante(sd arguments)
 		endif
 		#odd, put on high word
 		sd bag;set bag pointer#
-		div bag 0x10000
+		divu bag 0x10000
 		inc bag
 		and test2 bag
-		if test2!=0x8000
+		if test2!=0
 			#set to high word
 			#this is not endian independent add pointer (wsz)
 			#and pointer#s^ bag
@@ -109,14 +112,13 @@ function align_ante(sd arguments)
 			#inc pointer
 			#and pointer#s^ bag
 			#or pointer#s^ bag
+
 			mult bag 0x10000
-			sd bag2;set bag2 pointer#
-			and bag2 bag;or bag2 bag
 			and pointer# (0xffFF)
-			or pointer# bag2
+			or pointer# bag
 			return (noerror)
 		endif
-		return "32768 odd calls?"  #to div without sign
+		return "More than 65535 odd calls?"
 	endif
 	return (noerror)
 endfunction
@@ -131,14 +133,14 @@ function align_resolve()
 		sd bag;set bag pointer#
 		if bag!=0
 			sd even=0xffFF;and even bag
-			div bag 0x10000
+			divu bag 0x10000
 			if even>=bag
 				set pointer# (even_align)
 			else
 				set pointer# (odd_align)
 			endelse
 		endif
-		add pointer (dwsz)
+		add pointer (function_calculation_sz)
 	endwhile
 endfunction
 
@@ -147,14 +149,25 @@ function align_ptype()
 	sd ptrfunctionTagIndex%ptrfunctionTagIndex
 	sv container%ptrstackalign
 	sd cont;set cont container#
-	sd index=dwsz;mult index ptrfunctionTagIndex#
+	sd index=function_calculation_sz;mult index ptrfunctionTagIndex#
 	add cont index
+	return cont
+endfunction
+#pstack
+function align_pstack()
+	sd cont;setcall cont align_ptype()
+	add cont (align_calculation_size)
 	return cont
 endfunction
 
 #type
 function align_type()
 	sd cont;setcall cont align_ptype()
+	return cont#
+endfunction
+#stack
+function align_stack()
+	ss cont;setcall cont align_pstack()
 	return cont#
 endfunction
 
