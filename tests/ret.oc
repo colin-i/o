@@ -3,8 +3,13 @@ format elfobj
 
 orphan off #test
 
-function inner()
+function end_ret_test0()
 ret
+endfunction
+function end_ret_test1()
+return 15
+endfunction
+function end_ret_test2()
 endfunction
 
 entry main()
