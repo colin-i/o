@@ -92,16 +92,20 @@ Function addtosec(str content,data size,data dst)
 	Set pdestReg# destData
 	Return noerr
 EndFunction
-#errnr
-function addtoCode_set_programentrypoint(ss content,sd size)
-	sd err;data code%%ptr_codesec
-	setcall err addtosec(content,size,code)
-	if err!=(noerror);return err;endif
+function set_programentrypoint()
+	data code%%ptr_codesec
 	data c#1
 	Call getcontReg(code,#c)
 	data e%ptrprogramentrypoint
 	Set e# c
-	return (noerror)
+endfunction
+#errnr
+function addtoCode_set_programentrypoint(ss content,sd size)
+	sd err;data code%%ptr_codesec
+	setcall err addtosec(content,size,code)
+	#if noerror #is fatal anyway
+		call set_programentrypoint()
+	return err
 endfunction
 #errnr
 Function addtosecstr(str content,data size,data dst)

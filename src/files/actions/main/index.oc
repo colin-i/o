@@ -146,7 +146,9 @@ if errormsg=(noerror)
 						else;set commandset (cCOMMENT);endelse
 					endelse
 				endif
-			endif
+			else
+				set endfunction_has_write_marker (TRUE)  #why to loss space and write in every command when can write a default
+			endelse
 			if commandset=(cCOMMENT)
 				Call advancecursors(pcontent,pcomsize,comsize)
 				#1 is last
@@ -240,7 +242,9 @@ if errormsg=(noerror)
 					Inc entrylinenumber
 
 					Set fnavailable zero
-				EndIf
+				else
+					set endfunction_has_write endfunction_has_write_marker ##this is relevant only at pass_write
+				Endelse
 
 				If comsize!=zero
 					setcall was_whitespaces spaces(pcontent,pcomsize)

@@ -138,7 +138,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				sd len
 				setcall len strlen(fn_name)
 				inc len
-				SetCall err addtoCode_set_programentrypoint(fn_name,len)
+				SetCall err addtoCode_set_programentrypoint(fn_name,len) #and set entry point in case this is an entry/entryraw and also will be the last command in the program
 				If err!=(noerror)
 					Return err
 				EndIf
