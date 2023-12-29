@@ -104,7 +104,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				or mask (x86_64bit)
 			endif
 			sd err_pb;setcall err_pb global_err_pBool()
-			if err_pb#=(FALSE)
+			if err_pb#=(global_err_notset)
 				or mask (aftercallthrowlessbit)
 			endif
 

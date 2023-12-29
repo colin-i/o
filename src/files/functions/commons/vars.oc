@@ -41,7 +41,7 @@ endfunction
 #same
 function warn_or_log_vars_full(sd return_value,ss symbolname,sd p_err,sd size,sd location)
 	#can with unreachableReg but all the logic until now was without that, so don't init ac_current_data
-	if global_err_pBool.bool=(TRUE)
+	if global_err_pBool.bool=(global_err_local)
 		if location=main.ac_current_data
 			data ptrcodeFnObj%ptrcodeFnObj
 			#here is a declared aftercall and not used here, can be used in another object with aftercallimport, it's useless to warn it like a variable, will not be imported like a file/scope.variable, will be imported with the linker, can be imitated with faftercall iaftercall for ounused

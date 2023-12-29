@@ -1,5 +1,5 @@
 
-if g_e_b_p#=(FALSE)
+if g_e_b_p#=(global_err_notset)
 	set errormsg "AfterCall is not defined."
 else
 	setcall errormsg xfile_add_char_if((Xfile_aftercall))

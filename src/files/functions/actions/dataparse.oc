@@ -161,7 +161,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 			call stepcursors(ptrcontent,ptrsize)
 		elseIf typenumber!=(constantsnumber)
 			sd global_err_pB;setcall global_err_pB global_err_pBool()
-			if global_err_pB#=(FALSE)
+			if global_err_pB#=(global_err_notset)
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif

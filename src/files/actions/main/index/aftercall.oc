@@ -17,6 +17,7 @@ else
 				set acsym_value 0;set acsym_size (sym_with_size);set acsym_shndx (NULL)
 				setcall errormsg xfile_add_base_if((Xfile_aftercall_import),content,comsize)
 				if errormsg=(noerror)
+					set g_e_b_p# (global_err_extern)
 					if codeFnObj=(log_warn)
 						#the reason is commented when unused aftercall is logged
 						setcall errormsg addtolog_withchar_ex_atunused_handle(ac_store_c,ac_store_s,(log_import),logfile)
@@ -28,6 +29,7 @@ else
 		#(cAFTERCALL)
 			setcall errormsg xfile_add_char_if((Xfile_aftercall_declare))
 			if errormsg=(noerror)
+				set g_e_b_p# (global_err_local)
 				setcall ac_current_data get_img_vdata_dataReg()  #this must be before addtosec
 				SetCall errormsg addtosec(#null,(aftercalldeclaresize),ptrdatasec)
 				if errormsg=(noerror)
@@ -58,7 +60,6 @@ else
 			endif
 		endelse
 		if errormsg=(noerror)
-			#set g_e_b_p# (TRUE)
 			if object=(TRUE)
 				set g_e_p# tableReg
 				if p_is_for_64_value#=(TRUE)

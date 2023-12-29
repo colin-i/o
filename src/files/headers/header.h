@@ -533,5 +533,8 @@ charx xfile_sharp_comment#1
 charx endfunction_has_write#1
 charx endfunction_has_write_marker#1
 
-const unreachableReg=-1
 valuex ac_current_data#1
+const global_err_notset=0
+const global_err_set=1     #pass_init
+const global_err_local=1
+const global_err_extern=2  #write and search unrefs

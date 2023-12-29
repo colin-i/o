@@ -76,7 +76,7 @@ If errormsg=noerr
 								if subtype=(cIMPORTX)
 									or import_ref_mask (x86_64bit)
 								endif
-								if g_e_b_p#=(FALSE)
+								if g_e_b_p#=(global_err_notset)
 									or import_ref_mask (aftercallthrowlessbit)
 								endif
 
