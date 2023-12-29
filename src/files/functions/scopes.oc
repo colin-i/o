@@ -176,7 +176,8 @@ function scopes_searchinvars(sd p_err,sv p_name)
 			if scope!=entrybags ##calloc was for every scope
 				call vars_log_set(fns,size) #more at the function
 			else
-				call vars_log_reset()
+			#named entry here
+				call vars_log_reset()  #for example, will not vmain.qwe but v.qwe, same for o.qwe. it's ok at ounused, it also has a realpath there
 			endelse
 			setcall data searchinvars_scope_warn(p_err,scope)
 			if data!=(NULL)
@@ -190,7 +191,6 @@ function scopes_searchinvars(sd p_err,sv p_name)
 	endwhile
 	return (NULL)
 endfunction
-
 
 function scopes_store_class()
 	sd ptrfunctionTagIndex%ptrfunctionTagIndex

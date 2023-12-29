@@ -64,8 +64,8 @@ If errormsg=noerr
 					Else
 						SetCall errormsg fnimp_exists(content,imp_size) #it is at first pass when only fns and imports are
 						If errormsg=noerr
-							if codeFnObj=(log_warn)
-								if subtype=(cIMPORT)
+							if subtype=(cIMPORT)
+								if codeFnObj=(log_warn)
 									sub impquotsz impescapes
 									add imp_mark names
 									setcall errormsg addtolog_withchar_ex_atunused_handle(imp_mark,impquotsz,(log_import),logfile)

@@ -108,3 +108,5 @@ set ptrcodeRegD# 0
 call vars_log_reset() #to let next variables be ".var"
 
 set xfile_sharp_comment 0
+
+set ac_current_data (unreachable_mem)

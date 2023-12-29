@@ -8,7 +8,7 @@ function endfunction(sd parses)
 			return unexeferr
 		else
 			Set main.innerfunction (FALSE)
-			call vars_log_reset() #to let next variables be ".var"
+			call vars_log_reset() #to let next variables be "o.var"
 		endelse
 	elseif parses=(pass_write)
 		sd err

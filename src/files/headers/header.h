@@ -532,3 +532,6 @@ charx xfile_sharp_comment#1
 
 charx endfunction_has_write#1
 charx endfunction_has_write_marker#1
+
+const unreachable_mem=-1
+valuex ac_current_data#1

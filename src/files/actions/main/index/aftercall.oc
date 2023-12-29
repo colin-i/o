@@ -16,13 +16,18 @@ else
 				set ac_store_c content;set ac_store_s comsize
 				set acsym_value 0;set acsym_size (sym_with_size);set acsym_shndx (NULL)
 				setcall errormsg xfile_add_base_if((Xfile_aftercall_import),content,comsize)
-				call advancecursors(pcontent,pcomsize,comsize)
+				if errormsg=(noerror)
+					if codeFnObj=(log_warn)
+						#the reason is commented when unused aftercall is logged
+						setcall errormsg addtolog_withchar_ex_atunused_handle(ac_store_c,ac_store_s,(log_import),logfile)
+					endif
+					call advancecursors(pcontent,pcomsize,comsize)
+				endif
 			endelse
 		else
 		#(cAFTERCALL)
 			setcall errormsg xfile_add_char_if((Xfile_aftercall_declare))
 			if errormsg=(noerror)
-				sd ac_current_data
 				setcall ac_current_data get_img_vdata_dataReg()  #this must be before addtosec
 				SetCall errormsg addtosec(#null,(aftercalldeclaresize),ptrdatasec)
 				if errormsg=(noerror)

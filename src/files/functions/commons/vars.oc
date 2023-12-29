@@ -130,7 +130,13 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 					setcall cb constants_bool((const_warn_get))
 					setcall returnvalue warn_or_log((log_constant),returnvalue,container,cb,warningssearch,varsize)
 				else
-					setcall returnvalue warn_or_log_vars(returnvalue,container,warningssearch,varsize)
+					if entrypoint#!=main.ac_current_data
+						setcall returnvalue warn_or_log_vars(returnvalue,container,warningssearch,varsize)
+					else
+						#here is a declared aftercall and not used here, can be used in another object with aftercallimport, it's useless to warn it like a variable, will not be imported like a file/scope.variable, will be imported with the linker, can be imitated with faftercall iaftercall for ounused
+						setcall returnvalue warn_or_log((log_function),returnvalue,container,ptrcodeFnObj#,warningssearch,varsize)
+						#and global_err_p at objects is not dataReg is a reference to the relocation, so ac_current_data is free
+					endelse
 				endelse
 				if returnvalue!=zero
 					Return returnvalue
