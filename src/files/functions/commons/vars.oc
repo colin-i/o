@@ -1,4 +1,14 @@
 
+#p
+function global_err_p()
+	data e#1
+	return #e
+endfunction
+#p
+function global_err_pBool()
+	data bool#1
+	return #bool
+endfunction
 
 #same or zero
 function warn_or_log(sd type,sd return_value,ss symbolname,sd log_option,sd p_err,sd size)
@@ -26,6 +36,21 @@ function warn_or_log_vars(sd return_value,ss symbolname,sd p_err,sd size)
 			endif
 		endif
 	endif
+	return return_value
+endfunction
+#same
+function warn_or_log_vars_full(sd return_value,ss symbolname,sd p_err,sd size,sd location)
+	#can with unreachableReg but all the logic until now was without that, so don't init ac_current_data
+	if global_err_pBool.bool=(TRUE)
+		if location=main.ac_current_data
+			data ptrcodeFnObj%ptrcodeFnObj
+			#here is a declared aftercall and not used here, can be used in another object with aftercallimport, it's useless to warn it like a variable, will not be imported like a file/scope.variable, will be imported with the linker, can be imitated with faftercall iaftercall for ounused
+			setcall return_value warn_or_log((log_function),return_value,symbolname,ptrcodeFnObj#,p_err,size)
+			#and global_err_p at objects is not dataReg is a reference to the relocation, so ac_current_data is free
+			return return_value
+		endif
+	endif
+	setcall return_value warn_or_log_vars(return_value,symbolname,p_err,size)
 	return return_value
 endfunction
 
@@ -130,13 +155,7 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 					setcall cb constants_bool((const_warn_get))
 					setcall returnvalue warn_or_log((log_constant),returnvalue,container,cb,warningssearch,varsize)
 				else
-					if entrypoint#!=main.ac_current_data
-						setcall returnvalue warn_or_log_vars(returnvalue,container,warningssearch,varsize)
-					else
-						#here is a declared aftercall and not used here, can be used in another object with aftercallimport, it's useless to warn it like a variable, will not be imported like a file/scope.variable, will be imported with the linker, can be imitated with faftercall iaftercall for ounused
-						setcall returnvalue warn_or_log((log_function),returnvalue,container,ptrcodeFnObj#,warningssearch,varsize)
-						#and global_err_p at objects is not dataReg is a reference to the relocation, so ac_current_data is free
-					endelse
+					setcall returnvalue warn_or_log_vars_full(returnvalue,container,warningssearch,varsize,entrypoint#)
 				endelse
 				if returnvalue!=zero
 					Return returnvalue

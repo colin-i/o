@@ -10,7 +10,7 @@
 
 #err
 Function maxsectioncheck(sd a,sd pb)
-#const unreachable_mem=-1
+#const unreachableReg=-1
 	add pb# a
 	if pb#<0
 		return "Section size cannot be greater than 2 147 483 647 (0x7fFFffFF)."

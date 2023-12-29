@@ -524,17 +524,6 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex,sd subtype)
 	return err
 endfunction
 
-#p
-function global_err_p()
-	data e#1
-	return #e
-endfunction
-#p
-function global_err_pBool()
-	data bool#1
-	return #bool
-endfunction
-
 #bool
 function is_linux_end()
 	sd ptrfnavailable%ptrfnavailable
