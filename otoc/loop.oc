@@ -66,79 +66,14 @@ function loop(sd input,sd output)
 					call dest(#pointer,output)
 					if main.result=(EXIT_FAILURE);break;end
 				end
+				if main.result=(EXIT_SUCCESS)
+					call writen(output,"}",1)
+				end
 			end
 			call free(buffer)
 		end
 	end
 	return main.result
-end
-
-function comment(sv *pbuffer)
-end
-function commentmulti(sv *pbuffer)
-end
-function commentlineend(sv *pbuffer)
-end
-function format(sv pbuffer)
-	charx fmt#1;call get_char(pbuffer,#fmt)
-end
-function include(sv *pbuffer)
-end
-include "function.oc"
-function functiondef(sv pbuffer)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
-
-	value intern^functiondef_intern
-	value *raw^functiondef_intern       #functiondef_raw
-	value *extern^functiondef_extern
-	value *entry^functiondef_extern     #functiondef_entry
-	charx type#1;call get_char(pbuffer,#type)
-	mult type :
-	sv dest^intern;add dest type
-	set dest dest#
-	call dest(pbuffer)
-end
-function declare(sv *pbuffer)
-end
-function action(sv *pbuffer)
-end
-function action2(sv *pbuffer)
-end
-function call(sv *pbuffer)
-end
-function callex(sv *pbuffer)
-end
-function if(sv *pbuffer)
-end
-function else(sv *pbuffer)
-end
-function while(sv *pbuffer)
-end
-function break(sv *pbuffer)
-end
-function continue(sv *pbuffer)
-end
-function end(sv *pbuffer,sd outfile)
-	call writen(outfile,"}",1)
-end
-function ret(sv *pbuffer)
-end
-function library(sv *pbuffer)
-end
-function import(sv *pbuffer)
-end
-function aftercall(sv *pbuffer)
-end
-function hex(sv *pbuffer)
-end
-function override(sv *pbuffer)
-end
-function orphan(sv *pbuffer)
-end
-function interrupt(sv *pbuffer)
-end
-function line(sv *pbuffer)
 end
 
 function get_char(sv pbuffer,ss pchar)
@@ -161,14 +96,101 @@ end
 
 importx "fwrite" fwrite
 
+include "function.oc"
+
+aftercall e
+
+function comment(sv pbuffer,sd outfile)
+	call write(outfile,"//",2)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	callret writen(outfile,pointer,sz)
+end
+function commentmulti(sv *pbuffer)
+end
+function commentlineend(sv *pbuffer)
+end
+function format(sv pbuffer)
+	charx fmt#1;call get_char(pbuffer,#fmt)
+end
+function include(sv *pbuffer)
+end
+function functiondef(sv pbuffer,sd outfile)
+	call write(outfile,"void ",5)
+
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	call write(outfile,pointer,sz)
+
+	call write(outfile,"(",1)
+
+	value intern^functiondef_intern
+	value *raw^functiondef_intern       #functiondef_raw
+	value *extern^functiondef_extern
+	value *entry^functiondef_extern     #functiondef_entry
+	charx type#1;call get_char(pbuffer,#type)
+	mult type :
+	sv dest^intern;add dest type
+	set dest dest#
+	call dest(pbuffer)
+
+	callret writen(outfile,"){",2)
+end
+function declare(sv *pbuffer)
+end
+function action(sv *pbuffer)
+end
+function action2(sv *pbuffer)
+end
+function call(sv *pbuffer)
+end
+function callex(sv *pbuffer)
+end
+function if(sv *pbuffer)
+end
+function else(sv *pbuffer)
+end
+function while(sv *pbuffer)
+end
+function break(sv *pbuffer)
+end
+function continue(sv *pbuffer)
+end
+function end(sv *pbuffer,sd outfile)
+	callret writen(outfile,"}",1)
+end
+function ret(sv *pbuffer)
+end
+function library(sv *pbuffer)
+end
+function import(sv *pbuffer)
+end
+function aftercall(sv *pbuffer)
+end
+function hex(sv *pbuffer)
+end
+function override(sv *pbuffer)
+end
+function orphan(sv *pbuffer)
+end
+function interrupt(sv *pbuffer)
+end
+function line(sv *pbuffer)
+end
+
 function writen(sd outfile,ss buf,sd sz)
+	call write(outfile,buf,sz)
+
+	sd items;set items fwrite("\n",1,1,outfile)
+	if items!=1
+		set main.result (EXIT_FAILURE)
+	end
+end
+
+function write(sd outfile,ss buf,sd sz)
 	sd items;set items fwrite(buf,sz,1,outfile)
 	if items!=1
 		set main.result (EXIT_FAILURE)
-		ret
-	end
-	set items fwrite("\n",1,1,outfile)
-	if items!=1
-		set main.result (EXIT_FAILURE)
+		aftercallenable
 	end
 end

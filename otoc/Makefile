@@ -31,6 +31,10 @@ endif
 
 OFLAGS+=${OFLAGSEXTRA}
 
+#uncomment this to not see ->     make: Circular otoc.oc.o <- otoc.oc dependency dropped.
+#${FULLOBJS}:
+#	echo something or will not work
+
 %.o: ${FULLOBJS}
 	${OCOMP} $< ${OFLAGS}
 

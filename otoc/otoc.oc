@@ -14,8 +14,6 @@ importx "fopen" fopen
 importx "fclose" fclose
 importx "strrchr" strrchr
 
-include "loop.oc"
-
 function out_file(sd in)
 	ss p;set p strrchr(in,(asciidot))
 	if p!=(NULL)
@@ -36,6 +34,10 @@ function out_file(sd in)
 	end
 	return (NULL)
 end
+
+include "loop.oc"
+
+#aftercalli
 
 entry main(sd argc,sv argv)
 	if argc=2
