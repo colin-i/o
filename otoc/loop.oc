@@ -98,7 +98,7 @@ importx "fwrite" fwrite
 
 include "function.oc"
 
-aftercall e
+aftercall *
 
 function comment(sv pbuffer,sd outfile)
 	call write(outfile,"//",2)
