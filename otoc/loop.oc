@@ -106,7 +106,12 @@ function comment(sv pbuffer,sd outfile)
 	call get_string(pbuffer,#sz,#pointer)
 	callret writen(outfile,pointer,sz)
 end
-function commentmulti(sv *pbuffer)
+function commentmulti(sv pbuffer,sd outfile)
+	call write(outfile,"/*",2)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	call write(outfile,pointer,sz)
+	callret writen(outfile,"*/",2)
 end
 function commentlineend(sv *pbuffer)
 end
