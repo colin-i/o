@@ -15,9 +15,7 @@ const Xfile_action=7
 const Xfile_action2=8
 const Xfile_call=9
 const Xfile_callex=10
-#
-#Const ifinscribe=-1
-#Const nocondnumber=-1
+#Const ifinscribe=-1; #Const nocondnumber=-1; const elseinscribe=0
 const Xfile_if=11
 const Xfile_else=12
 const Xfile_while=13
