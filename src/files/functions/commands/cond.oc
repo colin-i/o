@@ -420,7 +420,7 @@ function prev_cond(sd psecond)
 	if structure#=(ifinscribe)
 		set psecond# (nocondnumber)
 	else
-	#structure#=(elseinscribe)
+	#structure#=(elsenumber)
 		set psecond# (elsenumber)
 	endelse
 	return (ifnumber) #if,elseif
