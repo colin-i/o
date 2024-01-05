@@ -1,8 +1,8 @@
 
-const condpack_coderegpart=dwsz
-const condpack_numberpart=dwsz
+const condpack_codereg=dwsz
+const condpack_number=dwsz
 const condpack_whilebegin=dwsz    #this is a coderegpart
-const condpack_ifinscribepart=dwsz    #this a numberpart
+const condpack_ifinscribe=dwsz    #this a numberpart
 const condpack_elseinscribe=dwsz      #same
 const condpacksize=2*dwsz
 const elseinscribe=0
@@ -18,7 +18,7 @@ Function coderegtocondloop()
 	Data err#1
 	Data condloopsec%%ptr_conditionsloops
 
-	SetCall err addtosec(ptrcodeReg,(condpack_coderegpart),condloopsec)
+	SetCall err addtosec(ptrcodeReg,(condpack_codereg),condloopsec)
 	Return err
 EndFunction
 
@@ -35,7 +35,7 @@ Function condbeginwrite(data condnumber)
 	Data condloopsec%%ptr_conditionsloops
 
 	Data ptrcondnumber^condnumber
-	SetCall err addtosec(ptrcondnumber,(condpack_numberpart),condloopsec)
+	SetCall err addtosec(ptrcondnumber,(condpack_number),condloopsec)
 	Return err
 EndFunction
 
@@ -123,21 +123,23 @@ Function condend(data number)
 
 	sd err;setcall err condendtest(#structure,number,codeoffset)
 	if err=(noerror)
-		If number=whilenr
+		if number=(elsenumber)
+			if main.parses=(pass_write)
+				call condendwrite(structure,codeoffset)
+			endif
+			add reg (condpack_elseinscribe) #to match for ptrcReg
+		elseIf number=whilenr
 			if main.parses=(pass_write)
 				setcall err jumpback(codeoffset,structure)
 				If err!=(noerror)
 					Return err
 				EndIf
+				call condendwrite(structure,codeoffset)
 			endif
 			add reg (condpack_whilebegin)   #to match for ptrcReg
-		elseif number=(elseinscribe)
-			add reg (condpack_elseinscribe) #to match for ptrcReg
-		EndelseIf
-
-		if main.parses=(pass_write)
+		elseif main.parses=(pass_write)
 			call condendwrite(structure,codeoffset)
-		endif
+		EndelseIf
 
 		sub reg structure
 		Sub ptrcReg# reg
@@ -155,9 +157,9 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 	while 1=1
 		Data lastcondition#1
 
-		sub conds (condpack_numberpart)
+		sub conds (condpack_number)
 		Set lastcondition conds#
-		sub conds (condpack_coderegpart)
+		sub conds (condpack_codereg)
 
 		if lastcondition=(breaknumber)
 			if number=(whilenumber)
@@ -177,15 +179,15 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 					#don't increase size to align ifinscribe and just swap
 
 					sd cursor;set cursor conds
-					sub cursor (condpack_numberpart)
+					sub cursor (condpack_number)
 					sd size
 					if cursor#=(ifinscribe)
 						set size (condpacksize)
 					elseif cursor#=(elseinscribe)
 						set size (condpacksize)
 					else
-						set size (condpack_coderegpart)
-						add cursor (condpack_numberpart)
+						set size (condpack_codereg)
+						add cursor (condpack_number)
 					endelse
 					sd aux#2
 					call memtomem(#aux,cursor,size)
@@ -221,7 +223,7 @@ endfunction
 
 #err
 function jumpback(sd codeoffset,sd condstruct)
-	sub condstruct (condpack_coderegpart)
+	sub condstruct (condpack_codereg)
 	sub codeoffset condstruct#
 	neg codeoffset
 	sd err
@@ -278,7 +280,7 @@ Function conditionscondend(data close1,data close2)
 		Call getptrcontReg(structure,ptrptrReg)
 		Data Reg#1
 		Set Reg ptrReg#
-		Sub Reg (condpack_ifinscribepart)
+		Sub Reg (condpack_ifinscribe)
 		Set ptrReg# Reg
 	endif
 	Return err
@@ -287,7 +289,7 @@ function prevcond()
 	vData cl#1
 	vData structure%%ptr_conditionsloops
 	Call getcontplusReg(structure,#cl)
-	Sub cl (condpack_numberpart)
+	Sub cl (condpack_number)
 	return cl#
 endfunction
 
@@ -312,7 +314,7 @@ Function closeifopenelse()
 		#this for unreachable else jumps bool
 		vData structure%%ptr_conditionsloops
 		data false=elseinscribe
-		setcall err addtosec(#false,(dwsz),structure)
+		setcall err addtosec(#false,(condpack_elseinscribe),structure)
 		if err=(noerror)
 			Data elsenr=elsenumber
 			SetCall err condbeginwrite(elsenr)
@@ -332,10 +334,10 @@ function continue()
 		add structure regnr
 		while start!=structure
 			sd type
-			sub structure (condpack_numberpart)
+			sub structure (condpack_number)
 			set type structure#
 			if type!=(ifinscribe)
-				sub structure (condpack_coderegpart)
+				sub structure (condpack_codereg)
 				if type=(whilenumber)
 					vdata ptrcodesec%%ptr_codesec
 					sd codeoffset
@@ -364,10 +366,10 @@ function break()
 		add structure regnr
 		while start!=structure
 			sd type
-			sub structure (condpack_numberpart)
+			sub structure (condpack_number)
 			set type structure#
 			if type!=(ifinscribe)
-				sub structure (condpack_coderegpart)
+				sub structure (condpack_codereg)
 				if type=(whilenumber)
 					sd err
 					SetCall err condjump(0)
@@ -403,7 +405,7 @@ function prev_cond(sd psecond)
 		return (nocondnumber) #function
 	endif
 	call getcontplusReg(condloop,#structure)
-	sub structure (condpack_numberpart)
+	sub structure (condpack_number)
 	while structure#=(breaknumber)
 		sub structure (condpacksize)
 	endwhile
