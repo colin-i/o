@@ -181,15 +181,21 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 					sd cursor;set cursor conds
 					sub cursor (condpack_number)
 					sd size
+					set size (condpack_codereg)
 					if cursor#=(ifinscribe)
-						set size (condpacksize)
+						add size (condpack_ifinscribe)
 					elseif cursor#=(elseinscribe)
-						set size (condpacksize)
+						add size (condpack_elseinscribe)
+						sd test;set test cursor
+						sub test (condpack_elseinscribe)
+						if test#=(ifinscribe) #need to get also ifinscribe, it will be closed in conditionscondend
+							sub cursor (condpack_ifinscribe)
+							add size (condpack_ifinscribe)
+						endif
 					else
-						set size (condpack_codereg)
 						add cursor (condpack_number)
 					endelse
-					sd aux#2
+					sd aux#3
 					call memtomem(#aux,cursor,size)
 					while conds!=last
 						add conds (condpacksize)
@@ -238,11 +244,6 @@ Function conditionscondend(data close1,data close2)
 
 	setcall err xfile_add_end_ifif()
 	if err=(noerror)
-		Data loop#1
-		Data loopini=1
-		Data loopstop=0
-		Set loop loopini
-
 		Data number#1
 		Set number close1
 
@@ -250,7 +251,7 @@ Function conditionscondend(data close1,data close2)
 		Data elsenr=elsenumber
 		Data structure%%ptr_conditionsloops
 
-		While loop=loopini
+		While 1=1
 			SetCall err condend(number)
 			If err!=noerr
 				Return err
@@ -263,14 +264,14 @@ Function conditionscondend(data close1,data close2)
 					if c=(ifinscribe)
 						call Message("Warning: ENDELSEIF not matching IF")
 					endif
-				Else
-					Set loop loopstop
-				EndElse
+					continue
+				endif
+				break
 			EndIf
 			If number=elsenr
 				setcall c prevcond()
 				if c=(ifinscribe)
-					Set loop loopstop
+					break
 				endif
 			EndIf
 		EndWhile
