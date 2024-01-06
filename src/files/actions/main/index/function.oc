@@ -4,7 +4,7 @@ If innerfunction=true
 	Str ptrfinf^finferr
 	Set errormsg ptrfinf
 ElseIf programentrypoint!=codesecReg
-	Char funcafterentry="Unavailable FUNCTION/ENTRY[...] statement; The start address was at File: %s; Line: %s."
+	Char funcafterentry="Unavailable FUNCTION/ENTRY[...] statement; The start address was at File: %s ; Line: %s." #ending dot is ok here, another text is coming then
 	Str fnafteren^funcafterentry
 
 	call dwtomem(entrylinenumber,uint32s)
