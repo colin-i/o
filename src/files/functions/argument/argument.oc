@@ -45,7 +45,7 @@ function argument_return(sd termswitch,ss pop,sd pregprepare_bool,sv pptrcontinu
 	call setimm()
 	Set pop# (moveatprocthemem)
 	Set pregprepare_bool# (TRUE)
-	set main.endfunction_has_write_marker (FALSE)
+	set main.ret_cont_break_marker (TRUE)
 
 	if termswitch=(TRUE)
 		data ebxregnumber=ebxregnumber

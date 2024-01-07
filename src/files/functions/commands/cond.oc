@@ -4,8 +4,9 @@ const condpack_number=dwsz
 const condpack_whilebegin=dwsz    #this is a coderegpart
 const condpack_ifinscribe=dwsz    #this a numberpart
 const condpack_elseinscribe=dwsz      #same
-const condpacksize=2*dwsz
-const elseinscribe=0
+const condpacksize=condpack_codereg+condpack_number
+const elseinscribe_write=0
+const elseinscribe_skip=1
 
 #err
 Function coderegtocondloop()
@@ -124,10 +125,13 @@ Function condend(data number)
 	sd err;setcall err condendtest(#structure,number,codeoffset)
 	if err=(noerror)
 		if number=(elsenumber)
+			sd marker;set marker structure
+			sub structure (condpack_elseinscribe) #to match for ptrcReg
 			if main.parses=(pass_write)
-				call condendwrite(structure,codeoffset)
+				if structure#=(elseinscribe_write)
+					call condendwrite(marker,codeoffset)
+				endif
 			endif
-			add reg (condpack_elseinscribe) #to match for ptrcReg
 		elseIf number=whilenr
 			if main.parses=(pass_write)
 				setcall err jumpback(codeoffset,structure)
@@ -136,7 +140,7 @@ Function condend(data number)
 				EndIf
 				call condendwrite(structure,codeoffset)
 			endif
-			add reg (condpack_whilebegin)   #to match for ptrcReg
+			sub structure (condpack_whilebegin)   #to match for ptrcReg
 		elseif main.parses=(pass_write)
 			call condendwrite(structure,codeoffset)
 		EndelseIf
@@ -184,7 +188,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 					set size (condpack_codereg)
 					if cursor#=(ifinscribe)
 						add size (condpack_ifinscribe)
-					elseif cursor#=(elseinscribe)
+					elseif number=(elsenumber)
 						add size (condpack_elseinscribe)
 						sd test;set test cursor
 						sub test (condpack_elseinscribe)
@@ -299,10 +303,12 @@ Function closeifopenelse()
 	Data noerr=noerror
 
 	if main.parses=(pass_write)
-		SetCall err condjump(0)
-		If err!=noerr
-			Return err
-		EndIf
+		if main.ret_cont_break=(FALSE)
+			SetCall err condjump(0)
+			If err!=noerr
+				Return err
+			EndIf
+		endif
 	endif
 	Data ifnr=ifnumber
 	SetCall err condend(ifnr)
@@ -314,12 +320,19 @@ Function closeifopenelse()
 	if err=(noerror)
 		#this for unreachable else jumps bool
 		vData structure%%ptr_conditionsloops
-		data false=elseinscribe
-		setcall err addtosec(#false,(condpack_elseinscribe),structure)
-		if err=(noerror)
-			Data elsenr=elsenumber
-			SetCall err condbeginwrite(elsenr)
-		endif
+		if main.ret_cont_break=(FALSE)
+			data e1=elseinscribe_write
+			setcall err addtosec(#e1,(condpack_elseinscribe),structure)
+			if err=(noerror)
+				Data elsenr=elsenumber
+				SetCall err condbeginwrite(elsenr)
+			endif
+		else
+			data e2=elseinscribe_skip
+			data *ignored codesection index#1
+			data *nr=elsenumber
+			setcall err addtosec(#e2,(condpack_elseinscribe+condpacksize),structure)
+		endelse
 	endif
 	Return err
 EndFunction

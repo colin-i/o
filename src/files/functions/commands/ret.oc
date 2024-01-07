@@ -16,7 +16,7 @@ function writeret()
 		setcall continuationsize getreturn(#continuation)
 		setcall err addtosec(continuation,continuationsize,ptrcodesec)
 	endelse
-	set main.endfunction_has_write_marker (FALSE)
+	set main.ret_cont_break_marker (TRUE)
 	return err
 endfunction
 

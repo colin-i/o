@@ -16,7 +16,7 @@ function endfunction(sd parses)
 		if err=(noerror)
 			setCall err checkcondloopclose()
 			If err=(noerror)
-				if main.endfunction_has_write=(TRUE)
+				if main.ret_cont_break=(FALSE)
 					data ptrreturn#1
 					data sizereturn#1
 					data ptrptrreturn^ptrreturn

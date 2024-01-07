@@ -147,7 +147,7 @@ if errormsg=(noerror)
 					endelse
 				endif
 			else
-				set endfunction_has_write_marker (TRUE)  #why to loss space and write in every command when can write a default
+				set ret_cont_break_marker (FALSE)  #why to loss space and write in every command when can write a default
 			endelse
 			if commandset=(cCOMMENT)
 				Call advancecursors(pcontent,pcomsize,comsize)
@@ -243,7 +243,7 @@ if errormsg=(noerror)
 
 					Set fnavailable zero
 				else
-					set endfunction_has_write endfunction_has_write_marker ##this is relevant only at pass_write
+					set ret_cont_break ret_cont_break_marker ##this is relevant only at pass_write
 				Endelse
 
 				If comsize!=zero

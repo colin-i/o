@@ -530,8 +530,8 @@ data xbool#1
 data xfile#1
 charx xfile_sharp_comment#1
 
-charx endfunction_has_write#1
-charx endfunction_has_write_marker#1
+charx ret_cont_break#1
+charx ret_cont_break_marker#1
 
 valuex ac_current_data#1
 const global_err_notset=0
