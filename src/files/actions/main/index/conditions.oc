@@ -42,4 +42,5 @@ Elseif parses=(pass_write)
 			setcall errormsg continue()
 		EndIf
 	EndElse
+	set ret_cont_break_marker (TRUE)
 endelseif
