@@ -99,7 +99,13 @@ uninstall:
 
 test:
 	echo "test"
-	cd linux; ../o o.oc nul_res_pref 1; mv o z; LD_LIBRARY_PATH=${linker} ${linker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; diff o z
+	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
+	if [ -z "${linker}" ]; then \
+		./z o.oc nul_res_pref 1; \
+	else \
+		LD_LIBRARY_PATH=${linker} ${linker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
+	fi; \
+	diff o z
 #cannot extern LD_LIBRARY_PATH, will wrong between them
 #linker=/home/bc/Downloads/lib32  make test
 #there is a backport in ppa-stagging for jammy
