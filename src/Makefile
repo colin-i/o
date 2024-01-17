@@ -99,10 +99,9 @@ uninstall:
 
 test:
 	echo "test"
-	cd linux; ../o o.oc nul_res_pref 1; mv o z; ${linker} ./z o.oc nul_res_pref 1; diff o z
-# linker=/home/bc/Desktop/out/libc6/lib32/ld-linux.so.2 make test
-#/home/bc/Desktop/out/libc6-i386.AppImage /home/bc/o/ocompiler-1/src/linux/z /home/bc/o/ocompiler-1/src/linux/o.oc nul_res_pref 1
-#2.36-0ubuntu4 (jammy) was ok, backportpackage is working for esm packages (tested)
-#DEB_BUILD_OPTIONS=nocheck debuild -us -uc
+	cd linux; ../o o.oc nul_res_pref 1; mv o z; LD_LIBRARY_PATH=${linker} ${linker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; diff o z
+#cannot extern LD_LIBRARY_PATH, will wrong between them
+#linker=/home/bc/Downloads/lib32  make test
+#there is a backport in ppa-stagging for jammy
 
 .PHONY: all install clean distclean uninstall test
