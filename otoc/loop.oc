@@ -60,6 +60,7 @@ function loop(sd input,sd output)
 					value *Xfile_orphan^orphan
 					value *Xfile_interrupt^interrupt
 					value *Xfile_line^line
+					#const Xfile_last_command=Xfile_line
 					mult command :
 					sv dest^Xfile_comment;add dest command
 					set dest dest#
