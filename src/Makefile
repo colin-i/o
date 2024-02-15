@@ -21,6 +21,9 @@ endif
 
 ifndef linker
 linker=/lib/ld-linux.so.2
+#testlinker=
+else
+test_has_linker=1
 endif
 
 ifndef prefix
@@ -100,7 +103,7 @@ uninstall:
 test:
 	echo "test"
 	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
-	if [ -z "${linker}" ]; then \
+	if [ -z "${test_has_linker}" ]; then \
 		./z o.oc nul_res_pref 1; \
 	else \
 		LD_LIBRARY_PATH=${linker} ${linker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
