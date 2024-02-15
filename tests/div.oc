@@ -20,3 +20,10 @@ hex 144,144,144,144
 divu b b
 hex 144,144,144,144
 divu c c
+
+hex 144,144,144,144
+mult a a
+hex 144,144,144,144
+mult b b
+hex 144,144,144,144
+mult c c
