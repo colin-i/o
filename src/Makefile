@@ -107,7 +107,7 @@ test:
 	fi; \
 	diff o z
 #cannot extern LD_LIBRARY_PATH, will wrong between them
-#linker=/home/bc/Downloads/lib32  make test
+#use ./test32
 #there is a backport in ppa-stagging for jammy
 
 .PHONY: all install clean distclean uninstall test
