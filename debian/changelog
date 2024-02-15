@@ -1,3 +1,9 @@
+ocompiler (1-5+143) xenial; urgency=medium
+
+  * divu fix
+
+ -- bc <bc@bc-Type1ProductConfigId>  Thu, 15 Feb 2024 09:04:06 +0200
+
 ocompiler (1-5+142) xenial; urgency=medium
 
   * garbage code
