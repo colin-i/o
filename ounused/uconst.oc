@@ -42,7 +42,7 @@ endfunction
 function uconst_search(sv fs,sd s,sd sz,sd is_new)
 	sd cursor
 	set cursor fs#
-	add fs :
+	add fs (cont_mem)
 	set fs fs#d^
 	add fs cursor
 	sv fls%files_p
@@ -65,11 +65,11 @@ function uconst_unused(sv cont,sd ofs)
 	set uns cont
 	sd cursor
 	set cursor cont#
-	add cont :
+	add cont (cont_mem)
 	sd end
 	set end cont#d^
 	add end cursor
-	add cont (dword)
+	add cont (cont_sizes)
 	while cursor!=end
 		sd offset
 		set offset cursor#

@@ -1,9 +1,9 @@
 
 const dword=4
 
-function alloc(sd p)
+function alloc10(sd p)
 	sd er
-	setcall er alloc_throwless(p)
+	setcall er alloc10_throwless(p)
 	if er=(NULL)
 		ret
 	endif
@@ -26,7 +26,7 @@ function addtocont(sv cont,ss s,sd sz)
 	call ralloc(cont,size)
 	sd mem
 	set mem cont#
-	add cont :
+	add cont (cont_mem)
 	add mem cont#d^
 	sub mem sz
 	call memcpy(mem,s,sz)
@@ -40,7 +40,7 @@ function addtocont_rev(sv cont,ss s,sd sz)
 	call ralloc(cont,size)
 	sd mem
 	set mem cont#
-	add cont :
+	add cont (cont_mem)
 	add mem cont#d^
 	sub mem (dword)
 	set mem# sz
@@ -52,7 +52,7 @@ function adddwordtocont(sv cont,sd the_dword)
 	call ralloc(cont,(dword))
 	sd pos=-dword
 	add pos cont#
-	add cont :
+	add cont (cont_mem)
 	add pos cont#d^
 	set pos# the_dword
 endfunction

@@ -3,28 +3,39 @@ include "./mem.oc"
 
 function allocs()
 	sv ip%imp_mem_p
-	call alloc(ip)
+	call alloc10(ip)
 	sv fp%fn_mem_p
-	call alloc(fp)
-	#
+	call alloc10(fp)
+
 	sv cwd%cwd_p
 	setcall cwd# get_current_dir_name()
 	if cwd#=(NULL)
 		call erExit("get_current_dir_name error")
 	endif
-	sd size=:
+	sd size=cont_mem
 	add size cwd
 	sd sz
 	setcall sz strlen(cwd#)
 	inc sz
 	set size# sz
+	add size (cont_size)
+	set size# sz
 	call ralloc(cwd,(dword))
 	set cwd cwd#
 	add cwd sz
 	set cwd#d^ sz
-	#sv cursor=dword;add cursor cwd;setcall cursor# get_current_dir_name();if cursor#==(NULL);call erExit("get_current_dir_name error");endif;sd size;setcall size strlen(cursor#);inc size;set cwd#d^ size;call ralloc(cwd,(dword));set cursor cursor#;add cursor size;set cursor#d^ size
+
 	sv fls%files_p
-	call alloc(fls)
+	call alloc10(fls)
 	sv lvs%levels_p
-	call alloc(lvs)
+	call alloc10(lvs)
+
+	sv linemem%logf_mem_p
+	sd er;set er malloc_throwless(linemem,10)
+	if er=(NULL)
+		add linemem (cont_mem)
+		set linemem#d^ 10
+		ret
+	end
+	call erExit(er)
 endfunction

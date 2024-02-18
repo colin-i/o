@@ -18,11 +18,11 @@ function log_file(ss file)
 		sv fp%logf_p
 		set fp# f
 		sv p%logf_mem_p
+		sd bsz=cont_mem;add bsz p
 		sd sz=0
 		sd link=TRUE
 		while sz!=-1
-			sd bsz
-			setcall sz getline(p,#bsz,f)
+			setcall sz getline(p,bsz,f)
 			if sz!=-1
 				#knowing line\r\n from ocompiler
 				sub sz 2
@@ -137,9 +137,9 @@ function incrementdir(ss s,sd sz)
 endfunction
 function decrementdir()
 	sv cwd%cwd_p
-	sd mem=:
+	sd mem=cont_mem
 	add mem cwd
-	set mem mem#v^
+	set mem mem#
 	add mem cwd#
 	#sd cwd%cwd_p;sd mem=dword;add mem cwd;set mem mem#v^;add mem cwd#
 	sub mem (dword)

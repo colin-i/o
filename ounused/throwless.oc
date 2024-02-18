@@ -1,6 +1,8 @@
 
 #mem
 
+const a_size=0x100
+
 function malloc_throwless(sv p,sd sz)
 	setcall p# malloc(sz)
 	if p#!=(NULL)
@@ -8,12 +10,14 @@ function malloc_throwless(sv p,sd sz)
 	endif
 	return "malloc error"
 endfunction
-function alloc_throwless(sd p)
+function alloc10_throwless(sd p)
 	sd er
-	setcall er malloc_throwless(p,0)
+	setcall er malloc_throwless(p,(a_size))
 	if er=(NULL)
-		add p :
+		add p (cont_mem)
 		set p# 0
+		add p (cont_size)
+		set p# (a_size)
 		return (NULL)
 	endif
 	return er
@@ -21,15 +25,22 @@ function alloc_throwless(sd p)
 endfunction
 #function ralloc_throwless(sd p,sd sz);add sz p#;if sz>0;sv cursor=dword;add cursor p;setcall cursor# realloc(cursor#,sz);if cursor#!=(NULL);set p# sz
 function ralloc_throwless(sv p,sd sz)
-	sd cursor=:
+	sd cursor=cont_mem
 	add cursor p
 	add sz cursor#
 	if sz>0
-		setcall p# realloc(p#,sz)
+		sd all_size=cont_size;add all_size cursor
+		if sz<=all_size#
+			set cursor# sz
+			return (NULL)
+		end
+		set all_size# sz
+		add all_size# (a_size)
+		setcall p# realloc(p#,all_size#)
 		if p#!=(NULL)
 			set cursor# sz
 			return (NULL)
-		endif
+		end
 		return "realloc error"
 	elseif sz=0  #equal 0 discovered at decrementfiles, since C23 the behaviour is undefined
 	#using this quirk, lvs[0] will be used at constants at end, when size is 0
@@ -43,7 +54,7 @@ endfunction
 #-1/offset
 function pos_in_cont(sv cont,ss s,sd sz)
 	sd p
-	sd mem=:
+	sd mem=cont_mem
 	set p cont#
 	add mem cont
 	set mem mem#
@@ -70,29 +81,35 @@ endfunction
 #inits
 
 function inits()
-	value logf#1
-	const logf_p^logf
-	set logf (NULL)
-	value logf_mem#1
-	const logf_mem_p^logf_mem
-	set logf_mem (NULL)
-	value imp_mem#1;data *#1
+	value imp_mem#1;data *#1;data *#1
 	const imp_mem_p^imp_mem
 	set imp_mem (NULL)
-	value fn_mem#1;data *#1
+	value fn_mem#1;data *#1;data *#1
 	const fn_mem_p^fn_mem
 	set fn_mem (NULL)
-	value cwd#1;data *#1
+	value cwd#1;data *#1;data *#1
 	const cwd_p^cwd
 	set cwd (NULL)
-	value files#1;data files_d#1
+	value files#1;data files_d#1;data *#1
 	const files_p^files
 	const files_dp^files_d
 	set files (NULL)
-	value levels#1;data levels_d#1
+	value levels#1;data levels_d#1;data *#1
 	const levels_p^levels
 	const levels_dp^levels_d
 	set levels (NULL)
+
+	value logf_mem#1;data *#1
+	const logf_mem_p^logf_mem
+	set logf_mem (NULL)
+
+	value logf#1
+	const logf_p^logf
+	set logf (NULL)
+
+	#value aux#1;data *#1;data *#1
+	#const aux_p^aux
+
 	call uconst_resolved(0)
 endfunction
 
@@ -124,7 +141,11 @@ function freeall()
 					sv lvs%levels_p
 					if lvs#!=(NULL)
 						call free(lvs#)
-						call logclose()
+						sv p%logf_mem_p
+						if p#!=(NULL)
+							call free(p#)
+							call logclose()
+						endif
 					endif
 				endif
 			endif
@@ -137,11 +158,6 @@ function logclose()
 	if fp#!=(NULL)
 		call fclose(fp#)
 		set fp# (NULL)
-		sv p%logf_mem_p
-		if p#!=(NULL)
-			call free(p#)
-			set p# (NULL)
-		endif
 	endif
 endfunction
 
@@ -152,7 +168,7 @@ function freefiles()
 	sv container%files_p
 	sv start
 	set start container#
-	add container :
+	add container (cont_mem)
 	set container container#d^
 	add container start
 	while start!=container
@@ -179,7 +195,7 @@ function fileentry_init(sd cont)
 	sd b;set b cont;add b (size_conts)
 	while cont!=b
 		sd er
-		setcall er alloc_throwless(cont)
+		setcall er alloc10_throwless(cont)
 		if er!=(NULL)
 			call fileentry_uninit_base(a,cont)
 			return er
@@ -231,7 +247,7 @@ function constssize()
 	sv end%files_p
 	sv cursor
 	set cursor end#
-	add end :
+	add end (cont_mem)
 	set end end#d^
 	add end cursor
 	#sv cursor%files_p;sd end;set end cursor#d^;add cursor (dword);set cursor cursor#;add end cursor
@@ -247,7 +263,7 @@ endfunction
 function constssize_file(sv end)
 	sd cursor
 	set cursor end#
-	add end :
+	add end (cont_mem)
 	set end end#d^
 	add end cursor
 	sd sz=0
@@ -284,7 +300,7 @@ function importssize()
 	sd p
 	sd mem
 	set p cont#
-	add cont :
+	add cont (cont_mem)
 	set mem cont#d^
 	add mem p
 	#set mem cont#d^;add cont (dword);set p cont#;add mem p

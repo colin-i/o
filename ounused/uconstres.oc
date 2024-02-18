@@ -19,20 +19,22 @@ function uconstres_spin(sd f,sd is_new)
 		add f (size_cont)
 		sd double
 		set double f
-		add double (size_cont+:)
+		add double (size_cont+cont_mem)
 		if double#!=0
-			sub double :
-			value aux#1;data *#1
+			sub double (cont_mem)
+
+			value aux#1;data *#1;data *#1
 			call memcpy(#aux,f,(size_cont))
 			call memcpy(f,double,(size_cont))
 			call memcpy(double,#aux,(size_cont))
+
 			set f double
 		endif
-		add f :
+		add f (cont_mem)
 		sd size
 		set size f#
 		if size!=0
-			sub f :
+			sub f (cont_mem)
 			call uconst_resolved(1,size)
 			neg size
 			call ralloc(f,size)
@@ -44,7 +46,7 @@ function uconstres_search(sv f,sd is_new)
 #there is a segmentation if from a random (not log) file like "format elfobjso", TO DO when wanted
 	sd cursor
 	set cursor f#
-	add f :
+	add f (cont_mem)
 	set f f#d^
 	add f cursor
 	sv fls%files_p
@@ -61,14 +63,14 @@ function uconst_resolve(ss const_str,ss var_str)
 	sv fls%files_p
 	sv cursor
 	set cursor fls#
-	add fls :
+	add fls (cont_mem)
 	set fls fls#d^
 	add fls cursor
 	while cursor!=fls
-		sd pointer=3*size_cont+:
+		sd pointer=3*size_cont+(cont_mem)
 		add pointer cursor#
 		if pointer#!=0
-			sub pointer :
+			sub pointer (cont_mem)
 			set pointer pointer#v^
 			set cursor cursor#
 			set cursor cursor#

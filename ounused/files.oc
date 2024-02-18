@@ -3,7 +3,10 @@ const FALSE=0
 const TRUE=1
 
 #const size_cont=dword+:
-const size_cont=:+dword
+const cont_mem=:
+const cont_size=dword
+const cont_sizes=cont_size+dword
+const size_cont=cont_mem+cont_sizes
 const size_conts=5*size_cont
 
 function fileentry_add(sd full,sd len)
@@ -73,7 +76,7 @@ function fileentry_exists(sd s)
 	sd init;set init fls#
 	sv p
 	set p init
-	add fls :
+	add fls (cont_mem)
 	set fls fls#d^
 	add fls p
 	while p!=fls

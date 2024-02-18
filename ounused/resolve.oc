@@ -4,7 +4,7 @@ function resolve(sd j)
 	sd p
 	sd mem
 	set p cont#
-	add cont :
+	add cont (cont_mem)
 	set mem cont#d^
 	add mem p
 	#set mem cont#d^;add cont (dword);set p cont#;add mem p
