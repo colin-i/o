@@ -1,7 +1,7 @@
 
 #mem
 
-const a_size=0x100
+const a_size=0x1000
 const dummy_alloc=1
 
 function malloc_throwless(sv p,sd sz)
