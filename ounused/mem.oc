@@ -1,9 +1,9 @@
 
 const dword=4
 
-function alloc10(sd p)
+function alloc1(sd p)
 	sd er
-	setcall er alloc10_throwless(p)
+	setcall er alloc1_throwless(p)
 	if er=(NULL)
 		ret
 	endif

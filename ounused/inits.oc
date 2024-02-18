@@ -3,9 +3,9 @@ include "./mem.oc"
 
 function allocs()
 	sv ip%imp_mem_p
-	call alloc10(ip)
+	call alloc1(ip)
 	sv fp%fn_mem_p
-	call alloc10(fp)
+	call alloc1(fp)
 
 	sv cwd%cwd_p
 	setcall cwd# get_current_dir_name()
@@ -26,9 +26,9 @@ function allocs()
 	set cwd#d^ sz
 
 	sv fls%files_p
-	call alloc10(fls)
+	call alloc1(fls)
 	sv lvs%levels_p
-	call alloc10(lvs)
+	call alloc1(lvs)
 
 	sv linemem%logf_mem_p
 	sd er;set er malloc_throwless(linemem,10)

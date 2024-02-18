@@ -2,6 +2,7 @@
 #mem
 
 const a_size=0x100
+const dummy_alloc=1
 
 function malloc_throwless(sv p,sd sz)
 	setcall p# malloc(sz)
@@ -10,14 +11,14 @@ function malloc_throwless(sv p,sd sz)
 	endif
 	return "malloc error"
 endfunction
-function alloc10_throwless(sd p)
+function alloc1_throwless(sd p)
 	sd er
-	setcall er malloc_throwless(p,(a_size))
+	setcall er malloc_throwless(p,(dummy_alloc)) #malloc(0) on some platforms is NULL
 	if er=(NULL)
 		add p (cont_mem)
 		set p# 0
 		add p (cont_size)
-		set p# (a_size)
+		set p# (dummy_alloc)
 		return (NULL)
 	endif
 	return er
@@ -195,7 +196,7 @@ function fileentry_init(sd cont)
 	sd b;set b cont;add b (size_conts)
 	while cont!=b
 		sd er
-		setcall er alloc10_throwless(cont)
+		setcall er alloc1_throwless(cont)
 		if er!=(NULL)
 			call fileentry_uninit_base(a,cont)
 			return er
