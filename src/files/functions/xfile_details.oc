@@ -105,7 +105,7 @@ data xf_commas#1;data xf_pos#1
 function xfile_prepare_commas_if()
 	if main.xfile!=(openno)
 		sd err
-		setcall main.xf_pos seekfile(main.xfile,0,(SEEK_CUR),#err)
+		setcall main.xf_pos tellfile(main.xfile,#err)
 		if main.xf_pos=-1
 			return err
 		endif
@@ -122,7 +122,7 @@ endfunction
 function xfile_add_commas_if()
 	if main.xfile!=(openno)
 		sd err
-		sd off;setcall off seekfile(main.xfile,0,(SEEK_CUR),#err)
+		sd off;setcall off tellfile(main.xfile,#err)
 		if off=-1;return err;endif
 		sub off main.xf_pos
 		sd mem

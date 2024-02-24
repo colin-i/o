@@ -321,8 +321,8 @@ function changedir(ss path)
 endfunction
 
 #lseek
-function seekfile(sd file,sd n,sd whence,sv perr)
-	sd p;setcall p lseek(file,n,whence)
+function tellfile(sd file,sv perr)
+	sd p;setcall p lseek(file,0,(SEEK_CUR))
 	if p=-1    #see the other lseek
 		set perr# "lseek error"
 	endif
