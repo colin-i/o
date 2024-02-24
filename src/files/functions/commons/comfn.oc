@@ -329,15 +329,6 @@ function seekfile(sd file,sd n,sd whence,sv perr)
 	return p
 endfunction
 
-#err
-function readfile(sd file,sd mem,sd len)
-	sd sz;setcall sz read(file,mem,len)
-	if sz!=len
-		return "File read error."
-	endif
-	return (noerror)
-endfunction
-
 #################Mixt
 #offset is when wanting to put the content at the allocation+offset
 Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
@@ -359,7 +350,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 	SetCall size lseek(file,0,seek_end)   #off_t is signed on elf32(ff... on c is only -1 at if, not 4billions...)
 	If size!=-1
 		#a simple test is showing that gedit can write, rm can delete, this is not exclusive
-		#The disk space won't be released until the last process with an open file descriptor for the file finally closes the file.
+		#anyway, The disk space won't be released until the last process with an open file descriptor for the file finally closes the file.
 		call lseek(file,0,seek_set)
 		#offset here
 		add size offset       ##this is only with MAX_PATH more on a int file size
@@ -375,10 +366,7 @@ Function file_get_content_ofs(str path,data ptrsize,data ptrmem,data offset)
 			sub size offset
 			#
 
-			setcall err readfile(file,mem,size)
-			if err!=(noerror)
-				call free(ptrmem#)
-			endif
+			call read(file,mem,size) #no err? the disk space can change/increase but is not decreased or released
 		EndIf
 	else
 		set err "File length function error."

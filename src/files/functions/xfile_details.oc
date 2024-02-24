@@ -129,21 +129,12 @@ function xfile_add_commas_if()
 		setcall err mem_alloc(off,#mem)
 		if err=(noerror)
 			sd sz
-			setcall sz seekfile(main.xfile,main.xf_pos,(SEEK_SET),#err)
-			if sz!=-1
-				setcall err readfile(main.xfile,mem,off)
-				if err=(noerror)
-					setcall sz seekfile(main.xfile,main.xf_pos,(SEEK_SET),#err)
-					if sz!=-1
-						call lseek(main.xfile,0,(SEEK_CUR))
-						setcall err xfile_add_int(main.xf_commas)
-						if err=(noerror)
-							call lseek(main.xfile,0,(SEEK_CUR))
-							setcall err writefile_errversion(main.xfile,mem,off)
-							call lseek(main.xfile,0,(SEEK_CUR))
-						endif
-					endif
-				endif
+			setcall sz lseek(main.xfile,main.xf_pos,(SEEK_SET)) #no err? is safe to seek back.
+			call read(main.xfile,mem,off)                       #same approach
+			call lseek(main.xfile,main.xf_pos,(SEEK_SET))       #
+			setcall err xfile_add_int(main.xf_commas)           #err on back write? smallest write is hex : where : is only 3 bytes, here are 4
+			if err=(noerror)
+				setcall err writefile_errversion(main.xfile,mem,off)
 			endif
 			call free(mem)
 		endif
