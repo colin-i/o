@@ -3,6 +3,6 @@ format elfobj
 
 importx "printf" printf
 
-include "a.oc"
+include "a.h"
 
 exit 0
