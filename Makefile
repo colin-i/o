@@ -20,4 +20,8 @@ all:
 	#; fi
 	@echo
 
+test:
+	cd tests
+	find -name "*.oc"
+
 .NOTPARALLEL:
