@@ -9,4 +9,4 @@ for file in "${tests[@]}"; do
 	../src/o ${file} ${OFLAGS} || exit 1
 done
 
-echo $?
+./c 1
