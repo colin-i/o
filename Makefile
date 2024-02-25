@@ -22,6 +22,6 @@ all:
 
 test:
 	cd tests
-	find -name "*.oc"
+	./tests
 
 .NOTPARALLEL:

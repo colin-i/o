@@ -1,19 +1,43 @@
-
-del () {
-	rm -f ./*.o
-	rm -f ./*.log
-	rm -f ./*.x
-	rm -f ./*.exe    #by ocomp
-	rm -f ./a.out
+if [ -z "${1}" ]; then is_del=1; else is_del=0; fi
+e=expected/
+switch () {
+	test -e ${1}
+	if [ $? = 0 ]; then
+		if [ ${is_del} = 1 ]; then
+			rm ${1}
+		else
+			mv ${1} ${exp}${1}
+		fi
+	fi
 }
-
+sw () {
+	n=( `find -maxdepth 1 -name "*${1}"` )
+	for v in "${n[@]}"; do
+		switch ${v:2}
+	done
+}
+del () {
+	sw .o
+	sw .log
+	sw .x
+	sw .exe       #by ocomp
+	switch a.out
+}
 a=( `ls` )
 for var in "${a[@]}"; do
 	if [ -d "${var}" ]; then
-		cd "${var}"
-			del
-		cd ..
+		if [ "${var}" != "${p}" ]; then
+			cd "${var}"
+				exp=../${e}${var}/
+				if [ ${is_del} = 0 ]; then
+					mkdir -p ${exp}
+				fi
+				del
+			cd ..
+		fi
 	fi
 done
 
+exp=${e}
 del
+switch acall/e

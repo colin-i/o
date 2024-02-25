@@ -1,0 +1,12 @@
+
+tests=( `find -name "*.oc"` )
+
+for file in "${tests[@]}"; do
+	OFLAGS="x_file 1 nul_res_pref 1"
+	echo ${file} | grep "\.w" > /dev/null
+	if [ $? = 0 ]; then OFLAGS+=" inplace_reloc 0 conv_64 2"; fi
+	echo ../src/o ${file} ${OFLAGS}
+	../src/o ${file} ${OFLAGS} || exit 1
+done
+
+echo $?
