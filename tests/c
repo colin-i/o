@@ -4,7 +4,7 @@ else
 	is_diff=${1}
 	diffs=0
 fi
-e=expected/
+e=.expected/
 switch () {
 	test -e ${1}
 	if [ $? = 0 ]; then
