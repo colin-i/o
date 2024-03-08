@@ -11,15 +11,21 @@ switch () {
 		if [ ${is_del} = 1 ]; then
 			rm ${1}
 		else
+			is_log=`echo ${1} | grep ".log$"`
 			if [ ${is_diff} = 1 ]; then
-				base64 -d ${exp}${1}.txt > ${exp}${1}
+				if [ -z "${is_log}" ]; then
+					base64 -d ${exp}${1}.txt > ${exp}${1}
+				fi
 				echo diff ${1} ${exp}${1}
 				diff ${1} ${exp}${1} || exit 1
 				diffs=$((diffs+1))
 			else
-				base64 ${1} > ${exp}${1}.txt
-				#mv ${1} ${exp}${1}
-				#chmod -x ${exp}${1}    #else, will be warning at dpkg-source
+				if [ -z "${is_log}" ]; then
+					base64 ${1} > ${exp}${1}.txt
+				else
+					mv ${1} ${exp}${1}
+					#chmod -x ${exp}${1}    #else, will be warning at dpkg-source
+				fi
 			fi
 		fi
 	fi
