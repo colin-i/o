@@ -21,7 +21,6 @@ all:
 	@echo
 
 test:
-	cd tests
-	./tests
+	cd tests; /bin/bash ./tests
 
 .NOTPARALLEL:
