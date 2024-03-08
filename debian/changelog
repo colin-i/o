@@ -1,3 +1,9 @@
+ocompiler (1-5+147) xenial; urgency=medium
+
+  * tests is not +x in deb src
+
+ -- bc <bc@bc-Type1ProductConfigId>  Fri, 08 Mar 2024 08:24:38 +0200
+
 ocompiler (1-5+146) xenial; urgency=medium
 
   * files
