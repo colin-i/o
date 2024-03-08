@@ -1,33 +1,21 @@
 
 
 
-Str pointofpathout#1
-Data pathinsize#1
-Str minpath#1
-Str cursorpath#1
-Data unit=1
+vStr pointofpathout#1
 
-Set minpath safecurrentdirloc
-
-Set pointofpathout safecurrentdirloc
-SetCall pathinsize strlen(safecurrentdirloc)
+Set pointofpathout safecurrentdirtopath
 Add pointofpathout pathinsize
-
-Set cursorpath pointofpathout
-Sub minpath unit
-Sub cursorpath unit
-
-While minpath!=cursorpath
-	Char teststr#1
-	Set teststr cursorpath#
-	If teststr=dot
-		Set pointofpathout cursorpath
-		Set cursorpath minpath
-	EndIf
-	If minpath!=cursorpath
-		Sub cursorpath unit
-	EndIf
-EndWhile
+while safecurrentdirtopath!=pointofpathout
+	dec pointofpathout
+	if pointofpathout#=dot
+		#inc pointofpathout
+		set pointofpathout# (asciinul)
+		break
+	endif
+endwhile
+if safecurrentdirtopath=pointofpathout
+	add pointofpathout pathinsize
+endif
 
 Data extension#1
 Set extension null

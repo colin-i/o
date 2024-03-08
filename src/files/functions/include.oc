@@ -75,9 +75,6 @@ Function include(ss path,sd both,sd subtype)
 			return getcwderr
 		endif
 
-		setcall err addtolog_withchar_parses(pcontentoffl#,(log_pathfolder),both)
-		If err!=noerr;Return err;EndIf
-
 		char storechar#1
 		set storechar folders#
 		set folders# 0
@@ -90,6 +87,14 @@ Function include(ss path,sd both,sd subtype)
 			str chdirerr="Chdir error."
 			return chdirerr
 		endif
+
+		#sd ptr_relativepath%%ptr_relativepath  #it is not ready for relative as is now with p/oldpath n../../newlocation
+		#if ptr_relativepath#=(FALSE)
+		setcall err addtolog_withchar_parses(pcontentoffl#,(log_pathfolder),both)
+		#else
+		#	setcall err addtolog_withchar_parses(path,(log_pathfolder),both)
+		#endelse
+		If err!=noerr;Return err;EndIf
 
 		set folders# storechar
 	endif

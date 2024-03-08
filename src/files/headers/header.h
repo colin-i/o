@@ -357,6 +357,8 @@ const ptrlogfile^logfile
 data includedir#1
 const ptrincludedir^includedir
 char fileendchar#1
+datax relative_path#1
+const ptr_relativepath^relative_path
 
 const ignore_warn=0
 #const show_warn=1
@@ -452,10 +454,10 @@ const p_over_pref^over_pref
 data hidden_pref#1
 const p_hidden_pref^hidden_pref
 
-Data safecurrentdirtopath#1
+vstr safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=23
+const nr_of_prefs=24
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
