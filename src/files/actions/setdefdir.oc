@@ -16,7 +16,7 @@ endif
 
 Set filenameloc# storeachar
 
-Data pathinsize#1
+Data pathinsize#1                         #also used at pathout
 SetCall pathinsize strlen(filenameloc)
 Data movesize#1
 Set movesize pathinsize
@@ -58,6 +58,7 @@ if logbool=true
 		else
 			Set filenameloc# (asciinul)
 			setcall errormsg addtolog_withchar_parses(path_nofree,(log_pathfolder),(TRUE))
+			Set filenameloc# storeachar  ##required to compare if they are same at pathout
 		endelse
 	endif
 	if errormsg!=noerr

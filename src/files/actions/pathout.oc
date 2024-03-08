@@ -43,6 +43,14 @@ If extension!=null
 
 	Call memtomem(pointofpathout,extension,sz)
 	Add pointofpathout sz
+	Set pointofpathout# null
 EndIf
 
-Set pointofpathout# null
+sub pointofpathout safecurrentdirtopath
+if pointofpathout=pathinsize
+	sd is_same
+	setcall is_same memcmp(filenameloc,safecurrentdirtopath,pathinsize)
+	if is_same=0
+		call msgerrexit("same output file as source file")   # z with format elf, or z.o with format elfobj
+	endif
+endif
