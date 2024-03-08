@@ -67,10 +67,17 @@ if [ ${is_del} = 0 ]; then
 		tests=( `find -name "*.oc"` )
 		n=${#tests[@]}
 		n=$((n*3))   #is .oc .log and .x
+		echo ${n} ${diffs}
 		if [ ${n} = ${diffs} ]; then
-			echo ${diffs} diffs is ok
+			echo diffs is ok
 		else
 			exit 1
 		fi
 	fi
+else #remove base64 troubles
+	cd ${e}
+	a=( `find . -type f ! -name "*.txt" ! -name "*.log"` )
+	for var in "${a[@]}"; do
+		rm ${var}
+	done
 fi
