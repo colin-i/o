@@ -12,12 +12,14 @@ switch () {
 			rm ${1}
 		else
 			if [ ${is_diff} = 1 ]; then
+				base64 -d ${exp}${1}.txt > ${exp}${1}
 				echo diff ${1} ${exp}${1}
 				diff ${1} ${exp}${1} || exit 1
 				diffs=$((diffs+1))
 			else
-				mv ${1} ${exp}${1}
-				chmod -x ${exp}${1}    #else, will be warning at dpkg-source
+				base64 ${1} > ${exp}${1}.txt
+				#mv ${1} ${exp}${1}
+				#chmod -x ${exp}${1}    #else, will be warning at dpkg-source
 			fi
 		fi
 	fi
@@ -58,7 +60,7 @@ if [ ${is_del} = 0 ]; then
 	if [ ${is_diff} = 1 ]; then
 		tests=( `find -name "*.oc"` )
 		n=${#tests[@]}
-		n=$((n*3))   #is .oc .loc and .x
+		n=$((n*3))   #is .oc .log and .x
 		if [ ${n} = ${diffs} ]; then
 			echo ${diffs} diffs is ok
 		else
