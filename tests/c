@@ -12,6 +12,7 @@ switch () {
 			rm ${1}
 		else
 			if [ ${is_diff} = 1 ]; then
+				echo diff ${1} ${exp}${1}
 				diff ${1} ${exp}${1} || exit 1
 				diffs=$((diffs+1))
 			else
