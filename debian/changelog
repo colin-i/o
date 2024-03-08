@@ -1,3 +1,9 @@
+ocompiler (1-5+154) xenial; urgency=medium
+
+  * input = output error
+
+ -- bc <bc@bc-Type1ProductConfigId>  Fri, 08 Mar 2024 17:00:47 +0200
+
 ocompiler (1-5+153) xenial; urgency=medium
 
   * fast solution for relative path tests
