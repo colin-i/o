@@ -16,6 +16,7 @@ switch () {
 				diffs=$((diffs+1))
 			else
 				mv ${1} ${exp}${1}
+				chmod -x ${exp}${1}    #else, will be warning at dpkg-source
 			fi
 		fi
 	fi
