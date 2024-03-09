@@ -145,8 +145,8 @@ endfunction
 function seek(sd file,sd offset,sd whence)
 	sd return;SetCall return fseek(file,offset,whence)
 	#at lseek:
-	#	beyond seekable device limit is not our concerne, error check at seekc can go if seeks was not
-	#	at section headers offset, error can be demonstrated (bad offset)
+	#	tested again with same truncate -s ... . fseek with a decent offset is not error, at ftell will be
+	#	with a negative offset if ftell is also wrong then fseek will error, if will overflow and ftell will end again in a good offset, then even with a negative offset, fseek will be ok
 	if return!=0
 		call erMessage("fseek error")
 	endif
