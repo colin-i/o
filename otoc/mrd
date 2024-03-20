@@ -1,3 +1,6 @@
 
+# sudo ln -snf ~/before /usr/x86_64-linux-gnu && \
+#           n if is already there to not follow there and f is force
+#ln, with -L is not enough
+
 LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd OFLAGSEXTRA="inplace_reloc 0" ./md
-#ln, more at docker; with L is not enough
