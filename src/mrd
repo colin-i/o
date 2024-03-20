@@ -1,0 +1,2 @@
+
+LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/i686-linux-gnu-ld.bfd ./md
