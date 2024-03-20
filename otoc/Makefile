@@ -22,11 +22,16 @@ FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 
+#OFLAGS=
+
+#problems at box64 and CC
 ifeq (${conv_64},0)
-ATCCCOM = $(CC) ${linkerflags} -o ${prog}
+#ATCCCOM = $(CC) ${linkerflags} -o ${prog}
+ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o ${prog}
 else
-ATCCCOM = $(CC) -m32 ${linkerflags} -o ${prog}
-OFLAGS=conv_64 1
+#ATCCCOM = $(CC) -m32 ${linkerflags} -o ${prog}
+ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${linkerflags} ${L} -lc -entry main -o ${prog}
+OFLAGS+=conv_64 1
 endif
 
 OFLAGS+=${OFLAGSEXTRA}
@@ -41,7 +46,8 @@ OFLAGS+=${OFLAGSEXTRA}
 ${prog}: ${OBJ}
 	${OLINK} ${FULLOBJLOG}
 	@echo
-	${ATCCCOM} ${FULLOBJO}
+	#${ATCCCOM} ${FULLOBJO}
+	${ATLDCOM} ${FULLOBJO}
 
 install: all
 	install -D ${prog} \

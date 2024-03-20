@@ -13,6 +13,7 @@ importx "puts" puts
 importx "fopen" fopen
 importx "fclose" fclose
 importx "strrchr" strrchr
+importx "exit" exit  #only for problems at box64
 
 function out_file(sd in)
 	ss p;set p strrchr(in,(asciidot))
@@ -39,25 +40,30 @@ include "loop.oc"
 
 #aftercalli
 
-entry main(sd argc,sv argv)
+function mainfn(sd argc,sv s)
 	if argc=2
-		incst argv
-		sd s;set s argv#
+		#sd s;incst argv;set s argv#
 		sd f;setcall f fopen(s,"rb")
 		if f!=(NULL)
 			sd out;set out out_file(s)
-			sd exit=EXIT_SUCCESS
+			sd exitval=EXIT_SUCCESS
 			if out!=(NULL)
-				set exit loop(f,out)
+				set exitval loop(f,out)
 				call fclose(out)
 			else
-				set exit (EXIT_FAILURE)
+				set exitval (EXIT_FAILURE)
 			end
 			call fclose(f)
-			return exit
+			return exitval
 		end
 		call puts("Cannot open input file")
 		return (EXIT_FAILURE)
 	end
 	call puts("Usage: otoc filePath")
 	return (EXIT_FAILURE)
+end
+
+entryraw main(sd argc,sv s)
+#entry main(sd argc,sv argv)
+	sd a;set a mainfn(argc,s)
+	call exit(a)

@@ -1,3 +1,4 @@
 
 if [ -z "${OCOMP}" ]; then OCOMP=o; fi
-OCOMP=${OCOMP} OLINK=ounused OFLAGSEXTRA="function_name 1 nul_res_pref 1" make linkerflags= $@
+OFLAGSEXTRA+=" function_name 1 nul_res_pref 1"
+OCOMP=${OCOMP} OLINK=ounused OFLAGSEXTRA="${OFLAGSEXTRA}" make linkerflags= $@

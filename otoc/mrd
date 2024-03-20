@@ -1,0 +1,3 @@
+
+LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd OFLAGSEXTRA="inplace_reloc 0" ./md
+#ln, more at docker; with L is not enough
