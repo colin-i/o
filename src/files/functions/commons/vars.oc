@@ -397,11 +397,10 @@ function sufix_test(ss content,sd p_size,sd p_cast)
 	add content p_size#
 	dec content
 	if content#!=(pointerascii)
-		if content#=(castascii)
-			setcall p_cast# cast_test(content,p_size)
+		setcall p_cast# cast_test(content,p_size)
+		if p_cast#!=(no_cast)
 			return (sufix_true)
 		endif
-		set p_cast# (no_cast)
 		return (sufix_false)
 	endif
 	dec p_size#
@@ -413,8 +412,21 @@ endfunction
 
 #cast
 function cast_test(ss content,sd p_size)
-	if p_size#>=3 #test only the cast
-		dec content
+	if p_size#>=3 #test only the minimum cast
+		sd cast_size
+		if content#!=(castascii)
+		#the cast sign is not mandatory
+			dec content
+			if content#=(pointerascii)
+				inc content
+				set cast_size 2
+			else
+				return (no_cast)
+			endelse
+		else
+			dec content
+			set cast_size 3
+		endelse
 		sd c
 		set c content#
 		if c>=(a_from_az)
@@ -429,7 +441,7 @@ function cast_test(ss content,sd p_size)
 		if c!=(no_cast)
 			dec content
 			if content#=(pointerascii)
-				sub p_size# 3
+				sub p_size# cast_size
 				call extend_sufix_test(content,p_size)
 				return c
 			endif
