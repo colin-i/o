@@ -1,3 +1,9 @@
+ocompiler (1-5+155) xenial; urgency=medium
+
+  * cast sign not mandatory
+
+ -- bc <bc@bc-Type1ProductConfigId>  Fri, 29 Mar 2024 14:14:35 +0200
+
 ocompiler (1-5+154) xenial; urgency=medium
 
   * input = output error
