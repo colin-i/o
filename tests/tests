@@ -1,16 +1,4 @@
 
-if [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
-
-tests=( `find -name "*.oc"` )
-
-for file in "${tests[@]}"; do
-	OFLAGS="x_file 1 nul_res_pref 1 includedir 0 relative_path 1"
-	#includedir 0 relative_path 1   to test on launchpad at <<PKGBUILDDIR>> that is not the real folder there. and ounused is also working with this
-
-	echo ${file} | grep "\.w" > /dev/null
-	if [ $? = 0 ]; then OFLAGS+=" inplace_reloc 0 conv_64 2"; fi
-	echo ${OCOMP} ${file} ${OFLAGS}
-	${OCOMP} ${file} ${OFLAGS} || exit 1
-done
+./compile
 
 /bin/bash ./c 1

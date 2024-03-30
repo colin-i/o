@@ -1,7 +1,8 @@
+
 if [ -z "${1}" ]; then is_del=1;
 else
 	is_del=0
-	is_diff=${1}
+	is_diff=${1}   # ./c 0 is to populate .expected
 	diffs=0
 fi
 e=.expected/
@@ -19,6 +20,9 @@ switch () {
 				echo diff ${1} ${exp}${1}
 				diff ${1} ${exp}${1} || exit 1
 				diffs=$((diffs+1))
+				#if [ -z "${is_log}" ]; then  #remove them later
+				#	rm ${exp}${1}
+				#fi
 			else
 				if [ -z "${is_log}" ]; then
 					base64 ${1} > ${exp}${1}.txt
@@ -74,7 +78,7 @@ if [ ${is_del} = 0 ]; then
 			exit 1
 		fi
 	fi
-else #remove base64 troubles
+else #remove base64 troubles #or remove them after diff
 	cd ${e}
 	a=( `find . -type f ! -name "*.txt" ! -name "*.log"` )
 	for var in "${a[@]}"; do
