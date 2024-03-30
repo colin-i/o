@@ -1,0 +1,14 @@
+
+format elfobj64
+
+#comment
+
+#!
+multi
+line
+!
+
+function intern()
+end
+
+entry main()
