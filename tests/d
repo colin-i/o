@@ -1,2 +1,4 @@
 
-../otoc/otoc ${1}.oc.x
+compile_only=1 ./x ${1} && \
+../otoc/otoc ${1}.oc.x && \
+cc ${1}.c

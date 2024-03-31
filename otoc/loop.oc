@@ -6,6 +6,7 @@ importx "malloc" malloc
 importx "fread" fread
 importx "free" free
 
+const SEEK_CUR=1
 const SEEK_END=2
 
 einclude "../src/files/headers/xfile.h" "/usr/include/ocompiler/xfile.h"
@@ -114,14 +115,33 @@ function commentmulti(sv pbuffer,sd outfile)
 	call write(outfile,pointer,sz)
 	callret writen(outfile,"*/",2)
 end
-function commentlineend(sv *pbuffer)
+function commentlineend(sv pbuffer,sd outfile)
+	call fseek(outfile,-1,(SEEK_CUR)) #this one and line command
+	callret comment(pbuffer,outfile)
 end
-function format(sv pbuffer)
+function format(sv pbuffer) #will do nothing at the moment
 	charx fmt#1;call get_char(pbuffer,#fmt)
 end
-function include(sv *pbuffer)
+function end(sv *pbuffer,sd outfile)
+	callret writen(outfile,"}",1)
+end
+function line(sv *pbuffer,sd outfile)
+	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
+	callret write(outfile,";",1)
+end
+
+function include(sv pbuffer,sd output)
+#no write
+	charx type#1;call get_char(pbuffer,#type)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	charx alternative#1;call get_char(pbuffer,#alternative)
+	if alternative=(Xfile_include_alternative_yes)
+		call get_string(pbuffer,#sz,#pointer)
+	end
 end
 function functiondef(sv pbuffer,sd outfile)
+#need arguments write
 	call write(outfile,"void ",5)
 
 	datax sz#1;valuex pointer#1
@@ -142,6 +162,15 @@ function functiondef(sv pbuffer,sd outfile)
 
 	callret writen(outfile,"){",2)
 end
+function hex(sv pbuffer)
+#N is minimum, no write
+	datax args#1;call get_data(pbuffer,#args)
+	sd n=0;while n!=args
+		call number(pbuffer)
+		inc n
+	end
+end
+
 function declare(sv *pbuffer)
 end
 function action(sv *pbuffer)
@@ -162,9 +191,6 @@ function break(sv *pbuffer)
 end
 function continue(sv *pbuffer)
 end
-function end(sv *pbuffer,sd outfile)
-	callret writen(outfile,"}",1)
-end
 function ret(sv *pbuffer)
 end
 function library(sv *pbuffer)
@@ -173,15 +199,11 @@ function import(sv *pbuffer)
 end
 function aftercall(sv *pbuffer)
 end
-function hex(sv *pbuffer)
-end
 function override(sv *pbuffer)
 end
 function orphan(sv *pbuffer)
 end
 function interrupt(sv *pbuffer)
-end
-function line(sv *pbuffer)
 end
 
 function writen(sd outfile,ss buf,sd sz)

@@ -1,4 +1,5 @@
 
+#D structure
 function decl(sv pbuffer)
 	charx field#1;call get_char(pbuffer,#field)
 	if field!=(Xfile_declfield_const)
@@ -25,3 +26,10 @@ function functiondef_extern(sv pbuffer)
 	call functiondef_intern(pbuffer)
 end
 #function functiondef_entry(sv pbuffer)
+
+#N structure
+function number(sv pbuffer)
+	charx prefix#1;call get_char(pbuffer,#prefix)
+	charx type#1;call get_char(pbuffer,#type)
+	charx next#1;call get_char(pbuffer,#next)
+end

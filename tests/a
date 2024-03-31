@@ -11,6 +11,7 @@ comp () {
 	else
 		${OCOMP} ${1}.oc ${OFLAGS} || exit 1
 	fi
+	if [ -n "compile_only" ]; then exit 0; fi
 }
 if [ -z "${ex}" ]; then
 	if [ -z "${OLINK}" ]; then OLINK=../ounused/ounused; fi
