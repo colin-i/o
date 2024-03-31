@@ -202,7 +202,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		sd err
 
 		if size=1
-			#the current data cursor   X
+			#the current data cursor   [calculation]
 			setcall outval# get_img_vdata_dataReg()
 
 			setcall err xfile_add_char_ifif((Xfile_numbers_type_idata))
