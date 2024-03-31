@@ -8,7 +8,7 @@ multi
 line
 !
 
-function intern()
+function intern(data a)
 end
 
 entry main()
