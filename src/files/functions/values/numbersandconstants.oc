@@ -202,7 +202,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		sd err
 
 		if size=1
-			#the current data cursor
+			#the current data cursor   X
 			setcall outval# get_img_vdata_dataReg()
 
 			setcall err xfile_add_char_ifif((Xfile_numbers_type_idata))
@@ -215,7 +215,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		set against content#
 		if against=(calculationmark)
 			if size=2
-				#the current virtual data cursor
+				#the current virtual data cursor   [calculation][calculation]
 				#main.ptr_nobits_virtual not yet at ocompiler, we have WinMain/main or (NULL)
 				vdata ptr_nobits_virtual%ptr_nobits_virtual
 				if ptr_nobits_virtual#=(No)
@@ -228,9 +228,10 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				setcall err xfile_add_char_ifif((Xfile_numbers_type_idatax))
 				return err
 			endif
+
+			#[calculation][calculation]fsize
 			inc content
 			sub size 2
-
 			if p_parses#=(pass_init)
 				return "At the moment, \\\\func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
@@ -252,7 +253,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			ss pointer=-1;add pointer content;add pointer size
 			datax data#1;datax low#1;datax sufix#1
 			if pointer#!=(calculationmark)
-				#size of variable
+				#size of variable    # [calculation]func.var
 				setcall err xfile_add_char_if((Xfile_numbers_type_vsizeVar))
 				if err=(noerror)
 					setcall err getarg_dot_any(content,size,dot_offset,#data,#low,#sufix)
@@ -313,6 +314,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				endif
 			endelse
 		else
+			#[calculation]fsize
 			if p_parses#=(pass_init)
 				return "At the moment, \\func is not implemented here."  #after pass_init is the calloc for scopes
 			endif

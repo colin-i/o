@@ -78,7 +78,14 @@ if [ ${is_del} = 0 ]; then
 			exit 1
 		fi
 	fi
-else #remove base64 troubles #or remove them after diff
+else
+	#remove otoc files
+	a=( `find -name "*.c"` )
+	for var in "${a[@]}"; do
+		rm ${var}
+	done
+
+	#remove base64 troubles #or remove them after diff
 	cd ${e}
 	a=( `find . -type f ! -name "*.txt" ! -name "*.log"` )
 	for var in "${a[@]}"; do

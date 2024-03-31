@@ -65,3 +65,4 @@ tests/.expected/unref.o
 tests/.expected/unref.oc.x
 tests/.expected/unref2.o
 tests/.expected/unref2.oc.x
+../../../../../dev/null

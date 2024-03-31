@@ -558,6 +558,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					#here there was not a space
 					setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 					if result=(TRUE)
+					#setxg
 						or ptrsubtype# (x_call_flag|x_callx_flag|x_callg_flag)
 						set pcontent# pointer
 						set psize# sz
@@ -575,7 +576,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				endelse
 			Elseif result=(TRUE)
 				If command=(cSTARTFUNCTION)
-				#functionx/entry [x] , varargs
+				#functionxx/entryx , varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
 					#sd for64;setcall for64 is_for_64()
 					#if for64==(TRUE)
@@ -595,6 +596,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			if command=(cPRIMSEC)
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
+				#setg
 					or ptrsubtype# (x_call_flag|x_callg_flag)
 					set pcontent# pointer
 					set psize# sz
@@ -614,6 +616,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			#if command=(cCALLEX)  #cSTARTFUNCTION is not coming here with intercursors=NULL
 				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
 				if result=(TRUE)
+				#call[ex]g
 					or ptrsubtype# (x_callg_flag)
 					set pcontent# pointer
 					set psize# sz

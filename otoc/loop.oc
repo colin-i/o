@@ -97,7 +97,7 @@ end
 
 importx "fwrite" fwrite
 
-include "function.oc"
+include "decl.oc"
 
 aftercall *
 

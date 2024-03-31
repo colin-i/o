@@ -113,7 +113,7 @@ const Xfile_numbers_operation_unsignedgreaterequal=asciig
 const Xfile_numbers_operation_parity=asciiexclamationmark #parsed at spelling
 const Xfile_numbers_operation_odd=asciip
 
-#here is ORing
+#here is ORing (~-N)
 const Xfile_numbers_prefix_none=0x0
 const Xfile_numbers_prefix_neg=0x1
 const Xfile_numbers_prefix_not=0x2
@@ -166,7 +166,7 @@ const Xfile_arg_varfn_colon_yes=1
 const Xfile_arg_varfn_dot_no=0
 const Xfile_arg_varfn_dot_yes=1
 
-#same ORing
+#same ORing [x][g]
 const Xfile_arg_call_normal=0x
 const Xfile_arg_call_extern=0x1
 const Xfile_arg_call_skipaftercall=0x2
