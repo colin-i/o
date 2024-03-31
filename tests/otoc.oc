@@ -8,7 +8,11 @@ multi
 line
 !
 
-function intern(data a)
+include "include.h" "include.h"
+
+function intern(data a) #commenting
 end
 
 entry main()
+hex :
+;
