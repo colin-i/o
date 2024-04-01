@@ -5,11 +5,26 @@ if [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
 
 OFLAGS+=" nul_res_pref 1"
 
+exp=.expected/
+
+copy () {
+	cp ${1} ${exp}${1}
+}
+base () {
+	base64 ${1} > ${exp}${1}.txt
+}
+
 comp () {
+	n=${1}.oc
 	if [ "${edb}" = "0" ]; then
-		edb --run ${OCOMP} ${1}.oc ${OFLAGS} || exit 1
+		edb --run ${OCOMP} ${n} ${OFLAGS} || exit 1
 	else
-		${OCOMP} ${1}.oc ${OFLAGS} || exit 1
+		${OCOMP} ${n} ${OFLAGS} || exit 1
+	fi
+	if [ -n "write_to_expected" ]; then
+		copy ${n}.log
+		base ${n}.x
+		base ${n:0:-3}.o  #this is hard coded at the moment
 	fi
 	if [ -n "compile_only" ]; then exit 0; fi
 }
