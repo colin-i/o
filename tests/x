@@ -1,2 +1,3 @@
 
-OFLAGS="x_file 1" ./a $@
+OFLAGS="x_file 1 includedir 0 relative_path 1" ./a $@
+#       same as in ./compile

@@ -32,4 +32,5 @@ function number(sv pbuffer)
 	charx prefix#1;call get_char(pbuffer,#prefix)
 	charx type#1;call get_char(pbuffer,#type)
 	charx next#1;call get_char(pbuffer,#next)
+	# <=prefix done open close operation
 end

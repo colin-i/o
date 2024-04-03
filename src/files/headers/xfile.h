@@ -75,9 +75,15 @@ const Xfile_declmode_value=0
 const Xfile_declmode_group=1
 const Xfile_declmode_string=2
 
-const Xfile_numbers_parenthesis_open=0
-const Xfile_numbers_parenthesis_close=1
-const Xfile_numbers_done=2
+#here is ORing (~-N)
+const Xfile_numbers_prefix_none=0x0
+const Xfile_numbers_prefix_neg=0x1
+const Xfile_numbers_prefix_not=0x2
+#
+const Xfile_numbers_parenthesis_open=30
+const Xfile_numbers_parenthesis_close=31
+const Xfile_numbers_done=32
+# ! is 33 is an operation
 
 # ! $ % ^ & * - =+
 # e uU o p [ ]}
@@ -112,11 +118,6 @@ const Xfile_numbers_operation_unsignedlessequal=asciil
 const Xfile_numbers_operation_unsignedgreaterequal=asciig
 const Xfile_numbers_operation_parity=asciiexclamationmark #parsed at spelling
 const Xfile_numbers_operation_odd=asciip
-
-#here is ORing (~-N)
-const Xfile_numbers_prefix_none=0x0
-const Xfile_numbers_prefix_neg=0x1
-const Xfile_numbers_prefix_not=0x2
 
 #i from int
 const Xfile_numbers_type_ilong=0

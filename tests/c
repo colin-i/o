@@ -18,8 +18,14 @@ switch () {
 					base64 -d ${exp}${1}.txt > ${exp}${1}
 				fi
 				echo diff ${1} ${exp}${1}
-				diff ${1} ${exp}${1} || exit 1
-				diffs=$((diffs+1))
+				diff ${1} ${exp}${1}
+				if [ $? != 0 ]; then
+					if [ -z "${continue_on_diff}" ]; then
+						exit 1
+					fi
+				else
+					diffs=$((diffs+1))
+				fi
 				#if [ -z "${is_log}" ]; then  #remove them later
 				#	rm ${exp}${1}
 				#fi
