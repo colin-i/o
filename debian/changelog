@@ -1,3 +1,9 @@
+ocompiler (1-5+156) xenial; urgency=medium
+
+  * uniqueness for numbers: prefix,open,close,done and operations
+
+ -- bc <bc@bc-desktop>  Fri, 05 Apr 2024 09:32:51 +0300
+
 ocompiler (1-5+155) xenial; urgency=medium
 
   * cast sign not mandatory
