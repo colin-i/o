@@ -18,18 +18,23 @@ if safecurrentdirtopath=pointofpathout
 endif
 
 Data extension#1
-Set extension null
+sd permissions
 
 If fileformat=pe_exec
 	Char exe=".exe"
 	Str pexe^exe
 	Set extension pexe
+	set permissions (exec_perms)
 Else
 	If object=true
 		Char obj=".o"
 		Str pobj^obj
 		Set extension pobj
-	EndIf
+		set permissions (nonexec_perms)
+	else
+		Set extension null
+		set permissions (exec_perms)
+	Endelse
 EndElse
 
 If extension!=null
