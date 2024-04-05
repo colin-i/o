@@ -15,18 +15,18 @@ base () {
 }
 
 comp () {
-	n=${1}.oc
+	n=./${1}.oc
 	if [ "${edb}" = "0" ]; then
 		edb --run ${OCOMP} ${n} ${OFLAGS} || exit 1
 	else
 		${OCOMP} ${n} ${OFLAGS} || exit 1
 	fi
-	if [ -n "write_to_expected" ]; then
+	if [ -n "${write_to_expected}" ]; then
 		copy ${n}.log
 		base ${n}.x
 		base ${n:0:-3}.o  #this is hard coded at the moment
 	fi
-	if [ -n "compile_only" ]; then exit 0; fi
+	if [ -n "${compile_only}" ]; then exit 0; fi
 }
 if [ -z "${ex}" ]; then
 	if [ -z "${OLINK}" ]; then OLINK=../ounused/ounused; fi
