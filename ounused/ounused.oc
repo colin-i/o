@@ -53,5 +53,6 @@ if argc>1
 	call freeall()
 	return (EXIT_SUCCESS)
 endif
-
+include "../version.h"
+call Message(#version)
 return (EXIT_FAILURE)

@@ -16,7 +16,7 @@ Function Message(str text)
 	Char visiblemessagedata={0x0a,0}
 	Str visiblemessage^visiblemessagedata
 
-	Call fprintf(stderrorobject,visiblemessage)
+	#Call fprintf(stderrorobject,visiblemessage)
 	Call fprintf(stderrorobject,text)
 	Call fprintf(stderrorobject,visiblemessage)
 EndFunction
