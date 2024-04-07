@@ -1,2 +1,7 @@
 
 LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/i686-linux-gnu-ld.bfd ./md
+
+#and for qemu o will be:
+# LD_LIBRARY_PATH=/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu qemu-i386 /home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu/ld-linux.so.2 /home/bc/x86_64_orig/o "$@"
+#and q:
+# LD_LIBRARY_PATH=/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu qemu-i386 /home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu/ld-linux.so.2 "$@"

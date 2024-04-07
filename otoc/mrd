@@ -4,3 +4,5 @@
 #ln, with -L is not enough
 
 LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd OFLAGSEXTRA="inplace_reloc 0" ./md
+
+#if qemu too, must comment in qemu-x86_64.conf (from qemu-user-binfmt)
