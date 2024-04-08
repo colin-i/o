@@ -101,6 +101,12 @@ importx "fwrite" fwrite
 include "decl.oc"
 
 aftercall *
+function aftercallenable()
+	set main.result (EXIT_FAILURE)
+	aftercallenable
+end
+
+include "number.oc"
 
 function comment(sv pbuffer,sd outfile)
 	call write(outfile,"//",2)
@@ -218,7 +224,6 @@ end
 function write(sd outfile,ss buf,sd sz)
 	sd items;set items fwrite(buf,sz,1,outfile)
 	if items!=1
-		set main.result (EXIT_FAILURE)
-		aftercallenable
+		callret aftercallenable()
 	end
 end

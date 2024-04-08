@@ -79,7 +79,7 @@ const Xfile_declmode_string=2
 const Xfile_numbers_prefix_none=0x0
 const Xfile_numbers_prefix_neg=0x1
 const Xfile_numbers_prefix_not=0x2
-#const Xfile_numbers_prefix_last=Xfile_numbers_prefix_not
+#const Xfile_numbers_prefix_notneg=Xfile_numbers_prefix_not|Xfile_numbers_prefix_neg
 #
 const Xfile_numbers_parenthesis_open=30
 const Xfile_numbers_parenthesis_close=31

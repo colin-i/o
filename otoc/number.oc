@@ -1,0 +1,24 @@
+
+#aftercalli
+
+const Xfile_numbers_prefix_notneg=Xfile_numbers_prefix_not|Xfile_numbers_prefix_neg
+#N structure
+function number(sv pbuffer)
+	charx item#1;call get_char(pbuffer,#item)
+	i3
+	while item!=(Xfile_numbers_done)
+		char chars={Xfile_numbers_operation_odd,Xfile_numbers_operation_parity,Xfile_numbers_operation_unsignedgreaterequal,Xfile_numbers_operation_unsignedlessequal,Xfile_numbers_operation_unsignedgreater,Xfile_numbers_operation_unsignedless,Xfile_numbers_operation_logicalor,Xfile_numbers_operation_logicaland,Xfile_numbers_operation_greaterequal,Xfile_numbers_operation_lessequal,Xfile_numbers_operation_greater,Xfile_numbers_operation_less,Xfile_numbers_operation_inequal,Xfile_numbers_operation_equal,Xfile_numbers_operation_shr,Xfile_numbers_operation_sar,Xfile_numbers_operation_shl,Xfile_numbers_operation_remu,Xfile_numbers_operation_rem,Xfile_numbers_operation_pow,Xfile_numbers_operation_xor,Xfile_numbers_operation_or,Xfile_numbers_operation_and,Xfile_numbers_operation_divu,Xfile_numbers_operation_div,Xfile_numbers_operation_mul,Xfile_numbers_operation_sub,Xfile_numbers_operation_add,Xfile_numbers_parenthesis_close,Xfile_numbers_parenthesis_open,Xfile_numbers_prefix_notneg,Xfile_numbers_prefix_not,Xfile_numbers_prefix_neg,Xfile_numbers_prefix_none}
+		value functions^odd;                    value *^parity;                value *^unsignedgreaterequal;                value *^unsignedlessequal;                value *^unsignedgreater;                value *^unsignedless;                value *^logicalor;                value *^logicaland;                value *^greaterequal;                value *^lessequal;                value *^greater;                value *^less;                value *^inequal;                value *^equal;                value *^shr;                value *^sar;                value *^shl;                value *^remu;                value *^rem;                value *^pow;                value *^xor;                value *^or;                value *^and;                value *^divu;                value *^div;                value *^mul;                value *^sub;                value *^add;                value  *^close;                 value  *^open;                 value  *^notneg;            value  *^not;            value  *^neg;            value *^normal;
+
+		sv &n;set n strrchr(#chars,item)
+		if n=(NULL)
+			callret aftercallenable()
+		end
+		sub n #chars
+		mult n :
+		add n #functions
+		set n n#
+		call n(pbuffer)
+		call get_char(pbuffer,#item)
+	end
+end
