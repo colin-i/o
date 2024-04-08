@@ -5,6 +5,7 @@ importx "rewind" rewind
 importx "malloc" malloc
 importx "fread" fread
 importx "free" free
+importx "memchr" memchr
 
 const SEEK_CUR=1
 const SEEK_END=2
