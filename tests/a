@@ -1,5 +1,8 @@
 
 if [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
+if [ "`uname -m`" = "aarch64" ]; then
+	LD_LIBRARY_PATH=/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu:${LD_LIBRARY_PATH}
+fi
 
 #edb(0=also ocomp),ex(exec),win,old(for32),onlycomp
 
@@ -19,7 +22,7 @@ comp () {
 	if [ "${edb}" = "0" ]; then
 		edb --run ${OCOMP} ${n} ${OFLAGS} || exit 1
 	else
-		${OCOMP} ${n} ${OFLAGS} || exit 1
+		LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${OCOMP} ${n} ${OFLAGS} || exit 1
 	fi
 	if [ -n "${write_to_expected}" ]; then
 		copy ${n}.log

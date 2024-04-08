@@ -27,10 +27,17 @@ function functiondef_extern(sv pbuffer)
 end
 #function functiondef_entry(sv pbuffer)
 
+const Xfile_numbers_prefix_last=Xfile_numbers_prefix_not
 #N structure
 function number(sv pbuffer)
-	charx prefix#1;call get_char(pbuffer,#prefix)
-	charx type#1;call get_char(pbuffer,#type)
-	charx next#1;call get_char(pbuffer,#next)
-	# <=prefix done open close operation
+	charx item#1;call get_char(pbuffer,#item)
+	while item!=(Xfile_numbers_done)
+		if item<=(Xfile_numbers_prefix_last)
+			charx type#1;call get_char(pbuffer,#type)
+		elseif item=(Xfile_numbers_parenthesis_open)
+		elseif item=(Xfile_numbers_parenthesis_close)
+		else #operation
+		end
+		call get_char(pbuffer,#item)
+	end
 end
