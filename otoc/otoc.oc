@@ -19,7 +19,6 @@ importx "exit" exit  #only for problems at box64
 function out_file(sd in)
 	ss p;set p strrchr(in,(asciidot))
 	if p!=(NULL)
-		set p# 0
 		sub p in
 		set p memrchr(in,(asciidot),p)
 		if p!=(NULL)
