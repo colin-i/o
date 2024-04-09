@@ -13,13 +13,15 @@ importx "puts" puts
 importx "fopen" fopen
 importx "fclose" fclose
 importx "strrchr" strrchr
+importx "memrchr" memrchr
 importx "exit" exit  #only for problems at box64
 
 function out_file(sd in)
 	ss p;set p strrchr(in,(asciidot))
 	if p!=(NULL)
 		set p# 0
-		set p strrchr(in,(asciidot))
+		sub p in
+		set p memrchr(in,(asciidot),p)
 		if p!=(NULL)
 			#here we know there at at least two dots and of course the term null char
 			inc p
