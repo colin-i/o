@@ -15,12 +15,17 @@ switch () {
 			is_log=`echo ${1} | grep ".log$"`
 			if [ ${is_diff} = 1 ]; then
 				if [ -z "${is_log}" ]; then
-					base64 -d ${exp}${1}.txt > ${exp}${1}
+					btxt=${exp}${1}.txt
+					base64 -d ${btxt} > ${exp}${1}
 				fi
 				echo diff ${1} ${exp}${1}
 				diff ${1} ${exp}${1}
 				if [ $? != 0 ]; then
 					if [ -z "${continue_on_diff}" ]; then
+						if [ -z "${is_log}" ]; then
+							base64 ${1}
+							cat ${btxt}
+						fi
 						exit 1
 					fi
 				else
