@@ -38,12 +38,12 @@ OFLAGS+=${OFLAGSEXTRA}
 
 number=number.h
 
-number.pre.o:
-	o number.pre.oc ${OFLAGS}
+number.pre.o: number.pre.oc
+	o $< ${OFLAGS}
 number.pre: number.pre.o
 	${ATLDCOM} $@ $^
 ${number}: number.pre
-	./number.pre
+	./$<
 #       in case otoc.oc is modified
 ${OBJ}: ${FULLOBJS} ${number}
 	${OCOMP} $< ${OFLAGS}
