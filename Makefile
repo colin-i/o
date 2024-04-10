@@ -16,7 +16,7 @@ $(SUBDIRS):
 ver=version.h
 
 ${ver}:
-	./versionscript
+	/bin/bash ./versionscript
 
 all: ${ver}
 	#if ! [ -s ./src/obj.txt ];then
