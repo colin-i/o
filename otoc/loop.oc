@@ -5,7 +5,7 @@ importx "rewind" rewind
 importx "malloc" malloc
 importx "fread" fread
 importx "free" free
-importx "memchr" memchr
+importx "memset" memset
 
 const SEEK_CUR=1
 const SEEK_END=2
@@ -31,6 +31,10 @@ function loop(sd input,sd output)
 				ss pointer;set pointer buffer
 				add delim buffer
 				set main.result (EXIT_SUCCESS)
+
+				#more inits
+				call number_data()
+
 				while pointer!=delim
 					charx command#1;call get_char(#pointer,#command)
 					if command>(Xfile_last)

@@ -78,13 +78,13 @@ const Xfile_declmode_string=2
 #here is ORing (~-N)
 const Xfile_numbers_prefix_none=0x0
 const Xfile_numbers_prefix_neg=0x1
-const Xfile_numbers_prefix_not=0x2
+const Xfile_numbers_prefix_not=0x2 # is ~(0x7E), attention at Xfile_numbers_last
 #const Xfile_numbers_prefix_notneg=Xfile_numbers_prefix_not|Xfile_numbers_prefix_neg
-#
-const Xfile_numbers_parenthesis_open=30
-const Xfile_numbers_parenthesis_close=31
-const Xfile_numbers_done=32
-# ! is 33 is an operation
+#0x4 is free, 0x8
+const Xfile_numbers_parenthesis_open=0x10
+const Xfile_numbers_parenthesis_close=0x18
+const Xfile_numbers_done=0x1f
+# ! is 33(0x21 0x20 is space) is an operation
 
 # ! $ % ^ & * - =+
 # e uU o p [ ]}
@@ -104,7 +104,7 @@ const Xfile_numbers_operation_rem=asciipercent            #parsed at spelling
 const Xfile_numbers_operation_remu=asciicolon
 const Xfile_numbers_operation_shl=asciileftsquareBracket
 const Xfile_numbers_operation_sar=asciirightsquareBracket
-const Xfile_numbers_operation_shr=asciirightcurlyBracket
+const Xfile_numbers_operation_shr=asciirightcurlyBracket  #const Xfile_numbers_last is Xfile_numbers_operation_shr #const Xfile_numbers_notmapped is 0xff # 0x7f DEL 0x7E ~ this is 0x7D
 const Xfile_numbers_operation_equal=asciiequal            #parsed at spelling
 const Xfile_numbers_operation_inequal=asciie
 const Xfile_numbers_operation_less=asciiless              #parsed at spelling
