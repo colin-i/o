@@ -44,8 +44,8 @@ number.pre: number.pre.o
 	${ATLDCOM} $@ $^
 ${number}: number.pre
 	./number.pre
-${OBJ}: ${FULLOBJS} ${number}
-	${OCOMP} $< ${OFLAGS}
+${OBJ}: ${number}
+	${OCOMP} ${FULLOBJS} ${OFLAGS}
 ${prog}: ${OBJ}
 	${OLINK} ${FULLOBJLOG}
 	@echo
