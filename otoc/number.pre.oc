@@ -1,0 +1,48 @@
+
+format elfobj64
+
+importx "fopen" fopen
+importx "fclose" fclose
+importx "fwrite" fwrite
+importx "strlen" strlen
+importx "fprintf" fprintf
+importx "exit" exit
+
+include "xfile.h"
+const Xfile_numbers_prefix_notneg=Xfile_numbers_prefix_not|Xfile_numbers_prefix_neg
+
+function nr(sd i,sd f)
+const numbers_start=\
+	char chars={Xfile_numbers_prefix_none,Xfile_numbers_prefix_neg,Xfile_numbers_prefix_not,Xfile_numbers_prefix_notneg,Xfile_numbers_parenthesis_open,Xfile_numbers_parenthesis_close,Xfile_numbers_operation_add,Xfile_numbers_operation_sub,Xfile_numbers_operation_mul,Xfile_numbers_operation_div,Xfile_numbers_operation_divu,Xfile_numbers_operation_and,Xfile_numbers_operation_or,Xfile_numbers_operation_xor,Xfile_numbers_operation_pow,Xfile_numbers_operation_rem,Xfile_numbers_operation_remu,Xfile_numbers_operation_shl,Xfile_numbers_operation_sar,Xfile_numbers_operation_shr,Xfile_numbers_operation_equal,Xfile_numbers_operation_inequal,Xfile_numbers_operation_less,Xfile_numbers_operation_greater,Xfile_numbers_operation_lessequal,Xfile_numbers_operation_greaterequal,Xfile_numbers_operation_logicaland,Xfile_numbers_operation_logicalor,Xfile_numbers_operation_unsignedless,Xfile_numbers_operation_unsignedgreater,Xfile_numbers_operation_unsignedlessequal,Xfile_numbers_operation_unsignedgreaterequal,Xfile_numbers_operation_parity,Xfile_numbers_operation_odd}
+const numbers_size=\-numbers_start
+	ss pos^chars
+	sd n=0
+	while n<(numbers_size)
+		if i=pos#
+			call fprintf(f,"%u",n)
+			ret
+		end
+		inc pos
+		inc n
+	end
+	call fprintf(f,"%u",(Xfile_numbers_notmapped))
+end
+
+entry main()
+
+sd f;set f fopen("number.h","wb")
+vstr a="char data={";sd b;set b strlen(a)
+call fwrite(a,b,1,f)
+
+sd i=0
+while i<=(Xfile_numbers_last)
+	if i!=0
+		call fwrite(",",1,1,f)
+	end
+	call nr(i,f)
+	inc i
+end
+
+call fwrite("}",1,1,f)
+call fclose(f)
+call exit(0)

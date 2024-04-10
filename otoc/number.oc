@@ -1,34 +1,16 @@
 
 #aftercalli
 
-const Xfile_numbers_last=Xfile_numbers_operation_shr
-const Xfile_numbers_notmapped=0xff
-function number_data()
-	sd n=0
-	charx c#Xfile_numbers_last
-	call memset(#c,(Xfile_numbers_notmapped),(Xfile_numbers_last))
-	const numbers_start=\
-		char chars={Xfile_numbers_prefix_none,Xfile_numbers_prefix_neg,Xfile_numbers_prefix_not,Xfile_numbers_prefix_notneg,Xfile_numbers_parenthesis_open,Xfile_numbers_parenthesis_close,Xfile_numbers_operation_add,Xfile_numbers_operation_sub,Xfile_numbers_operation_mul,Xfile_numbers_operation_div,Xfile_numbers_operation_divu,Xfile_numbers_operation_and,Xfile_numbers_operation_or,Xfile_numbers_operation_xor,Xfile_numbers_operation_pow,Xfile_numbers_operation_rem,Xfile_numbers_operation_remu,Xfile_numbers_operation_shl,Xfile_numbers_operation_sar,Xfile_numbers_operation_shr,Xfile_numbers_operation_equal,Xfile_numbers_operation_inequal,Xfile_numbers_operation_less,Xfile_numbers_operation_greater,Xfile_numbers_operation_lessequal,Xfile_numbers_operation_greaterequal,Xfile_numbers_operation_logicaland,Xfile_numbers_operation_logicalor,Xfile_numbers_operation_unsignedless,Xfile_numbers_operation_unsignedgreater,Xfile_numbers_operation_unsignedlessequal,Xfile_numbers_operation_unsignedgreaterequal,Xfile_numbers_operation_parity,Xfile_numbers_operation_odd}
-	ss pos^chars
-	while n<(\-numbers_start)
-		ss m;set m pos#
-		add m #c
-		set m# n
-		inc pos
-		inc n
-	end
-end
-
-const Xfile_numbers_prefix_notneg=Xfile_numbers_prefix_not|Xfile_numbers_prefix_neg
 #N structure
 function number(sv pbuffer)
+include "number.h"
 	charx item#1;call get_char(pbuffer,#item)
 	while item!=(Xfile_numbers_done)
 		value functions^normal;               value  *^neg;            value  *^not;            value  *^notneg;            value  *^open;                 value  *^close;                 value *^add;                value *^sub;                value *^mul;                value *^div;                value *^divu;                value *^and;                value *^or;                value *^xor;                value *^pow;                value *^rem;                value *^remu;                value *^shl;                value *^sar;                value *^shr;                value *^equal;                value *^inequal;                value *^less;                value *^greater;                value *^lessequal;                value *^greaterequal;                value *^logicaland;                value *^logicalor;                value *^unsignedless;                value *^unsignedgreater;                value *^unsignedlessequal;                value *^unsignedgreaterequal;                value *^parity;                value *^odd;
 		if item>^(Xfile_numbers_last)
 			callret aftercallenable()
 		end
-		ss n;set n #number_data.c
+		ss n;set n #data
 		add n item
 		sv &f;set f n#
 		if f=(Xfile_numbers_notmapped)
