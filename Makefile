@@ -13,10 +13,12 @@ $(SUBDIRS):
 	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
 .PHONY: $(TOPTARGETS) $(SUBDIRS)
 
-version.h:
+ver=version.h
+
+${ver}:
 	./versionscript
 
-all: version.h
+all: ${ver}
 	#if ! [ -s ./src/obj.txt ];then
 	cd ./src; ../ounused/ounused ./linux/obj.oc.log
 	#; fi
@@ -24,5 +26,8 @@ all: version.h
 
 test:
 	cd tests; /bin/bash ./tests
+
+clean:
+	-rm -f ${ver}
 
 .NOTPARALLEL:
