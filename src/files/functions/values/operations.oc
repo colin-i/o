@@ -55,11 +55,12 @@ endfunction
 #err
 function shift_right(sd a,sd n)
 	#at 64? 1 shl 63 is last one
-	if n>^31
+	if n>=^31
+	#case 31: at neg is exactly -1, at 0x4.. is exactly 0
 		if a<0
 			set a# -1
 		else
-			set a# 0   #here is clear that 30 is maximum but will be hardcoded
+			set a# 0
 		endelse
 	else
 		while n>0
