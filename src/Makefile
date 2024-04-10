@@ -51,14 +51,15 @@ etcinclude=etcinclude.oc
 
 #OFLAGS=
 
-${OBJ}: ${etcinclude}
+#       this is in case .oc file is modified
+${OBJ}: ${FULLOBJS} ${etcinclude}
 	if [ -s ${OBT} ];then \
 		echo text; \
 		base64 -d ${OBT} > $@; \
 		${_ATLDCOM} o $@; \
 		./o ${FULLOBJS}; \
 	else \
-		${OCOMP} ${FULLOBJS} ${OFLAGS}; \
+		${OCOMP} $< ${OFLAGS}; \
 	fi; \
 	mv ${FULLOBJO} . \
 
