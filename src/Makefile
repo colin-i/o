@@ -51,17 +51,14 @@ etcinclude=etcinclude.oc
 
 #OFLAGS=
 
-${FULLOBJS}: ${etcinclude}
-	echo something or is not working
-
-%.o: ${FULLOBJS}
+${OBJ}: ${etcinclude}
 	if [ -s ${OBT} ];then \
 		echo text; \
 		base64 -d ${OBT} > $@; \
 		${_ATLDCOM} o $@; \
 		./o ${FULLOBJS}; \
 	else \
-		${OCOMP} $< ${OFLAGS}; \
+		${OCOMP} ${FULLOBJS} ${OFLAGS}; \
 	fi; \
 	mv ${FULLOBJO} . \
 
