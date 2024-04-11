@@ -1,21 +1,17 @@
 
-#aftercalli
-
 #N structure
+
 function number(sv pbuffer)
 include "number.h"
 	charx item#1;call get_char(pbuffer,#item)
 	while item!=(Xfile_numbers_done)
+		#this coresponds to number.pre.oc line
 		value functions^normal;               value  *^neg;            value  *^not;            value  *^notneg;            value  *^open;                 value  *^close;                 value *^add;                value *^sub;                value *^mul;                value *^div;                value *^divu;                value *^and;                value *^or;                value *^xor;                value *^pow;                value *^rem;                value *^remu;                value *^shl;                value *^sar;                value *^shr;                value *^equal;                value *^inequal;                value *^less;                value *^greater;                value *^lessequal;                value *^greaterequal;                value *^logicaland;                value *^logicalor;                value *^unsignedless;                value *^unsignedgreater;                value *^unsignedlessequal;                value *^unsignedgreaterequal;                value *^parity;                value *^odd;
-		if item>^(Xfile_numbers_last)
-			callret aftercallenable()
-		end
+		#if item>^(Xfile_numbers_last);callret aftercallenable();end
 		ss n;set n #data
 		add n item
-		sv &f;set f n#
-		if f=(Xfile_numbers_notmapped)
-			callret aftercallenable()
-		end
+		sv f;set f n#
+		#if f=(Xfile_numbers_notmapped);callret aftercallenable();end
 		mult f :
 		add f #functions
 		set f f#
@@ -23,3 +19,100 @@ include "number.h"
 		call get_char(pbuffer,#item)
 	end
 end
+
+function numbertype(sv pbuffer)
+	value functions^number_int_long
+	value         *^number_int_data
+	value         *^number_int_datax
+	value         *^number_text_dec
+	value         *^number_text_oct
+	value         *^number_text_hex
+	value         *^number_text_const
+	value         *^number_func_size
+	value         *^number_func_sizex
+	value         *^number_var_size
+	value         *^number_var_offset
+	charx type#1;call get_char(pbuffer,#type)
+	mult type :
+	sv f^functions
+	add f type
+	set f f#
+	call f(pbuffer)
+end
+
+function number_int_long();end
+function number_int_data();end
+function number_int_datax();end
+function number_text_dec(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
+function number_text_oct(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
+function number_text_hex(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
+function number_text_const(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
+function number_func_size(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
+function number_func_sizex(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
+function number_var_size(sv pbuffer)
+	call dot(pbuffer)
+end
+function number_var_offset(sv pbuffer)
+	call dot(pbuffer)
+end
+
+function normal(sv pbuffer)
+	call numbertype(pbuffer)
+end
+function neg(sv pbuffer)
+	call numbertype(pbuffer)
+end
+function not(sv pbuffer)
+	call numbertype(pbuffer)
+end
+function notneg(sv pbuffer)
+	call numbertype(pbuffer)
+end
+function open();end
+function close();end
+function add();end
+function sub();end
+function mul();end
+function div();end
+function divu();end
+function and();end
+function or();end
+function xor();end
+function pow();end
+function rem();end
+function remu();end
+function shl();end
+function sar();end
+function shr();end
+function equal();end
+function inequal();end
+function less();end
+function greater();end
+function lessequal();end
+function greaterequal();end
+function logicaland();end
+function logicalor();end
+function unsignedless();end
+function unsignedgreater();end
+function unsignedlessequal();end
+function unsignedgreaterequal();end
+function parity();end
+function odd();end

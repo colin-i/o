@@ -1,0 +1,9 @@
+
+function var(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	charx suffix#1;call get_char(pbuffer,#suffix)
+	if suffix=(Xfile_suffix_true)
+		charx cast#1;call get_char(pbuffer,#cast)
+	end
+end

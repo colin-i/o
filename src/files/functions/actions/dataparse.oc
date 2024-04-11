@@ -114,6 +114,7 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 				or mask (pointbit)
 			endif
 		endelse
+		or mask 0x10000 #this is used at get var size number, both at fndec and declare
 	Else
 		Data structure#1
 		SetCall structure getstructcont(constantsnr)

@@ -1,4 +1,4 @@
 
-write_to_expected=1 compile_only=1 ./x ${1} && \
+./x ${1} && \
 ../otoc/otoc ${1}.oc.x && \
 cc ${1}.c

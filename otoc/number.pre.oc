@@ -10,6 +10,8 @@ importx "exit" exit
 
 include "xfile.h"
 const Xfile_numbers_prefix_notneg=Xfile_numbers_prefix_not|Xfile_numbers_prefix_neg
+const Xfile_numbers_last=Xfile_numbers_operation_shr
+const Xfile_numbers_notmapped=0xff
 
 function nr(sd i,sd f)
 const numbers_start=\

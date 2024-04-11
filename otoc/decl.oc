@@ -27,46 +27,9 @@ function functiondef_extern(sv pbuffer)
 end
 #function functiondef_entry(sv pbuffer)
 
-#at N structure
-function normal(sv pbuffer)
-	charx type#1;call get_char(pbuffer,#type)
+#DoT
+function dot(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	call var(pbuffer)
 end
-function neg(sv pbuffer)
-	charx type#1;call get_char(pbuffer,#type)
-end
-function not(sv pbuffer)
-	charx type#1;call get_char(pbuffer,#type)
-end
-function notneg(sv pbuffer)
-	charx type#1;call get_char(pbuffer,#type)
-end
-function open();end
-function close();end
-function add();end
-function sub();end
-function mul();end
-function div();end
-function divu();end
-function and();end
-function or();end
-function xor();end
-function pow();end
-function rem();end
-function remu();end
-function shl();end
-function sar();end
-function shr();end
-function equal();end
-function inequal();end
-function less();end
-function greater();end
-function lessequal();end
-function greaterequal();end
-function logicaland();end
-function logicalor();end
-function unsignedless();end
-function unsignedgreater();end
-function unsignedlessequal();end
-function unsignedgreaterequal();end
-function parity();end
-function odd();end

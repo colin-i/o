@@ -48,6 +48,9 @@ Include "./functions/64/bit.oc"
 Include "./functions/64/reloc.oc"
 Include "./functions/64/align.oc"
 
+Include "./functions/xfile.oc"
+Include "./functions/xfile_details.oc"
+
 Include "./functions/include.oc"
 Include "./functions/dataassign.oc"
 Include "./functions/enumbags.oc"
@@ -57,6 +60,3 @@ Include "./functions/scopes.oc"
 Include "./functions/debug.oc"
 Include "./functions/index.oc"
 Include "./functions/short.oc"
-
-Include "./functions/xfile.oc"
-Include "./functions/xfile_details.oc"

@@ -126,8 +126,8 @@ const Xfile_numbers_type_idata=1
 const Xfile_numbers_type_idatax=2
 #t from text
 const Xfile_numbers_type_tdecimal=3
-const Xfile_numbers_type_toct=4
-const Xfile_numbers_type_thex=5
+const Xfile_numbers_type_toctal=4
+const Xfile_numbers_type_thexadec=5
 const Xfile_numbers_type_tconstant=6
 #f from function
 const Xfile_numbers_type_fsize=7

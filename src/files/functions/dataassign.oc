@@ -47,11 +47,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			endelse
 			If err!=noerr;Return err;EndIf
 
-			#for size of var
-			call getcont(immovable_struct_cont,#ptr_reserve)
-			add ptr_reserve reg
-			add ptr_reserve (maskoffset_reserve)
-			call i_to_s(1,ptr_reserve) #why not set # 1? anyone can modify in peace and not set this part if not required. is this a plan? don't care
+			#for size of var  1 is set at addvar
 
 			if sign=nosign
 				#stack variable declared without assignation, only increment stack variables
@@ -230,9 +226,16 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Str ptrgroupend^groupend
 				Return ptrgroupend
 			EndIf
-			if punitsize=(NULL)
+			if punitsize=(NULL)  #pass_write
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool,relocindx)
 				If err!=noerr;Return err;EndIf
+
+				#for size of var
+				call getcont(immovable_struct_cont,#ptr_reserve)
+				add ptr_reserve reg
+				add ptr_reserve (maskoffset_reserve)
+				call i_to_s_safe(main.xf_commas,ptr_reserve)
+
 				setcall err xfile_add_commas_if()
 				If err!=noerr;Return err;EndIf
 			else
@@ -244,6 +247,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Return noerr
 		EndElse
 	ElseIf sign=(reservesign)
+		#for size of var
+		call getcont(immovable_struct_cont,#ptr_reserve)
+		add ptr_reserve reg
+		add ptr_reserve (maskoffset_reserve)
+
 		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask,ptr_reserve)
 		if err=(noerror)
 			if punitsize!=(NULL)
@@ -456,6 +464,14 @@ function get_function_values(sd impbit,sd p_value,sd pointer)
 	return pointer#
 endfunction
 
+function i_to_s_safe(sd value,sd ptr_reserve)
+	if value<=(wmax)
+		call i_to_s(value,ptr_reserve)
+	else
+		call i_to_s(0,ptr_reserve)
+	endelse
+end
+
 #err
 function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask,sd ptr_reserve)
 	sd err
@@ -473,11 +489,7 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 	vdata p_parses%ptr_parses
 	if p_parses=(pass_write)
 	#ptr_reserve is undefined at another pass (and theoretically at constants)
-		if value<=(wmax)
-			call i_to_s(value,ptr_reserve)
-		else
-			call i_to_s(0,ptr_reserve)
-		endelse
+		call i_to_s_safe(value,ptr_reserve)
 	endif
 
 	if is_stack=(FALSE)

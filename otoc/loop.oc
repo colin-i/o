@@ -99,14 +99,14 @@ end
 importx "fwrite" fwrite
 
 include "decl.oc"
+include "number.oc"
+include "var.oc"
 
 aftercall *
 function aftercallenable()
 	set main.result (EXIT_FAILURE)
 	aftercallenable
 end
-
-include "number.oc"
 
 function comment(sv pbuffer,sd outfile)
 	call write(outfile,"//",2)
@@ -137,7 +137,7 @@ function line(sv *pbuffer,sd outfile)
 end
 
 function include(sv pbuffer,sd output)
-#no write
+#need write
 	charx type#1;call get_char(pbuffer,#type)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
@@ -169,7 +169,7 @@ function functiondef(sv pbuffer,sd outfile)
 	callret writen(outfile,"){",2)
 end
 function hex(sv pbuffer)
-#N is minimum, no write
+#need write
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
 		call number(pbuffer)

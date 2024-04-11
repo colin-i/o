@@ -109,14 +109,14 @@ function xfile_prepare_commas_if()
 		if main.xf_pos=-1
 			return err
 		endif
-		set main.xf_commas 0
 	endif
+	set main.xf_commas 0  # outside if? is used at var size for declare
 	return (noerror)
 endfunction
-function xfile_inc_commas_if()
-	if main.xfile!=(openno)
-		inc main.xf_commas
-	endif
+function xfile_inc_commas()#_if()         same as prepare_commas
+	#if main.xfile!=(openno)            same
+	inc main.xf_commas
+	#endif
 endfunction
 #err
 function xfile_add_commas_if()

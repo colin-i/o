@@ -321,13 +321,9 @@ EndFunction
 #err
 function getarg_dot_any(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd errnr
-	setcall errnr xfile_add_char_if((Xfile_arg_varfn_dot_yes))
+	sd scope
+	setcall errnr get_scope(#content,#argsize,container_sz,#scope)
 	if errnr=(noerror)
-		sd scope
-		setcall errnr get_scope(#content,#argsize,container_sz,#scope)
-		if errnr!=(noerror)
-			return errnr
-		endif
 		SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
 	endif
 	return errnr
@@ -335,15 +331,18 @@ endfunction
 #err
 function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd errnr
-	setcall errnr getarg_dot_any(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
-	if errnr!=(noerror)
-		return errnr
+	setcall errnr xfile_add_char_if((Xfile_arg_varfn_dot_yes))
+	if errnr=(noerror)
+		setcall errnr getarg_dot_any(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix)
+		if errnr!=(noerror)
+			return errnr
+		endif
+		sd test;setcall test stackbit(ptrdata#)
+		if test=0
+			return (noerror)
+		endif
+		setcall errnr there_is_nothing_there()
 	endif
-	sd test;setcall test stackbit(ptrdata#)
-	if test=0
-		return (noerror)
-	endif
-	setcall errnr there_is_nothing_there()
 	return errnr
 endfunction
 #er

@@ -338,13 +338,13 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	#0X ?
 	SetCall bool memtohex(content,size,outval)
 	If bool=(TRUE)
-		setcall err xfile_add_base_ifif((Xfile_numbers_type_thex),content,size)
+		setcall err xfile_add_base_ifif((Xfile_numbers_type_thexadec),content,size)
 		return err
 	endif
 	#0 ?
 	SetCall bool memtooct(content,size,outval)
 	If bool=(TRUE)
-		setcall err xfile_add_base_ifif((Xfile_numbers_type_toct),content,size)
+		setcall err xfile_add_base_ifif((Xfile_numbers_type_toctal),content,size)
 		return err
 	endif
 	#decimal number
