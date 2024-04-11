@@ -10,7 +10,7 @@ const SEEK_CUR=1
 const SEEK_END=2
 
 include "xfile.h"
-const Xfile_last=Xfile_line
+#const Xfile_last=Xfile_line
 
 datax result#1
 
@@ -32,10 +32,7 @@ function loop(sd input,sd output)
 
 				while pointer!=delim
 					charx command#1;call get_char(#pointer,#command)
-					if command>(Xfile_last)
-						call puts("Error")
-						break
-					end
+					#if command>(Xfile_last);call puts("Error");break;end
 					value Xfile_comment^comment
 					value *Xfile_commentmulti^commentmulti
 					value *Xfile_commentlineend^commentlineend
