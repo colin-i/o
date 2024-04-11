@@ -303,7 +303,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			if subtype!=(cCALLEX_primsec)
 				SetCall errnr write_imm_trunc(dataargsec,regopcode,lowprim,dataargprim,sufixprim)
 			else
-				SetCall errnr write_imm_sign(dataargsec,regopcode) #not low, same scalar ff 34 c8  pushq  (%rax,%rcx,8)
+				SetCall errnr write_imm_simple(dataargsec,regopcode) #not low, same scalar ff 34 c8  pushq  (%rax,%rcx,8),   and set ecx is ok on big, and with rex is sign extended that is also useless
 			endelse
 		else
 			if p_prefix#=(FALSE)
