@@ -14,5 +14,5 @@ function intern(data a) #commenting
 end
 
 entry main()
-hex -:,~:,~-:+(:+:)
+hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 ;
