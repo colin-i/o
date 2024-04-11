@@ -77,6 +77,13 @@ function write_imm(sd dataarg,sd op)
 	return err
 endfunction
 #er
+function write_imm_simple(sd value,sd reg)
+	sd err
+	add reg (ateaximm)
+	setcall err write_imm(value,reg)
+	return err
+endfunction
+#er
 function write_imm_sign(sd dataarg,sd regopcode)
 	vData codeptr%%ptr_codesec
 	sd err
@@ -99,12 +106,11 @@ function write_imm_trunc(sd value,sd reg,sd low,sd data,sd sufix)
 		sd bool;setcall bool is_big_imm(data,sufix)
 		if bool=(FALSE)
 			#mediu
-			add reg (ateaximm)
-			setcall err write_imm(value,reg)
+			setcall err write_imm_simple(value,reg)
 			return err
 		endif
 		#big
-		setcall err write_imm_sign(value,reg)  #there is one if64 useless inside
+		setcall err write_imm_sign(value,reg)  #there is one if64 inside that extends the sign
 		return err
 	endif
 	#low
