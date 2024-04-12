@@ -1,9 +1,10 @@
 
 format elfobj64
 
-function b(data c)
-char a=1
-char d#2
+function b(data d)
+char a#2
+char c={1,2,3}
+char e="1234"
 value aa^a
 return aa#s^
 endfunction
@@ -22,4 +23,5 @@ char *z=\\b
 char *z=\b.a
 char *z=\b.c
 char *z=\b.d
+char *z=\b.e
 char *z=\b.a\
