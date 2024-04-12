@@ -18,18 +18,16 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	#Data pointer_structure#1
 	#at constants and at data^sd,str^ss
 
-	#for size of var
-	sd reg;sd ptr_reserve
-
 	if punitsize=(NULL)
 		if typenumber=constantsnr
 			#this can't go after dataparse, addvarref will increase the offset
 			Call getcontReg(constantsstruct,ptroffset_const)
-			SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask) #there are 2 more argument but are not used
+			SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,long_mask) #there are 2 more arguments but are not used
 			#it is not a mistake to go with 0 mask in variable from here to addaref
 			If err!=noerr;Return err;EndIf
 		else
-			sd immovable_struct_cont
+			sd immovable_struct_cont ;#for size of var
+			sd reg	             ;#for size of var
 			if stack=(TRUE)
 				sd sectiontypenumber=totalmemvariables
 				add sectiontypenumber typenumber
@@ -135,9 +133,9 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					#else is at stack value   grep stackfilter2   2
 						set stringtodata true
 						set skipNumberValue true
-						if punitsize!=(NULL)
-							set punitsize# 1    #was 1 from bsz is 1 from null end
-						endif
+						#??? #if punitsize!=(NULL)
+						#	set punitsize# 1    #was 1 from bsz is 1 from null end
+						#endif
 					endif
 				ElseIf typenumber=stringsnr
 					set stringtodata true
@@ -229,13 +227,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if punitsize=(NULL)  #pass_write
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool,relocindx)
 				If err!=noerr;Return err;EndIf
-
-				#for size of var
-				call getcont(immovable_struct_cont,#ptr_reserve)
-				add ptr_reserve reg
-				add ptr_reserve (maskoffset_reserve)
-				call i_to_s_safe(main.xf_commas,ptr_reserve)
-
+				call to_size_of_var(main.xf_commas,immovable_struct_cont,reg)
 				setcall err xfile_add_commas_if()
 				If err!=noerr;Return err;EndIf
 			else
@@ -247,12 +239,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Return noerr
 		EndElse
 	ElseIf sign=(reservesign)
-		#for size of var
-		call getcont(immovable_struct_cont,#ptr_reserve)
-		add ptr_reserve reg
-		add ptr_reserve (maskoffset_reserve)
-
-		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask,ptr_reserve)
+		setcall err get_reserve_size(ptrcontent,ptrsize,size,ptrvalue,stack,typenumber,long_mask,immovable_struct_cont,reg)
 		if err=(noerror)
 			if punitsize!=(NULL)
 				set punitsize# value
@@ -428,6 +415,14 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		SetCall err quotinmem(ptrcontent,ptrsize,ptrvalue,#escapes)
 		if punitsize=(NULL)
 			SetCall err addtosecstresc_xfile(ptrcontent,ptrsize,value,escapes,ptrdatasec)
+			If typenumber=charnr
+			#for size of var
+				if err=(noerror)
+					sub value escapes
+					inc value ##ptr_reserve is already 1, another solution is add short and check overlow there not at this _safe function
+					call to_size_of_var(value,immovable_struct_cont,reg)
+				endif
+			endif
 			return err
 		else
 			sub value escapes
@@ -464,16 +459,19 @@ function get_function_values(sd impbit,sd p_value,sd pointer)
 	return pointer#
 endfunction
 
-function i_to_s_safe(sd value,sd ptr_reserve)
+function to_size_of_var(sd value,sd struct,sd reg)
+	sd r;call getcont(struct,#r)
+	add r reg
+	add r (maskoffset_reserve)
 	if value<=(wmax)
-		call i_to_s(value,ptr_reserve)
+		call i_to_s(value,r)
 	else
-		call i_to_s(0,ptr_reserve)
+		call i_to_s(0,r)
 	endelse
-end
+endfunction
 
 #err
-function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask,sd ptr_reserve)
+function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_stack,sd typenumber,sd long_mask,sd struct,sd reg)
 	sd err
 	SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 	If err!=(noerror)
@@ -487,9 +485,9 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 
 	sd value;set value ptrvalue#
 	vdata p_parses%ptr_parses
-	if p_parses=(pass_write)
-	#ptr_reserve is undefined at another pass (and theoretically at constants)
-		call i_to_s_safe(value,ptr_reserve)
+	if p_parses#=(pass_write)
+	#strunct/reg not at another pass (and theoretically at constants)
+		call to_size_of_var(value,struct,reg) #for size of var
 	endif
 
 	if is_stack=(FALSE)
