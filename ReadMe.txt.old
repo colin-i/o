@@ -11,13 +11,13 @@ src\
 
 - has the source code
 
-changelog.old.html
+changelog.html.old
 
 - has the history of the program before git creation (last bump: 1.3.16, December 07, 2015)
 
-compiler.html
+compiler.html.old
 
-- explains how to use o.exe
+- was a short html page about the compiler
 
 o.html
 
@@ -27,11 +27,11 @@ ReadMe.old.txt
 
 - this file
 
-make
+make.old
 
 - Linux shell file to compile the source for executable; the output file will be in the './build/' folder
 
-make.bat
+make.bat.old
 
 - Windows bat file to compile the source for executable; the output file will be in the './build/' folder
 
@@ -39,10 +39,10 @@ makewin32
 
 - Linux shell file to compile the source and to link it with mingw-w64-i686 for linux; the output file will be 'ocompiler.zip'
 
-makewin64
+makewin64.old
 
 - Linux shell file to compile the source and to link it with mingw-w64-x86-64 for linux; the output file will be in the './buildg/' folder
 
-.ocompiler.txt
+ocompiler.conf
 
 - the program parse this file to set the preferences
