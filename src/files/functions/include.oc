@@ -173,7 +173,7 @@ function include_sec_skip(sv pcontent,sd pcomsize)
 	if content#=(asciidoublequote)
 		sd sz;sd escapes
 		sd err
-		SetCall err quotinmem(pcontent,pcomsize,#sz,#escapes)
+		SetCall err quotinmem_started(pcontent,pcomsize,#sz,#escapes)
 		if err=(noerror)
 			setcall err xfile_add_char_ifif((Xfile_include_alternative_yes))
 			if err=(noerror)

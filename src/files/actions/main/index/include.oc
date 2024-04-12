@@ -24,7 +24,7 @@ if errormsg=noerr
 							sub include_test content
 							sub comsize include_test
 							add content include_test
-							SetCall errormsg quotinmem(pcontent,pcomsize,pquotsz,pescapes)
+							SetCall errormsg quotinmem_started(pcontent,pcomsize,pquotsz,pescapes)
 							if errormsg=noerr
 								SetCall errormsg xfile_add_char_ifif((Xfile_include_alternative_yes))
 							endif

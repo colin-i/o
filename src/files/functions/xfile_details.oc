@@ -271,8 +271,7 @@ function xfile_add_import_if(sv pcontent,sd psize,sd subtype)
 			if err=(noerror)
 				Datax impquotsz#1
 				Datax impescapes#1
-				#the spelling errors were at pass init
-				Call quotinmem(pcontent,psize,#impquotsz,#impescapes)
+				Call quotinmem_noerr(pcontent,psize,#impquotsz,#impescapes) #the spelling errors were at pass init
 				setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
 				if err=(noerror)
 					Call spaces(pcontent,psize)
@@ -296,8 +295,7 @@ function xfile_add_library_if(sv pcontent,sd psize)
 		if err=(noerror)
 			Datax impquotsz#1
 			Datax impescapes#1
-			#the spelling errors were at pass init
-			Call quotinmem(pcontent,psize,#impquotsz,#impescapes)
+			Call quotinmem_noerr(pcontent,psize,#impquotsz,#impescapes) #the spelling errors were at pass init
 			setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
 			#here a low chances error, not a spelling error, spelling was at pass init
 			call advancecursors(pcontent,psize,psize#)

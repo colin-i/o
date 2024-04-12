@@ -301,22 +301,15 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 EndFunction
 
 #return false or true
-Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
+Function quotientinmem(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	Char quotation={asciidoublequote,0}
-	Str pquotation^quotation
-	Data intnr=0
 	Data zero=0
 	Data nonzero=1
 
-	SetCall intnr stratmem(ptrcontent,ptrsize,pquotation)
-	If intnr=zero
-		Return zero
-	EndIf
-
-	Str data#1
+	vStr data#1
 	Data length#1
-	Str ptrdata^data
-	Data ptrlength^length
+	value ptrdata^data
+	vdata ptrlength^length
 
 	Set data ptrcontent#
 	Set length ptrsize#
@@ -346,19 +339,38 @@ Function quotientinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
 	EndWhile
 	Return zero
 EndFunction
-
 #err
-Function quotinmem(data ptrcontent,data ptrsize,data pquotsz,data pescapes)
+Function quotinmem(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
+	Char quotation={asciidoublequote,0}
+	vStr pquotation^quotation
+	sd intnr
+	SetCall intnr stratmem(ptrcontent,ptrsize,pquotation)
+	If intnr=0
+		Return "Expecting quotation mark."
+	EndIf
+	sd err;setcall err quotinmem_err(ptrcontent,ptrsize,pquotsz,pescapes)
+	return err
+endfunction
+#err
+function quotinmem_err(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	Data bool#1
 	SetCall bool quotientinmem(ptrcontent,ptrsize,pquotsz,pescapes)
 	Data false=FALSE
 	If bool=false
 		Char strerr="Expecting string delimited by quotations and with the backslash the escape character."
-		Str ptrstrerr^strerr
+		vStr ptrstrerr^strerr
 		Return ptrstrerr
 	EndIf
-	Data noerr=noerror
-	Return noerr
+	Return (noerror)
+EndFunction
+Function quotinmem_started(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
+	call stepcursors(ptrcontent,ptrsize)
+	sd err;setcall err quotinmem_err(ptrcontent,ptrsize,pquotsz,pescapes)
+	return err
+EndFunction
+Function quotinmem_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
+	call stepcursors(ptrcontent,ptrsize)
+	Call quotientinmem(ptrcontent,ptrsize,pquotsz,pescapes)
 EndFunction
 
 #err
