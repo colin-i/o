@@ -263,33 +263,18 @@ Function stratmemspc(data pcontent,data psize,str match,data spacereq)
 EndFunction
 
 #return the escaped char and change the size and cursor
-Function quotescaped(Data pcontent,Data psize,Data pescapes)
-	Str content#1
-	Data size#1
-	Char byte#1
+Function quotescaped(sv pcontent,sd psize)
+	vStr content#1
 	Char bs=asciibs
-	Data zero=0
+	charx byte#1
 
 	Set content pcontent#
-	Set byte content#
-	If byte!=bs
-		Return byte
+	if content#!=bs
+		Return content#
 	EndIf
-	Set size psize#
-	Dec size
-	If size=zero
-		Return byte
-	EndIf
-
-	Inc content
-	Set byte content#
-	Set pcontent# content
-	Set psize# size
-	If pescapes!=zero
-		Inc pescapes#
-		Return byte   ##quotation/null/another are relevant here
-	EndIf
-
+	inc content
+	set pcontent# content;dec psize#
+	set byte content#
 	if byte=(asciin)
 		return (asciireturn)
 	elseif byte=(asciir)
@@ -300,44 +285,34 @@ Function quotescaped(Data pcontent,Data psize,Data pescapes)
 	return byte
 EndFunction
 
-#return false or true
-Function quotientinmem(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
-	Char quotation={asciidoublequote,0}
-	Data zero=0
-	Data nonzero=1
+#err
+function quotinmem_err(ss content,sd pquotsz,sd pescapes,sd null_ok)
+	Char quotation=asciidoublequote
+	Char bs=asciibs
+	Char bnull=0
+	Charx byte#1
 
-	vStr data#1
-	Data length#1
-	value ptrdata^data
-	vdata ptrlength^length
-
-	Set data ptrcontent#
-	Set length ptrsize#
-	Set pescapes# zero
-	Data escbefore=0
-	Data escafter=0
-
-	Char byte={0}
-	Char bnull={0}
-	While length!=zero
-		Set escbefore pescapes#
-		SetCall byte quotescaped(ptrdata,ptrlength,pescapes)
-		If byte=quotation
-			Set escafter pescapes#
-			If escbefore=escafter
-				Str datastart#1
-				Set datastart ptrcontent#
-				Sub data datastart
-				Set pquotsz# data
-				Return nonzero
-			EndIf
-		ElseIf byte=bnull
-			Return zero
-		EndElseIf
-		Inc data
-		Dec length
+	sd aux;set aux content
+	Set pescapes# 0
+	#quotes_forward was called already, the string has a good end, and nulls are not ok at include/import/library but tolerated at decl/arg
+	While 0=0
+		if content#=bs
+			inc pescapes#
+			add content 2
+			continue
+		endif
+		if content#=quotation
+			sub content aux
+			Set pquotsz# content
+			return (noerror)
+		endif
+		if content#=bnull
+			if null_ok=(FALSE)
+				return "Null will break the include/import/library statement."
+			endif
+		endif
+		inc content
 	EndWhile
-	Return zero
 EndFunction
 #err
 Function quotinmem(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
@@ -348,29 +323,22 @@ Function quotinmem(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	If intnr=0
 		Return "Expecting quotation mark."
 	EndIf
-	sd err;setcall err quotinmem_err(ptrcontent,ptrsize,pquotsz,pescapes)
+	sd err;setcall err quotinmem_err(ptrcontent#,pquotsz,pescapes,(FALSE))
 	return err
 endfunction
-#err
-function quotinmem_err(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
-	Data bool#1
-	SetCall bool quotientinmem(ptrcontent,ptrsize,pquotsz,pescapes)
-	Data false=FALSE
-	If bool=false
-		Char strerr="Expecting string delimited by quotations and with the backslash the escape character."
-		vStr ptrstrerr^strerr
-		Return ptrstrerr
-	EndIf
-	Return (noerror)
-EndFunction
 Function quotinmem_started(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
-	sd err;setcall err quotinmem_err(ptrcontent,ptrsize,pquotsz,pescapes)
+	sd err;setcall err quotinmem_err(ptrcontent#,pquotsz,pescapes,(FALSE))
+	return err
+EndFunction
+Function quotinmem_started_blind(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
+	call stepcursors(ptrcontent,ptrsize)
+	sd err;setcall err quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE))
 	return err
 EndFunction
 Function quotinmem_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
-	Call quotientinmem(ptrcontent,ptrsize,pquotsz,pescapes)
+	Call quotinmem_err(ptrcontent#,pquotsz,pescapes) #null_ok is irelevant, spelling was already
 EndFunction
 
 #err

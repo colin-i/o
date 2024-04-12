@@ -99,7 +99,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 		sd q_size
 		sd escapes
 		set size ptrsize#
-		SetCall errnr quotinmem_started(#content,#size,#q_size,#escapes) #this has a stepcursors
+		SetCall errnr quotinmem_started_blind(#content,#size,#q_size,#escapes) #this has a stepcursors
 		If errnr!=(noerror)
 			return errnr
 		endif
