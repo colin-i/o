@@ -19,12 +19,7 @@ linkerflags=-O3 -s
 #             1
 endif
 
-ifndef linker
 linker=/lib/ld-linux.so.2
-#testlinker=
-else
-test_has_linker=1
-endif
 
 ifndef prefix
 prefix=/usr
@@ -101,10 +96,10 @@ uninstall:
 test:
 	echo "test"
 	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
-	if [ -z "${test_has_linker}" ]; then \
+	if [ -z "${testlinker}" ]; then \
 		./z o.oc nul_res_pref 1; \
 	else \
-		LD_LIBRARY_PATH=${linker} ${linker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
+		LD_LIBRARY_PATH=${testlinker} ${testlinker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
 	fi; \
 	diff o z
 #cannot extern LD_LIBRARY_PATH, will wrong between them

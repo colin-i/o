@@ -20,7 +20,7 @@ ${ver}:
 
 all: ${ver}
 	#if ! [ -s ./src/obj.txt ];then
-	cd ./src; ../ounused/ounused ./linux/obj.oc.log
+	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
 	#; fi
 	@echo
 

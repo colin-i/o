@@ -290,7 +290,6 @@ function quotinmem_err(ss content,sd pquotsz,sd pescapes,sd null_ok)
 	Char quotation=asciidoublequote
 	Char bs=asciibs
 	Char bnull=0
-	Charx byte#1
 
 	sd aux;set aux content
 	Set pescapes# 0
