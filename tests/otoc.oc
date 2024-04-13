@@ -14,7 +14,7 @@ char *=1
 char *={2,3}
 char *="45"
 char a#3
-value *^a
+value b^a
 
 function intern(data a) #commenting
 end
@@ -22,3 +22,6 @@ end
 entry main()
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 ;
+call intern(1,"qw",main.a:main.a)
+set a intern()
+set b intern
