@@ -98,6 +98,7 @@ importx "fwrite" fwrite
 include "decl.oc"
 include "number.oc"
 include "var.oc"
+include "action.oc"
 
 aftercall *
 function aftercallenable()
@@ -188,6 +189,19 @@ function declare(sv pbuffer)
 		end
 	endelse
 end
+function action(sv pbuffer)
+	charx act#1;call get_char(pbuffer,#act)
+	call action1(act)
+end
+function action2(sv pbuffer)
+	call varfunc(pbuffer)
+	charx a2#1;call get_char(pbuffer,#a2)
+	call arg(pbuffer)
+end
+function call(sv pbuffer)
+	char c#1;call get_char(pbuffer,#c)
+	call cll(pbuffer)
+end
 function hex(sv pbuffer)
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
@@ -196,12 +210,6 @@ function hex(sv pbuffer)
 	end
 end
 
-function action(sv *pbuffer)
-end
-function action2(sv *pbuffer)
-end
-function call(sv *pbuffer)
-end
 function callex(sv *pbuffer)
 end
 function if(sv *pbuffer)

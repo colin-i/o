@@ -288,11 +288,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 						setcall err xfile_add_commas_interncall_if(ptrcontent#,ptrsize#,sz)
 						if err=(noerror)
 							SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 6 more arguments but are not used
-							if err!=noerr;return err;endif
 						else
 							return err
 						endelse
-					endif
+					else
+						setcall err xfile_add_int_if(0)
+					endelse
 				else
 					setcall p nr_of_args_64need_p_get();set p# 0 #also at 0 at win will be sub all shadow space
 					if sz!=zero
@@ -315,10 +316,15 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 							return err
 						endelse
 					else
-						setcall err stack_align(0)
+						setcall err xfile_add_int_if(0)
+						if err=(noerror)
+							setcall err stack_align(0)
+						else
+							return err
+						endelse
 					endelse
-					if err!=noerr;return err;endif
 				endelse
+				if err!=noerr;return err;endif
 
 				setcall err write_function_call(ptrdata,boolindirect,(FALSE),subtype)
 				if err!=noerr;return err;endif

@@ -1,18 +1,4 @@
 
-#D structure
-function decl(sv pbuffer)
-	charx field#1;call get_char(pbuffer,#field)
-	if field!=(Xfile_declfield_const)
-		if field=(Xfile_declfield_data)
-			charx data#1;call get_char(pbuffer,#data)
-		end
-		charx type#1;call get_char(pbuffer,#type)
-		charx feature#1;call get_char(pbuffer,#feature)
-	end
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
-end
-
 function functiondef_intern(sv pbuffer)
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
@@ -26,6 +12,38 @@ function functiondef_extern(sv pbuffer)
 	call functiondef_intern(pbuffer)
 end
 #function functiondef_entry(sv pbuffer)
+
+#A structure
+function arg(sv pbuffer)
+	charx a#1;call get_char(pbuffer,#a)
+	if a=(Xfile_arg_number)
+		call number(pbuffer)
+	elseif a=(Xfile_arg_varfn)
+		call varfunc(pbuffer)
+	elseif a=(Xfile_arg_string)
+		datax sz#1;valuex pointer#1
+		call get_string(pbuffer,#sz,#pointer)
+	else #Xfile_arg_call
+		call cll(pbuffer)
+	end
+end
+
+#CD structure
+#function cond
+
+#D structure
+function decl(sv pbuffer)
+	charx field#1;call get_char(pbuffer,#field)
+	if field!=(Xfile_declfield_const)
+		if field=(Xfile_declfield_data)
+			charx data#1;call get_char(pbuffer,#data)
+		end
+		charx type#1;call get_char(pbuffer,#type)
+		charx feature#1;call get_char(pbuffer,#feature)
+	end
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
 
 #DoT
 function dot(sv pbuffer)

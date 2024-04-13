@@ -304,7 +304,7 @@ EndFunction
 #err
 Function undefinedvariable()
 	Char undefinedvar="Undefined variable name."
-	Str _undefinedvar^undefinedvar
+	vStr _undefinedvar^undefinedvar
 	Return _undefinedvar
 EndFunction
 

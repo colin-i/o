@@ -1,9 +1,50 @@
 
+#C structure
+function cal(sv pbuffer)
+	char arg_call#1;call get_char(pbuffer,#arg_call)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+end
+
+#CL structure
+function cll(sv pbuffer)
+	call cal(pbuffer)
+	datax args#1;call get_data(pbuffer,#args)
+	sd n=0;while n!=args
+		call arg(pbuffer)
+		inc n
+	end
+end
+
+#V structure
 function var(sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	charx suffix#1;call get_char(pbuffer,#suffix)
 	if suffix=(Xfile_suffix_true)
 		charx cast#1;call get_char(pbuffer,#cast)
+	end
+	#Xfile_suffix_no Xfile_suffix_notasuffix
+end
+
+#VF structure
+function varfunc(sv pbuffer)
+	charx prefix#1;call get_char(pbuffer,#prefix)
+	charx colon#1;call get_char(pbuffer,#colon)
+	if colon=(Xfile_arg_varfn_colon_yes)
+		charx dt#1;call get_char(pbuffer,#dt)
+		if dt=(Xfile_arg_varfn_dot_yes)
+			datax szf#1;valuex func#1
+			call get_string(pbuffer,#szf,#func)
+		end
+		datax szv#1;valuex vr#1
+		call get_string(pbuffer,#szv,#vr)
+		charx suffix#1;call get_char(pbuffer,#suffix)
+	end
+	charx d#1;call get_char(pbuffer,#d)
+	if d=(Xfile_arg_varfn_dot_no)
+		call var(pbuffer)
+	else
+		call dot(pbuffer)
 	end
 end

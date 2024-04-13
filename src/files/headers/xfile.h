@@ -137,6 +137,7 @@ const Xfile_numbers_type_voffsetVar=10
 
 const Xfile_suffix_false=0
 const Xfile_suffix_true=1
+const Xfile_suffix_notasuffix=2       # hacky way to see a function fast, instead of searching through all functions
 const Xfile_suffix_cast_none=0
 const Xfile_suffix_cast_value=asciiV
 const Xfile_suffix_cast_data=asciiD
