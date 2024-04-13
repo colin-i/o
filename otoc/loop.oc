@@ -133,8 +133,8 @@ function line(sv *pbuffer,sd outfile)
 	callret write(outfile,";",1)
 end
 
-function include(sv pbuffer,sd output)
 #need write
+function include(sv pbuffer,sd output)
 	charx type#1;call get_char(pbuffer,#type)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
@@ -144,7 +144,7 @@ function include(sv pbuffer,sd output)
 	end
 end
 function functiondef(sv pbuffer,sd outfile)
-#need arguments write
+#at least arguments write
 	call write(outfile,"void ",5)
 
 	datax sz#1;valuex pointer#1
@@ -165,8 +165,30 @@ function functiondef(sv pbuffer,sd outfile)
 
 	callret writen(outfile,"){",2)
 end
+function declare(sv pbuffer)
+	call decl(pbuffer)
+	datax sz#1;valuex pointer#1
+	charx sign#1;call get_char(pbuffer,#sign)
+	if sign=(Xfile_declsign_reserve)
+		call number(pbuffer)
+	elseif sign=(Xfile_declsign_pointer)
+		call get_string(pbuffer,#sz,#pointer)
+	else #Xfile_declsign_e*
+		charx mode#1;call get_char(pbuffer,#mode)
+		if mode=(Xfile_declmode_value)
+			call number(pbuffer)
+		elseif mode=(Xfile_declmode_group)
+			datax args#1;call get_data(pbuffer,#args)
+			sd n=0;while n!=args
+				call number(pbuffer)
+				inc n
+			end
+		else #Xfile_declmode_string
+			call get_string(pbuffer,#sz,#pointer)
+		end
+	endelse
+end
 function hex(sv pbuffer)
-#need write
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
 		call number(pbuffer)
@@ -174,8 +196,6 @@ function hex(sv pbuffer)
 	end
 end
 
-function declare(sv *pbuffer)
-end
 function action(sv *pbuffer)
 end
 function action2(sv *pbuffer)
