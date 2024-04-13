@@ -10,6 +10,12 @@ line
 
 include "include.h" "include.h"
 
+char *=1
+char *={2,3}
+char *="45"
+char a#3
+value *^a
+
 function intern(data a) #commenting
 end
 
