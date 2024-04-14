@@ -29,7 +29,12 @@ function arg(sv pbuffer)
 end
 
 #CD structure
-#function cond
+function cond(sv pbuffer,sd output)
+	call arg(pbuffer)
+	charx cnd#1;call get_char(pbuffer,#cnd)
+	call arg(pbuffer)
+	callret writen(output,"{",1)
+end
 
 #D structure
 function decl(sv pbuffer)

@@ -1,0 +1,6 @@
+
+if [ -n "${1}" ]; then
+	s=SUBDIRS=src
+	shift
+fi
+launcher=q LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/i686-linux-gnu-ld.bfd OFLAGS+=" function_name 1 nul_res_pref 1" make $@ linkerflags= ${s}
