@@ -216,6 +216,7 @@ const Xfile_include_alternative_yes=1
 
 const Xfile_aftercall_declare=0
 const Xfile_aftercall_import=1
+#const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
 const Xfile_aftercall_enable=2
 const Xfile_aftercall_disable=3
 

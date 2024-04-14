@@ -11,6 +11,7 @@ const SEEK_END=2
 
 include "xfile.h"
 #const Xfile_last=Xfile_line
+const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
 
 datax result#1
 
@@ -62,7 +63,7 @@ function loop(sd input,sd output)
 					mult command :
 					sv dest^Xfile_comment;add dest command
 					set dest dest#
-					call dest(#pointer,output)
+					call dest(output,#pointer)
 					if main.result=(EXIT_FAILURE);break;end
 				end
 				if main.result=(EXIT_SUCCESS)
@@ -106,36 +107,36 @@ function aftercallenable()
 	aftercallenable
 end
 
-function comment(sv pbuffer,sd outfile)
+function comment(sd outfile,sv pbuffer)
 	call write(outfile,"//",2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	callret writen(outfile,pointer,sz)
 end
-function commentmulti(sv pbuffer,sd outfile)
+function commentmulti(sd outfile,sv pbuffer)
 	call write(outfile,"/*",2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	call write(outfile,pointer,sz)
 	callret writen(outfile,"*/",2)
 end
-function commentlineend(sv pbuffer,sd outfile)
+function commentlineend(sd outfile,sv pbuffer)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and line command
-	callret comment(pbuffer,outfile)
+	callret comment(outfile,pbuffer)
 end
-function format(sv pbuffer) #will do nothing at the moment
+function format(sd *outfile,sv pbuffer) #will do nothing at the moment
 	charx fmt#1;call get_char(pbuffer,#fmt)
 end
-function end(sv *pbuffer,sd outfile)
+function end(sd outfile)
 	callret writen(outfile,"}",1)
 end
-function line(sv *pbuffer,sd outfile)
+function line(sd outfile)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
 	callret write(outfile,";",1)
 end
 
 #need write
-function include(sv pbuffer,sd output)
+function include(sd output,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
@@ -144,7 +145,7 @@ function include(sv pbuffer,sd output)
 		call get_string(pbuffer,#sz,#pointer)
 	end
 end
-function functiondef(sv pbuffer,sd outfile)
+function functiondef(sd outfile,sv pbuffer)
 #at least arguments write
 	call write(outfile,"void ",5)
 
@@ -166,7 +167,7 @@ function functiondef(sv pbuffer,sd outfile)
 
 	callret writen(outfile,"){",2)
 end
-function declare(sv pbuffer)
+function declare(sd *outfile,sv pbuffer)
 	call decl(pbuffer)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
@@ -189,53 +190,76 @@ function declare(sv pbuffer)
 		end
 	endelse
 end
-function action(sv pbuffer)
+function action(sd *outfile,sv pbuffer)
 	charx act#1;call get_char(pbuffer,#act)
 	call action1(act)
 end
-function action2(sv pbuffer)
+function action2(sd *outfile,sv pbuffer)
 	call varfunc(pbuffer)
 	charx a2#1;call get_char(pbuffer,#a2)
 	call arg(pbuffer)
 end
-function call(sv pbuffer)
+function call(sd *outfile,sv pbuffer)
 	char c#1;call get_char(pbuffer,#c)
 	call cll(pbuffer)
 end
-function if(sv pbuffer,sd output)
-	call cond(pbuffer,output)
+function callex(sd *outfile,sv pbuffer)
+	char c#1;call get_char(pbuffer,#c)
+	call cal(pbuffer)
+	call varfunc(pbuffer)
+	call arg(pbuffer)
 end
-function hex(sv pbuffer)
+function if(sd outfile,sv pbuffer)
+	call cond(pbuffer,outfile)
+end
+function else()
+end
+function while(sd outfile,sv pbuffer)
+	call cond(pbuffer,outfile)
+end
+function break()
+end
+function continue()
+end
+function ret()
+end
+function library(sd *outfile,sv pbuffer)
+	datax sz#1;valuex lib#1
+	call get_string(pbuffer,#sz,#lib)
+end
+function import(sd *outfile,sv pbuffer)
+	charx imp#1;call get_char(pbuffer,#imp)
+	datax sz#1;valuex name#1
+	call get_string(pbuffer,#sz,#name)
+	datax sza#1;valuex alias#1
+	call get_string(pbuffer,#sza,#alias)
+end
+function aftercall(sd *outfile,sv pbuffer)
+	charx acall#1;call get_char(pbuffer,#acall)
+	if acall<=(Xfile_aftercall_declarative)
+		if acall=(Xfile_aftercall_declare)
+			charx feature#1;call get_char(pbuffer,#feature)
+			datax sz#1;valuex vr#1
+			call get_string(pbuffer,#sz,#vr)
+		end
+	end
+end
+function hex(sd *outfile,sv pbuffer)
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
 		call number(pbuffer)
 		inc n
 	end
 end
-
-function callex(sv *pbuffer)
+function override(sd *outfile,sv pbuffer)
+	datax sz#1;valuex name#1
+	call get_string(pbuffer,#sz,#name)
+	charx value#1;call get_char(pbuffer,#value)
 end
-function else(sv *pbuffer)
+function orphan(sd *outfile,sv pbuffer)
+	charx orph#1;call get_char(pbuffer,#orph)
 end
-function while(sv *pbuffer)
-end
-function break(sv *pbuffer)
-end
-function continue(sv *pbuffer)
-end
-function ret(sv *pbuffer)
-end
-function library(sv *pbuffer)
-end
-function import(sv *pbuffer)
-end
-function aftercall(sv *pbuffer)
-end
-function override(sv *pbuffer)
-end
-function orphan(sv *pbuffer)
-end
-function interrupt(sv *pbuffer)
+function interrupt()
 end
 
 function writen(sd outfile,ss buf,sd sz)

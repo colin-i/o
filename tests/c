@@ -56,7 +56,7 @@ del () {
 	sw .log
 	sw .x
 	sw .exe       #by ocomp
-	switch a.out
+	switch a.out  #when ld also a.out.oc
 }
 a=( `ls` )
 for var in "${a[@]}"; do
