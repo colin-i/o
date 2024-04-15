@@ -325,8 +325,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		endelse
 		return err
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
-	char int_size=asciicolon
-	elseif content#=int_size
+	elseif content#=(long_size)
 		if size!=1;return "The text after the size of an integer sign isn't recognized.";endif
 		sd b;setcall b is_for_64()
 		if b=(FALSE);set outval# (dwsz)
@@ -390,7 +389,7 @@ Function numbersconstants(str content,data size,data outval)
 		or xprefixes (Xfile_numbers_prefix_not)
 	endif
 	sd minusbool=FALSE
-	if content#=(asciiminus)
+	if content#=(minus_number)
 		set minusbool (TRUE)
 		inc content
 		dec size

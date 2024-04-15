@@ -17,7 +17,7 @@ datax result#1
 
 #exit
 function loop(sd input,sd output)
-	set main.result (EXIT_FAILURE)
+	call aftercallsoft()
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
 	if a=0
 		sd delim;set delim ftell(input) #is still same place if file deleted in parallel
@@ -101,9 +101,12 @@ include "number.oc"
 include "var.oc"
 include "action.oc"
 
+function aftercallsoft()
+	set main.result (EXIT_FAILURE)
+end
 aftercall *
 function aftercallenable()
-	set main.result (EXIT_FAILURE)
+	call aftercallsoft()
 	aftercallenable
 end
 
@@ -129,6 +132,12 @@ function format(sd *outfile,sv pbuffer) #will do nothing at the moment
 end
 function end(sd outfile)
 	callret writen(outfile,"}",1)
+end
+function interrupt(sd outfile)
+	#this is not arm #char a="__asm__(\"int $3\");"
+	#this is no x86 #__asm__("BKPT");
+	char a="__builtin_trap();" #this is not continuing on x86 but is an temporary solution
+	callret writen(outfile,#a,\interrupt.a-1)
 end
 function line(sd outfile)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
@@ -259,15 +268,13 @@ end
 function orphan(sd *outfile,sv pbuffer)
 	charx orph#1;call get_char(pbuffer,#orph)
 end
-function interrupt()
-end
 
 function writen(sd outfile,ss buf,sd sz)
 	call write(outfile,buf,sz)
 
 	sd items;set items fwrite("\n",1,1,outfile)
 	if items!=1
-		set main.result (EXIT_FAILURE)
+		call aftercallsoft()
 	end
 end
 

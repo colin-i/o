@@ -327,7 +327,7 @@ EndFunction
 function getarg_dot_any(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,sd ptrsufix)
 	sd errnr
 	sd scope
-	setcall errnr get_scope(#content,#argsize,container_sz,#scope)
+	setcall errnr get_scope_inner(#content,#argsize,container_sz,#scope)
 	if errnr=(noerror)
 		SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
 	endif
@@ -624,8 +624,29 @@ function get_scope(sv pcontent,sd psize,sd sz,sv pscope)
 	return err
 endfunction
 #err
+function get_scope_inner(sv pcontent,sd psize,sd sz,sv pscope) #if inside a function and want to \function.var it is not yet pointer-copied to store
+	sd pos
+	sd err;setcall err get_scope_pos(pcontent#,sz,#pos)
+	if err=(noerror)
+		inc sz
+		call advancecursors(pcontent,psize,sz)
+
+		vdata ptrfunctionTagIndex%ptrfunctionTagIndex
+		if ptrfunctionTagIndex#=pos
+			vdata ptrinnerfunction%globalinnerfunction
+			if ptrinnerfunction#=(TRUE)
+				value pointer%%ptr_fnscopes
+				set pscope# pointer
+				return (noerror)
+			endif
+		endif
+		setcall pscope# scopes_get_scope(pos)
+	endif
+	return err
+endfunction
+#err
 function get_scope_pos(ss content,sd sz,sv ppos)
-	data ptrfunctions%%ptr_functions
+	value ptrfunctions%%ptr_functions
 	set ppos# 0
 	sd var
 	setcall var vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
@@ -642,23 +663,19 @@ function function_in_code()
 endfunction
 
 function is_constant_related_ascii(sd in_byte)
-# ! data cursor
-	if in_byte=(asciiexclamationmark)
-		return (TRUE)
+	if in_byte>=(asciizero) #the asm here is right, this is the fastest, even if is 0 and was = and so on
+		if in_byte<=(asciinine)
+			return (TRUE)
+		elseif in_byte=(calculationmark)
+			return (TRUE)
+		elseif in_byte=(long_size)
+			return (TRUE)
+		elseif in_byte=(not_number)
+			return (TRUE)
+		endelseif
 	elseif in_byte=(asciiparenthesisstart)
 		return (TRUE)
-#negative number
-	elseif in_byte=(asciiminus)
-		return (TRUE)
-	elseif in_byte<(asciizero)
-		return (FALSE)
-	elseif in_byte<=(asciinine)
-		return (TRUE)
-# : size of integer
-	elseif in_byte=(asciicolon)
-		return (TRUE)
-# not,~
-	elseif in_byte=(asciiequiv)
+	elseif in_byte=(minus_number)
 		return (TRUE)
 	endelseif
 	return (FALSE)
