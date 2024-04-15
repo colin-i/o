@@ -3,6 +3,11 @@ format elfobj64
 
 importx "printf" printf
 
+function test()
+char a#1
+return \test.a
+endfunction
+
 entry main()
 
 char a=1
@@ -19,7 +24,7 @@ charx aa#2
 datax bb#3
 valuex cc#4
 
-call printf("%d\n",(\main.a))  #1
+call printf("%d\n",\main.a)    #1
 call printf("%d\n",(\main.b))  #4
 call printf("%d\n",(\main.c))  #8
 call printf("%d\n",(\main.c#)) #8
