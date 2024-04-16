@@ -10,7 +10,7 @@ data b#1
 datax *#5
 datax c#1
 sd *
-sd d
+sd d=\a.b\
 endfunction
 
 entry main()

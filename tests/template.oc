@@ -8,6 +8,8 @@ function file()
 	valuex path#1
 	valuex lines#1
 	datax a#1
+	set lines lines:file.lines
+	set file.lines:lines lines
 endfunction
 
 function line()
