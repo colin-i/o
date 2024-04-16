@@ -1,0 +1,23 @@
+
+if [ -z "${1}" ]; then echo error; exit 1; fi
+
+current=${1}.oc
+exp=.expected/
+
+a=${current}.log
+aa=${exp}${a}
+diff ${a} ${aa}
+
+b=${1}.o
+bb=${exp}${b}
+bbb=${bb}.txt
+base64 -d ${bbb} > ${bb}
+diff ${b} ${bb}
+rm ${bb}
+
+c=${current}.x
+cc=${exp}${c}
+ccc=${cc}.txt
+base64 -d ${ccc} > ${cc}
+diff ${c} ${cc}
+rm ${cc}

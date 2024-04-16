@@ -443,7 +443,6 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				inc pointer_size
 			endif
 		endif
-		sd data
 		sd scope
 		sd is_stack
 		sd part_sz;setcall part_sz valinmem(content,container_sz,(asciidot))
@@ -451,12 +450,12 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		if part_sz!=container_sz
 			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_yes))
 			if err=(noerror)
-				setcall err get_scope(#content,#container_sz,part_sz,#scope)
+				setcall err get_scope_inner(#content,#container_sz,part_sz,#scope)
 				if err!=(noerror)
 					return err
 				endif
-				sd nr;setcall data searchinvars_scope(content,container_sz,#nr,scope)
-				if data=(NULL)
+				sd nr;setcall ptrdata# searchinvars_scope(content,container_sz,#nr,scope)
+				if ptrdata#=(NULL)
 					setcall err undefinedvariable()
 					return err
 				endif
@@ -471,12 +470,12 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		else
 			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_no))
 			if err=(noerror)
-				setcall data searchinvars(content,container_sz,(NULL),(NULL),1)
-				if data=(NULL)
+				setcall ptrdata# searchinvars(content,container_sz,(NULL),(NULL),1)
+				if ptrdata#=(NULL)
 					setcall err undefinedvariable()
 					return err
 				endif
-				setcall is_stack stackbit(data)
+				setcall is_stack stackbit(ptrdata#)
 			else
 				return err
 			endelse
@@ -499,13 +498,14 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 		call advancecursors(#content,#argsize,pointer_size)
 		call stepcursors(#content,#argsize)
 
+		sd data
 		sd subtract_base
 		sd test
 		setcall container_sz valinmem(content,argsize,(asciidot))
 		if container_sz!=argsize
 			setcall err xfile_add_char_if((Xfile_arg_varfn_dot_yes))
 			if err=(noerror)
-				setcall err getarg_base(content,argsize,container_sz,ptrdata,ptrlow,ptrsufix,#subtract_base)
+				setcall err getarg_base(content,argsize,container_sz,#data,ptrlow,ptrsufix,#subtract_base)
 				if err!=(noerror)
 					return err
 				endif
@@ -513,28 +513,27 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				return err
 			endelse
 		else
-			SetCall err varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
+			SetCall err varsufix(content,argsize,#data,ptrlow,ptrsufix)
 			if err!=(noerror)
 				return err
 			endif
-			setcall test stackbit(ptrdata#)
+			setcall test stackbit(data)
 			if test=0
 				sd ptrinnerfunction%globalinnerfunction
 				if ptrinnerfunction#=(TRUE)
 					sd ptrfunctionTagIndex%ptrfunctionTagIndex
 					setcall scope scopes_get_scope(ptrfunctionTagIndex#)
-					setcall subtract_base scopes_get_class_data(scope,ptrdata#)
+					setcall subtract_base scopes_get_class_data(scope,data)
 				else
 					setcall subtract_base get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
 				endelse
 			else
-				setcall subtract_base stack64_base(ptrdata#)
+				setcall subtract_base stack64_base(data)
 			endelse
 		endelse
 		setcall err tempdataadd(ptrdata)
 		if err=(noerror)
 			sd pointer;set pointer ptrdata#
-			sub pointer# subtract_base
 
 			#keep location, will be some disturbance if combining stack with data, but if not is ok
 			sd pointer2=maskoffset;sd data2=maskoffset
@@ -543,25 +542,27 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			sd location_part;sd transformation_part
 			if is_stack!=0
 				set location_part (stack_location_bits)
-				and location_part data2#
 				set transformation_part (~stack_location_bits)
+				and transformation_part data2#
 			else
 				set location_part (location_bits)
-				and location_part data2#
 				set transformation_part (~location_bits)
+				and transformation_part data2#
 			endelse
-			and pointer2# transformation_part
-			or pointer2# location_part
+			and pointer2# location_part
+			or pointer2# transformation_part
 
 			#decide if add offset now or at runtime with sufix
 			if pointer_size!=0
 				#runtime
 				or pointer2# (suffixbit)
 				add pointer2 (masksize) #note that here is not on nameoffset, is on data#3 value from temp
-				set pointer2# pointer#
-				set pointer# data#
+				set pointer2# data#
+				sub pointer2# subtract_base
+				#pointer# is staying as it is
 			else
 				add pointer# data#
+				sub pointer# subtract_base
 			endelse
 		endif
 	endif
@@ -584,7 +585,8 @@ endfunction
 function getarg_base(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,sd ptrsufix,sd p_subtract_base)
 	sd err
 	sd scope
-	setcall err get_scope(#content,#argsize,container_sz,#scope)
+	sd scope_final
+	setcall err get_scope_inner_base(#content,#argsize,container_sz,#scope,#scope_final)
 	if err!=(noerror)
 		return err
 	endif
@@ -598,7 +600,7 @@ function getarg_base(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow,
 		sd entrybags%%ptr_scopes
 		if scope!=entrybags
 			#stored class info
-			setcall p_subtract_base# scopes_get_class_data(scope,ptrdata#) # test expandbit is inside
+			setcall p_subtract_base# scopes_get_class_data(scope_final,ptrdata#) # test expandbit is inside
 		else
 			setcall p_subtract_base# get_img_vdata() #if exe will get nobits add one argument, get_img_vdata is also called at datareg and datasize
 		endelse
@@ -613,24 +615,13 @@ function there_is_nothing_there()
 endfunction
 
 #err
-function get_scope(sv pcontent,sd psize,sd sz,sv pscope)
+function get_scope_inner(sv pcontent,sd psize,sd sz,sv pscope)
+#if inside a function and want to \function.var it is not yet pointer-copied to store, but that will create another problem for class_data, so add _scope_inner_base for getarg_base
 	sd pos
 	sd err;setcall err get_scope_pos(pcontent#,sz,#pos)
 	if err=(noerror)
 		inc sz
 		call advancecursors(pcontent,psize,sz)
-		setcall pscope# scopes_get_scope(pos)
-	endif
-	return err
-endfunction
-#err
-function get_scope_inner(sv pcontent,sd psize,sd sz,sv pscope) #if inside a function and want to \function.var it is not yet pointer-copied to store
-	sd pos
-	sd err;setcall err get_scope_pos(pcontent#,sz,#pos)
-	if err=(noerror)
-		inc sz
-		call advancecursors(pcontent,psize,sz)
-
 		vdata ptrfunctionTagIndex%ptrfunctionTagIndex
 		if ptrfunctionTagIndex#=pos
 			vdata ptrinnerfunction%globalinnerfunction
@@ -641,6 +632,28 @@ function get_scope_inner(sv pcontent,sd psize,sd sz,sv pscope) #if inside a func
 			endif
 		endif
 		setcall pscope# scopes_get_scope(pos)
+	endif
+	return err
+endfunction
+#err
+function get_scope_inner_base(sv pcontent,sd psize,sd sz,sv pscope,sv pscope_final)
+	sd pos
+	sd err;setcall err get_scope_pos(pcontent#,sz,#pos)
+	if err=(noerror)
+		inc sz
+		call advancecursors(pcontent,psize,sz)
+		vdata ptrfunctionTagIndex%ptrfunctionTagIndex
+		if ptrfunctionTagIndex#=pos
+			vdata ptrinnerfunction%globalinnerfunction
+			if ptrinnerfunction#=(TRUE)
+				value pointer%%ptr_fnscopes
+				set pscope# pointer
+				setcall pscope_final# scopes_get_scope(pos)
+				return (noerror)
+			endif
+		endif
+		setcall pscope# scopes_get_scope(pos)
+		set pscope_final# pscope#
 	endif
 	return err
 endfunction
