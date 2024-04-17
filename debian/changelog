@@ -1,3 +1,9 @@
+ocompiler (1-5+167) xenial; urgency=medium
+
+  * fixes and minor improvements
+
+ -- bc <bc@bc-desktop>  Wed, 17 Apr 2024 07:37:46 +0300
+
 ocompiler (1-5+166) xenial; urgency=medium
 
   * xfile fix call nr of args, add a function mark at V
