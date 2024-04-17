@@ -24,7 +24,13 @@ comp () {
 	if [ -n "${write_to_expected}" ]; then
 		copy ${n}.log
 		base ${n}.x
-		base ${n:0:-3}.o  #this is hard coded at the moment
+		basenm=${1%.[^.]*}  #this is ok for a -> a , a.b -> a , a.b.c -> a.b
+		ext=${1:${#basenm} + 1}
+		if [ "${ext}" = "out" ]; then
+			base ${1}
+		else
+			base ${1}.o  #${n:0:-3}.o
+		fi
 	fi
 	if [ -n "${compile_only}" ]; then exit 0; fi
 }
