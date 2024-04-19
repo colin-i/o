@@ -23,10 +23,10 @@ function endfunction(sd parses)
 					setcall sizereturn getreturn(ptrptrreturn)
 					SetCall err addtoCode_set_programentrypoint(ptrreturn,sizereturn)
 					If err!=(noerror);return err;endif
-				elseif main.ret_cont_break=(ret_cont_break_canskip)
-					call set_programentrypoint()
-				else #main.ret_cont_break=(ret_cont_break_mustskip)
+				elseif main.ret_cont_break=(ret_cont_break_mustskip)
 					return "Previous RET was useless."
+				else # ret_cont_break_canskip ret_cont_break_skip
+					call set_programentrypoint()
 				endelse
 				setcall err scopes_store(main.functionTagIndex)
 				If err=(noerror)
