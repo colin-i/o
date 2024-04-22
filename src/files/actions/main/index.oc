@@ -78,11 +78,10 @@ while loop=2
 	elseif is_comment=0
 		if pointer#=(asciidoublequote)
 			setcall errormsg quotes_forward(#pointer,last,#newlines,#textlinestart)
+			add totalnewlines newlines  ##this is also good when error
 			if errormsg!=(noerror)
 				set loop 1
-			else
-				add totalnewlines newlines
-			endelse
+			endif
 		elseif pointer#=(asciisemicolon)
 			set loop 1
 			set dot_comma_end 1
