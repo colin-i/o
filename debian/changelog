@@ -1,3 +1,9 @@
+ocompiler (1-5+169) xenial; urgency=medium
+
+  * fix erroneous column write
+
+ -- bc <bc@bc-desktop>  Tue, 23 Apr 2024 15:35:30 +0300
+
 ocompiler (1-5+168) xenial; urgency=medium
 
   * is 0xc there
