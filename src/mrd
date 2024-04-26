@@ -3,8 +3,11 @@ LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/i686-linux-gnu-ld.bfd ./md
 
 #and for qemu o will be:
 # LD_LIBRARY_PATH=/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu /home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu/ld-linux.so.2 /home/bc/x86_64_orig/o "$@"
+
 #and q:
-# LD_LIBRARY_PATH=/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu /home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu/ld-linux.so.2 "$@"
+# !/bin/bash
+# LD_LIBRARY_PATH+=:/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu
+# LD_LIBRARY_PATH=${LD_LIBRARY_PATH} qemu-i386 /home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu/ld-linux.so.2 "$@"
 
 #here libc-i386 is the latest noble 2.39-0ubuntu8
 #not recommended: ln -s to /lib/ld-linux.so.2 and add LD_LIBRARY_PATH somehow
