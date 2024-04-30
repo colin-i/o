@@ -57,7 +57,7 @@ end
 
 #exit
 function preloop(sd input,sd output)
-	call aftercallsoft()
+	set main.result (EXIT_FAILURE)
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
 	if a=0
 		sd size;set size ftell(input) #is still same place if file deleted in parallel
@@ -104,12 +104,9 @@ include "number.oc"
 include "var.oc"
 include "action.oc"
 
-function aftercallsoft()
-	set main.result (EXIT_FAILURE)
-end
 #aftercalli *
 function aftercallenable()
-	call aftercallsoft()
+	set main.result (EXIT_FAILURE)
 	leave loop.bp
 	#aftercallenable
 end
@@ -278,7 +275,7 @@ function writen(sd outfile,ss buf,sd sz)
 
 	sd items;set items fwrite("\n",1,1,outfile)
 	if items!=1
-		call aftercallsoft()
+		call aftercallenable() #at aftercall was without enable because was no more code to follow
 	end
 end
 
