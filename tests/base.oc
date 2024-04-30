@@ -1,0 +1,14 @@
+
+format elfobj64
+
+value z#1
+
+function a()
+leave main.z
+end
+
+entry main()
+hex 144
+base z
+call a()
+i3
