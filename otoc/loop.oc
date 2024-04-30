@@ -15,57 +15,60 @@ const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
 
 datax result#1
 
+function loop(sd pointer,sd delim,sd output)
+	valuex bp#1
+	base bp
+	add delim pointer
+	while pointer!=delim
+		charx command#1;call get_char(#pointer,#command)
+		#if command>(Xfile_last);call puts("Error");break;end
+		value Xfile_comment^comment
+		value *Xfile_commentmulti^commentmulti
+		value *Xfile_commentlineend^commentlineend
+		value *Xfile_format^format
+		value *Xfile_include^include
+		value *Xfile_functiondef^functiondef
+		value *Xfile_declare^declare
+		value *Xfile_action^action
+		value *Xfile_action2^action2
+		value *Xfile_call^call
+		value *Xfile_callex^callex
+		value *Xfile_if^if
+		value *Xfile_else^else
+		value *Xfile_while^while
+		value *Xfile_break^break
+		value *Xfile_continue^continue
+		value *Xfile_end^end
+		value *Xfile_ret^ret
+		value *Xfile_library^library
+		value *Xfile_import^import
+		value *Xfile_aftercall^aftercall
+		value *Xfile_hex^hex
+		value *Xfile_override^override
+		value *Xfile_orphan^orphan
+		value *Xfile_interrupt^interrupt
+		value *Xfile_line^line
+		mult command :
+		sv dest^Xfile_comment;add dest command
+		set dest dest#
+		call dest(output,#pointer)
+	end
+end
+
 #exit
-function loop(sd input,sd output)
+function preloop(sd input,sd output)
 	call aftercallsoft()
 	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
 	if a=0
-		sd delim;set delim ftell(input) #is still same place if file deleted in parallel
-		#if delim!=-1  #lseek and same result (remark fileno)
+		sd size;set size ftell(input) #is still same place if file deleted in parallel
+		#if size!=-1  #lseek and same result (remark fileno)
 		call rewind(input)
-		sd buffer;set buffer malloc(delim)
+		sd buffer;set buffer malloc(size)
 		if buffer!=(NULL)
-			sd r;set r fread(buffer,delim,1,input)
+			sd r;set r fread(buffer,size,1,input)
 			if r=1
-				ss pointer;set pointer buffer
-				add delim buffer
 				set main.result (EXIT_SUCCESS)
-
-				while pointer!=delim
-					charx command#1;call get_char(#pointer,#command)
-					#if command>(Xfile_last);call puts("Error");break;end
-					value Xfile_comment^comment
-					value *Xfile_commentmulti^commentmulti
-					value *Xfile_commentlineend^commentlineend
-					value *Xfile_format^format
-					value *Xfile_include^include
-					value *Xfile_functiondef^functiondef
-					value *Xfile_declare^declare
-					value *Xfile_action^action
-					value *Xfile_action2^action2
-					value *Xfile_call^call
-					value *Xfile_callex^callex
-					value *Xfile_if^if
-					value *Xfile_else^else
-					value *Xfile_while^while
-					value *Xfile_break^break
-					value *Xfile_continue^continue
-					value *Xfile_end^end
-					value *Xfile_ret^ret
-					value *Xfile_library^library
-					value *Xfile_import^import
-					value *Xfile_aftercall^aftercall
-					value *Xfile_hex^hex
-					value *Xfile_override^override
-					value *Xfile_orphan^orphan
-					value *Xfile_interrupt^interrupt
-					value *Xfile_line^line
-					mult command :
-					sv dest^Xfile_comment;add dest command
-					set dest dest#
-					call dest(output,#pointer)
-					if main.result=(EXIT_FAILURE);break;end
-				end
+				call loop(buffer,size,output)
 				if main.result=(EXIT_SUCCESS)
 					callg writen(output,"}",1)
 				end
@@ -104,10 +107,11 @@ include "action.oc"
 function aftercallsoft()
 	set main.result (EXIT_FAILURE)
 end
-aftercall *
+#aftercalli *
 function aftercallenable()
 	call aftercallsoft()
-	aftercallenable
+	leave loop.bp
+	#aftercallenable
 end
 
 function comment(sd outfile,sv pbuffer)
