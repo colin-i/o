@@ -152,9 +152,11 @@ const Xfile_action_tdec=4
 const Xfile_action_tdecst=5
 const Xfile_action_tneg=6
 const Xfile_action_tnot=7
-const Xfile_action_tshl1=8
-const Xfile_action_tshr1=9
-const Xfile_action_tsar1=10
+const Xfile_action_tbase=8
+const Xfile_action_tleave=9
+const Xfile_action_tshl1=10
+const Xfile_action_tshr1=11
+const Xfile_action_tsar1=12
 
 const Xfile_arg_number=0
 const Xfile_arg_string=1

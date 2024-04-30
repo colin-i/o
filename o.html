@@ -446,6 +446,30 @@
         set string "text test"<br>
         #string will point to "text test"</a>
 	</p>
+	<p>
+	3. Base/Leave
+	<br>
+	Language command: <b>Base</b> <b>Leave</b>
+	<br>
+	Base is setting the Base Pointer and Leave is restoring the base pointer and is leaving.
+	<br>
+	Example:
+	<br>
+	<a class="code">
+format elfobj64<br>
+
+  value z#1<br>
+
+  function a()<br>
+  leave main.z<br>
+  end<br>
+
+  entry main()<br>
+  hex 144<br>
+  base z<br>
+  call a()<br>
+  i3</a>
+	</p>
 </p>
 
 

@@ -69,7 +69,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 	Char op#1
 	Data zero=0
 
-	Str ptrcontinuation#1
+	vStr ptrcontinuation#1
 	Data sizeofcontinuation#1
 
 	vData codeptr%%ptr_codesec
@@ -129,6 +129,16 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			Set op not
 			Set regopcode notregopcode
 			set xlog (Xfile_action_tnot)
+		elseif subtype=(cBASE)
+			set op (moveatmemtheproc)
+			set regopcode (ebpregnumber)
+			set xlog (Xfile_action_tbase)
+		elseif subtype=(cLEAVE)
+			set op (moveatprocthemem)
+			set regopcode (ebpregnumber)
+			set xlog (Xfile_action_tleave)
+			set main.ret_cont_break_marker (TRUE)
+			setcall sizeofcontinuation getreturn(#ptrcontinuation)
 		ElseIf subtype<=(cSAR1)
 			set op (0xD1)
 			If subtype=(cSHL1)
