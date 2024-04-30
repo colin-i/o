@@ -265,8 +265,9 @@ function argument_init(sv ptrcontent,sd ptrsize,sd subtype)
 		if subtype!=(cEXIT)
 			#exclude strings at inc,dec,...
 			#can't go with allow_no because, for vars, will not exclude pass init
-			setcall err getarg(ptrcontent,ptrsize,ptrsize#,(allow_later_sec),(FORWARD)) #there are 3 more arguments but are not used
-			return err
+			#why was parsing here and not advancecursors? setcall err getarg(ptrcontent,ptrsize,ptrsize#,(allow_later_sec),(FORWARD)) #there are 3 more arguments but are not used
+			call advancecursors(ptrcontent,ptrsize,ptrsize#)
+			return (noerror)
 		endif
 	endif
 	setcall err getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 3 more arguments but are not used
