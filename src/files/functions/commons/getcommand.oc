@@ -529,7 +529,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		Char calldata="CALL"
 		vStr call^calldata
 		vstr xstr="X"
-		vstr skipaftercall="G"
+		vstr skipretjump="G"
 		value pointer#1;data sz#1
 
 		ss extstr=NULL
@@ -546,6 +546,13 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
 			set intercursors #pointer
+		elseif command=(cEND)
+			set extstr skipretjump
+		elseif command=(cCONDITIONS)
+			if ptrsubtype#=(cELSE)
+				set extstr skipretjump
+				set intercursors #pointer  ##only for elseGif
+			endif
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)
@@ -566,7 +573,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					Return command
 				else
 					#here there was not a space
-					setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+					setcall result stratmemspc(#pointer,#sz,skipretjump,spacebool)
 					if result=(TRUE)
 					#setxg
 						or ptrsubtype# (x_call_flag|x_callx_flag|x_callg_flag)
@@ -585,26 +592,39 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					endif
 				endelse
 			Elseif result=(TRUE)
-				If command=(cSTARTFUNCTION)
+			#and space_ok/not_with_space
+				if command=(cEND)
+				#endg
+					set main.ret_cont_break (TRUE) #will skip return
+				elseif command=(cCONDITIONS)
+					setcall result stratmemspc(#pointer,#sz,#main.cIF_c,(spacereq))
+					if result=(TRUE) #elsegif
+						set main.ret_cont_break (TRUE)
+						set pcontent# pointer
+						set psize# sz
+						set ptrsubtype# (cELSEIF)  #from cELSE
+					else #elseg
+						set main.ret_cont_break (TRUE)
+					endelse
+				elseIf command=(cSTARTFUNCTION)
 				#functionxx/entryx , varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
 					#sd for64;setcall for64 is_for_64()
 					#if for64==(TRUE)
 					or ptrsubtype# (x_func_flag)
 					#endif
-					return command
-				else
+				else #4 variants here
 				#call[ex][x]ret
 					or ptrsubtype# (call_ret_flag)
-					return command
 				endelse
+				return command
 			endElseif
 		elseIf result=true
 		#here (first/onlyone)+-space was ok
 			Return command
 		elseif start!=pointer  ##here first was ok, but not extra part
 			if command=(cPRIMSEC)
-				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+				setcall result stratmemspc(#pointer,#sz,skipretjump,spacebool)
 				if result=(TRUE)
 				#setg
 					or ptrsubtype# (x_call_flag|x_callg_flag)
@@ -621,10 +641,10 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					Return command
 				endif
 				#break #don't want to remember this when having something like addend command, and who will wrong here?
-			else
+			elseif command!=(cCONDITIONS)  #elsegif is also requiring intercursors
 			#if command=(cCALL)
 			#if command=(cCALLEX)  #cSTARTFUNCTION is not coming here with intercursors=NULL
-				setcall result stratmemspc(#pointer,#sz,skipaftercall,spacebool)
+				setcall result stratmemspc(#pointer,#sz,skipretjump,spacebool)
 				if result=(TRUE)
 				#call[ex]g
 					or ptrsubtype# (x_callg_flag)
@@ -632,7 +652,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					set psize# sz
 					Return command
 				endif
-			endelse
+			endelseif
 		endelseIf
 		Add pointercommands dsz
 		Set cursor pointercommands#

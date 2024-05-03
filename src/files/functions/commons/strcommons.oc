@@ -236,7 +236,7 @@ Function stringsatmemspc(sv pcontent,sd psize,ss match,sd spacereq,ss extstr,sd 
 	If extstr!=zero
 		SetCall extbool# stratmem(tocontent,tosize,extstr)
 		if intercursors!=(NULL)
-			#to work around ...xcall
+			#to work around ...xcall, ...g[if]
 			Set intercursors# content
 			add intercursors :
 			set intercursors#d^ size
