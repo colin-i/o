@@ -98,7 +98,7 @@ function parsepreferences(sd ptrcontent,sd ptrsize)
 			endIf
 		else
 			if is_comment=(FALSE)
-				call Message("Unrecognized preference")
+				call Message("Unrecognized preference")  # to do: #new_pref=x is a comment, but old ocompiler will not know that, the new ocompiler will know that
 			endif
 		endelse
 		return (TRUE)

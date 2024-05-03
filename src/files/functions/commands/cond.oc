@@ -213,7 +213,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 			return (noerror)
 		Endelse
 	endwhile
-endfunction
+endfunction #endg
 
 function condendwrite(sd structure,sd codeoffset)
 	Data jumploc#1
@@ -303,7 +303,7 @@ Function closeifopenelse()
 	Data noerr=noerror
 
 	if main.parses=(pass_write)
-		if main.ret_cont_break=(FALSE)
+		if main.ret_cont_break=(ret_cont_break_no)
 			SetCall err condjump(0)
 			If err!=noerr
 				Return err
@@ -320,18 +320,20 @@ Function closeifopenelse()
 	if err=(noerror)
 		#this for unreachable else jumps bool
 		vData structure%%ptr_conditionsloops
-		if main.ret_cont_break=(FALSE)
+		if main.ret_cont_break=(ret_cont_break_no)
 			data e1=elseinscribe_write
 			setcall err addtosec(#e1,(condpack_elseinscribe),structure)
 			if err=(noerror)
 				Data elsenr=elsenumber
 				SetCall err condbeginwrite(elsenr)
 			endif
-		else
+		elseif main.ret_cont_break=(ret_cont_break_skip)
 			data e2=elseinscribe_skip
 			data *ignored codesection index#1
 			data *nr=elsenumber
 			setcall err addtosec(#e2,(condpack_elseinscribe+condpacksize),structure)
+		else
+			return "Else jump is useless here. Use ElseG."
 		endelse
 	endif
 	Return err

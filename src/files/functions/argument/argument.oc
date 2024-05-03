@@ -45,7 +45,7 @@ function argument_return(sd termswitch,ss pop,sd pregprepare_bool,sv pptrcontinu
 	call setimm()
 	Set pop# (moveatprocthemem)
 	Set pregprepare_bool# (TRUE)
-	set main.ret_cont_break_marker (TRUE)
+	set main.ret_cont_break_marker (ret_cont_break_canskip)
 
 	if termswitch=(TRUE)
 		data ebxregnumber=ebxregnumber
@@ -137,7 +137,7 @@ Function argument(data ptrcontent,data ptrsize,data forwardORcallsens,data subty
 			set op (moveatprocthemem)
 			set regopcode (ebpregnumber)
 			set xlog (Xfile_action_tleave)
-			set main.ret_cont_break_marker (TRUE)
+			set main.ret_cont_break_marker (ret_cont_break_canskip)
 			setcall sizeofcontinuation getreturn(#ptrcontinuation)
 		ElseIf subtype<=(cSAR1)
 			set op (0xD1)

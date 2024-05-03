@@ -146,7 +146,7 @@ if errormsg=(noerror)
 					endelse
 				endif
 			else
-				set ret_cont_break_marker (FALSE)  #why to loss space and write in every command when can write a default
+				set ret_cont_break_marker (ret_cont_break_no)  #why to loss space and write in every command when can write a default
 			endelse
 			if commandset=(cCOMMENT)
 				Call advancecursors(pcontent,pcomsize,comsize)

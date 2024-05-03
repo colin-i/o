@@ -16,15 +16,17 @@ function endfunction(sd parses)
 		if err=(noerror)
 			setCall err checkcondloopclose()
 			If err=(noerror)
-				if main.ret_cont_break=(FALSE)
+				if main.ret_cont_break=(ret_cont_break_no)
 					data ptrreturn#1
 					data sizereturn#1
 					data ptrptrreturn^ptrreturn
 					setcall sizereturn getreturn(ptrptrreturn)
 					SetCall err addtoCode_set_programentrypoint(ptrreturn,sizereturn)
 					If err!=(noerror);return err;endif
-				else
+				elseif main.ret_cont_break=(ret_cont_break_canskip)
 					call set_programentrypoint()
+				else #main.ret_cont_break=(ret_cont_break_mustskip)
+					return "Previous RET was useless."
 				endelse
 				setcall err scopes_store(main.functionTagIndex)
 				If err=(noerror)

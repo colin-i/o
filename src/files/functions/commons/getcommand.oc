@@ -595,16 +595,16 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			#and space_ok/not_with_space
 				if command=(cEND)
 				#endg
-					set main.ret_cont_break (TRUE) #will skip return
+					set main.ret_cont_break (ret_cont_break_skip) #will skip return
 				elseif command=(cCONDITIONS)
 					setcall result stratmemspc(#pointer,#sz,#main.cIF_c,(spacereq))
 					if result=(TRUE) #elsegif
-						set main.ret_cont_break (TRUE)
+						set main.ret_cont_break (ret_cont_break_skip)
 						set pcontent# pointer
 						set psize# sz
 						set ptrsubtype# (cELSEIF)  #from cELSE
 					else #elseg
-						set main.ret_cont_break (TRUE)
+						set main.ret_cont_break (ret_cont_break_skip)
 					endelse
 				elseIf command=(cSTARTFUNCTION)
 				#functionxx/entryx , varargs
