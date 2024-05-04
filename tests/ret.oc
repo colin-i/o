@@ -5,6 +5,7 @@ orphan off #test
 
 function end_ret_test0()
 ret
+#only testing here
 endfunction
 function end_ret_test1()
 return 15
