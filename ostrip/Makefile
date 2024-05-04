@@ -32,15 +32,16 @@ FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 OLINK=../ounused/ounused
 
-%.o: ${FULLOBJS}
-	${OCOMP} $< ${OFLAGS}
+${OBJ}: ${FULLOBJS}
+	${launcher} ${OCOMP} $< ${OFLAGS}
 
-ATCCCOM = $(CC) ${linkerflags} -o ${OB}
+#ATCCCOM = $(CC) ${linkerflags} -o ${OB}
+ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o ${OB}
 
 ${OB}: ${OBJ}
-	${OLINK} ${FULLOBJLOG}
+	${launcher} ${OLINK} ${FULLOBJLOG}
 	@echo
-	${ATCCCOM} ${FULLOBJO}
+	${ATLDCOM} ${FULLOBJO}
 	if [ "${nobits_virtual}" != "1" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
@@ -80,7 +81,7 @@ uninstall:
 
 test:
 	if [ "${nobits_virtual}" != "1" ]; then \
-		${ATCCCOM} ${FULLOBJO} -o z; \
+		${ATLDCOM} ${FULLOBJO} -o z; \
 		if [ "$$?" = "0" ]; then \
 			${FULLOBJ} ./z ${FULLOBJLOG} ${FULLOBJO}; \
 			if [ "$$?" = "0" ]; then \

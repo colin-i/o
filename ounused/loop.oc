@@ -58,29 +58,34 @@ function log_line(ss s,sd sz,sd plink)
 				call constant_add(s,sz) #same as with const, except it has a dot
 			endif
 			ret
-		elseif type=(log_declare)
+		endif
+		if type=(log_declare)
 			setcall skip skip_test() #skip same included file
 			if skip=(FALSE)
 				call constant_add(s,sz)
 			endif
 			ret
-		elseif type=(log_import)
+		endif
+		if type=(log_import)
 			setcall skip skip_test()
 			if skip=(FALSE)
 				call import_add(s,sz)
 			endif
 			ret
-		elseif type=(log_constant)
+		endif
+		if type=(log_constant)
 			call uconst_add(s,sz)
 			ret
-		elseif type=(log_function)
+		endif
+		if type=(log_function)
 			sv fns%fn_mem_p
 			call addtocont(fns,s,sz)
 			ret
-		elseif type=(log_variable)
+		endif
+		if type=(log_variable)
 			call uconst_add(s,sz)
 			ret
-		endelseif
+		endif
 	endif
 	if type=(log_pathname)
 		call filesplus()

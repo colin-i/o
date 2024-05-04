@@ -26,9 +26,10 @@ function filesminus()
 	if nr=s#
 		call skip_reset()
 		return 0
-	elseif nr<s#
+	endif
+	if nr<s#
 		return -1
-	endelseif
+	endif
 	return 1
 endfunction
 

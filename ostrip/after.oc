@@ -38,9 +38,8 @@ const sym__to_shndx=datasize+charize+charize
 					add poffset# doffset
 
 					return mem
-				else
-					add sym (sym_size-datasize)
-				endelse
+				endif
+				add sym (sym_size-datasize)
 			else
 				add sym (sym_size-sym__to_shndx)
 			endelse

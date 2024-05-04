@@ -34,6 +34,7 @@ Importx "memcmp" memcmp
 importx "malloc" malloc
 importx "free" free
 Importx "memcpy" memcpy
+importx "exit" exit  #only for problems at box64/qemu-amd64
 
 importx "strcmp" strcmp
 importx "strlen" strlen

@@ -43,12 +43,13 @@ function ralloc_throwless(sv p,sd sz)
 			return (NULL)
 		end
 		return "realloc error"
-	elseif sz=0  #equal 0 discovered at decrementfiles, since C23 the behaviour is undefined
+	endif
+	if sz=0  #equal 0 discovered at decrementfiles, since C23 the behaviour is undefined
 	#using this quirk, lvs[0] will be used at constants at end, when size is 0
 		#set p# 0
 		set cursor# 0
 		return (NULL)
-	endelseif
+	endif
 	return "realloc must stay in 31 bits"
 endfunction
 
