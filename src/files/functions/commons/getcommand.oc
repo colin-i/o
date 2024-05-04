@@ -3,7 +3,7 @@
 Const spacereq=1
 Const spacenotreq=0
 
-#with caution like elseif before else for getcommand comparations, only at space not required (elseif/else, endelseif/endelse, end../end, return/ret)
+#with caution like elseif before else for getcommand comparations, only at space not required (elseif/else, endelseif/endelse, end../end, return/ret, whiletrue/while)
 #and shl1,i3,... are ok, only AZ are going to az
 
 Char cCOMMENT_c={commentascii,0}
@@ -15,7 +15,7 @@ Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cWORD_c="WORD";Ch
 Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cDIVU_c="DIVU";Char cREM_c="REM";Char cREMU_c="REMU";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
 Char cRETURN_c="RETURN";Char cINC_c="INC";Char cDEC_c="DEC";Char cINCST_c="INCST";Char cDECST_c="DECST";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cBASE_c="BASE";Char cLEAVE_c="LEAVE"; Char cSHL1_c="SHL1";Char cSHR1_c="SHR1";Char cSAR1_c="SAR1";Char cEXIT_c="EXIT"
 Char cCALL_c="CALL";Char cCALLX_c="CALLX"
-Char cIF_c="IF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE";Char cENDIF_c="ENDIF";Char cENDELSEIF_c="ENDELSEIF";Char cENDELSE_c="ENDELSE";Char cWHILE_c="WHILE";Char cENDWHILE_c="ENDWHILE";Char cBREAK_c="BREAK";Char cCONTINUE_c="CONTINUE"
+Char cIF_c="IF";Char cELSEIF_c="ELSEIF";Char cELSE_c="ELSE";Char cENDIF_c="ENDIF";Char cENDELSEIF_c="ENDELSEIF";Char cENDELSE_c="ENDELSE";Char cWHILETRUE_c="WHILETRUE";Char cWHILE_c="WHILE";Char cENDWHILE_c="ENDWHILE";Char cBREAK_c="BREAK";Char cCONTINUE_c="CONTINUE"
 Char cIMPORT_c="IMPORT";Char cIMPORTX_c="IMPORTX"
 Char cFUNCTION_c="FUNCTION";Char cFUNCTIONX_c="FUNCTIONX";Char cENTRY_c="ENTRY";Char cENTRYRAW_c="ENTRYRAW"
 Char cENDFUNCTION_c="ENDFUNCTION"
@@ -319,6 +319,11 @@ Const numberofcommandsvars=(\-commandsvars_start)/com_size
 			Data *=cCONDITIONS
 			Data *=cENDELSE
 			Data *=spacenotreq
+		Const cWHILETRUE=\-cCONDITIONS_top   #was to be in extrastr but strigsatmem spacereq complications
+			data *^cWHILETRUE_c
+			Data *=cCONDITIONS
+			Data *=cWHILETRUE
+			Data *=spacenotreq
 		Const cWHILE=\-cCONDITIONS_top
 			data *^cWHILE_c
 			Data *=cCONDITIONS
@@ -546,13 +551,13 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		vstr call_ret_str="RET"
 			set extstr call_ret_str
 			set intercursors #pointer
-		elseif command=(cEND)
-			set extstr skipretjump
-		elseif command=(cCONDITIONS)
-			if ptrsubtype#=(cELSE)
-				set extstr skipretjump
-				set intercursors #pointer  ##only for elseGif
-			endif
+		#elseif command=(cEND)
+		#	set extstr skipretjump
+		#elseif command=(cCONDITIONS)
+		#	if ptrsubtype#=(cELSE)
+		#		set extstr skipretjump
+		#		set intercursors #pointer  ##only for elseGif
+		#	endif
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)
@@ -593,20 +598,20 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				endelse
 			Elseif result=(TRUE)
 			#and space_ok/not_with_space
-				if command=(cEND)
+				#if command=(cEND)
 				#endg
-					set main.ret_cont_break (ret_cont_break_skip) #will skip return
-				elseif command=(cCONDITIONS)
-					setcall result stratmemspc(#pointer,#sz,#main.cIF_c,(spacereq))
-					if result=(TRUE) #elsegif
-						set main.ret_cont_break (ret_cont_break_skip)
-						set pcontent# pointer
-						set psize# sz
-						set ptrsubtype# (cELSEIF)  #from cELSE
-					else #elseg
-						set main.ret_cont_break (ret_cont_break_skip)
-					endelse
-				elseIf command=(cSTARTFUNCTION)
+				#	set main.ret_cont_break (ret_cont_break_skip) #will skip return
+				#elseif command=(cCONDITIONS)
+				#	setcall result stratmemspc(#pointer,#sz,#main.cIF_c,(spacereq))
+				#	if result=(TRUE) #elsegif
+				#		set main.ret_cont_break (ret_cont_break_skip)
+				#		set pcontent# pointer
+				#		set psize# sz
+				#		set ptrsubtype# (cELSEIF)  #from cELSE
+				#	else #elseg
+				#		set main.ret_cont_break (ret_cont_break_skip)
+				#	endelse
+				If command=(cSTARTFUNCTION)
 				#functionxx/entryx , varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
 					#sd for64;setcall for64 is_for_64()
@@ -641,7 +646,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					Return command
 				endif
 				#break #don't want to remember this when having something like addend command, and who will wrong here?
-			elseif command!=(cCONDITIONS)  #elsegif is also requiring intercursors
+			else #if command!=(cCONDITIONS)  #elsegif is also requiring intercursors
 			#if command=(cCALL)
 			#if command=(cCALLEX)  #cSTARTFUNCTION is not coming here with intercursors=NULL
 				setcall result stratmemspc(#pointer,#sz,skipretjump,spacebool)
@@ -652,7 +657,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 					set psize# sz
 					Return command
 				endif
-			endelseif
+			endelse
 		endelseIf
 		Add pointercommands dsz
 		Set cursor pointercommands#

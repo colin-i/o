@@ -5,7 +5,7 @@ Data ptrifinscribe^ifinscribe
 Data nocond=nocondnumber
 
 If subtype=(cIF)
-	SetCall errormsg addtosec(ptrifinscribe,dwordsize,ptrconditionsloops)
+	SetCall errormsg addtosec(ptrifinscribe,(condpack_ifinscribe),ptrconditionsloops)
 	If errormsg=noerr
 		SetCall errormsg condbegin(pcontent,pcomsize,(ifnumber))
 	EndIf
@@ -23,20 +23,18 @@ ElseIf subtype=(cELSEIF)
 ElseIf subtype=(cENDELSEIF)
 	SetCall errormsg conditionscondend((ifnumber),(elsenumber))
 ElseIf subtype=(cWHILE)
-	SetCall errormsg coderegtocondloop()
-	If errormsg=noerr
-		SetCall errormsg condbegin(pcontent,pcomsize,(whilenumber))
-	EndIf
+	SetCall errormsg whilebegin(pcontent,pcomsize,(whilenumber))
 ElseIf subtype=(cENDWHILE)
 	setcall errormsg whileend()
+ElseIf subtype=(cWHILETRUE)
+	SetCall errormsg whilebegin(pcontent,pcomsize,(whiletruenumber))
 Elseif parses=(pass_write)
 	If subtype=(cBREAK)
 		setcall errormsg xfile_add_char_if((Xfile_break))
 		If errormsg=noerr
 			setcall errormsg break()
 		EndIf
-	Else
-	#cCONTINUE
+	Else #if subtype=(cCONTINUE)
 		setcall errormsg xfile_add_char_if((Xfile_continue))
 		If errormsg=noerr
 			setcall errormsg continue()

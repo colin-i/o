@@ -36,6 +36,7 @@ function loop(sd pointer,sd delim,sd output)
 		value *Xfile_if^if
 		value *Xfile_else^else
 		value *Xfile_while^while
+		value *Xfile_whiletrue^whiletrue
 		value *Xfile_break^break
 		value *Xfile_continue^continue
 		value *Xfile_end^end
@@ -226,6 +227,8 @@ function else()
 end
 function while(sd outfile,sv pbuffer)
 	call cond(pbuffer,outfile)
+end
+function whiletrue()
 end
 function break()
 end

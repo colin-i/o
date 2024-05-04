@@ -1,7 +1,8 @@
 
 const condpack_codereg=dwsz
 const condpack_number=dwsz
-const condpack_whilebegin=dwsz    #this is a coderegpart
+const condpack_whileinscribe=dwsz #for while 0 is 0 ret end endfunction
+const condpack_whilebegin=condpack_whileinscribe+dwsz    #this is a numberpart plus coderegpart
 const condpack_ifinscribe=dwsz    #this a numberpart
 const condpack_elseinscribe=dwsz      #same
 const condpacksize=condpack_codereg+condpack_number
@@ -35,7 +36,7 @@ Function condbeginwrite(data condnumber)
 
 	Data condloopsec%%ptr_conditionsloops
 
-	Data ptrcondnumber^condnumber
+	vData ptrcondnumber^condnumber
 	SetCall err addtosec(ptrcondnumber,(condpack_number),condloopsec)
 	Return err
 EndFunction
@@ -50,10 +51,17 @@ Function condbegin(data ptrcontent,data ptrsize,data condnumber)
 	if main.parses=(pass_write)
 		setcall err xfile_add_char_if(condnumber)
 		If err!=noerr;Return err;EndIf
-		SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
-		If err!=noerr;Return err;EndIf
+		if condnumber!=(whiletruenumber)
+			SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
+			If err!=noerr;Return err;EndIf
+		else
+			set condnumber (whilenumber)
+		endelse
 	else
 		call advancecursors(ptrcontent,ptrsize,ptrsize#)
+		if condnumber=(whiletruenumber)
+			set condnumber (whilenumber)
+		endif
 	endelse
 	SetCall err condbeginwrite(condnumber)
 	Return err
@@ -110,37 +118,40 @@ Function condend(data number)
 	Data codeoffset#1
 	Data ptrcodeoff^codeoffset
 	Data codesec%%ptr_codesec
-	Data whilenr=whilenumber
 	Data structure#1
 	Data ptrstructure^structure
 
 	Call getcontReg(codesec,ptrcodeoff)
-	If number=whilenr
+	If number=(whilenumber)
 		Add codeoffset (backjumpsize)
 	EndIf
 	Call getcont(condloop,ptrstructure)
 	Add structure ptrcReg#
 	sd reg;set reg structure
 
+	sd marker
 	sd err;setcall err condendtest(#structure,number,codeoffset)
 	if err=(noerror)
 		if number=(elsenumber)
-			sd marker;set marker structure
+			set marker structure
 			sub structure (condpack_elseinscribe) #to match for ptrcReg
 			if main.parses=(pass_write)
 				if structure#=(elseinscribe_write)
 					call condendwrite(marker,codeoffset)
 				endif
 			endif
-		elseIf number=whilenr
+		elseIf number=(whilenumber)
+			set marker structure
+			sub structure (condpack_whilebegin) #to match for ptrcReg
 			if main.parses=(pass_write)
-				setcall err jumpback(codeoffset,structure)
+				setcall err jumpback(codeoffset,marker)
 				If err!=(noerror)
 					Return err
 				EndIf
-				call condendwrite(structure,codeoffset)
+				if structure#=(whilenumber) #or whiletruenumber
+					call condendwrite(marker,codeoffset)
+				endif
 			endif
-			sub structure (condpack_whilebegin)   #to match for ptrcReg
 		elseif main.parses=(pass_write)
 			call condendwrite(structure,codeoffset)
 		EndelseIf
@@ -327,13 +338,11 @@ Function closeifopenelse()
 				Data elsenr=elsenumber
 				SetCall err condbeginwrite(elsenr)
 			endif
-		elseif main.ret_cont_break=(ret_cont_break_skip)
+		else # ret_cont_break_canskip ret_cont_break_mustskip
 			data e2=elseinscribe_skip
 			data *ignored codesection index#1
 			data *nr=elsenumber
 			setcall err addtosec(#e2,(condpack_elseinscribe+condpacksize),structure)
-		else
-			return "Else jump is useless here. Use ElseG."
 		endelse
 	endif
 	Return err
@@ -404,6 +413,19 @@ function break()
 endfunction
 
 #err
+function whilebegin(sd pcontent,sd pcomsize,sd number)
+	sd err
+	vData condloop%%ptr_conditionsloops
+	SetCall err addtosec(#number,(condpack_whileinscribe),condloop)
+	If err=(noerror)
+		SetCall err coderegtocondloop()
+		If err=(noerror)
+			SetCall err condbegin(pcontent,pcomsize,number)
+		EndIf
+	endif
+	return err
+endfunction
+#err
 function whileend()
 	sd err;setcall err xfile_add_end_ifif()
 	If err=(noerror)
@@ -432,6 +454,7 @@ function prev_cond(sd psecond)
 		set psecond# (nocondnumber)
 		return (elsenumber)
 	endif
+	#if,elseif
 	sub structure (condpacksize)
 	if structure#=(ifinscribe)
 		set psecond# (nocondnumber)
@@ -439,5 +462,5 @@ function prev_cond(sd psecond)
 	#structure#=(elsenumber)
 		set psecond# (elsenumber)
 	endelse
-	return (ifnumber) #if,elseif
+	return (ifnumber)
 endfunction

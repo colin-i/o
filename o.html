@@ -720,7 +720,7 @@ format elfobj64<br>
 </p>
 <h3><a name="usingfunctions">VII. Using functions</a></h3>
 <p>
-	<b>Function</b> can be declared and called later in the program. Functions must be closed with <b>EndFunction</b>(or <b>End</b>, <b>EndG</b> to skip the RET) command.
+	<b>Function</b> can be declared and called later in the program. Functions must be closed with <b>EndFunction</b>(or <b>End</b>) command.
 	To call a function use the <b>Call</b> command. To call a function and store the return value into a variable use the <b>SetCall</b> comand.
 	The functions must be declared before the main scope.
 	For example, at the first operation within the main scope (ex. basic Set command, or arithmetic Add command) the Entry Point is placed there and the Function statement it is no longer available.
@@ -793,7 +793,7 @@ format elfobj64<br>
 </p>
 <h3><a name="usingconditions">IX. Using conditions</a></h3>
 <p>
-	The language has <b>if-elseif-else</b> conditions that must by closed with <b>endif-endelseif-endelse</b>(or <b>end</b>) commands. <b>elsegif-elseg</b> will skip the jump.
+	The language has <b>if-elseif-else</b> conditions that must by closed with <b>endif-endelseif-endelse</b>(or <b>end</b>) commands.
 	The condition operators are:
 	<br>
 	Equal: =
@@ -858,7 +858,7 @@ format elfobj64<br>
 	<a class="code">
 	sd a=5<br>
 	sd b=0<br>
-	while b&lt;a<br>
+	while b&lt;a ##whiletrue is without a condition<br>
 &emsp;	inc b<br>
 &emsp;	if b=1<br>
 &emsp;&emsp;	continue<br>
@@ -1007,6 +1007,7 @@ format elfobj64<br>
 	<tr><td>Xfile_if</td>      <td class="green">CD</td></tr>
 	<tr><td>Xfile_else</td></tr>
 	<tr><td>Xfile_while</td>   <td class="green">CD</td></tr>
+	<tr><td>Xfile_whiletrue</td></tr>
 	<tr><td>Xfile_break</td></tr>
 	<tr><td>Xfile_continue</td></tr>
 <table id="selection_table">

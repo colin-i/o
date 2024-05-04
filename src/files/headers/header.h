@@ -536,9 +536,8 @@ charx xfile_sharp_comment#1
 charx ret_cont_break#1   #cont break? is also skipping the jump at conditions
 charx ret_cont_break_marker#1
 const ret_cont_break_no=0
-const ret_cont_break_skip=1   #with ..g
-const ret_cont_break_canskip=2  #for return,leave against end    and break,continue    , this case is compiler extra type
-const ret_cont_break_mustskip=3 # ret against end, this case is user extra type
+const ret_cont_break_canskip=1  #for return,leave, break,continue, endwhile for whiletrue without breaks. this case is compiler extra type
+const ret_cont_break_mustskip=2 # ret against end, this case is user extra type
 
 valuex ac_current_data#1
 const global_err_notset=0
