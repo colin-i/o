@@ -1,3 +1,9 @@
+ocompiler (1-5+170) xenial; urgency=medium
+
+  * base/leave and dead jumps/rets
+
+ -- bc <bc@bc-desktop>  Sat, 04 May 2024 14:17:55 +0300
+
 ocompiler (1-5+169) xenial; urgency=medium
 
   * fix erroneous column write
