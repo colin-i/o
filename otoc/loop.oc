@@ -116,34 +116,34 @@ function comment(sd outfile,sv pbuffer)
 	call write(outfile,"//",2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	callret writen(outfile,pointer,sz)
+	callg writen(outfile,pointer,sz)
 end
 function commentmulti(sd outfile,sv pbuffer)
 	call write(outfile,"/*",2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	call write(outfile,pointer,sz)
-	callret writen(outfile,"*/",2)
+	callg writen(outfile,"*/",2)
 end
 function commentlineend(sd outfile,sv pbuffer)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and line command
-	callret comment(outfile,pbuffer)
+	callg comment(outfile,pbuffer)
 end
 function format(sd *outfile,sv pbuffer) #will do nothing at the moment
 	charx fmt#1;call get_char(pbuffer,#fmt)
 end
 function end(sd outfile)
-	callret writen(outfile,"}",1)
+	callg writen(outfile,"}",1)
 end
 function interrupt(sd outfile)
 	#this is not arm #char a="__asm__(\"int $3\");"
 	#this is no x86 #__asm__("BKPT");
 	char a="__builtin_trap();" #this is not continuing on x86 but is an temporary solution
-	callret writen(outfile,#a,\interrupt.a-1)
+	callg writen(outfile,#a,\interrupt.a-1)
 end
 function line(sd outfile)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
-	callret write(outfile,";",1)
+	callg write(outfile,";",1)
 end
 
 #need write
@@ -176,7 +176,7 @@ function functiondef(sd outfile,sv pbuffer)
 	set dest dest#
 	call dest(pbuffer)
 
-	callret writen(outfile,"){",2)
+	callg writen(outfile,"){",2)
 end
 function declare(sd *outfile,sv pbuffer)
 	call decl(pbuffer)
