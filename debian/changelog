@@ -1,3 +1,9 @@
+ocompiler (1-5+171) xenial; urgency=medium
+
+  * unused else at ounused/ostrip
+
+ -- bc <bc@bc-desktop>  Sat, 04 May 2024 15:04:33 +0300
+
 ocompiler (1-5+170) xenial; urgency=medium
 
   * base/leave and dead jumps/rets
