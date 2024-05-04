@@ -175,7 +175,8 @@ function convdata(sd type,sd dest,sd fnargs)
 	if type=(convdata_total)
 		data nr_of_args#1
 		return nr_of_args   ##ms_convention or lin
-	elseif type=(convdata_call)
+	endif
+	if type=(convdata_call)
 		#rdi
 		char hex_1={REX_Operand_64,moveatprocthemem,ediregnumber*toregopcode|espregnumber,0x24,0}
 		#rsi
@@ -198,7 +199,8 @@ function convdata(sd type,sd dest,sd fnargs)
 		incst dest;set dest# #hex_5
 		incst dest;set dest# #hex_6
 		ret
-	elseif type=(convdata_fn)
+	endif
+	if type=(convdata_fn)
 		const functionxlin_start=\
 		#pop a
 		char functionxlin_code=0x58
@@ -263,7 +265,7 @@ function convdata(sd type,sd dest,sd fnargs)
 			set dest# (\-functionxlin_start)
 		endelse
 		return #functionxlin_code
-	endelseif
+	endif
 	set nr_of_args dest
 	if nr_of_args=(ms_convention)
 		set c3 0x0C;set c3o 0

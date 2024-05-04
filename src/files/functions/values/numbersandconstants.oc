@@ -8,9 +8,10 @@ Function is_numeric(char c)
 	Data true=TRUE
 	If c<zero
 		Return false
-	ElseIf c>nine
+	endif
+	If c>nine
 		Return false
-	EndElseIf
+	EndIf
 	Return true
 EndFunction
 
@@ -46,7 +47,8 @@ Function memtoint(str content,data size,data outvalue,data minusbool)
 		if multx=(bil_1)
 			if size!=1    #0 is not
 				return (FALSE)
-			elseif number=2
+			endif
+			if number=2
 				if value=(max_int_bil_2_rest)
 					if minusbool=(FALSE)
 						#2 147 483 648 is the first positive overflow
@@ -84,7 +86,8 @@ Function hexnr(char byte)
 	Char afternine={10}
 	If byte<Asciizero
 		Return (nothex_value)
-	ElseIf byte<=Asciinine
+	endif
+	If byte<=Asciinine
 		Sub byte Asciizero
 	ElseIf byte<AsciiA
 		Return (nothex_value)

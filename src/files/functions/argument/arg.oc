@@ -679,13 +679,16 @@ function is_constant_related_ascii(sd in_byte)
 	if in_byte>=(asciizero) #the asm here is right, this is the fastest, even if is 0 and was = and so on
 		if in_byte<=(asciinine)
 			return (TRUE)
-		elseif in_byte=(calculationmark)
+		endif
+		if in_byte=(calculationmark)
 			return (TRUE)
-		elseif in_byte=(long_size)
+		endif
+		if in_byte=(long_size)
 			return (TRUE)
-		elseif in_byte=(not_number)
+		endif
+		if in_byte=(not_number)
 			return (TRUE)
-		endelseif
+		endif
 	elseif in_byte=(asciiparenthesisstart)
 		return (TRUE)
 	elseif in_byte=(minus_number)

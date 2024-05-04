@@ -6,10 +6,9 @@ function endfunction(sd parses)
 			Char unexef="Unexpected ENDFUNCTION command."
 			Str unexeferr^unexef
 			return unexeferr
-		else
-			Set main.innerfunction (FALSE)
-			call vars_log_reset() #to let next variables be "o.var"
-		endelse
+		endif
+		Set main.innerfunction (FALSE)
+		call vars_log_reset() #to let next variables be "o.var"
 	elseif parses=(pass_write)
 		sd err
 		setcall err xfile_add_end_if()

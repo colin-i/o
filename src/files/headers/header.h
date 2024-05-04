@@ -538,6 +538,7 @@ charx ret_cont_break_marker#1
 const ret_cont_break_no=0
 const ret_cont_break_canskip=1  #for return,leave, break,continue, endwhile for whiletrue without breaks. this case is compiler extra type
 const ret_cont_break_mustskip=2 # ret against end, this case is user extra type
+const ret_cont_break_notyet=0xff
 
 valuex ac_current_data#1
 const global_err_notset=0

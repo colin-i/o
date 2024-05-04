@@ -108,3 +108,6 @@ set ptrcodeRegD# 0
 call vars_log_reset() #to let next variables be ".var"
 
 set xfile_sharp_comment 0
+
+set breakflag (FALSE)
+set ret_cont_break (ret_cont_break_notyet)

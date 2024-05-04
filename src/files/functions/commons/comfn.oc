@@ -46,10 +46,9 @@ Function memalloc(data pathsize)
 	Data noerr=noerror
 	If errmsg=noerr
 		Return mem
-	Else
-		Call Message(errmsg)
-		Return null
-	EndElse
+	endif
+	Call Message(errmsg)
+	Return null
 EndFunction
 
 
@@ -428,8 +427,7 @@ function compareagainstmaxpath(data sizetocompare)
 		char greaterthanmax="A file path size is greater than maximum number."
 		str greater^greaterthanmax
 		return greater
-	else
-		data noerr=noerror
-		return noerr
-	endelse
+	endif
+	data noerr=noerror
+	return noerr
 endfunction

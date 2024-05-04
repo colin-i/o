@@ -148,10 +148,11 @@ function parsepreferences_back(sd sizeback,ss content,sd p_is_comment)
 
 				set test# store
 				return return
-			elseif p_is_comment#=(TRUE)
+			endif
+			if p_is_comment#=(TRUE)
 				#this is a recognized preference but it is commented, stop comparing characters
 				return (NULL)
-			endelseif
+			endif
 		endif
 		incst strs_pointers
 	endwhile

@@ -53,10 +53,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			if parses=(pass_init)
 				setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
 				return errnr
-			else
+			endif
 			#skip this at pass_calls
-				Call advancecursors(ptrcontent,ptrsize,ptrsize#)
-			endelse
+			Call advancecursors(ptrcontent,ptrsize,ptrsize#)
 		else
 			#and subtype (x_callx_flag) #call and callex are testing without and
 			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype) #there are 2 more arguments but are not used
@@ -452,10 +451,11 @@ function comp_sec(sd lowsec,sd dataargprim,sd sufixprim,sd dataargsec,sd sufixse
 			if sec=(TRUE)
 				#first is low/medium, don't promote the big second
 				return 0
-			elseif sameimportant=(TRUE)
+			endif
+			if sameimportant=(TRUE)
 				#first is big, second is medium, keep sign for second
 				return 1
-			endelseif
+			endif
 		endif
 	elseif is_prepare=(TRUE)
 		setcall prim is_big_imm(dataargprim,sufixprim)

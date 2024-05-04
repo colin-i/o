@@ -220,11 +220,12 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 									set size_mark content
 									setcall content mem_spaces(content,size)
 									break
-								elseif content#=(asciitab)
+								endif
+								if content#=(asciitab)
 									set size_mark content
 									setcall content mem_spaces(content,size)
 									break
-								endelseif
+								endif
 								inc content
 								continue
 							endif
@@ -246,7 +247,8 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 			if content#=(assignsign)
 				Set assigntype# (assignsign)
 				return (noerror)
-			elseif content#=(reservesign)
+			endif
+			if content#=(reservesign)
 				If typenumber=(constantsnumber)
 					Char constreserveerr="Unexpected reserve sign ('#') at constant declaration."
 					Str ptrconstreserveerr^constreserveerr
@@ -254,7 +256,8 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 				EndIf
 				Set assigntype# (reservesign)
 				return (noerror)
-			elseif content#=(pointersigndeclare)
+			endif
+			if content#=(pointersigndeclare)
 				If typenumber=(charnumber)
 					#grep    stackfilter2 4
 					if stack=(FALSE)
@@ -269,7 +272,8 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 				EndIf
 
 				return (noerror)
-			elseif content#=(relsign)
+			endif
+			if content#=(relsign)
 				Char ptrrelchar="Incorrect relocation sign ('%') used at CHAR/CONST declaration."
 				vStr ptrptrrelchar^ptrrelchar
 				If typenumber=(charnumber)
@@ -297,7 +301,7 @@ function getsign(ss content,sd size,ss assigntype,sd ptrsz,sd typenumber,sd stac
 					set ptrdataxrel# (FALSE)
 				endelse
 				return (noerror)
-			endelseif
+			endif
 		endelse
 	endif
 	Char _assignoperatorerr="One from the assign operators expected."

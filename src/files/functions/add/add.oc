@@ -5,9 +5,10 @@
 Function is_variable_char(sd byte)
 	If byte<(asciizero)
 		Return (FALSE)
-	ElseIf byte<=(asciinine)
+	endif
+	If byte<=(asciinine)
 		Return (TRUE)
-	EndElseIf
+	EndIf
 	sd bool
 	setcall bool is_variable_char_not_numeric(byte)
 	return bool
@@ -17,17 +18,22 @@ EndFunction
 function is_variable_char_not_numeric(sd in_byte)
 	if in_byte=(asciiaround)
 		return (TRUE)
-	elseif in_byte<(asciiA)
+	endif
+	if in_byte<(asciiA)
 		return (FALSE)
-	elseif in_byte<=(asciiZ)
+	endif
+	if in_byte<=(asciiZ)
 		return (TRUE)
-	elseif in_byte=(asciiunderscore)
+	endif
+	if in_byte=(asciiunderscore)
 		return (TRUE)
-	elseif in_byte<(asciia)
+	endif
+	if in_byte<(asciia)
 		return (FALSE)
-	elseif in_byte<=(asciiz)
+	endif
+	if in_byte<=(asciiz)
 		return (TRUE)
-	endelseif
+	endif
 	return (FALSE)
 endfunction
 

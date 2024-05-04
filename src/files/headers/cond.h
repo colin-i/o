@@ -8,3 +8,5 @@ Const whiletruenumber=Xfile_whiletrue
 Const breaknumber=Xfile_break
 
 Const nocondnumber=-1
+
+charx breakflag#1

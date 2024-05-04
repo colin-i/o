@@ -277,11 +277,13 @@ Function quotescaped(sv pcontent,sd psize)
 	set byte content#
 	if byte=(asciin)
 		return (asciireturn)
-	elseif byte=(asciir)
+	endif
+	if byte=(asciir)
 		return (asciicarriage)
-	elseif byte=(asciit)
+	endif
+	if byte=(asciit)
 		return (asciitab)
-	endelseif
+	endif
 	return byte
 EndFunction
 

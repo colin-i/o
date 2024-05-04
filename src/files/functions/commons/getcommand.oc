@@ -576,26 +576,25 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				#setx
 					or ptrsubtype# (x_call_flag|x_callx_flag)
 					Return command
-				else
-					#here there was not a space
-					setcall result stratmemspc(#pointer,#sz,skipretjump,spacebool)
-					if result=(TRUE)
-					#setxg
-						or ptrsubtype# (x_call_flag|x_callx_flag|x_callg_flag)
-						set pcontent# pointer
-						set psize# sz
-						Return command
-					endif
-					#maybe is the deprecated ..xcall
-					setcall result stratmemspc(#pointer,#sz,call,spacebool)
-					if result=(TRUE)
-						#or first byte at subcommand to recognize the xcall at two args
-						or ptrsubtype# (x_call_flag|x_callx_flag)
-						set pcontent# pointer
-						set psize# sz
-						Return command
-					endif
-				endelse
+				endif
+				#here there was not a space
+				setcall result stratmemspc(#pointer,#sz,skipretjump,spacebool)
+				if result=(TRUE)
+				#setxg
+					or ptrsubtype# (x_call_flag|x_callx_flag|x_callg_flag)
+					set pcontent# pointer
+					set psize# sz
+					Return command
+				endif
+				#maybe is the deprecated ..xcall
+				setcall result stratmemspc(#pointer,#sz,call,spacebool)
+				if result=(TRUE)
+					#or first byte at subcommand to recognize the xcall at two args
+					or ptrsubtype# (x_call_flag|x_callx_flag)
+					set pcontent# pointer
+					set psize# sz
+					Return command
+				endif
 			Elseif result=(TRUE)
 			#and space_ok/not_with_space
 				#if command=(cEND)

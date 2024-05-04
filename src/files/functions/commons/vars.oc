@@ -85,9 +85,10 @@ function vars_log_prepare(ss content,sd size)
 		if size>0  #addvarref..orunref is erroring there for getsign and fndecargs
 			if content#=(unrefsign)
 				return (noerror)
-			elseif content#=(throwlesssign)
+			endif
+			if content#=(throwlesssign)
 				inc content;dec size
-			endelseif
+			endif
 		endif
 		sd vals;setcall vals vars_log((get),content,size)
 		sd err
@@ -470,9 +471,10 @@ function cast_resolve(sd number,sd cast,sv ptrdata,sv p_error)
 		Data stackstringnumber=stackstringnumber
 		if number=stringsnumber
 			return (TRUE)
-		elseif number=stackstringnumber
+		endif
+		if number=stackstringnumber
 			return (TRUE)
-		endelseif
+		endif
 		return (FALSE)
 	endif
 	if cast!=(cast_string)

@@ -181,10 +181,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				#ss =% x is 0
 					call advancecursors(ptrcontent,ptrsize,size)
 					return (noerror)
-				elseif typenumber!=constantsnr ##constant=value is declared at pass_init
+				endif
+				if typenumber!=constantsnr ##constant=value is declared at pass_init
 					setcall err xfile_add_char_if((Xfile_declmode_value))
 					If err!=noerr;Return err;EndIf
-				endelseif
+				endif
 				SetCall err parseoperations(ptrcontent,ptrsize,size,ptrvalue,(TRUE))
 				if err!=noerr
 					return err
@@ -424,11 +425,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				endif
 			endif
 			return err
-		else
-			sub value escapes
-			add punitsize# value
-			call advancecursors(ptrcontent,ptrsize,ptrsize#)
-		endelse
+		endif
+		sub value escapes
+		add punitsize# value
+		call advancecursors(ptrcontent,ptrsize,ptrsize#)
 	endif
 	Return noerr
 EndFunction

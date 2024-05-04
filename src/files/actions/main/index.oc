@@ -241,9 +241,9 @@ if errormsg=(noerror)
 					Inc entrylinenumber
 
 					Set fnavailable zero
-				else
-					set ret_cont_break ret_cont_break_marker ##this is relevant only at pass_write
-				Endelse
+				elseif parses=(pass_write) #else is _notyet  . fnavailable is 2 only once, and no endfunction after
+					set ret_cont_break ret_cont_break_marker
+				Endelseif
 
 				If comsize!=zero
 					setcall was_whitespaces spaces(pcontent,pcomsize)

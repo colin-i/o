@@ -47,11 +47,13 @@ Function addtosec(str content,data size,data dst)
 			Value ptraddresses%%ptr_addresses
 			If dst=ptrtable
 				Return memerr
-			ElseIf dst=ptrnames
+			endif
+			If dst=ptrnames
 				Return memerr
-			ElseIf dst=ptraddresses
+			endif
+			If dst=ptraddresses
 				Return memerr
-			EndElseIf
+			EndIf
 		Endif
 		Data value#1
 		sd err

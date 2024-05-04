@@ -34,7 +34,7 @@ Function condbeginwrite(data condnumber)
 		Return err
 	EndIf
 
-	Data condloopsec%%ptr_conditionsloops
+	vData condloopsec%%ptr_conditionsloops
 
 	vData ptrcondnumber^condnumber
 	SetCall err addtosec(ptrcondnumber,(condpack_number),condloopsec)
@@ -44,26 +44,32 @@ EndFunction
 #err
 Function condbegin(data ptrcontent,data ptrsize,data condnumber)
 	Data cond#1
-	Data ptrcond^cond
+	vData ptrcond^cond
 	Data err#1
 	Data noerr=noerror
 
+	data dummy=0
+	data condnr#1
 	if main.parses=(pass_write)
 		setcall err xfile_add_char_if(condnumber)
 		If err!=noerr;Return err;EndIf
 		if condnumber!=(whiletruenumber)
 			SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
 			If err!=noerr;Return err;EndIf
-		else
-			set condnumber (whilenumber)
-		endelse
+			SetCall err condbeginwrite(condnumber)
+			return err
+		endif
+		set condnr (whilenumber)
 	else
 		call advancecursors(ptrcontent,ptrsize,ptrsize#)
-		if condnumber=(whiletruenumber)
-			set condnumber (whilenumber)
-		endif
+		if condnumber!=(whiletruenumber)
+			set condnr condnumber
+		else
+			set condnr (whilenumber)
+		endelse
 	endelse
-	SetCall err condbeginwrite(condnumber)
+	vData condloopsec%%ptr_conditionsloops
+	SetCall err addtosec(#dummy,(condpacksize),condloopsec)
 	Return err
 EndFunction
 
@@ -150,7 +156,11 @@ Function condend(data number)
 				EndIf
 				if structure#=(whilenumber) #or whiletruenumber
 					call condendwrite(marker,codeoffset)
-				endif
+				elseif main.breakflag=(FALSE)  #this is an infinite loop with no breaks, some ret inside was, and must skip next dead ret if is endfunction
+					set main.ret_cont_break_marker (ret_cont_break_canskip)
+				else   #same whiletrue but with at least one break
+					set main.breakflag (FALSE)
+				endelse
 			endif
 		elseif main.parses=(pass_write)
 			call condendwrite(structure,codeoffset)
@@ -177,8 +187,10 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 		sub conds (condpack_codereg)
 
 		if lastcondition=(breaknumber)
+		#here is pass_write only
 			if number=(whilenumber)
 				call condendwrite(conds,codeoffset)
+				set main.breakflag (TRUE)
 			endif
 		elseIf lastcondition!=number
 			Char difcloseerr="The previous condition/loop is from a different type."
@@ -313,13 +325,11 @@ Function closeifopenelse()
 	Data err#1
 	Data noerr=noerror
 
-	if main.parses=(pass_write)
-		if main.ret_cont_break=(ret_cont_break_no)
-			SetCall err condjump(0)
-			If err!=noerr
-				Return err
-			EndIf
-		endif
+	if main.ret_cont_break=(ret_cont_break_no)
+		SetCall err condjump(0)
+		If err!=noerr
+			Return err
+		EndIf
 	endif
 	Data ifnr=ifnumber
 	SetCall err condend(ifnr)
@@ -338,7 +348,13 @@ Function closeifopenelse()
 				Data elsenr=elsenumber
 				SetCall err condbeginwrite(elsenr)
 			endif
-		else # ret_cont_break_canskip ret_cont_break_mustskip
+		else # ret_cont_break_canskip ret_cont_break_mustskip ret_cont_break_notyet
+			if main.ret_cont_break!=(ret_cont_break_notyet) #is useless JMP, if no previous JMP in this ifinscribe, is also useless ELSE
+				setcall err elseg()
+				If err!=noerr
+					Return err
+				EndIf
+			endif
 			data e2=elseinscribe_skip
 			data *ignored codesection index#1
 			data *nr=elsenumber
@@ -347,6 +363,27 @@ Function closeifopenelse()
 	endif
 	Return err
 EndFunction
+
+#err
+function elseg()
+	sd pointer
+	vData structure%%ptr_conditionsloops
+	Call getcontplusReg(structure,#pointer)
+	sub pointer (condpack_number)
+	while pointer#!=(ifinscribe)  #ifnumbers are all closed
+		if pointer#=(breaknumber)
+			sub pointer (condpacksize)
+			continue
+		endif
+		#this is waiting else
+		sub pointer (condpacksize)
+		if pointer#=(elseinscribe_write)
+			return (noerror)
+		endif
+		sub pointer (condpack_elseinscribe)
+	endwhile
+	return "ELSE is useless here."
+endfunction
 
 #err
 function continue()
@@ -434,7 +471,7 @@ function whileend()
 	return err
 endfunction
 
-#err
+#number
 function prev_cond(sd psecond)
 	sd structure
 	vData condloop%%ptr_conditionsloops
@@ -454,7 +491,7 @@ function prev_cond(sd psecond)
 		set psecond# (nocondnumber)
 		return (elsenumber)
 	endif
-	#if,elseif
+	#ifnumber at if or elseif
 	sub structure (condpacksize)
 	if structure#=(ifinscribe)
 		set psecond# (nocondnumber)
