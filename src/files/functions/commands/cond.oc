@@ -370,18 +370,12 @@ function elseg()
 	vData structure%%ptr_conditionsloops
 	Call getcontplusReg(structure,#pointer)
 	sub pointer (condpack_number)
-	while pointer#!=(ifinscribe)  #ifnumbers are all closed
-		if pointer#=(breaknumber)
-			sub pointer (condpacksize)
-			continue
-		endif
-		#this is waiting else
+	while pointer#=(breaknumber)  #skip first pack of breaks
 		sub pointer (condpacksize)
-		if pointer#=(elseinscribe_write)
-			return (noerror)
-		endif
-		sub pointer (condpack_elseinscribe)
 	endwhile
+	if pointer#=(elsenumber)  #an else was accepted, then first IF was ok
+		return (noerror)
+	endif
 	return "ELSE is useless here."
 endfunction
 
