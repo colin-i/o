@@ -296,7 +296,7 @@ function quotinmem_err(ss content,sd pquotsz,sd pescapes,sd null_ok)
 	sd aux;set aux content
 	Set pescapes# 0
 	#quotes_forward was called already, the string has a good end, and nulls are not ok at include/import/library but tolerated at decl/arg
-	While 0=0
+	Whiletrue
 		if content#=bs
 			inc pescapes#
 			add content 2

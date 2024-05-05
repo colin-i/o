@@ -179,7 +179,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 	#for breaks inside conditions
 	sd last;set last conds
 
-	while 1=1
+	whiletrue
 		Data lastcondition#1
 
 		sub conds (condpack_number)
@@ -278,7 +278,7 @@ Function conditionscondend(data close1,data close2)
 		Data elsenr=elsenumber
 		Data structure%%ptr_conditionsloops
 
-		While 1=1
+		Whiletrue
 			SetCall err condend(number)
 			If err!=noerr
 				Return err
