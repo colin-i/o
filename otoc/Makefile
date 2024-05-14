@@ -39,7 +39,7 @@ OFLAGS+=${OFLAGSEXTRA}
 number=number.h
 
 number.pre.o: number.pre.oc
-	o $< ${OFLAGS}
+	${OCOMP} $< ${OFLAGS}
 number.pre: number.pre.o
 	${ATLDCOM} $@ $^
 ${number}: number.pre

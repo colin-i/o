@@ -18,11 +18,12 @@ ver=version.h
 ${ver}:
 	/bin/bash ./versionscript
 
-all: ${ver}
-	#if ! [ -s ./src/obj.txt ];then
+#if ! [ -s ./src/obj.txt ];then
+verify_comp_with_link:
 	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
-	#; fi
 	@echo
+
+all: ${ver} verify_comp_with_link
 
 test:
 	cd tests; /bin/bash ./tests
