@@ -23,7 +23,9 @@ verify_comp_with_link:
 	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
 	@echo
 
-all: ${ver} verify_comp_with_link
+#if only after ':' is after; if after ':' and below, one is at start the other one at end
+all: ${ver}
+	$(MAKE) verify_comp_with_link
 
 test:
 	cd tests; /bin/bash ./tests
