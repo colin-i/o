@@ -228,7 +228,8 @@ end
 function while(sd outfile,sv pbuffer)
 	call cond(pbuffer,outfile)
 end
-function whiletrue()
+function whiletrue(sd outfile)
+	callg writen(outfile,"{",1)
 end
 function break()
 end

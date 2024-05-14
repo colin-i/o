@@ -54,8 +54,9 @@ ${prog}: ${OBJ}
 	${ATLDCOM} ${prog} ${FULLOBJO}
 
 install: all
-	install -D ${prog} \
-		$(DESTDIR)$(prefix)/bin/${prog}
+	echo "${prog} is not ready yet"
+#	install -D ${prog} \
+#		$(DESTDIR)$(prefix)/bin/${prog}
 
 clean:
 	-rm -f ${FULLOBJO}
@@ -68,7 +69,8 @@ clean:
 distclean: clean
 
 uninstall:
-	-rm -f $(DESTDIR)$(prefix)/bin/${prog}
+	echo "${prog} is not ready yet"
+#	-rm -f $(DESTDIR)$(prefix)/bin/${prog}
 
 test:
 	echo "Nothing"
