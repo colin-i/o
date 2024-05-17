@@ -94,14 +94,14 @@ if [ ${is_del} = 0 ]; then
 	fi
 else
 	#remove otoc files
-	a=( `find -name "*.c"` )
+	a=( `find -maxdepth 1 -name "*.c"` )
 	for var in "${a[@]}"; do
 		rm ${var}
 	done
 
 	#remove base64 troubles #or remove them after diff
 	cd ${e}
-	a=( `find . -type f ! -name "*.txt" ! -name "*.log"` )
+	a=( `find . -type f ! -name "*.txt" ! -name "*.log" ! -name "*.c"` )
 	for var in "${a[@]}"; do
 		rm ${var}
 	done
