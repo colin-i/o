@@ -79,6 +79,7 @@ switch acall/e
 
 if [ ${is_del} = 0 ]; then
 	if [ ${is_diff} = 1 ]; then
+		diff a.out.c .expected/a.out.c || exit 1
 		tests=( `find -name "*.oc"` )
 		n=${#tests[@]}
 		n=$((n*3))   #is .oc .log and .x
@@ -88,6 +89,8 @@ if [ ${is_del} = 0 ]; then
 		else
 			exit 1
 		fi
+	else # populate
+		mv a.out.c .expected
 	fi
 else
 	#remove otoc files
