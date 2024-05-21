@@ -8,13 +8,15 @@ line
 
 include "include.h" "include.h"
 
-char *=1
-char *={2,3}
-char *="45"
+orphan off
+
+char c1=1
+char c2={2,3}
+char c3="45"
 char a#3
 value b^a
 
-function intern(data a) #commenting
+function intern(data a,sd b) #commenting
 end
 
 library "a"
@@ -39,5 +41,4 @@ end
 ret
 aftercall *tst
 override x_file 1
-orphan on
 i3
