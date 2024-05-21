@@ -1,43 +1,27 @@
 
-function functiondef_intern(sv pbuffer)
+#aftercalli
+
+function functiondef_intern(sv pbuffer,sd output)
 	datax args#1;call get_data(pbuffer,#args)
-	sd n=0;while n!=args
-		call decl(pbuffer)
-		inc n
+	if args>^1
+		call decl(pbuffer,output)
+		sd n=1;while n!=args
+			char c=asciicomma
+			call write(output,#c,1)
+			call decl(pbuffer,output)
+			inc n
+		end
 	end
 end
 #function functiondef_raw(sv pbuffer)
-function functiondef_extern(sv pbuffer)
+function functiondef_extern(sv pbuffer,sd output)
 	charx e#1;call get_char(pbuffer,#e)
-	call functiondef_intern(pbuffer)
+	call functiondef_intern(pbuffer,output)
 end
 #function functiondef_entry(sv pbuffer)
 
-#A structure
-function arg(sv pbuffer)
-	charx a#1;call get_char(pbuffer,#a)
-	if a=(Xfile_arg_number)
-		call number(pbuffer)
-	elseif a=(Xfile_arg_varfn)
-		call varfunc(pbuffer)
-	elseif a=(Xfile_arg_string)
-		datax sz#1;valuex pointer#1
-		call get_string(pbuffer,#sz,#pointer)
-	else #Xfile_arg_call
-		call cll(pbuffer)
-	end
-end
-
-#CD structure
-function cond(sv pbuffer,sd output)
-	call arg(pbuffer)
-	charx cnd#1;call get_char(pbuffer,#cnd)
-	call arg(pbuffer)
-	callg writen(output,"{",1)
-end
-
 #D structure
-function decl(sv pbuffer)
+function decl(sv pbuffer,sd output)
 	charx field#1;call get_char(pbuffer,#field)
 	if field!=(Xfile_declfield_const)
 		if field=(Xfile_declfield_data)
@@ -48,11 +32,7 @@ function decl(sv pbuffer)
 	end
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-end
-
-#DoT
-function dot(sv pbuffer)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
-	call var(pbuffer)
+	char d={asciii,asciin,asciit,asciispace}
+	call write(output,#d,4)
+	callg write(output,pointer,sz)
 end

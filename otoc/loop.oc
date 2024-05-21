@@ -12,6 +12,7 @@ const SEEK_END=2
 include "xfile.h"
 #const Xfile_last=Xfile_line
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
+include "ascii.h"
 
 datax result#1
 
@@ -71,7 +72,8 @@ function preloop(sd input,sd output)
 				set main.result (EXIT_SUCCESS)
 				call loop(buffer,size,output)
 				if main.result=(EXIT_SUCCESS)
-					callg writen(output,"}",1)
+					char d=asciicurlyright
+					callg writen(output,#d,1)
 				end
 			end
 			call free(buffer)
@@ -100,12 +102,14 @@ end
 
 importx "fwrite" fwrite
 
-include "decl.oc"
 include "number.oc"
 include "var.oc"
 include "action.oc"
 
 #aftercalli *
+
+include "decl.oc"
+
 function aftercallenable()
 	set main.result (EXIT_FAILURE)
 	leave loop.bp
@@ -113,17 +117,20 @@ function aftercallenable()
 end
 
 function comment(sd outfile,sv pbuffer)
-	call write(outfile,"//",2)
+	char a={asciislash,asciislash}
+	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	callg writen(outfile,pointer,sz)
 end
 function commentmulti(sd outfile,sv pbuffer)
-	call write(outfile,"/*",2)
+	char b=asciiasterisk
+	char a={asciislash,asciiasterisk}
+	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	call write(outfile,pointer,sz)
-	callg writen(outfile,"*/",2)
+	callg writen(outfile,#b,2)
 end
 function commentlineend(sd outfile,sv pbuffer)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and line command
@@ -133,17 +140,20 @@ function format(sd *outfile,sv pbuffer) #will do nothing at the moment
 	charx fmt#1;call get_char(pbuffer,#fmt)
 end
 function end(sd outfile)
-	callg writen(outfile,"}",1)
+	char a=asciicurlyright
+	callg writen(outfile,#a,1)
 end
 function interrupt(sd outfile)
 	#this is not arm #char a="__asm__(\"int $3\");"
 	#this is no x86 #__asm__("BKPT");
-	char a="__builtin_trap();" #this is not continuing on x86 but is an temporary solution
-	callg writen(outfile,#a,\interrupt.a-1)
+	char a={asciiunderscore,asciiunderscore,asciib,asciiu,asciii,asciil,asciit,asciii,asciin,asciiunderscore,asciit,asciir,asciia,asciip,asciiparenthesisleft,asciiparenthesisright,asciisemicolon}
+	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
+	callg writen(outfile,#a,\interrupt.a)
 end
 function line(sd outfile)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
-	callg write(outfile,";",1)
+	char a=asciisemicolon
+	callg write(outfile,#a,1)
 end
 
 #need write
@@ -158,13 +168,15 @@ function include(sd output,sv pbuffer)
 end
 function functiondef(sd outfile,sv pbuffer)
 #at least arguments write
-	call write(outfile,"void ",5)
+	char a={asciiv,asciio,asciii,asciid,asciispace}
+	call write(outfile,#a,5)
 
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	call write(outfile,pointer,sz)
 
-	call write(outfile,"(",1)
+	char b=asciiparenthesisleft
+	call write(outfile,#b,1)
 
 	value intern^functiondef_intern
 	value *raw^functiondef_intern       #functiondef_raw
@@ -174,12 +186,13 @@ function functiondef(sd outfile,sv pbuffer)
 	mult type :
 	sv dest^intern;add dest type
 	set dest dest#
-	call dest(pbuffer)
+	call dest(pbuffer,outfile)
 
-	callg writen(outfile,"){",2)
+	char c={asciiparenthesisright,asciicurlyleft}
+	callg writen(outfile,#c,2)
 end
-function declare(sd *outfile,sv pbuffer)
-	call decl(pbuffer)
+function declare(sd outfile,sv pbuffer)
+	call decl(pbuffer,outfile)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
@@ -200,6 +213,8 @@ function declare(sd *outfile,sv pbuffer)
 			call get_string(pbuffer,#sz,#pointer)
 		end
 	endelse
+	char sc=asciisemicolon
+	callg writen(outfile,#sc,1)
 end
 function action(sd *outfile,sv pbuffer)
 	charx act#1;call get_char(pbuffer,#act)

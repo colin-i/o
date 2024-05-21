@@ -1,4 +1,19 @@
 
+#A structure
+function arg(sv pbuffer)
+	charx a#1;call get_char(pbuffer,#a)
+	if a=(Xfile_arg_number)
+		call number(pbuffer)
+	elseif a=(Xfile_arg_varfn)
+		call varfunc(pbuffer)
+	elseif a=(Xfile_arg_string)
+		datax sz#1;valuex pointer#1
+		call get_string(pbuffer,#sz,#pointer)
+	else #Xfile_arg_call
+		call cll(pbuffer)
+	end
+end
+
 #C structure
 function cal(sv pbuffer)
 	char arg_call#1;call get_char(pbuffer,#arg_call)
@@ -14,6 +29,22 @@ function cll(sv pbuffer)
 		call arg(pbuffer)
 		inc n
 	end
+end
+
+#CD structure
+function cond(sv pbuffer,sd output)
+	call arg(pbuffer)
+	charx cnd#1;call get_char(pbuffer,#cnd)
+	call arg(pbuffer)
+	char a=asciicurlyleft
+	callg writen(output,#a,1)
+end
+
+#DoT
+function dot(sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	call var(pbuffer)
 end
 
 #V structure
