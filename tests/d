@@ -1,6 +1,7 @@
 
 ./x ${1} && \
 ../otoc/otoc ${1}.oc.x && \
-cat ${1}.c && \
-cc ${1}.c && \
-mv ${1}.c .expected
+cat ${1}.c && {
+	cc ${1}.c
+	mv ${1}.c .expected
+}

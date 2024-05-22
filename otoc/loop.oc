@@ -330,6 +330,10 @@ function writetn(sd outfile) #terminator newline
 	char sc=asciisemicolon
 	callg writen(outfile,#sc,1)
 end
+function writec(sd outfile)
+	char c=asciicomma
+	call write(outfile,#c,1)
+end
 function write_void(sd outfile,sd pointer,sd size)
 	char a={asciiv,asciio,asciii,asciid,asciispace}
 	call write(outfile,#a,5)

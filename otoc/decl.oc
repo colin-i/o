@@ -1,27 +1,26 @@
 
 #aftercalli
 
-function functiondef_intern(sv pbuffer,sd output)
+function functiondef_intern(sv pbuffer,sd outfile)
 	datax args#1;call get_data(pbuffer,#args)
-	if args>^1
-		call decl(pbuffer,output)
+	if args>=^1
+		call decl(pbuffer,outfile)
 		sd n=1;while n!=args
-			char c=asciicomma
-			call write(output,#c,1)
-			call decl(pbuffer,output)
+			call writec(outfile)
+			call decl(pbuffer,outfile)
 			inc n
 		end
 	end
 end
 #function functiondef_raw(sv pbuffer)
-function functiondef_extern(sv pbuffer,sd output)
+function functiondef_extern(sv pbuffer,sd outfile)
 	charx e#1;call get_char(pbuffer,#e)
-	callg functiondef_intern(pbuffer,output)
+	callg functiondef_intern(pbuffer,outfile)
 end
 #function functiondef_entry(sv pbuffer)
 
 #D structure
-function decl(sv pbuffer,sd output)
+function decl(sv pbuffer,sd outfile)
 	charx field#1;call get_char(pbuffer,#field)
 	if field!=(Xfile_declfield_const)
 		if field=(Xfile_declfield_data)
@@ -33,6 +32,6 @@ function decl(sv pbuffer,sd output)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	char d={asciii,asciin,asciit,asciispace}
-	call write(output,#d,4)
-	callg write(output,pointer,sz)
+	call write(outfile,#d,4)
+	callg write(outfile,pointer,sz)
 end
