@@ -23,6 +23,19 @@ library "a"
 import "b" c
 
 entry main()
+
+set a a
+add a a
+sub a a
+mult a a
+div a a
+divu a a
+rem a a
+remu a a
+and a a
+or a a
+xor a a
+
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 ;
 call intern(1,"qw",main.a:main.a)
