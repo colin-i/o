@@ -20,7 +20,7 @@ function intern(data a,sd b) #commenting
 end
 
 library "a"
-import "b" c
+import "b" f
 
 entry main()
 
@@ -39,7 +39,7 @@ xor a a
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 ;
 call intern(1,"qw",main.a:main.a)
-set a c()
+set a f()
 if 1=1
 else
 end
