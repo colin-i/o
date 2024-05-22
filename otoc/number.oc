@@ -1,7 +1,9 @@
 
+#aftercalli
+
 #N structure
 
-function number(sv pbuffer)
+function number(sv pbuffer,sd outfile)
 include "number.h"
 	charx item#1;call get_char(pbuffer,#item)
 	while item!=(Xfile_numbers_done)
@@ -15,12 +17,12 @@ include "number.h"
 		mult f :
 		add f #functions
 		set f f#
-		call f(pbuffer)
+		call f(pbuffer,outfile)
 		call get_char(pbuffer,#item)
 	end
 end
 
-function numbertype(sv pbuffer)
+function numbertype(sv pbuffer,sd outfile)
 	value functions^number_int_long
 	value         *^number_int_data
 	value         *^number_int_datax
@@ -37,7 +39,7 @@ function numbertype(sv pbuffer)
 	sv f^functions
 	add f type
 	set f f#
-	call f(pbuffer)
+	callg f(pbuffer,outfile)
 end
 
 function number_int_long();end
@@ -67,24 +69,24 @@ function number_func_sizex(sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 end
-function number_var_size(sv pbuffer)
-	call dot(pbuffer)
+function number_var_size(sv pbuffer,sd outfile)
+	callg dot(pbuffer,outfile)
 end
-function number_var_offset(sv pbuffer)
-	call dot(pbuffer)
+function number_var_offset(sv pbuffer,sd outfile)
+	callg dot(pbuffer,outfile)
 end
 
-function normal(sv pbuffer)
-	call numbertype(pbuffer)
+function normal(sv pbuffer,sd outfile)
+	callg numbertype(pbuffer,outfile)
 end
-function neg(sv pbuffer)
-	call numbertype(pbuffer)
+function neg(sv pbuffer,sd outfile)
+	callg numbertype(pbuffer,outfile)
 end
-function not(sv pbuffer)
-	call numbertype(pbuffer)
+function not(sv pbuffer,sd outfile)
+	callg numbertype(pbuffer,outfile)
 end
-function notneg(sv pbuffer)
-	call numbertype(pbuffer)
+function notneg(sv pbuffer,sd outfile)
+	callg numbertype(pbuffer,outfile)
 end
 function open();end
 function close();end

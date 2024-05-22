@@ -1,56 +1,60 @@
 
+#aftercalli
+
 #A structure
-function arg(sv pbuffer)
+function arg(sv pbuffer,sd outfile)
 	charx a#1;call get_char(pbuffer,#a)
 	if a=(Xfile_arg_number)
-		call number(pbuffer)
+		call number(pbuffer,outfile)
 	elseif a=(Xfile_arg_varfn)
-		call varfunc(pbuffer)
+		call varfunc(pbuffer,outfile)
 	elseif a=(Xfile_arg_string)
 		datax sz#1;valuex pointer#1
 		call get_string(pbuffer,#sz,#pointer)
 	else #Xfile_arg_call
-		call cll(pbuffer)
+		callg cll(pbuffer,outfile)
 	end
 end
 
 #C structure
-function cal(sv pbuffer)
+function cal(sv pbuffer,sd outfile)
 	char arg_call#1;call get_char(pbuffer,#arg_call)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
+	callg write(outfile,pointer,sz)
 end
 
 #CL structure
-function cll(sv pbuffer)
-	call cal(pbuffer)
+function cll(sv pbuffer,sd outfile)
+	call cal(pbuffer,outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
-		call arg(pbuffer)
+		call arg(pbuffer,outfile)
 		inc n
 	end
 end
 
 #CD structure
-function cond(sv pbuffer,sd output)
-	call arg(pbuffer)
+function cond(sv pbuffer,sd outfile)
+	call arg(pbuffer,outfile)
 	charx cnd#1;call get_char(pbuffer,#cnd)
-	call arg(pbuffer)
+	call arg(pbuffer,outfile)
 	char a=asciicurlyleft
-	callg writen(output,#a,1)
+	callg writen(outfile,#a,1)
 end
 
 #DoT
-function dot(sv pbuffer)
+function dot(sv pbuffer,sd outfile)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	call var(pbuffer)
+	callg var(pbuffer,outfile)
 end
 
 #V structure
-function var(sv pbuffer)
+function var(sv pbuffer,sd outfile)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
+	call write(outfile,pointer,sz)
 	charx suffix#1;call get_char(pbuffer,#suffix)
 	if suffix=(Xfile_suffix_true)
 		charx cast#1;call get_char(pbuffer,#cast)
@@ -59,7 +63,7 @@ function var(sv pbuffer)
 end
 
 #VF structure
-function varfunc(sv pbuffer)
+function varfunc(sv pbuffer,sd outfile)
 	charx prefix#1;call get_char(pbuffer,#prefix)
 	charx colon#1;call get_char(pbuffer,#colon)
 	if colon=(Xfile_arg_varfn_colon_yes)
@@ -74,8 +78,8 @@ function varfunc(sv pbuffer)
 	end
 	charx d#1;call get_char(pbuffer,#d)
 	if d=(Xfile_arg_varfn_dot_no)
-		call var(pbuffer)
+		call var(pbuffer,outfile)
 	else
-		call dot(pbuffer)
+		callg dot(pbuffer,outfile)
 	end
 end

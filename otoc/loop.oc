@@ -9,6 +9,9 @@ importx "free" free
 const SEEK_CUR=1
 const SEEK_END=2
 
+const FALSE=0
+const TRUE=1
+
 include "xfile.h"
 #const Xfile_last=Xfile_line
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
@@ -19,6 +22,10 @@ datax result#1
 function loop(sd pointer,sd delim,sd output)
 	valuex bp#1
 	base bp
+
+	charx allowwrite#1
+	set allowwrite (TRUE)
+
 	add delim pointer
 	while pointer!=delim
 		charx command#1;call get_char(#pointer,#command)
@@ -102,19 +109,18 @@ end
 
 importx "fwrite" fwrite
 
-include "number.oc"
-include "var.oc"
-include "action.oc"
-
-#aftercalli *
-
-include "decl.oc"
-
 function aftercallenable()
 	set main.result (EXIT_FAILURE)
 	leave loop.bp
 	#aftercallenable
 end
+
+#aftercalli *
+
+include "action.oc"
+include "decl.oc"
+include "number.oc"
+include "var.oc"
 
 function comment(sd outfile,sv pbuffer)
 	char a={asciislash,asciislash}
@@ -168,12 +174,9 @@ function include(sd output,sv pbuffer)
 end
 function functiondef(sd outfile,sv pbuffer)
 #at least arguments write
-	char a={asciiv,asciio,asciii,asciid,asciispace}
-	call write(outfile,#a,5)
-
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	call write(outfile,pointer,sz)
+	call write_void(outfile,pointer,sz)
 
 	char b=asciiparenthesisleft
 	call write(outfile,#b,1)
@@ -196,52 +199,68 @@ function declare(sd outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
-		call number(pbuffer)
+		call number(pbuffer,outfile)
 	elseif sign=(Xfile_declsign_pointer)
 		call get_string(pbuffer,#sz,#pointer)
 	else #Xfile_declsign_e*
 		charx mode#1;call get_char(pbuffer,#mode)
 		if mode=(Xfile_declmode_value)
-			call number(pbuffer)
+			call number(pbuffer,outfile)
 		elseif mode=(Xfile_declmode_group)
 			datax args#1;call get_data(pbuffer,#args)
 			sd n=0;while n!=args
-				call number(pbuffer)
+				call number(pbuffer,outfile)
 				inc n
 			end
 		else #Xfile_declmode_string
 			call get_string(pbuffer,#sz,#pointer)
 		end
 	endelse
-	char sc=asciisemicolon
-	callg writen(outfile,#sc,1)
+	callg writetn(outfile)
 end
-function action(sd *outfile,sv pbuffer)
+function action(sd outfile,sv pbuffer)
 	charx act#1;call get_char(pbuffer,#act)
-	call action1(act)
+	callg action1(act,outfile)
 end
-function action2(sd *outfile,sv pbuffer)
-	call varfunc(pbuffer)
+function action2(sd outfile,sv pbuffer)
+	call varfunc(pbuffer,outfile)
 	charx a2#1;call get_char(pbuffer,#a2)
-	call arg(pbuffer)
+
+	if a2!=(Xfile_action2_set)
+		if a2=(Xfile_action2_divu)
+			set a2 (Xfile_action2_div)
+		elseif a2=(Xfile_action2_remu)
+			set a2 (Xfile_action2_rem)
+		end
+		call write(outfile,#a2,1)
+	end
+	char a=asciiequal
+	call write(outfile,#a,1)
+
+	call arg(pbuffer,outfile)
+	callg writetn(outfile)
 end
-function call(sd *outfile,sv pbuffer)
+function call(sd outfile,sv pbuffer)
 	char c#1;call get_char(pbuffer,#c)
-	call cll(pbuffer)
+	call cll(pbuffer,outfile)
+	callg writetn(outfile)
 end
-function callex(sd *outfile,sv pbuffer)
+function callex(sd outfile,sv pbuffer)
+	set loop.allowwrite (FALSE)  #at some structures is complicated
 	char c#1;call get_char(pbuffer,#c)
-	call cal(pbuffer)
-	call varfunc(pbuffer)
-	call arg(pbuffer)
+	call cal(pbuffer,outfile)
+	call varfunc(pbuffer,outfile)
+	call arg(pbuffer,outfile)
+	call writetn(outfile)
+	set loop.allowwrite (TRUE)
 end
 function if(sd outfile,sv pbuffer)
-	call cond(pbuffer,outfile)
+	callg cond(pbuffer,outfile)
 end
 function else()
 end
 function while(sd outfile,sv pbuffer)
-	call cond(pbuffer,outfile)
+	callg cond(pbuffer,outfile)
 end
 function whiletrue(sd outfile)
 	callg writen(outfile,"{",1)
@@ -256,12 +275,17 @@ function library(sd *outfile,sv pbuffer)
 	datax sz#1;valuex lib#1
 	call get_string(pbuffer,#sz,#lib)
 end
-function import(sd *outfile,sv pbuffer)
+function import(sd outfile,sv pbuffer)
 	charx imp#1;call get_char(pbuffer,#imp)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
 	datax sza#1;valuex alias#1
 	call get_string(pbuffer,#sza,#alias)
+
+	call write_void(outfile,alias,sza)
+	char a={asciiparenthesisleft,asciiparenthesisright}
+	call write(outfile,#a,2)
+	callg writetn(outfile)
 end
 function aftercall(sd *outfile,sv pbuffer)
 	charx acall#1;call get_char(pbuffer,#acall)
@@ -273,10 +297,10 @@ function aftercall(sd *outfile,sv pbuffer)
 		end
 	end
 end
-function hex(sd *outfile,sv pbuffer)
+function hex(sd outfile,sv pbuffer)
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
-		call number(pbuffer)
+		call number(pbuffer,outfile)
 		inc n
 	end
 end
@@ -289,18 +313,25 @@ function orphan(sd *outfile,sv pbuffer)
 	charx orph#1;call get_char(pbuffer,#orph)
 end
 
-function writen(sd outfile,ss buf,sd sz)
-	call write(outfile,buf,sz)
-
-	sd items;set items fwrite("\n",1,1,outfile)
-	if items!=1
-		call aftercallenable() #at aftercall was without enable because was no more code to follow
+function write(sd outfile,ss buf,sd sz)
+	if loop.allowwrite=(TRUE)
+		sd items;set items fwrite(buf,sz,1,outfile)
+		if items!=1
+			call aftercallenable()
+		end
 	end
 end
-
-function write(sd outfile,ss buf,sd sz)
-	sd items;set items fwrite(buf,sz,1,outfile)
-	if items!=1
-		callret aftercallenable()
-	end
+function writen(sd outfile,ss buf,sd sz)
+	call write(outfile,buf,sz)
+	char n=asciinewline
+	callg write(outfile,#n,1)
+end
+function writetn(sd outfile) #terminator newline
+	char sc=asciisemicolon
+	callg writen(outfile,#sc,1)
+end
+function write_void(sd outfile,sd pointer,sd size)
+	char a={asciiv,asciio,asciii,asciid,asciispace}
+	call write(outfile,#a,5)
+	callg write(outfile,pointer,size)
 end
