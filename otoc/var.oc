@@ -31,15 +31,49 @@ function cll(sv pbuffer,sd outfile)
 	call write(outfile,#a,1)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
-		call arg(pbuffer,outfile)
+	#need to reverse the push order
+		set loop.directwrite (FALSE)
+		set mems.carg_size 0
+		set mems.cargx_size 0
+
+		call carg_stamp()
+		call arg(pbuffer,#mems.carg)
+		call carg_stamp()
 		sd n=1;while n!=args
-			call writec(outfile)
-			call arg(pbuffer,outfile)
+			call arg(pbuffer,#mems.carg)
+			call carg_stamp()
 			inc n
 		end
+		set loop.directwrite (TRUE)
+		call carg_resolve(outfile)
 	end
 	char b=asciiparenthesisright
-	call write(outfile,#b,1)
+	callg write(outfile,#b,1)
+end
+function carg_stamp()
+	sd r;set r mwrite(#mems.carg_size,:,#mems.cargx)
+	if r!=1
+		call aftercallenable()
+	end
+end
+function carg_resolve(sd outfile)
+	sv cursor;set cursor mems.cargx_size
+	add cursor mems.cargx
+	decst cursor
+	sd right;set right cursor#
+	decst cursor
+	call carg_resolve_one(cursor#,right,outfile)
+	while mems.cargx!=cursor
+		call writec(outfile)
+		set right cursor#
+		decst cursor
+		call carg_resolve_one(cursor#,right,outfile)
+	end
+end
+function carg_resolve_one(sv left,sv right,sd outfile)
+	sub right left
+	add left mems.carg
+	callg write(outfile,left,right)
 end
 
 #CD structure

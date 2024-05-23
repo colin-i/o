@@ -25,6 +25,8 @@ function loop(sd pointer,sd delim,sd output)
 
 	charx allowwrite#1
 	set allowwrite (TRUE)
+	charx directwrite#1
+	set directwrite (TRUE)
 
 	add delim pointer
 	while pointer!=delim
@@ -76,11 +78,15 @@ function preloop(sd input,sd output)
 		if buffer!=(NULL)
 			sd r;set r fread(buffer,size,1,input)
 			if r=1
-				set main.result (EXIT_SUCCESS)
-				call loop(buffer,size,output)
-				if main.result=(EXIT_SUCCESS)
-					char d=asciicurlyright
-					callg writen(output,#d,1)
+				set r mems()
+				if r=(TRUE)
+					set main.result (EXIT_SUCCESS)
+					call loop(buffer,size,output)
+					if main.result=(EXIT_SUCCESS)
+						char d=asciicurlyright
+						callg writen(output,#d,1)
+					end
+					call memfree()
 				end
 			end
 			call free(buffer)
@@ -114,6 +120,8 @@ function aftercallenable()
 	leave loop.bp
 	#aftercallenable
 end
+
+include "mem.oc"
 
 #aftercalli *
 
@@ -315,7 +323,12 @@ end
 
 function write(sd outfile,ss buf,sd sz)
 	if loop.allowwrite=(TRUE)
-		sd items;set items fwrite(buf,sz,1,outfile)
+		sd items
+		if loop.directwrite=(TRUE)
+			set items fwrite(buf,sz,1,outfile)
+		else
+			set items mwrite(buf,sz,outfile)
+		end
 		if items!=1
 			call aftercallenable()
 		end

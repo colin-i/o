@@ -1,0 +1,64 @@
+
+importx "realloc" realloc
+importx "memcpy" memcpy
+
+function mems()
+const _mem_allocs=\\
+	valuex carg#1      #call arg
+	valuex *#1
+	valuex carg_size#1
+	valuex cargx#1     #call arg index
+	valuex *#1
+	valuex cargx_size#1
+const mem_allocs=\\-_mem_allocs
+	valuex ender#1
+	set ender (NULL)
+
+	sv p%%_mem_allocs
+	sd e=mem_allocs;add e p
+	while p!=e
+		set p# (NULL)
+		set p# malloc(1) #malloc(0) can be NULL, or another fault can be if is not unique
+		if p#=(NULL)
+			return (FALSE)
+		end
+		incst p;set p# 1
+		incst p
+	end
+	return (TRUE)
+end
+
+function memfree()
+	sv p%%_mem_allocs
+	while p#!=(NULL)
+		call free(p#)
+		add p :*3
+	end
+end
+
+function mwrite(sd buf,sd bufsize,sv pcont)
+	sd mem;set mem pcont#
+	incst pcont
+	sd allsize;set allsize pcont#
+	incst pcont
+	sd size;set size pcont#
+
+	add size bufsize
+	if size>^allsize
+		set allsize size
+		add allsize 0x100
+		set mem realloc(mem,allsize)
+		if mem=(NULL)
+			return 0
+		end
+		decst pcont
+		set pcont# allsize
+		decst pcont
+		set pcont# mem
+		add pcont :+:
+	end
+	add mem pcont#
+	call memcpy(mem,buf,bufsize)
+	set pcont# size
+	return 1
+end
