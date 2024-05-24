@@ -45,7 +45,7 @@ function get_dataSize()
 	vdata ptr_nobits_virtual%ptr_nobits_virtual
 	if ptr_nobits_virtual#=(Yes)
 		#this is here because this function is called from fndecargs and from simple declare add reference
-		vdata ptr_nobitsDataStart%ptr_nobitsDataStart
+		vdata ptr_nobitsDataStart%%ptr_nobitsDataStart
 		sub reg ptr_nobitsDataStart#
 	endif
 	return reg

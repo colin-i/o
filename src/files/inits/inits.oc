@@ -91,7 +91,7 @@ call resetisimm()
 #this is init at main.oc and used after that
 #but since #! needed at first pass too
 set datasecSize 0
-#set nobitssecReg 0
+set nobitsDataStart 0   #at dtnb when using \\ will require this at pass init
 
 sd p_b
 setcall p_b is_for_64_is_impX_or_fnX_p_get()
