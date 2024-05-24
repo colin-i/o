@@ -45,9 +45,10 @@ end
 function number_int_long();end
 function number_int_data();end
 function number_int_datax();end
-function number_text_dec(sv pbuffer)
+function number_text_dec(sv pbuffer,sd outfile)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
+	callg write(outfile,pointer,sz)
 end
 function number_text_oct(sv pbuffer)
 	datax sz#1;valuex pointer#1

@@ -347,6 +347,10 @@ function writec(sd outfile)
 	char c=asciicomma
 	call write(outfile,#c,1)
 end
+function writeq(sd outfile)
+	char q=asciidquote
+	call write(outfile,#q,1)
+end
 function write_void(sd outfile,sd pointer,sd size)
 	char a={asciiv,asciio,asciii,asciid,asciispace}
 	call write(outfile,#a,5)

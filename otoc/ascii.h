@@ -2,6 +2,7 @@
 const asciinul=0x0
 const asciinewline=0xa
 const asciispace=0x20
+const asciidquote=0x22
 const asciiasterisk=0x2a
 const asciiparenthesisleft=0x28
 const asciiparenthesisright=0x29

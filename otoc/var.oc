@@ -11,6 +11,9 @@ function arg(sv pbuffer,sd outfile)
 	elseif a=(Xfile_arg_string)
 		datax sz#1;valuex pointer#1
 		call get_string(pbuffer,#sz,#pointer)
+		call writeq(outfile)
+		call write(outfile,pointer,sz)
+		call writeq(outfile)
 	else #Xfile_arg_call
 		callg cll(pbuffer,outfile)
 	end
@@ -73,9 +76,7 @@ end
 function carg_resolve_one(sv left,sv right,sd outfile)
 	sub right left
 	add left mems.carg
-	#if right!=0 #only test now
 	callg write(outfile,left,right)
-	#end
 end
 
 #CD structure
