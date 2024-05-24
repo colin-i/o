@@ -23,7 +23,7 @@ const mem_allocs=\\-_mem_allocs
 			return (FALSE)
 		end
 		incst p;set p# 1
-		incst p
+		add p :*2
 	end
 	return (TRUE)
 end

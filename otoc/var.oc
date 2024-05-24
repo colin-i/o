@@ -73,7 +73,9 @@ end
 function carg_resolve_one(sv left,sv right,sd outfile)
 	sub right left
 	add left mems.carg
+	#if right!=0 #only test now
 	callg write(outfile,left,right)
+	#end
 end
 
 #CD structure
