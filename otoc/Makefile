@@ -54,9 +54,9 @@ ${prog}: ${OBJ}
 	${ATLDCOM} ${prog} ${FULLOBJO}
 
 install: all
-	echo "${prog} is not ready yet"
-#	install -D ${prog} \
-#		$(DESTDIR)$(prefix)/bin/${prog}
+	install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog}
+	#if [ "${NOOCONV}" != "1" ]; then install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog} && echo ${prog} is installed; else echo ${prog} is not installed; fi
+	#is at debian/ocompiler.install , will install here but not in the final deb
 
 clean:
 	-rm -f ${FULLOBJO}
@@ -69,8 +69,7 @@ clean:
 distclean: clean
 
 uninstall:
-	echo "${prog} is not ready yet"
-#	-rm -f $(DESTDIR)$(prefix)/bin/${prog}
+	-rm -f $(DESTDIR)$(prefix)/bin/${prog}
 
 test:
 	echo "Nothing"

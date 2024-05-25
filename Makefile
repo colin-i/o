@@ -1,5 +1,7 @@
 TOPTARGETS := all install clean distclean uninstall test
 
+#NOOCONV ? is at debian/ocompiler.install , will install here but not in the final deb
+
 ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), amd64)
 SUBDIRS := src ounused ostrip otoc
 conv_64=0
@@ -28,7 +30,7 @@ all: ${ver}
 	$(MAKE) verify_comp_with_link
 
 test:
-	cd tests; /bin/bash ./tests
+	cd tests; NOOCONVTEST=${NOOCONVTEST} /bin/bash ./tests
 
 clean:
 	-rm -f ${ver}

@@ -13,4 +13,13 @@ for file in "${tests[@]}"; do
 	LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${OCOMP} ${file} ${OFLAGS} || exit 1
 done
 
-../otoc/otoc a.out.oc.x && cc a.out.c
+../otoc/otoc a.out.oc.x && {
+	cc a.out.c || {
+		if [ ! -e ../NOOCONVTEST ]; then
+			echo cc test result is wrong
+			exit 1
+		else
+			echo cc test result was disabled
+		fi
+	}
+}

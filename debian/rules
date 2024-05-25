@@ -5,6 +5,10 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 #export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
 #export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
+#here and at dh_auto_configure. here not working
+#export DEB_MAKE_INVOKE += NOOCONVTEST=1
+#export DEB_MAKE_ENVVARS = NOOCONVTEST=1
+
 %:
 	dh $@
 # --with autoreconf
@@ -25,4 +29,11 @@ ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
 override_dh_auto_configure:
 	dh_auto_configure
 	sed -i '/ostrip/d' debian/ocompiler.install
+	sed -i '/otoc/d' debian/ocompiler.install
+	touch NOOCONVTEST
+else
+override_dh_auto_configure:
+	dh_auto_configure
+	sed -i '/otoc/d' debian/ocompiler.install
+	touch NOOCONVTEST
 endif

@@ -1,4 +1,3 @@
 
-/bin/bash ./compile
-
+/bin/bash ./compile && \
 /bin/bash ./c 1
