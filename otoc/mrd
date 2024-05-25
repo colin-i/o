@@ -3,6 +3,6 @@
 # sudo ln -s /home/bc/before/lib/libc.so.6 /usr/x86_64-linux-gnu/lib/libc.so.6
 #            and for libc_nonshared.a and ld-linux-x86-64.so.2
 
-LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd L=-L/home/bc/before/lib OFLAGSEXTRA="inplace_reloc 0" ./md
+LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd L=-L/home/bc/before/lib OFLAGSEXTRA="inplace_reloc 0" ldprefer=1 ./md
 
 #if qemu too, must comment in qemu-x86_64.conf (from qemu-user-binfmt)

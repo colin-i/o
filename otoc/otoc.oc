@@ -56,8 +56,8 @@ function mainfn(sv s)
 	return (EXIT_FAILURE)
 end
 
-entryraw main(sd argc,sv *,sd s)
-#entry main(sd argc,sv argv)
+include "entryraw.oc" "entry.oc"
+
 	if argc=2
 		sd a;set a mainfn(s)
 		call exit(a)

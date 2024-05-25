@@ -75,11 +75,9 @@ include "obj.oc"
 include "after.oc"
 include "reldyn.oc"
 
-entryraw main(sd argc,ss a0) #0,ss exec,ss log1,ss *obj1)   #... logN objN
-if argc>=(1+3)  #0 is all the time
-	sv argv
-	set argv #a0
+include "entryraw.oc" "entry.oc"
 
+if argc>=(1+3)  #0 is all the time
 	sd verb%%ptrverbose
 	setcall verb# access(".debug",(F_OK))
 

@@ -30,7 +30,7 @@ const numbers_size=\-numbers_start
 	call fprintf(f,"%u",(Xfile_numbers_notmapped))
 end
 
-entry main()
+entry main() #attention that this can be entryraw or entry
 
 sd f;set f fopen("number.h","wb")
 vstr a="char data={";sd b;set b strlen(a)

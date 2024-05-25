@@ -1,0 +1,1 @@
+entry main(sd argc,sv argv) #0,ss exec,ss log1,ss *obj1)   #... logN objN

@@ -14,11 +14,16 @@ endif
 
 strippy=ostriputil
 
-OFLAGS=${OFLAGSEXTRA}
-
-ifeq (${nobits_virtual},0)
-OFLAGS+=nobits_virtual 0
+ifndef ldprefer
+	OFLAGSPRE= include_sec 1
 endif
+ifeq (${nobits_virtual},0)
+	OFLAGSPRE+= nobits_virtual 0
+endif
+ifndef OFLAGS
+	OFLAGS= ${OFLAGSPRE}
+endif
+OFLAGS+= ${OFLAGSEXTRA}
 
 ifndef OCOMP
 OCOMP=../src/o
@@ -35,13 +40,17 @@ OLINK=../ounused/ounused
 ${OBJ}: ${FULLOBJS}
 	${launcher} ${OCOMP} $< ${OFLAGS}
 
-#ATCCCOM = $(CC) ${linkerflags} -o ${OB}
-ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o ${OB}
+ATCCCOM = $(CC) ${linkerflags} -o
+ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o
 
 ${OB}: ${OBJ}
 	${launcher} ${OLINK} ${FULLOBJLOG}
 	@echo
-	${ATLDCOM} ${FULLOBJO}
+	if [ -z "${ldprefer}" ]; then \
+		${ATCCCOM} ${OB} ${FULLOBJO}; \
+	else \
+		${ATLDCOM} ${OB} ${FULLOBJO}; \
+	fi
 	if [ "${nobits_virtual}" != "1" ]; then \
 		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
@@ -81,7 +90,11 @@ uninstall:
 
 test:
 	if [ "${nobits_virtual}" != "1" ]; then \
-		${ATLDCOM} ${FULLOBJO} -o z; \
+		if [ -z "${ldprefer}" ]; then \
+			${ATCCCOM} z ${FULLOBJO}; \
+		else \
+			${ATLDCOM} z ${FULLOBJO}; \
+		fi; \
 		if [ "$$?" = "0" ]; then \
 			${FULLOBJ} ./z ${FULLOBJLOG} ${FULLOBJO}; \
 			if [ "$$?" = "0" ]; then \

@@ -22,26 +22,36 @@ FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 
-#OFLAGS=
+
+ifndef ldprefer
+	OFLAGSPRE= include_sec 1
+endif
 
 #problems at box64 and CC
 ifeq (${conv_64},0)
-#ATCCCOM = $(CC) ${linkerflags} -o ${prog}
-ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o
+	ATCCCOM = $(CC) ${linkerflags} -o
+	ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o
 else
-#ATCCCOM = $(CC) -m32 ${linkerflags} -o ${prog}
-ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${linkerflags} ${L} -lc -entry main -o
-OFLAGS+=conv_64 1
+	ATCCCOM = $(CC) -m32 ${linkerflags} -o
+	ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${linkerflags} ${L} -lc -entry main -o
+	OFLAGSPRE+= conv_64 1
 endif
 
-OFLAGS+=${OFLAGSEXTRA}
+ifndef OFLAGS
+	OFLAGS= ${OFLAGSPRE}
+endif
+OFLAGS+= ${OFLAGSEXTRA}
 
 number=number.h
 
 number.pre.o: number.pre.oc
 	${OCOMP} $< ${OFLAGS}
 number.pre: number.pre.o
-	${ATLDCOM} $@ $^
+	if [ -z "${ldprefer}" ]; then \
+		${ATCCCOM} $@ $^; \
+	else \
+		${ATLDCOM} $@ $^; \
+	fi
 ${number}: number.pre
 	./$<
 #       in case otoc.oc is modified
@@ -50,8 +60,11 @@ ${OBJ}: ${FULLOBJS} ${number}
 ${prog}: ${OBJ}
 	${OLINK} ${FULLOBJLOG}
 	@echo
-	#${ATCCCOM} ${FULLOBJO}
-	${ATLDCOM} ${prog} ${FULLOBJO}
+	if [ -z "${ldprefer}" ]; then \
+		${ATCCCOM} ${prog} ${FULLOBJO}; \
+	else \
+		${ATLDCOM} ${prog} ${FULLOBJO}; \
+	fi
 
 install: all
 	install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog}
