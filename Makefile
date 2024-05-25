@@ -30,7 +30,7 @@ all: ${ver}
 	$(MAKE) verify_comp_with_link
 
 test:
-	cd tests; NOOCONVTEST=${NOOCONVTEST} /bin/bash ./tests
+	cd tests; /bin/bash ./tests
 
 clean:
 	-rm -f ${ver}
