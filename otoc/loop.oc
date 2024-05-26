@@ -123,6 +123,8 @@ end
 
 include "mem.oc"
 
+importx "strchr" strchr
+
 #aftercalli *
 
 include "action.oc"

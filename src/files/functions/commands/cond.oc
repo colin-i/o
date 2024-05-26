@@ -129,7 +129,9 @@ Function condend(data number)
 
 	Call getcontReg(codesec,ptrcodeoff)
 	If number=(whilenumber)
-		Add codeoffset (backjumpsize)
+		if main.ret_cont_break!=(ret_cont_break_canskip)  #useless to write back jump after break or return
+			Add codeoffset (backjumpsize)
+		end
 	EndIf
 	Call getcont(condloop,ptrstructure)
 	Add structure ptrcReg#
@@ -150,10 +152,12 @@ Function condend(data number)
 			set marker structure
 			sub structure (condpack_whilebegin) #to match for ptrcReg
 			if main.parses=(pass_write)
-				setcall err jumpback(codeoffset,marker)
-				If err!=(noerror)
-					Return err
-				EndIf
+				if main.ret_cont_break!=(ret_cont_break_canskip)  #useless to write back jump after break or return
+					setcall err jumpback(codeoffset,marker)
+					If err!=(noerror)
+						Return err
+					EndIf
+				end
 				if structure#=(whilenumber) #or whiletruenumber
 					call condendwrite(marker,codeoffset)
 				elseif main.breakflag=(FALSE)  #this is an infinite loop with no breaks, some ret inside was, and must skip next dead ret if is endfunction
@@ -187,7 +191,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 		sub conds (condpack_codereg)
 
 		if lastcondition=(breaknumber)
-		#here is pass_write only
+		#here is pass_write only, breaks are pass_write only
 			if number=(whilenumber)
 				call condendwrite(conds,codeoffset)
 				set main.breakflag (TRUE)
@@ -200,7 +204,7 @@ function condendtest(sv p_conds,sd number,sd codeoffset)
 			if number!=(whilenumber)
 				sub last (condpacksize)
 				if conds!=last   ##here are breaks
-					#move it to last to match the reg set outside
+					#move it to last to match the reg set outside, and the breaks back, starting with the place of this closing cond
 					#and move ifinscribe/elseinscribe if it is the case
 					#ignore type, it will only be removed outside
 					#don't increase size to align ifinscribe and just swap
