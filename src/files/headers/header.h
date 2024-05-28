@@ -388,11 +388,11 @@ Data programentrypoint#1
 const ptrprogramentrypoint^programentrypoint
 
 #getcommand
-Str commandset#1
+data commandset#1
 Data subtype#1
 Data ptrsubtype^subtype
-
-
+datax last_command#1
+datax last_subcommand#1
 
 
 

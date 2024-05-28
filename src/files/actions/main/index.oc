@@ -243,6 +243,8 @@ if errormsg=(noerror)
 					Set fnavailable zero
 				elseif parses=(pass_write) #else is _notyet  . fnavailable is 2 only once, and no endfunction after
 					set ret_cont_break ret_cont_break_marker
+					set last_command commandset  ##for break skip if is last command
+					set last_subcommand subtype  ##for break skip if is last command
 				Endelseif
 
 				If comsize!=zero
