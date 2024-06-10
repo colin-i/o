@@ -16,7 +16,7 @@ char c3="45"
 char a#3
 value b^a
 
-function intern(data a,sd b) #commenting
+function intern(data a,sd b,sv c) #commenting
 end
 
 library "a"
@@ -24,22 +24,22 @@ import "b" f
 
 entry main()
 
-set a a
-add a a
-sub a a
-mult a a
-div a a
-divu a a
-rem a a
-remu a a
-and a a
-or a a
-xor a a
+set b b
+add b b
+sub b b
+mult b b
+div b b
+divu b b
+rem b b
+remu b b
+and b b
+or b b
+xor b b
 
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 ;
 call intern(1,"q\nw\re\tr",main.a:main.a)
-set a f()
+set b f()
 if 1=1
 else
 end
