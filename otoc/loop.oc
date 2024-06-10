@@ -83,8 +83,7 @@ function preloop(sd input,sd output)
 					set main.result (EXIT_SUCCESS)
 					call loop(buffer,size,output)
 					if main.result=(EXIT_SUCCESS)
-						char d=asciicurlyright
-						callg writen(output,#d,1)
+						callg end(output)
 					end
 					call memfree()
 				end
@@ -156,8 +155,8 @@ function format(sd *outfile,sv pbuffer) #will do nothing at the moment
 	charx fmt#1;call get_char(pbuffer,#fmt)
 end
 function end(sd outfile)
-	char a=asciicurlyright
-	callg writen(outfile,#a,1)
+	call writecr(outfile)
+	callg writenl(outfile)
 end
 function interrupt(sd outfile)
 	#this is not arm #char a="__asm__(\"int $3\");"
@@ -201,34 +200,42 @@ function functiondef(sd outfile,sv pbuffer)
 	set dest dest#
 	call dest(pbuffer,outfile)
 
-	char c={asciiparenthesisright,asciicurlyleft}
-	callg writen(outfile,#c,2)
+	char c=asciiparenthesisright
+	call write(outfile,#c,1)
+	call writecl(outfile)
+	callg writenl(outfile)
 end
 function declare(sd outfile,sv pbuffer)
 	call decl(pbuffer,outfile)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
-		char left=asciisquareleft
-		call write(outfile,#left,1)
+		call writesl(outfile)
 		call number(pbuffer,outfile)
-		char right=asciisquareright
-		call write(outfile,#right,1)
+		call writesr(outfile)
 	elseif sign=(Xfile_declsign_pointer)
 		call get_string(pbuffer,#sz,#pointer)
 	else #Xfile_declsign_e*
-		call writee(outfile)
 		charx mode#1;call get_char(pbuffer,#mode)
 		if mode=(Xfile_declmode_value)
+			call writee(outfile)
 			call number(pbuffer,outfile)
 		elseif mode=(Xfile_declmode_group)
+			call writesl(outfile)
+			call writesr(outfile)
+			call writee(outfile)
+			call writecl(outfile)
 			datax args#1;call get_data(pbuffer,#args)
-			sd n=0;while n!=args
+			call number(pbuffer,outfile)
+			sd n=1;while n!=args
+				call writec(outfile)
 				call number(pbuffer,outfile)
 				inc n
 			end
+			call writecr(outfile)
 		else #Xfile_declmode_string
-			call get_string(pbuffer,#sz,#pointer)
+			call writee(outfile)
+			call write_string(pbuffer,outfile)
 		end
 	endelse
 	callg writetn(outfile)
@@ -342,6 +349,9 @@ end
 
 function writen(sd outfile,ss buf,sd sz)
 	call write(outfile,buf,sz)
+	callg writenl(outfile)
+end
+function writenl(sd outfile)
 	char n=asciinewline
 	callg write(outfile,#n,1)
 end
@@ -354,6 +364,14 @@ function writec(sd outfile)
 	char c=asciicomma
 	callg write(outfile,#c,1)
 end
+function writecl(sd outfile)
+	char c=asciicurlyleft
+	callg write(outfile,#c,1)
+end
+function writecr(sd outfile)
+	char a=asciicurlyright
+	callg write(outfile,#a,1)
+end
 function writee(sd outfile)
 	char a=asciiequal
 	callg write(outfile,#a,1)
@@ -361,6 +379,14 @@ end
 function writeq(sd outfile)
 	char q=asciidquote
 	callg write(outfile,#q,1)
+end
+function writesl(sd outfile)
+	char left=asciisquareleft
+	callg write(outfile,#left,1)
+end
+function writesr(sd outfile)
+	char right=asciisquareright
+	callg write(outfile,#right,1)
 end
 
 function write_void(sd outfile,sd pointer,sd size)

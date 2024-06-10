@@ -9,36 +9,7 @@ function arg(sv pbuffer,sd outfile)
 	elseif a=(Xfile_arg_varfn)
 		call varfunc(pbuffer,outfile)
 	elseif a=(Xfile_arg_string)
-		datax sz#1;vstrx pointer#1
-		call get_string(pbuffer,#sz,#pointer)
-		call writeq(outfile)
-		sd term;set term pointer;add term sz
-		sd start;set start pointer
-		while pointer!=term
-			char chars="\n\r\t"
-			char letters={asciin,asciir,asciit}
-			ss r;set r strchr(#chars,pointer#)
-			if r!=(NULL)
-				sd c;set c pointer;sub c start
-				if c!=0
-					call write(outfile,start,c)
-				end
-				char bs=asciibs;char d#1
-				sub r #chars
-				add r #letters
-				set d r#
-				call write(outfile,#bs,2)
-				inc pointer
-				set start pointer
-				continue
-			end
-			inc pointer
-		end
-		sub pointer start
-		if pointer!=0
-			call write(outfile,start,pointer)
-		end
-		call writeq(outfile)
+		call write_string(pbuffer,outfile)
 	else #Xfile_arg_call
 		callg cll(pbuffer,outfile)
 	end
@@ -152,4 +123,37 @@ function varfunc(sv pbuffer,sd outfile)
 	else
 		callg dot(pbuffer,outfile)
 	end
+end
+
+function write_string(sv pbuffer,sd outfile)
+	datax sz#1;vstrx pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	call writeq(outfile)
+	sd term;set term pointer;add term sz
+	sd start;set start pointer
+	while pointer!=term
+		char chars="\n\r\t"
+		char letters={asciin,asciir,asciit}
+		ss r;set r strchr(#chars,pointer#)
+		if r!=(NULL)
+			sd c;set c pointer;sub c start
+			if c!=0
+				call write(outfile,start,c)
+			end
+			char bs=asciibs;char d#1
+			sub r #chars
+			add r #letters
+			set d r#
+			call write(outfile,#bs,2)
+			inc pointer
+			set start pointer
+			continue
+		end
+		inc pointer
+	end
+	sub pointer start
+	if pointer!=0
+		call write(outfile,start,pointer)
+	end
+	callg writeq(outfile)
 end
