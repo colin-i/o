@@ -209,10 +209,15 @@ function declare(sd outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
+		char left=asciisquareleft
+		call write(outfile,#left,1)
 		call number(pbuffer,outfile)
+		char right=asciisquareright
+		call write(outfile,#right,1)
 	elseif sign=(Xfile_declsign_pointer)
 		call get_string(pbuffer,#sz,#pointer)
 	else #Xfile_declsign_e*
+		call writee(outfile)
 		charx mode#1;call get_char(pbuffer,#mode)
 		if mode=(Xfile_declmode_value)
 			call number(pbuffer,outfile)
@@ -244,9 +249,7 @@ function action2(sd outfile,sv pbuffer)
 		end
 		call write(outfile,#a2,1)
 	end
-	char a=asciiequal
-	call write(outfile,#a,1)
-
+	call writee(outfile)
 	call arg(pbuffer,outfile)
 	callg writetn(outfile)
 end
@@ -336,6 +339,7 @@ function write(sd outfile,ss buf,sd sz)
 		end
 	end
 end
+
 function writen(sd outfile,ss buf,sd sz)
 	call write(outfile,buf,sz)
 	char n=asciinewline
@@ -345,14 +349,20 @@ function writetn(sd outfile) #terminator newline
 	char sc=asciisemicolon
 	callg writen(outfile,#sc,1)
 end
+
 function writec(sd outfile)
 	char c=asciicomma
 	callg write(outfile,#c,1)
+end
+function writee(sd outfile)
+	char a=asciiequal
+	callg write(outfile,#a,1)
 end
 function writeq(sd outfile)
 	char q=asciidquote
 	callg write(outfile,#q,1)
 end
+
 function write_void(sd outfile,sd pointer,sd size)
 	char a={asciiv,asciio,asciii,asciid,asciispace}
 	call write(outfile,#a,5)
