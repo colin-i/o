@@ -111,7 +111,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 							call advancecursors(pcontent,pcomsize,pcomsize#)
 						endif
 					endif
-					return (noerror)
+					return err
 				endelse
 			else
 				if typenumber!=(charnumber)
