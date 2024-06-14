@@ -32,7 +32,10 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 	#	endif
 	#endif
 
+	sd err
 	sd xfile_decltype
+	sd relocbool;sd dataxrel
+
 	if declare_typenumber=(vintegernumber)
 		set is_stack (FALSE);set typenumber (integernumber)
 		if bool_64=(TRUE);set mask (datapointbit)
@@ -100,7 +103,14 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 				if typenumber=(stringnumber)
 					set unitsize 0
 				else
-					call advancecursors(pcontent,pcomsize,pcomsize#)
+					#this is used only to log for ounused
+					setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool,#dataxrel)
+					if err=(noerror)
+						setcall err vars_log_prepare(pcontent#,valsize)
+						if err=(noerror)
+							call advancecursors(pcontent,pcomsize,pcomsize#)
+						endif
+					endif
 					return (noerror)
 				endelse
 			else
@@ -147,8 +157,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 		set mask 0
 	endelse
 
-	sd err
-	sd relocbool=FALSE;sd dataxrel
+	set relocbool (FALSE)
 	setcall err getsign(pcontent#,pcomsize#,#sign,#valsize,typenumber,is_stack,#relocbool,#dataxrel)
 	if err=(noerror)
 		if parses=(pass_init)
