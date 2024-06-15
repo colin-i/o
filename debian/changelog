@@ -1,3 +1,9 @@
+ocompiler (1-5+177) xenial; urgency=medium
+
+  * fix tests
+
+ -- bc <bc@bc-desktop>  Sat, 15 Jun 2024 14:30:49 +0300
+
 ocompiler (1-5+176) xenial; urgency=medium
 
   * ounused for stacks fix
