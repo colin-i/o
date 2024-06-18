@@ -82,13 +82,11 @@ endfunction
 function vars_log_prepare(ss content,sd size)
 	data ptrobject%ptrobject
 	if ptrobject#=(TRUE)
-		if size>0  #addvarref..orunref is erroring there for getsign and fndecargs
-			if content#=(unrefsign)
-				return (noerror)
-			endif
-			if content#=(throwlesssign)
-				inc content;dec size
-			endif
+		if content#=(unrefsign)
+			return (noerror)
+		endif
+		if content#=(throwlesssign)
+			inc content;dec size
 		endif
 		sd vals;setcall vals vars_log((get),content,size)
 		sd err
