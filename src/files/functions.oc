@@ -1,5 +1,6 @@
 
 Include "./functions/inits.oc"
+Include "./functions/debug.oc"
 
 Include "./functions/commons/comfn.oc"
 Include "./functions/commons/base.oc"
@@ -57,6 +58,5 @@ Include "./functions/enumbags.oc"
 Include "./functions/import.oc"
 Include "./functions/override.oc"
 Include "./functions/scopes.oc"
-Include "./functions/debug.oc"
 Include "./functions/index.oc"
 Include "./functions/short.oc"

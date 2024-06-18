@@ -156,7 +156,7 @@ Function condend(data number)
 			set marker structure
 			sub structure (condpack_whilebegin) #to match for ptrcReg
 			if main.parses=(pass_write)
-				if main.ret_cont_break!=(ret_cont_break_canskip)  #useless to write back jump after break or return
+				if main.ret_cont_break!=(ret_cont_break_canskip)  #useless to write back jump after break or return , continue endwhile is not logical
 					setcall err jumpback(codeoffset,marker)
 					If err!=(noerror)
 						Return err
@@ -165,7 +165,15 @@ Function condend(data number)
 					if main.last_subcommand=(cBREAK)  #here the break jump is zero, skip also the break the jump
 						valuex ptrcodeReg#1
 						Call getptrcontReg(codesec,#ptrcodeReg)
+						#also from .debug if is the case
+						vdata ptrcodeRegD%%ptrcodeRegD
+						sd currentcodeReg;set currentcodeReg ptrcodeReg#
 						sub ptrcodeReg# (backjumpsize)
+						if ptrcodeRegD#=currentcodeReg ## break was last command from the previous row  , currentcodeReg is positive, codeRegD is 0 or increased
+							#example here: break\nend\n
+							#old modified reg is on the query for next but is not on .debug mem, will be at line end
+							set ptrcodeRegD# ptrcodeReg#
+						endif
 					endif
 				endelseif
 				if structure#=(whilenumber) #or whiletruenumber

@@ -26,12 +26,13 @@ function debug_lines(sd reg,sd line,sd content,sd last)
 			setcall err addtosec(#a,(bsz),ptrdebug)
 			if err=(noerror)
 				charx buf#dw_char_0
-				sd len
+				charx len#1
 				inc aux
 				setcall len dwtomem(aux,#buf)
 				setcall err addtosec(#buf,len,ptrdebug)
 				if err=(noerror)
-					char b=asciispace
+					const debug_separator=asciispace
+					char b=debug_separator
 					setcall err addtosec(#b,(bsz),ptrdebug)
 					if err=(noerror)
 						setcall len dwtomem(codeRegD,#buf)
