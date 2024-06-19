@@ -172,7 +172,7 @@ function line(sd outfile)
 end
 
 #need write
-function include(sd output,sv pbuffer)
+function include(sd *output,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
