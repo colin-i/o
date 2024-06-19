@@ -82,16 +82,20 @@ endfunction
 function vars_log_prepare(ss content,sd size)
 	data ptrobject%ptrobject
 	if ptrobject#=(TRUE)
-		if content#=(unrefsign)
-			return (noerror)
+		#fndec: sd \? close para error, with ) is checking there
+		#declare: data \? getsign error, data = is checking there
+		if size>^0
+			if content#=(unrefsign)
+				return (noerror)
+			endif
+			if content#=(throwlesssign)
+				inc content;dec size
+			endif
+			sd vals;setcall vals vars_log((get),content,size)
+			sd err
+			setcall err addtolog_array_withchar(vals,(log_offset))
+			return err
 		endif
-		if content#=(throwlesssign)
-			inc content;dec size
-		endif
-		sd vals;setcall vals vars_log((get),content,size)
-		sd err
-		setcall err addtolog_array_withchar(vals,(log_offset))
-		return err
 	endif
 	return (noerror)
 endfunction
