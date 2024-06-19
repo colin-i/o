@@ -59,9 +59,9 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				add ptrdataSize# datasize
 			endelse
 		endif
-		if sz>^0 #error will be catched later
-			setcall err vars_log_prepare(ptrcontent#,sz) #for ounused
-		endif
+		#is only a . if not and then error elsewhere if sz>^0 #error will be catched later
+		setcall err vars_log_prepare(ptrcontent#,sz) #for ounused
+		#endif
 		If err=noerr
 			call advancecursors(ptrcontent,ptrsize,sz)
 		EndIf
