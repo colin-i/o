@@ -5,6 +5,9 @@ importx "rewind" rewind
 importx "malloc" malloc
 importx "fread" fread
 importx "free" free
+importx "fwrite" fwrite
+importx "strchr" strchr
+importx "printf" printf
 
 const SEEK_CUR=1
 const SEEK_END=2
@@ -16,6 +19,8 @@ include "xfile.h"
 #const Xfile_last=Xfile_line
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
 include "ascii.h"
+
+include "mem.oc"
 
 datax result#1
 
@@ -112,17 +117,19 @@ function get_string(sv pbuffer,sd psize,sv ppointer)
 	add pbuffer# psize#
 end
 
-importx "fwrite" fwrite
+function unimplemented_start(ss com)
+	call printf("Unimplemented command: %s\n",com)
+	set loop.allowwrite (FALSE)
+end
+function unimplemented_end()
+	set loop.allowwrite (TRUE)
+end
 
 function aftercallenable()
 	set main.result (EXIT_FAILURE)
 	leave loop.bp
 	#aftercallenable
 end
-
-include "mem.oc"
-
-importx "strchr" strchr
 
 #aftercalli *
 
@@ -266,13 +273,13 @@ function call(sd outfile,sv pbuffer)
 	callg writetn(outfile)
 end
 function callex(sd outfile,sv pbuffer)
-	set loop.allowwrite (FALSE)  #at some structures is complicated
+	call unimplemented_start("callex")  #at some structures is complicated
 	char c#1;call get_char(pbuffer,#c)
 	call cal(pbuffer,outfile)
 	call varfunc(pbuffer,outfile)
 	call arg(pbuffer,outfile)
 	call writetn(outfile)
-	set loop.allowwrite (TRUE)
+	call unimplemented_end()
 end
 function if(sd outfile,sv pbuffer)
 	callg cond(pbuffer,outfile)
@@ -318,11 +325,13 @@ function aftercall(sd *outfile,sv pbuffer)
 	end
 end
 function hex(sd outfile,sv pbuffer)
+	call unimplemented_start("hex")
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
 		call number(pbuffer,outfile)
 		inc n
 	end
+	call unimplemented_end()
 end
 function override(sd *outfile,sv pbuffer)
 	datax sz#1;valuex name#1

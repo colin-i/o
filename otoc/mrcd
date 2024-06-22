@@ -1,2 +1,2 @@
 
-make clean && ./mrd
+rm otoc.o && ./mrd
