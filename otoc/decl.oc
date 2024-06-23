@@ -4,10 +4,11 @@
 function functiondef_intern(sv pbuffer,sd outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
-		call decl(pbuffer,outfile)
+		charx type#1
+		call decl(pbuffer,outfile,#type)
 		sd n=1;while n!=args
 			call writec(outfile)
-			call decl(pbuffer,outfile)
+			call decl(pbuffer,outfile,#type)
 			inc n
 		end
 	end
@@ -20,18 +21,25 @@ end
 #function functiondef_entry(sv pbuffer)
 
 #D structure
-function decl(sv pbuffer,sd outfile)
+function decl(sv pbuffer,sd outfile,ss ptype)
 	charx field#1;call get_char(pbuffer,#field)
 	if field!=(Xfile_declfield_const)
 		if field=(Xfile_declfield_data)
 			charx data#1;call get_char(pbuffer,#data)
 		end
-		charx type#1;call get_char(pbuffer,#type)
+		call get_char(pbuffer,ptype)
 		charx feature#1;call get_char(pbuffer,#feature)
+		if ptype#=(Xfile_decltype_byte)
+			char c={asciic,asciih,asciia,asciir}
+			call write(outfile,#c,\decl.c)
+		else
+			char d={asciii,asciin,asciit}
+			call write(outfile,#d,\decl.d)
+		end
+		char s=asciispace
+		call write(outfile,#s,1)
 	end
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	char d={asciii,asciin,asciit,asciispace}
-	call write(outfile,#d,4)
 	callg write(outfile,pointer,sz)
 end

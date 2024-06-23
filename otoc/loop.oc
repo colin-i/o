@@ -209,7 +209,8 @@ function functiondef(sd outfile,sv pbuffer)
 	callg writenl(outfile)
 end
 function declare(sd outfile,sv pbuffer)
-	call decl(pbuffer,outfile)
+	charx type#1
+	call decl(pbuffer,outfile,#type)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
@@ -224,8 +225,7 @@ function declare(sd outfile,sv pbuffer)
 			call writee(outfile)
 			call number(pbuffer,outfile)
 		elseif mode=(Xfile_declmode_group)
-			call writesl(outfile)
-			call writesr(outfile)
+			call writeslsr(outfile)
 			call writee(outfile)
 			call writecl(outfile)
 			datax args#1;call get_data(pbuffer,#args)
@@ -237,6 +237,9 @@ function declare(sd outfile,sv pbuffer)
 			end
 			call writecr(outfile)
 		else #Xfile_declmode_string
+			if type=(Xfile_decltype_byte)
+				call writeslsr(outfile)
+			end
 			call writee(outfile)
 			call write_string(pbuffer,outfile)
 		end
@@ -404,6 +407,11 @@ end
 function writesr(sd outfile)
 	char right=asciisquareright
 	callg write(outfile,#right,1)
+end
+
+function writeslsr(sd outfile)
+	call writesl(outfile)
+	call writesr(outfile)
 end
 
 function write_void(sd outfile,sd pointer,sd size)
