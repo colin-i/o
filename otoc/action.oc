@@ -16,10 +16,20 @@ function action1(sv act,sv pbuffer,sd outfile)
 	value         *^action_tsar1
 	mult act :
 	add act #functions
+	set act act#
 	callg act(pbuffer,outfile)
 end
 
 function action_areturn(sv pbuffer,sd outfile)
+	if loop.function_start!=(NULL)
+		call fseek(outfile,loop.function_start,(SEEK_SET))
+		call fwrite(#write_long.a,\write_long.a-1,1,outfile)
+		sd n;set n fseek(outfile,0,(SEEK_END)) #it's tested, is not 0 on that 32 app example, so the pointer is not moved
+		if n!=0
+			call aftercallenable()
+		end
+		set loop.function_start (NULL) #if is not at endfunction, is here
+	end
 	callg arg(pbuffer,outfile)
 end
 function action_aexit(sv pbuffer,sd outfile)

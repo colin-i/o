@@ -21,6 +21,7 @@ const asciic=0x63
 const asciid=0x64
 const asciie=0x65
 const asciif=0x66
+const asciig=0x67
 const asciih=0x68
 const asciii=0x69
 const asciil=0x6c

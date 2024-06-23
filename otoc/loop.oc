@@ -10,6 +10,7 @@ importx "fwrite" fwrite
 importx "strchr" strchr
 importx "printf" printf
 
+const SEEK_SET=0
 const SEEK_CUR=1
 const SEEK_END=2
 
@@ -33,6 +34,8 @@ function loop(sd pointer,sd delim,sd output)
 	set allowwrite (TRUE)
 	charx directwrite#1
 	set directwrite (TRUE)
+	valuex function_start#1
+	set function_start (NULL)
 
 	add delim pointer
 	while pointer!=delim
@@ -134,6 +137,17 @@ end
 
 #aftercalli *
 
+function write_void(sd outfile,sd pointer,sd size)
+	char a={asciiv,asciio,asciii,asciid,asciispace}
+	call write(outfile,#a,5)
+	callg write(outfile,pointer,size)
+end
+function write_long(sd outfile,sd pointer,sd size)
+	char a={asciil,asciio,asciin,asciig,asciispace}
+	call write(outfile,#a,5)
+	callg write(outfile,pointer,size)
+end
+
 include "action.oc"
 include "decl.oc"
 include "number.oc"
@@ -190,23 +204,27 @@ function include(sd *output,sv pbuffer)
 	end
 end
 function functiondef(sd outfile,sv pbuffer)
-#at least arguments write
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
-	call write_void(outfile,pointer,sz)
-	call writel(outfile)
-	value intern^functiondef_intern
-	value *raw^functiondef_intern       #functiondef_raw
-	value *extern^functiondef_extern
-	value *entry^functiondef_extern     #functiondef_entry
-	charx type#1;call get_char(pbuffer,#type)
-	mult type :
-	sv dest^intern;add dest type
-	set dest dest#
-	call dest(pbuffer,outfile)
-	call writer(outfile)
-	call writecl(outfile)
-	callg writenl(outfile)
+	set loop.function_start ftell(outfile)
+	if loop.function_start!=-1
+		datax sz#1;valuex pointer#1
+		call get_string(pbuffer,#sz,#pointer)
+		call write_void(outfile,pointer,sz)
+		call writel(outfile)
+		value intern^functiondef_intern
+		value *raw^functiondef_intern       #functiondef_raw
+		value *extern^functiondef_extern
+		value *entry^functiondef_extern     #functiondef_entry
+		charx type#1;call get_char(pbuffer,#type)
+		mult type :
+		sv dest^intern;add dest type
+		set dest dest#
+		call dest(pbuffer,outfile)
+		call writer(outfile)
+		call writecl(outfile)
+		callg writenl(outfile)
+		ret
+	end
+	call aftercallenable()
 end
 function declare(sd outfile,sv pbuffer)
 	charx type#1
@@ -248,7 +266,8 @@ function declare(sd outfile,sv pbuffer)
 end
 function action(sd outfile,sv pbuffer)
 	charx act#1;call get_char(pbuffer,#act)
-	callg action1(act,outfile)
+	call action1(act,pbuffer,outfile)
+	callg writetn(outfile)
 end
 function action2(sd outfile,sv pbuffer)
 	call varfunc(pbuffer,outfile)
@@ -312,7 +331,7 @@ function import(sd outfile,sv pbuffer)
 	datax sza#1;valuex alias#1
 	call get_string(pbuffer,#sza,#alias)
 
-	call write_void(outfile,alias,sza)
+	call write_long(outfile,alias,sza)
 	char a={asciiparenthesisleft,asciiparenthesisright}
 	call write(outfile,#a,2)
 	callg writetn(outfile)
@@ -411,11 +430,5 @@ end
 
 function writeslsr(sd outfile)
 	call writesl(outfile)
-	call writesr(outfile)
-end
-
-function write_void(sd outfile,sd pointer,sd size)
-	char a={asciiv,asciio,asciii,asciid,asciispace}
-	call write(outfile,#a,5)
-	callg write(outfile,pointer,size)
+	callg writesr(outfile)
 end
