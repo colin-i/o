@@ -193,10 +193,7 @@ function functiondef(sd outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	call write_void(outfile,pointer,sz)
-
-	char b=asciiparenthesisleft
-	call write(outfile,#b,1)
-
+	call writel(outfile)
 	value intern^functiondef_intern
 	value *raw^functiondef_intern       #functiondef_raw
 	value *extern^functiondef_extern
@@ -206,9 +203,7 @@ function functiondef(sd outfile,sv pbuffer)
 	sv dest^intern;add dest type
 	set dest dest#
 	call dest(pbuffer,outfile)
-
-	char c=asciiparenthesisright
-	call write(outfile,#c,1)
+	call writer(outfile)
 	call writecl(outfile)
 	callg writenl(outfile)
 end
@@ -282,11 +277,15 @@ function callex(sd outfile,sv pbuffer)
 	call unimplemented_end()
 end
 function if(sd outfile,sv pbuffer)
+	char a={asciii,asciif}
+	call write(outfile,#a,\if.a)
 	callg cond(pbuffer,outfile)
 end
 function else()
 end
 function while(sd outfile,sv pbuffer)
+	char a={asciiw,asciih,asciii,asciil,asciie}
+	call write(outfile,#a,\while.a)
 	callg cond(pbuffer,outfile)
 end
 function whiletrue(sd outfile)
@@ -385,9 +384,17 @@ function writee(sd outfile)
 	char a=asciiequal
 	callg write(outfile,#a,1)
 end
+function writel(sd outfile)
+	char a=asciiparenthesisleft
+	callg write(outfile,#a,1)
+end
 function writeq(sd outfile)
 	char q=asciidquote
 	callg write(outfile,#q,1)
+end
+function writer(sd outfile)
+	char a=asciiparenthesisright
+	callg write(outfile,#a,1)
 end
 function writesl(sd outfile)
 	char left=asciisquareleft

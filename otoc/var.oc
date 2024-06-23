@@ -26,8 +26,7 @@ end
 #CL structure
 function cll(sv pbuffer,sd outfile)
 	call cal(pbuffer,outfile)
-	char a=asciiparenthesisleft
-	call write(outfile,#a,1)
+	call writel(outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
 	#need to reverse the push order
@@ -46,8 +45,7 @@ function cll(sv pbuffer,sd outfile)
 		set loop.directwrite (TRUE)
 		call carg_resolve(outfile)
 	end
-	char b=asciiparenthesisright
-	callg write(outfile,#b,1)
+	callg writer(outfile)
 end
 function carg_stamp()
 	sd r;set r mwrite(#mems.carg_size,:,#mems.cargx)
@@ -77,11 +75,12 @@ end
 
 #CD structure
 function cond(sv pbuffer,sd outfile)
+	call writel(outfile)
 	call arg(pbuffer,outfile)
 	charx cnd#1;call get_char(pbuffer,#cnd)
 	call arg(pbuffer,outfile)
-	char a=asciicurlyleft
-	callg writen(outfile,#a,1)
+	call writer(outfile)
+	callg writecl(outfile)
 end
 
 #DoT
