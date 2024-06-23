@@ -17,10 +17,11 @@ char a#3
 value b^a
 
 function intern(data a,sd b,sv c) #commenting
+	return c
 end
 
 library "a"
-import "b" f
+import "b" puts
 
 entry main()
 
@@ -39,7 +40,7 @@ xor b b
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 ;
 call intern(1,"q\nw\re\tr",main.a:main.a)
-set b f()
+set b puts()
 if 1=1
 else
 end
