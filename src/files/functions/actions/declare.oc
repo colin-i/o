@@ -212,7 +212,12 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 					if sign!=(pointersigndeclare)
 						setcall err xfile_add_char_if((Xfile_declmode_value))
 						if err=(noerror)
-							call advancecursors(pcontent,pcomsize,pcomsize#)
+							#call advancecursors(pcontent,pcomsize,pcomsize#)
+							#still to call aftercode for .x file, and not beforecode
+							sd discarded
+							call advancecursors(pcontent,pcomsize,valsize)
+							call stepcursors(pcontent,pcomsize)
+							call parseoperations(pcontent,pcomsize,pcomsize#,#discarded,(TRUE))
 							return (noerror)
 						endif
 					endif

@@ -124,7 +124,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		Char byte#1
 		Set byte content#
 		Char groupstart="{"
-		If byte!=groupstart ;# " case
+		If byte!=groupstart ;# "" or normal
 			char stringstart=asciidoublequote
 			If byte=stringstart
 			#"text"
@@ -418,7 +418,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if err=(noerror)
 				call advancecursors(ptrcontent,ptrsize,value)
 				sub value escapes
-				subcall value trim_string(ptrcontent,ptrsize)
+				subcall value string_pop(ptrcontent,ptrsize)
 				add punitsize# value
 				call advancecursors(ptrcontent,ptrsize,ptrsize#)
 			endif
@@ -428,13 +428,15 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		SetCall err addtosecstresc_xfile(ptrcontent,ptrsize,value,escapes,ptrdatasec)
 		if err=(noerror)
 			sd trim
-			setcall trim trim_string(ptrcontent,ptrsize)
+			setcall trim string_pop(ptrcontent,ptrsize)
 			If typenumber=charnr
 			#for size of var
 				sub value escapes
 				if trim=(Xfile_declmode_string_pop_no)
 					inc value ##ptr_reserve is already 1, another solution is add short and check overlow there not at this _safe function
-				endif
+				elseif value=0
+					return "CHAR *=\"\"^ is not allowed."
+				endelseif
 				call to_size_of_var(value,immovable_struct_cont,reg)
 			endif
 			if trim!=(Xfile_declmode_string_pop_no)
@@ -449,7 +451,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 	Return noerr
 EndFunction
 #0/1
-function trim_string(sv ptrcontent,sd ptrsize)
+function string_pop(sv ptrcontent,sd ptrsize)
 	if ptrsize#>^0
 		ss content;set content ptrcontent#
 		if content#=(popsign)

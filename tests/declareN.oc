@@ -4,6 +4,7 @@ format elfobj64
 function b(data d)
 char a#2
 char c={1,2,3}
+#char e=""^
 char e="1234"
 value aa^a
 return aa#s^
