@@ -337,6 +337,10 @@ Function quotinmem_started_blind(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes
 	sd err;setcall err quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE))
 	return err
 EndFunction
+Function quotinmem_started_blind_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
+	call stepcursors(ptrcontent,ptrsize)
+	call quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE)) #null_ok will continue there
+EndFunction
 Function quotinmem_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
 	Call quotinmem_err(ptrcontent#,pquotsz,pescapes) #null_ok is irelevant, spelling was already

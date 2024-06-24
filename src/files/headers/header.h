@@ -442,6 +442,8 @@ const commentascii=asciinumber
 const pointerascii=asciinumber
 const castascii=asciicirc
 
+const popsign=asciicirc
+
 #const max_uint64=20
 char uint32c#dw_char_0
 vstr uint32s^uint32c

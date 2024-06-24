@@ -138,13 +138,13 @@ end
 #aftercalli *
 
 function write_void(sd outfile,sd pointer,sd size)
-	char a={asciiv,asciio,asciii,asciid,asciispace}
-	call write(outfile,#a,5)
+	char a="void "^
+	call write(outfile,#a,\write_void.a)
 	callg write(outfile,pointer,size)
 end
 function write_long(sd outfile,sd pointer,sd size)
-	char a={asciil,asciio,asciin,asciig,asciispace}
-	call write(outfile,#a,5)
+	char a="long "^
+	call write(outfile,#a,\write_long.a)
 	callg write(outfile,pointer,size)
 end
 
@@ -183,7 +183,7 @@ end
 function interrupt(sd outfile)
 	#this is not arm #char a="__asm__(\"int $3\");"
 	#this is no x86 #__asm__("BKPT");
-	char a={asciiunderscore,asciiunderscore,asciib,asciiu,asciii,asciil,asciit,asciii,asciin,asciiunderscore,asciit,asciir,asciia,asciip,asciiparenthesisleft,asciiparenthesisright,asciisemicolon}
+	char a="__builtin_trap();"^
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
 	callg writen(outfile,#a,\interrupt.a)
 end
@@ -260,6 +260,7 @@ function declare(sd outfile,sv pbuffer)
 			end
 			call writee(outfile)
 			call write_string(pbuffer,outfile)
+			charx trim#1;call get_char(pbuffer,#trim)
 		end
 	endelse
 	callg writetn(outfile)
