@@ -176,28 +176,17 @@ end
 function format(sd *outfile,sv pbuffer) #will do nothing at the moment
 	charx fmt#1;call get_char(pbuffer,#fmt)
 end
-function end(sd outfile)
-	call writecr(outfile)
-	callg writenl(outfile)
-end
-function interrupt(sd outfile)
-	#this is not arm #char a="__asm__(\"int $3\");"
-	#this is no x86 #__asm__("BKPT");
-	char a="__builtin_trap();"^
-	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
-	callg writen(outfile,#a,\interrupt.a)
-end
-function line(sd outfile)
-	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
-	char a=asciisemicolon
-	callg write(outfile,#a,1)
-end
-
-#need write
-function include(sd *output,sv pbuffer)
+function include(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
+
+	char a="#include \""^
+	call write(outfile,#a,\include.a)
+	call write(outfile,pointer,sz)
+	call writeq(outfile)
+	call writenl(outfile)
+
 	charx alternative#1;call get_char(pbuffer,#alternative)
 	if alternative=(Xfile_include_alternative_yes)
 		call get_string(pbuffer,#sz,#pointer)
@@ -319,6 +308,10 @@ function break()
 end
 function continue()
 end
+function end(sd outfile)
+	call writecr(outfile)
+	callg writenl(outfile)
+end
 function ret()
 end
 function library(sd *outfile,sv pbuffer)
@@ -363,6 +356,18 @@ function override(sd *outfile,sv pbuffer)
 end
 function orphan(sd *outfile,sv pbuffer)
 	charx orph#1;call get_char(pbuffer,#orph)
+end
+function interrupt(sd outfile)
+	#this is not arm #char a="__asm__(\"int $3\");"
+	#this is no x86 #__asm__("BKPT");
+	char a="__builtin_trap();"^
+	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
+	callg writen(outfile,#a,\interrupt.a)
+end
+function line(sd outfile)
+	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
+	char a=asciisemicolon
+	callg write(outfile,#a,1)
 end
 
 function write(sd outfile,ss buf,sd sz)
