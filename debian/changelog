@@ -1,3 +1,9 @@
+ocompiler (1-5+180) xenial; urgency=medium
+
+  * ""^ and fix .x const=
+
+ -- bc <bc@bc-desktop>  Tue, 25 Jun 2024 08:03:38 +0300
+
 ocompiler (1-5+179) xenial; urgency=medium
 
   * prev release, and a fix
