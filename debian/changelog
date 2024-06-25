@@ -1,3 +1,9 @@
+ocompiler (1-5+181) xenial; urgency=medium
+
+  * and fix test
+
+ -- bc <bc@bc-desktop>  Tue, 25 Jun 2024 08:48:41 +0300
+
 ocompiler (1-5+180) xenial; urgency=medium
 
   * ""^ and fix .x const=
