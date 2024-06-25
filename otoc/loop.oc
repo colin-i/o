@@ -154,7 +154,7 @@ include "number.oc"
 include "var.oc"
 
 function comment(sd outfile,sv pbuffer)
-	char a={asciislash,asciislash}
+	char a="//"^
 	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
@@ -162,7 +162,7 @@ function comment(sd outfile,sv pbuffer)
 end
 function commentmulti(sd outfile,sv pbuffer)
 	char b=asciiasterisk
-	char a={asciislash,asciiasterisk}
+	char a="/*"^
 	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
@@ -290,14 +290,14 @@ function callex(sd outfile,sv pbuffer)
 	call unimplemented_end()
 end
 function if(sd outfile,sv pbuffer)
-	char a={asciii,asciif}
+	char a="if"^
 	call write(outfile,#a,\if.a)
 	callg cond(pbuffer,outfile)
 end
 function else()
 end
 function while(sd outfile,sv pbuffer)
-	char a={asciiw,asciih,asciii,asciil,asciie}
+	char a="while"^
 	call write(outfile,#a,\while.a)
 	callg cond(pbuffer,outfile)
 end
@@ -326,7 +326,7 @@ function import(sd outfile,sv pbuffer)
 	call get_string(pbuffer,#sza,#alias)
 
 	call write_long(outfile,alias,sza)
-	char a={asciiparenthesisleft,asciiparenthesisright}
+	char a="()"^
 	call write(outfile,#a,2)
 	callg writetn(outfile)
 end

@@ -132,16 +132,15 @@ function write_string(sv pbuffer,sd outfile)
 	sd start;set start pointer
 	while pointer!=term
 		char chars="\n\r\t"
-		char letters={asciin,asciir,asciit}
+		char *    ="nrt"^
 		ss r;set r strchr(#chars,pointer#)
 		if r!=(NULL)
-			sd c;set c pointer;sub c start
-			if c!=0
+			if start!=pointer
+				sd c;set c pointer;sub c start
 				call write(outfile,start,c)
 			end
 			char bs=asciibs;char d#1
-			sub r #chars
-			add r #letters
+			add r \write_string.chars
 			set d r#
 			call write(outfile,#bs,2)
 			inc pointer

@@ -30,10 +30,10 @@ function decl(sv pbuffer,sd outfile,ss ptype)
 		call get_char(pbuffer,ptype)
 		charx feature#1;call get_char(pbuffer,#feature)
 		if ptype#=(Xfile_decltype_byte)
-			char c={asciic,asciih,asciia,asciir}
+			char c="char"^
 			call write(outfile,#c,\decl.c)
 		else
-			char d={asciii,asciin,asciit}
+			char d="int"^
 			call write(outfile,#d,\decl.d)
 		end
 		char s=asciispace
