@@ -14,7 +14,7 @@ for file in "${tests[@]}"; do
 done
 
 ../otoc/otoc a.out.oc.x && {
-	cc a.out.c || {
+	cc a.out.c -o cc || {
 		if [ ! -e ../NOOCONVTEST ]; then
 			echo cc test result is wrong
 			exit 1

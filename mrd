@@ -1,3 +1,3 @@
 
-make version.h && cd src && ./mrd && cd ../ounused && ./mrd && cd ../otoc && ./mrd && cd .. && launcher=q make verify_comp_with_link
+make version.h && cd src && ./mrd && cd ../ounused && ./mrd && cd ../otoc && OCOMP="q ../src/o" ./mrd && cd .. && launcher=q make verify_comp_with_link
 #launcher=q LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/i686-linux-gnu-ld.bfd OFLAGS+=" function_name 1 nul_res_pref 1" make $@ linkerflags= SUBDIRS="src ounused"
