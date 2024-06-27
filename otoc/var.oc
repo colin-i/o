@@ -9,7 +9,9 @@ function arg(sv pbuffer,sd outfile)
 	elseif a=(Xfile_arg_varfn)
 		call varfunc(pbuffer,outfile)
 	elseif a=(Xfile_arg_string)
-		call write_string(pbuffer,outfile)
+		datax sz#1;vstrx pointer#1
+		call get_string(pbuffer,#sz,#pointer)
+		call write_string(pointer,sz,outfile)
 	else #Xfile_arg_call
 		callg cll(pbuffer,outfile)
 	end
@@ -124,9 +126,7 @@ function varfunc(sv pbuffer,sd outfile)
 	end
 end
 
-function write_string(sv pbuffer,sd outfile)
-	datax sz#1;vstrx pointer#1
-	call get_string(pbuffer,#sz,#pointer)
+function write_string(ss pointer,sd sz,sd outfile)
 	call writeq(outfile)
 	sd term;set term pointer;add term sz
 	sd start;set start pointer
@@ -154,4 +154,18 @@ function write_string(sv pbuffer,sd outfile)
 		call write(outfile,start,pointer)
 	end
 	callg writeq(outfile)
+end
+function write_popstring(ss pointer,sd sz,sd outfile)
+	call writecl(outfile) #write {}, can work for char*?see at declare
+	add sz pointer
+	if pointer!=sz
+		call fprintu(outfile,pointer#)
+		inc pointer
+		while pointer!=sz
+			call writec(outfile)
+			call fprintu(outfile,pointer#)
+			inc pointer
+		end
+	end
+	callg writecr(outfile)
 end

@@ -100,7 +100,9 @@ else
 	done
 
 	#remoce cc output, will be different, based on distribution/architecture
-	rm ./cc
+	if [ -e ./cc ]; then
+		rm ./cc
+	fi
 
 	#remove base64 troubles #or remove them after diff
 	cd ${e}

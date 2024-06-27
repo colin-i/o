@@ -29,13 +29,21 @@ function decl(sv pbuffer,sd outfile,ss ptype)
 		end
 		call get_char(pbuffer,ptype)
 		charx feature#1;call get_char(pbuffer,#feature)
-		if ptype#=(Xfile_decltype_byte)
-			char c="char"^
-			call write(outfile,#c,\decl.c)
-		else
-			char d="int"^
-			call write(outfile,#d,\decl.d)
-		end
+
+		value f^byte
+		value *^int      #word short
+		value *^int
+		value *^intByte
+		value *^int      #long
+		value *^intByte  #longByte
+		value *^int      #longWord short*
+		value *^int      #longInt  int*
+		sv fn;set fn ptype#     #type is used outside
+		mult fn :
+		add fn #f
+		set fn fn#
+		call fn(outfile)
+
 		char s=asciispace
 		call write(outfile,#s,1)
 	end
@@ -43,3 +51,19 @@ function decl(sv pbuffer,sd outfile,ss ptype)
 	call get_string(pbuffer,#sz,#pointer)
 	callg write(outfile,pointer,sz)
 end
+function byte(sd outfile)
+	char c="char*"^
+	call write(outfile,#c,\byte.c-1)
+end
+#function word()end
+function int(sd outfile)
+	char d="int"^
+	call write(outfile,#d,\int.d)
+end
+function intByte(sd outfile)
+	call write(outfile,#byte.c,\byte.c)
+end
+#function long()end
+#function longByte()end
+#function longWord()end
+#function longInt()end

@@ -9,6 +9,7 @@ importx "fwrite" fwrite
 
 importx "strchr" strchr
 importx "printf" printf
+importx "fprintf" fprintf
 
 const SEEK_SET=0
 const SEEK_CUR=1
@@ -153,6 +154,11 @@ include "decl.oc"
 include "number.oc"
 include "var.oc"
 
+function error()
+	call puts("unimplemented")
+	call aftercallenable()
+end
+
 function comment(sd outfile,sv pbuffer)
 	char a="//"^
 	call write(outfile,#a,2)
@@ -248,8 +254,16 @@ function declare(sd outfile,sv pbuffer)
 				call writeslsr(outfile)
 			end
 			call writee(outfile)
-			call write_string(pbuffer,outfile)
+			call get_string(pbuffer,#sz,#pointer)
 			charx trim#1;call get_char(pbuffer,#trim)
+			if trim=(Xfile_declmode_string_pop_yes)
+				call write_popstring(pointer,sz,outfile)
+				if type!=(Xfile_decltype_byte) #why check here and not above? to let popstring to be normal and check for 0 size and write to file (is more easy at debug)
+					call error() # char*={'a','b','c',0} is not "abc" ,downgrade to char? the sizeof and pointers then
+				end
+			else
+				call write_string(pointer,sz,outfile)
+			end
 		end
 	endelse
 	callg writetn(outfile)
@@ -437,4 +451,10 @@ end
 function writeslsr(sd outfile)
 	call writesl(outfile)
 	callg writesr(outfile)
+end
+function fprintu(sd outfile,sd c)
+	sd items;set items fprintf(outfile,"%u",c) #this does't encounter allowwrite or directwrite at this moment
+	if items<0
+		call aftercallenable()
+	end
 end
