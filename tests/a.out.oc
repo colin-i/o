@@ -13,6 +13,7 @@ orphan off
 char c1=1
 char c2={2,3}
 char c3="45"
+vstr c4="";char c5="\taz"^
 char a#3
 value b^a
 
