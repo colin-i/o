@@ -4,11 +4,11 @@
 function functiondef_intern(sv pbuffer,sd outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
-		charx type#1
-		call decl(pbuffer,outfile,#type)
+		charx type#1;charx field#1
+		call decl(pbuffer,outfile,#field,#type)
 		sd n=1;while n!=args
 			call writec(outfile)
-			call decl(pbuffer,outfile,#type)
+			call decl(pbuffer,outfile,#field,#type)
 			inc n
 		end
 	end
@@ -21,10 +21,10 @@ end
 #function functiondef_entry(sv pbuffer)
 
 #D structure
-function decl(sv pbuffer,sd outfile,ss ptype)
-	charx field#1;call get_char(pbuffer,#field)
-	if field!=(Xfile_declfield_const)
-		if field=(Xfile_declfield_data)
+function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
+	call get_char(pbuffer,pfield)
+	if pfield#!=(Xfile_declfield_const)
+		if pfield#=(Xfile_declfield_data)
 			charx data#1;call get_char(pbuffer,#data)
 		end
 		call get_char(pbuffer,ptype)
@@ -43,10 +43,12 @@ function decl(sv pbuffer,sd outfile,ss ptype)
 		add fn #f
 		set fn fn#
 		call fn(outfile)
-
-		char s=asciispace
-		call write(outfile,#s,1)
+	else
+		char c="#define"^
+		call write(outfile,#c,\decl.c)
 	end
+	call writes(outfile)
+
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	callg write(outfile,pointer,sz)

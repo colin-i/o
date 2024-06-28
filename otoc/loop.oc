@@ -217,8 +217,8 @@ function functiondef(sd outfile,sv pbuffer)
 	call aftercallenable()
 end
 function declare(sd outfile,sv pbuffer)
-	charx type#1
-	call decl(pbuffer,outfile,#type)
+	charx type#1;charx field#1
+	call decl(pbuffer,outfile,#field,#type)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
@@ -230,7 +230,11 @@ function declare(sd outfile,sv pbuffer)
 	else #Xfile_declsign_e*
 		charx mode#1;call get_char(pbuffer,#mode)
 		if mode=(Xfile_declmode_value)
-			call writee(outfile)
+			if field!=(Xfile_declfield_const)
+				call writee(outfile)
+			else
+				call writes(outfile)
+			end
 			call number(pbuffer,outfile)
 		elseif mode=(Xfile_declmode_group)
 			call writeslsr(outfile)
@@ -262,7 +266,7 @@ function declare(sd outfile,sv pbuffer)
 			end
 		end
 	endelse
-	callg writetn(outfile)
+	callg writetn(outfile) #at #define semicolon is extra
 end
 function action(sd outfile,sv pbuffer)
 	charx act#1;call get_char(pbuffer,#act)
@@ -434,6 +438,10 @@ end
 function writer(sd outfile)
 	char a=asciiparenthesisright
 	callg write(outfile,#a,1)
+end
+function writes(sd outfile)
+	char s=asciispace
+	callg write(outfile,#s,1)
 end
 function writesl(sd outfile)
 	char left=asciisquareleft
