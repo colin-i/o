@@ -31,13 +31,13 @@ function decl(sv pbuffer,sd outfile,ss ptype)
 		charx feature#1;call get_char(pbuffer,#feature)
 
 		value f^byte
-		value *^int      #word short
+		value *^word
 		value *^int
 		value *^intByte
-		value *^int      #long
+		value *^long
 		value *^intByte  #longByte
-		value *^int      #longWord short*
-		value *^int      #longInt  int*
+		value *^longWord
+		value *^longInt
 		sv fn;set fn ptype#     #type is used outside
 		mult fn :
 		add fn #f
@@ -52,18 +52,28 @@ function decl(sv pbuffer,sd outfile,ss ptype)
 	callg write(outfile,pointer,sz)
 end
 function byte(sd outfile)
-	char c="char*"^
-	call write(outfile,#c,\byte.c-1)
+	char a="char*"^
+	call write(outfile,#a,\byte.a-1)
 end
-#function word()end
+function word(sd outfile)
+	char a="short*"^
+	call write(outfile,#a,\word.a-1)
+end
 function int(sd outfile)
-	char d="int"^
-	call write(outfile,#d,\int.d)
+	char a="int*"^
+	call write(outfile,#a,\int.a-1)
 end
 function intByte(sd outfile)
-	call write(outfile,#byte.c,\byte.c)
+	call write(outfile,#byte.a,\byte.a)
 end
-#function long()end
+function long(sd outfile)
+	char a="long"^
+	call write(outfile,#a,\long.a)
+end
 #function longByte()end
-#function longWord()end
-#function longInt()end
+function longWord(sd outfile)
+	call write(outfile,#word.a,\word.a)
+end
+function longInt(sd outfile)
+	call write(outfile,#int.a,\int.a)
+end
