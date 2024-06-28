@@ -266,7 +266,10 @@ function declare(sd outfile,sv pbuffer)
 			end
 		end
 	endelse
-	callg writetn(outfile) #at #define semicolon is extra
+	if field!=(Xfile_declfield_const)
+		call writet(outfile)
+	end
+	callg writenl(outfile)
 end
 function action(sd outfile,sv pbuffer)
 	charx act#1;call get_char(pbuffer,#act)
@@ -398,19 +401,6 @@ function write(sd outfile,ss buf,sd sz)
 	end
 end
 
-function writen(sd outfile,ss buf,sd sz)
-	call write(outfile,buf,sz)
-	callg writenl(outfile)
-end
-function writenl(sd outfile)
-	char n=asciinewline
-	callg write(outfile,#n,1)
-end
-function writetn(sd outfile) #terminator newline
-	char sc=asciisemicolon
-	callg writen(outfile,#sc,1)
-end
-
 function writec(sd outfile)
 	char c=asciicomma
 	callg write(outfile,#c,1)
@@ -430,6 +420,10 @@ end
 function writel(sd outfile)
 	char a=asciiparenthesisleft
 	callg write(outfile,#a,1)
+end
+function writenl(sd outfile)
+	char n=asciinewline
+	callg write(outfile,#n,1)
 end
 function writeq(sd outfile)
 	char q=asciidquote
@@ -451,11 +445,24 @@ function writesr(sd outfile)
 	char right=asciisquareright
 	callg write(outfile,#right,1)
 end
+function writet(sd outfile)
+	char sc=asciisemicolon
+	callg write(outfile,#sc,1)
+end
 
+function writen(sd outfile,ss buf,sd sz)
+	call write(outfile,buf,sz)
+	callg writenl(outfile)
+end
 function writeslsr(sd outfile)
 	call writesl(outfile)
 	callg writesr(outfile)
 end
+function writetn(sd outfile) #terminator newline
+	call writet(outfile)
+	callg writenl(outfile)
+end
+
 function fprintu(sd outfile,sd c)
 	sd items;set items fprintf(outfile,"%u",c) #this does't encounter allowwrite or directwrite at this moment
 	if items<0
