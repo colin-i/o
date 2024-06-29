@@ -30,6 +30,8 @@ function action_areturn(sv pbuffer,sd outfile)
 		end
 		set loop.function_start (NULL) #if is not at endfunction, is here
 	end
+	char a="return "^
+	call write(outfile,#a,\action_areturn.a)
 	callg arg(pbuffer,outfile)
 end
 function action_aexit(sv pbuffer,sd outfile)
