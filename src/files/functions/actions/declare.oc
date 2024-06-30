@@ -149,7 +149,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 				elseif typenumber=(charnumber)
 					set xfile_decltype (Xfile_decltype_byte)
 					#if is_signed=(Xfile_declsign_yes)
-					#	set mask (signbit)
+					#	or mask (signbit)
 					#endif
 				elseif typenumber=(integernumber)
 					set xfile_decltype (Xfile_decltype_int)
