@@ -30,12 +30,12 @@ function action_areturn(sv pbuffer,sd outfile)
 		end
 		set loop.function_start (NULL) #if is not at endfunction, is here
 	end
-	char a="return "^
+	char a="return "^  #also used at ret
 	call write(outfile,#a,\action_areturn.a)
 	callg arg(pbuffer,outfile)
 end
-function action_aexit(sv pbuffer,sd outfile)
-	callg arg(pbuffer,outfile)
+function action_aexit(sv pbuffer,sd outfile) #this exit() an option? now only entryraw/exit case
+	callg action_areturn(pbuffer,outfile)
 end
 function action_tinc(sv pbuffer,sd outfile)
 	callg varfunc(pbuffer,outfile)

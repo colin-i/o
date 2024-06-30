@@ -558,6 +558,16 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#		set extstr skipretjump
 		#		set intercursors #pointer  ##only for elseGif
 		#	endif
+#		elseif command=(cDECLARE) #here used for otoc to sign extend char, if imm is only 32 like now zero extend is default
+#			whiletrue
+#				if ptrsubtype#!=(cCHAR)
+#					if ptrsubtype#!=(cCHARX)
+#						break
+#					endif
+#				endif
+#				set extstr "S"
+#				break
+#			endwhile
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)

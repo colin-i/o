@@ -329,7 +329,9 @@ function end(sd outfile)
 	call writecr(outfile)
 	callg writenl(outfile)
 end
-function ret()
+function ret(sd outfile)
+	call write(outfile,#action_areturn.a,\action_areturn.a-1)
+	callg writetn(outfile)
 end
 function library(sd *outfile,sv pbuffer)
 	datax sz#1;valuex lib#1
