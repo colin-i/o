@@ -44,7 +44,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 			else
 				set xfile_decltype (Xfile_decltype_longInt)
 			endelse
-		else;set mask 0
+		else;set mask (dummy_mask)
 			if parses=(pass_init)
 				set unitsize (dwsz)
 			else
@@ -59,7 +59,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 			else
 				set xfile_decltype (Xfile_decltype_longByte)
 			endelse
-		else;set mask 0
+		else;set mask (dummy_mask)
 			if parses=(pass_init)
 				set unitsize (dwsz)
 			else
@@ -74,7 +74,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 			else
 				set xfile_decltype (Xfile_decltype_long)
 			endelse
-		else;set mask 0
+		else;set mask (dummy_mask)
 			if parses=(pass_init)
 				set unitsize (dwsz)
 			else
@@ -89,7 +89,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 			else
 				set xfile_decltype (Xfile_decltype_longWord)
 			endelse
-		else;set mask 0
+		else;set mask (dummy_mask)
 			if parses=(pass_init)
 				set unitsize (dwsz)
 			else
@@ -116,7 +116,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 			else
 				if typenumber!=(charnumber)
 					if typenumber!=(constantsnumber)
-						set mask 0  #at pass_init, mask is used at get reserve data notchar, str reloc64 preference, define constant equal (is 0 pass there)
+						set mask (dummy_mask)  #at pass_init, mask is used at get reserve data notchar, str reloc64 preference, define constant equal (is 0 pass there)
 						set unitsize (dwsz)
 					endif
 				else
@@ -140,7 +140,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 					set xfile_decltype (Xfile_decltype_longWord)
 				endelse
 			else
-				set mask 0   #at pass_write, mask is used where stack is false (dataassign with stack false, descend into enumcomma and writevar again with stack false)
+				set mask (dummy_mask)   #at pass_write, mask is used where stack is false (dataassign with stack false, descend into enumcomma and writevar again with stack false)
 				#                                         at stack is beginning with dummy_mask
 
 				#xfile part
@@ -190,7 +190,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 					else
 					#search for data%  with R_X86_64_64
 						if relocbool=(TRUE)
-							if mask=0
+							if mask=(dummy_mask)
 							#data str
 							#strs are without ""
 								vdata is_64_and_pref_is_rx866464%p_elf64_r_info_type

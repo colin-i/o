@@ -69,7 +69,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	endif
 
 	sd xfile_decltype
-	sd long_mask=0
+	sd long_mask=(dummy_mask)
 	if is_stack=(TRUE)
 		if vartype=(stackdatanumber)
 			set xfile_decltype (Xfile_decltype_longInt)
@@ -182,7 +182,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	#char
 		Dec stacktransfer1
 		Dec stacktransfer2
-	elseif long_mask!=0
+	elseif long_mask!=(dummy_mask)
 	#values
 		call rex_w(#err)
 		If err!=noerr;Return err;EndIf
@@ -194,7 +194,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		Const fndecargs_offstart^stacktransfer1
 		Data ptrextra%%ptr_extra
 		sd reloff=fndecargs_offend-fndecargs_offstart
-		if long_mask!=0
+		if long_mask!=(dummy_mask)
 			inc reloff
 		endif
 		SetCall err adddirectrel_base(ptrextra,reloff,sectionind,memoff)
@@ -207,7 +207,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	Data _codesec%%ptr_codesec
 
 	SetCall err addtosec(#stacktransfer1,(3*bsz+dwsz),_codesec);If err!=noerr;Return err;EndIf
-	if long_mask!=0
+	if long_mask!=(dummy_mask)
 		call rex_w(#err)
 		If err!=noerr;Return err;EndIf
 	endif

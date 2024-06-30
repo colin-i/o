@@ -40,7 +40,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 			endif
 		endif
 		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec);If err!=noerr;Return err;EndIf
-		if long_mask!=0
+		if long_mask!=(dummy_mask)
 			data null=0
 			SetCall err addtosec(#null,(dwsz),ptrdatasec)
 			return err

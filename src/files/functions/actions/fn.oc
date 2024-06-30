@@ -96,7 +96,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				Set mask (referencebit)
 			else
 				call vars_log_set(content,sz) #more at the function
-				set mask 0
+				set mask (dummy_mask)
 			endelse
 			sd can_scope64
 			setcall can_scope64 func_xfile(subtype)

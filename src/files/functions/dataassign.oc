@@ -142,7 +142,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					if punitsize=(NULL)
 						setcall value get_img_vdata_dataReg()
 						if stack=false
-							if long_mask!=0
+							if long_mask!=(dummy_mask)
 								add value (qwsz)
 							else
 								add value (dwsz)
@@ -158,7 +158,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 						#let relocationsign, mess with dataReg, possible error will be catched at pass_write
 						inc punitsize#   #null end
 						if stack=false
-							if long_mask=0
+							if long_mask=(dummy_mask)
 								#for ^ and rel64 write is somewhere else
 								addcall punitsize# reloc64_mid()
 							endif
@@ -304,7 +304,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 							Return err
 						EndIf
 						sd v64;setcall v64 val64_p_get()
-						if long_mask!=0
+						if long_mask!=(dummy_mask)
 							setcall v64# is_for_64()
 						else
 							set v64# (val64_no)
@@ -525,7 +525,7 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 			If err=(noerror)
 				SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
 				If err=(noerror)
-					if long_mask!=0
+					if long_mask!=(dummy_mask)
 						SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
 					endif
 				endIf
