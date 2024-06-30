@@ -25,6 +25,11 @@ value b^a
 function intern(data a,sd b,sv c) #commenting
 	return c
 end
+function f()
+	if 2=2
+		ret
+	end
+end
 
 library "a"
 import "b" puts
@@ -58,7 +63,8 @@ end
 whiletrue
 	break
 end
-ret
+
 aftercall *tst
 override x_file 1
 i3
+exit 2
