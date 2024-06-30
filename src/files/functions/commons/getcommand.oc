@@ -479,13 +479,15 @@ Const compointersvarsloc^pointersvars
 const x_func_flag=0x80000000   #at def, varargs
 
 #at ...call...
-const x_callx_flag=0x80000000  #call a variable function import like functionx importx
-const x_callg_flag=0x40000000  #skip aftercall
+const  x_callx_flag=0x80000000 #call a variable function import like functionx importx
+const  x_callg_flag=0x40000000 #skip aftercall
 
 const call_ret_flag=0x20000000 #at call
-const x_call_flag=0x10000000   #at setcall... . attention that at write_func is asking about callret and setcall does not have that
+const   x_call_flag=0x10000000 #at setcall... . attention that at write_func is asking about callret and setcall does not have that
 
 const x_call_flags=x_call_flag|x_callx_flag|x_callg_flag
+
+#const declares_flag=0x80000000 #chars/charxs
 
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
@@ -620,6 +622,9 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				#	else #elseg
 				#		set main.ret_cont_break (ret_cont_break_skip)
 				#	endelse
+#				if command=(cDECLARE) #chars/charxs
+#					or ptrsubtype# (declares_flag)
+#				elseIf command=(cSTARTFUNCTION)
 				If command=(cSTARTFUNCTION)
 				#functionxx/entryx , varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know

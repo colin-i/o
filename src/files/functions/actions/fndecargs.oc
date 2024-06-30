@@ -32,6 +32,8 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 
 	sd vartype
 	sd is_expand
+	#sd is_signed
+	#setcall vartype commandSubtypeDeclare_to_typenumber(#subtype,#is_expand,#is_signed)
 	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
 
 	data is_stack#1
@@ -106,6 +108,9 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		elseif vartype=(charnumber)
 			set datasize (bsz)
 			set xfile_decltype (Xfile_decltype_byte)
+			#if is_signed=(Xfile_declsign_yes)
+			#	set long_mask (signbit)
+			#endif
 		elseif vartype=(integernumber)
 			set xfile_decltype (Xfile_decltype_int)
 		elseif vartype=(stringnumber)

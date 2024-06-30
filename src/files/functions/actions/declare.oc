@@ -1,18 +1,14 @@
 
 #err
 function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
-	Data valsize#1
-	Char sign#1
-	#below also at virtual at get_reserve (with mask there)
-	sd is_stack
-	sd typenumber
-	sd mask
-
-	sd unitsize
-
 	sd declare_typenumber
 	sd is_expand
+	#sd is_signed
+	#setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand,#is_signed)
 	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
+
+	sd is_stack
+	sd typenumber
 
 	if parses=(pass_calls)
 		setcall typenumber stackfilter(declare_typenumber,#is_stack)
@@ -35,6 +31,10 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 	sd err
 	sd xfile_decltype
 	sd relocbool;sd dataxrel
+	sd unitsize
+	sd mask
+	Data valsize#1
+	Char sign#1
 
 	if declare_typenumber=(vintegernumber)
 		set is_stack (FALSE);set typenumber (integernumber)
@@ -116,6 +116,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 			else
 				if typenumber!=(charnumber)
 					if typenumber!=(constantsnumber)
+						set mask 0  #at pass_init, mask is used at get reserve data notchar, str reloc64 preference, define constant equal (is 0 pass there)
 						set unitsize (dwsz)
 					endif
 				else
@@ -139,11 +140,17 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 					set xfile_decltype (Xfile_decltype_longWord)
 				endelse
 			else
+				set mask 0   #at pass_write, mask is used where stack is false (dataassign with stack false, descend into enumcomma and writevar again with stack false)
+				#                                         at stack is beginning with dummy_mask
+
 				#xfile part
 				if typenumber=(constantsnumber)
 					set xfile_decltype (Xfile_decltype_const)
 				elseif typenumber=(charnumber)
 					set xfile_decltype (Xfile_decltype_byte)
+					#if is_signed=(Xfile_declsign_yes)
+					#	set mask (signbit)
+					#endif
 				elseif typenumber=(integernumber)
 					set xfile_decltype (Xfile_decltype_int)
 				elseif typenumber=(stringnumber)
@@ -154,7 +161,6 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 				endelse
 			endelse
 		endelse
-		set mask 0
 	endelse
 
 	set relocbool (FALSE)
