@@ -496,12 +496,11 @@ function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand,sd p_is_s
 		return (constantsnumber)
 	endif
 
-	sd test=declares_flag;and test subtype
-	if test=0
+	sd test;set test subtype;and subtype (~declares_flag)
+	if test=subtype
 		set p_is_signed# (Xfile_declext_no)
 	else
 		set p_is_signed# (Xfile_declext_yes)
-		xor subtype (declares_flag)
 	endelse
 
 	div subtype (com_size)
