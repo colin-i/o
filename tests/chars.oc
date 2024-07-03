@@ -1,0 +1,27 @@
+
+format elfobj
+
+char a=0xff
+chars b=-1
+
+importx "puts" puts
+
+function signs(charx a,charxs b)
+	if a!=0xFFffFFff
+		call puts("ok")
+	end
+	if b=-1
+		call puts("ok")
+	end
+end
+
+entry main()
+if a!=-1
+	call puts("ok")
+end
+if b=-1
+	call puts("ok")
+end
+call signs(0xff,0xff)
+importx "exit" exit
+call exit(0)
