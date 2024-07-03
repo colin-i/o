@@ -131,9 +131,8 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 	SetCall errnr addaref(value,ptrcontent,ptrsize,valsize,typenumber,mask)
 	Return errnr
 EndFunction
-
 #err
-function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand,sd is_signed)
+function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	data err#1
 	data noerr=noerror
 
@@ -166,9 +165,6 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif
-		if is_signed=(Xfile_declext_yes)
-			or mask (signbit)
-		endif
 		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
 		Return err
 	EndIf
@@ -179,6 +175,14 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 	EndIf
 	Call advancecursors(ptrcontent,ptrsize,valsize)
 	Return noerr
+endfunction
+#same
+function addvarreferenceorunref_signed(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand,sd is_signed)
+	if is_signed=(Xfile_declext_yes)
+		or mask (signbit)
+	endif
+	sd er;set er addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
+	return er
 endfunction
 
 function getsign_size(sd start,sd last,sd mark,sd pdest) #mark is if was ended by a sign or whitespaces
