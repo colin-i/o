@@ -33,7 +33,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	sd vartype
 	sd is_expand
 	#sd is_signed
-	#setcall vartype commandSubtypeDeclare_to_typenumber(#subtype,#is_expand,#is_signed)
+	#setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand,#is_signed)
 	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
 
 	data is_stack#1

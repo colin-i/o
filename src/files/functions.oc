@@ -18,14 +18,14 @@ Include "./functions/values/operations.oc"
 
 Include "./functions/elf/elf.oc"
 
-Include "./functions/stack/stack_inits.oc"
+Include "./functions/mask.oc"
 
 Include "./functions/argument/comwrite.oc"
 Include "./functions/argument/imm.oc"
 Include "./functions/argument/arg.oc"
 Include "./functions/argument/argument.oc"
 
-Include "./functions/stack/stack.oc"
+Include "./functions/stack.oc"
 
 Include "./functions/global/funcs.oc"
 Include "./functions/global/end.oc"

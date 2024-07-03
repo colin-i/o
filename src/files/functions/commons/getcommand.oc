@@ -491,6 +491,14 @@ const x_call_flags=x_call_flag|x_callx_flag|x_callg_flag
 
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
+#function commandSubtypeDeclare_to_typenumber(sd subtypewithflag,sd p_is_expand,sd p_is_signed)
+#	sd subtype=declares_flag;xor subtype subtypewithflag
+#	if subtype=subtypewithflag
+#		set p_is_signed# (Xfile_declsign_no)
+#	else
+#		set p_is_signed# (Xfile_declsign_yes)
+#		xor subtype (declares_flag)
+#	endelse
 #these numbers will be used at getstruct directly
 	if subtype=(cCONST)
 		return (constantsnumber)
