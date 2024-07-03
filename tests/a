@@ -50,7 +50,8 @@ if [ -z "${ex}" ]; then
 		logs+=" ${f}.oc.log"
 		objs+=" ${f}.o"
 	done
-	${OLINK} ${logs} || exit 1
+	${launcher} ${OLINK} ${logs} || exit 1
+	echo
 
 	if [ -n "${onlycomp}" ]; then exit 0; fi
 
@@ -58,9 +59,10 @@ if [ -z "${ex}" ]; then
 		if [ -z "${old}" ]; then
 			cc ${objs}
 		else
-			ld ${objs} --entry main --dynamic-linker=/lib/ld-linux.so.2 -m elf_i386 -o a.out -lc
+			if [ -z "${LD}" ]; then LD=ld; fi
+			${LD} ${objs} --entry main --dynamic-linker=/lib/ld-linux.so.2 -m elf_i386 -o a.out -lc
 		fi
-		if [ -z "${edb}" ]; then ./a.out
+		if [ -z "${edb}" ]; then ${launcher} ./a.out
 		else edb --run a.out
 		fi
 	else

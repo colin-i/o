@@ -33,7 +33,7 @@ const pointbit=0x80
 const suffixbit=0x100
 
 #bit offset 9: sign
-#const signbit=0x200
+const signbit=0x200
 
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit

@@ -51,11 +51,11 @@ function suffixbit(sd pointer)
 	setcall bit data_get_maskbit(pointer,(suffixbit))
 	return bit
 endfunction
-#function signbit(sd pointer)
-#	sd bit
-#	setcall bit data_get_maskbit(pointer,(signbit))
-#	return bit
-#endfunction
+function signbit(sd pointer)
+	sd bit
+	setcall bit data_get_maskbit(pointer,(signbit))
+	return bit
+endfunction
 
 function stack_get_relative(sd location)
 	sd mask

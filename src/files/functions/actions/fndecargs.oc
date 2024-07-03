@@ -32,9 +32,8 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 
 	sd vartype
 	sd is_expand
-	#sd is_signed
-	#setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand,#is_signed)
-	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
+	sd is_signed
+	setcall vartype commandSubtypeDeclare_to_typenumber(subtype,#is_expand,#is_signed)
 
 	data is_stack#1
 	data ptrstack^is_stack
@@ -108,9 +107,6 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		elseif vartype=(charnumber)
 			set datasize (bsz)
 			set xfile_decltype (Xfile_decltype_byte)
-			#if is_signed=(Xfile_declsign_yes)
-			#	or long_mask (signbit)
-			#endif
 		elseif vartype=(integernumber)
 			set xfile_decltype (Xfile_decltype_int)
 		elseif vartype=(stringnumber)
@@ -144,7 +140,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 	#setcall err maxsectioncheck(stackoff,#stackindex)
 	add stackindex stackoff
 
-	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex,is_expand)
+	setcall err addvarreferenceorunref(ptrcontent,ptrsize,sz,vartype,long_mask,stackindex,is_expand,is_signed)
 	If err!=noerr
 		Return err
 	EndIf

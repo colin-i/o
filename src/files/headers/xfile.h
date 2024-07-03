@@ -76,6 +76,9 @@ const Xfile_declmode_string=2
 const Xfile_declmode_string_pop_no=0
 const Xfile_declmode_string_pop_yes=1
 
+const Xfile_declext_no=0
+const Xfile_declext_yes=1
+
 #here is ORing (~-N)
 const Xfile_numbers_prefix_none=0x0
 const Xfile_numbers_prefix_neg=0x1

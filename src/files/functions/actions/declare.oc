@@ -3,9 +3,8 @@
 function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 	sd declare_typenumber
 	sd is_expand
-	#sd is_signed
-	#setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand,#is_signed)
-	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand)
+	sd is_signed
+	setcall declare_typenumber commandSubtypeDeclare_to_typenumber(subtype,#is_expand,#is_signed)
 
 	sd is_stack
 	sd typenumber
@@ -148,9 +147,6 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 					set xfile_decltype (Xfile_decltype_const)
 				elseif typenumber=(charnumber)
 					set xfile_decltype (Xfile_decltype_byte)
-					#if is_signed=(Xfile_declsign_yes)
-					#	or mask (signbit)
-					#endif
 				elseif typenumber=(integernumber)
 					set xfile_decltype (Xfile_decltype_int)
 				elseif typenumber=(stringnumber)
@@ -174,7 +170,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 						call advancecursors(pcontent,pcomsize,pcomsize#)
 						return (noerror)
 					endif
-					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool) #there are 3 more argument but are not used
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool) #there are 4 more argument but are not used
 					#                                                                            since %%|
 				endif
 			else
@@ -200,7 +196,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 							endif
 						endif
 					endelse
-					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,dataxrel,is_stack) #there is 1 more argument but is not used
+					setcall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,#unitsize,mask,relocbool,dataxrel,is_stack) #there are 2 more arguments but are not used
 					#                                                                               since %%|
 					if is_expand=(FALSE)
 						sd pdataReg%%ptr_dataReg
@@ -232,7 +228,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 						return "Virtual declarations can have only the reserve sign."
 					endif
 				endelseif
-				SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool,dataxrel,is_stack,is_expand)
+				SetCall err dataassign(pcontent,pcomsize,sign,valsize,typenumber,(NULL),mask,relocbool,dataxrel,is_stack,is_expand,is_signed)
 			endif
 		endelse
 	endif

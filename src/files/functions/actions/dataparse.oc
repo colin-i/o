@@ -133,7 +133,7 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 EndFunction
 
 #err
-function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
+function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand,sd is_signed)
 	data err#1
 	data noerr=noerror
 
@@ -166,6 +166,9 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif
+		if is_signed=(Xfile_declext_yes)
+			or mask (signbit)
+		endif
 		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
 		Return err
 	EndIf

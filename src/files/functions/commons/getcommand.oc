@@ -487,22 +487,23 @@ const   x_call_flag=0x10000000 #at setcall... . attention that at write_func is 
 
 const x_call_flags=x_call_flag|x_callx_flag|x_callg_flag
 
-#const declares_flag=0x80000000 #chars/charxs
+const declares_flag=0x80000000 # chars charxs
 
 #declare coresp
-function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand)
-#function commandSubtypeDeclare_to_typenumber(sd subtypewithflag,sd p_is_expand,sd p_is_signed)
-#	sd subtype=declares_flag;xor subtype subtypewithflag
-#	if subtype=subtypewithflag
-#		set p_is_signed# (Xfile_declsign_no)
-#	else
-#		set p_is_signed# (Xfile_declsign_yes)
-#		xor subtype (declares_flag)
-#	endelse
+function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand,sd p_is_signed)
 #these numbers will be used at getstruct directly
 	if subtype=(cCONST)
 		return (constantsnumber)
 	endif
+
+	sd test=declares_flag;and test subtype
+	if test=0
+		set p_is_signed# (Xfile_declext_no)
+	else
+		set p_is_signed# (Xfile_declext_yes)
+		xor subtype (declares_flag)
+	endelse
+
 	div subtype (com_size)
 	if subtype>=(xnumbers)
 		if subtype>=(xvnumbers)
@@ -568,16 +569,16 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#		set extstr skipretjump
 		#		set intercursors #pointer  ##only for elseGif
 		#	endif
-#		elseif command=(cDECLARE) #here used for otoc to sign extend char, if imm is only 32 like now zero extend is default
-#			whiletrue
-#				if ptrsubtype#!=(cCHAR)
-#					if ptrsubtype#!=(cCHARX)
-#						break
-#					endif
-#				endif
-#				set extstr "S"
-#				break
-#			endwhile
+		elseif command=(cDECLARE) #here used for otoc to sign extend char, if imm is only 32 like now zero extend is default
+			whiletrue
+				if ptrsubtype#!=(cCHAR)
+					if ptrsubtype#!=(cCHARX)
+						break
+					endif
+				endif
+				set extstr "S"
+				break
+			endwhile
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)
@@ -630,10 +631,9 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				#	else #elseg
 				#		set main.ret_cont_break (ret_cont_break_skip)
 				#	endelse
-#				if command=(cDECLARE) #chars/charxs
-#					or ptrsubtype# (declares_flag)
-#				elseIf command=(cSTARTFUNCTION)
-				If command=(cSTARTFUNCTION)
+				if command=(cDECLARE) #chars/charxs
+					or ptrsubtype# (declares_flag)
+				elseIf command=(cSTARTFUNCTION)
 				#functionxx/entryx , varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
 					#sd for64;setcall for64 is_for_64()
