@@ -277,18 +277,26 @@ function action(sd outfile,sv pbuffer)
 	callg writetn(outfile)
 end
 function action2(sd outfile,sv pbuffer)
+	sd replay;set replay pbuffer#
 	call varfunc(pbuffer,outfile)
-	charx a2#1;call get_char(pbuffer,#a2)
 
+	call writee(outfile)
+
+	charx a2#1;call get_char(pbuffer,#a2)
 	if a2!=(Xfile_action2_set)
 		if a2=(Xfile_action2_divu)
 			set a2 (Xfile_action2_div)
 		elseif a2=(Xfile_action2_remu)
 			set a2 (Xfile_action2_rem)
 		end
+
+		call writel(outfile)
+		call write(outfile,#write_long.a,\write_long.a-1)
+		call writer(outfile)
+		call varfunc(#replay,outfile)
 		call write(outfile,#a2,1)
 	end
-	call writee(outfile)
+
 	call arg(pbuffer,outfile)
 	callg writetn(outfile)
 end

@@ -661,13 +661,22 @@ endfunction
 function get_scope_pos(ss content,sd sz,sv ppos)
 	value ptrfunctions%%ptr_functions
 	set ppos# 0
-	sd var
-	setcall var vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
-	if var!=(NULL)
-		sd err;setcall err xfile_add_string_if(content,sz)
-		return err
-	endif
-	return "Undefined function name."
+#	if sz=0  # .var is the current scope
+#		if inner, to do: store content,sz in parsefunction where is now
+#		else to do: also store entry pointer in same place, if has_named_entry
+#		call vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
+#	else
+		sd var
+		setcall var vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
+#		if var=(NULL)
+#			return "Undefined function name."
+#		endif
+#	endelse
+if var!=(NULL)
+	sd err;setcall err xfile_add_string_if(content,sz)
+	return err
+endif
+return "Undefined function name."
 endfunction
 
 function function_in_code()
