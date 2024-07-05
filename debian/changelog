@@ -1,3 +1,9 @@
+ocompiler (1-5+182) xenial; urgency=medium
+
+  * char[x]s
+
+ -- bc <bc@bc-desktop>  Fri, 05 Jul 2024 09:03:06 +0300
+
 ocompiler (1-5+181) xenial; urgency=medium
 
   * and fix test
