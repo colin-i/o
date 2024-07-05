@@ -23,6 +23,10 @@ char a#3
 value b^a
 
 function intern(data a,sd b,sv c) #commenting
+	inc a
+	dec a
+	incst c
+	decst c
 	return c
 end
 function f()
@@ -37,16 +41,16 @@ import "b" puts
 entry main()
 
 set b b
-add b b
-sub b b
-mult b b
-div b b
-divu b b
-rem b b
-remu b b
-and b b
-or b b
-xor b b
+add b 1
+sub b 1
+mult c1 1
+div c1 1
+divu c1 1
+rem c1 1
+remu c1 1
+and c1 1
+or c1 1
+xor c1 1
 
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 ;
