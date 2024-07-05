@@ -26,12 +26,9 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
 	if pfield#!=(Xfile_declfield_const)
 		if pfield#=(Xfile_declfield_data)
 			charx data#1;call get_char(pbuffer,#data)
+			charx signed#1;call get_char(pbuffer,#signed)
 		end
 		call get_char(pbuffer,ptype)
-		#if ptype#=(Xfile_decltype_byte)
-		#	charx signed#1
-		#	call get_char(pbuffer,#signed)
-		#end
 		charx feature#1;call get_char(pbuffer,#feature)
 
 		value f^byte
