@@ -23,7 +23,7 @@ end
 function action_areturn(sv pbuffer,sd outfile)
 	if loop.function_start!=(NULL)
 		call fseek(outfile,loop.function_start,(SEEK_SET))
-		call fwrite(#write_long.a,\write_long.a-1,1,outfile)
+		call fwrite(#write_long.a,\write_long.a,1,outfile)
 		sd n;set n fseek(outfile,0,(SEEK_END)) #it's tested, is not 0 on that 32 app example, so the pointer is not moved
 		if n!=0
 			call aftercallenable()
@@ -38,16 +38,22 @@ function action_aexit(sv pbuffer,sd outfile) #this exit() an option? now only en
 	callg action_areturn(pbuffer,outfile)
 end
 function action_tinc(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	call varfunc(pbuffer,outfile)
+	char a="++"^
+	callg write(outfile,#a,\action_tinc.a)
 end
 function action_tincst(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	call varfunc(pbuffer,outfile)
+	callg write(outfile,#action_tinc.a,\action_tinc.a)
 end
 function action_tdec(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	call varfunc(pbuffer,outfile)
+	char a="--"^
+	callg write(outfile,#a,\action_tdec.a)
 end
 function action_tdecst(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	call varfunc(pbuffer,outfile)
+	callg write(outfile,#action_tdec.a,\action_tdec.a)
 end
 function action_tneg(sv pbuffer,sd outfile)
 	callg varfunc(pbuffer,outfile)

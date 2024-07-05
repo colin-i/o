@@ -144,7 +144,7 @@ function write_void(sd outfile,sd pointer,sd size)
 	callg write(outfile,pointer,size)
 end
 function write_long(sd outfile,sd pointer,sd size)
-	char a="long "^
+	char a="long*"^
 	call write(outfile,#a,\write_long.a)
 	callg write(outfile,pointer,size)
 end
