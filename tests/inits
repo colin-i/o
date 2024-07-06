@@ -1,5 +1,5 @@
 
 if [ "`uname -m`" = "aarch64" ]; then
-	LD_LIBRARY_PATH=/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu:${LD_LIBRARY_PATH}
+	LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu
 	if [ -z "${OCOMP}" ]; then OCOMP="q ../src/o"; fi
 elif [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi

@@ -1,0 +1,3 @@
+
+launcher=q ldprefer=1 LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd L=-L/home/bc/before/lib OFLAGS="inplace_reloc 0" ./a $@
+#and will diff with .expected because of arm and inplace_reloc

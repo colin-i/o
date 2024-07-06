@@ -111,3 +111,5 @@ set xfile_sharp_comment 0
 
 set breakflag (FALSE)
 set ret_cont_break (ret_cont_break_notyet)
+
+set entryReg (lastReg)

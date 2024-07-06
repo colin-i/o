@@ -661,29 +661,26 @@ endfunction
 function get_scope_pos(ss content,sd sz,sv ppos)
 	value ptrfunctions%%ptr_functions
 	set ppos# 0
-#	if sz=0  # .var is the current scope
-#		value fns%%ptr_functions
-#		sd c;call getcont(fns,#c)
-#		vdata ptrinnerfunction%globalinnerfunction
-#		if ptrinnerfunction#=(TRUE)
-#			add c main.innerReg
-#		elseif main.entryReg!=(lastByte)
-#			add c main.entryReg
-#		endelse
-#		setcall content vars_getstring(c,#sz)
-#		call vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
-#	else
+	if sz=0  # .var is the current scope
+		value fns%%ptr_functions
+		sd c;call getcont(fns,#c)
+		vdata ptrinnerfunction%globalinnerfunction
+		if ptrinnerfunction#=(TRUE)
+			add c main.innerReg
+		elseif main.entryReg!=(lastReg)
+			add c main.entryReg
+		endelseif
+		setcall content vars_getstring(c,#sz)
+		call vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
+	else
 		sd var
 		setcall var vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
-#		if var=(NULL)
-#			return "Undefined function name."
-#		endif
-#	endelse
-if var!=(NULL)
+		if var=(NULL)
+			return "Undefined function name."
+		endif
+	endelse
 	sd err;setcall err xfile_add_string_if(content,sz)
 	return err
-endif
-return "Undefined function name."
 endfunction
 
 function function_in_code()

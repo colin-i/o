@@ -57,12 +57,21 @@ if [ -z "${ex}" ]; then
 
 	if [ -z "${win}" ]; then
 		if [ -z "${old}" ]; then
-			cc ${objs}
+			if [ -z "${ldprefer}" ]; then
+				cc ${objs}
+			else
+				${LD} ${objs} --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${L} -lc --entry main -o a.out
+			fi
 		else
 			if [ -z "${LD}" ]; then LD=ld; fi
 			${LD} ${objs} --entry main --dynamic-linker=/lib/ld-linux.so.2 -m elf_i386 -o a.out -lc
 		fi
-		if [ -z "${edb}" ]; then ${launcher} ./a.out
+		if [ -z "${edb}" ]; then
+			if [ -n "${ldprefer}" ]; then  #for box64 case
+				./a.out
+			else
+				${launcher} ./a.out
+			fi
 		else edb --run a.out
 		fi
 	else
@@ -92,7 +101,9 @@ else
 		else wine /home/bc/Desktop/x64/release/x32/x32dbg.exe `pwd`/a.out
 		fi
 	fi
-fi && \
-echo $?
+fi || {
+	echo $?
+	exit 1
+}
 
 #wine regedit wine_debugger
