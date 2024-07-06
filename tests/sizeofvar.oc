@@ -24,8 +24,8 @@ charx aa#2
 datax bb#3
 valuex cc#4
 
-call printf("%d\n",\main.a)    #1
 call printf("%d\n",\.b)        #4
+call printf("%d\n",\main.a)    #1
 call printf("%d\n",(\main.c))  #8
 call printf("%d\n",(\main.c#)) #8
 call printf("%d\n",(\main.d#)) #4

@@ -661,6 +661,7 @@ endfunction
 function get_scope_pos(ss content,sd sz,sv ppos)
 	value ptrfunctions%%ptr_functions
 	set ppos# 0
+	vstr und="Undefined function name."
 	if sz=0  # .var is the current scope
 		value fns%%ptr_functions
 		sd c;call getcont(fns,#c)
@@ -669,14 +670,16 @@ function get_scope_pos(ss content,sd sz,sv ppos)
 			add c main.innerReg
 		elseif main.entryReg!=(lastReg)
 			add c main.entryReg
-		endelseif
+		else #there is nothing for ppos here, it is an unnamed entry, must code if is important
+			return und
+		endelse
 		setcall content vars_getstring(c,#sz)
 		call vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
 	else
 		sd var
 		setcall var vars_core_ref_scope(content,sz,ptrfunctions,(NULL),(TRUE),ppos)
 		if var=(NULL)
-			return "Undefined function name."
+			return und
 		endif
 	endelse
 	sd err;setcall err xfile_add_string_if(content,sz)
