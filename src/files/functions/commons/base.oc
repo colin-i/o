@@ -1,5 +1,5 @@
 
-Function getcont(data ptrstructure,data ptrcontainer)
+Function getcont(sv ptrstructure,sv ptrcontainer)
 	Data offset=containersdataoffset
 	Add ptrstructure offset
 	Set ptrcontainer# ptrstructure#
