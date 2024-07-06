@@ -498,3 +498,10 @@ function cast_resolve(sd number,sd cast,sv ptrdata,sv p_error)
 	endif
 	return (TRUE)
 endfunction
+
+#content
+function vars_getstring(sd pointer,sd psz)
+	add pointer (nameoffset)
+	setcall psz# strlen(pointer)
+	return pointer
+endfunction

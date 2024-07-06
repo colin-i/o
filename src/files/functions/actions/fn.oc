@@ -94,6 +94,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			#Data ptrobjfnmask%ptrobjfnmask
 			if el_or_e=(TRUE)
 				Set mask (referencebit)
+
+#				#and for .var
+#				call getcontReg(fns,#main.entryReg)
 			else
 				call vars_log_set(content,sz) #more at the function
 				set mask (dummy_mask)
@@ -119,24 +122,27 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			#
 			#return noerr
 		else
-			if el_or_e=(FALSE)
-				call scopes_store_class()
-			endif
-
 			#pass_write
 			sd pointer
 			setcall pointer vars_ignoreref(content,sz,fns)
 			Call advancecursors(ptrcontent,ptrsize,sz)
+
+			if el_or_e=(FALSE)
+				call scopes_store_class()
+
+#				#and for .var
+#				call getcont(fns,#main.innerReg)
+#				sub main.innerReg pointer
+#				neg main.innerReg
+			endif
 
 			#add the function name to the code section if the option is set
 			sd fn_text
 			setcall fn_text fn_text_info()
 			if fn_text#=1
 				sd fn_name
-				set fn_name pointer
-				add fn_name (nameoffset)
 				sd len
-				setcall len strlen(fn_name)
+				setcall fn_name vars_getstring(pointer,#len)
 				inc len
 				SetCall err addtoCode_set_programentrypoint(fn_name,len) #and set entry point in case this is an entry/entryraw and also will be the last command in the program
 				If err!=(noerror)
