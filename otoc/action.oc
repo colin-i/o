@@ -87,13 +87,13 @@ function actionsimple(sv pbuffer,sd act,sd outfile)
 	call varfunc(pbuffer,outfile)
 	call writee(outfile)
 	call write(outfile,#act,1)
-	callg write_longcast(outfile,replay)
+	callg write_longcast(outfile,#replay)
 end
 function actionshift1(sv pbuffer,ss act,sd ex,sd outfile)
 	sd replay;set replay pbuffer#
 	call varfunc(pbuffer,outfile)
 	call writee(outfile)
-	call write_longcast_ex(outfile,replay,ex)
+	call write_longcast_ex(outfile,#replay,ex)
 	call write(outfile,act,2)
 	char a="1"^
 	callg write(outfile,#a,1)

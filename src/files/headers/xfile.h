@@ -232,6 +232,7 @@ const Xfile_call_normal=0
 const Xfile_call_ret=1
 
 const Xfile_cond_greatequalunsign=0x82
+# const Xfile_cond_first=Xfile_cond_greatequalunsign
 const Xfile_cond_lessunsign=0x83
 const Xfile_cond_notequal=0x84
 const Xfile_cond_equal=0x85

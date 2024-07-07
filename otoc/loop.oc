@@ -21,6 +21,7 @@ const TRUE=1
 include "xfile.h"
 #const Xfile_last=Xfile_line
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
+const Xfile_cond_first=Xfile_cond_greatequalunsign
 include "ascii.h"
 
 include "mem.oc"
@@ -138,6 +139,11 @@ end
 
 #aftercalli *
 
+function unimplemented()
+	call puts("unimplemented")
+	call aftercallenable()
+end
+
 function write_long(sd outfile,sd pointer,sd size)
 	char a="long*"^
 	call write(outfile,#a,\.a)
@@ -253,8 +259,7 @@ function declare(sd outfile,sv pbuffer)
 			if trim=(Xfile_declmode_string_pop_yes)
 				call write_popstring(pointer,sz,outfile)
 				if type!=(Xfile_decltype_byte) #why check here and not above? to let popstring to be normal and check for 0 size and write to file (is more easy at debug)
-					call puts("unimplemented") # char*={'a','b','c',0} is not "abc" ,downgrade to char? the sizeof and pointers then
-					call aftercallenable()
+					call unimplemented() # char*={'a','b','c',0} is not "abc" ,downgrade to char? the sizeof and pointers then
 				end
 			else
 				call write_string(pointer,sz,outfile)
@@ -284,7 +289,7 @@ function action2(sd outfile,sv pbuffer)
 		elseif a2=(Xfile_action2_remu)
 			set a2 (Xfile_action2_rem)
 		end
-		call write_longcast(outfile,replay)
+		call write_longcast(outfile,#replay)
 		call write(outfile,#a2,1)
 	end
 
@@ -457,16 +462,23 @@ function unsigned(sd outfile)
 	char a="unsigned "^
 	callg write(outfile,#a,\.a)
 end
-function write_longcast_ex(sd outfile,sd buffer,sv sign)
+function write_longcast_ex_ex(sd outfile,sd pbuffer,sv sign,sv fn)
 	call writel(outfile)
 	call sign(outfile)
 	call write(outfile,#write_long.a,\write_long.a-1)
 	call writer(outfile)
-	callg varfunc(#buffer,outfile)
+	callg fn(pbuffer,outfile)
 end
-function write_longcast(sd outfile,sd buffer)
-	callg write_longcast_ex(outfile,buffer,signed)
+function write_longcast_ex(sd outfile,sd pbuffer,sv sign)
+	callg write_longcast_ex_ex(outfile,pbuffer,sign,varfunc)
 end
+function write_longcast_arg(sd outfile,sd pbuffer)
+	callg write_longcast_ex_ex(outfile,pbuffer,unsigned,arg)
+end
+function write_longcast(sd outfile,sd pbuffer)
+	callg write_longcast_ex(outfile,pbuffer,signed)
+end
+
 function write_void(sd outfile,sd pointer,sd size)
 	char a="void "^
 	call write(outfile,#a,\.a)

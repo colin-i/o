@@ -78,9 +78,60 @@ end
 #CD structure
 function cond(sv pbuffer,sd outfile)
 	call writel(outfile)
-	call arg(pbuffer,outfile)
+
+	#here is not o,must know signed/unsigned at start
+	sd replay;set replay pbuffer#
+	set loop.allowwrite (FALSE)
+	call arg(pbuffer) #,outfile
+	set loop.allowwrite (TRUE)
 	charx cnd#1;call get_char(pbuffer,#cnd)
-	call arg(pbuffer,outfile)
+
+const unimplemented=-1
+const unsigned_cond=0
+const signed_cond=1
+	char conds=unsigned_cond;char *=">="^
+	char     *=unsigned_cond;char *=asciinul;char *="<"^
+	char     *=signed_cond;  char *="!="^
+	char     *=signed_cond;  char *="=="^
+	char     *=unsigned_cond;char *=asciinul;char *=">"^
+	char     *=unsigned_cond;char *="<="^
+	char     *=unimplemented;char *#2
+	char     *=unimplemented;char *#2
+	char     *=unimplemented;char *#2  #notparity
+	char     *=unimplemented;char *#2  #parity
+	char     *=signed_cond;  char *=">="^
+	char     *=signed_cond;  char *=asciinul;char *="<"^
+	char     *=signed_cond;  char *=asciinul;char *=">"^
+	char     *=signed_cond;  char *="<="^
+
+	sub cnd (Xfile_cond_first)
+	ss set=1+2
+	mult set cnd
+	add set #conds
+	sd type;set type set#
+	inc set
+
+	if type=(unsigned_cond)
+		call write_longcast_arg(outfile,#replay)
+	elseif type=(signed_cond)
+		call arg(#replay,outfile)
+	else
+		call unimplemented()
+	end
+
+	if set#=(asciinul)
+		inc set
+		call write(outfile,set,1)
+	else
+		call write(outfile,set,2)
+	end
+
+	if type=(unsigned_cond)
+		call write_longcast_arg(outfile,pbuffer)
+	else
+		call arg(pbuffer,outfile)
+	end
+
 	call writer(outfile)
 	callg writecl(outfile)
 end
