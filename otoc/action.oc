@@ -11,6 +11,8 @@ function action1(sv act,sv pbuffer,sd outfile)
 	value         *^action_tdecst
 	value         *^action_tneg
 	value         *^action_tnot
+	value         *^action_tbase
+	value         *^action_tbase #leave
 	value         *^action_tshl1
 	value         *^action_tshr1
 	value         *^action_tsar1
@@ -63,14 +65,21 @@ function action_tnot(sv pbuffer,sd outfile)
 	char a="~"^
 	callg actionsimple(pbuffer,a,outfile)
 end
+function action_tbase(sv pbuffer)
+	call unimplemented_start("base/leave")
+	call varfunc(pbuffer)
+	call unimplemented_end()
+end
 function action_tshl1(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	char a="<<"^
+	callg actionshift1(pbuffer,#a,signed,outfile)
 end
 function action_tshr1(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	char a=">>"^
+	callg actionshift1(pbuffer,#a,unsigned,outfile)
 end
 function action_tsar1(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	callg actionshift1(pbuffer,#action_tshr1.a,signed,outfile)
 end
 
 function actionsimple(sv pbuffer,sd act,sd outfile)
@@ -78,5 +87,14 @@ function actionsimple(sv pbuffer,sd act,sd outfile)
 	call varfunc(pbuffer,outfile)
 	call writee(outfile)
 	call write(outfile,#act,1)
-	call write_longcast(outfile,replay)
+	callg write_longcast(outfile,replay)
+end
+function actionshift1(sv pbuffer,ss act,sd ex,sd outfile)
+	sd replay;set replay pbuffer#
+	call varfunc(pbuffer,outfile)
+	call writee(outfile)
+	call write_longcast_ex(outfile,replay,ex)
+	call write(outfile,act,2)
+	char a="1"^
+	callg write(outfile,#a,1)
 end

@@ -284,7 +284,6 @@ function action2(sd outfile,sv pbuffer)
 		elseif a2=(Xfile_action2_remu)
 			set a2 (Xfile_action2_rem)
 		end
-
 		call write_longcast(outfile,replay)
 		call write(outfile,#a2,1)
 	end
@@ -297,13 +296,13 @@ function call(sd outfile,sv pbuffer)
 	call cll(pbuffer,outfile)
 	callg writetn(outfile)
 end
-function callex(sd outfile,sv pbuffer)
+function callex(sd *outfile,sv pbuffer)
 	call unimplemented_start("callex")  #at some structures is complicated
 	char c#1;call get_char(pbuffer,#c)
-	call cal(pbuffer,outfile)
-	call varfunc(pbuffer,outfile)
-	call arg(pbuffer,outfile)
-	call writetn(outfile)
+	call cal(pbuffer) #,outfile
+	call varfunc(pbuffer) #,outfile
+	call arg(pbuffer) #,outfile
+	call writetn() #outfile
 	call unimplemented_end()
 end
 function if(sd outfile,sv pbuffer)
@@ -359,11 +358,11 @@ function aftercall(sd *outfile,sv pbuffer)
 		end
 	end
 end
-function hex(sd outfile,sv pbuffer)
+function hex(sd *outfile,sv pbuffer)
 	call unimplemented_start("hex")
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
-		call number(pbuffer,outfile)
+		call number(pbuffer) #,outfile
 		inc n
 	end
 	call unimplemented_end()
@@ -452,11 +451,21 @@ function writet(sd outfile)
 	callg write(outfile,#sc,1)
 end
 
-function write_longcast(sd outfile,sd buffer)
+function signed()
+end
+function unsigned(sd outfile)
+	char a="unsigned "^
+	callg write(outfile,#a,\.a)
+end
+function write_longcast_ex(sd outfile,sd buffer,sv sign)
 	call writel(outfile)
+	call sign(outfile)
 	call write(outfile,#write_long.a,\write_long.a-1)
 	call writer(outfile)
 	callg varfunc(#buffer,outfile)
+end
+function write_longcast(sd outfile,sd buffer)
+	callg write_longcast_ex(outfile,buffer,signed)
 end
 function write_void(sd outfile,sd pointer,sd size)
 	char a="void "^
