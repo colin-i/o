@@ -31,7 +31,7 @@ function action_areturn(sv pbuffer,sd outfile)
 		set loop.function_start (NULL) #if is not at endfunction, is here
 	end
 	char a="return "^  #also used at ret
-	call write(outfile,#a,\action_areturn.a)
+	call write(outfile,#a,\.a)
 	callg arg(pbuffer,outfile)
 end
 function action_aexit(sv pbuffer,sd outfile) #this exit() an option? now only entryraw/exit case
@@ -40,7 +40,7 @@ end
 function action_tinc(sv pbuffer,sd outfile)
 	call varfunc(pbuffer,outfile)
 	char a="++"^
-	callg write(outfile,#a,\action_tinc.a)
+	callg write(outfile,#a,\.a)
 end
 function action_tincst(sv pbuffer,sd outfile)
 	call varfunc(pbuffer,outfile)
@@ -49,7 +49,7 @@ end
 function action_tdec(sv pbuffer,sd outfile)
 	call varfunc(pbuffer,outfile)
 	char a="--"^
-	callg write(outfile,#a,\action_tdec.a)
+	callg write(outfile,#a,\.a)
 end
 function action_tdecst(sv pbuffer,sd outfile)
 	call varfunc(pbuffer,outfile)

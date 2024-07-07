@@ -140,7 +140,7 @@ function write_string(ss pointer,sd sz,sd outfile)
 				call write(outfile,start,c)
 			end
 			char bs=asciibs;char d#1
-			add r \write_string.chars
+			add r \.chars
 			set d r#
 			call write(outfile,#bs,2)
 			inc pointer

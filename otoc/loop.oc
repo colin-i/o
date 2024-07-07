@@ -140,12 +140,12 @@ end
 
 function write_void(sd outfile,sd pointer,sd size)
 	char a="void "^
-	call write(outfile,#a,\write_void.a)
+	call write(outfile,#a,\.a)
 	callg write(outfile,pointer,size)
 end
 function write_long(sd outfile,sd pointer,sd size)
 	char a="long*"^
-	call write(outfile,#a,\write_long.a)
+	call write(outfile,#a,\.a)
 	callg write(outfile,pointer,size)
 end
 
@@ -183,7 +183,7 @@ function include(sd outfile,sv pbuffer)
 	call get_string(pbuffer,#sz,#pointer)
 
 	char a="#include \""^
-	call write(outfile,#a,\include.a)
+	call write(outfile,#a,\.a)
 	call write(outfile,pointer,sz)
 	call writeq(outfile)
 	call writenl(outfile)
@@ -316,14 +316,14 @@ function callex(sd outfile,sv pbuffer)
 end
 function if(sd outfile,sv pbuffer)
 	char a="if"^
-	call write(outfile,#a,\if.a)
+	call write(outfile,#a,\.a)
 	callg cond(pbuffer,outfile)
 end
 function else()
 end
 function while(sd outfile,sv pbuffer)
 	char a="while"^
-	call write(outfile,#a,\while.a)
+	call write(outfile,#a,\.a)
 	callg cond(pbuffer,outfile)
 end
 function whiletrue(sd outfile)
@@ -389,7 +389,7 @@ function interrupt(sd outfile)
 	#this is no x86 #__asm__("BKPT");
 	char a="__builtin_trap();"^
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
-	callg writen(outfile,#a,\interrupt.a)
+	callg writen(outfile,#a,\.a)
 end
 function line(sd outfile)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment

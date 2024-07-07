@@ -46,7 +46,7 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
 		call fn(outfile)
 	else
 		char c="#define"^
-		call write(outfile,#c,\decl.c)
+		call write(outfile,#c,\.c)
 	end
 	call writes(outfile)
 
@@ -56,15 +56,15 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
 end
 function byte(sd outfile)
 	char a="char*"^
-	call write(outfile,#a,\byte.a-1)
+	call write(outfile,#a,\.a-1)
 end
 function word(sd outfile)
 	char a="short*"^
-	call write(outfile,#a,\word.a-1)
+	call write(outfile,#a,\.a-1)
 end
 function int(sd outfile)
 	char a="int*"^
-	call write(outfile,#a,\int.a-1)
+	call write(outfile,#a,\.a-1)
 end
 function intByte(sd outfile)
 	call write(outfile,#byte.a,\byte.a)
