@@ -27,6 +27,8 @@ function intern(data a,sd b,sv c) #commenting
 	dec a
 	incst c
 	decst c
+	neg c
+	not c
 	return c
 end
 function f()
