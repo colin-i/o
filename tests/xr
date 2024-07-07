@@ -1,0 +1,2 @@
+
+launcher=q ldprefer=1 LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd L=-L/home/bc/before/lib ./x $@
