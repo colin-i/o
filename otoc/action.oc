@@ -56,10 +56,12 @@ function action_tdecst(sv pbuffer,sd outfile)
 	callg write(outfile,#action_tdec.a,\action_tdec.a)
 end
 function action_tneg(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	char a="-"^
+	callg actionsimple(pbuffer,a,outfile)
 end
 function action_tnot(sv pbuffer,sd outfile)
-	callg varfunc(pbuffer,outfile)
+	char a="~"^
+	callg actionsimple(pbuffer,a,outfile)
 end
 function action_tshl1(sv pbuffer,sd outfile)
 	callg varfunc(pbuffer,outfile)
@@ -69,4 +71,12 @@ function action_tshr1(sv pbuffer,sd outfile)
 end
 function action_tsar1(sv pbuffer,sd outfile)
 	callg varfunc(pbuffer,outfile)
+end
+
+function actionsimple(sv pbuffer,sd act,sd outfile)
+	sd replay;set replay pbuffer#
+	call varfunc(pbuffer,outfile)
+	call writee(outfile)
+	call write(outfile,#act,1)
+	call write_longcast(outfile,replay)
 end

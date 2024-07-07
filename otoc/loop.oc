@@ -138,11 +138,6 @@ end
 
 #aftercalli *
 
-function write_void(sd outfile,sd pointer,sd size)
-	char a="void "^
-	call write(outfile,#a,\.a)
-	callg write(outfile,pointer,size)
-end
 function write_long(sd outfile,sd pointer,sd size)
 	char a="long*"^
 	call write(outfile,#a,\.a)
@@ -290,10 +285,7 @@ function action2(sd outfile,sv pbuffer)
 			set a2 (Xfile_action2_rem)
 		end
 
-		call writel(outfile)
-		call write(outfile,#write_long.a,\write_long.a-1)
-		call writer(outfile)
-		call varfunc(#replay,outfile)
+		call write_longcast(outfile,replay)
 		call write(outfile,#a2,1)
 	end
 
@@ -460,6 +452,17 @@ function writet(sd outfile)
 	callg write(outfile,#sc,1)
 end
 
+function write_longcast(sd outfile,sd buffer)
+	call writel(outfile)
+	call write(outfile,#write_long.a,\write_long.a-1)
+	call writer(outfile)
+	callg varfunc(#buffer,outfile)
+end
+function write_void(sd outfile,sd pointer,sd size)
+	char a="void "^
+	call write(outfile,#a,\.a)
+	callg write(outfile,pointer,size)
+end
 function writen(sd outfile,ss buf,sd sz)
 	call write(outfile,buf,sz)
 	callg writenl(outfile)
