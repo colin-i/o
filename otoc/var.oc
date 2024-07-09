@@ -133,7 +133,7 @@ const signed_cond=1
 	end
 
 	call writer(outfile)
-	callg writecl(outfile)
+	callg writecln(outfile)
 end
 
 #DoT

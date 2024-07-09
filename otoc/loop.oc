@@ -211,8 +211,7 @@ function functiondef(sd outfile,sv pbuffer)
 		set dest dest#
 		call dest(pbuffer,outfile)
 		call writer(outfile)
-		call writecl(outfile)
-		callg writenl(outfile)
+		callg writecln(outfile)
 		ret
 	end
 	call aftercallenable()
@@ -478,11 +477,15 @@ end
 function write_longcast(sd outfile,sd pbuffer)
 	callg write_longcast_ex(outfile,pbuffer,signed)
 end
-
 function write_void(sd outfile,sd pointer,sd size)
 	char a="void "^
 	call write(outfile,#a,\.a)
 	callg write(outfile,pointer,size)
+end
+
+function writecln(sd outfile)
+	call writecl(outfile)
+	callg writenl(outfile)
 end
 function writen(sd outfile,ss buf,sd sz)
 	call write(outfile,buf,sz)
