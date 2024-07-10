@@ -86,6 +86,9 @@ whiletrue
 	break
 end
 
+char z=0xff+077+12
+char zz=a1
+
 aftercall *tst
 override x_file 1
 i3
