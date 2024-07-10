@@ -50,17 +50,14 @@ function number_text_dec(sv pbuffer,sd outfile)
 	call get_string(pbuffer,#sz,#pointer)
 	callg write(outfile,pointer,sz)
 end
-function number_text_oct(sv pbuffer)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
+function number_text_oct(sv pbuffer,sd outfile)
+	callg number_text_dec(pbuffer,outfile)
 end
-function number_text_hex(sv pbuffer)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
+function number_text_hex(sv pbuffer,sd outfile)
+	callg number_text_dec(pbuffer,outfile)
 end
-function number_text_const(sv pbuffer)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
+function number_text_const(sv pbuffer,sd outfile)
+	callg number_text_dec(pbuffer,outfile)
 end
 function number_func_size(sv pbuffer)
 	datax sz#1;valuex pointer#1
