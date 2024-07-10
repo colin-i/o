@@ -17,7 +17,7 @@ include "number.h"
 		mult f :
 		add f #functions
 		set f f#
-		call f(pbuffer,outfile)
+		call f(outfile,pbuffer)
 		call get_char(pbuffer,#item)
 	end
 end
@@ -74,21 +74,26 @@ function number_var_offset(sv pbuffer,sd outfile)
 	callg dot(pbuffer,outfile)
 end
 
-function normal(sv pbuffer,sd outfile)
+function normal(sd outfile,sv pbuffer)
 	callg numbertype(pbuffer,outfile)
 end
-function neg(sv pbuffer,sd outfile)
+function neg(sd outfile,sv pbuffer)
+	call write(outfile,#action_tdec.a,1)
 	callg numbertype(pbuffer,outfile)
 end
-function not(sv pbuffer,sd outfile)
+function not(sd outfile,sv pbuffer)
+	call write(outfile,#action_tnot.a,1)
 	callg numbertype(pbuffer,outfile)
 end
-function notneg(sv pbuffer,sd outfile)
+function notneg(sd outfile,sv pbuffer)
+	call write(outfile,#action_tnot.a,2)
 	callg numbertype(pbuffer,outfile)
 end
 function open();end
 function close();end
-function add();end
+function add(sd outfile)
+	callg write(outfile,#action_tinc.a,1)
+end
 function sub();end
 function mul();end
 function div();end

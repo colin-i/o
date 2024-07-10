@@ -41,7 +41,7 @@ function action_aexit(sv pbuffer,sd outfile) #this exit() an option? now only en
 end
 function action_tinc(sv pbuffer,sd outfile)
 	call varfunc(pbuffer,outfile)
-	char a="++"^
+	char a={asciiplus,asciiplus}
 	callg write(outfile,#a,\.a)
 end
 function action_tincst(sv pbuffer,sd outfile)
@@ -50,7 +50,7 @@ function action_tincst(sv pbuffer,sd outfile)
 end
 function action_tdec(sv pbuffer,sd outfile)
 	call varfunc(pbuffer,outfile)
-	char a="--"^
+	char a={asciihyphen,asciihyphen}
 	callg write(outfile,#a,\.a)
 end
 function action_tdecst(sv pbuffer,sd outfile)
@@ -58,11 +58,12 @@ function action_tdecst(sv pbuffer,sd outfile)
 	callg write(outfile,#action_tdec.a,\action_tdec.a)
 end
 function action_tneg(sv pbuffer,sd outfile)
-	char a="-"^
+	char a=asciihyphen
 	callg actionsimple(pbuffer,a,outfile)
 end
 function action_tnot(sv pbuffer,sd outfile)
-	char a="~"^
+	char a=asciinot
+	char *=asciihyphen   #this is fast for notneg function
 	callg actionsimple(pbuffer,a,outfile)
 end
 function action_tbase(sv pbuffer)
@@ -71,11 +72,11 @@ function action_tbase(sv pbuffer)
 	call unimplemented_end()
 end
 function action_tshl1(sv pbuffer,sd outfile)
-	char a="<<"^
+	char a={asciileft,asciileft}
 	callg actionshift1(pbuffer,#a,signed,outfile)
 end
 function action_tshr1(sv pbuffer,sd outfile)
-	char a=">>"^
+	char a={asciiright,asciiright}
 	callg actionshift1(pbuffer,#a,unsigned,outfile)
 end
 function action_tsar1(sv pbuffer,sd outfile)

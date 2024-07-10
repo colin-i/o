@@ -388,8 +388,8 @@ function interrupt(sd outfile)
 end
 function line(sd outfile)
 	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
-	char a=asciisemicolon
-	callg write(outfile,#a,1)
+	#char a=asciisemicolon
+	#callg write(outfile,#a,1)
 end
 
 function write(sd outfile,ss buf,sd sz)
