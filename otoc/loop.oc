@@ -145,15 +145,18 @@ function unimplemented()
 end
 
 function write_long(sd outfile,sd pointer,sd size)
-	char a="long*"^
-	call write(outfile,#a,\.a)
+const write_long_cast_start=\
+	char a="long"^
+	char *point=asciiasterisk
+const write_long_cast=\-write_long_cast_start
+	call write(outfile,#a,(write_long_cast))
 	callg write(outfile,pointer,size)
 end
 
 include "action.oc"
 include "decl.oc"
-include "number.oc"
 include "var.oc"
+include "number.oc"
 
 function comment(sd outfile,sv pbuffer)
 	char a="//"^
@@ -419,8 +422,7 @@ function writecr(sd outfile)
 	callg write(outfile,#a,1)
 end
 function writee(sd outfile)
-	char a=asciiequal
-	callg write(outfile,#a,1)
+	callg write(outfile,#cond.eq,1)
 end
 function writel(sd outfile)
 	char a=asciiparenthesisleft
@@ -464,7 +466,7 @@ end
 function write_longcast_ex_ex(sd outfile,sd pbuffer,sv sign,sv fn)
 	call writel(outfile)
 	call sign(outfile)
-	call write(outfile,#write_long.a,\write_long.a-1)
+	call write(outfile,#write_long.a,\write_long.a)
 	call writer(outfile)
 	callg fn(pbuffer,outfile)
 end

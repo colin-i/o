@@ -89,35 +89,93 @@ function notneg(sd outfile,sv pbuffer)
 	call write(outfile,#action_tnot.a,2)
 	callg numbertype(pbuffer,outfile)
 end
-function open();end
-function close();end
+function open()
+#	writel
+end
+function close()
+#	writer
+end
 function add(sd outfile)
 	callg write(outfile,#action_tinc.a,1)
 end
-function sub();end
-function mul();end
-function div();end
-function divu();end
-function and();end
-function or();end
-function xor();end
-function pow();end
-function rem();end
-function remu();end
-function shl();end
-function sar();end
-function shr();end
-function equal();end
-function inequal();end
-function less();end
-function greater();end
-function lessequal();end
-function greaterequal();end
-function logicaland();end
-function logicalor();end
-function unsignedless();end
-function unsignedgreater();end
-function unsignedlessequal();end
-function unsignedgreaterequal();end
-function parity();end
-function odd();end
+function sub(sd outfile)
+	callg write(outfile,#action_tdec.a,1)
+end
+function mul()
+#	write_long.point
+end
+function div()
+#	comment.a
+end
+function divu()
+#	div
+end
+function and()
+#	asciiand,
+end
+function or()
+#	asciior,
+end
+function xor()
+#	asciicirc
+end
+function pow()
+#	unimplemented
+end
+function rem()
+#	asciipercent
+end
+function remu()
+#	rem
+end
+function shl()
+#	action_tshl1
+end
+function sar()
+#	action_tshr1
+end
+function shr()
+#	action_tshr1
+end
+function equal()
+#	cond.eq
+end
+function inequal()
+#	cond.ne
+end
+function less()
+#	action_tshl1
+end
+function greater()
+#	action_tshr1
+end
+function lessequal()
+#	cond.le
+end
+function greaterequal()
+#	cond.ge
+end
+function logicaland()
+#	and
+end
+function logicalor()
+#	or
+end
+function unsignedless()
+#	less
+end
+function unsignedgreater()
+#	greater
+end
+function unsignedlessequal()
+#	lessequal
+end
+function unsignedgreaterequal()
+#	greaterequal
+end
+function parity()
+#	unimplemented
+end
+function odd()
+#	unimplemented
+end

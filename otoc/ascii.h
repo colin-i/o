@@ -12,7 +12,6 @@ const asciihyphen=0x2d
 const asciidot=0x2e
 const asciisemicolon=0x3b
 const asciileft=0x3c
-const asciiequal=0x3d
 const asciiright=0x3e
 const asciisquareleft=0x5B
 const asciisquareright=0x5D

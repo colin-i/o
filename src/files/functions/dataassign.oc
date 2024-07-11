@@ -418,6 +418,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			if err=(noerror)
 				call advancecursors(ptrcontent,ptrsize,value)
 				sub value escapes
+				call stepcursors(ptrcontent,ptrsize) # is the last quote
 				subcall value string_pop(ptrcontent,ptrsize)
 				add punitsize# value
 				call advancecursors(ptrcontent,ptrsize,ptrsize#)

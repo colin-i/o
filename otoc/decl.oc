@@ -70,7 +70,7 @@ function intByte(sd outfile)
 	call write(outfile,#byte.a,\byte.a)
 end
 function long(sd outfile)
-	call write(outfile,#write_long.a,\write_long.a)
+	call write(outfile,#write_long.a,(write_long_cast))
 end
 #function longByte()end
 function longWord(sd outfile)

@@ -91,18 +91,18 @@ const unsigned_cond=0
 const signed_cond=1
 	char conds=unsigned_cond;char *=">="^
 	char     *=unsigned_cond;char *=asciinul;char *="<"^
-	char     *=signed_cond;  char *="!="^
-	char     *=signed_cond;  char *="=="^
+	char     *=signed_cond;  char *ne="!="^
+	char     *=signed_cond;  char eq="=="^
 	char     *=unsigned_cond;char *=asciinul;char *=">"^
 	char     *=unsigned_cond;char *="<="^
 	char     *=unimplemented;char *#2
 	char     *=unimplemented;char *#2
 	char     *=unimplemented;char *#2  #notparity
 	char     *=unimplemented;char *#2  #parity
-	char     *=signed_cond;  char *=">="^
+	char     *=signed_cond;  char *ge=">="^
 	char     *=signed_cond;  char *=asciinul;char *="<"^
 	char     *=signed_cond;  char *=asciinul;char *=">"^
-	char     *=signed_cond;  char *="<="^
+	char     *=signed_cond;  char *le="<="^
 
 	sub cnd (Xfile_cond_first)
 	ss set=1+2
