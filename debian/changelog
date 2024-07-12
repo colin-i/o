@@ -1,3 +1,9 @@
+ocompiler (1-5+185) xenial; urgency=medium
+
+  * fix ""^ and pass init
+
+ -- bc <bc@bc-desktop>  Fri, 12 Jul 2024 07:44:01 +0300
+
 ocompiler (1-5+184) xenial; urgency=medium
 
   * and fix test
