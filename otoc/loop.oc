@@ -147,16 +147,11 @@ end
 function write_long(sd outfile,sd pointer,sd size)
 const write_long_cast_start=\
 	char a="long"^
-	char *point=asciiasterisk
+	char point=asciiasterisk
 const write_long_cast=\-write_long_cast_start
 	call write(outfile,#a,(write_long_cast))
 	callg write(outfile,pointer,size)
 end
-
-include "action.oc"
-include "decl.oc"
-include "var.oc"
-include "number.oc"
 
 function comment(sd outfile,sv pbuffer)
 	char a="//"^
@@ -165,6 +160,12 @@ function comment(sd outfile,sv pbuffer)
 	call get_string(pbuffer,#sz,#pointer)
 	callg writen(outfile,pointer,sz)
 end
+
+include "action.oc"
+include "decl.oc"
+include "var.oc"
+include "number.oc"
+
 function commentmulti(sd outfile,sv pbuffer)
 	char b=asciiasterisk
 	char a="/*"^

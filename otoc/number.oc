@@ -89,11 +89,11 @@ function notneg(sd outfile,sv pbuffer)
 	call write(outfile,#action_tnot.a,2)
 	callg numbertype(pbuffer,outfile)
 end
-function open()
-#	writel
+function open(sd outfile)
+	callg writel(outfile)
 end
-function close()
-#	writer
+function close(sd outfile)
+	callg writer(outfile)
 end
 function add(sd outfile)
 	callg write(outfile,#action_tinc.a,1)
@@ -101,11 +101,11 @@ end
 function sub(sd outfile)
 	callg write(outfile,#action_tdec.a,1)
 end
-function mul()
-#	write_long.point
+function mul(sd outfile)
+	callg write(outfile,#write_long.point,1)
 end
-function div()
-#	comment.a
+function div(sd outfile)
+	callg write(outfile,#comment.a,1)
 end
 function divu()
 #	div

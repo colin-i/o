@@ -86,7 +86,7 @@ whiletrue
 	break
 end
 
-char z=0xff+077+12-3
+char z=0xff+077+12-3+(4*3/2)
 char z2=a1;char z3=-a1;char z4=~a1;char z5=~-a1;
 
 aftercall *tst
