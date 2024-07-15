@@ -107,75 +107,79 @@ end
 function div(sd outfile)
 	callg write(outfile,#comment.a,1)
 end
-function divu()
-#	div
+function divu(sd outfile)
+	callg div(outfile)
 end
-function and()
-#	asciiand,
+function and(sd outfile)
+	char a={asciiand,asciiand}
+	callg write(outfile,#a,1)
 end
-function or()
-#	asciior,
+function or(sd outfile)
+	char a={asciior,asciior}
+	callg write(outfile,#a,1)
 end
-function xor()
-#	asciicirc
+function xor(sd outfile)
+	char a={asciicirc,asciicirc}
+	callg write(outfile,#a,1)
 end
 function pow()
-#	unimplemented
+	call unimplemented()
 end
-function rem()
-#	asciipercent
+function rem(sd outfile)
+	char a={asciipercent}
+	callg write(outfile,#a,1)
 end
-function remu()
-#	rem
+function remu(sd outfile)
+	callg rem(outfile)
 end
-function shl()
-#	action_tshl1
+function shl(sd outfile)
+	callg write(outfile,#action_tshl1.a,\action_tshl1.a)
 end
-function sar()
-#	action_tshr1
+function sar(sd outfile)
+	callg write(outfile,#action_tshr1.a,\action_tshr1.a)
 end
-function shr()
-#	action_tshr1
+function shr(sd outfile)
+	callg sar(outfile)
 end
-function equal()
-#	cond.eq
+function equal(sd outfile)
+	callg write(outfile,#cond.eq,\cond.eq)
 end
-function inequal()
-#	cond.ne
+function inequal(sd outfile)
+	callg write(outfile,#cond.ne,\cond.ne)
 end
-function less()
-#	action_tshl1
+function less(sd outfile)
+	callg write(outfile,#action_tshl1.a,1)
 end
-function greater()
-#	action_tshr1
+function greater(sd outfile)
+	callg write(outfile,#action_tshr1.a,1)
 end
-function lessequal()
-#	cond.le
+function lessequal(sd outfile)
+	callg write(outfile,#cond.le,\cond.le)
 end
-function greaterequal()
-#	cond.ge
+function greaterequal(sd outfile)
+	callg write(outfile,#cond.ge,\cond.ge)
 end
-function logicaland()
-#	and
+function logicaland(sd outfile)
+	callg write(outfile,#and.a,\and.a)
 end
-function logicalor()
-#	or
+function logicalor(sd outfile)
+	callg write(outfile,#or.a,\or.a)
 end
-function unsignedless()
-#	less
+function unsignedless(sd outfile)
+	callg less(outfile)
 end
-function unsignedgreater()
-#	greater
+function unsignedgreater(sd outfile)
+	callg greater(outfile)
 end
-function unsignedlessequal()
-#	lessequal
+function unsignedlessequal(sd outfile)
+	callg lessequal(outfile)
 end
-function unsignedgreaterequal()
-#	greaterequal
+function unsignedgreaterequal(sd outfile)
+	callg greaterequal(outfile)
 end
 function parity()
-#	unimplemented
+	call unimplemented()
 end
 function odd()
-#	unimplemented
+	call unimplemented()
 end
