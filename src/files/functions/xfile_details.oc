@@ -117,6 +117,7 @@ endfunction
 #			write((Xfile_function_tintern_struct))
 #			seek end
 #		endif
+#		set main.xstruct (unierror)
 #	endif
 #endfunction
 
