@@ -183,7 +183,7 @@ Function writefile(data hfile,str buf,data ln)
 	If writeres!=ln
 		sd writeerr%writefile_err_p
 		Call Message(writeerr)
-		Return (writeno)
+		Return (unierror)
 	EndIf
 	Return writeres
 EndFunction
@@ -218,7 +218,7 @@ EndFunction
 Function padwrite(data hfile,data size)
 	Data padmem#1
 	Data null=NULL
-	Data writefalse=writeno
+	Data writefalse=unierror
 	SetCall padmem memcalloc(size)
 	If padmem=null
 		return writefalse
@@ -242,7 +242,7 @@ Function paddedwrite(data hfile,str buf,data ln,data pad)
 	EndElse
 	Data writeres#1
 	If ln!=zero
-		Data writefalse=writeno
+		Data writefalse=unierror
 		SetCall writeres writefile(hfile,buf,ln)
 		If writeres=writefalse
 			Return writefalse
@@ -320,7 +320,7 @@ endfunction
 #lseek
 function tellfile(sd file,sv perr)
 	sd p;setcall p lseek(file,0,(SEEK_CUR))
-	if p=-1    #see the other lseek
+	if p=(unierror)    #see the other lseek
 		set perr# "lseek error"
 	endif
 	return p

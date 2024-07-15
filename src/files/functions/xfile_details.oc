@@ -89,6 +89,36 @@ function xfile_add_fndef_if(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
 	endif
 	return (noerror)
 endfunction
+#err
+#function xfile_fndef_struct_if()
+#	if main.xfile!=(openno)
+#		sd err
+#		setcall main.xstruct tellfile(main.xfile,#err)
+#		if err=(noerror)
+#			setcall err xfile_add_char((Xfile_function_tintern_normal))
+#		endif
+#		return err
+#	endif
+#	return (noerror)
+#endfunction
+#function xfile_fndef_structstart_if()
+#	if main.xfile!=(openno)
+#		value code%%ptr_codesec
+#		call getcontReg(code,#main.xstruct_reg)
+#	endif
+#endfunction
+#function xfile_fndef_structend_if()
+#	if main.xstruct!=(unierror)
+#		datax reg#1
+#		value code%%ptr_codesec
+#		call getcontReg(code,#reg)
+#		if reg=main.xstruct_reg
+#			seek
+#			write((Xfile_function_tintern_struct))
+#			seek end
+#		endif
+#	endif
+#endfunction
 
 #err
 function xfile_add_varsufix_if(sd content,sd size,sd sufix,sd cast)

@@ -113,3 +113,5 @@ set breakflag (FALSE)
 set ret_cont_break (ret_cont_break_notyet)
 
 set entryReg (lastReg)
+
+#set xtruct (unierror)

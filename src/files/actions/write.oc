@@ -12,7 +12,7 @@ EndIf
 
 #headers
 Data writeres#1
-Data writefalse=writeno
+Data writefalse=unierror
 
 SetCall writeres writefile(fileout,fileheaders,sizefileheaders)
 If writeres=writefalse

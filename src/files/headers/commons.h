@@ -22,7 +22,7 @@ Const SEEK_SET=0
 Const SEEK_CUR=1
 Const SEEK_END=2
  #write
-Const writeno=-1
+Const unierror=-1
  #chdir
 Const chdirok=0
 data chdirok=chdirok

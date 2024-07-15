@@ -41,6 +41,7 @@ function endfunction(sd parses)
 						Set indexptr# 0
 						Inc i
 					EndWhile
+					#call xfile_fndef_structend_if()
 				else
 					return err
 				endelse

@@ -555,3 +555,6 @@ const global_err_extern=2  #write and search unrefs
 datax entryReg#1
 const lastReg=-1  #there is no entry at this address
 valuex innerReg#1  #value? is faster at fn.oc for less coding
+
+#valuex xtruct#1
+#datax xtruct_reg#1
