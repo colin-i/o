@@ -42,6 +42,10 @@ function f()
 	end
 end
 
+function st()
+	datax a#1
+end
+
 library "a"
 import "b" puts
 
