@@ -1,7 +1,7 @@
 
 #aftercalli
 
-function functiondef_intern(sv pbuffer,sd outfile)
+function functiondef_raw(sv pbuffer,sd outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
 		charx type#1;charx field#1
@@ -13,10 +13,13 @@ function functiondef_intern(sv pbuffer,sd outfile)
 		end
 	end
 end
-#function functiondef_raw(sv pbuffer)
+function functiondef_intern(sv pbuffer,sd outfile)
+	charx s#1;call get_char(pbuffer,#s)
+	callg functiondef_raw(pbuffer,outfile)
+end
 function functiondef_extern(sv pbuffer,sd outfile)
 	charx e#1;call get_char(pbuffer,#e)
-	callg functiondef_intern(pbuffer,outfile)
+	callg functiondef_raw(pbuffer,outfile)
 end
 #function functiondef_entry(sv pbuffer)
 

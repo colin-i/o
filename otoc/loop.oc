@@ -206,7 +206,7 @@ function functiondef(sd outfile,sv pbuffer)
 		call write_void(outfile,pointer,sz)
 		call writel(outfile)
 		value intern^functiondef_intern
-		value *raw^functiondef_intern       #functiondef_raw
+		value *raw^functiondef_raw
 		value *extern^functiondef_extern
 		value *entry^functiondef_extern     #functiondef_entry
 		charx type#1;call get_char(pbuffer,#type)

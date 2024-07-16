@@ -173,7 +173,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			if subtype=(cFUNCTION)
 				call scope64_set((FALSE))
 				setcall err xfile_add_fndef_if(content,sz,(Xfile_function_tintern),(Xfile_function_not_x)) #,arg
-				#xfile_fndef_struct_if
+				If err=noerr;setcall err xfile_fndef_struct_if();endif
 			else
 				#functionx,entry in 64 conventions
 				if subtype!=(Xfile_function_traw)
@@ -257,9 +257,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 		EndIf
 		if parses=(pass_write)
 			call entryscope()
-			#if subtype=(cFUNCTION)
-			#	call xfile_fndef_structstart_if()
-			#endif
+			if subtype=(cFUNCTION)
+				call xfile_fndef_structstart_if()
+			endif
 		endif
 	Else
 		if parses=(pass_init)

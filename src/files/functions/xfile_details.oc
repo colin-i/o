@@ -90,36 +90,41 @@ function xfile_add_fndef_if(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
 	return (noerror)
 endfunction
 #err
-#function xfile_fndef_struct_if()
-#	if main.xfile!=(openno)
-#		sd err
-#		setcall main.xstruct tellfile(main.xfile,#err)
-#		if err=(noerror)
-#			setcall err xfile_add_char((Xfile_function_tintern_normal))
-#		endif
-#		return err
-#	endif
-#	return (noerror)
-#endfunction
-#function xfile_fndef_structstart_if()
-#	if main.xfile!=(openno)
-#		value code%%ptr_codesec
-#		call getcontReg(code,#main.xstruct_reg)
-#	endif
-#endfunction
-#function xfile_fndef_structend_if()
-#	if main.xstruct!=(unierror)
-#		datax reg#1
-#		value code%%ptr_codesec
-#		call getcontReg(code,#reg)
-#		if reg=main.xstruct_reg
-#			seek
-#			write((Xfile_function_tintern_struct))
-#			seek end
-#		endif
-#		set main.xstruct (unierror)
-#	endif
-#endfunction
+function xfile_fndef_struct_if()
+	if main.xfile!=(openno)
+		sd err
+		setcall main.xstruct tellfile(main.xfile,#err)
+		if main.xstruct!=(unierror)
+			set main.xstruct_dreg main.datasecSize ##also need to differentiate from a dummy function
+
+			setcall err xfile_add_char((Xfile_function_tintern_normal))
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction
+function xfile_fndef_structstart_if()
+	if main.xfile!=(openno)
+		value code%%ptr_codesec
+		call getcontReg(code,#main.xstruct_reg)
+	endif
+endfunction
+function xfile_fndef_structend_if()
+	if main.xstruct!=(unierror)
+		datax reg#1
+		value code%%ptr_codesec
+		call getcontReg(code,#reg)
+		if reg=main.xstruct_reg
+			if main.xstruct_dreg=main.datasecSize
+				call lseek(main.xfile,main.xstruct,(SEEK_SET))
+				char a=Xfile_function_tintern_struct
+				call write(main.xfile,#a,1)
+				call lseek(main.xfile,0,(SEEK_END)) #what if on extra? will return -1 but will move. to test, a next SEEK_CUR will be -1, and write?
+			endif
+		endif
+		set main.xstruct (unierror)
+	endif
+endfunction
 
 #err
 function xfile_add_varsufix_if(sd content,sd size,sd sufix,sd cast)
@@ -144,7 +149,7 @@ function xfile_prepare_commas_if()
 	if main.xfile!=(openno)
 		sd err
 		setcall main.xf_pos tellfile(main.xfile,#err)
-		if main.xf_pos=-1
+		if main.xf_pos=(unierror)
 			return err
 		endif
 	endif
@@ -161,7 +166,7 @@ function xfile_add_commas_if()
 	if main.xfile!=(openno)
 		sd err
 		sd off;setcall off tellfile(main.xfile,#err)
-		if off=-1;return err;endif
+		if off=(unierror);return err;endif
 		sub off main.xf_pos
 		sd mem
 		setcall err mem_alloc(off,#mem)

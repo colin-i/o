@@ -30,7 +30,7 @@ const Xfile_override=23
 const Xfile_orphan=24
 const Xfile_interrupt=25
 const Xfile_line=26
-#at the moment these are <= 0xff
+#at the moment these are < 0x100
 
 #t from type
 const Xfile_function_tintern=0
@@ -38,6 +38,9 @@ const Xfile_function_traw=1
 #const Xfile_function_not_x=Xfile_function_traw
 const Xfile_function_extern=2
 const Xfile_function_entry=3
+
+const Xfile_function_tintern_normal=0
+const Xfile_function_tintern_struct=1
 
 const Xfile_function_e_normal=0
 const Xfile_function_e_varargs=1

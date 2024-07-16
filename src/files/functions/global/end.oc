@@ -16,6 +16,8 @@ function endfunction(sd parses)
 			setCall err checkcondloopclose()
 			If err=(noerror)
 				if main.ret_cont_break=(ret_cont_break_no)
+					call xfile_fndef_structend_if()
+
 					data ptrreturn#1
 					data sizereturn#1
 					data ptrptrreturn^ptrreturn
@@ -41,7 +43,6 @@ function endfunction(sd parses)
 						Set indexptr# 0
 						Inc i
 					EndWhile
-					#call xfile_fndef_structend_if()
 				else
 					return err
 				endelse
