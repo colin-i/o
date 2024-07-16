@@ -1,3 +1,9 @@
+ocompiler (1-5+186) xenial; urgency=medium
+
+  * _tintern_*
+
+ -- bc <bc@bc-desktop>  Tue, 16 Jul 2024 13:24:09 +0300
+
 ocompiler (1-5+185) xenial; urgency=medium
 
   * fix ""^ and pass init
