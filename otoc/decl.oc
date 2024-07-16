@@ -1,7 +1,7 @@
 
 #aftercalli
 
-function functiondef_raw(sv pbuffer,sd outfile)
+function functiondef_d(sv pbuffer,sd outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
 		charx type#1;charx field#1
@@ -13,13 +13,31 @@ function functiondef_raw(sv pbuffer,sd outfile)
 		end
 	end
 end
-function functiondef_intern(sv pbuffer,sd outfile)
-	charx s#1;call get_char(pbuffer,#s)
-	callg functiondef_raw(pbuffer,outfile)
+function functiondef_raw(sv pbuffer,sd outfile,sd pointer,sd sz)
+	set loop.function_start ftell(outfile)
+	if loop.function_start!=-1
+		call write_void(outfile,pointer,sz)
+		call writel(outfile)
+		call functiondef_d(pbuffer,outfile)
+		callg writer(outfile)
+		ret
+	end
+	call aftercallenable()
 end
-function functiondef_extern(sv pbuffer,sd outfile)
+function functiondef_intern(sv pbuffer,sd outfile,sd pointer,sd sz)
+	charx s#1;call get_char(pbuffer,#s)
+	if s=(Xfile_function_tintern_normal)
+		call functiondef_raw(pbuffer,outfile,pointer,sz)
+	else
+		char a="struct "^
+		call write(outfile,#a,\.a)
+		call write(outfile,pointer,sz)
+		callg functiondef_d(pbuffer,outfile)
+	end
+end
+function functiondef_extern(sv pbuffer,sd outfile,sd pointer,sd sz)
 	charx e#1;call get_char(pbuffer,#e)
-	callg functiondef_raw(pbuffer,outfile)
+	callg functiondef_raw(pbuffer,outfile,pointer,sz)
 end
 #function functiondef_entry(sv pbuffer)
 

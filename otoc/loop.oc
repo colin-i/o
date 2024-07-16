@@ -199,26 +199,20 @@ function include(sd outfile,sv pbuffer)
 	end
 end
 function functiondef(sd outfile,sv pbuffer)
-	set loop.function_start ftell(outfile)
-	if loop.function_start!=-1
-		datax sz#1;valuex pointer#1
-		call get_string(pbuffer,#sz,#pointer)
-		call write_void(outfile,pointer,sz)
-		call writel(outfile)
-		value intern^functiondef_intern
-		value *raw^functiondef_raw
-		value *extern^functiondef_extern
-		value *entry^functiondef_extern     #functiondef_entry
-		charx type#1;call get_char(pbuffer,#type)
-		mult type :
-		sv dest^intern;add dest type
-		set dest dest#
-		call dest(pbuffer,outfile)
-		call writer(outfile)
-		callg writecln(outfile)
-		ret
-	end
-	call aftercallenable()
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+
+	value intern^functiondef_intern
+	value *raw^functiondef_raw
+	value *extern^functiondef_extern
+	value *entry^functiondef_extern     #functiondef_entry
+	charx type#1;call get_char(pbuffer,#type)
+	mult type :
+	sv dest^intern;add dest type
+	set dest dest#
+	call dest(pbuffer,outfile,pointer,sz)
+
+	callg writecln(outfile)
 end
 function declare(sd outfile,sv pbuffer)
 	charx type#1;charx field#1
@@ -334,7 +328,7 @@ function continue()
 end
 function end(sd outfile)
 	call writecr(outfile)
-	callg writenl(outfile)
+	callg writetn(outfile) #with termination only for struct
 end
 function ret(sd outfile)
 	call write(outfile,#action_areturn.a,\action_areturn.a-1)

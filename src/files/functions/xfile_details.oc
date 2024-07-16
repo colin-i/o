@@ -115,7 +115,7 @@ function xfile_fndef_structend_if()
 		value code%%ptr_codesec
 		call getcontReg(code,#reg)
 		if reg=main.xstruct_reg
-			if main.xstruct_dreg=main.datasecSize
+			if main.xstruct_dreg!=main.datasecSize
 				call lseek(main.xfile,main.xstruct,(SEEK_SET))
 				char a=Xfile_function_tintern_struct
 				call write(main.xfile,#a,1)
