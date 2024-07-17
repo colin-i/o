@@ -312,7 +312,15 @@ function if(sd outfile,sv pbuffer)
 	call write(outfile,#a,\.a)
 	callg cond(pbuffer,outfile)
 end
-function else()
+function else(sd outfile,sv pbuffer)
+	char a="else "^
+	call writecr(outfile)
+	call write(outfile,#a,\.a)
+	# next is { or if
+	ss buffer;set buffer pbuffer#
+	if buffer#!=(Xfile_if)
+		callg writecln(outfile)
+	end
 end
 function while(sd outfile,sv pbuffer)
 	char a="while"^
