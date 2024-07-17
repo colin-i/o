@@ -1,3 +1,9 @@
+ocompiler (1-5+187) xenial; urgency=medium
+
+  * there must test if has size is struct else dummy function
+
+ -- bc <bc@bc-desktop>  Wed, 17 Jul 2024 07:47:40 +0300
+
 ocompiler (1-5+186) xenial; urgency=medium
 
   * _tintern_*
