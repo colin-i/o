@@ -66,8 +66,8 @@ function action_tnot(sv pbuffer,sd outfile)
 	char *=asciihyphen   #this is fast for notneg function
 	callg actionsimple(pbuffer,a,outfile)
 end
-function action_tbase(sv pbuffer)
-	call unimplemented_start("base/leave")
+function action_tbase(sv pbuffer,sd outfile)
+	call unimplemented_start("base/leave",outfile)
 	call varfunc(pbuffer)
 	call unimplemented_end()
 end

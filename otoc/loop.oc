@@ -38,11 +38,30 @@ function loop(sd pointer,sd delim,sd output)
 	set directwrite (TRUE)
 	valuex function_start#1
 	set function_start (NULL)
+	charx indentation#1
+	set indentation 0
 
 	add delim pointer
 	while pointer!=delim
 		charx command#1;call get_char(#pointer,#command)
 		#if command>(Xfile_last);call puts("Error");break;end
+
+		whiletrue
+			if command!=(Xfile_end)
+				if command!=(Xfile_else)
+					break
+				end
+			end
+			dec indentation
+			break
+		end
+		sd i;set i indentation
+		while i>0
+			char a=asciitab
+			call write(output,#a,1)
+			dec i
+		end
+
 		value Xfile_comment^comment
 		value *Xfile_commentmulti^commentmulti
 		value *Xfile_commentlineend^commentlineend
@@ -123,9 +142,28 @@ function get_string(sv pbuffer,sd psize,sv ppointer)
 	add pbuffer# psize#
 end
 
-function unimplemented_start(ss com)
+function backnl(sd outfile)
+	call fseek(outfile,-1,(SEEK_CUR))
+end
+function backindent(sd outfile)
+	sd i=1
+	mult i loop.indentation  ##0 or more
+	neg i
+	call fseek(outfile,i,(SEEK_CUR))
+end
+function line_continuation(sd outfile)
+	call backindent(outfile)
+	call backnl(outfile)
+end
+
+function line(sd outfile) #this with the functions but is throwless
+	call line_continuation(outfile)
+end
+
+function unimplemented_start(ss com,sd outfile)
 	call printf("Unimplemented command: %s\n",com)
 	set loop.allowwrite (FALSE)
+	call backindent(outfile)
 end
 function unimplemented_end()
 	set loop.allowwrite (TRUE)
@@ -176,7 +214,7 @@ function commentmulti(sd outfile,sv pbuffer)
 	callg writen(outfile,#b,2)
 end
 function commentlineend(sd outfile,sv pbuffer)
-	call fseek(outfile,-1,(SEEK_CUR)) #this one and line command
+	call line_continuation(outfile)
 	callg comment(outfile,pbuffer)
 end
 function format(sd *outfile,sv pbuffer) #will do nothing at the moment
@@ -298,8 +336,8 @@ function call(sd outfile,sv pbuffer)
 	call cll(pbuffer,outfile)
 	callg writetn(outfile)
 end
-function callex(sd *outfile,sv pbuffer)
-	call unimplemented_start("callex")  #at some structures is complicated
+function callex(sd outfile,sv pbuffer)
+	call unimplemented_start("callex",outfile)  #at some structures is complicated
 	char c#1;call get_char(pbuffer,#c)
 	call cal(pbuffer) #,outfile
 	call varfunc(pbuffer) #,outfile
@@ -313,13 +351,15 @@ function if(sd outfile,sv pbuffer)
 	callg cond(pbuffer,outfile)
 end
 function else(sd outfile,sv pbuffer)
-	char a="else "^
+	char a="else"^
 	call writecr(outfile)
 	call write(outfile,#a,\.a)
 	# next is { or if
 	ss buffer;set buffer pbuffer#
 	if buffer#!=(Xfile_if)
-		callg writecln(outfile)
+		call writecln(outfile)
+	else
+		callg writes(outfile)
 	end
 end
 function while(sd outfile,sv pbuffer)
@@ -328,6 +368,7 @@ function while(sd outfile,sv pbuffer)
 	callg cond(pbuffer,outfile)
 end
 function whiletrue(sd outfile)
+	inc loop.indentation
 	callg writen(outfile,"{",1)
 end
 function break()
@@ -368,8 +409,8 @@ function aftercall(sd *outfile,sv pbuffer)
 		end
 	end
 end
-function hex(sd *outfile,sv pbuffer)
-	call unimplemented_start("hex")
+function hex(sd outfile,sv pbuffer)
+	call unimplemented_start("hex",outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
 		call number(pbuffer) #,outfile
@@ -391,11 +432,6 @@ function interrupt(sd outfile)
 	char a="__builtin_trap();"^
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
 	callg writen(outfile,#a,\.a)
-end
-function line(sd outfile)
-	call fseek(outfile,-1,(SEEK_CUR)) #this one and lineend comment
-	#char a=asciisemicolon
-	#callg write(outfile,#a,1)
 end
 
 function write(sd outfile,ss buf,sd sz)
@@ -489,6 +525,7 @@ function write_void(sd outfile,sd pointer,sd size)
 end
 
 function writecln(sd outfile)
+	inc loop.indentation
 	call writecl(outfile)
 	callg writenl(outfile)
 end

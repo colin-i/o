@@ -1,5 +1,6 @@
 
 const asciinul=0x0
+const asciitab=0x9
 const asciinewline=0xa
 const asciispace=0x20
 const asciidquote=0x22
