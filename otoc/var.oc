@@ -75,67 +75,6 @@ function carg_resolve_one(sv left,sv right,sd outfile)
 	callg write(outfile,left,right)
 end
 
-#CD structure
-function cond(sv pbuffer,sd outfile)
-	call writel(outfile)
-
-	#here is not o,must know signed/unsigned at start
-	sd replay;set replay pbuffer#
-	set loop.allowwrite (FALSE)
-	call arg(pbuffer) #,outfile
-	set loop.allowwrite (TRUE)
-	charx cnd#1;call get_char(pbuffer,#cnd)
-
-const unimplemented=-1
-const unsigned_cond=0
-const signed_cond=1
-	char conds=unsigned_cond;char *=">="^
-	char     *=unsigned_cond;char *=asciinul;char *="<"^
-	char     *=signed_cond;  char ne="!="^
-	char     *=signed_cond;  char eq="=="^
-	char     *=unsigned_cond;char *=asciinul;char *=">"^
-	char     *=unsigned_cond;char *="<="^
-	char     *=unimplemented;char *#2
-	char     *=unimplemented;char *#2
-	char     *=unimplemented;char *#2  #notparity
-	char     *=unimplemented;char *#2  #parity
-	char     *=signed_cond;  char ge=">="^
-	char     *=signed_cond;  char *=asciinul;char *="<"^
-	char     *=signed_cond;  char *=asciinul;char *=">"^
-	char     *=signed_cond;  char le="<="^
-
-	sub cnd (Xfile_cond_first)
-	ss set=1+2
-	mult set cnd
-	add set #conds
-	sd type;set type set#
-	inc set
-
-	if type=(unsigned_cond)
-		call write_longcast_arg(outfile,#replay)
-	elseif type=(signed_cond)
-		call arg(#replay,outfile)
-	else
-		call unimplemented()
-	end
-
-	if set#=(asciinul)
-		inc set
-		call write(outfile,set,1)
-	else
-		call write(outfile,set,2)
-	end
-
-	if type=(unsigned_cond)
-		call write_longcast_arg(outfile,pbuffer)
-	else
-		call arg(pbuffer,outfile)
-	end
-
-	call writer(outfile)
-	callg writecln(outfile)
-end
-
 #DoT
 function dot(sv pbuffer,sd outfile)
 	datax sz#1;valuex pointer#1
@@ -147,10 +86,31 @@ end
 function var(sv pbuffer,sd outfile)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	call write(outfile,pointer,sz)
 	charx suffix#1;call get_char(pbuffer,#suffix)
 	if suffix=(Xfile_suffix_true)
 		charx cast#1;call get_char(pbuffer,#cast)
+		if cast!=(Xfile_suffix_cast_none)
+			call writel(outfile)
+			call writel(outfile)
+			if cast=(Xfile_suffix_cast_string) #char*
+				call intByte(outfile)
+			elseif cast=(Xfile_suffix_cast_data) #int*
+				call longInt(outfile)
+			else # Xfile_suffix_cast_value long*
+				call long(outfile)
+			end
+			call writer(outfile)
+		end
+		call write(outfile,pointer,sz)
+		if cast!=(Xfile_suffix_cast_none)
+			call writer(outfile)
+		end
+		call writesl(outfile)
+		char a=asciizero
+		call write(outfile,#a,1)
+		call writesr(outfile)
+	else
+		callg write(outfile,pointer,sz)
 	end
 	#Xfile_suffix_no Xfile_suffix_notasuffix
 end
@@ -158,6 +118,9 @@ end
 #VF structure
 function varfunc(sv pbuffer,sd outfile)
 	charx prefix#1;call get_char(pbuffer,#prefix)
+	if prefix=(Xfile_arg_varfn_prefix_yes)
+		call write(outfile,#and.a,1)
+	end
 	charx colon#1;call get_char(pbuffer,#colon)
 	if colon=(Xfile_arg_varfn_colon_yes)
 		charx dt#1;call get_char(pbuffer,#dt)

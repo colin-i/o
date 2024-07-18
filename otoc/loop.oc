@@ -208,8 +208,9 @@ end
 
 include "action.oc"
 include "decl.oc"
-include "var.oc"
+include "cond.oc"
 include "number.oc"
+include "var.oc"
 
 function commentmulti(sd outfile,sv pbuffer)
 	char b=asciiasterisk
@@ -365,6 +366,7 @@ function else(sd outfile,sv pbuffer)
 	if buffer#!=(Xfile_if)
 		call writecln(outfile)
 	else
+		set loop.same_line (TRUE)
 		callg writes(outfile)
 	end
 end
