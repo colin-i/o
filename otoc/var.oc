@@ -94,6 +94,8 @@ function var(sv pbuffer,sd outfile)
 			call writel(outfile)
 			if cast=(Xfile_suffix_cast_string) #char*
 				call intByte(outfile)
+			elseif cast=(Xfile_suffix_cast_word) #short*
+				call longWord(outfile)
 			elseif cast=(Xfile_suffix_cast_data) #int*
 				call longInt(outfile)
 			else # Xfile_suffix_cast_value long*

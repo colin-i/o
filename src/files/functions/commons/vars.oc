@@ -314,6 +314,7 @@ EndFunction
 const no_cast=Xfile_suffix_cast_none
 const cast_value=Xfile_suffix_cast_value
 const cast_data=Xfile_suffix_cast_data
+const cast_word=Xfile_suffix_cast_word
 const cast_string=Xfile_suffix_cast_string
 
 #err
@@ -438,6 +439,7 @@ function cast_test(ss content,sd p_size)
 		if c=(cast_value)
 		elseif c=(cast_data)
 		elseif c=(cast_string)
+		elseif c=(cast_word) # for otoc at the moment
 		else
 			set c (no_cast)
 		endelse
@@ -485,14 +487,14 @@ function cast_resolve(sd number,sd cast,sv ptrdata,sv p_error)
 		sd data;set data ptrdata#
 		add data (maskoffset)
 
-		if cast=(cast_data)
-			and data# (~pointbit)
-		else
-		#cast==(cast_value)
+		if cast=(cast_value)
 			sd for_64;setcall for_64 is_for_64()
 			if for_64!=0 #not at sizeof variable, will be xor
 				or data# (pointbit)
 			endif
+		else
+		#cast=(cast_data) cast=(cast_word)
+			and data# (~pointbit)
 		endelse
 		return (FALSE)
 	endif

@@ -185,6 +185,7 @@ const Xfile_suffix_notasuffix=2       # hacky way to see a function fast, instea
 const Xfile_suffix_cast_none=0
 const Xfile_suffix_cast_value=0x56    # asciiV
 const Xfile_suffix_cast_data=0x44     # asciiD
+const Xfile_suffix_cast_word=0x57     # asciiW
 const Xfile_suffix_cast_string=0x53   # asciiS
 
 #a from any, t from type
