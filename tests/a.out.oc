@@ -37,6 +37,13 @@ function intern(data a,sd b,sv c) #commenting
 	return c
 end
 function f()
+	value a=0
+	value b=0
+	set a #b
+	set b a#
+	set b a#s
+	set b a#d
+	set b a#v
 	if 2=2
 		ret
 	end
