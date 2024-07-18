@@ -42,6 +42,7 @@ function f()
 	set a #b
 	set b a#
 	set b a#s
+	set b a#w
 	set b a#d
 	set b a#v
 	if 2=2
