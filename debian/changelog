@@ -1,3 +1,9 @@
+ocompiler (1-5+188) xenial; urgency=medium
+
+  * short cast
+
+ -- bc <bc@bc-desktop>  Thu, 18 Jul 2024 15:15:55 +0300
+
 ocompiler (1-5+187) xenial; urgency=medium
 
   * there must test if has size is struct else dummy function
