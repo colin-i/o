@@ -13,6 +13,7 @@ const asciiplus=0x2b
 const asciicomma=0x2c
 const asciihyphen=0x2d
 const asciidot=0x2e
+const asciione=0x31
 const asciisemicolon=0x3b
 const asciileft=0x3c
 const asciiright=0x3e

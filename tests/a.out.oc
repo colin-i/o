@@ -64,7 +64,7 @@ or c1 1
 xor b 1
 
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
-;
+
 call intern(1,"q\nw\re\tr",main.a:main.a)
 set b puts()
 

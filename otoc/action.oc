@@ -70,6 +70,7 @@ function action_tbase(sv pbuffer,sd outfile)
 	call unimplemented_start("base/leave",outfile)
 	call varfunc(pbuffer)
 	call unimplemented_end()
+	call backchar(outfile);call backchar(outfile) #will term nl next
 end
 function action_tshl1(sv pbuffer,sd outfile)
 	char a={asciileft,asciileft}

@@ -40,6 +40,8 @@ function loop(sd pointer,sd delim,sd output)
 	set function_start (NULL)
 	charx indentation#1
 	set indentation 0
+	charx same_line#1
+	set same_line (FALSE)
 
 	add delim pointer
 	while pointer!=delim
@@ -55,11 +57,15 @@ function loop(sd pointer,sd delim,sd output)
 			dec indentation
 			break
 		end
-		sd i;set i indentation
-		while i>0
-			char a=asciitab
-			call write(output,#a,1)
-			dec i
+		if same_line=(FALSE)
+			sd i;set i indentation
+			while i>0
+				char a=asciitab
+				call write(output,#a,1)
+				dec i
+			end
+		else
+			set same_line (FALSE)
 		end
 
 		value Xfile_comment^comment
@@ -142,7 +148,7 @@ function get_string(sv pbuffer,sd psize,sv ppointer)
 	add pbuffer# psize#
 end
 
-function backnl(sd outfile)
+function backchar(sd outfile)
 	call fseek(outfile,-1,(SEEK_CUR))
 end
 function backindent(sd outfile)
@@ -153,11 +159,12 @@ function backindent(sd outfile)
 end
 function line_continuation(sd outfile)
 	call backindent(outfile)
-	call backnl(outfile)
+	call backchar(outfile) #nl
 end
 
 function line(sd outfile) #this with the functions but is throwless
 	call line_continuation(outfile)
+	set loop.same_line (TRUE)
 end
 
 function unimplemented_start(ss com,sd outfile)
@@ -342,7 +349,6 @@ function callex(sd outfile,sv pbuffer)
 	call cal(pbuffer) #,outfile
 	call varfunc(pbuffer) #,outfile
 	call arg(pbuffer) #,outfile
-	call writetn() #outfile
 	call unimplemented_end()
 end
 function if(sd outfile,sv pbuffer)
@@ -368,12 +374,22 @@ function while(sd outfile,sv pbuffer)
 	callg cond(pbuffer,outfile)
 end
 function whiletrue(sd outfile)
-	inc loop.indentation
-	callg writen(outfile,"{",1)
+	call write(outfile,#while.a,\while.a)
+	call writel(outfile)
+	char a=asciione
+	call write(outfile,#a,1)
+	call writer(outfile)
+	callg writecln(outfile)
 end
-function break()
+function break(sd outfile)
+	char a="break"^
+	call write(outfile,#a,\.a)
+	callg writetn(outfile)
 end
-function continue()
+function continue(sd outfile)
+	char a="continue"^
+	call write(outfile,#a,\.a)
+	callg writetn(outfile)
 end
 function end(sd outfile)
 	call writecr(outfile)
@@ -399,7 +415,8 @@ function import(sd outfile,sv pbuffer)
 	call write(outfile,#a,2)
 	callg writetn(outfile)
 end
-function aftercall(sd *outfile,sv pbuffer)
+function aftercall(sd outfile,sv pbuffer)
+	call backindent(outfile)
 	charx acall#1;call get_char(pbuffer,#acall)
 	if acall<=(Xfile_aftercall_declarative)
 		if acall=(Xfile_aftercall_declare)
@@ -418,7 +435,8 @@ function hex(sd outfile,sv pbuffer)
 	end
 	call unimplemented_end()
 end
-function override(sd *outfile,sv pbuffer)
+function override(sd outfile,sv pbuffer)
+	call backindent(outfile)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
 	charx value#1;call get_char(pbuffer,#value)
