@@ -124,6 +124,7 @@ function varfunc(sv pbuffer,sd outfile)
 		call write(outfile,#and.a,1)
 	end
 	charx colon#1;call get_char(pbuffer,#colon)
+	charx d#1
 	if colon=(Xfile_arg_varfn_colon_yes)
 		charx dt#1;call get_char(pbuffer,#dt)
 		if dt=(Xfile_arg_varfn_dot_yes)
@@ -133,14 +134,11 @@ function varfunc(sv pbuffer,sd outfile)
 		datax szv#1;valuex vr#1
 		call get_string(pbuffer,#szv,#vr)
 		charx suffix#1;call get_char(pbuffer,#suffix)
-	end
-	charx d#1;call get_char(pbuffer,#d)
-	if d=(Xfile_arg_varfn_dot_no)
-		call var(pbuffer,outfile)
-	else #not using dot() because in the middle is the location( ((struct a*)c)->b ), dot() for sizeof a.b offsetof a.b
-		datax sz#1;valuex pointer#1
-		call get_string(pbuffer,#sz,#pointer)
-		if colon=(Xfile_arg_varfn_colon_yes)
+
+		call get_char(pbuffer,#d)
+		if d=(Xfile_arg_varfn_dot_yes) #not using dot() because in the middle is the location( ((struct a*)c)->b ), dot() for sizeof a.b offsetof a.b
+			datax sz#1;valuex pointer#1
+			call get_string(pbuffer,#sz,#pointer)
 			call writel(outfile)
 			call writel(outfile)
 			call write(outfile,#functiondef_intern.a,\functiondef_intern.a)
@@ -152,7 +150,14 @@ function varfunc(sv pbuffer,sd outfile)
 			char a="->"^
 			call write(outfile,#a,\.a)
 		end
-		callg var(pbuffer,outfile)
+		call var(pbuffer,outfile)
+	else
+		call get_char(pbuffer,#d)
+		if d=(Xfile_arg_varfn_dot_no)
+			call var(pbuffer,outfile)
+		else
+			callg dot(pbuffer,outfile)
+		end
 	end
 end
 

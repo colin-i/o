@@ -22,7 +22,7 @@ const a1=1
 char a#3
 value b^a
 
-function intern(data a,sd b,sv c) #commenting
+function intern(data a,sd b,sv c,sv d) #commenting
 	inc a
 	dec a
 	incst c
@@ -34,7 +34,7 @@ function intern(data a,sd b,sv c) #commenting
 	shl1 c
 	shr1 c
 	sar1 c
-	return c
+	return d
 end
 function st()
 	datax a#1
@@ -75,7 +75,7 @@ xor b 1
 
 hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 
-call intern(1,"q\nw\re\tr",main.a:a)
+call intern(1,"q\nw\re\tr",main.a:a,main.a)
 set b puts()
 
 if 1=1
