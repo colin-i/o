@@ -267,9 +267,12 @@ function declare(sd outfile,sv pbuffer)
 		call writesl(outfile)
 		call number(pbuffer,outfile)
 		call writesr(outfile)
-		set loop.allowwrite (TRUE)  # example: at unimplemented commands and at conditions is FALSE
+		set loop.allowwrite (TRUE)  # example: at unimplemented commands and at condition sign check is FALSE
 	elseif sign=(Xfile_declsign_pointer)
+		call writee(outfile)
+		call write(outfile,#and.a,1)
 		call get_string(pbuffer,#sz,#pointer)
+		call write(outfile,pointer,sz)
 	else #Xfile_declsign_e*
 		charx mode#1;call get_char(pbuffer,#mode)
 		if mode=(Xfile_declmode_value)
