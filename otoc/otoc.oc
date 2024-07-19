@@ -1,9 +1,7 @@
 
 format elfobj64
 
-const EXIT_SUCCESS=0
-const EXIT_FAILURE=1
-const NULL=0
+include "common.h"
 
 importx "puts" puts
 importx "fopen" fopen

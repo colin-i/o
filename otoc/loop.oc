@@ -11,13 +11,6 @@ importx "strchr" strchr
 importx "printf" printf
 importx "fprintf" fprintf
 
-const SEEK_SET=0
-const SEEK_CUR=1
-const SEEK_END=2
-
-const FALSE=0
-const TRUE=1
-
 include "xfile.h"
 #const Xfile_last=Xfile_line
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
@@ -176,6 +169,8 @@ function unimplemented_end()
 	set loop.allowwrite (TRUE)
 end
 
+include "util.oc"
+
 function aftercallenable()
 	set main.result (EXIT_FAILURE)
 	leave loop.bp
@@ -266,9 +261,13 @@ function declare(sd outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
+		#as a special case, [1] is removed for C. and whit what replaced? const a=1 and [a]. alternatives? structure with declared vars, = at nobits vars
+		#this for structures, and not only because at o #1 is not [1], will make more similar
+		set loop.allowwrite number_allowwrite(pbuffer#)
 		call writesl(outfile)
 		call number(pbuffer,outfile)
 		call writesr(outfile)
+		set loop.allowwrite (TRUE)  # example: at unimplemented commands and at conditions is FALSE
 	elseif sign=(Xfile_declsign_pointer)
 		call get_string(pbuffer,#sz,#pointer)
 	else #Xfile_declsign_e*
