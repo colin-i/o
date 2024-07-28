@@ -45,7 +45,6 @@ ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L}
 
 ${OB}: ${OBJ}
 	${launcher} ${OLINK} ${FULLOBJLOG}
-	@echo
 	if [ -z "${ldprefer}" ]; then \
 		${ATCCCOM} ${OB} ${FULLOBJO}; \
 	else \

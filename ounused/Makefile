@@ -26,7 +26,6 @@ ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o
 ${OB}: ${OBJ}
 	${ATLDCOM} ${FULLOBJO}
 	${launcher} ./${OB} ${FULLOBJLOG}
-	@echo
 
 install: all
 	install -D ${OB} \

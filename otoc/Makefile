@@ -59,7 +59,6 @@ ${OBJ}: ${FULLOBJS} ${number}
 	${OCOMP} $< ${OFLAGS}
 ${prog}: ${OBJ}
 	${OLINK} ${FULLOBJLOG}
-	@echo
 	if [ -z "${ldprefer}" ]; then \
 		${ATCCCOM} ${prog} ${FULLOBJO}; \
 	else \

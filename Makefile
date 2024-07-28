@@ -23,7 +23,6 @@ ${ver}:
 #if ! [ -s ./src/obj.txt ];then
 verify_comp_with_link:
 	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
-	@echo
 
 #if only after ':' is after; if after ':' and below, one is at start the other one at end
 all: ${ver}
