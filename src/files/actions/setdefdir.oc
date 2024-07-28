@@ -6,9 +6,9 @@ Char storeachar#1
 Set storeachar filenameloc#
 Set filenameloc# null
 
-sd chdirresult#1
-setcall chdirresult changedir(path_nofree)
-if chdirresult!=chdirok
+datax chdir_result#1
+setcall chdir_result changedir(path_nofree)
+if chdir_result!=chdirok
 	str startchdirerr="Cannot set active folder:"
 	setcall errormsg errorDefOut(startchdirerr,path_nofree)
 	Call msgerrexit(errormsg)

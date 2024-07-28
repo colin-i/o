@@ -15,7 +15,7 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 	sd err
 	sd s2;setcall s2 strlen(prefpath)
 	sd mem
-	sd a
+	datax int#1
 
 	#first verify in home
 	ss homestr="HOME"
@@ -29,8 +29,8 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 			call memtomem(mem,envhome,s1)
 			ss p;set p mem;add p s1;set p# (asciislash);inc p
 			call memtomem(p,prefpath,s2);add p s2;set p# (NULL)
-			setcall a access(mem,(F_OK))
-			if a=0
+			setcall int access(mem,(F_OK))
+			if int=0
 				SetCall err file_get_content_ofs(mem,ptrpreferencessize,ptrpreferencescontent,(NULL))
 				if err=(noerror)
 					call free(mem)
@@ -71,8 +71,8 @@ function prefextra_helper(ss prefpath,sd ptrpreferencessize,sd ptrpreferencescon
 				call memtomem(scrpath,prefpath,s2)
 				add scrpath s2
 				set scrpath# (NULL)
-				setcall a access(mem,(F_OK))
-				if a=0
+				setcall int access(mem,(F_OK))
+				if int=0
 					SetCall err file_get_content_ofs(mem,ptrpreferencessize,ptrpreferencescontent,(NULL)) #openfile has alloc err msg
 					if err=(noerror)
 						call free(mem)

@@ -127,9 +127,9 @@ endfunction
 
 function changedir(ss s)
 	if s#!=0 #it's extern chdir error
-		sd d
-		setcall d chdir(s)
-		if d!=0
+		datax int#1
+		setcall int chdir(s)
+		if int!=0
 			Call erExit("chdir error")
 		endif
 	endif
