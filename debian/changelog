@@ -1,3 +1,9 @@
+ocompiler (1-5+189) xenial; urgency=medium
+
+  * small diff at ounused
+
+ -- bc <bc@bc-desktop>  Sun, 28 Jul 2024 14:56:06 +0300
+
 ocompiler (1-5+188) xenial; urgency=medium
 
   * short cast
