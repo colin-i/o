@@ -75,12 +75,7 @@ function carg_resolve_one(sv left,sv right,sd outfile)
 	callg write(outfile,left,right)
 end
 
-#DoT
-function dot(sv pbuffer,sd outfile)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
-	callg var(pbuffer,outfile)
-end
+#DoT has multiple interpretations in C
 
 #V structure
 function var(sv pbuffer,sd outfile)
@@ -125,10 +120,10 @@ function varfunc(sv pbuffer,sd outfile)
 	end
 	charx colon#1;call get_char(pbuffer,#colon)
 	charx d#1
+	datax szf#1;valuex func#1
 	if colon=(Xfile_arg_varfn_colon_yes)
 		charx dt#1;call get_char(pbuffer,#dt)
 		if dt=(Xfile_arg_varfn_dot_yes)
-			datax szf#1;valuex func#1
 			call get_string(pbuffer,#szf,#func)
 		end
 		datax szv#1;valuex vr#1
@@ -136,7 +131,7 @@ function varfunc(sv pbuffer,sd outfile)
 		charx suffix#1;call get_char(pbuffer,#suffix)
 
 		call get_char(pbuffer,#d)
-		if d=(Xfile_arg_varfn_dot_yes) #not using dot() because in the middle is the location( ((struct a*)c)->b ), dot() for sizeof a.b offsetof a.b
+		if d=(Xfile_arg_varfn_dot_yes) #DoT ((struct a*)c)->b
 			datax sz#1;valuex pointer#1
 			call get_string(pbuffer,#sz,#pointer)
 			call writel(outfile)
@@ -155,8 +150,9 @@ function varfunc(sv pbuffer,sd outfile)
 		call get_char(pbuffer,#d)
 		if d=(Xfile_arg_varfn_dot_no)
 			call var(pbuffer,outfile)
-		else
-			callg dot(pbuffer,outfile)
+		else #DoT
+			call get_string(pbuffer,#szf,#func)
+			callg var(pbuffer,outfile)
 		end
 	end
 end

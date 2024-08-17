@@ -181,7 +181,9 @@ end
 
 function unimplemented()
 	call puts("unimplemented")
-	call aftercallenable()
+	if loop.allowwrite=(TRUE)
+		call aftercallenable()
+	end
 end
 
 function write_long(sd outfile,sd pointer,sd size)

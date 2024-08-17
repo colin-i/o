@@ -43,8 +43,12 @@ function numbertype(sv pbuffer,sd outfile)
 end
 
 function number_int_long();end
-function number_int_data();end
-function number_int_datax();end
+function number_int_data()
+	callg unimplemented()
+end
+function number_int_datax()
+	callg unimplemented()
+end
 function number_text_dec(sv pbuffer,sd outfile)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
@@ -67,11 +71,15 @@ function number_func_sizex(sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 end
-function number_var_size(sv pbuffer,sd outfile)
-	callg dot(pbuffer,outfile)
+function number_var_size(sv pbuffer,sd outfile) #DoT
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	callg var(pbuffer,outfile)
 end
-function number_var_offset(sv pbuffer,sd outfile)
-	callg dot(pbuffer,outfile)
+function number_var_offset(sv pbuffer,sd outfile) #DoT
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	callg var(pbuffer,outfile)
 end
 
 function normal(sd outfile,sv pbuffer)
@@ -123,7 +131,7 @@ function xor(sd outfile)
 	callg write(outfile,#a,1)
 end
 function pow()
-	call unimplemented()
+	callg unimplemented()
 end
 function rem(sd outfile)
 	char a={asciipercent}
@@ -178,8 +186,8 @@ function unsignedgreaterequal(sd outfile)
 	callg greaterequal(outfile)
 end
 function parity()
-	call unimplemented()
+	callg unimplemented()
 end
 function odd()
-	call unimplemented()
+	callg unimplemented()
 end
