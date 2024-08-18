@@ -6,7 +6,8 @@ multi
 line
 !
 
-include "include.h" "include.h"
+override include_sec 1
+include "stddef.h" "include.h"
 
 orphan off
 
@@ -39,7 +40,7 @@ end
 function st()
 	datax a#1
 end
-function f()
+functionxx f()
 	value a=0
 	value b=0
 	set a #b
@@ -59,7 +60,7 @@ end
 library "a"
 import "b" puts
 
-entry main()
+entryx main(sd argc)
 
 set b b
 add b 1
@@ -104,7 +105,7 @@ end
 char z=0xff+077+12-3+(4*3/2//1&1|1^1%5%%5<<3>>3>>>3=2!=2<3>3<=4>=4&&7||7<^6>^6<=^6>=^6) ;#char er=3!!2 char er=3!2 char er=3$2
 char z2=a1;char z3=-a1;char z4=~a1;char z5=~-a1
 
-char q1=:
+char q1=:;char q2=\st;char q3=\st.a\;char q4=\st.a
 
 aftercall *tst
 override x_file 1

@@ -12,17 +12,21 @@ function functiondef_d(sv pbuffer,sd outfile)
 			inc n
 		end
 	end
+	return args ##for varargs
 end
-function functiondef_raw(sv pbuffer,sd outfile,sd pointer,sd sz)
+function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
 	set loop.function_start ftell(outfile)
 	if loop.function_start!=-1
 		call write_void(outfile,pointer,sz)
 		call writel(outfile)
-		call functiondef_d(pbuffer,outfile)
-		callg writer(outfile)
-		ret
+		sd args;set args functiondef_d(pbuffer,outfile)
+		return args ##for varargs
 	end
 	call aftercallenable()
+end
+function functiondef_raw(sv pbuffer,sd outfile,sd pointer,sd sz)
+	call functiondef_r(pbuffer,outfile,pointer,sz)
+	callg writer(outfile)
 end
 function functiondef_intern(sv pbuffer,sd outfile,sd pointer,sd sz)
 	charx s#1;call get_char(pbuffer,#s)
@@ -37,7 +41,18 @@ function functiondef_intern(sv pbuffer,sd outfile,sd pointer,sd sz)
 end
 function functiondef_extern(sv pbuffer,sd outfile,sd pointer,sd sz)
 	charx e#1;call get_char(pbuffer,#e)
-	callg functiondef_raw(pbuffer,outfile,pointer,sz)
+	sd args;set args functiondef_r(pbuffer,outfile,pointer,sz)
+	if e=(Xfile_function_e_normal)
+		call writer(outfile)
+	else #varargs
+		char a=asciicomma
+		char b="...)"^
+		if args!=0
+			call write(outfile,#a,1+\.b)
+		else
+			callg write(outfile,#b,\.b)
+		end
+	end
 end
 #function functiondef_entry(sv pbuffer)
 

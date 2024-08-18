@@ -196,7 +196,7 @@ const write_long_cast=\-write_long_cast_start
 end
 
 function comment(sd outfile,sv pbuffer)
-	char a="//"^
+	char a={asciislash,asciislash}
 	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
@@ -211,7 +211,7 @@ include "var.oc"
 
 function commentmulti(sd outfile,sv pbuffer)
 	char b=asciiasterisk
-	char a="/*"^
+	char a={asciislash,asciiasterisk}
 	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
