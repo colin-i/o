@@ -83,7 +83,7 @@ function number_var_size(sd outfile,sv pbuffer) #DoT
 	char a="sizeof(((struct "^
 	call write(outfile,#a,\.a)
 	call write(outfile,pointer,sz)
-	char b="*)0)->"
+	char b="*)0)->"^
 	call write(outfile,#b,\.b)
 	call var(pbuffer,outfile)
 	callg writer(outfile)
