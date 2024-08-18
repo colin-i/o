@@ -1,3 +1,4 @@
+
 format elf
 
 #!
@@ -60,53 +61,52 @@ library "a"
 import "b" puts
 
 entryx main(sd argc)
+	set b b
+	add b 1
+	sub b 1
+	mult b 1
+	div c1 1
+	divu c1 1
+	rem c1 1
+	remu c1 1
+	and c1 1
+	or c1 1
+	xor b 1
 
-set b b
-add b 1
-sub b 1
-mult b 1
-div c1 1
-divu c1 1
-rem c1 1
-remu c1 1
-and c1 1
-or c1 1
-xor b 1
+	hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 
-hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
+	call intern(1,"q\nw\re\tr",main.a:a,main.a)
+	set b puts()
 
-call intern(1,"q\nw\re\tr",main.a:a,main.a)
-set b puts()
+	if 1=1
+	#elseif 1!!1
+	#elseif 1!1
+	end
+	if 1!=1
+	elseif 1<1
+	else;end
+	if 1>1;end
+	if 1<=1;end
+	if 1>=1;end
+	if 1<^1;end
+	if 1>^1;end
+	if 1<=^1;end
+	if 1>=^1;end
 
-if 1=1
-#elseif 1!!1
-#elseif 1!1
-end
-if 1!=1
-elseif 1<1
-else;end
-if 1>1;end
-if 1<=1;end
-if 1>=1;end
-if 1<^1;end
-if 1>^1;end
-if 1<=^1;end
-if 1>=^1;end
+	callex b b 1
+	while 1=2
+		continue
+	end
+	whiletrue
+		break
+	end
 
-callex b b 1
-while 1=2
-	continue
-end
-whiletrue
-	break
-end
+	char z=0xff+077+12-3+(4*3/2//1&1|1^1%5%%5<<3>>3>>>3=2!=2<3>3<=4>=4&&7||7<^6>^6<=^6>=^6) ;#char er=3!!2 char er=3!2 char er=3$2
+	char z2=a1;char z3=-a1;char z4=~a1;char z5=~-a1
 
-char z=0xff+077+12-3+(4*3/2//1&1|1^1%5%%5<<3>>3>>>3=2!=2<3>3<=4>=4&&7||7<^6>^6<=^6>=^6) ;#char er=3!!2 char er=3!2 char er=3$2
-char z2=a1;char z3=-a1;char z4=~a1;char z5=~-a1
+	char q1=:;char q2=\st;char q3=\st.a\;char q4=\st.a
 
-char q1=:;char q2=\st;char q3=\st.a\;char q4=\st.a
-
-aftercall *tst
-override x_file 1
-i3
-exit 2
+	aftercall *tst
+	override x_file 1
+	i3
+	exit 2
