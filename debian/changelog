@@ -1,3 +1,9 @@
+ocompiler (1-5+191) xenial; urgency=medium
+
+  * otoc
+
+ -- bc <bc@bc-desktop>  Sun, 18 Aug 2024 14:39:08 +0300
+
 ocompiler (1-5+190c) xenial; urgency=medium
 
   * otoc
