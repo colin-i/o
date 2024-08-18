@@ -39,44 +39,47 @@ function numbertype(sv pbuffer,sd outfile)
 	sv f^functions
 	add f type
 	set f f#
-	callg f(pbuffer,outfile)
+	callg f(outfile,pbuffer)
 end
 
-function number_int_long();end
+function number_int_long(sd outfile)
+	char a="sizeof(long)"^
+	callg write(outfile,#a,\.a)
+end
 function number_int_data()
 	callg unimplemented()
 end
 function number_int_datax()
 	callg unimplemented()
 end
-function number_text_dec(sv pbuffer,sd outfile)
+function number_text_dec(sd outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	callg write(outfile,pointer,sz)
 end
-function number_text_oct(sv pbuffer,sd outfile)
-	callg number_text_dec(pbuffer,outfile)
+function number_text_oct(sd outfile,sv pbuffer)
+	callg number_text_dec(outfile,pbuffer)
 end
-function number_text_hex(sv pbuffer,sd outfile)
-	callg number_text_dec(pbuffer,outfile)
+function number_text_hex(sd outfile,sv pbuffer)
+	callg number_text_dec(outfile,pbuffer)
 end
-function number_text_const(sv pbuffer,sd outfile)
-	callg number_text_dec(pbuffer,outfile)
+function number_text_const(sd outfile,sv pbuffer)
+	callg number_text_dec(outfile,pbuffer)
 end
-function number_func_size(sv pbuffer)
+function number_func_size(sd *outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 end
-function number_func_sizex(sv pbuffer)
+function number_func_sizex(sd *outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 end
-function number_var_size(sv pbuffer,sd outfile) #DoT
+function number_var_size(sd outfile,sv pbuffer) #DoT
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	callg var(pbuffer,outfile)
 end
-function number_var_offset(sv pbuffer,sd outfile) #DoT
+function number_var_offset(sd outfile,sv pbuffer) #DoT
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	callg var(pbuffer,outfile)
