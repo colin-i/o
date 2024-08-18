@@ -104,6 +104,8 @@ end
 char z=0xff+077+12-3+(4*3/2//1&1|1^1%5%%5<<3>>3>>>3=2!=2<3>3<=4>=4&&7||7<^6>^6<=^6>=^6) ;#char er=3!!2 char er=3!2 char er=3$2
 char z2=a1;char z3=-a1;char z4=~a1;char z5=~-a1
 
+char q1=:
+
 aftercall *tst
 override x_file 1
 i3
