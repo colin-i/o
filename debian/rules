@@ -29,11 +29,11 @@ ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
 override_dh_auto_configure:
 	dh_auto_configure
 	sed -i '/ostrip/d' debian/ocompiler.install
-	sed -i '/otoc/d' debian/ocompiler.install
+	#sed -i '/otoc/d' debian/ocompiler.install
 	#touch NOOCONVTEST
 else
 override_dh_auto_configure:
 	dh_auto_configure
-	sed -i '/otoc/d' debian/ocompiler.install
+	#sed -i '/otoc/d' debian/ocompiler.install
 	#touch NOOCONVTEST
 endif
