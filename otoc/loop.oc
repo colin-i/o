@@ -110,9 +110,12 @@ function preloop(sd input,sd output)
 				set r mems()
 				if r=(TRUE)
 					set main.result (EXIT_SUCCESS)
+					charx has_entry#1;set has_entry (FALSE)
 					call loop(buffer,size,output)
 					if main.result=(EXIT_SUCCESS)
-						callg end(output)
+						if has_entry=(TRUE)
+							callg end(output)
+						end
 					end
 					call memfree()
 				end
@@ -248,7 +251,7 @@ function functiondef(sd outfile,sv pbuffer)
 	value intern^functiondef_intern
 	value *raw^functiondef_raw
 	value *extern^functiondef_extern
-	value *entry^functiondef_extern     #functiondef_entry
+	value *entry^functiondef_entry
 	charx type#1;call get_char(pbuffer,#type)
 	mult type :
 	sv dest^intern;add dest type

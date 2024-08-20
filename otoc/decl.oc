@@ -54,7 +54,10 @@ function functiondef_extern(sv pbuffer,sd outfile,sd pointer,sd sz)
 		end
 	end
 end
-#function functiondef_entry(sv pbuffer)
+function functiondef_entry(sv pbuffer,sd outfile,sd pointer,sd sz)
+	call functiondef_extern(pbuffer,outfile,pointer,sz)
+	set preloop.has_entry (TRUE)
+end
 
 #D structure
 function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
