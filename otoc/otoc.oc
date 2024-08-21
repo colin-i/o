@@ -18,7 +18,15 @@ function out_file(sd in)
 		if p!=(NULL)
 			#here we know there at at least two dots and of course the term null char
 			inc p
-			set p# (asciic)
+			charx ext#1;set ext (asciic)
+			if p#=(asciio) #if .oh then is a header
+				ss test;set test p
+				inc test
+				if test#=(asciih)
+					set ext (asciih)
+				end
+			end
+			set p# ext
 			inc p
 			set p# (asciinul)
 			sd f;set f fopen(in,"wb")
