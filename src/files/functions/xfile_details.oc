@@ -57,8 +57,12 @@ function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,sd is_signed,
 					elseif sign=(pointersigndeclare)
 						setcall err xfile_add_char((Xfile_declsign_pointer))
 					else
-					#if sign==(nosign) reserve
+					#if sign==(nosign) reserve#1 but need to add N=1
 						setcall err xfile_add_char((Xfile_declsign_reserve))
+						if err=(noerror)
+							char n1={Xfile_numbers_prefix_none,Xfile_numbers_type_tdecimal,1,0,0,0,asciione,Xfile_numbers_done}
+							setcall err writefile_errversion(main.xfile,#n1,\.n1)
+						endif
 					endelse
 				endif
 			endif
