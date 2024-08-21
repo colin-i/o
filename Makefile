@@ -33,5 +33,6 @@ test:
 
 clean:
 	-rm -f ${ver}
+	cd tests; /bin/bash ./c
 
 .NOTPARALLEL:
