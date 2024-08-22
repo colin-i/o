@@ -1,3 +1,9 @@
+ocompiler (1-5+193) xenial; urgency=medium
+
+  * .oh and sd a
+
+ -- bc <bc@bc-desktop>  Thu, 22 Aug 2024 12:24:08 +0300
+
 ocompiler (1-5+192) xenial; urgency=medium
 
   * otoc entry fix
