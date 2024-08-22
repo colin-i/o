@@ -19,6 +19,8 @@ include "ascii.h"
 
 include "mem.oc"
 
+const err=-1
+
 datax result#1
 
 function loop(sd pointer,sd delim,sd output)
@@ -30,7 +32,7 @@ function loop(sd pointer,sd delim,sd output)
 	charx directwrite#1
 	set directwrite (TRUE)
 	valuex function_start#1
-	set function_start (NULL)
+	set function_start (err)
 	charx indentation#1
 	set indentation 0
 	charx same_line#1

@@ -16,7 +16,7 @@ function functiondef_d(sv pbuffer,sd outfile)
 end
 function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
 	set loop.function_start ftell(outfile)
-	if loop.function_start!=-1
+	if loop.function_start!=(err)
 		call write_void(outfile,pointer,sz)
 		call writel(outfile)
 		sd args;set args functiondef_d(pbuffer,outfile)
