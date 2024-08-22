@@ -2,7 +2,7 @@
 if [ -z "${1}" ]; then is_del=1;
 else
 	is_del=0
-	is_diff=${1}   # ./c 0 is to populate .expected
+	is_diff=${1}   # ./c 1 is diff, else(example: 0) to populate .expected
 	diffs=0
 fi
 e=.expected/
