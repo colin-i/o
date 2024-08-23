@@ -40,6 +40,8 @@ function loop(sd pointer,sd delim,sd output)
 	set same_line (FALSE)
 	charx hotgroup#1
 	set hotgroup 0
+	datax szfunctiondef#1
+	set szfunctiondef 0
 
 	add delim pointer
 	while pointer!=delim
@@ -217,8 +219,8 @@ function comment(sd outfile,sv pbuffer)
 	callg writen(outfile,pointer,sz)
 end
 function functiondef(sd outfile,sv pbuffer)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
+	valuex pointer#1
+	call get_string(pbuffer,#loop.szfunctiondef,#pointer)
 
 	value intern^functiondef_intern
 	value *raw^functiondef_raw
@@ -228,7 +230,7 @@ function functiondef(sd outfile,sv pbuffer)
 	mult type :
 	sv dest^intern;add dest type
 	set dest dest#
-	call dest(pbuffer,outfile,pointer,sz)
+	call dest(pbuffer,outfile,pointer,loop.szfunctiondef)
 
 	callg writecln(outfile)
 end

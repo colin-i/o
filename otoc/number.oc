@@ -79,8 +79,8 @@ function number_func_sizex(sd outfile,sv pbuffer)
 end
 function number_var_size(sd outfile,sv pbuffer) #DoT
 	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
-	if sz=functiondef.sz
+	call get_string(pbuffer,#sz,#pointer) #\.a is \fn.a in .x
+	if sz=loop.szfunctiondef
 		sd cmp;set cmp memcmp(pointer,functiondef.pointer,sz)
 		if cmp=0 #here is not sizeof a struct member, is sizeof an item inside same function
 			char c="sizeof("^
