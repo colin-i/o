@@ -10,6 +10,7 @@ importx "fwrite" fwrite
 importx "strchr" strchr
 importx "printf" printf
 importx "fprintf" fprintf
+importx "memcmp" memcmp
 
 include "xfile.h"
 #const Xfile_last=Xfile_line
@@ -37,6 +38,8 @@ function loop(sd pointer,sd delim,sd output)
 	set indentation 0
 	charx same_line#1
 	set same_line (FALSE)
+	charx hotgroup#1
+	set hotgroup 0
 
 	add delim pointer
 	while pointer!=delim
@@ -94,6 +97,12 @@ function loop(sd pointer,sd delim,sd output)
 		sv dest^Xfile_comment;add dest command
 		set dest dest#
 		call dest(output,#pointer)
+
+		if hotgroup>0
+			if dest!=line
+				dec hotgroup
+			end
+		end
 	end
 end
 
@@ -207,6 +216,22 @@ function comment(sd outfile,sv pbuffer)
 	call get_string(pbuffer,#sz,#pointer)
 	callg writen(outfile,pointer,sz)
 end
+function functiondef(sd outfile,sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+
+	value intern^functiondef_intern
+	value *raw^functiondef_raw
+	value *extern^functiondef_extern
+	value *entry^functiondef_entry
+	charx type#1;call get_char(pbuffer,#type)
+	mult type :
+	sv dest^intern;add dest type
+	set dest dest#
+	call dest(pbuffer,outfile,pointer,sz)
+
+	callg writecln(outfile)
+end
 
 include "action.oc"
 include "decl.oc"
@@ -246,28 +271,13 @@ function include(sd outfile,sv pbuffer)
 		call get_string(pbuffer,#sz,#pointer)
 	end
 end
-function functiondef(sd outfile,sv pbuffer)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
-
-	value intern^functiondef_intern
-	value *raw^functiondef_raw
-	value *extern^functiondef_extern
-	value *entry^functiondef_entry
-	charx type#1;call get_char(pbuffer,#type)
-	mult type :
-	sv dest^intern;add dest type
-	set dest dest#
-	call dest(pbuffer,outfile,pointer,sz)
-
-	callg writecln(outfile)
-end
 function declare(sd outfile,sv pbuffer)
 	charx type#1;charx field#1
 	call decl(pbuffer,outfile,#field,#type)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
+		set loop.hotgroup 2
 		#as a special case, [1] is removed for C. and whit what replaced? const a=1 and [a]. alternatives? structure with declared vars, = at nobits vars
 		#this for structures, and not only because at o #1 is not [1], will make more similar
 		set loop.allowwrite number_allowwrite(pbuffer#)
@@ -277,7 +287,9 @@ function declare(sd outfile,sv pbuffer)
 		set loop.allowwrite (TRUE)  # example: at unimplemented commands and at condition sign check is FALSE
 	elseif sign=(Xfile_declsign_pointer)
 		call writee(outfile)
-		call write(outfile,#and.a,1)
+		if loop.hotgroup=0
+			call write(outfile,#and.a,1) #in o, #rezerve/""/{} stays at pointing on first val,modify this behaviour or keep this trick
+		end
 		call get_string(pbuffer,#sz,#pointer)
 		call write(outfile,pointer,sz)
 	else #Xfile_declsign_e*
@@ -290,6 +302,7 @@ function declare(sd outfile,sv pbuffer)
 			end
 			call number(pbuffer,outfile)
 		elseif mode=(Xfile_declmode_group)
+			set loop.hotgroup 2
 			call writeslsr(outfile)
 			call writee(outfile)
 			call writecl(outfile)
@@ -303,6 +316,7 @@ function declare(sd outfile,sv pbuffer)
 			call writecr(outfile)
 		else #Xfile_declmode_string
 			if type=(Xfile_decltype_byte)
+				set loop.hotgroup 2
 				call writeslsr(outfile)
 			end
 			call writee(outfile)
