@@ -1,3 +1,9 @@
+ocompiler (1-5+195) xenial; urgency=medium
+
+  * function_start=0 / [] and ^ / sizeof(var)
+
+ -- bc <bc@bc-desktop>  Fri, 23 Aug 2024 14:11:42 +0300
+
 ocompiler (1-5+194) xenial; urgency=medium
 
   * fix test
