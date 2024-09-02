@@ -354,13 +354,17 @@ function action2(sd outfile,sv pbuffer)
 	if a2!=(Xfile_action2_set)
 		if a2=(Xfile_action2_divu)
 			set a2 (Xfile_action2_div)
+			call write_longcast_uns(outfile,#replay)
 		elseif a2=(Xfile_action2_remu)
 			set a2 (Xfile_action2_rem)
+			call write_longcast_uns(outfile,#replay)
+		else
+			call write_longcast(outfile,#replay)
 		end
-		call write_longcast(outfile,#replay)
 		call write(outfile,#a2,1)
 	end
 
+	call write_longcast_simple(outfile) #(long)p-log    invalid operands to binary - (have long int and char *)
 	call arg(pbuffer,outfile)
 	callg writetn(outfile)
 end
@@ -547,6 +551,11 @@ function unsigned(sd outfile)
 	char a="unsigned "^
 	callg write(outfile,#a,\.a)
 end
+function write_longcast_simple(sd outfile)
+	call writel(outfile)
+	call write(outfile,#write_long.a,\write_long.a)
+	call writer(outfile)
+end
 function write_longcast_ex_ex(sd outfile,sd pbuffer,sv sign,sv fn)
 	call writel(outfile)
 	call sign(outfile)
@@ -556,6 +565,9 @@ function write_longcast_ex_ex(sd outfile,sd pbuffer,sv sign,sv fn)
 end
 function write_longcast_ex(sd outfile,sd pbuffer,sv sign)
 	callg write_longcast_ex_ex(outfile,pbuffer,sign,varfunc)
+end
+function write_longcast_uns(sd outfile,sd pbuffer)
+	callg write_longcast_ex_ex(outfile,pbuffer,unsigned,varfunc)
 end
 function write_longcast_arg(sd outfile,sd pbuffer)
 	callg write_longcast_ex_ex(outfile,pbuffer,unsigned,arg)
