@@ -1,3 +1,9 @@
+ocompiler (1-5+196) xenial; urgency=medium
+
+  * second action2 can be in problem when is pointer
+
+ -- bc <bc@bc-desktop>  Wed, 04 Sep 2024 11:01:43 +0300
+
 ocompiler (1-5+195) xenial; urgency=medium
 
   * function_start=0 / [] and ^ / sizeof(var)
