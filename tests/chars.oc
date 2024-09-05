@@ -1,5 +1,5 @@
 
-format elfobj
+format elfobj64
 
 char a=0xff
 chars b=-1
@@ -8,20 +8,45 @@ importx "puts" puts
 
 function signs(charx a,charxs b)
 	if a!=0xFFffFFff
-		call puts("ok")
+		call o()
 	end
 	if b=-1
-		call puts("ok")
+		call o()
 	end
+end
+function o()
+	call puts("ok")
 end
 
 entry main()
 if a!=-1
-	call puts("ok")
+	call o()
 end
 if b=-1
-	call puts("ok")
+	call o()
 end
 call signs(0xff,0xff)
+
+#also, test short/int
+sv c=-1
+importx "printf" printf
+call printf("%lx\n",c)
+word c1=-1
+if c=c1
+	call o()
+end
+data c2=-1
+if c=c2
+	call o()
+end
+wordu c3=-1
+if c!=c3
+	call o()
+end
+datau c4=-1
+if c!=c4
+	call o()
+end
+
 importx "exit" exit
 call exit(0)
