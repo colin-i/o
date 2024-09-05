@@ -2,8 +2,9 @@
 const sizeofclassinfostartdata=location
 #                              data
 const classinfostartdatax=sizeofclassinfostartdata
-const sizeofclassinfostarts=sizeofclassinfostartdata+location
-#                                                    datax
+const sizeofclassinfostartdatax=location
+#                               datax
+const sizeofclassinfostarts=sizeofclassinfostartdata+sizeofclassinfostartdatax
 const classinfosizedata=sizeofclassinfostarts
 const sizeofclassinfosizedata=location
 #                             datasize
@@ -204,8 +205,14 @@ function scopes_get_class_data(sd scope,sd data)
 	add scope (sizeofscope)
 	sd expand;setcall expand expandbit(data)
 	if expand!=0
-		add scope (location)
-		return scope#
+		add scope (classinfostartdatax)
+		sd mix;set mix scope#
+		add scope (sizeofclassinfostartdatax)
+
+		#only with this can mix value[x] for otoc for long/long*
+		sub mix scope#  #will add sizeof data for this scope
+
+		return mix
 	endif
 	return scope#
 endfunction
