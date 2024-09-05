@@ -60,29 +60,45 @@ function functiondef_entry(sv pbuffer,sd outfile,sd pointer,sd sz)
 end
 
 #D structure
+function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
+	value f^byte      #char[x]
+	value *^word      #word[x]
+	value *^int       #data[x]
+	value *^longByte  #is intByte but same as vstr
+	value *^longLong  #valuex sv
+	value *^longByte  #vstr[x] ss
+	value *^longWord  #vword[x] sw
+	value *^longInt   #vdata[x] sd
+
+	charx feature#1
+	if field=(Xfile_declfield_data)
+		charx data#1;call get_char(pbuffer,#data)
+		charx sign#1;call get_char(pbuffer,#sign)
+		call get_char(pbuffer,ptype)     #type is used outside
+		call get_char(pbuffer,#feature)
+
+		#special hack for a pointless long (value), needed to inc/dec
+		if ptype#=(Xfile_decltype_long)
+			if data=(Xfile_declfield_data_concrete)
+				callg write(outfile,#write_long.a,\write_long.a)
+				ret
+			end
+		end
+	else
+		call get_char(pbuffer,ptype)
+		call get_char(pbuffer,#feature)
+	end
+	sv fn
+	set fn ptype#     #type is used outside
+	mult fn :
+	add fn #f
+	set fn fn#
+	callg fn(outfile)
+end
 function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
 	call get_char(pbuffer,pfield)
 	if pfield#!=(Xfile_declfield_const)
-		if pfield#=(Xfile_declfield_data)
-			charx data#1;call get_char(pbuffer,#data)
-			charx sign#1;call get_char(pbuffer,#sign)
-		end
-		call get_char(pbuffer,ptype)
-		charx feature#1;call get_char(pbuffer,#feature)
-
-		value f^byte
-		value *^word
-		value *^int
-		value *^intByte
-		value *^long
-		value *^intByte  #longByte
-		value *^longWord
-		value *^longInt
-		sv fn;set fn ptype#     #type is used outside
-		mult fn :
-		add fn #f
-		set fn fn#
-		call fn(outfile)
+		call decl_runtime(pbuffer,outfile,pfield#,ptype)
 	else
 		char c="#define"^
 		call write(outfile,#c,\.c)
@@ -105,10 +121,10 @@ function int(sd outfile)
 	char a="int*"^
 	call write(outfile,#a,\.a-1)
 end
-function intByte(sd outfile)
+function longByte(sd outfile)
 	call write(outfile,#byte.a,\byte.a)
 end
-function long(sd outfile)
+function longLong(sd outfile)
 	call write(outfile,#write_long.a,(write_long_cast))
 end
 #function longByte()end
