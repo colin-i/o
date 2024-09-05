@@ -572,6 +572,19 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			whiletrue
 				if ptrsubtype#!=(cCHAR)
 					if ptrsubtype#!=(cCHARX)
+						whiletrue #and, also, at otoc, unsigned short is good to have small size. with this occasion also is unsigned int
+							if ptrsubtype#!=(cWORD)
+								if ptrsubtype#!=(cWORDX)
+									if ptrsubtype#!=(cDATA)
+										if ptrsubtype#!=(cDATAX)
+											break
+										endif
+									endif
+								endif
+							endif
+							set extstr "U"
+							break
+						endwhile
 						break
 					endif
 				endif
