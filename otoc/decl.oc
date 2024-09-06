@@ -77,6 +77,10 @@ function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
 		call get_char(pbuffer,ptype)     #type is used outside
 		call get_char(pbuffer,#feature)
 
+		if sign=(Xfile_declext_no)
+			call unsigned(outfile)
+		end
+
 		#special hack for a pointless long (value), needed to inc/dec
 		if ptype#=(Xfile_decltype_long)
 			if data=(Xfile_declfield_data_concrete)

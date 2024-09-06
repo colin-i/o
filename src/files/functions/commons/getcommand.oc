@@ -568,29 +568,8 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#		set extstr skipretjump
 		#		set intercursors #pointer  ##only for elseGif
 		#	endif
-		elseif command=(cDECLARE) #here used for otoc to sign extend char, if imm is only 32 like now zero extend is default
-			whiletrue
-				if ptrsubtype#!=(cCHAR)
-					if ptrsubtype#!=(cCHARX)
-						whiletrue #and, also, at otoc, unsigned short is good to have small size. with this occasion also is unsigned int
-							if ptrsubtype#!=(cWORD)
-								if ptrsubtype#!=(cWORDX)
-									if ptrsubtype#!=(cDATA)
-										if ptrsubtype#!=(cDATAX)
-											break
-										endif
-									endif
-								endif
-							endif
-							set extstr "U"
-							break
-						endwhile
-						break
-					endif
-				endif
-				set extstr "S"
-				break
-			endwhile
+		elseif command=(cDECLARE)
+			setcall extstr getcom_declare(ptrsubtype#)
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)
@@ -757,3 +736,29 @@ Function sortallcommands()
 	Data variables=numberofcommandsvars
 	Call sortcommands(pointersvarscursor,variables,datacursorini)
 EndFunction
+
+function getcom_declare(sd a) #here used for otoc to sign extend char, if imm is only 32 like now zero extend is default
+	vstr s="S"
+	if a=(cCHAR)
+		return s
+	end
+	if a=(cCHARX)
+		return s
+	end
+	vstr u="U" #and, also, at otoc, unsigned short is good to have small size. with this occasion also is unsigned int
+	#and, for otoc, why not at every declare command?
+	return u
+#	if a=(cWORD)
+#		return u
+#	end
+#	if a=(cWORDX)
+#		return u
+#	end
+#	if a=(cDATA)
+#		return u
+#	end
+#	if a=(cDATAX)
+#		return u
+#	end
+#	return (NULL)
+endfunction

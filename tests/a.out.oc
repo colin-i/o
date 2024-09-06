@@ -12,9 +12,9 @@ include "stddef.h" "include.h"
 orphan off
 
 char c1=1
-char c2={2,3}
+chars c2={2,3}
 char c3="45"
-word c5=1;data c6=1;str c7=1;value c8=1
+word c5=1;datau c6=1;str c7=1;value c8=1
 vstr c9="";vword ca=1;vdata cb=1
 char cc="\taz"^
 

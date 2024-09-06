@@ -17,10 +17,18 @@ function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,sd is_signed,
 						setcall err xfile_add_char((Xfile_declfield_data_concrete))
 					endelse
 					if err=(noerror)
-						if is_signed=(Xfile_declext_no)
-							setcall err xfile_add_char((Xfile_declext_no))
-						else
-							setcall err xfile_add_char((Xfile_declext_yes))
+						if decltype!=(Xfile_decltype_byte) #default to yes
+							if is_signed=(Xfile_declext_no)
+								setcall err xfile_add_char((Xfile_declext_yes))
+							else
+								setcall err xfile_add_char((Xfile_declext_no))
+							endelse
+						else #default to no
+							if is_signed=(Xfile_declext_no)
+								setcall err xfile_add_char((Xfile_declext_no))
+							else
+								setcall err xfile_add_char((Xfile_declext_yes))
+							endelse
 						endelse
 					endif
 				endif
