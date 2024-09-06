@@ -18,12 +18,13 @@ word c5=1;datau c6=1;str c7=1;value c8=1
 vstr c9="";vword ca=1;vdata cb=1
 char cc="\taz"^
 
+#constu a1=1
 const a1=1
 
 char a#3
 value b^a
 
-function intern(data a,sd b,sv c,sv d) #commenting
+function intern(data a,sd b,sv c,svu d) #commenting
 	inc a
 	dec a
 	incst c
