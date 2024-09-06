@@ -35,13 +35,13 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				setcall immovable_struct_cont getstructcont(sectiontypenumber)
 				call getcontReg(immovable_struct_cont,#reg)
 				#
-				SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,sectiontypenumber,(dummy_mask),0) #there is 1 more argument but is not used
+				SetCall err addvarreferenceorunref_signed(ptrcontent,ptrsize,valsize,sectiontypenumber,(dummy_mask),is_signed,0) #there is 1 more argument but is not used
 			else
 				#
 				setcall immovable_struct_cont getstructcont(typenumber)
 				call getcontReg(immovable_struct_cont,#reg)
 				#
-				SetCall err addvarreferenceorunref_signed(ptrcontent,ptrsize,valsize,typenumber,long_mask,0,is_expand,is_signed)
+				SetCall err addvarreferenceorunref_signed(ptrcontent,ptrsize,valsize,typenumber,long_mask,is_signed,0,is_expand)
 			endelse
 			If err!=noerr;Return err;EndIf
 

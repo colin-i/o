@@ -177,7 +177,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 	Return noerr
 endfunction
 #same
-function addvarreferenceorunref_signed(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand,sd is_signed)
+function addvarreferenceorunref_signed(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd is_signed,sd stackoffset,sd is_expand)
 	if is_signed=(Xfile_declext_yes)
 		or mask (signbit)
 	endif
