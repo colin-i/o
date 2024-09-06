@@ -70,17 +70,15 @@ function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
 	value *^longWord  #vword[x] sw
 	value *^longInt   #vdata[x] sd
 
-	charx feature#1
+	charx sign#1;charx feature#1
 	if field=(Xfile_declfield_data)
 		charx data#1;call get_char(pbuffer,#data)
-		charx sign#1;call get_char(pbuffer,#sign)
+		call get_char(pbuffer,#sign)
 		call get_char(pbuffer,ptype)     #type is used outside
 		call get_char(pbuffer,#feature)
-
 		if sign=(Xfile_declext_no)
 			call unsigned(outfile)
 		end
-
 		#special hack for a pointless long (value), needed to inc/dec
 		if ptype#=(Xfile_decltype_long)
 			if data=(Xfile_declfield_data_concrete)
@@ -89,8 +87,12 @@ function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
 			end
 		end
 	else
+		call get_char(pbuffer,#sign)
 		call get_char(pbuffer,ptype)
 		call get_char(pbuffer,#feature)
+		if sign=(Xfile_declext_no)
+			call unsigned(outfile)
+		end
 	end
 	sv fn
 	set fn ptype#     #type is used outside

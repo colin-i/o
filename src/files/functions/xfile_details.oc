@@ -16,35 +16,35 @@ function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,sd is_signed,
 					else
 						setcall err xfile_add_char((Xfile_declfield_data_concrete))
 					endelse
-					if err=(noerror)
-						if decltype!=(Xfile_decltype_byte) #default to yes
-							if is_signed=(Xfile_declext_no)
-								setcall err xfile_add_char((Xfile_declext_yes))
-							else
-								setcall err xfile_add_char((Xfile_declext_no))
-							endelse
-						else #default to no
-							if is_signed=(Xfile_declext_no)
-								setcall err xfile_add_char((Xfile_declext_no))
-							else
-								setcall err xfile_add_char((Xfile_declext_yes))
-							endelse
-						endelse
-					endif
 				endif
 			endelse
 			if err=(noerror)
-				setcall err xfile_add_char(decltype)
-				if err=(noerror)
-					if content#=(throwlesssign)
-						setcall err xfile_add_char((Xfile_declfeature_throwless))
-						call stepcursors(#content,#size)
-					elseif content#=(unrefsign)
-						setcall err xfile_add_char((Xfile_declfeature_unref))
-						call stepcursors(#content,#size)
+				if decltype!=(Xfile_decltype_byte) #default to yes
+					if is_signed=(Xfile_declext_no)
+						setcall err xfile_add_char((Xfile_declext_yes))
 					else
-						setcall err xfile_add_char((Xfile_declfeature_normal))
+						setcall err xfile_add_char((Xfile_declext_no))
 					endelse
+				else #default to no
+					if is_signed=(Xfile_declext_no)
+						setcall err xfile_add_char((Xfile_declext_no))
+					else
+						setcall err xfile_add_char((Xfile_declext_yes))
+					endelse
+				endelse
+				if err=(noerror)
+					setcall err xfile_add_char(decltype)
+					if err=(noerror)
+						if content#=(throwlesssign)
+							setcall err xfile_add_char((Xfile_declfeature_throwless))
+							call stepcursors(#content,#size)
+						elseif content#=(unrefsign)
+							setcall err xfile_add_char((Xfile_declfeature_unref))
+							call stepcursors(#content,#size)
+						else
+							setcall err xfile_add_char((Xfile_declfeature_normal))
+						endelse
+					endif
 				endif
 			endif
 		endelse

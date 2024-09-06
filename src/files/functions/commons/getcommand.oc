@@ -569,7 +569,9 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#		set intercursors #pointer  ##only for elseGif
 		#	endif
 		elseif command=(cDECLARE)
-			setcall extstr getcom_declare(ptrsubtype#)
+			if ptrsubtype#!=(cCONST)
+				setcall extstr getcom_declare(ptrsubtype#)
+			endif
 		Elseif command=(cSTARTFUNCTION)
 			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
 			if x_fn!=(Xfile_function_not_x)
