@@ -383,6 +383,8 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 			endelse
 			inc content
 			if content=last
+				set p_content# content
+				if p_newlines!=0;set p_newlines# newlines;endif
 				return unend
 			endif
 		endwhile
@@ -401,6 +403,8 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 			inc content
 		endelseif
 		if content=last
+			set p_content# content
+			if p_newlines!=0;set p_newlines# newlines;endif
 			return unend
 		endif
 	endwhile

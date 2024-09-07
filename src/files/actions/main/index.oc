@@ -81,6 +81,7 @@ while loop=2
 			add totalnewlines newlines  ##this is also good when error
 			if errormsg!=(noerror)
 				set loop 1
+				set content pointer
 			endif
 		elseif pointer#=(asciisemicolon)
 			set loop 1

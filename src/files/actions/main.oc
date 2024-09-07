@@ -65,12 +65,10 @@ While includesReg!=null
 
 				Data printbuffer#1
 
-				if totalnewlines=0
-					setcall printbuffer printbuf("%s File %s , Row %u , Column %u",errormsg,cursorforincludes,2,lineoffile,columnoffile)
-				else
-				#first textlinestart is lost at multilines command
-					setcall printbuffer printbuf("%s File %s , Row %u",errormsg,cursorforincludes,1,lineoffile)
-				endelse
+				if totalnewlines!=0
+					add lineoffile totalnewlines
+				endif
+				setcall printbuffer printbuf("%s File %s , Row %u , Column %u",errormsg,cursorforincludes,2,lineoffile,columnoffile)
 				If printbuffer=null
 					Call errexit()
 				EndIf
