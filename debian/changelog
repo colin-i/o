@@ -1,3 +1,9 @@
+ocompiler (1-5+197) xenial; urgency=medium
+
+  * long/long* char;charxOffset1 unsigned
+
+ -- bc <bc@bc-desktop>  Sat, 07 Sep 2024 11:24:13 +0300
+
 ocompiler (1-5+196) xenial; urgency=medium
 
   * second action2 can be in problem when is pointer
