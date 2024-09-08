@@ -230,7 +230,7 @@ function functiondef(sd outfile,sv pbuffer)
 	mult type :
 	sv dest^intern;add dest type
 	set dest dest#
-	call dest(pbuffer,outfile,pointer,loop.szfunctiondef)
+	callg dest(pbuffer,outfile,pointer,loop.szfunctiondef)
 end
 
 include "action.oc"
