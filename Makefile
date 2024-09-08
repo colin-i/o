@@ -13,7 +13,6 @@ endif
 $(TOPTARGETS): $(SUBDIRS)
 $(SUBDIRS):
 	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
-.PHONY: $(TOPTARGETS) $(SUBDIRS)
 
 ver=version.h
 
@@ -35,4 +34,6 @@ clean:
 	-rm -f ${ver}
 	cd tests; /bin/bash ./c
 
+#phony only in this file not in subdirs, then can write extra for a PHONYTOPTARGETS
+.PHONY: $(TOPTARGETS) $(SUBDIRS) verify_comp_with_link
 .NOTPARALLEL:
