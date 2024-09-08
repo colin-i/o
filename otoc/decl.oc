@@ -39,7 +39,7 @@ function functiondef_ext(sv pbuffer,sd outfile,sd pointer,sd sz)
 		if args!=0
 			call write(outfile,#a,1+\.b)
 		else
-			call write(outfile,#b,\.b)
+			callg write(outfile,#b,\.b)
 		end
 	end
 end
