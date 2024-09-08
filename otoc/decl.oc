@@ -24,22 +24,11 @@ function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
 	end
 	call aftercallenable()
 end
-function functiondef_raw(sv pbuffer,sd outfile,sd pointer,sd sz)
+function functiondef_rw(sv pbuffer,sd outfile,sd pointer,sd sz)
 	call functiondef_r(pbuffer,outfile,pointer,sz)
 	callg writer(outfile)
 end
-function functiondef_intern(sv pbuffer,sd outfile,sd pointer,sd sz)
-	charx s#1;call get_char(pbuffer,#s)
-	if s=(Xfile_function_tintern_normal)
-		call functiondef_raw(pbuffer,outfile,pointer,sz)
-	else
-		char a="struct "^
-		call write(outfile,#a,\.a)
-		call write(outfile,pointer,sz)
-		callg functiondef_d(pbuffer,outfile)
-	end
-end
-function functiondef_extern(sv pbuffer,sd outfile,sd pointer,sd sz)
+function functiondef_ext(sv pbuffer,sd outfile,sd pointer,sd sz)
 	charx e#1;call get_char(pbuffer,#e)
 	sd args;set args functiondef_r(pbuffer,outfile,pointer,sz)
 	if e=(Xfile_function_e_normal)
@@ -50,13 +39,42 @@ function functiondef_extern(sv pbuffer,sd outfile,sd pointer,sd sz)
 		if args!=0
 			call write(outfile,#a,1+\.b)
 		else
-			callg write(outfile,#b,\.b)
+			call write(outfile,#b,\.b)
 		end
 	end
 end
+
+function functiondef_intern(sv pbuffer,sd outfile,sd pointer,sd sz)
+	charx s#1;call get_char(pbuffer,#s)
+	if s=(Xfile_function_t_normal)
+		call functiondef_rw(pbuffer,outfile,pointer,sz)
+	else
+		char a="struct "^
+		call write(outfile,#a,\.a)
+		call write(outfile,pointer,sz)
+		call functiondef_d(pbuffer,outfile)
+	end
+	callg writecln(outfile)
+end
+function functiondef_raw(sv pbuffer,sd outfile,sd pointer,sd sz)
+	charx s#1;call get_char(pbuffer,#s)
+	if s=(Xfile_function_t_normal)
+		call functiondef_rw(pbuffer,outfile,pointer,sz)
+		set preloop.has_entry (TRUE)
+		call writecln(outfile)
+	else #skip struct part, entryraw is only for global variables here, will error if not that
+		call functiondef_d(pbuffer,outfile)
+		callg writenl(outfile)
+	end
+end
+function functiondef_extern(sv pbuffer,sd outfile,sd pointer,sd sz)
+	call functiondef_ext(pbuffer,outfile,pointer,sz)
+	callg writecln(outfile)
+end
 function functiondef_entry(sv pbuffer,sd outfile,sd pointer,sd sz)
-	call functiondef_extern(pbuffer,outfile,pointer,sz)
+	call functiondef_ext(pbuffer,outfile,pointer,sz)
 	set preloop.has_entry (TRUE)
+	callg writecln(outfile)
 end
 
 #D structure

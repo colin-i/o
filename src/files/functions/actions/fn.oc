@@ -92,7 +92,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 			Data mask#1
 			#Data ptrobjfnmask%ptrobjfnmask
-			if el_or_e=(TRUE)
+			if el_or_e!=(el_or_e_nothing)
 				Set mask (referencebit)
 
 				#and for .var
@@ -127,7 +127,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			setcall pointer vars_ignoreref(content,sz,fns)
 			Call advancecursors(ptrcontent,ptrsize,sz)
 
-			if el_or_e=(FALSE)
+			if el_or_e=(el_or_e_nothing)
 				call scopes_store_class()
 
 				#and for .var
@@ -170,10 +170,10 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				EndIf
 			EndIf
 
+			sd s2
 			if subtype=(cFUNCTION)
 				call scope64_set((FALSE))
-				setcall err xfile_add_fndef_if(content,sz,(Xfile_function_tintern),(Xfile_function_not_x)) #,arg
-				If err=noerr;setcall err xfile_fndef_struct_if();endif
+				set s2 (Xfile_function_not_x)
 			else
 				#functionx,entry in 64 conventions
 				if subtype!=(Xfile_function_traw)
@@ -183,13 +183,14 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				else
 				#if subtype==(cENTRYRAW)
 				#entryraw has no return but has argc,aexec,a1...an
-					setcall err entryraw_top();if err!=noerr;Return err;EndIf
-
+					setcall err entryraw_top()
+					if err!=noerr;Return err;EndIf
 					#set only to avoid at start args, else, not using, never get into getreturn here
 					call scope64_set((FALSE))
 				endelse
-				setcall err xfile_add_fndef_if(content,sz,subtype,subtype,varargs)
+				set s2 subtype
 			endelse
+			setcall err xfile_add_fndef_if(content,sz,subtype,s2,varargs)
 			If err!=noerr
 				Return err
 			EndIf
@@ -259,7 +260,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 			call entryscope()
 			if subtype=(cFUNCTION)
 				call xfile_fndef_structstart_if()
-			endif
+			elseif subtype=(cENTRYRAW)
+				call xfile_fndef_structstart_if()
+			endelseif
 		endif
 	Else
 		if parses=(pass_init)

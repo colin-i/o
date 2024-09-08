@@ -18,10 +18,10 @@ Else
 	and varargs (x_func_flag)
 	and subtype (~x_func_flag)
 
-	if subtype=(cENTRY);set el_or_e (TRUE)
-	elseif subtype=(cENTRYRAW);set el_or_e (TRUE)
-	else;set el_or_e (FALSE);endelse
-	If el_or_e=(TRUE)
+	if subtype=(cENTRY);set el_or_e (el_or_e_entry)
+	elseif subtype=(cENTRYRAW);set el_or_e (el_or_e_entryraw)
+	else;set el_or_e (el_or_e_nothing);endelse
+	If el_or_e!=(el_or_e_nothing)
 		#Data referencebit=referencebit
 		#Set objfnmask referencebit
 		if parses=(pass_write)

@@ -52,7 +52,7 @@ function scopes_free()
 endfunction
 
 #err
-function scopes_alloc(sd has_named_entry,sd i)
+function scopes_alloc(sd el_or_e,sd i)
 	#now at three pass the fns are mixed with imports
 	#sv ptrfunctions%ptrfunctions
 	#sd i=0
@@ -73,7 +73,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 	#if has_named_entry==(FALSE)
 	#	sub i :
 	#endif
-	if has_named_entry=(TRUE)
+	if el_or_e!=(el_or_e_nothing)
 		inc i
 	endif
 	mult i :
@@ -86,7 +86,7 @@ function scopes_alloc(sd has_named_entry,sd i)
 		set s# i
 		sv pointer;set pointer start
 		add pointer i
-		if has_named_entry=(TRUE)
+		if el_or_e!=(el_or_e_nothing)
 			#entry tag is, and is last, entry. define global variable, use in function is practical
 			sub pointer :
 			sd scps%%ptr_scopes

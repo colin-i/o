@@ -1,4 +1,8 @@
 
+#conclude for otoc c global variables
+if el_or_e=(el_or_e_entryraw)
+	call xfile_fndef_structend_if((el_or_e_entryraw))
+end
 
 #verify that all conditions are closed
 SetCall errormsg checkcondloopclose()

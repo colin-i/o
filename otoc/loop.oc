@@ -231,8 +231,6 @@ function functiondef(sd outfile,sv pbuffer)
 	sv dest^intern;add dest type
 	set dest dest#
 	call dest(pbuffer,outfile,pointer,loop.szfunctiondef)
-
-	callg writecln(outfile)
 end
 
 include "action.oc"

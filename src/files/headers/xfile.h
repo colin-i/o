@@ -39,8 +39,8 @@ const Xfile_function_traw=1
 const Xfile_function_extern=2
 const Xfile_function_entry=3
 
-const Xfile_function_tintern_normal=0
-const Xfile_function_tintern_struct=1
+const Xfile_function_t_normal=0
+const Xfile_function_t_struct=1
 
 const Xfile_function_e_normal=0
 const Xfile_function_e_varargs=1

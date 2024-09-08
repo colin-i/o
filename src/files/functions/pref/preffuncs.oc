@@ -6,7 +6,7 @@ data ignore_format_so#1
 const p_ignore_format_so^ignore_format_so
 
 #bool for err2
-Function warnings(sd p_err,sd has_named_entry)
+Function warnings(sd p_err,sd el_or_e)
 	Data warningsboolptr%ptrwarningsbool
 	Data warningsbool#1
 	Set warningsbool warningsboolptr#
@@ -15,7 +15,7 @@ Function warnings(sd p_err,sd has_named_entry)
 		sd var
 		setcall var scopes_searchinvars(p_err,#fn_name)
 		If var=(NULL)
-			if has_named_entry=(FALSE)
+			if el_or_e=(el_or_e_nothing)
 				call vars_log_reset() #example: it just searched function q, not having a named entry, it remains there, now here needing "v.var"
 
 				SetCall var searchinvars((NULL),0,(NULL),p_err) #,setref unused

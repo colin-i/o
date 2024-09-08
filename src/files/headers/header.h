@@ -559,3 +559,4 @@ valuex innerReg#1  #value? is faster at fn.oc for less coding
 valuex xstruct#1
 datax xstruct_reg#1
 datax xstruct_dreg#1
+datax xstruct_dregx#1

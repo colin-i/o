@@ -94,7 +94,9 @@ function xfile_add_fndef_if(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
 					else
 						setcall err xfile_add_char((Xfile_function_e_varargs))
 					endelse
-				endif
+				else #normal or entryraw
+					setcall err xfile_fndef_struct_if()
+				endelse
 			endif
 		endif
 		return err
@@ -107,9 +109,11 @@ function xfile_fndef_struct_if()
 		sd err
 		setcall main.xstruct tellfile(main.xfile,#err)
 		if main.xstruct!=(unierror)
-			set main.xstruct_dreg main.datasecSize ##also need to differentiate from a dummy function
+			set main.xstruct_dregx main.datasecSize ##also need to differentiate from a dummy function
+			#and since long/long*, also datasecReg
+			set main.xstruct_dreg main.datasecReg
 
-			setcall err xfile_add_char((Xfile_function_tintern_normal))
+			setcall err xfile_add_char((Xfile_function_t_normal))
 		endif
 		return err
 	endif
@@ -121,18 +125,32 @@ function xfile_fndef_structstart_if()
 		call getcontReg(code,#main.xstruct_reg)
 	endif
 endfunction
-function xfile_fndef_structend_if()
+function xfile_fndef_structend_if(sd el_or_e)
 	if main.xstruct!=(unierror)
 		datax reg#1
 		value code%%ptr_codesec
 		call getcontReg(code,#reg)
 		if reg=main.xstruct_reg
-			if main.xstruct_dreg!=main.datasecSize
+			whiletrue
+				if el_or_e=(el_or_e_nothing) #break if no data/datax
+					if main.xstruct_dregx=main.datasecSize
+						if main.xstruct_dreg=main.datasecReg
+							break
+						end
+					end
+				else #at entryraw must be full empty(stack are not counted at this moment), only for global variables here
+					if main.xstruct_dregx!=main.datasecSize
+						if main.xstruct_dreg!=main.datasecReg
+							break
+						end
+					end
+				endelse
 				call lseek(main.xfile,main.xstruct,(SEEK_SET))
-				char a=Xfile_function_tintern_struct
+				char a=Xfile_function_t_struct
 				call write(main.xfile,#a,1)
 				call lseek(main.xfile,0,(SEEK_END)) #what if on extra? will return -1 but will move. to test, a next SEEK_CUR will be -1, and write?
-			endif
+				break
+			endwhile
 		endif
 		set main.xstruct (unierror)
 	endif
