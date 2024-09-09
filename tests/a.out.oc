@@ -43,7 +43,7 @@ function st()
 end
 functionxx f(sd dummy) #void f(...) was working with gcc13 but with 5 still is: ISO C requires a named argument before '...'
 	valuex a#1
-	value b=0
+	value b=\main.c2
 	set a #b
 	set b a#
 	set b a#s

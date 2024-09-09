@@ -21,6 +21,7 @@ include "ascii.h"
 include "mem.oc"
 
 const err=-1
+const long32=DWORD
 
 datax result#1
 
@@ -43,66 +44,76 @@ function loop(sd pointer,sd delim,sd output)
 	datax szfunctiondef#1
 	set szfunctiondef 0
 
-	add delim pointer
-	while pointer!=delim
-		charx command#1;call get_char(#pointer,#command)
-		#if command>(Xfile_last);call puts("Error");break;end
+	if delim>^(long32)
+		vdatax entrystart#1
+		vstrx entrychars#1
+		set entrystart pointer#
+		add entrystart pointer
+		set entrychars entrystart
+		add entrychars (DWORD)
 
-		whiletrue
-			if command!=(Xfile_end)
-				if command!=(Xfile_else)
-					break
+		add pointer (long32)
+		sub delim (long32)
+		add delim pointer
+		while pointer!=delim
+			charx command#1;call get_char(#pointer,#command)
+			#if command>(Xfile_last);call puts("Error");break;end
+			whiletrue
+				if command!=(Xfile_end)
+					if command!=(Xfile_else)
+						break
+					end
 				end
+				dec indentation
+				break
 			end
-			dec indentation
-			break
-		end
-		if same_line=(FALSE)
-			sd i;set i indentation
-			while i>0
-				char a=asciitab
-				call write(output,#a,1)
-				dec i
+			if same_line=(FALSE)
+				sd i;set i indentation
+				while i>0
+					char a=asciitab
+					call write(output,#a,1)
+					dec i
+				end
+			else
+				set same_line (FALSE)
 			end
-		else
-			set same_line (FALSE)
-		end
 
-		value Xfile_comment^comment
-		value *Xfile_commentmulti^commentmulti
-		value *Xfile_commentlineend^commentlineend
-		value *Xfile_format^format
-		value *Xfile_include^include
-		value *Xfile_functiondef^functiondef
-		value *Xfile_declare^declare
-		value *Xfile_action^action
-		value *Xfile_action2^action2
-		value *Xfile_call^call
-		value *Xfile_callex^callex
-		value *Xfile_if^if
-		value *Xfile_else^else
-		value *Xfile_while^while
-		value *Xfile_whiletrue^whiletrue
-		value *Xfile_break^break
-		value *Xfile_continue^continue
-		value *Xfile_end^end
-		value *Xfile_ret^ret
-		value *Xfile_library^library
-		value *Xfile_import^import
-		value *Xfile_aftercall^aftercall
-		value *Xfile_hex^hex
-		value *Xfile_override^override
-		value *Xfile_orphan^orphan
-		value *Xfile_interrupt^interrupt
-		value *Xfile_line^line
-		mult command :
-		sv dest^Xfile_comment;add dest command
-		set dest dest#
-		call dest(output,#pointer)
+			value Xfile_comment^comment
+			value *Xfile_commentmulti^commentmulti
+			value *Xfile_commentlineend^commentlineend
+			value *Xfile_format^format
+			value *Xfile_include^include
+			value *Xfile_functiondef^functiondef
+			value *Xfile_declare^declare
+			value *Xfile_action^action
+			value *Xfile_action2^action2
+			value *Xfile_call^call
+			value *Xfile_callex^callex
+			value *Xfile_if^if
+			value *Xfile_else^else
+			value *Xfile_while^while
+			value *Xfile_whiletrue^whiletrue
+			value *Xfile_break^break
+			value *Xfile_continue^continue
+			value *Xfile_end^end
+			value *Xfile_ret^ret
+			value *Xfile_library^library
+			value *Xfile_import^import
+			value *Xfile_aftercall^aftercall
+			value *Xfile_hex^hex
+			value *Xfile_override^override
+			value *Xfile_orphan^orphan
+			value *Xfile_interrupt^interrupt
+			value *Xfile_line^line
+			mult command :
+			sv dest^Xfile_comment;add dest command
+			set dest dest#
+			call dest(output,#pointer)
 
-		if hotgroup>0
-			if dest!=line
-				dec hotgroup
+			if hotgroup>0
+				if dest!=line
+					dec hotgroup
+				end
 			end
 		end
 	end
@@ -111,27 +122,26 @@ end
 #exit
 function preloop(sd input,sd output)
 	set main.result (EXIT_FAILURE)
-	sd a;set a fseek(input,0,(SEEK_END)) #on 32 can be -1 return error
-	if a=0
-		sd size;set size ftell(input) #is still same place if file deleted in parallel
-		#if size!=-1  #lseek and same result (remark fileno)
+	call fseek(input,0,(SEEK_END))
+	sd size;set size ftell(input) #will not decrease if claimed here(is still same place if file deleted in parallel)
+	if size!=-1  #lseek and same result (remark fileno)
 		call rewind(input)
 		sd buffer;set buffer malloc(size)
 		if buffer!=(NULL)
-			sd r;set r fread(buffer,size,1,input)
-			if r=1
-				set r mems()
-				if r=(TRUE)
-					set main.result (EXIT_SUCCESS)
-					charx has_entry#1;set has_entry (FALSE)
-					call loop(buffer,size,output)
-					if main.result=(EXIT_SUCCESS)
-						if has_entry=(TRUE)
-							callg end(output)
-						end
+			call fread(buffer,size,1,input)
+			#if r=1 why? already claimed by ftell
+			sd r
+			set r mems()
+			if r=(TRUE)
+				set main.result (EXIT_SUCCESS)
+				charx has_entry#1;set has_entry (FALSE)
+				call loop(buffer,size,output)
+				if main.result=(EXIT_SUCCESS)
+					if has_entry=(TRUE)
+						callg end(output)
 					end
-					call memfree()
 				end
+				call memfree()
 			end
 			call free(buffer)
 		end
@@ -219,14 +229,15 @@ function comment(sd outfile,sv pbuffer)
 	callg writen(outfile,pointer,sz)
 end
 function functiondef(sd outfile,sv pbuffer)
-	valuex pointer#1
-	call get_string(pbuffer,#loop.szfunctiondef,#pointer)
-
 	value intern^functiondef_intern
 	value *raw^functiondef_raw
 	value *extern^functiondef_extern
 	value *entry^functiondef_entry
+
 	charx type#1;call get_char(pbuffer,#type)
+	valuex pointer#1
+	call get_string(pbuffer,#loop.szfunctiondef,#pointer)
+
 	mult type :
 	sv dest^intern;add dest type
 	set dest dest#

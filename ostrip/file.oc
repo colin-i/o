@@ -147,6 +147,7 @@ function seek(sd file,sd offset,sd whence)
 	#at lseek:
 	#	tested again with same truncate -s ... . fseek with a decent offset is not error, at ftell will be
 	#	with a negative offset fseek will error if crossing through the beginning
+	#	about read:fopen 3gb will error, 1 is ok, modify outside, seekend ok, ftell error(and can't decrease if claimed untill here)
 	if return!=0
 		call erMessage("fseek error")
 	endif

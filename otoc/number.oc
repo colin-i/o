@@ -80,10 +80,20 @@ end
 function number_var_size(sd outfile,sv pbuffer) #DoT
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer) #\.a is \fn.a in .x
+	sd cmp
+	char c="sizeof("^
 	if sz=loop.szfunctiondef
-		sd cmp;set cmp memcmp(pointer,functiondef.pointer,sz)
+		set cmp memcmp(pointer,functiondef.pointer,sz)
 		if cmp=0 #here is not sizeof a struct member, is sizeof an item inside same function
-			char c="sizeof("^
+			call write(outfile,#c,\.c)
+			call var(pbuffer,outfile)
+			callg writer(outfile)
+			ret
+		end
+	end
+	if sz=loop.entrystart#
+		set cmp memcmp(pointer,loop.entrychars,sz)
+		if cmp=0 #same for global variables
 			call write(outfile,#c,\.c)
 			call var(pbuffer,outfile)
 			callg writer(outfile)

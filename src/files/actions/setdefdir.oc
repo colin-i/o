@@ -67,6 +67,10 @@ if logbool=true
 endif
 if xbool!=(No)
 	setcall errormsg openfile_mode_add_extension(safecurrentdirtopath,".x",#xfile,(_open_readwrite),(nonexec_perms))
+	if errormsg=noerr
+		value entryxfileoffset=NULL
+		setcall errormsg writefile_errversion(xfile,#entryxfileoffset,:)
+	endif
 	if errormsg!=noerr
 		Call msgerrexit(errormsg)
 	endif

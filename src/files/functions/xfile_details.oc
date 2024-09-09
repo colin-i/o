@@ -81,43 +81,59 @@ function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,sd is_signed,
 endfunction
 
 #err
-function xfile_add_fndef_if(sd content,sd sz,sd fn,sd x_or_not_x,sd varargs)
+function xfile_add_fndef_if(sd content,sd sz,sd fn,sd varargs)
 	if main.xfile!=(openno)
 		sd err
-		setcall err xfile_add_base((Xfile_functiondef),content,sz)
+		setcall err xfile_add_char((Xfile_functiondef))
 		if err=(noerror)
 			setcall err xfile_add_char(fn)
 			if err=(noerror)
-				if x_or_not_x!=(Xfile_function_not_x)
-					if varargs=0
-						setcall err xfile_add_char((Xfile_function_e_normal))
-					else
-						setcall err xfile_add_char((Xfile_function_e_varargs))
-					endelse
-				else #normal or entryraw
-					setcall err xfile_fndef_struct_if()
-				endelse
+				setcall err xfile_add_string(content,sz)
+				if err=(noerror)
+					whiletrue
+						if fn!=(cENTRY)
+							if fn!=(cFUNCTIONX)
+								setcall main.xstruct tellfile(main.xfile,#err)
+								if main.xstruct!=(unierror)
+									set main.xstruct_dregx main.datasecSize ##also need to differentiate from a dummy function
+									#and since long/long*, also datasecReg
+									set main.xstruct_dreg main.datasecReg
+									if fn=(cENTRYRAW) #must remeber the offset for global sizeof at otoc
+										call xfile_entry_offset(sz,main.xstruct)
+									endif
+									setcall err xfile_add_char((Xfile_function_t_normal))
+								endif
+								break
+							endif
+						else
+							sd off;set off tellfile(main.xfile,#err)
+							if off!=(unierror)
+								call xfile_entry_offset(sz,off)
+							else
+								break
+							endelse
+						endelse
+						if varargs=0
+							setcall err xfile_add_char((Xfile_function_e_normal))
+						else
+							setcall err xfile_add_char((Xfile_function_e_varargs))
+						endelse
+						break
+					endwhile
+				endif
 			endif
 		endif
 		return err
 	endif
 	return (noerror)
 endfunction
-#err
-function xfile_fndef_struct_if()
-	if main.xfile!=(openno)
-		sd err
-		setcall main.xstruct tellfile(main.xfile,#err)
-		if main.xstruct!=(unierror)
-			set main.xstruct_dregx main.datasecSize ##also need to differentiate from a dummy function
-			#and since long/long*, also datasecReg
-			set main.xstruct_dreg main.datasecReg
-
-			setcall err xfile_add_char((Xfile_function_t_normal))
-		endif
-		return err
-	endif
-	return (noerror)
+function xfile_entry_offset(sd sz,sd off)
+	neg sz        ##-content
+	add sz off    ##here-content
+	sub sz (dwsz) ##here-string(sz+content)
+	call lseek(main.xfile,0,(SEEK_SET))
+	call write(main.xfile,#sz,:)
+	call lseek(main.xfile,0,(SEEK_END)) #already was tellfile
 endfunction
 function xfile_fndef_structstart_if()
 	if main.xfile!=(openno)
@@ -132,27 +148,31 @@ function xfile_fndef_structend_if(sd el_or_e)
 		call getcontReg(code,#reg)
 		if reg=main.xstruct_reg
 			whiletrue
+				char a=Xfile_function_t_struct
 				if el_or_e=(el_or_e_nothing) #break if no data/datax
 					if main.xstruct_dregx=main.datasecSize
 						if main.xstruct_dreg=main.datasecReg
 							break
 						end
 					end
+					call lseek(main.xfile,main.xstruct,(SEEK_SET))
+					call write(main.xfile,#a,1)
+					call lseek(main.xfile,0,(SEEK_END)) #what if on extra? will return -1 but will move. to test, a next SEEK_CUR will be -1, and write?
+					set main.xstruct (unierror)
 				else #at entryraw must be full empty(stack are not counted at this moment), only for global variables here
 					if main.xstruct_dregx!=main.datasecSize
 						if main.xstruct_dreg!=main.datasecReg
 							break
 						end
 					end
+					call lseek(main.xfile,main.xstruct,(SEEK_SET))
+					call write(main.xfile,#a,1)
+					#why to seek end if this is the last write
+					#why to set xtruct again?
 				endelse
-				call lseek(main.xfile,main.xstruct,(SEEK_SET))
-				char a=Xfile_function_t_struct
-				call write(main.xfile,#a,1)
-				call lseek(main.xfile,0,(SEEK_END)) #what if on extra? will return -1 but will move. to test, a next SEEK_CUR will be -1, and write?
 				break
 			endwhile
 		endif
-		set main.xstruct (unierror)
 	endif
 endfunction
 

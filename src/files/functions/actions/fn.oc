@@ -170,10 +170,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				EndIf
 			EndIf
 
-			sd s2
 			if subtype=(cFUNCTION)
 				call scope64_set((FALSE))
-				set s2 (Xfile_function_not_x)
 			else
 				#functionx,entry in 64 conventions
 				if subtype!=(Xfile_function_traw)
@@ -188,9 +186,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 					#set only to avoid at start args, else, not using, never get into getreturn here
 					call scope64_set((FALSE))
 				endelse
-				set s2 subtype
 			endelse
-			setcall err xfile_add_fndef_if(content,sz,subtype,s2,varargs)
+			setcall err xfile_add_fndef_if(content,sz,subtype,varargs)
 			If err!=noerr
 				Return err
 			EndIf
