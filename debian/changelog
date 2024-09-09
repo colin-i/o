@@ -1,3 +1,9 @@
+ocompiler (1-5+198) xenial; urgency=medium
+
+  * multiline row fix. datareg test for struct. global at otoc. sizeof global at otoc.
+
+ -- bc <bc@bc-desktop>  Mon, 09 Sep 2024 14:19:41 +0300
+
 ocompiler (1-5+197) xenial; urgency=medium
 
   * long/long* char;charxOffset1 unsigned
