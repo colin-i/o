@@ -48,7 +48,7 @@ function loop(sd pointer,sd delim,sd output)
 	set hotgroup 0
 	datax szfunctiondef#1
 	set szfunctiondef 0
-	charx icount#1
+	datax icount#1  #dependent on includesReg
 	set icount 0
 
 	#if delim>^(long32)
