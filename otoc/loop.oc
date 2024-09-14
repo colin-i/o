@@ -90,7 +90,7 @@ function loop(sd pointer,sd delim,sd output)
 		value *Xfile_commentlineend^commentlineend
 		value *Xfile_format^format
 		value *Xfile_include^include
-		value *Xfile_functiondef^functiondef
+		value *Xfile_functiondef^functiondef   #in c, this can cause implicit declaration if a{b()} b{} but is only a warning, will be resolved ok
 		value *Xfile_declare^declare
 		value *Xfile_action^action
 		value *Xfile_action2^action2
