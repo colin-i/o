@@ -99,9 +99,9 @@ While includesReg!=null
 
 	data skipfree#1
 	set skipfree 0
-	if includesReg=0
+	if errormsg=(noerror)
 		if parses!=(pass_write)
-			if errormsg=(noerror)
+			if includesReg=0
 				If innerfunction=true
 					Str endfnexp="ENDFUNCTION command expected to close the opened FUNCTION."
 					set errormsg endfnexp
@@ -149,7 +149,9 @@ While includesReg!=null
 					endif
 				EndElse
 			endif
-		endif
+		elseif includesReg!=0
+			setcall errormsg xfile_add_char_if((Xfile_iend))
+		endelseif
 	endif
 	if skipfree=0
 		Call free(contentoffile)

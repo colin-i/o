@@ -7,9 +7,9 @@ function cond(sv pbuffer,sd outfile)
 
 	#here is not o,must know signed/unsigned at start
 	sd replay;set replay pbuffer#
-	set loop.allowwrite (FALSE)
+	or loop.allowwrite (allowwrite_no)
 	call arg(pbuffer) #,outfile
-	set loop.allowwrite (TRUE)
+	and loop.allowwrite (~allowwrite_no)
 	charx cnd#1;call get_char(pbuffer,#cnd)
 
 const unimplemented=-1

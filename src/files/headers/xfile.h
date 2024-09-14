@@ -30,6 +30,7 @@ const Xfile_override=23
 const Xfile_orphan=24
 const Xfile_interrupt=25
 const Xfile_line=26
+const Xfile_iend=27
 #at the moment these are < 0x100
 
 #t from type

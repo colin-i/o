@@ -60,7 +60,7 @@ function functiondef_raw(sv pbuffer,sd outfile,sd pointer,sd sz)
 	charx s#1;call get_char(pbuffer,#s)
 	if s=(Xfile_function_t_normal)
 		call functiondef_rw(pbuffer,outfile,pointer,sz)
-		set preloop.has_entry (TRUE)
+		set loop.has_entry (TRUE)
 		call writecln(outfile)
 	else #skip struct part, entryraw is only for global variables here, will error if not that
 		call functiondef_d(pbuffer,outfile)
@@ -73,7 +73,7 @@ function functiondef_extern(sv pbuffer,sd outfile,sd pointer,sd sz)
 end
 function functiondef_entry(sv pbuffer,sd outfile,sd pointer,sd sz)
 	call functiondef_ext(pbuffer,outfile,pointer,sz)
-	set preloop.has_entry (TRUE)
+	set loop.has_entry (TRUE)
 	callg writecln(outfile)
 end
 

@@ -13,7 +13,6 @@ importx "fprintf" fprintf
 importx "memcmp" memcmp
 
 include "xfile.h"
-#const Xfile_last=Xfile_line
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
 const Xfile_cond_first=Xfile_cond_greatequalunsign
 include "ascii.h"
@@ -23,14 +22,20 @@ include "mem.oc"
 const err=-1
 const long32=DWORD
 
+const allowwrite_yes=0
+const allowwrite_no=1
+const allowwrite_no_include=2
+
 datax result#1
 
 function loop(sd pointer,sd delim,sd output)
 	valuex bp#1
 	base bp
 
+	charx has_entry#1
+	set has_entry (FALSE)
 	charx allowwrite#1
-	set allowwrite (TRUE)
+	set allowwrite (allowwrite_yes)
 	charx directwrite#1
 	set directwrite (TRUE)
 	valuex function_start#1
@@ -43,78 +48,85 @@ function loop(sd pointer,sd delim,sd output)
 	set hotgroup 0
 	datax szfunctiondef#1
 	set szfunctiondef 0
+	charx icount#1
+	set icount 0
 
-	if delim>^(long32)
-		vdatax entrystart#1
-		vstrx entrychars#1
-		set entrystart pointer#
-		add entrystart pointer
-		set entrychars entrystart
-		add entrychars (DWORD)
+	#if delim>^(long32)
+	vdatax entrystart#1
+	vstrx entrychars#1
+	set entrystart pointer#
+	add entrystart pointer
+	set entrychars entrystart
+	add entrychars (DWORD)
 
-		add pointer (long32)
-		sub delim (long32)
-		add delim pointer
-		while pointer!=delim
-			charx command#1;call get_char(#pointer,#command)
-			#if command>(Xfile_last);call puts("Error");break;end
-			whiletrue
-				if command!=(Xfile_end)
-					if command!=(Xfile_else)
-						break
-					end
-				end
-				dec indentation
-				break
-			end
-			if same_line=(FALSE)
-				sd i;set i indentation
-				while i>0
-					char a=asciitab
-					call write(output,#a,1)
-					dec i
-				end
-			else
-				set same_line (FALSE)
-			end
-
-			value Xfile_comment^comment
-			value *Xfile_commentmulti^commentmulti
-			value *Xfile_commentlineend^commentlineend
-			value *Xfile_format^format
-			value *Xfile_include^include
-			value *Xfile_functiondef^functiondef
-			value *Xfile_declare^declare
-			value *Xfile_action^action
-			value *Xfile_action2^action2
-			value *Xfile_call^call
-			value *Xfile_callex^callex
-			value *Xfile_if^if
-			value *Xfile_else^else
-			value *Xfile_while^while
-			value *Xfile_whiletrue^whiletrue
-			value *Xfile_break^break
-			value *Xfile_continue^continue
-			value *Xfile_end^end
-			value *Xfile_ret^ret
-			value *Xfile_library^library
-			value *Xfile_import^import
-			value *Xfile_aftercall^aftercall
-			value *Xfile_hex^hex
-			value *Xfile_override^override
-			value *Xfile_orphan^orphan
-			value *Xfile_interrupt^interrupt
-			value *Xfile_line^line
-			mult command :
-			sv dest^Xfile_comment;add dest command
-			set dest dest#
-			call dest(output,#pointer)
-
-			if hotgroup>0
-				if dest!=line
-					dec hotgroup
+	add pointer (long32)
+	sub delim (long32)
+	add delim pointer
+	while pointer!=delim
+		charx command#1;call get_char(#pointer,#command)
+		#if command>(Xfile_last);call puts("Error");break;end
+		whiletrue
+			if command!=(Xfile_end)
+				if command!=(Xfile_else)
+					break
 				end
 			end
+			dec indentation
+			break
+		end
+		if same_line=(FALSE)
+			sd i;set i indentation
+			while i>0
+				char a=asciitab
+				call write(output,#a,1)
+				dec i
+			end
+		else
+			set same_line (FALSE)
+		end
+
+		value Xfile_comment^comment
+		value *Xfile_commentmulti^commentmulti
+		value *Xfile_commentlineend^commentlineend
+		value *Xfile_format^format
+		value *Xfile_include^include
+		value *Xfile_functiondef^functiondef
+		value *Xfile_declare^declare
+		value *Xfile_action^action
+		value *Xfile_action2^action2
+		value *Xfile_call^call
+		value *Xfile_callex^callex
+		value *Xfile_if^if
+		value *Xfile_else^else
+		value *Xfile_while^while
+		value *Xfile_whiletrue^whiletrue
+		value *Xfile_break^break
+		value *Xfile_continue^continue
+		value *Xfile_end^end
+		value *Xfile_ret^ret
+		value *Xfile_library^library
+		value *Xfile_import^import
+		value *Xfile_aftercall^aftercall
+		value *Xfile_hex^hex
+		value *Xfile_override^override
+		value *Xfile_orphan^orphan
+		value *Xfile_interrupt^interrupt
+		value *Xfile_line^line
+		value *Xfile_iend^iend
+		mult command :
+		sv dest^Xfile_comment;add dest command
+		set dest dest#
+		call dest(output,#pointer)
+
+		if hotgroup>0
+			if dest!=line
+				dec hotgroup
+			end
+		end
+	end
+	if main.result=(EXIT_SUCCESS)
+		if has_entry=(TRUE)
+			callg end(output)
 		end
 	end
 end
@@ -133,13 +145,9 @@ function preloop(sd input,sd output)
 			sd r
 			set r mems()
 			if r=(TRUE)
-				set main.result (EXIT_SUCCESS)
-				charx has_entry#1;set has_entry (FALSE)
-				call loop(buffer,size,output)
-				if main.result=(EXIT_SUCCESS)
-					if has_entry=(TRUE)
-						callg end(output)
-					end
+				if size>^(long32)
+					set main.result (EXIT_SUCCESS)
+					call loop(buffer,size,output)
 				end
 				call memfree()
 			end
@@ -167,14 +175,19 @@ function get_string(sv pbuffer,sd psize,sv ppointer)
 	add pbuffer# psize#
 end
 
+function fseek_if(sd outfile,sd i)
+	if loop.allowwrite=(allowwrite_yes) #can be no_include
+		call fseek(outfile,i,(SEEK_CUR))
+	end
+end
 function backchar(sd outfile)
-	call fseek(outfile,-1,(SEEK_CUR))
+	call fseek_if(outfile,-1)
 end
 function backindent(sd outfile)
 	sd i=1
 	mult i loop.indentation  ##0 or more
 	neg i
-	call fseek(outfile,i,(SEEK_CUR))
+	call fseek_if(outfile,i)
 end
 function line_continuation(sd outfile)
 	call backindent(outfile)
@@ -188,11 +201,11 @@ end
 
 function unimplemented_start(ss com,sd outfile)
 	call printf("Unimplemented command: %s\n",com)
-	set loop.allowwrite (FALSE)
 	call backindent(outfile)
+	or loop.allowwrite (allowwrite_no)
 end
 function unimplemented_end()
-	set loop.allowwrite (TRUE)
+	and loop.allowwrite (~allowwrite_no)
 end
 
 include "util.oc"
@@ -207,7 +220,7 @@ end
 
 function unimplemented()
 	call puts("unimplemented")
-	if loop.allowwrite=(TRUE)
+	if loop.allowwrite=(allowwrite_yes)
 		call aftercallenable()
 	end
 end
@@ -242,6 +255,14 @@ function functiondef(sd outfile,sv pbuffer)
 	sv dest^intern;add dest type
 	set dest dest#
 	callg dest(pbuffer,outfile,pointer,loop.szfunctiondef)
+end
+function iend()
+	if loop.icount!=0
+		dec loop.icount
+		if loop.icount=0
+			and loop.allowwrite (~allowwrite_no_include)
+		end
+	end
 end
 
 include "action.oc"
@@ -281,6 +302,9 @@ function include(sd outfile,sv pbuffer)
 	if alternative=(Xfile_include_alternative_yes)
 		call get_string(pbuffer,#sz,#pointer)
 	end
+
+	inc loop.icount
+	or loop.allowwrite (allowwrite_no_include)
 end
 function declare(sd outfile,sv pbuffer)
 	charx type#1;charx field#1
@@ -291,11 +315,11 @@ function declare(sd outfile,sv pbuffer)
 		set loop.hotgroup 2
 		#as a special case, [1] is removed for C. and whit what replaced? const a=1 and [a]. alternatives? structure with declared vars, = at nobits vars
 		#this for structures, and not only because at o #1 is not [1], will make more similar
-		set loop.allowwrite number_allowwrite(pbuffer#)
+		or loop.allowwrite number_allowwrite(pbuffer#)
 		call writesl(outfile)
 		call number(pbuffer,outfile)
 		call writesr(outfile)
-		set loop.allowwrite (TRUE)  # example: at unimplemented commands and at condition sign check is FALSE
+		and loop.allowwrite (~allowwrite_no)  # example: at unimplemented commands and at condition sign check is FALSE
 	elseif sign=(Xfile_declsign_pointer)
 		call writee(outfile)
 		if loop.hotgroup=0
@@ -493,7 +517,7 @@ function interrupt(sd outfile)
 end
 
 function write(sd outfile,ss buf,sd sz)
-	if loop.allowwrite=(TRUE)
+	if loop.allowwrite=(allowwrite_yes)
 		sd items
 		if loop.directwrite=(TRUE)
 			set items fwrite(buf,sz,1,outfile)

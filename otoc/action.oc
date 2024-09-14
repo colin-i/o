@@ -24,13 +24,13 @@ end
 
 function action_areturn(sv pbuffer,sd outfile)
 	if loop.function_start!=(err)
-		call fseek(outfile,loop.function_start,(SEEK_SET))
-		call fwrite(#write_long.a,(write_long_cast),1,outfile)
-		sd n;set n fseek(outfile,0,(SEEK_END)) #it's tested, is not 0 on that 32 app example, so the pointer is not moved
-		if n!=0
-			call aftercallenable()
+		if loop.allowwrite=(allowwrite_yes) #can be no_include
+			call fseek(outfile,loop.function_start,(SEEK_SET))
+			call fwrite(#write_long.a,(write_long_cast),1,outfile)
+			call fseek(outfile,0,(SEEK_END))
+			#is ok to ignore multi return at entry because it is non-sense
+			#set loop.function_start (err) #if is not at endfunction, is here
 		end
-		set loop.function_start (err) #if is not at endfunction, is here
 	end
 	char a="return "^  #also used at ret
 	call write(outfile,#a,\.a)
