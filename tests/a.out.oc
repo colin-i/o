@@ -39,6 +39,7 @@ function intern(data a,sd b,sv c,svu d) #commenting
 	return d
 end
 function st()
+	data b#1
 	datax a#1
 end
 functionxx f(sd dummy) #void f(...) was working with gcc13 but with 5 still is: ISO C requires a named argument before '...'
@@ -63,10 +64,10 @@ import "b" puts
 
 entryx main(sd argc)
 	set b b
-	add b 1
-	sub b 1
-	mult b 1
-	div c1 1
+	add b \st
+	sub b \\st
+	mult b \st.a
+	div c1 \st.a\
 	divu c1 1
 	rem c1 1
 	remu c1 1
