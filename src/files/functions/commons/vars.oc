@@ -173,15 +173,27 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 				If cmpret=zero
 					#if set the reference is true
 					if setref=1
-						#go back from string to mask
-						#Sub container dwlen
-
-						#get the value and change the reference bit of the mask to true
-						Data value#1
-						Set value pmask#
-						Data referenceBit=referencebit
-						Or value referenceBit
-						Set pmask# value
+						#is using another scope? for ounused. at this question, can also not ref a selfref
+						sd referenceBit=referencebit
+						and referenceBit pmask#
+						if referenceBit=0  #entries are defined with refbit
+							#can also consider where \.func, but stil tricked by localfunc.var which is not another scope
+							whiletrue
+								if position_pointer!=(NULL) #and ignore when not asking the scope, infinite loop is not a reasone to add code now
+									vdata ptrinnerfunction%globalinnerfunction
+									if ptrinnerfunction#=(TRUE)
+										vdata ptrfunctionTagIndex%ptrfunctionTagIndex
+										if ptrfunctionTagIndex#=position_pointer#
+											break
+										endif
+									endif
+									call addtolog_withchar_ex_atunused(content,size,(log_import))
+								endif
+								#change the reference bit of the mask to true
+								Or pmask# (referencebit)
+								break
+							endwhile
+						endif
 					endif
 					Return entrypoint
 				EndIf
