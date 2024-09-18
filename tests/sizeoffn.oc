@@ -12,6 +12,7 @@ function f1()
 data *#1;datax *#2;data *#2
 call printf(main.p,(\\f1))   #8
 call printf(main.p,(\f1))    #12
+call printf(main.p,(\f1\))   #20
 data *#1;datax *#1
 endfunction
 
@@ -21,8 +22,10 @@ function f2()
 data *#1;datax *#4;data *#1
 call printf(main.p,(\\f1))   #12
 call printf(main.p,(\f1))    #16
+call printf(main.p,(\f1\))   #28
 call printf(main.p,(\\main)) #16
 call printf(main.p,(\main))  #36
+call printf(main.p,(\main\)) #52
 endfunction
 
 data *#1;datax *#1
@@ -32,6 +35,8 @@ entry main()
 call f1()
 call f2()
 
-call printf(p,(\\main))        #20
+call printf(p,(\\main))       #20
 call printf(p,(\main))        #40
-return 0
+call printf(p,(\main\))       #60
+importx "exit" exit
+call exit(0)

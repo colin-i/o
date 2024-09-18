@@ -68,7 +68,7 @@ entryx main(sd argc)
 	sub b \\st
 	mult b \st.a
 	div c1 \st.a\
-	divu c1 1
+	divu c1 \st\
 	rem c1 1
 	remu c1 1
 	and c1 1
