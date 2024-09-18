@@ -176,9 +176,10 @@ const Xfile_numbers_type_tconstant=6
 #f from function
 const Xfile_numbers_type_fsize=7
 const Xfile_numbers_type_fsizeX=8
+const Xfile_numbers_type_fsizeXX=9
 #v from var
-const Xfile_numbers_type_vsizeVar=9
-const Xfile_numbers_type_voffsetVar=10
+const Xfile_numbers_type_vsizeVar=10
+const Xfile_numbers_type_voffsetVar=11
 
 const Xfile_suffix_false=0
 const Xfile_suffix_true=1

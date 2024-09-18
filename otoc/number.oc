@@ -32,6 +32,7 @@ function numbertype(sv pbuffer,sd outfile)
 	value         *^number_text_const
 	value         *^number_func_size
 	value         *^number_func_sizex
+	value         *^number_func_sizexx
 	value         *^number_var_size
 	value         *^number_var_offset
 	charx type#1;call get_char(pbuffer,#type)
@@ -76,6 +77,9 @@ function number_func_sizex(sd outfile,sv pbuffer)
 	call write(outfile,#a,\.a)
 	call write(outfile,pointer,sz)
 	callg writer(outfile)
+end
+function number_func_sizexx(sd outfile,sv pbuffer)
+	callg number_func_sizex(outfile,pbuffer)
 end
 function number_var_size(sd outfile,sv pbuffer) #DoT
 	datax sz#1;valuex pointer#1

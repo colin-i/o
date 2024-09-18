@@ -560,3 +560,7 @@ valuex xstruct#1
 datax xstruct_reg#1
 datax xstruct_dreg#1
 datax xstruct_dregx#1
+
+const fsize=0
+const fsizeX=1
+const fsize_fsizeX=2

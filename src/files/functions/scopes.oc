@@ -218,7 +218,7 @@ function scopes_get_class_data(sd scope,sd data)
 endfunction
 
 #size
-function get_scope_data_size(sd pos,sd is_expand)
+function get_scope_data_size(sd pos,sd size_type)
 	value entrybags%%ptr_scopes
 	vdata ptrfunctionTagIndex%ptrfunctionTagIndex
 	vdata ptrinnerfunction%globalinnerfunction
@@ -228,7 +228,16 @@ function get_scope_data_size(sd pos,sd is_expand)
 		if ptrfunctionTagIndex#=pos
 			if ptrinnerfunction#=(TRUE)
 				add scope (sizeofscope)
-				if is_expand!=0
+				if size_type=(fsize_fsizeX)
+					setcall size get_img_vdata_dataReg()
+					sub size scope#
+
+					add scope (classinfostartdatax)
+					addcall size get_img_vdata_dataSize()
+					sub size scope#
+					return size
+				endif
+				if size_type=(fsizeX)
 					add scope (classinfostartdatax)
 					setcall size get_img_vdata_dataSize()
 				else
@@ -241,7 +250,13 @@ function get_scope_data_size(sd pos,sd is_expand)
 		endif
 		#another function
 		add scope (sizeofscope+classinfosizedata)
-		if is_expand!=0
+		if size_type=(fsize_fsizeX)
+			set size scope#
+			add scope (classinfosizedatax)
+			add size scope#
+			return size
+		endif
+		if size_type=(fsizeX)
 			add scope (classinfosizedatax)
 		endif
 		return scope# #calloc at bigger
@@ -250,13 +265,20 @@ function get_scope_data_size(sd pos,sd is_expand)
 	if ptrinnerfunction#=(TRUE)
 		setcall scope scopes_get_scope(ptrfunctionTagIndex#)
 		add scope (sizeofscope)
-		if is_expand!=0
+		if size_type=(fsizeX)
 			add scope (classinfostartdatax)
 		endif
 		set size scope#
+		if size_type=(fsize_fsizeX)
+			add scope (classinfostartdatax)
+			add size scope#
+		endif
 	else
-		if is_expand!=0
+		if size_type!=(fsize)
 			setcall size get_img_vdata_dataSize()
+			if size_type=(fsize_fsizeX)
+				addcall size get_img_vdata_dataReg()
+			endif
 		else
 			setcall size get_img_vdata_dataReg()
 		endelse
@@ -268,10 +290,14 @@ function get_scope_data_size(sd pos,sd is_expand)
 	while p<^last
 		sd s;set s p#
 		add s (sizeofscope+classinfosizedata)
-		if is_expand!=0
+		if size_type=(fsizeX)
 			add s (classinfosizedatax)
 		endif
 		sub size s#
+		if size_type=(fsize_fsizeX)
+			add s (classinfostartdatax)
+			sub size s#
+		endif
 		incst p
 	endwhile
 	return size

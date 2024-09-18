@@ -240,7 +240,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			endif
 			setcall err xfile_add_char_if((Xfile_numbers_type_fsizeX))  #next in get_scope_pos
 			if err=(noerror)
-				setcall err get_sizeoffunction(content,size,outval,(TRUE))
+				setcall err get_sizeoffunction(content,size,outval,(fsizeX))
 			endif
 			return err
 		endif
@@ -317,14 +317,23 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				endif
 			endelse
 		else
-			#[calculation]fsize
 			if p_parses#=(pass_init)
 				return "At the moment, \\func is not implemented here."  #after pass_init is the calloc for scopes
 			endif
-			setcall err xfile_add_char_if((Xfile_numbers_type_fsize))  #next in get_scope_pos
-			if err=(noerror)
-				setcall err get_sizeoffunction(content,size,outval,(FALSE))
-			endif
+
+			ss cursor=-1;add cursor content;add cursor size
+			if cursor#=(calculationmark) #[calculation]fsize[calculation]
+				dec size
+				setcall err xfile_add_char_if((Xfile_numbers_type_fsizeXX))  #next in get_scope_pos
+				if err=(noerror)
+					setcall err get_sizeoffunction(content,size,outval,(fsize_fsizeX))
+				endif
+			else #[calculation]fsize
+				setcall err xfile_add_char_if((Xfile_numbers_type_fsize))  #next in get_scope_pos
+				if err=(noerror)
+					setcall err get_sizeoffunction(content,size,outval,(fsize))
+				endif
+			end
 		endelse
 		return err
 	#test for : sign (the size of a stack value, 4B on 32-bits, 8B on 64-bits)
@@ -361,12 +370,12 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 endfunction
 
 #size of function
-function get_sizeoffunction(sd content,sd size,sd outval,sd is_expand)
+function get_sizeoffunction(sd content,sd size,sd outval,sd size_type)
 	sd err
 	sd pos
 	setcall err get_scope_pos(content,size,#pos)
 	if err=(noerror)
-		setcall outval# get_scope_data_size(pos,is_expand)
+		setcall outval# get_scope_data_size(pos,size_type)
 	endif
 	return err
 endfunction
