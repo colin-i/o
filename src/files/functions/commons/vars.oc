@@ -122,14 +122,87 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 
 	sd end;set end container
 	add end containerReg
-	While container!=end
-		Set entrypoint container
-		Add container (location)
-		sd pmask;set pmask container
-		Add container (masksize) #add here, not twice, inside warn_or_log and outside (since logging all variables)
-		If warningssearch!=(NULL)
-			SetCall varsize strlen(container)
 
+	value ptrfunctions%%ptr_functions
+	sd pmask
+	sd against_idata
+	If warningssearch=(NULL)
+		if ptrstructure=ptrfunctions
+			sd position=0
+		endif
+		While container!=end
+			Set entrypoint container
+			Add container (location)
+			set pmask container
+			Add container (masksize) #add here, not twice, inside warn_or_log and outside (since logging all variables)
+
+			SetCall varsize strlen(container)
+			If varsize=size
+				Data cmpret#1
+				SetCall cmpret memcmp(container,content,size)
+				If cmpret=zero
+					#if set the reference is true
+					if setref=1
+						#is using another scope? for ounused. at this question, can also not ref a selfref
+						sd referenceBit=referencebit
+						and referenceBit pmask#
+						if referenceBit=0  #entries are defined with refbit
+							#can also consider where \.func, but stil tricked by localfunc.var which is not another scope
+							whiletrue
+								if ptrstructure=ptrfunctions ##scope part or not
+									vdata ptrinnerfunction%globalinnerfunction
+									if ptrinnerfunction#=(TRUE)
+										vdata ptrfunctionTagIndex%ptrfunctionTagIndex
+										if ptrfunctionTagIndex#=position
+											set against_idata (idatabitfunction) #are mixed with imports
+											and against_idata pmask#
+											if against_idata=0
+												break
+											endif
+										endif
+									endif
+									if position_pointer!=(NULL) #is about scope part
+										sd structbit=structbit
+										and structbit pmask#
+										if structbit!=0
+											call addtolog_withchar_ex_atunused(content,size,(log_import))  #structs across multiple objects at ounused
+										else #will reference the scope if the code is called
+											break
+										endelse
+									endif
+								endif
+								#change the reference bit of the mask to true
+								Or pmask# (referencebit)
+								break
+							endwhile
+						endif
+					endif
+					Return entrypoint
+				EndIf
+			EndIf
+			if ptrstructure=ptrfunctions
+				#are mixed with imports
+				set against_idata (idatabitfunction)
+				and against_idata pmask#
+				if against_idata=0
+					inc position
+					if position_pointer!=(NULL)
+						inc position_pointer#
+					endif
+				endif
+			endif
+
+			Add varsize blen
+			Add container varsize
+		EndWhile
+	else
+		While container!=end
+			Set entrypoint container
+			Add container (location)
+			set pmask container
+			Add container (masksize)
+
+			SetCall varsize strlen(container)
 			Data ReferenceBit=referencebit
 			Data checkvalue#1
 			Set checkvalue pmask#
@@ -138,11 +211,9 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 			If checkvalue=zero
 				data returnvalue#1
 				set returnvalue entrypoint
-				#
-				data ptrfunctions%%ptr_functions
 				if ptrfunctions=ptrstructure
 					Set checkvalue pmask#
-					sd against_idata=idatabitfunction
+					set against_idata (idatabitfunction)
 					and against_idata checkvalue
 					if against_idata=0
 						and checkvalue (x86_64bit)
@@ -165,51 +236,11 @@ function vars_core_ref_scope(ss content,sd size,sv ptrstructure,data warningssea
 				endif
 			endIf
 			#elseIf ptrconstants==ptrstructure 0x72
-		Else
-			SetCall varsize strlen(container)
-			If varsize=size
-				Data cmpret#1
-				SetCall cmpret memcmp(container,content,size)
-				If cmpret=zero
-					#if set the reference is true
-					if setref=1
-						#is using another scope? for ounused. at this question, can also not ref a selfref
-						sd referenceBit=referencebit
-						and referenceBit pmask#
-						if referenceBit=0  #entries are defined with refbit
-							#can also consider where \.func, but stil tricked by localfunc.var which is not another scope
-							whiletrue
-								if position_pointer!=(NULL) #and ignore when not asking the scope, infinite loop is not a reasone to add code now
-									vdata ptrinnerfunction%globalinnerfunction
-									if ptrinnerfunction#=(TRUE)
-										vdata ptrfunctionTagIndex%ptrfunctionTagIndex
-										if ptrfunctionTagIndex#=position_pointer#
-											break
-										endif
-									endif
-									call addtolog_withchar_ex_atunused(content,size,(log_import))
-								endif
-								#change the reference bit of the mask to true
-								Or pmask# (referencebit)
-								break
-							endwhile
-						endif
-					endif
-					Return entrypoint
-				EndIf
-			EndIf
-			if position_pointer!=(NULL)
-				#are mixed with imports
-				sd against=idatabitfunction
-				and against pmask#
-				if against=0
-					inc position_pointer#
-				endif
-			endif
-		endElse
-		Add varsize blen
-		Add container varsize
-	EndWhile
+
+			Add varsize blen
+			Add container varsize
+		EndWhile
+	endelse
 	Return zero
 endfunction
 

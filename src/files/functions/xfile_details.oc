@@ -100,7 +100,11 @@ function xfile_add_fndef_if(sd content,sd sz,sd fn,sd varargs)
 									set main.xstruct_dreg main.datasecReg
 									if fn=(cENTRYRAW) #must remeber the offset for global sizeof at otoc
 										call xfile_entry_offset(sz,main.xstruct)
-									endif
+									else #also must set structbit
+										value ptrfunctions%%ptr_functions
+										setcall main.xstruct_fn vars_ignoreref(content,sz,ptrfunctions)
+										sub main.xstruct_fn main.functions
+									endelse
 									setcall err xfile_add_char((Xfile_function_t_normal))
 								endif
 								break
@@ -159,6 +163,11 @@ function xfile_fndef_structend_if(sd el_or_e)
 					call write(main.xfile,#a,1)
 					call lseek(main.xfile,0,(SEEK_END)) #what if on extra? will return -1 but will move. to test, a next SEEK_CUR will be -1, and write?
 					set main.xstruct (unierror)
+
+					#and structbit
+					add main.xstruct_fn main.functions
+					add main.xstruct_fn (maskoffset)
+					or main.xstruct_fn# (structbit)
 				else #at entryraw must be full empty(stack are not counted at this moment), only for global variables here
 					if main.xstruct_dregx!=main.datasecSize
 						if main.xstruct_dreg!=main.datasecReg

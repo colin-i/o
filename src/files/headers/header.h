@@ -35,6 +35,9 @@ const suffixbit=0x100
 #bit offset 9: sign
 const signbit=0x200
 
+#bit offset 10: struct like bit
+const structbit=0x400
+
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
 const location_bits=stackbit|expandbit
@@ -192,7 +195,7 @@ Datax *constantsReg#1
 Const ptr_constants^constantsMax
 
 Datax functionsMax#1
-Datax *functions#1
+Datax functions#1
 Datax *functionsReg#1
 Const ptr_functions^functionsMax
 
@@ -560,6 +563,7 @@ valuex xstruct#1
 datax xstruct_reg#1
 datax xstruct_dreg#1
 datax xstruct_dregx#1
+vdatax xstruct_fn#1
 
 const fsize=0
 const fsizeX=1

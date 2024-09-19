@@ -26,7 +26,13 @@ switch () {
 							base64 ${1}
 							cat ${btxt}
 						fi
-						exit 1
+						if [ -n "${mod_and_cont}" ]; then
+							echo y \?; read -n1 -t $((60*60*24)) ans
+							if [ "${ans}" != "y" ]; then { echo not ok; exit 1; } fi
+							diffs=$((diffs+1))
+						else
+							exit 1
+						fi
 					fi
 				else
 					diffs=$((diffs+1))
