@@ -1,6 +1,5 @@
 
 
-
 #ref entry start
 #bit offset 0: 1 means referenced
 Const referencebit=0x01
@@ -37,6 +36,9 @@ const signbit=0x200
 
 #bit offset 10: struct like bit
 const structbit=0x400
+
+#11,12,13,14,15
+#16-31: reserve units
 
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
