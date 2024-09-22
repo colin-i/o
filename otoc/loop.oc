@@ -239,7 +239,11 @@ function comment(sd outfile,sv pbuffer)
 	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	callg writen(outfile,pointer,sz)
+	if sz!=0
+		call writen(outfile,pointer,sz)
+	else
+		callg writenl(outfile)
+	end
 end
 function functiondef(sd outfile,sv pbuffer)
 	value intern^functiondef_intern
@@ -277,7 +281,9 @@ function commentmulti(sd outfile,sv pbuffer)
 	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	call write(outfile,pointer,sz)
+	if sz!=0
+		call write(outfile,pointer,sz)
+	end
 	callg writen(outfile,#b,2)
 end
 function commentlineend(sd outfile,sv pbuffer)
