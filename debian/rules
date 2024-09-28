@@ -19,16 +19,31 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 #      here                --with autoreconf
 #      remove compat file
 
+#because etchelper in src/Makefile is forged like in install
+override_dh_auto_build:
+	dh_auto_build -- prefix=/usr
+
 override_dh_auto_install:
+	echo src/files/headers/logs.h usr/include/ocompiler/ > debian/ocompiler-dev.install
+	echo src/files/headers/log.h usr/include/ocompiler/ >> debian/ocompiler-dev.install
+	echo src/files/headers/xfile.h usr/include/ocompiler/ >> debian/ocompiler-dev.install
+
+	#and, at least local, will discard make install to deb because of dev.install
+	echo src/o usr/bin/ > debian/ocompiler.install
+	echo ounused/ounused usr/bin/ >> debian/ocompiler.install
+	echo ostrip/ostrip usr/bin/ >> debian/ocompiler.install
+	echo otoc/otoc usr/bin/ >> debian/ocompiler.install
+	echo ocompiler.conf etc/ >> debian/ocompiler.install
+
 	dh_auto_install -- prefix=/usr
 
 #override_dh_install:
 #	dh_install --list-missing -X.pyc -X.pyo
 
-ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
-override_dh_auto_configure:
-	dh_auto_configure
-	sed -i '/ostrip/d' debian/ocompiler.install
+#ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
+#override_dh_auto_configure:
+#	dh_auto_configure
+#	sed -i '/ostrip/d' debian/ocompiler.install
 	#sed -i '/otoc/d' debian/ocompiler.install
 	#touch NOOCONVTEST
 #else
@@ -36,4 +51,4 @@ override_dh_auto_configure:
 #	dh_auto_configure
 	#sed -i '/otoc/d' debian/ocompiler.install
 	#touch NOOCONVTEST
-endif
+#endif

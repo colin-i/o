@@ -10,10 +10,6 @@ SUBDIRS := src ounused otoc
 conv_64=1
 endif
 
-$(TOPTARGETS): $(SUBDIRS)
-$(SUBDIRS):
-	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
-
 ver=version.h
 
 ${ver}:
@@ -26,6 +22,10 @@ verify_comp_with_link:
 #if only after ':' is after; if after ':' and below, one is at start the other one at end
 all: ${ver}
 	$(MAKE) verify_comp_with_link
+
+$(TOPTARGETS): $(SUBDIRS)
+$(SUBDIRS):
+	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
 
 test:
 	cd tests; /bin/bash ./tests
