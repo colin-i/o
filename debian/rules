@@ -31,7 +31,7 @@ override_dh_auto_install:
 	#and, at least local, will discard make install to deb because of dev.install
 	echo src/o usr/bin/ > debian/ocompiler.install
 	echo ounused/ounused usr/bin/ >> debian/ocompiler.install
-	echo ostrip/ostrip usr/bin/ >> debian/ocompiler.install
+	if [ "$(shell dpkg-architecture -qDEB_HOST_ARCH)" = "amd64" ]; then echo ostrip/ostrip usr/bin/ >> debian/ocompiler.install; fi
 	echo otoc/otoc usr/bin/ >> debian/ocompiler.install
 	echo ocompiler.conf etc/ >> debian/ocompiler.install
 

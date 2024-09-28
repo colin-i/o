@@ -1,7 +1,9 @@
 
 projname=o
 
-all: ${projname}
+../version.h:
+	$(MAKE) -f ../Makefile version.h
+all: ../version.h ${projname}
 
 OB = obj
 OBJ = ${OB}.o
@@ -107,3 +109,5 @@ test:
 #there is a backport in ppa-stagging for jammy
 
 .PHONY: all install clean distclean uninstall test
+#for ../version.h first
+.NOTPARALLEL:

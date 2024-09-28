@@ -10,22 +10,19 @@ SUBDIRS := src ounused otoc
 conv_64=1
 endif
 
-ver=version.h
-
-${ver}:
-	/bin/bash ./versionscript
+version.h:
+	s=`pwd`; cd ..; /bin/bash ./versionscript; cd ${s}
 
 #if ! [ -s ./src/obj.txt ];then
 verify_comp_with_link:
 	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
 
-#if only after ':' is after; if after ':' and below, one is at start the other one at end
-all: ${ver}
-	$(MAKE) verify_comp_with_link
-
 $(TOPTARGETS): $(SUBDIRS)
 $(SUBDIRS):
 	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
+#if only after ':' is after; if after ':' and below, one is at start the other one at end
+all install:
+	$(MAKE) verify_comp_with_link
 
 test:
 	cd tests; /bin/bash ./tests

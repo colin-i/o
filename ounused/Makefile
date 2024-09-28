@@ -1,7 +1,9 @@
 
 OB = ounused
 
-all: ${OB}
+../version.h:
+	$(MAKE) -f ../Makefile version.h
+all: ../version.h ${OB}
 
 OBJ = ${OB}.o
 FULLOBJ = ./${OB}
@@ -48,3 +50,5 @@ test:
 	echo "Nothing"
 
 .PHONY: all install clean distclean uninstall test
+#for ../version.h first
+.NOTPARALLEL:
