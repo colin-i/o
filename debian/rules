@@ -28,7 +28,7 @@ override_dh_auto_install:
 	echo src/files/headers/log.h usr/include/ocompiler/ >> debian/ocompiler-dev.install
 	echo src/files/headers/xfile.h usr/include/ocompiler/ >> debian/ocompiler-dev.install
 
-	#and, at least local, will discard make install to deb because of dev.install
+	#and, at least local, (since 2 debs?), will ignore make install to deb
 	echo src/o usr/bin/ > debian/ocompiler.install
 	echo ounused/ounused usr/bin/ >> debian/ocompiler.install
 	if [ "$(shell dpkg-architecture -qDEB_HOST_ARCH)" = "amd64" ]; then echo ostrip/ostrip usr/bin/ >> debian/ocompiler.install; fi

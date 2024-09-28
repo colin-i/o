@@ -1,4 +1,6 @@
-TOPTARGETS := all install clean distclean uninstall test
+
+TOPTOPTARGETS := all install
+TOPTARGETS := clean distclean uninstall test
 
 #NOOCONV ? is at debian/ocompiler.install , will install here but not in the final deb
 
@@ -10,19 +12,16 @@ SUBDIRS := src ounused otoc
 conv_64=1
 endif
 
-version.h:
-	s=`pwd`; cd ..; /bin/bash ./versionscript; cd ${s}
-
-#if ! [ -s ./src/obj.txt ];then
-verify_comp_with_link:
-	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
-
 $(TOPTARGETS): $(SUBDIRS)
+$(TOPTOPTARGETS): $(SUBDIRS)
+	$(MAKE) verify_comp_with_link
 $(SUBDIRS):
 	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
-#this will add after
-all install:
-	$(MAKE) verify_comp_with_link
+
+verify_comp_with_link:
+	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
+version.h:
+	s=`pwd`; cd ..; /bin/bash ./versionscript; cd ${s}
 
 test:
 	cd tests; /bin/bash ./tests
@@ -32,5 +31,5 @@ clean:
 	cd tests; /bin/bash ./c
 
 #phony only in this file not in subdirs, then can write extra for a PHONYTOPTARGETS
-.PHONY: $(TOPTARGETS) $(SUBDIRS) verify_comp_with_link
+.PHONY: $(TOPTOPTARGETS) $(TOPTARGETS) $(SUBDIRS) verify_comp_with_link
 .NOTPARALLEL:
