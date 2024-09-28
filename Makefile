@@ -20,7 +20,7 @@ verify_comp_with_link:
 $(TOPTARGETS): $(SUBDIRS)
 $(SUBDIRS):
 	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
-#if only after ':' is after; if after ':' and below, one is at start the other one at end
+#this will add after
 all install:
 	$(MAKE) verify_comp_with_link
 
