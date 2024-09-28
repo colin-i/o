@@ -1,9 +1,7 @@
 
 OB = ounused
 
-../version.h:
-	$(MAKE) -f ../Makefile version.h
-all: ../version.h ${OB}
+all: ${OB}
 
 OBJ = ${OB}.o
 FULLOBJ = ./${OB}
@@ -20,7 +18,10 @@ linkerflags=-O3 -s
 #             1
 endif
 
-${FULLOBJO}: ${FULLOBJS}
+../version.h:
+	$(MAKE) -f ../Makefile version.h
+
+${FULLOBJO}: ${FULLOBJS} ../version.h
 	${launcher} ${OCOMP} $< exit_end 1 ${OFLAGSEXTRA}
 
 ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
@@ -50,5 +51,3 @@ test:
 	echo "Nothing"
 
 .PHONY: all install clean distclean uninstall test
-#for ../version.h first
-.NOTPARALLEL:

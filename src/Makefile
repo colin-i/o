@@ -1,9 +1,7 @@
 
 projname=o
 
-../version.h:
-	$(MAKE) -f ../Makefile version.h
-all: ../version.h ${projname}
+all: ${projname}
 
 OB = obj
 OBJ = ${OB}.o
@@ -48,8 +46,11 @@ etcinclude=etcinclude.oc
 
 #OFLAGS=
 
+../version.h:
+	$(MAKE) -f ../Makefile version.h
+
 #       this is in case .oc file is modified
-${OBJ}: ${FULLOBJS} ${etcinclude}
+${OBJ}: ${FULLOBJS} ${etcinclude} ../version.h
 	if [ -s ${OBT} ];then \
 		echo text; \
 		base64 -d ${OBT} > $@; \
@@ -109,5 +110,3 @@ test:
 #there is a backport in ppa-stagging for jammy
 
 .PHONY: all install clean distclean uninstall test
-#for ../version.h first
-.NOTPARALLEL:

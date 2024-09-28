@@ -28,7 +28,7 @@ test:
 	cd tests; /bin/bash ./tests
 
 clean:
-	-rm -f ${ver}
+	-rm -f version.h
 	cd tests; /bin/bash ./c
 
 #phony only in this file not in subdirs, then can write extra for a PHONYTOPTARGETS
