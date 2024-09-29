@@ -1,6 +1,5 @@
 
-TOPTOPTARGETS := all install
-TOPTARGETS := clean distclean uninstall test
+TOPTARGETS := install clean distclean uninstall test
 
 #NOOCONV ? is at debian/ocompiler.install , will install here but not in the final deb
 
@@ -13,7 +12,7 @@ conv_64=1
 endif
 
 $(TOPTARGETS): $(SUBDIRS)
-$(TOPTOPTARGETS): $(SUBDIRS)
+all: $(SUBDIRS)
 	$(MAKE) verify_comp_with_link
 $(SUBDIRS):
 	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
@@ -31,5 +30,5 @@ clean:
 	cd tests; /bin/bash ./c
 
 #phony only in this file not in subdirs, then can write extra for a PHONYTOPTARGETS
-.PHONY: $(TOPTOPTARGETS) $(TOPTARGETS) $(SUBDIRS) verify_comp_with_link
+.PHONY: all $(TOPTARGETS) $(SUBDIRS) verify_comp_with_link
 .NOTPARALLEL:
