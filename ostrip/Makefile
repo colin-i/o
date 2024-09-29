@@ -62,7 +62,10 @@ ${OB}: ${OBJ}
 #		fi; \
 #xenial do wrong access somehow, bionic and focal do extra code at text and need to extra code at realoffset for .text
 
-install: all
+install:
+	$(MAKE) all
+	$(MAKE) install-proj
+install-proj:
 	install -D ${OB} \
 		$(DESTDIR)$(prefix)/bin/${OB}
 
@@ -105,4 +108,4 @@ test:
 		fi; \
 	fi
 
-.PHONY: all install clean distclean uninstall test
+.PHONY: all install install-proj clean clean-compile clean-link clean-test distclean uninstall test

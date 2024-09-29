@@ -30,7 +30,10 @@ ${OB}: ${OBJ}
 	${ATLDCOM} ${FULLOBJO}
 	${launcher} ./${OB} ${FULLOBJLOG}
 
-install: all
+install:
+	$(MAKE) all
+	$(MAKE) install-proj
+install-proj:
 	install -D ${OB} \
 		$(DESTDIR)$(prefix)/bin/${OB}
 
@@ -50,4 +53,4 @@ uninstall:
 test:
 	echo "Nothing"
 
-.PHONY: all install clean distclean uninstall test
+.PHONY: all install install-proj clean clean-compile clean-link distclean uninstall test

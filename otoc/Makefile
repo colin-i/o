@@ -65,7 +65,10 @@ ${prog}: ${OBJ}
 		${ATLDCOM} ${prog} ${FULLOBJO}; \
 	fi
 
-install: all
+install:
+	$(MAKE) all
+	$(MAKE) install-proj
+install-proj:
 	install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog}
 	#if [ "${NOOCONV}" != "1" ]; then install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog} && echo ${prog} is installed; else echo ${prog} is not installed; fi
 	#is at debian/ocompiler.install , will install here but not in the final deb
@@ -86,4 +89,4 @@ uninstall:
 test:
 	echo "Nothing"
 
-.PHONY: all install clean distclean uninstall test
+.PHONY: all install install-proj clean distclean uninstall test

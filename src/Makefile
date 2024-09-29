@@ -71,7 +71,10 @@ ${projname}: ${OBJ}
 	${ATLDCOM} $^
 #$^ is all objects here, $< is first object
 
-install: all
+install:
+	$(MAKE) all
+	$(MAKE) install-proj
+install-proj:
 	install -D o \
 		$(DESTDIR)$(prefix)/bin/o
 	install -D ../${PREFFILE} ${PREFFILEFULL}
@@ -109,4 +112,4 @@ test:
 #use ./test32
 #there is a backport in ppa-stagging for jammy
 
-.PHONY: all install clean distclean uninstall test
+.PHONY: all install install-proj clean clean-compile clean-link clean-test distclean uninstall test
