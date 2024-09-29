@@ -11,10 +11,12 @@ SUBDIRS := src ounused otoc
 conv_64=1
 endif
 
-$(TOPTARGETS): $(SUBDIRS)
-
+#all must be first rule (rule: ...) to be executed in case of make with no args
 all: $(SUBDIRS)
 	$(MAKE) verify_comp_with_link
+
+$(TOPTARGETS): $(SUBDIRS)
+
 install:
 	$(MAKE) all
 	$(MAKE) install-proj

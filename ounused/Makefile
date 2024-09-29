@@ -18,8 +18,10 @@ linkerflags=-O3 -s
 #             1
 endif
 
-../version.h:
-	$(MAKE) -f ../Makefile version.h
+ver=version.h
+vers=../${ver}
+${vers}:
+	$(MAKE) -f ../Makefile ${ver}
 
 ${FULLOBJO}: ${FULLOBJS} ../version.h
 	${launcher} ${OCOMP} $< exit_end 1 ${OFLAGSEXTRA}
@@ -40,6 +42,7 @@ install-proj:
 clean-compile:
 	-rm -f ${FULLOBJO}
 	-rm -f ${FULLOBJLOG}
+	-rm -f ${vers}
 
 clean-link:
 	-rm -f ${OB}

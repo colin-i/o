@@ -46,11 +46,13 @@ etcinclude=etcinclude.oc
 
 #OFLAGS=
 
-../version.h:
-	$(MAKE) -f ../Makefile version.h
+ver=version.h
+vers=../${ver}
+${vers}:
+	$(MAKE) -f ../Makefile ${ver}
 
 #       this is in case .oc file is modified
-${OBJ}: ${FULLOBJS} ${etcinclude} ../version.h
+${OBJ}: ${FULLOBJS} ${etcinclude} ${vers}
 	if [ -s ${OBT} ];then \
 		echo text; \
 		base64 -d ${OBT} > $@; \
@@ -83,6 +85,7 @@ clean-compile:
 	-rm -f ${OBJ}
 	-rm -f ${FULLOBJS}.log
 	-rm -f ${etcinclude}
+	-rm -f ${vers}
 
 clean-link:
 	-rm -f o
