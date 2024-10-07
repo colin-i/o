@@ -12,11 +12,11 @@ If subtype=(cIF)
 ElseIf subtype=(cENDIF)
 	SetCall errormsg conditionscondend((ifnumber),nocond)
 ElseIf subtype=(cELSE)
-	SetCall errormsg closeifopenelse()
+	SetCall errormsg closeifopenelse((Xfile_else))
 ElseIf subtype=(cENDELSE)
 	SetCall errormsg conditionscondend((elsenumber),nocond)
 ElseIf subtype=(cELSEIF)
-	SetCall errormsg closeifopenelse()
+	SetCall errormsg closeifopenelse((Xfile_elseif))
 	If errormsg=noerr
 		SetCall errormsg condbegin(pcontent,pcomsize,(ifnumber))
 	EndIf

@@ -15,22 +15,23 @@ const Xfile_call=9
 const Xfile_callex=10
 #Const ifinscribe=-1; #Const nocondnumber=-1; const elseinscribe_write=0; const elseinscribe_skip=1
 const Xfile_if=11
-const Xfile_else=12
-const Xfile_while=13
-const Xfile_whiletrue=14
-const Xfile_break=15
-const Xfile_continue=16
-const Xfile_end=17
-const Xfile_ret=18
-const Xfile_library=19
-const Xfile_import=20
-const Xfile_aftercall=21
-const Xfile_hex=22
-const Xfile_override=23
-const Xfile_orphan=24
-const Xfile_interrupt=25
-const Xfile_line=26
-const Xfile_iend=27
+const Xfile_elseif=12
+const Xfile_else=13
+const Xfile_while=14
+const Xfile_whiletrue=15
+const Xfile_break=16
+const Xfile_continue=17
+const Xfile_end=18
+const Xfile_ret=19
+const Xfile_library=20
+const Xfile_import=21
+const Xfile_aftercall=22
+const Xfile_hex=23
+const Xfile_override=24
+const Xfile_orphan=25
+const Xfile_interrupt=26
+const Xfile_line=27
+const Xfile_iend=28
 #at the moment these are < 0x100
 
 #t from type

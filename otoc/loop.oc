@@ -68,7 +68,9 @@ function loop(sd pointer,sd delim,sd output)
 		whiletrue
 			if command!=(Xfile_end)
 				if command!=(Xfile_else)
-					break
+					if command!=(Xfile_elseif)
+						break
+					end
 				end
 			end
 			dec indentation
@@ -97,6 +99,7 @@ function loop(sd pointer,sd delim,sd output)
 		value *Xfile_call^call
 		value *Xfile_callex^callex
 		value *Xfile_if^if
+		value *Xfile_elseif^elseif
 		value *Xfile_else^else
 		value *Xfile_while^while
 		value *Xfile_whiletrue^whiletrue
@@ -424,18 +427,14 @@ function if(sd outfile,sv pbuffer)
 	call write(outfile,#a,\.a)
 	callg cond(pbuffer,outfile)
 end
-function else(sd outfile,sv pbuffer)
-	char a="else"^
-	call writecr(outfile)
-	call write(outfile,#a,\.a)
-	# next is { or if
-	ss buffer;set buffer pbuffer#
-	if buffer#!=(Xfile_if)
-		call writecln(outfile)
-	else
-		set loop.same_line (TRUE)
-		callg writes(outfile)
-	end
+function elseif(sd outfile)
+	call else_core(outfile)
+	set loop.same_line (TRUE)
+	callg writes(outfile)
+end
+function else(sd outfile)
+	call else_core(outfile)
+	callg writecln(outfile)
 end
 function while(sd outfile,sv pbuffer)
 	char a="while"^
@@ -519,6 +518,12 @@ function interrupt(sd outfile)
 	char a="__builtin_trap();"^
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
 	callg writen(outfile,#a,\.a)
+end
+
+function else_core(sd outfile)
+	char a="else"^
+	call writecr(outfile)
+	callg write(outfile,#a,\.a)
 end
 
 function write(sd outfile,ss buf,sd sz)

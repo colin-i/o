@@ -343,7 +343,7 @@ function prevcond()
 	return cl#
 endfunction
 
-Function closeifopenelse()
+Function closeifopenelse(sd xfile_type)
 	Data err#1
 	Data noerr=noerror
 
@@ -359,7 +359,7 @@ Function closeifopenelse()
 		Return err
 	EndIf
 
-	setcall err xfile_add_char_ifif((Xfile_else))
+	setcall err xfile_add_char_ifif(xfile_type)
 	if err=(noerror)
 		#this for unreachable else jumps bool
 		vData structure%%ptr_conditionsloops
