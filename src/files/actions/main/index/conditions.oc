@@ -18,7 +18,7 @@ ElseIf subtype=(cENDELSE)
 ElseIf subtype=(cELSEIF)
 	SetCall errormsg closeifopenelse((Xfile_elseif))
 	If errormsg=noerr
-		SetCall errormsg condbegin(pcontent,pcomsize,(ifnumber))
+		SetCall errormsg condbegin_ex(pcontent,pcomsize,(ifnumber),(FALSE))
 	EndIf
 ElseIf subtype=(cENDELSEIF)
 	SetCall errormsg conditionscondend((ifnumber),(elsenumber))

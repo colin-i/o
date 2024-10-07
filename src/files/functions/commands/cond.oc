@@ -42,7 +42,11 @@ Function condbeginwrite(data condnumber)
 EndFunction
 
 #err
-Function condbegin(data ptrcontent,data ptrsize,data condnumber)
+Function condbegin(sv ptrcontent,sd ptrsize,sd condnumber)
+	sd err;setcall err condbegin_ex(ptrcontent,ptrsize,condnumber,(TRUE))
+	return err
+endfunction
+function condbegin_ex(sv ptrcontent,sd ptrsize,sd condnumber,sd write_xfile_cond)
 	Data cond#1
 	vData ptrcond^cond
 	Data err#1
@@ -51,8 +55,10 @@ Function condbegin(data ptrcontent,data ptrsize,data condnumber)
 	data dummy=0
 	data condnr#1
 	if main.parses=(pass_write)
-		setcall err xfile_add_char_if(condnumber)
-		If err!=noerr;Return err;EndIf
+		if write_xfile_cond=(TRUE)
+			setcall err xfile_add_char_if(condnumber)
+			If err!=noerr;Return err;EndIf
+		end
 		if condnumber!=(whiletruenumber)
 			SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
 			If err!=noerr;Return err;EndIf
