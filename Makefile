@@ -26,7 +26,8 @@ $(SUBDIRS):
 verify_comp_with_link:
 	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
 version.h:
-	s=`pwd`; cd ..; /bin/bash ./versionscript; cd ${s}
+	/bin/bash ../versionscript ../
+#s=`pwd`; cd ${s} is working here, is not working on launchpad
 
 test:
 	cd tests; /bin/bash ./tests
