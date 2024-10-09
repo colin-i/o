@@ -106,13 +106,14 @@ test:
 	echo "test"
 	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
 	if [ -z "${testlinker}" ]; then \
-		./z o.oc nul_res_pref 1; \
+		cd ../../; ./test32; \
 	else \
 		LD_LIBRARY_PATH=${testlinker} ${testlinker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
-	fi; \
-	diff o z
+		diff o z; \
+	fi
 #cannot extern LD_LIBRARY_PATH, will wrong between them
 #use ./test32
 #there is a backport in ppa-stagging for jammy
+#still at xenial/bionic but launchpad stop working for ./z . solution? local test
 
 .PHONY: all install install-proj clean clean-compile clean-link clean-test distclean uninstall test

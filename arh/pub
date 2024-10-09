@@ -1,6 +1,7 @@
 
 #1 msg
 
+./test32 && \
 if [ -z "${msg}" ]; then # more at test/publ
 	msg="${1}"
 fi
