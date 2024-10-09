@@ -106,7 +106,7 @@ test:
 	echo "test"
 	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
 	if [ -z "${testlinker}" ]; then \
-		cd ../../; ./test32; \
+		cd ../../; /bin/bash ./test32; \
 	else \
 		LD_LIBRARY_PATH=${testlinker} ${testlinker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
 		diff o z; \
