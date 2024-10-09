@@ -1,3 +1,9 @@
+ocompiler (1-5+207) xenial; urgency=medium
+
+  * same(localtest fix)
+
+ -- bc <bc@bc-desktop>  Wed, 09 Oct 2024 13:26:02 +0300
+
 ocompiler (1-5+206) xenial; urgency=medium
 
   * same(with makefile fix)
