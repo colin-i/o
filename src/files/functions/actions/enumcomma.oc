@@ -199,7 +199,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 				set argsize content
 				dec argsize
 				char d_quot=asciidoublequote
-				if argsize#=d_quot
+				if argsize#=d_quot ##to allow comma in string, but spaces at end will error
 					#look later at escapes, here only at the margins
 					#here the string ".." is in a good condition when quotes_forward was called at parenthesis_size
 					sd last;set last content
@@ -223,7 +223,14 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					neg argsize
 					set size_aux sz
 					sub size_aux argsize
-					setcall size_aux valinmemsens(mark,size_aux,comma,sens) #better than set size_aux 0
+					setcall size_aux valinmemsens(mark,size_aux,comma,sens)
+
+					#and this to ensure no frontal inner_text
+					sub mark size_aux
+					setcall mark mem_spaces(mark,last)
+					sub last mark
+					sub size_aux last
+					add argsize last
 				else
 					SetCall argsize valinmemsens(content,sz,comma,sens)
 					#and don't let ( ) at getarg, there let only something(exlcuding spaces)/nothing like in all cases
