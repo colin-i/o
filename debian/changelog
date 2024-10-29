@@ -1,3 +1,9 @@
+ocompiler (1-5+208) xenial; urgency=medium
+
+  * check frontal inner text error
+
+ -- bc <bc@bc-desktop>  Tue, 29 Oct 2024 09:31:06 +0200
+
 ocompiler (1-5+207) xenial; urgency=medium
 
   * same(localtest fix)
