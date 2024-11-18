@@ -21,8 +21,8 @@ char cc="\taz"^
 #constu a1=1
 const a1=1
 
-char a#3
-value b^a
+char a#3;value b^a
+char no_hotgroup=1;value no_hotgroup_test^no_hotgroup
 
 function intern(data a,sd b,sv c,svu d) #commenting
 	inc a
