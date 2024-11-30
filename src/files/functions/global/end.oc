@@ -9,6 +9,7 @@ function endfunction(sd parses)
 		endif
 		Set main.innerfunction (FALSE)
 		call vars_log_reset() #to let next variables be "o.var"
+		set main.innerfunctionreturn (FALSE)
 	elseif parses=(pass_write)
 		sd err
 		setcall err xfile_add_end_if()

@@ -47,9 +47,6 @@ Function getcontplusReg(data ptrstrucutre,data ptrcontainer)
 	add ptrcontainer# r
 EndFunction
 
-Data innerfunction#1
-Const globalinnerfunction^innerfunction
-
 #pdata
 Function getstructcont(data typenumber)
 #structcont is not same as cont, it's easy to rename

@@ -279,7 +279,12 @@ function argument_init(sv ptrcontent,sd ptrsize,sd subtype)
 			call advancecursors(ptrcontent,ptrsize,ptrsize#)
 			return (noerror)
 		endif
-	endif
+	else
+		setcall err xfile_recursive()
+		if err!=(noerror)
+			return err
+		endif
+	endelse
 	setcall err getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 3 more arguments but are not used
 	return err
 endfunction

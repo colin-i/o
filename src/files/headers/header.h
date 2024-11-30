@@ -570,3 +570,7 @@ vdatax xstruct_fn#1
 const fsize=0
 const fsizeX=1
 const fsize_fsizeX=2
+
+Data innerfunction#1
+Const globalinnerfunction^innerfunction
+datax innerfunctionreturn#1

@@ -116,6 +116,7 @@ function loop(sd pointer,sd delim,sd output)
 		value *Xfile_interrupt^interrupt
 		value *Xfile_line^line
 		value *Xfile_iend^iend
+		value *Xfile_proto^proto
 		mult command :
 		sv dest^Xfile_comment;add dest command
 		set dest dest#
@@ -476,13 +477,7 @@ function import(sd outfile,sv pbuffer)
 	charx imp#1;call get_char(pbuffer,#imp)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
-	datax sza#1;valuex alias#1
-	call get_string(pbuffer,#sza,#alias)
-
-	call write_long(outfile,alias,sza)
-	char a="()"^
-	call write(outfile,#a,2)
-	callg writetn(outfile)
+	callg proto(outfile,pbuffer)
 end
 function aftercall(sd outfile,sv pbuffer)
 	call backindent(outfile)
@@ -519,6 +514,14 @@ function interrupt(sd outfile)
 	char a="__builtin_trap();"^
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
 	callg writen(outfile,#a,\.a)
+end
+function proto(sd outfile,sv pbuffer)
+	datax sz#1;valuex name#1
+	call get_string(pbuffer,#sz,#name)
+	call write_long(outfile,name,sz)
+	char a="()"^
+	call write(outfile,#a,2)
+	callg writetn(outfile)
 end
 
 function else_core(sd outfile)

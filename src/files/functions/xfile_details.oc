@@ -420,3 +420,35 @@ function xfile_add_override_if(sd name,sd size,sd value)
 	endif
 	return (noerror)
 endfunction
+
+#err
+function xfile_recursive()
+	if main.xfile!=(openno)
+		if main.innerfunctionreturn=(FALSE)
+			#can add at pass_init on top of all
+			sv ptrfunctions%%ptr_functions
+			sd fns
+			call getcont(ptrfunctions,#fns)
+			sd pos;set pos 0
+			whiletrue
+				sd ibit;setcall ibit importbit(fns)
+				if ibit=0
+					if pos=main.functionTagIndex
+						break
+					endif
+					inc pos
+				endif
+				add fns (nameoffset)
+				addcall fns strlen(fns)
+				inc fns
+			endwhile
+			sd size
+			add fns (nameoffset)
+			setcall size strlen(fns)
+			sd err;setcall err xfile_add_base((Xfile_proto),fns,size)
+			set main.innerfunctionreturn (TRUE)
+			return err
+		endif
+	endif
+	return (noerror)
+endfunction
