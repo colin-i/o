@@ -1,3 +1,9 @@
+ocompiler (1-5+210) xenial; urgency=medium
+
+  * same + fix proto innerfunction
+
+ -- bc <bc@bc-desktop>  Mon, 02 Dec 2024 10:22:12 +0200
+
 ocompiler (1-5+209) xenial; urgency=medium
 
   * otoc add prototype to call function b in a and viceversa (recursive call all around)
