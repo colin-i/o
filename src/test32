@@ -1,4 +1,5 @@
 
+if [ ! -f ./o ]; then ./md; fi
 testlinker=/home/bc/Desktop/out/libc6/lib32 make test && \
 if [ $? = 0 ]; then
 	cat ../debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))" > ../localtest && \
