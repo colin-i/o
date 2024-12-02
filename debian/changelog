@@ -1,3 +1,9 @@
+ocompiler (1-5+209) xenial; urgency=medium
+
+  * otoc add prototype to call function b in a and viceversa (recursive call all around)
+
+ -- bc <bc@bc-desktop>  Mon, 02 Dec 2024 09:37:55 +0200
+
 ocompiler (1-5+208) xenial; urgency=medium
 
   * check frontal inner text error
