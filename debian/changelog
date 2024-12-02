@@ -1,3 +1,9 @@
+ocompiler (1-5+211) xenial; urgency=medium
+
+  * excluding proto at varargs, will error at cc
+
+ -- bc <bc@bc-desktop>  Mon, 02 Dec 2024 15:23:15 +0200
+
 ocompiler (1-5+210) xenial; urgency=medium
 
   * same + fix proto innerfunction
