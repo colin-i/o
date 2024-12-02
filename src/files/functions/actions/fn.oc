@@ -47,7 +47,7 @@ function func_xfile(sd subtype)
 	return subtype ##Xfile_function_traw Xfile_function_extern Xfile_function_entry
 endfunction
 #err
-Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,sd el_or_e,sd varargs)
+Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,sd el_or_e)
 	Data true=TRUE
 	#Data false=FALSE
 
@@ -187,7 +187,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 					call scope64_set((FALSE))
 				endelse
 			endelse
-			setcall err xfile_add_fndef_if(content,sz,subtype,varargs)
+			setcall err xfile_add_fndef_if(content,sz,subtype)
 			If err!=noerr
 				Return err
 			EndIf
@@ -235,7 +235,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 
 			sd b;setcall b scope64_get()
 			if b=(TRUE)
-				if varargs!=0
+				if main.varargs!=0
 					sd nr_of_args
 					setcall nr_of_args convdata((convdata_total))
 					setcall err function_start_64(nr_of_args)

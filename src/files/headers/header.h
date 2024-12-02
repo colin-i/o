@@ -574,3 +574,4 @@ const fsize_fsizeX=2
 Data innerfunction#1
 Const globalinnerfunction^innerfunction
 datax innerfunctionreturn#1
+datax varargs#1

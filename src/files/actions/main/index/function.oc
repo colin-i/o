@@ -14,7 +14,7 @@ ElseIf programentrypoint!=codesecReg
 	EndIf
 	Set errormsg allocerrormsg
 Else
-	sd varargs;set varargs subtype
+	set varargs subtype
 	and varargs (x_func_flag)
 	and subtype (~x_func_flag)
 
@@ -33,6 +33,6 @@ Else
 	EndElse
 	if errormsg=(noerror)
 		Data declarefn=declarefunction
-		SetCall errormsg parsefunction(pcontent,pcomsize,declarefn,subtype,el_or_e,varargs)
+		SetCall errormsg parsefunction(pcontent,pcomsize,declarefn,subtype,el_or_e)
 	endif
 EndElse
