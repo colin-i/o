@@ -2,7 +2,7 @@
 make && \
 testlinker=/home/bc/Desktop/out/libc6/lib32 make test && \
 if [ $? = 0 ]; then
+	make clean && \
 	cat ../debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))" > ../localtest && \
-	cat ../localtest && \
-	make clean
+	cat ../localtest
 fi
