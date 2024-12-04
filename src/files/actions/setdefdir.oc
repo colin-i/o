@@ -74,4 +74,5 @@ if xbool!=(No)
 	if errormsg!=noerr
 		Call msgerrexit(errormsg)
 	endif
+	set innerfunctionreturn (FALSE)
 endif

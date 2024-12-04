@@ -477,7 +477,8 @@ function import(sd outfile,sv pbuffer)
 	charx imp#1;call get_char(pbuffer,#imp)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
-	callg proto(outfile,pbuffer)
+	call proto_open(outfile,pbuffer)
+	callg proto_close(outfile)
 end
 function aftercall(sd outfile,sv pbuffer)
 	call backindent(outfile)
@@ -516,11 +517,40 @@ function interrupt(sd outfile)
 	callg writen(outfile,#a,\.a)
 end
 function proto(sd outfile,sv pbuffer)
+	ss buf;set buf pbuffer#
+	datax sz#1;valuex name#1
+	call get_string(#buf,#sz,#name)
+	whiletrue
+		if buf#=(Xfile_decltype_done)
+			inc buf
+			break
+		end
+		inc buf
+	end
+	charx ftype#1;call get_char(#buf,#ftype)
+	if ftype=(Xfile_proto_void)
+		set pbuffer# buf
+		ret
+	end
+	call proto_open(outfile,pbuffer)
+	whiletrue
+		charx type#1;call get_char(pbuffer,#type)
+		if type=(Xfile_decltype_done)
+			break
+		end
+	end
+	inc pbuffer#
+	callg proto_close(outfile)
+end
+
+function proto_open(sd outfile,sv pbuffer)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
 	call write_long(outfile,name,sz)
-	char a="()"^
-	call write(outfile,#a,2)
+	callg writel(outfile)
+end
+function proto_close(sd outfile)
+	call writer(outfile)
 	callg writetn(outfile)
 end
 

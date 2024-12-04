@@ -64,6 +64,7 @@ const Xfile_decltype_longByte=5
 const Xfile_decltype_longWord=6
 const Xfile_decltype_longInt=7
 #const Xfile_decltype_const=Xfile_decltype_longInt+1  #here will be used Xfile_declfield_const
+const Xfile_decltype_done=0xff
 
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1
@@ -277,3 +278,6 @@ const Xfile_import_extern=1
 
 const Xfile_orphan_no=0
 const Xfile_orphan_yes=1
+
+const Xfile_proto_void=0
+const Xfile_proto_long=1

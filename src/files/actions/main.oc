@@ -122,7 +122,12 @@ While includesReg!=null
 						#set logfile negative   #will reiterate tree. and will also have reusable,imports and constants
 
 						setcall errormsg align_alloc(functionTagIndex)
-						set parses (pass_calls)
+						if errormsg=(noerror)
+							if el_or_e!=(el_or_e_nothing) #last was an entry/entryraw
+								setcall errormsg xfile_proto_done()
+							endif
+							set parses (pass_calls)
+						endif
 					else
 						call align_resolve()
 

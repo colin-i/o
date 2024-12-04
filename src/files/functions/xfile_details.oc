@@ -421,38 +421,26 @@ function xfile_add_override_if(sd name,sd size,sd value)
 	return (noerror)
 endfunction
 
-#err
-function xfile_recursive()
+function xfile_proto()
 	if main.xfile!=(openno)
-		if main.innerfunction=(TRUE)
-			if main.innerfunctionreturn=(FALSE)
-				if main.varargs=0  #will error on any varargs at c
-					#can add at pass_init on top of all
-					sv ptrfunctions%%ptr_functions
-					sd fns
-					call getcont(ptrfunctions,#fns)
-					sd pos;set pos 0
-					whiletrue
-						sd ibit;setcall ibit importbit(fns)
-						if ibit=0
-							if pos=main.functionTagIndex
-								break
-							endif
-							inc pos
-						endif
-						add fns (nameoffset)
-						addcall fns strlen(fns)
-						inc fns
-					endwhile
-					sd size
-					add fns (nameoffset)
-					setcall size strlen(fns)
-					sd err;setcall err xfile_add_base((Xfile_proto),fns,size)
-					set main.innerfunctionreturn (TRUE)
-					return err
-				endif
-			endif
-		endif
-	endif
+		if main.innerfunctionreturn=(FALSE)
+			if main.varargs=0  #will error on any varargs at c, anyway todo a decltype for that
+				set main.innerfunctionreturn (TRUE)
+			end
+		end
+	end
+endfunction
+#err
+function xfile_proto_done()
+	if main.xfile!=(openno)
+		sd err
+		if main.innerfunctionreturn=(FALSE)
+			setcall err xfile_add_char((Xfile_proto_void))
+		else
+			setcall err xfile_add_char((Xfile_proto_long))
+			set main.innerfunctionreturn (FALSE)
+		end
+		return err
+	end
 	return (noerror)
 endfunction

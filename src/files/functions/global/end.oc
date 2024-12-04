@@ -1,17 +1,20 @@
 
 #err
 function endfunction(sd parses)
+	sd err
 	if parses=(pass_init)
 		if main.innerfunction=(FALSE)
 			Char unexef="Unexpected ENDFUNCTION command."
 			Str unexeferr^unexef
 			return unexeferr
 		endif
+		setcall err xfile_proto_done()
+		if err!=(noerror)
+			return err
+		end
 		Set main.innerfunction (FALSE)
 		call vars_log_reset() #to let next variables be "o.var"
-		set main.innerfunctionreturn (FALSE)
 	elseif parses=(pass_write)
-		sd err
 		setcall err xfile_add_end_if()
 		if err=(noerror)
 			setCall err checkcondloopclose()
