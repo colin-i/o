@@ -4,11 +4,11 @@
 function functiondef_d(sv pbuffer,sd outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
-		charx type#1;charx field#1
-		call decl(pbuffer,outfile,#field,#type)
+		charx field#1
+		call decl(pbuffer,outfile,#field,(NULL))
 		sd n=1;while n!=args
 			call writec(outfile)
-			call decl(pbuffer,outfile,#field,#type)
+			call decl(pbuffer,outfile,#field,(NULL))
 			inc n
 		end
 	end
@@ -77,29 +77,32 @@ end
 
 #D structure
 function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
-	charx sign#1
+	charx sign#1;charx type#1
 	if field=(Xfile_declfield_data)
 		charx data#1;call get_char(pbuffer,#data)
 		call get_char(pbuffer,#sign)
-		call get_char(pbuffer,ptype)     #type is used outside
+		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
 		if sign=(Xfile_declext_no)
 			call unsigned(outfile)
 		end
 		#special hack for a pointless long (value), needed to inc/dec
-		if ptype#=(Xfile_decltype_long)
+		if type=(Xfile_decltype_long)
 			if data=(Xfile_declfield_data_concrete)
 				callg write(outfile,#write_long.a,\write_long.a)
 				ret
 			end
 		end
-	else
+		callg decl_type(outfile,type)
+	elseif field=(Xfile_declfield_stack)
 		call get_char(pbuffer,#sign)
-		call get_char(pbuffer,ptype)
+		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
 		if sign=(Xfile_declext_no)
 			call unsigned(outfile)
 		end
+		callg decl_type(outfile,type)
+	else #Xfile_declfield_varargs
+		callg varargs(outfile)
 	end
-	callg decl_type(outfile,ptype#)  #type is used outside
 end
 function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
 	call decl_runtime_core(pbuffer,outfile,field,ptype)
@@ -128,7 +131,6 @@ function decl_type(sd outfile,sv fn)
 	value *^longByte  #vstr[x] ss                     Xfile_decltype_longByte
 	value *^longWord  #vword[x] sw                    Xfile_decltype_longWord
 	value *^longInt   #vdata[x] sd                    Xfile_decltype_longInt
-	value *^varargs   #...                            Xfile_decltype_varargs
 	mult fn :
 	add fn #f
 	set fn fn#

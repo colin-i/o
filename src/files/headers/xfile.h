@@ -51,6 +51,7 @@ const Xfile_function_e_varargs=1
 const Xfile_declfield_const=0
 const Xfile_declfield_stack=1
 const Xfile_declfield_data=2
+const Xfile_declfield_varargs=3
 
 const Xfile_declfield_data_concrete=0
 const Xfile_declfield_data_expand=1
@@ -64,7 +65,7 @@ const Xfile_decltype_longByte=5
 const Xfile_decltype_longWord=6
 const Xfile_decltype_longInt=7
 #const Xfile_decltype_const=Xfile_decltype_longInt+1  #here will be used Xfile_declfield_const
-const Xfile_decltype_varargs=8
+#const Xfile_decltype_varargs=Xfile_decltype_const+1  #here will be used Xfile_declfield_varargs
 #const Xfile_decltype_done=0xff
 
 const Xfile_declfeature_normal=0

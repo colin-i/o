@@ -535,12 +535,12 @@ function proto_core(sd outfile,sv pbuffer)
 	call proto_open(outfile,pbuffer)
 	datax nr#1;call get_data(pbuffer,#nr)
 	if nr>^0
-		charx type#1;call get_char(pbuffer,#type)
-		call decl_type(outfile,type)
+		charx field#1;call get_char(pbuffer,#field)
+		call decl_runtime_core(pbuffer,outfile,field,(NULL))
 		while nr>^1
 			call writec(outfile)
-			call get_char(pbuffer,#type)
-			call decl_type(outfile,type)
+			call get_char(pbuffer,#field)
+			call decl_runtime_core(pbuffer,outfile,field,(NULL))
 			dec nr
 		end
 	end
