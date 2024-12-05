@@ -520,29 +520,23 @@ function proto(sd outfile,sv pbuffer)
 	ss buf;set buf pbuffer#
 	datax sz#1;valuex name#1
 	call get_string(#buf,#sz,#name)
-	whiletrue
-		if buf#=(Xfile_decltype_done)
-			inc buf
-			break
-		end
-		inc buf
-	end
+	datax nr#1;call get_data(#buf,#nr)
+	add buf nr
 	charx ftype#1;call get_char(#buf,#ftype)
 	if ftype=(Xfile_proto_void)
 		set pbuffer# buf
 		ret
 	end
 	call proto_open(outfile,pbuffer)
-	charx type#1;call get_char(pbuffer,#type)
-	if type!=(Xfile_decltype_done)
+	call get_data(pbuffer,#nr)
+	if nr>^0
+		charx type#1;call get_char(pbuffer,#type)
 		call decl_type(outfile,type)
-		whiletrue
-			call get_char(pbuffer,#type)
-			if type=(Xfile_decltype_done)
-				break
-			end
+		while nr>^1
 			call writec(outfile)
+			call get_char(pbuffer,#type)
 			call decl_type(outfile,type)
+			dec nr
 		end
 	end
 	inc pbuffer#

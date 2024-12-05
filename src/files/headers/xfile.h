@@ -65,7 +65,7 @@ const Xfile_decltype_longWord=6
 const Xfile_decltype_longInt=7
 #const Xfile_decltype_const=Xfile_decltype_longInt+1  #here will be used Xfile_declfield_const
 const Xfile_decltype_varargs=8
-const Xfile_decltype_done=0xff
+#const Xfile_decltype_done=0xff
 
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1

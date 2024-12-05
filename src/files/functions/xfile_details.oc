@@ -443,7 +443,7 @@ function xfile_proto_done()
 	return (noerror)
 endfunction
 
-function xfile_proto_arg(sd type,sd *is_stack,sd *is_expand,sd *is_signed)
+function xfile_proto_arg(sd type) #,sd *is_stack,sd *is_expand,sd *is_signed)
 	if main.xfile!=(openno)
 		sd err
 		setcall err xfile_add_char(type)
