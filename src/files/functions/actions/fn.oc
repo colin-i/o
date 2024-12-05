@@ -266,6 +266,12 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				call xfile_fndef_structstart_if()
 			endelseif
 		else #pass_init
+			if main.varargs!=0
+				SetCall err xfile_add_char_if((Xfile_decltype_varargs))
+				if err!=noerr
+					return err
+				endif
+			endif
 			SetCall err xfile_add_char_if((Xfile_decltype_done))
 			if err!=noerr
 				return err

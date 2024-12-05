@@ -424,9 +424,7 @@ endfunction
 function xfile_proto()
 	if main.xfile!=(openno)
 		if main.innerfunctionreturn=(FALSE)
-			if main.varargs=0  #will error on any varargs at c, anyway todo a decltype for that
-				set main.innerfunctionreturn (TRUE)
-			end
+			set main.innerfunctionreturn (TRUE)
 		end
 	end
 endfunction
@@ -440,6 +438,15 @@ function xfile_proto_done()
 			setcall err xfile_add_char((Xfile_proto_long))
 			set main.innerfunctionreturn (FALSE)
 		end
+		return err
+	end
+	return (noerror)
+endfunction
+
+function xfile_proto_arg(sd type,sd *is_stack,sd *is_expand,sd *is_signed)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_char(type)
 		return err
 	end
 	return (noerror)

@@ -1,3 +1,0 @@
-
-#make clean && ./mrd
-rm obj.o && ./mrd

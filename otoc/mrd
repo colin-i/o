@@ -1,4 +1,6 @@
 
+if [ -e otoc.o ]; then rm otoc.o; fi
+
 #saying this?: cannot find /usr/x86_64-linux-gnu/lib/libc.so.6
 # sudo ln -s /home/bc/before/lib/libc.so.6 /usr/x86_64-linux-gnu/lib/libc.so.6
 #            and for libc_nonshared.a and ld-linux-x86-64.so.2

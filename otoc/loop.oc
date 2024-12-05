@@ -87,7 +87,8 @@ function loop(sd pointer,sd delim,sd output)
 			set same_line (FALSE)
 		end
 
-		value Xfile_comment^comment
+		value Xfile_proto^proto
+		value *Xfile_comment^comment
 		value *Xfile_commentmulti^commentmulti
 		value *Xfile_commentlineend^commentlineend
 		value *Xfile_format^format
@@ -116,9 +117,8 @@ function loop(sd pointer,sd delim,sd output)
 		value *Xfile_interrupt^interrupt
 		value *Xfile_line^line
 		value *Xfile_iend^iend
-		value *Xfile_proto^proto
 		mult command :
-		sv dest^Xfile_comment;add dest command
+		sv dest^Xfile_proto;add dest command
 		set dest dest#
 		call dest(output,#pointer)
 
@@ -533,10 +533,16 @@ function proto(sd outfile,sv pbuffer)
 		ret
 	end
 	call proto_open(outfile,pbuffer)
-	whiletrue
-		charx type#1;call get_char(pbuffer,#type)
-		if type=(Xfile_decltype_done)
-			break
+	charx type#1;call get_char(pbuffer,#type)
+	if type!=(Xfile_decltype_done)
+		call decl_type(outfile,type)
+		whiletrue
+			call get_char(pbuffer,#type)
+			if type=(Xfile_decltype_done)
+				break
+			end
+			call writec(outfile)
+			call decl_type(outfile,type)
 		end
 	end
 	inc pbuffer#

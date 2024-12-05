@@ -34,13 +34,11 @@ function functiondef_ext(sv pbuffer,sd outfile,sd pointer,sd sz)
 	if e=(Xfile_function_e_normal)
 		call writer(outfile)
 	else #varargs
-		char a=asciicomma
-		char b="...)"^
 		if args!=0
-			call write(outfile,#a,1+\.b)
-		else
-			callg write(outfile,#b,\.b)
-		end
+			call writec(outfile)
+		endif
+		call varargs(outfile)
+		callg writer(outfile)
 	end
 end
 
@@ -78,22 +76,12 @@ function functiondef_entry(sv pbuffer,sd outfile,sd pointer,sd sz)
 end
 
 #D structure
-function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
-	value f^byte      #char[x]
-	value *^word      #word[x]
-	value *^int       #data[x]
-	value *^longByte  #is intByte but same as vstr
-	value *^longLong  #valuex sv
-	value *^longByte  #vstr[x] ss
-	value *^longWord  #vword[x] sw
-	value *^longInt   #vdata[x] sd
-
-	charx sign#1;charx feature#1
+function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
+	charx sign#1
 	if field=(Xfile_declfield_data)
 		charx data#1;call get_char(pbuffer,#data)
 		call get_char(pbuffer,#sign)
 		call get_char(pbuffer,ptype)     #type is used outside
-		call get_char(pbuffer,#feature)
 		if sign=(Xfile_declext_no)
 			call unsigned(outfile)
 		end
@@ -107,17 +95,15 @@ function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
 	else
 		call get_char(pbuffer,#sign)
 		call get_char(pbuffer,ptype)
-		call get_char(pbuffer,#feature)
 		if sign=(Xfile_declext_no)
 			call unsigned(outfile)
 		end
 	end
-	sv fn
-	set fn ptype#     #type is used outside
-	mult fn :
-	add fn #f
-	set fn fn#
-	callg fn(outfile)
+	callg decl_type(outfile,ptype#)  #type is used outside
+end
+function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
+	call decl_runtime_core(pbuffer,outfile,field,ptype)
+	charx feature#1;call get_char(pbuffer,#feature) #not used here at the moment
 end
 function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
 	call get_char(pbuffer,pfield)
@@ -132,6 +118,21 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
 	callg write(outfile,pointer,sz)
+end
+function decl_type(sd outfile,sv fn)
+	value f^byte      #char[x]                        Xfile_decltype_byte
+	value *^word      #word[x]                        Xfile_decltype_word
+	value *^int       #data[x]                        Xfile_decltype_int
+	value *^longByte  #is intByte but same as vstr    Xfile_decltype_intByte
+	value *^longLong  #valuex sv                      Xfile_decltype_long
+	value *^longByte  #vstr[x] ss                     Xfile_decltype_longByte
+	value *^longWord  #vword[x] sw                    Xfile_decltype_longWord
+	value *^longInt   #vdata[x] sd                    Xfile_decltype_longInt
+	value *^varargs   #...                            Xfile_decltype_varargs
+	mult fn :
+	add fn #f
+	set fn fn#
+	callg fn(outfile)
 end
 function byte(sd outfile)
 	char a="char*"^
@@ -157,4 +158,8 @@ function longWord(sd outfile)
 end
 function longInt(sd outfile)
 	call write(outfile,#int.a,\int.a)
+end
+function varargs(sd outfile)
+	char a="..."^
+	callg write(outfile,#a,\.a)
 end

@@ -2,37 +2,37 @@
 const Xfile_sz_char=1
 const Xfile_sz_int=4
 
-const Xfile_comment=0
-const Xfile_commentmulti=1
-const Xfile_commentlineend=2
-const Xfile_format=3
-const Xfile_include=4
-const Xfile_functiondef=5
-const Xfile_declare=6
-const Xfile_action=7
-const Xfile_action2=8
-const Xfile_call=9
-const Xfile_callex=10
+const Xfile_proto=0
+const Xfile_comment=1
+const Xfile_commentmulti=2
+const Xfile_commentlineend=3
+const Xfile_format=4
+const Xfile_include=5
+const Xfile_functiondef=6
+const Xfile_declare=7
+const Xfile_action=8
+const Xfile_action2=9
+const Xfile_call=10
+const Xfile_callex=11
 #Const ifinscribe=-1; #Const nocondnumber=-1; const elseinscribe_write=0; const elseinscribe_skip=1
-const Xfile_if=11
-const Xfile_elseif=12
-const Xfile_else=13
-const Xfile_while=14
-const Xfile_whiletrue=15
-const Xfile_break=16
-const Xfile_continue=17
-const Xfile_end=18
-const Xfile_ret=19
-const Xfile_library=20
-const Xfile_import=21
-const Xfile_aftercall=22
-const Xfile_hex=23
-const Xfile_override=24
-const Xfile_orphan=25
-const Xfile_interrupt=26
-const Xfile_line=27
-const Xfile_iend=28
-const Xfile_proto=29
+const Xfile_if=12
+const Xfile_elseif=13
+const Xfile_else=14
+const Xfile_while=15
+const Xfile_whiletrue=16
+const Xfile_break=17
+const Xfile_continue=18
+const Xfile_end=19
+const Xfile_ret=20
+const Xfile_library=21
+const Xfile_import=22
+const Xfile_aftercall=23
+const Xfile_hex=24
+const Xfile_override=25
+const Xfile_orphan=26
+const Xfile_interrupt=27
+const Xfile_line=28
+const Xfile_iend=29
 #at the moment these are < 0x100
 
 #t from type
@@ -64,6 +64,7 @@ const Xfile_decltype_longByte=5
 const Xfile_decltype_longWord=6
 const Xfile_decltype_longInt=7
 #const Xfile_decltype_const=Xfile_decltype_longInt+1  #here will be used Xfile_declfield_const
+const Xfile_decltype_varargs=8
 const Xfile_decltype_done=0xff
 
 const Xfile_declfeature_normal=0
