@@ -518,17 +518,22 @@ function interrupt(sd outfile)
 end
 function proto(sd outfile,sv pbuffer)
 	ss buf;set buf pbuffer#
-	datax sz#1;valuex name#1
-	call get_string(#buf,#sz,#name)
-	datax nr#1;call get_data(#buf,#nr)
-	add buf nr
+	or loop.allowwrite (allowwrite_no)
+	call proto_core(outfile,#buf)
+	and loop.allowwrite (~allowwrite_no)
 	charx ftype#1;call get_char(#buf,#ftype)
 	if ftype=(Xfile_proto_void)
 		set pbuffer# buf
 		ret
 	end
+	call proto_core(outfile,pbuffer)
+	inc pbuffer#
+	callg proto_close(outfile)
+end
+
+function proto_core(sd outfile,sv pbuffer)
 	call proto_open(outfile,pbuffer)
-	call get_data(pbuffer,#nr)
+	datax nr#1;call get_data(pbuffer,#nr)
 	if nr>^0
 		charx type#1;call get_char(pbuffer,#type)
 		call decl_type(outfile,type)
@@ -539,10 +544,7 @@ function proto(sd outfile,sv pbuffer)
 			dec nr
 		end
 	end
-	inc pbuffer#
-	callg proto_close(outfile)
 end
-
 function proto_open(sd outfile,sv pbuffer)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
