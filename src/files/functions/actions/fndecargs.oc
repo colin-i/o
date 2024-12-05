@@ -117,7 +117,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		endelse
 	endelse
 	if parses=(pass_init) # long_mask and again datasize are extra
-		setcall err xfile_proto_arg(xfile_decltype) #,is_stack,is_expand,is_signed)
+		setcall err xfile_add_char_if(xfile_decltype) #xfile_proto_arg(xfile_decltype,is_stack,is_expand,is_signed)
 		return err
 	endif
 	setcall err xfile_add_declare_if(xfile_decltype,is_stack,is_expand,is_signed,ptrcontent#,sz,(sign_not_required)) #2 more
