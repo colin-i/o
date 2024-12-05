@@ -974,7 +974,7 @@ format elfobj64<br>
 <p>There are at least two options at the '*' wildcard from there. '{}' is an enumeration.</p>
 <p>First long(4 bytes) is null or offset of entry which will be at the end.</p>
 <table id="selection_table">
-	<tr><td>Xfile_proto</td><td class="red">name</td><td class="blue">nr_of_args</td><td>{Xfile_decltype_*}</td><td>Xfile_proto_*</td></tr>
+	<tr><td>Xfile_proto</td><td class="red">name</td><td class="blue">nr_of_args</td><td class="green">{DA}</td><td>Xfile_proto_*</td></tr>
 </table>
 <table id="selection_table">
 	<tr><td>Xfile_comment*</td><td class="red">comment</td></tr>
@@ -1074,9 +1074,14 @@ format elfobj64<br>
 </table>
 <br>Table D:
 <table id="selection_table">
-	<tr><td colspan=5>Xfile_declfield_const</td>                                                                                                                                <td class="red" rowspan=3>name</td></tr>
-	<tr><td colspan=2>Xfile_declfield_stack</td>                     <td rowspan=2>Xfile_declext_*</td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declfeature_*</td></tr>
+	<tr><td>Xfile_declfield_const</td><td class="red" rowspan=2>name</td></tr>
+	<tr><td class="green">DA</td></tr>
+</table>
+<br>Table DA:
+<table id="selection_table">
+	<tr><td colspan=2>Xfile_declfield_stack</td>                     <td rowspan=2>Xfile_declext_*</td><td rowspan=2>Xfile_decltype_*</td></tr>
 	<tr><td>Xfile_declfield_data</td> <td>Xfile_declfield_data_*</td></tr>
+	<tr><td colspan=4>Xfile_declfield_varargs</td></tr>
 </table>
 <br>Table DT:
 <table id="selection_table">
