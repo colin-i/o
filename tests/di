@@ -1,2 +1,3 @@
-
-OCOMP=o ./d $@
+if [ -z "${OCOMP}" ]; then OCOMP=o; fi
+if [ -z "${OCONV}" ]; then OCONV=otoc; fi
+OCOMP=${OCOMP} OCONV=${OCONV} ./d $@

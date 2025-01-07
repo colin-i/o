@@ -17,9 +17,9 @@ char c3="45"
 word c5=1;datau c6=1;str c7=1;value c8=1
 vstr c9="";vword ca=1;vdata cb=1
 char cc="\taz"^
-
 #constu a1=1
 const a1=1
+constif a1=2 #ok
 
 char a#3;value b^a
 char no_hotgroup=1;value no_hotgroup_test^no_hotgroup

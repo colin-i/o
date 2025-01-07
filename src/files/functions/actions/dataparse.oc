@@ -63,6 +63,7 @@ function get_img_vdata_dataSize()
 	return reg
 endfunction
 
+Char constdup="Constant name is already defined."
 #err
 Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
 	#duplications
@@ -121,9 +122,7 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 		Data pointer#1
 		SetCall pointer vars(content,valsize,structure)
 		If pointer!=zero
-			Char constdup="Constant name is already defined."
-			Str pconstdup^constdup
-			Return pconstdup
+			Return #main.constdup
 		EndIf
 		#this will be set outside Set value 0
 	EndElse

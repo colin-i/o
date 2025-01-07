@@ -1,7 +1,7 @@
 
 
 #err
-Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd long_mask,sd relocbool,sd dataxrel,sd stack,sd is_expand,sd is_signed)
+Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd punitsize,sd relocbool,sd long_mask,sd dataxrel,sd stack,sd is_expand,sd is_signed)
 	Data false=FALSE
 	Data true=TRUE
 	Str err#1
@@ -24,7 +24,15 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			Call getcontReg(constantsstruct,ptroffset_const)
 			SetCall err addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,(dummy_mask)) #there are 2 more arguments but are not used
 			#it is not a mistake to go with 0 mask in variable from here to addaref
-			If err!=noerr;Return err;EndIf
+			If err!=noerr
+				if main.is_constif=(TRUE)
+					if err=#main.constdup
+						call advancecursors(ptrcontent,ptrsize,ptrsize#)
+						return (noerror)
+					endif
+				endif
+				Return err
+			EndIf
 		else
 			sd immovable_struct_cont ;#for size of var
 			sd reg	             ;#for size of var

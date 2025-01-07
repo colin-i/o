@@ -118,3 +118,5 @@ set ret_cont_break (ret_cont_break_notyet)
 set entryReg (lastReg)
 
 set xstruct (unierror)
+
+set is_constif (FALSE)

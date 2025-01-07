@@ -11,7 +11,7 @@ Char cDATA_c="DATA";Char cSTR_c="STR";Char cCHAR_c="CHAR";Char cWORD_c="WORD";Ch
 	Char cVDATA_c="VDATA";Char cVSTR_c="VSTR";Char cVALUE_c="VALUE";Char cVWORD_c="VWORD"
 	Char cDATAX_c="DATAX";Char cSTRX_c="STRX";Char cCHARX_c="CHARX";Char cWORDX_c="WORDX"
 	Char cVDATAX_c="VDATAX";Char cVSTRX_c="VSTRX";Char cVALUEX_c="VALUEX";Char cVWORDX_c="VWORDX"
-	Char cCONST_c="CONST"
+	Char cCONST_c="CONST";Char cCONSTIF_c="CONSTIF"
 Char cSET_c="SET";Char cADD_c="ADD";Char cSUB_c="SUB";Char cMULT_c="MULT";Char cDIV_c="DIV";Char cDIVU_c="DIVU";Char cREM_c="REM";Char cREMU_c="REMU";Char cAND_c="AND";Char cOR_c="OR";Char cXOR_c="XOR"
 Char cRETURN_c="RETURN";Char cINC_c="INC";Char cDEC_c="DEC";Char cINCST_c="INCST";Char cDECST_c="DECST";Char cNEG_c="NEG";Char cNOT_c="NOT";Char cBASE_c="BASE";Char cLEAVE_c="LEAVE"; Char cSHL1_c="SHL1";Char cSHR1_c="SHR1";Char cSAR1_c="SAR1";Char cEXIT_c="EXIT"
 Char cCALL_c="CALL";Char cCALLX_c="CALLX"
@@ -152,6 +152,11 @@ Const numberofcommandsvars=(\-commandsvars_start)/com_size
 			data *^cCONST_c
 			Data *=cDECLARE
 			Data *=cCONST
+			Data *=spacereq
+		Const cCONSTIF=\-cDECLARE_top
+			data *^cCONSTIF_c
+			Data *=cDECLARE
+			Data *=cCONSTIF
 			Data *=spacereq
 	Const cPRIMSEC=\-coms_start
 	Const cPRIMSEC_top=\
@@ -492,11 +497,12 @@ const declares_flag=0x80000000 # chars charxs
 #declare coresp
 function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand,sd p_is_signed)
 #these numbers will be used at getstruct directly
-	if subtype=(cCONST)
+	sd test;set test subtype;and subtype (~declares_flag)
+
+	if subtype>=^(cCONST)
 		return (constantsnumber)
 	endif
 
-	sd test;set test subtype;and subtype (~declares_flag)
 	if test=subtype
 		set p_is_signed# (Xfile_declext_no)
 	else
@@ -569,7 +575,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		#		set intercursors #pointer  ##only for elseGif
 		#	endif
 		elseif command=(cDECLARE)
-			if ptrsubtype#!=(cCONST)
+			if ptrsubtype#<^(cCONST)
 				setcall extstr getcom_declare(ptrsubtype#)
 			endif
 		Elseif command=(cSTARTFUNCTION)
@@ -624,7 +630,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				#	else #elseg
 				#		set main.ret_cont_break (ret_cont_break_skip)
 				#	endelse
-				if command=(cDECLARE) #chars/charxs
+				if command=(cDECLARE) #chars/charxs and all ...u
 					or ptrsubtype# (declares_flag)
 				elseIf command=(cSTARTFUNCTION)
 				#functionxx/entryx , varargs
