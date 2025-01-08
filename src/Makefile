@@ -125,4 +125,4 @@ test: test-obj
 #there is a backport in ppa-stagging for jammy
 #still at xenial/bionic but launchpad stop working for ./z . solution? local test
 
-.PHONY: all install install-proj clean clean-compile clean-link clean-test distclean uninstall test test-obj
+.PHONY: all install install-proj clean clean-compile clean-link clean-test clean-test-obj distclean uninstall test test-obj
