@@ -36,11 +36,18 @@ function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signe
 endfunction
 
 #err
-function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,sd is_signed,ss content,sd size,sd sign,sd reloc,sd relocx)
+function xfile_add_declare_if(sd decltype,sd is_stack,sd is_expand,sd is_signed,ss content,sd size,sd sign,sd reloc,sd relocx,sd subtype)
 	if main.xfile!=(openno)
 		sd err
 		if decltype=(Xfile_decltype_const)
 			setcall err xfile_add_char((Xfile_declfield_const))
+			if err=(noerror)
+				if subtype=(cCONST)
+					setcall err xfile_add_char((Xfile_declfield_const_normal))
+				else # cCONSTIF
+					setcall err xfile_add_char((Xfile_declfield_const_cond))
+				endelse
+			endif
 		else
 			setcall err xfile_add_declare_base(decltype,is_stack,is_expand,is_signed)
 			if err=(noerror)

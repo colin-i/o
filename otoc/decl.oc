@@ -5,10 +5,10 @@ function functiondef_d(sv pbuffer,sd outfile)
 	datax args#1;call get_data(pbuffer,#args)
 	if args>=^1
 		charx field#1
-		call decl(pbuffer,outfile,#field,(NULL))
+		call decl(pbuffer,outfile,#field,(NULL)) #1 more
 		sd n=1;while n!=args
 			call writec(outfile)
-			call decl(pbuffer,outfile,#field,(NULL))
+			call decl(pbuffer,outfile,#field,(NULL)) #1 more
 			inc n
 		end
 	end
@@ -108,18 +108,24 @@ function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
 	call decl_runtime_core(pbuffer,outfile,field,ptype)
 	charx feature#1;call get_char(pbuffer,#feature) #not used here at the moment
 end
-function decl(sv pbuffer,sd outfile,ss pfield,ss ptype)
+function decl(sv pbuffer,sd outfile,ss pfield,ss ptype,ss pconstif)
 	call get_char(pbuffer,pfield)
+	datax sz#1;valuex pointer#1
 	if pfield#!=(Xfile_declfield_const)
 		call decl_runtime(pbuffer,outfile,pfield#,ptype)
+		call get_string(pbuffer,#sz,#pointer)
 	else
+		call get_char(pbuffer,pconstif)
+		call get_string(pbuffer,#sz,#pointer)
+		if pconstif#=(Xfile_declfield_const_cond)
+			char a="#ifndef "^
+			call write(outfile,#a,\.a)
+			call writen(outfile,pointer,sz)
+		end
 		char c="#define"^
 		call write(outfile,#c,\.c)
 	end
 	call writes(outfile)
-
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
 	callg write(outfile,pointer,sz)
 end
 function decl_type(sd outfile,sv fn)

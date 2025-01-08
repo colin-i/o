@@ -114,13 +114,15 @@
 	<p>
 	1. Constants
 	<br>
-	Language command: <b>Const</b>
+	Language command: <b>Const</b> <b>ConstIf</b>
 	<br>
 	Is a 32 bit value. It's content is declared into the memory(variables are declared into the file) therefore it is used at header files.
 	<br>
 	Constants have a separate declaration scope.
 	<br>
 	Constants(like ordinary integers) can be used at operations, but to avoid same names these are introduced with parenthesis (); without parenthesis only one integer can be used 
+	<br>
+	<b>ConstIf</b> will define the constant only if is not defined.
 	<br>
 	Example:
 	<br>
@@ -240,7 +242,9 @@
 	so ostrip can remove them after ld linked the objects.
 	</p>
 
-	<br>
+	<p>
+	For otoc, adding <b>U</b> at the end, excepting constants, will make them unsigned in C, and excepting chars where adding <b>S</b> will make them signed.
+	</p>
 
 	<p>
 	Data can be declared using the following methods:
@@ -1074,8 +1078,8 @@ format elfobj64<br>
 </table>
 <br>Table D:
 <table id="selection_table">
-	<tr><td>Xfile_declfield_const</td><td class="red" rowspan=2>name</td></tr>
-	<tr><td class="green">DA</td></tr>
+	<tr><td>Xfile_declfield_const</td>     <td>Xfile_declfield_const_*</td><td class="red" rowspan=2>name</td></tr>
+	<tr><td class="green" colspan=2>DA</td></tr>
 </table>
 <br>Table DA:
 <table id="selection_table">

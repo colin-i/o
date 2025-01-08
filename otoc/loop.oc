@@ -316,8 +316,8 @@ function include(sd outfile,sv pbuffer)
 	or loop.allowwrite (allowwrite_no_include)
 end
 function declare(sd outfile,sv pbuffer)
-	charx type#1;charx field#1
-	call decl(pbuffer,outfile,#field,#type)
+	charx type#1;charx field#1;charx constif#1
+	call decl(pbuffer,outfile,#field,#type,#constif)
 	datax sz#1;valuex pointer#1
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
@@ -378,6 +378,10 @@ function declare(sd outfile,sv pbuffer)
 	endelse
 	if field!=(Xfile_declfield_const)
 		call writet(outfile)
+	elseif constif=(Xfile_declfield_const_cond)
+		call writenl(outfile)
+		char a="#endif"^
+		call write(outfile,#a,\.a)
 	end
 	callg writenl(outfile)
 end

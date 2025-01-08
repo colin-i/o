@@ -53,6 +53,9 @@ const Xfile_declfield_stack=1
 const Xfile_declfield_data=2
 const Xfile_declfield_varargs=3
 
+const Xfile_declfield_const_normal=0
+const Xfile_declfield_const_cond=1
+
 const Xfile_declfield_data_concrete=0
 const Xfile_declfield_data_expand=1
 
