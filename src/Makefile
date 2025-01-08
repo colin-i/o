@@ -65,6 +65,7 @@ ${OBJ}: ${FULLOBJS} ${etcinclude} ${vers}
 
 _ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=${linker} -lc -entry main -o
 ATLDCOM = ${_ATLDCOM} $@
+ATLDCOM_T_O = $(LD) -melf_i386 --dynamic-linker=${linker} -lc -entry main -o z ${FULLOBJO}
 
 ${etcinclude}:
 	echo sd etchelper=${etchelper}\;ss etc_helper=\"${etc_helper}\" > ${etcinclude}
@@ -86,24 +87,32 @@ clean-compile:
 	-rm -f ${FULLOBJS}.log
 	-rm -f ${etcinclude}
 	-rm -f ${vers}
-
 clean-link:
 	-rm -f o
-
 clean-test:
 	-rm -f ./linux/o
 	-rm -f ./linux/o.oc.log
 	-rm -f ./linux/z
+clean-test-obj:
+	-rm -f ${FULLOBJO}
+	-rm -f z
+	-rm -f zz
 
-clean: clean-compile clean-link clean-test
+clean: clean-compile clean-link clean-test clean-test-obj
 distclean: clean
 
 uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
 	-rm -f ${PREFFILEFULL}
 
-test:
-	echo "test"
+test-obj:
+	./o linux/obj.oc function_name 1 nul_res_pref 1
+	${ATLDCOM_T_O}
+	./z linux/obj.oc function_name 1 nul_res_pref 1
+	mv z zz
+	${ATLDCOM_T_O}
+	diff z zz
+test: test-obj
 	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
 	if [ -z "${testlinker}" ]; then \
 		cd ../../; /bin/bash ./test32; \
@@ -116,4 +125,4 @@ test:
 #there is a backport in ppa-stagging for jammy
 #still at xenial/bionic but launchpad stop working for ./z . solution? local test
 
-.PHONY: all install install-proj clean clean-compile clean-link clean-test distclean uninstall test
+.PHONY: all install install-proj clean clean-compile clean-link clean-test distclean uninstall test test-obj
