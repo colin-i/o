@@ -102,42 +102,46 @@ function xfile_add_fndef_if(sd content,sd sz,sd fn)
 		if err=(noerror)
 			setcall err xfile_add_char(fn)
 			if err=(noerror)
-				setcall err xfile_add_string(content,sz)
+				if main.varargs=0  #now this also at normal function at otoc, and not watching here if is for global or for a struct
+					setcall err xfile_add_char((Xfile_function_v_no))
+				else
+					setcall err xfile_add_char((Xfile_function_v_yes))
+				endelse
 				if err=(noerror)
-					whiletrue
-						if fn!=(cENTRY)
-							if fn!=(cFUNCTIONX)
-								setcall main.xstruct tellfile(main.xfile,#err)
-								if main.xstruct!=(unierror)
-									set main.xstruct_dregx main.datasecSize ##also need to differentiate from a dummy function
-									#and since long/long*, also datasecReg
-									set main.xstruct_dreg main.datasecReg
-									if fn=(cENTRYRAW) #must remeber the offset for global sizeof at otoc
-										call xfile_entry_offset(sz,main.xstruct)
-									else #also must set structbit
-										value ptrfunctions%%ptr_functions
-										setcall main.xstruct_fn vars_ignoreref(content,sz,ptrfunctions)
-										sub main.xstruct_fn main.functions
-									endelse
-									setcall err xfile_add_char((Xfile_function_t_normal))
+					setcall err xfile_add_string(content,sz)
+					if err=(noerror)
+						whiletrue
+							if fn!=(cENTRY)
+								if fn!=(cFUNCTIONX)
+									setcall main.xstruct tellfile(main.xfile,#err)
+									if main.xstruct!=(unierror)
+										set main.xstruct_dregx main.datasecSize ##also need to differentiate from a dummy function
+										#and since long/long*, also datasecReg
+										set main.xstruct_dreg main.datasecReg
+										if fn=(cENTRYRAW) #must remeber the offset for global sizeof at otoc
+											call xfile_entry_offset(sz,main.xstruct)
+										else #also must set structbit
+											value ptrfunctions%%ptr_functions
+											setcall main.xstruct_fn vars_ignoreref(content,sz,ptrfunctions)
+											sub main.xstruct_fn main.functions
+										endelse
+										setcall err xfile_add_char((Xfile_function_t_normal))
+									endif
+									break
 								endif
-								break
-							endif
-						else
-							sd off;set off tellfile(main.xfile,#err)
-							if off!=(unierror)
-								call xfile_entry_offset(sz,off)
 							else
-								break
+								sd off;set off tellfile(main.xfile,#err)
+								if off!=(unierror)
+									call xfile_entry_offset(sz,off)
+								endif
+								#else
+								#	break
 							endelse
-						endelse
-						if main.varargs=0
-							setcall err xfile_add_char((Xfile_function_e_normal))
-						else
-							setcall err xfile_add_char((Xfile_function_e_varargs))
-						endelse
-						break
-					endwhile
+							#if main.varargs=0
+							#else
+							break
+						endwhile
+					endif
 				endif
 			endif
 		endif

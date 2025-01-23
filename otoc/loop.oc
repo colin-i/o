@@ -255,13 +255,14 @@ function functiondef(sd outfile,sv pbuffer)
 	value *entry^functiondef_entry
 
 	charx type#1;call get_char(pbuffer,#type)
+	charx vargs#1;call get_char(pbuffer,#vargs)
 	valuex pointer#1
 	call get_string(pbuffer,#loop.szfunctiondef,#pointer)
 
 	mult type :
 	sv dest^intern;add dest type
 	set dest dest#
-	callg dest(pbuffer,outfile,pointer,loop.szfunctiondef)
+	callg dest(pbuffer,outfile,pointer,loop.szfunctiondef,vargs)
 end
 function iend()
 	if loop.icount!=0

@@ -7,7 +7,7 @@ endfunction
 functionx test2()
 endfunction
 
-functionxx test3()
+functionxv test3()
 endfunction
 
 entry test4(word a,vword b,sw c)

@@ -551,6 +551,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		vStr call^calldata
 		vstr xstr="X"
 		vstr skipretjump="G"
+		vstr varargs="V"
 		value pointer#1;data sz#1
 
 		ss extstr=NULL
@@ -579,10 +580,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				setcall extstr getcom_declare(ptrsubtype#)
 			endif
 		Elseif command=(cSTARTFUNCTION)
-			sd x_fn;setcall x_fn func_xfile(ptrsubtype#)
-			if x_fn!=(Xfile_function_not_x)
-				Set extstr xstr ##varargs
-			endif
+			Set extstr varargs
 		elseif command=(cCALLEX)
 			set extstr call_ret_str
 			set intercursors #pointer
@@ -633,7 +631,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 				if command=(cDECLARE) #chars/charxs and all ...u
 					or ptrsubtype# (declares_flag)
 				elseIf command=(cSTARTFUNCTION)
-				#functionxx/entryx , varargs
+				#varargs
 					#allow the command at 64, there is a check inside parsefunc, and for xfile better to know
 					#sd for64;setcall for64 is_for_64()
 					#if for64==(TRUE)
