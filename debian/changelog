@@ -1,3 +1,9 @@
+ocompiler (1-5+214) xenial; urgency=medium
+
+  * varargs for otoc at normal functions
+
+ -- bc <bc@bc-desktop>  Thu, 23 Jan 2025 09:58:00 +0200
+
 ocompiler (1-5+213) xenial; urgency=medium
 
   * constif
