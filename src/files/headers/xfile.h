@@ -45,8 +45,8 @@ const Xfile_function_entry=3
 const Xfile_function_t_normal=0
 const Xfile_function_t_struct=1
 
-const Xfile_function_v_no=0 #varargs
-const Xfile_function_v_yes=1
+const Xfile_function_va_no=0 #varargs
+const Xfile_function_va_yes=1
 
 const Xfile_declfield_const=0
 const Xfile_declfield_stack=1

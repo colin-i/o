@@ -103,9 +103,9 @@ function xfile_add_fndef_if(sd content,sd sz,sd fn)
 			setcall err xfile_add_char(fn)
 			if err=(noerror)
 				if main.varargs=0  #now this also at normal function at otoc, and not watching here if is for global or for a struct
-					setcall err xfile_add_char((Xfile_function_v_no))
+					setcall err xfile_add_char((Xfile_function_va_no))
 				else
-					setcall err xfile_add_char((Xfile_function_v_yes))
+					setcall err xfile_add_char((Xfile_function_va_yes))
 				endelse
 				if err=(noerror)
 					setcall err xfile_add_string(content,sz)

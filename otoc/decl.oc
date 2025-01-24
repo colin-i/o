@@ -2,9 +2,9 @@
 #aftercalli
 
 function functiondef_varargs(sd outfile,sd args,sd vargs)
-	if vargs=(Xfile_function_v_no)
+	if vargs=(Xfile_function_va_no)
 		call writer(outfile)
-	else #varargs
+	else # Xfile_function_va_yes varargs
 		if args!=0
 			call writec(outfile)
 		endif
