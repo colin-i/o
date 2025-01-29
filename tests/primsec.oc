@@ -7,9 +7,12 @@ set a 1
 add a 2
 sub a 3
 mult a 4
-div a 5
-rem a 6
-and a 7
-or a 8
+mults a 5
+div a 6
+divu a 7
+rem a 8
+remu a 9
+and a 10
+or a 11
 xor a a(a,a)
 xorxcall a a(a,a)

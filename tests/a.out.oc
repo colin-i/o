@@ -67,6 +67,7 @@ entryv main(sd argc)
 	add b \st
 	sub b \\st
 	mult b \st.a
+	mults b \st.a
 	div c1 \st.a\
 	divu c1 \st\
 	rem c1 1
