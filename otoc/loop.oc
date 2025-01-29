@@ -406,6 +406,9 @@ function action2(sd outfile,sv pbuffer)
 			set a2 (Xfile_action2_rem)
 			call write_longcast_uns(outfile,#replay)
 		else
+			if a2=(Xfile_action2_mults)
+				set a2 (Xfile_action2_mult)
+			end
 			call write_longcast(outfile,#replay)
 		end
 		call write(outfile,#a2,1)

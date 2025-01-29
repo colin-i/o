@@ -8,16 +8,19 @@ a=${current}.log
 aa=${exp}${a}
 diff ${a} ${aa}
 
-b=${1}.o
-bb=${exp}${b}
-bbb=${bb}.txt
-base64 -d ${bbb} > ${bb}
-diff ${b} ${bb}
-rm ${bb}
+xxd="xxd -c 48 -g 4 "
 
-c=${current}.x
-cc=${exp}${c}
-ccc=${cc}.txt
-base64 -d ${ccc} > ${cc}
-diff ${c} ${cc}
-rm ${cc}
+comp () {
+	echo ${1}
+	b=${1}
+	${xxd}${b} > 1
+	bb=${exp}${b}
+	bbb=${bb}.txt
+	base64 -d ${bbb} > 2
+	${xxd}2 > 3
+	diff 1 3
+	rm 1 2 3
+}
+
+comp ${1}.o
+comp ${current}.x

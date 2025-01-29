@@ -126,6 +126,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 				if subtype=(cMULT)
 					set rem (FALSE)
 					set xlog (Xfile_action2_mult)
+				elseif subtype=(cMULTS) #this command is useless only on char or int will differ the upper part and that can be used only with hex next
+					set rem (FALSE)
+					set xlog (Xfile_action2_mults)
 				else
 					sd is_signed
 					if subtype=(cDIV)
@@ -377,6 +380,8 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 		If subtype=(cMULT)
 			Set regopcodeex 4  #regopcodemult
+		ElseIf subtype=(cMULTS)
+			Set regopcodeex 5  #regopcodeimult
 		Else
 			setcall errnr div_prepare(lowprim,big,#regopcodeex,is_signed)
 		EndElse
