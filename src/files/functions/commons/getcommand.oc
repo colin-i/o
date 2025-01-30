@@ -557,10 +557,10 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 		vstr xstr="X"
 		vstr skipretjump="G"
 		vstr varargs="V"
+		vstr call_ret_str="RET"
+
 		value pointer#1;data sz#1
-
 		ss extstr=NULL
-
 		sd extbooldata=FALSE
 		sv extbool^extbooldata
 		sd intercursors=NULL
@@ -570,7 +570,6 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			Set extstr xstr
 			set intercursors #pointer
 		elseif command=(cCALL)
-		vstr call_ret_str="RET"
 			set extstr call_ret_str
 			set intercursors #pointer
 		#elseif command=(cEND)
@@ -675,7 +674,7 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 			#if command=(cCALLEX)  #cSTARTFUNCTION is not coming here with intercursors=NULL
 				setcall result stratmemspc(#pointer,#sz,skipretjump,spacebool)
 				if result=(TRUE)
-				#call[ex]g
+				#call[ex][x]g
 					or ptrsubtype# (x_callg_flag)
 					set pcontent# pointer
 					set psize# sz
