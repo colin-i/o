@@ -16,3 +16,12 @@ and a 10
 or a 11
 xor a a(a,a)
 xorxcall a a(a,a)
+
+if a=12
+end
+
+valueu b=0
+set b 0xffFFffFF
+valueu c=0
+if c=12
+end
