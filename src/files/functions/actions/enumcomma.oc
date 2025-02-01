@@ -11,7 +11,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 
 	if stack=false
 		data ptrdatasec%%ptr_datasec
-		if ptrobject#=1
+		if ptrobject#=(TRUE)
 			If relocbool=true
 				#data
 				Data ptraddresses%%ptr_addresses
@@ -49,7 +49,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	endif
 
 	setcall for_64 is_for_64()
-	if ptrobject#=1
+	if ptrobject#=(TRUE)
 		If relocbool=true
 			#code
 			sd stackoff

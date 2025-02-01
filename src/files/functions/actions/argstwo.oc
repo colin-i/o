@@ -348,7 +348,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		#first argument imm are comparations
 		#or second value is imm (switched) still a comparation
 		if store_big=(TRUE)
-			SetCall errnr write_imm_sign(dataargprim,(ecxregnumber)) #0xb8+
+			SetCall errnr write_imm_sign_dependent(dataargprim,(ecxregnumber),dataargsec) #here is not a switch (not involving a low), is imm and a big
 		else
 			setcall errnr write_imm_simple(dataargprim,(ecxregnumber))
 		endelse

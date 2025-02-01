@@ -265,7 +265,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 							else
 								SetCall errnr varsufix(content,argsize,ptrdata,ptrlow,ptrsufix)
 								if errnr!=(noerror)
-									if ptrobject#=1
+									if ptrobject#=(TRUE)
 										sd undvar_err
 										setcall undvar_err undefinedvariable()
 										if errnr=undvar_err
