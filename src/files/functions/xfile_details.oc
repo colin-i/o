@@ -267,7 +267,7 @@ function xfile_add_commas_interncall_if(sd content,sd size,sd sz)
 	if main.xfile!=(openno)
 		sd p;setcall p nr_of_args_64need_p_get();set p# 0
 		sd err
-		SetCall err enumcommas(#content,#size,sz,(FALSE),(pass_calls)) #there are 6 more arguments but are not used
+		SetCall err enumcommas(#content,#size,sz,(FALSE),(pass_calls)) #there are 7 more arguments but are not used
 		if err=(noerror)
 			setcall err xfile_add_int(p#)
 		endif

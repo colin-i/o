@@ -234,7 +234,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				Return ptrgroupend
 			EndIf
 			if punitsize=(NULL)  #pass_write
-				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool,relocindx)
+				SetCall err enumcommas(ptrcontent,ptrsize,sz,true,typenumber,(NULL),(not_hexenum),stack,long_mask,relocbool,relocindx,is_signed)
 				If err!=noerr;Return err;EndIf
 				call to_size_of_var(main.xf_commas,immovable_struct_cont,reg)
 				setcall err xfile_add_commas_if()
@@ -242,7 +242,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			else
 				sd aux;set aux punitsize#
 				set punitsize# 0   #will add unit sizes inside
-				Call enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 4 more arguments but are not used
+				Call enumcommas(ptrcontent,ptrsize,sz,true,typenumber,punitsize,aux) #there are 5 more arguments but are not used
 			endelse
 			Call stepcursors(ptrcontent,ptrsize)
 			Return noerr
@@ -406,7 +406,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 					endif
 				endif
 				#addtocode(#test,1,code) cannot add to code for test will trick the next compiler, entry is started,will look like a bug
-				setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask,relocbool)
+				setcall err writevar(ptrvalue,valuewritesize,relocindx,stack,rightstackpointer,long_mask,relocbool,is_signed)
 				If err!=noerr
 					Return err
 				EndIf

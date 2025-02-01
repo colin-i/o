@@ -1,6 +1,6 @@
 
 #e
-function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpointer,sd long_mask,sd relocbool)
+function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpointer,sd long_mask,sd relocbool,sd is_signed)
 	data err#1
 	data noerr=noerror
 	data true=TRUE
@@ -73,21 +73,26 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 		setcall err addtocodeforstack(rightstackpointer,for_64)
 	else
 		#s=consts
-		sd test=~0x7fFFffFF
-		and test ptrvalue#
-		if test=0
+		whiletrue
+			if is_signed=(Xfile_declext_no) #signed (default) ,stack values are not low
+				sd test=~0x7fFFffFF
+				and test ptrvalue#
+				if test!=0
+					#keep sign, for comparations
+					setcall err addtocodefordata(ptrvalue#,for_64,-1)
+					break
+				end
+			end
 			setcall err addtocodefordata(ptrvalue#,for_64,0)
-		else
-			#keep sign, for comparations
-			setcall err addtocodefordata(ptrvalue#,for_64,-1)
-		endelse
+			break
+		endwhile
 	endelse
 	return err
 endfunction
 
 const fndecandgroup=1
 #er
-Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrparses,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool,sd relocindx)
+Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typenumberOrparses,sd punitsizeOrparses,sd hexOrunitsize,sd stack,sd long_mask,sd relocbool,sd relocindx,sd is_signed)
 	Data zero=0
 	vstrx argsize#1
 	Char comma=asciicomma
@@ -170,7 +175,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 						Return err
 					EndIf
 					if hexOrunitsize=(not_hexenum)
-						setcall err writevar(ptrvalue,unitsize,relocindx,stack,zero,long_mask,relocbool)
+						setcall err writevar(ptrvalue,unitsize,relocindx,stack,zero,long_mask,relocbool,is_signed)
 						If err!=noerr
 							Return err
 						EndIf
