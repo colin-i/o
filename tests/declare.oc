@@ -33,3 +33,8 @@ value *z^dd
 word w^a
 vword ww^a
 sw www^a
+
+sv *=-1
+svu *=-1
+sv *={-1,-1}
+svu *={-1,-1}
