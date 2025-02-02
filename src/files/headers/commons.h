@@ -80,3 +80,5 @@ const long_size=asciicolon
 
 const sufix_true=Xfile_suffix_true
 const sufix_false=Xfile_suffix_false
+
+const sign_bit=~0x7fFFffFF

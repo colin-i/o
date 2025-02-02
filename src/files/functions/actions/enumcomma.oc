@@ -7,7 +7,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	data false=FALSE
 	data ptrobject%ptrobject
 
-	sd for_64
+	sd for_64;sd test
 
 	if stack=false
 		data ptrdatasec%%ptr_datasec
@@ -41,8 +41,20 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 		endif
 		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec);If err!=noerr;Return err;EndIf
 		if long_mask!=(dummy_mask)
-			data null=0
-			SetCall err addtosec(#null,(dwsz),ptrdatasec)
+			whiletrue
+				if is_signed=(Xfile_declext_no) #signed (default) for long
+					set test (sign_bit)
+					and test ptrvalue#
+					if test!=0
+						data negative=-1
+						SetCall err addtosec(#negative,(dwsz),ptrdatasec)
+						break
+					end
+				end
+				data null=0
+				SetCall err addtosec(#null,(dwsz),ptrdatasec)
+				break
+			endwhile
 			return err
 		endif
 		return (noerror)
@@ -74,8 +86,8 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	else
 		#s=consts
 		whiletrue
-			if is_signed=(Xfile_declext_no) #signed (default) ,stack values are not low
-				sd test=~0x7fFFffFF
+			if is_signed=(Xfile_declext_no) #signed (default) ,stack values are long
+				set test (sign_bit)
 				and test ptrvalue#
 				if test!=0
 					#keep sign, for comparations
