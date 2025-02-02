@@ -1,3 +1,9 @@
+ocompiler (1-5+216) xenial; urgency=medium
+
+  * sign expand for numbers
+
+ -- bc <bc@bc-desktop>  Sun, 02 Feb 2025 11:36:50 +0200
+
 ocompiler (1-5+215) xenial; urgency=medium
 
   * mults
