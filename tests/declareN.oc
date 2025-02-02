@@ -2,6 +2,8 @@
 format elfobj64
 
 function b(data d)
+value *=-1
+value *={-1,-1}
 char a#2
 char c={1,2,3}
 #char e=""^
