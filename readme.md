@@ -5,7 +5,7 @@ On Ubuntu from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
-Or the *manual installation step* from this link *https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6*:
+Or the *Manual installation step* from this [link](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6):
 ```sh
 sudo apt-get install ocompiler
 ```
@@ -25,5 +25,4 @@ Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/c
 [Preferences file](https://raw.githubusercontent.com/colin-i/o/master/ocompiler.conf).
 
 ## Donations
-The *donations* section is here
-*https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6*
+The *Donations* section is [here](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6).
