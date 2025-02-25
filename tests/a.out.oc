@@ -113,3 +113,4 @@ entryv main(sd argc)
 	override x_file 1
 	i3
 	exit 2
+	callret main(0)

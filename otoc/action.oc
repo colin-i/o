@@ -22,18 +22,20 @@ function action1(sv act,sv pbuffer,sd outfile)
 	callg act(pbuffer,outfile)
 end
 
-function action_areturn(sv pbuffer,sd outfile)
+function return(sd outfile)
 	if loop.function_start!=(err)
 		if loop.allowwrite=(allowwrite_yes) #can be no_include
 			call fseek(outfile,loop.function_start,(SEEK_SET))
 			call fwrite(#write_long.a,(write_long_cast),1,outfile)
 			call fseek(outfile,0,(SEEK_END))
-			#is ok to ignore multi return at entry because it is non-sense
-			#set loop.function_start (err) #if is not at endfunction, is here
+			set loop.function_start (err) #if is not at endfunction, is here. multipe returns,write once
 		end
 	end
 	char a="return "^  #also used at ret
-	call write(outfile,#a,\.a)
+	callg write(outfile,#a,\.a)
+end
+function action_areturn(sv pbuffer,sd outfile)
+	call return(outfile)
 	callg arg(pbuffer,outfile)
 end
 function action_aexit(sv pbuffer,sd outfile) #this exit() an option? now only entryraw/exit case

@@ -420,6 +420,9 @@ function action2(sd outfile,sv pbuffer)
 end
 function call(sd outfile,sv pbuffer)
 	char c#1;call get_char(pbuffer,#c)
+	if c=(Xfile_call_ret)
+		call return(outfile)
+	end
 	call cll(pbuffer,outfile)
 	callg writetn(outfile)
 end
@@ -474,7 +477,7 @@ function end(sd outfile)
 	callg writetn(outfile) #with termination only for struct
 end
 function ret(sd outfile)
-	call write(outfile,#action_areturn.a,\action_areturn.a-1)
+	call write(outfile,#return.a,\return.a-1)
 	callg writetn(outfile)
 end
 function library(sd *outfile,sv pbuffer)

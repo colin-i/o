@@ -89,6 +89,7 @@ switch acall/e
 
 if [ ${is_del} = 0 ]; then
 	if [ ${is_diff} = 1 ]; then
+		echo diff a.out.c .expected/a.out.c
 		diff a.out.c .expected/a.out.c || exit 1
 		tests=( `find -name "*.oc"` )
 		n=${#tests[@]}
