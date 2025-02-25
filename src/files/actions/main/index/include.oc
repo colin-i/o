@@ -12,6 +12,7 @@ if errormsg=noerr
 		SetCall errormsg xfile_add_char_ifif(subtype)
 		if errormsg=noerr
 			if include_sec=(TRUE)
+				sd inc_resolved=FALSE
 				ss include_test
 				set include_test content
 				add include_test quotsz
@@ -27,11 +28,10 @@ if errormsg=noerr
 							SetCall errormsg quotinmem_started(pcontent,pcomsize,pquotsz,pescapes)
 							if errormsg=noerr
 								SetCall errormsg xfile_add_char_ifif((Xfile_include_alternative_yes))
+								set inc_resolved (TRUE)
 							endif
 						endif
-					else
-						setcall errormsg xfile_add_char_ifif((Xfile_include_alternative_no))
-					endelse
+					endif
 				endif
 			endif
 			if errormsg=noerr
@@ -40,7 +40,9 @@ if errormsg=noerr
 					Set includebool one
 					if include_sec=(FALSE)
 						SetCall errormsg include_sec_skip(pcontent,pcomsize)
-					endif
+					elseif inc_resolved=(FALSE)
+						setcall errormsg xfile_add_char_ifif((Xfile_include_alternative_no))
+					endelseif
 				EndIf
 			endif
 		endif

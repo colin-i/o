@@ -22,5 +22,9 @@ comp () {
 	rm 1 2 3
 }
 
-comp ${1}.o
+if [ -e "${1}.o" ]; then
+	comp ${1}.o
+else
+	comp ${1}.exe
+fi
 comp ${current}.x
