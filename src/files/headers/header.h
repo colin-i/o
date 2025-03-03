@@ -468,7 +468,7 @@ const p_hidden_pref^hidden_pref
 vstr safecurrentdirtopath#1
 const p_safecurrentdirtopath^safecurrentdirtopath
 
-const nr_of_prefs=24
+const nr_of_prefs=25
 const nr_of_prefs_jumper=nr_of_prefs*:
 
 vdata nr_of_prefs_pointers#nr_of_prefs;vdata nr_of_prefs_strings#nr_of_prefs
@@ -547,8 +547,9 @@ charx xfile_sharp_comment#1
 charx ret_cont_break#1   #cont break? is also skipping the jump at conditions
 charx ret_cont_break_marker#1
 const ret_cont_break_no=0
-const ret_cont_break_canskip=1  #for return,leave, break,continue, endwhile for whiletrue without breaks. this case is compiler extra type
-const ret_cont_break_mustskip=2 # ret against end, this case is user extra type
+const ret_cont_break_canskip=1      #for return,leave, break,continue, endwhile for whiletrue without breaks. this case is compiler extra type
+const ret_cont_break_mustskip=2     #ret against end, this case is user extra type
+const ret_cont_break_canskip_warn=3 #same as mustskip but from callret
 const ret_cont_break_notyet=0xff
 
 valuex ac_current_data#1
@@ -577,3 +578,5 @@ datax innerfunctionreturn#1
 datax varargs#1
 
 charx is_constif#1
+
+charx callret_end_warn#1

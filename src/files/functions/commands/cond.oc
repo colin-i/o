@@ -376,7 +376,7 @@ Function closeifopenelse(sd xfile_type)
 				Data elsenr=elsenumber
 				SetCall err condbeginwrite(elsenr)
 			endif
-		else # ret_cont_break_canskip ret_cont_break_mustskip ret_cont_break_notyet
+		else # ret_cont_break_canskip ret_cont_break_canskip_warn ret_cont_break_mustskip ret_cont_break_notyet
 			if main.ret_cont_break!=(ret_cont_break_notyet) #is useless JMP, if no previous JMP in this ifinscribe, is also useless ELSE
 				setcall err elseg()
 				If err!=noerr
