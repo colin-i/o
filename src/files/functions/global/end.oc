@@ -29,18 +29,21 @@ function endfunction(sd parses)
 					SetCall err addtoCode_set_programentrypoint(ptrreturn,sizereturn)
 					If err!=(noerror);return err;endif
 				elseif main.ret_cont_break=(ret_cont_break_mustskip)
-					return "Previous RET was useless."
+					vstr uselessret="Previous RET was useless."
+					return uselessret
 				else
 					call set_programentrypoint()
 					if main.ret_cont_break=(ret_cont_break_canskip_warn)
-						whiletrue
-							if main.xbool=(Yes_strict)
-								if main.callret_end_warn=(No)
-									break
+						if main.xbool!=(Yes_strict) #at c is ok, is return argument
+							whiletrue
+								if main.xbool=(Yes)
+									if main.callret_end_warn=(Yes)
+										call Message("CallRet;EndFunction warning") #at c more important
+										break
+									end
 								end
+								return uselessret ##at only o or o more important
 							end
-							call Message("CallRet;EndFunction warning")
-							break
 						end
 					end
 					#else ret_cont_break_canskip
