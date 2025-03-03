@@ -1,6 +1,6 @@
 
 #err
-function writeret()
+function writeret(sd type)
 	sd err
 	sd termswitch
 	sd continuation
@@ -16,7 +16,7 @@ function writeret()
 		setcall continuationsize getreturn(#continuation)
 		setcall err addtosec(continuation,continuationsize,ptrcodesec)
 	endelse
-	set main.ret_cont_break_marker (ret_cont_break_mustskip)
+	set main.ret_cont_break_marker type
 	return err
 endfunction
 
@@ -30,7 +30,7 @@ function after_after_call(sd subtype)
 	setcall subtype callret_flag(subtype)
 	if subtype!=0
 		sd err
-		setcall err writeret()
+		setcall err writeret((ret_cont_break_canskip)) #if was only o, mustskip was a rule, but at otoc this is: return operation
 		return err
 	endif
 	return (noerror)

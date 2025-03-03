@@ -190,7 +190,7 @@ if errormsg=(noerror)
 			ElseIf commandset=(cRET)
 		call entryscope_verify_code()
 				setcall errormsg xfile_add_char_if((Xfile_ret));if errormsg=(noerror)
-					setcall errormsg writeret();endif
+					setcall errormsg writeret((ret_cont_break_mustskip));endif
 			ElseIf commandset=(cINCLUDELINK)
 				Include "./index/include.oc"
 			ElseIf commandset=(cFORMAT)
