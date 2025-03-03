@@ -2,6 +2,7 @@
 format elfobj64
 
 function a()
+	callret a()
 endfunction
 
 entry main()
