@@ -24,6 +24,12 @@ comp () {
 
 if [ -e "${1}.o" ]; then
 	comp ${1}.o
+elif [ -e "${1}" ]; then
+	comp ${1}
+	if [ -e "${1}.c" ]; then
+		echo ${1}.c
+		diff ${exp}${1}.c ${1}.c
+	fi
 else
 	comp ${1}.exe
 fi

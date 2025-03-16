@@ -299,12 +299,14 @@ function format(sd *outfile,sv pbuffer) #will do nothing at the moment
 end
 function include(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
-	datax sz#1;valuex pointer#1
-	call get_string(pbuffer,#sz,#pointer)
 
 	char s="#include "^
 	call write(outfile,#s,\.s)
+
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer) #no get_string write_string macro? if string_pop before also with that but that will extra lseek
 	call write_string(pointer,sz,outfile) #new line is useless: there are no escape chars in c include and, also: any member of the source character set except new-line and (quote or >)
+
 	call writenl(outfile)
 
 	charx alternative#1;call get_char(pbuffer,#alternative)
