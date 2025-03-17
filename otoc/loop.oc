@@ -7,10 +7,10 @@ importx "fread" fread
 importx "free" free
 importx "fwrite" fwrite
 
-importx "strchr" strchr
 importx "printf" printf
 importx "fprintf" fprintf
 importx "memcmp" memcmp
+importx "memchr" memchr
 
 include "xfile.h"
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
@@ -178,6 +178,11 @@ function get_string(sv pbuffer,sd psize,sv ppointer)
 	set ppointer# pbuffer#
 	add pbuffer# psize#
 end
+#S structure
+function get_multistring(sv pbuffer,ss multiline,sd sz,sv pointer)
+	call get_char(pbuffer,multiline)
+	call get_string(pbuffer,sz,pointer)
+end
 
 function fseek_if(sd outfile,sd i)
 	if loop.allowwrite=(allowwrite_yes) #can be no_include
@@ -310,8 +315,8 @@ function include(sd outfile,sv pbuffer)
 
 	charx alternative#1;call get_char(pbuffer,#alternative)
 	if alternative=(Xfile_include_alternative_yes)
-		datax sz#1;valuex pointer#1
-		call get_string(pbuffer,#sz,#pointer)
+		charx multi#1;datax sz#1;valuex pointer#1
+		call get_multistring(pbuffer,#multi,#sz,#pointer)
 	end
 
 	inc loop.icount
@@ -366,7 +371,7 @@ function declare(sd outfile,sv pbuffer)
 				call writeslsr(outfile)
 			end
 			call writee(outfile)
-			call get_string(pbuffer,#sz,#pointer)
+			charx multi#1;call get_multistring(pbuffer,#multi,#sz,#pointer)
 			charx trim#1;call get_char(pbuffer,#trim)
 			if trim=(Xfile_declmode_string_pop_yes)
 				call write_popstring(pointer,sz,outfile)
@@ -374,7 +379,7 @@ function declare(sd outfile,sv pbuffer)
 					call unimplemented() # char*={'a','b','c',0} is not "abc" ,downgrade to char? the sizeof and pointers then
 				end
 			else
-				call write_string(pointer,sz,outfile)
+				call write_string(outfile,multi,sz,pointer)
 			end
 		end
 	endelse
@@ -482,13 +487,13 @@ function ret(sd outfile)
 	callg writetn(outfile)
 end
 function library(sd *outfile,sv pbuffer)
-	datax sz#1;valuex lib#1
-	call get_string(pbuffer,#sz,#lib)
+	charx multi#1;datax sz#1;valuex lib#1
+	call get_multistring(pbuffer,#multi,#sz,#lib)
 end
 function import(sd outfile,sv pbuffer)
 	charx imp#1;call get_char(pbuffer,#imp)
-	datax sz#1;valuex name#1
-	call get_string(pbuffer,#sz,#name)
+	charx multi#1;datax sz#1;valuex name#1
+	call get_multistring(pbuffer,#multi,#sz,#name)
 	call proto_open(outfile,pbuffer)
 	callg proto_close(outfile)
 end
@@ -547,10 +552,13 @@ function proto_core(sd outfile,sv pbuffer)
 	call proto_open(outfile,pbuffer)
 	datax nr#1;call get_data(pbuffer,#nr)
 	if nr>^0
+		#DA structure and one more like this
 		charx field#1;call get_char(pbuffer,#field)
 		call decl_runtime_core(pbuffer,outfile,field,(NULL))
+		#
 		while nr>^1
 			call writec(outfile)
+			#DA
 			call get_char(pbuffer,#field)
 			call decl_runtime_core(pbuffer,outfile,field,(NULL))
 			dec nr
@@ -585,6 +593,11 @@ function write(sd outfile,ss buf,sd sz)
 		if items!=1
 			call aftercallenable()
 		end
+	end
+end
+function write_if(sd outfile,ss buf,sd sz)
+	if sz!=0
+		callg write(outfile,buf,sz)
 	end
 end
 

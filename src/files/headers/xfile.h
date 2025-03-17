@@ -87,6 +87,8 @@ const Xfile_declmode_string=2
 
 const Xfile_declmode_string_pop_no=0
 const Xfile_declmode_string_pop_yes=1
+const Xfile_string_multiline_no=0
+const Xfile_string_multiline_yes=1
 
 const Xfile_declext_no=0
 const Xfile_declext_yes=1

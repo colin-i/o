@@ -988,8 +988,8 @@ format elfobj64<br>
 	<tr><td>Xfile_format</td><td>Xfile_format_*</td></tr>
 </table>
 <table id="selection_table">
-	<tr><td rowspan=2>Xfile_include</td><td rowspan=2>Xfile_include_normal<br>Xfile_include_extern</td><td class="red"rowspan=2>file<sup-r>s</sup-r></td><td colspan=2>Xfile_include_alternative_no</td></tr>
-	<tr>                                                                                                                                                 <td>Xfile_include_alternative_yes</td>         <td class="red">file<sup-r>s</sup-r></td></tr>
+	<tr><td rowspan=2>Xfile_include</td><td rowspan=2>Xfile_include_normal<br>Xfile_include_extern</td><td class="green"rowspan=2>S</td><td colspan=2>Xfile_include_alternative_no</td></tr>
+	<tr>                                                                                                                                <td>Xfile_include_alternative_yes</td>         <td class="green">S</td></tr>
 </table>
 <table id="selection_table">
 	<tr><td rowspan=2>Xfile_functiondef</td><td>Xfile_function_t*</td><td rowspan=2>Xfile_function_va_*</td><td class="red" rowspan=2>name</td><td>Xfile_function_t_*</td><td class="blue" rowspan=2>nr_of_args</td><td class="green" rowspan=2>{D}</td></tr>
@@ -999,8 +999,8 @@ format elfobj64<br>
 	<tr><td rowspan=5>Xfile_declare</td><td class="green" rowspan=5>D</td><td>Xfile_declsign_pointer</td>     <td class="red">var/fn</td></tr>
 	<tr>                                                                  <td>Xfile_declsign_reserve</td>     <td class="green">N</td></tr>
 	<tr>                                                                  <td rowspan=3>Xfile_declsign_e*</td><td>Xfile_declmode_value</td> <td class="green">N</td></tr>
-	<tr>                                                                                                      <td>Xfile_declmode_group</td> <td class="blue">nr_of_args</td>           <td class="green">{N}</td></tr>
-	<tr>                                                                                                      <td>Xfile_declmode_string</td><td class="red">string<sup-r>s</sup-r></td><td>Xfile_declmode_string_pop_*</td></tr>
+	<tr>                                                                                                      <td>Xfile_declmode_group</td> <td class="blue">nr_of_args</td><td class="green">{N}</td></tr>
+	<tr>                                                                                                      <td>Xfile_declmode_string</td><td class="green">S</td>        <td>Xfile_declmode_string_pop_*</td></tr>
 </table>
 <table id="selection_table">
 	<tr><td rowspan=2>Xfile_action</td><td>Xfile_action_a*</td><td class="green">A</td></tr>
@@ -1028,10 +1028,10 @@ format elfobj64<br>
 	<tr><td>Xfile_ret</td></tr>
 </table>
 <table id="selection_table">
-	<tr><td>Xfile_library</td><td class="red">library<sup-r>s</sup-r></td></tr>
+	<tr><td>Xfile_library</td><td class="green">S</td></tr>
 </table>
 <table id="selection_table">
-	<tr><td>Xfile_import</td><td>Xfile_import_*</td><td class="red">extern<sup-r>s</sup-r></td><td class="red">intern</td></tr>
+	<tr><td>Xfile_import</td><td>Xfile_import_*</td><td class="green">S</td><td class="red">intern</td></tr>
 </table>
 <table id="selection_table">
 	<tr><td rowspan=4>Xfile_aftercall</td><td>Xfile_aftercall_declare</td><td>Xfile_declfeature_normal<br>Xfile_declfeature_unref</td><td class="red">var</td></tr>
@@ -1061,7 +1061,7 @@ format elfobj64<br>
 <br>Table A:
 <table id="selection_table">
 	<tr><td>Xfile_arg_number</td><td class="green">N</td></tr>
-	<tr><td>Xfile_arg_string</td><td class="red">string<sup-r>s</sup-r></td></tr>
+	<tr><td>Xfile_arg_string</td><td class="green">S</td></tr>
 	<tr><td>Xfile_arg_varfn</td> <td class="green">VF</td></tr>
 	<tr><td>Xfile_arg_call</td>  <td class="green">CL</td></tr>
 </table>
@@ -1099,6 +1099,10 @@ format elfobj64<br>
 	<tr>                                                                                            <td>Xfile_numbers_type_f*</td><td class="red">func<sup-r>f</sup-r></td></tr>
 	<tr>                                                                                            <td>Xfile_numbers_type_v*</td><td class="green">DT</td></tr>
 </table>
+<br>Table S:
+<table id="selection_table">
+	<tr><td>Xfile_string_multiline_*</td><td class="red">string</td></tr>
+</table>
 <br>Table V:
 <table id="selection_table">
 	<tr><td class="red" rowspan=3>var/fn</td><td>Xfile_suffix_false</td></tr>
@@ -1115,7 +1119,7 @@ format elfobj64<br>
 	<tr>                                           <td rowspan=2>Xfile_arg_varfn_colon_yes</td><td colspan=2>Xfile_arg_varfn_dot_no</td>                                         <td class="red" rowspan=2>var</td><td rowspan=2>Xfile_suffix_*</td>
 	<tr>                                                                                       <td>Xfile_arg_varfn_dot_yes</td>         <td class="red">func<sup-r>f</sup-r></td></tr>
 </table>
-<br><div class="green">Arg Call CaLl ConD Decl DeclArg DoT <sup-r>f</sup-r> Nr <sup-r>s</sup-r> Var VarFunc</div>
+<br><div class="green">Arg Call CaLl ConD Decl DeclArg DoT <sup-r>f</sup-r> Nr S Var VarFunc</div>
 <h3><a name="otheroperations">XVI. Other operations</a></h3>
 <p>
 	Other commands that comes with the language.
