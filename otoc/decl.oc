@@ -77,9 +77,7 @@ function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
 		charx data#1;call get_char(pbuffer,#data)
 		call get_char(pbuffer,#sign)
 		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
-		if sign=(Xfile_declext_no)
-			call unsigned_type(outfile,type)
-		end
+		call unsigned_type(outfile,type,sign)
 		#special hack for a pointless long (value), needed to inc/dec
 		if type=(Xfile_decltype_long)
 			if data=(Xfile_declfield_data_concrete)
@@ -87,14 +85,12 @@ function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
 				ret
 			end
 		end
-		callg decl_type(outfile,type,sign)
+		callg decl_type(outfile,type)
 	elseif field=(Xfile_declfield_stack)
 		call get_char(pbuffer,#sign)
 		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
-		if sign=(Xfile_declext_no)
-			call unsigned_type(outfile,type)
-		end
-		callg decl_type(outfile,type,sign)
+		call unsigned_type(outfile,type,sign)
+		callg decl_type(outfile,type)
 	else #Xfile_declfield_varargs
 		callg varargs(outfile)
 	end
@@ -124,14 +120,7 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype,ss pconstif)
 	callg write(outfile,pointer,sz)
 end
 const un_chars_size=2
-function decl_type(sd outfile,sv fn,sd sign)
-	if fn<=(Xfile_decltype_longByte)
-		if sign=(Xfile_declext_yes)
-			ss s=un_chars_size
-			add s #unsigned.a
-			call write(outfile,s,\unsigned.a-un_chars_size)
-		end
-	end
+function decl_type(sd outfile,sv fn)
 	value f^byte      #char[x]                        Xfile_decltype_byte
 	value *^longByte  #is intByte but same as vstr    Xfile_decltype_intByte
 	value *^longByte  #vstr[x] ss                     Xfile_decltype_longByte

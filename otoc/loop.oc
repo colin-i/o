@@ -276,11 +276,6 @@ function iend()
 	end
 end
 
-function unsigned(sd outfile)
-	char a="unsigned "^
-	callg write(outfile,#a,\.a)
-end
-
 include "action.oc"
 include "decl.oc"
 include "cond.oc"
@@ -641,11 +636,21 @@ function writet(sd outfile)
 	callg write(outfile,#sc,1)
 end
 
-function unsigned_type(sd outfile,sd type)
-	if type<=(Xfile_decltype_longByte) #can't write: unsigned signed char
-		ret
+function unsigned(sd outfile)
+	char a="unsigned "^
+	callg write(outfile,#a,\.a)
+end
+function unsigned_type(sd outfile,sd type,sd sign)
+	if sign=(Xfile_declext_no)
+		if type<=(Xfile_decltype_longByte) #char is already unsigned
+			ret
+		end
+		call write(outfile,#unsigned.a,\unsigned.a)
+	elseif type<=(Xfile_decltype_longByte)
+		ss s=un_chars_size
+		add s #unsigned.a
+		callg write(outfile,s,\unsigned.a-un_chars_size)
 	end
-	callg write(outfile,#unsigned.a,\unsigned.a)
 end
 function write_longcast_simple(sd outfile)
 	call writel(outfile)
