@@ -658,8 +658,10 @@ function unsigned_type(sd outfile,sd type,sd sign)
 		if type<=(Xfile_decltype_longByte) #char is already unsigned
 			ret
 		end
-		call write(outfile,#unsigned.a,\unsigned.a)
-	elseif type<=(Xfile_decltype_longByte)
+		callg write(outfile,#unsigned.a,\unsigned.a)
+		ret
+	end
+	if type<=(Xfile_decltype_longByte)
 		ss s=un_chars_size
 		add s #unsigned.a
 		callg write(outfile,s,\unsigned.a-un_chars_size)
