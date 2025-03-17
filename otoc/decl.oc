@@ -78,7 +78,7 @@ function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
 		call get_char(pbuffer,#sign)
 		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
 		if sign=(Xfile_declext_no)
-			call unsigned(outfile)
+			call unsigned_type(outfile,type)
 		end
 		#special hack for a pointless long (value), needed to inc/dec
 		if type=(Xfile_decltype_long)
@@ -87,14 +87,14 @@ function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
 				ret
 			end
 		end
-		callg decl_type(outfile,type)
+		callg decl_type(outfile,type,sign)
 	elseif field=(Xfile_declfield_stack)
 		call get_char(pbuffer,#sign)
 		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
 		if sign=(Xfile_declext_no)
-			call unsigned(outfile)
+			call unsigned_type(outfile,type)
 		end
-		callg decl_type(outfile,type)
+		callg decl_type(outfile,type,sign)
 	else #Xfile_declfield_varargs
 		callg varargs(outfile)
 	end
@@ -123,15 +123,23 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype,ss pconstif)
 	call writes(outfile)
 	callg write(outfile,pointer,sz)
 end
-function decl_type(sd outfile,sv fn)
+const un_chars_size=2
+function decl_type(sd outfile,sv fn,sd sign)
+	if fn<=(Xfile_decltype_longByte)
+		if sign=(Xfile_declext_yes)
+			ss s=un_chars_size
+			add s #unsigned.a
+			call write(outfile,s,\unsigned.a-un_chars_size)
+		end
+	end
 	value f^byte      #char[x]                        Xfile_decltype_byte
-	value *^word      #word[x]                        Xfile_decltype_word
-	value *^int       #data[x]                        Xfile_decltype_int
 	value *^longByte  #is intByte but same as vstr    Xfile_decltype_intByte
-	value *^longLong  #valuex sv                      Xfile_decltype_long
 	value *^longByte  #vstr[x] ss                     Xfile_decltype_longByte
+	value *^word      #word[x]                        Xfile_decltype_word
 	value *^longWord  #vword[x] sw                    Xfile_decltype_longWord
+	value *^int       #data[x]                        Xfile_decltype_int
 	value *^longInt   #vdata[x] sd                    Xfile_decltype_longInt
+	value *^longLong  #valuex sv                      Xfile_decltype_long
 	mult fn :
 	add fn #f
 	set fn fn#

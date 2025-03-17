@@ -220,6 +220,9 @@ function aftercallenable()
 	#aftercallenable
 end
 
+function signed()
+end
+
 #aftercalli *
 
 function unimplemented()
@@ -271,6 +274,11 @@ function iend()
 			and loop.allowwrite (~allowwrite_no_include)
 		end
 	end
+end
+
+function unsigned(sd outfile)
+	char a="unsigned "^
+	callg write(outfile,#a,\.a)
 end
 
 include "action.oc"
@@ -633,11 +641,11 @@ function writet(sd outfile)
 	callg write(outfile,#sc,1)
 end
 
-function signed()
-end
-function unsigned(sd outfile)
-	char a="unsigned "^
-	callg write(outfile,#a,\.a)
+function unsigned_type(sd outfile,sd type)
+	if type<=(Xfile_decltype_longByte) #can't write: unsigned signed char
+		ret
+	end
+	callg write(outfile,#unsigned.a,\unsigned.a)
 end
 function write_longcast_simple(sd outfile)
 	call writel(outfile)

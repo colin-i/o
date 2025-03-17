@@ -60,15 +60,15 @@ const Xfile_declfield_data_concrete=0
 const Xfile_declfield_data_expand=1
 
 const Xfile_decltype_byte=0
-const Xfile_decltype_word=1
-const Xfile_decltype_int=2
-const Xfile_decltype_intByte=3
-const Xfile_decltype_long=4
-const Xfile_decltype_longByte=5
-const Xfile_decltype_longWord=6
-const Xfile_decltype_longInt=7
-#const Xfile_decltype_const=Xfile_decltype_longInt+1  #here will be used Xfile_declfield_const
-#const Xfile_decltype_varargs=Xfile_decltype_const+1  #here will be used Xfile_declfield_varargs
+const Xfile_decltype_intByte=1
+const Xfile_decltype_longByte=2  ;# at otoc is <= Xfile_decltype_longByte
+const Xfile_decltype_word=3
+const Xfile_decltype_longWord=4
+const Xfile_decltype_int=5
+const Xfile_decltype_longInt=6
+const Xfile_decltype_long=7
+#const Xfile_decltype_const=Xfile_decltype_long+1  #and at output is used Xfile_declfield_const
+#const Xfile_decltype_varargs=Xfile_decltype_const+1  #is used only Xfile_declfield_varargs
 #const Xfile_decltype_done=0xff
 
 const Xfile_declfeature_normal=0
