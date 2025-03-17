@@ -184,34 +184,32 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 #	callg writeq(outfile)
 	if is_multiline=(Xfile_string_multiline_yes)
 		char a="R";call write(outfile,#a,1)
-	end
-	call writeq(outfile)
-	if is_multiline=(Xfile_string_multiline_yes)
+		call writeq(outfile)
 		call writel(outfile)
 		call write_if(outfile,pointer,sz)
-	else #here we escape dquotes
-		whiletrue
-			ss str
-			set str memchr(pointer,(asciidquote),sz)
-			if str=(NULL)
-				call write_if(outfile,pointer,sz)
-				break
-			end
-			sd size;set size str
-			sub size pointer
-			call write_if(outfile,pointer,size)
-			char bs=asciibs
-			call write(outfile,#bs,1)
-			call writeq(outfile)
-			inc str
-			set pointer str
-			sub sz size
-			dec sz
-		end
-	end
-
-	if is_multiline=(Xfile_string_multiline_yes)
 		call writer(outfile)
+		callg writeq(outfile)
+		ret
+	end
+	#here we escape dquotes
+	call writeq(outfile)
+	whiletrue
+		ss str
+		set str memchr(pointer,(asciidquote),sz)
+		if str=(NULL)
+			call write_if(outfile,pointer,sz)
+			break
+		end
+		sd size;set size str
+		sub size pointer
+		call write_if(outfile,pointer,size)
+		char bs=asciibs
+		call write(outfile,#bs,1)
+		call writeq(outfile)
+		inc str
+		set pointer str
+		sub sz size
+		dec sz
 	end
 	callg writeq(outfile)
 end

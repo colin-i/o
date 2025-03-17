@@ -5,7 +5,7 @@ if [ -e otoc.o ]; then rm otoc.o; fi
 # sudo ln -s /home/bc/before/lib/libc.so.6 /usr/x86_64-linux-gnu/lib/libc.so.6
 #            and for libc_nonshared.a and ld-linux-x86-64.so.2
 
-if [ -n "${1}" ]; then OCOMP="q ../src/o"; fi
+if [ -z "${1}" ]; then OCOMP="q ../src/o"; fi
 
 OCOMP=${OCOMP} LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd L=-L/home/bc/before/lib OFLAGSEXTRA="inplace_reloc 0" ldprefer=1 ./md
 
