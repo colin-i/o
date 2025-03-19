@@ -1,3 +1,9 @@
+ocompiler (1-5+219) xenial; urgency=medium
+
+  * otoc: signed char and raw strings
+
+ -- bc <bc@bc-desktop>  Wed, 19 Mar 2025 10:36:42 +0200
+
 ocompiler (1-5+218) xenial; urgency=medium
 
   * callret;endfunction
