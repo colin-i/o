@@ -284,6 +284,9 @@ Function quotescaped(sv pcontent,sd psize)
 	if byte=(asciit)
 		return (asciitab)
 	endif
+	if byte=(asciizero)
+		return (asciinul)
+	endif
 	return byte
 EndFunction
 

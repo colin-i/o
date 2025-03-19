@@ -11,6 +11,7 @@ importx "printf" printf
 importx "fprintf" fprintf
 importx "memcmp" memcmp
 importx "memchr" memchr
+importx "strchr" strchr
 
 include "xfile.h"
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
@@ -593,11 +594,6 @@ function write(sd outfile,ss buf,sd sz)
 		if items!=1
 			call aftercallenable()
 		end
-	end
-end
-function write_if(sd outfile,ss buf,sd sz)
-	if sz!=0
-		callg write(outfile,buf,sz)
 	end
 end
 
