@@ -15,17 +15,17 @@ function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signe
 		endif
 	endelse
 	if err=(noerror)
-		if decltype!=(Xfile_decltype_byte) #default to yes
+		if decltype<=(Xfile_decltype_longByte) #default to no
 			if is_signed=(Xfile_declext_no)
-				setcall err xfile_add_char((Xfile_declext_yes))
-			else
 				setcall err xfile_add_char((Xfile_declext_no))
+			else
+				setcall err xfile_add_char((Xfile_declext_yes))
 			endelse
-		else #default to no
+		else #default to yes
 			if is_signed=(Xfile_declext_no)
-				setcall err xfile_add_char((Xfile_declext_no))
-			else
 				setcall err xfile_add_char((Xfile_declext_yes))
+			else
+				setcall err xfile_add_char((Xfile_declext_no))
 			endelse
 		endelse
 		if err=(noerror)

@@ -747,28 +747,19 @@ Function sortallcommands()
 	Call sortcommands(pointersvarscursor,variables,datacursorini)
 EndFunction
 
-function getcom_declare(sd a) #here used for otoc to sign extend char, if imm is only 32 like now zero extend is default
-	vstr s="S"
-	if a=(cCHAR)
-		return s
+function getcom_declare(ss a) #here used for otoc to sign types, if imm is only 32 like now zero extend is default
+	divu a (com_size)
+
+	char map={0,1,1,0} #data
+	char   *={0,1,0,0} #stack
+	char   *={0,1,0,0} #vdata
+	char   *={0,1,1,0} #datax
+	char   *={0,1,0,0} #vdatax
+
+	add a #map
+	if a#=0
+		return "U"  #and, also, at otoc, unsigned short is good to have small size. with this occasion also is unsigned int
+		#and, for otoc, why not at every declare command?
 	end
-	if a=(cCHARX)
-		return s
-	end
-	vstr u="U" #and, also, at otoc, unsigned short is good to have small size. with this occasion also is unsigned int
-	#and, for otoc, why not at every declare command?
-	return u
-#	if a=(cWORD)
-#		return u
-#	end
-#	if a=(cWORDX)
-#		return u
-#	end
-#	if a=(cDATA)
-#		return u
-#	end
-#	if a=(cDATAX)
-#		return u
-#	end
-#	return (NULL)
+	return "S"
 endfunction

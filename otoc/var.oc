@@ -155,7 +155,7 @@ end
 
 function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 	if is_multiline=(Xfile_string_multiline_yes)
-		#if memmem(pointer,sz,)",2)=(NULL) #at o can \h0a(or force a \linefeed) to add new line but not mark as multiline
+		#if memmem(pointer,sz,)",2)=(NULL) #at o can \n to add new line and not mark as multiline
 		char a="R";call write(outfile,#a,1)
 		call writeq(outfile)
 		call writel(outfile)

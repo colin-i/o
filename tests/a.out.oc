@@ -14,7 +14,7 @@ char c1=1
 chars c2={2,3}
 char c3="01
 23"
-word c5=1;datau c6=1;str c7=1;value c8=1
+word c5=1;datau c6=1;strs c7=1;value c8=1
 vstr c9="";vword ca=1;vdata cb=1
 char cc="az"^
 #constu a1=1

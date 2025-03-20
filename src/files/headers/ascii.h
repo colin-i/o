@@ -37,6 +37,5 @@ Const asciicirc=0x5E
 Const asciiunderscore=0x5F
 Const asciia=0x61
 Const asciif=0x66
-Const asciih=0x68
 Const asciiz=0x7A
 Const asciiequiv=0x7E
