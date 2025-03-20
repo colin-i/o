@@ -49,7 +49,7 @@ etcinclude=etcinclude.oc
 ver=version.h
 vers=../${ver}
 ${vers}:
-	$(MAKE) -f ../Makefile ${ver}
+	cd .. && $(MAKE) -f ./Makefile ${ver}
 
 #       this is in case .oc file is modified
 ${OBJ}: ${FULLOBJS} ${etcinclude} ${vers}

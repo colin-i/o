@@ -1,2 +1,2 @@
 
-echo char version=\"`cat ${1}debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`\" > ${1}version.h
+echo char version=\"`cat ./debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`\" > ./version.h
