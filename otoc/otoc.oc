@@ -22,8 +22,8 @@ function out_file(sd in)
 			if p#=(asciio) #if .oh then is a header
 				ss test;set test p
 				inc test
-				if test#=(h)
-					set ext (h)
+				if test#=(asciih)
+					set ext (asciih)
 				end
 			end
 			set p# ext

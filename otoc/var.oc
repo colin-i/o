@@ -165,14 +165,14 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 		ret
 	end
 	call writeq(outfile)
-	char map1={h,h,            h,h,h,h,h,h,h,asciit,asciin,h,h,asciir,h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h} #at 0 can be asciizero but \000 at c is 0
+	char map1={x,x,            x,x,x,x,x,x,x,asciit,asciin,x,x,asciir,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x} #at 0 can be asciizero but \000 at c is 0
 	char    *={0,0,asciidquote,0,0,0,0,0,0,0,0,     0,     0,0,       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,      0,0,0}
 	char    *={0,0,            0,0,0,0,0,0,0,0,     0,     0,0,0,     0,0,0,0,0,0,0,0,0,0,0,0,0,0,asciibs,0,0,0}
-	char    *={0,0,            0,0,0,0,0,0,0,0,     0,     0,0,0,     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,      0,0,h}
-	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
-	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
-	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
-	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
+	char    *={0,0,            0,0,0,0,0,0,0,0,     0,     0,0,0,     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,      0,0,x}
+	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
+	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
+	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
+	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
 	sd term;set term pointer;add term sz
 	sd start;set start pointer
 	while pointer!=term
@@ -185,7 +185,7 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 			end
 			char bs=asciibs;char b#1;char h1#1;char *#1
 			set b map#
-			if b=(h)
+			if b=(x)
 				call sprintf(#h1,"%02x",pointer#)
 				call write(outfile,#bs,4)
 			else

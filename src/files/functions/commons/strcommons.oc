@@ -288,8 +288,8 @@ Function quotescaped(sv pcontent,sd psize,sd write_to_xfile,sd p_is_multiline)
 	inc content
 	set pcontent# content;dec psize#
 	set byte content#
-#is good this but need to modify where size-=escapes --> plus 2*hescapes <-- and not doing this today
-#	if byte=(asciih)
+#is good this but need to modify where size-=escapes , and add at escapes 2 bytes for every xescape
+#	if byte=(asciix)
 #		#test if raw
 #		inc content
 #		sd a;set a hexnr(content#)
