@@ -21,7 +21,7 @@ endif
 ver=version.h
 vers=../${ver}
 ${vers}:
-	$(MAKE) -f ../Makefile ${ver}
+	cd .. && $(MAKE) -f ./Makefile ${ver}
 
 ${FULLOBJO}: ${FULLOBJS} ${vers}
 	${launcher} ${OCOMP} $< exit_end 1 ${OFLAGSEXTRA}
