@@ -10,8 +10,7 @@ importx "fwrite" fwrite
 importx "printf" printf
 importx "fprintf" fprintf
 importx "memcmp" memcmp
-importx "memchr" memchr
-importx "strchr" strchr
+importx "sprintf" sprintf
 
 include "xfile.h"
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal

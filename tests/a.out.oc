@@ -1,6 +1,5 @@
 
 format elf
-
 #!
 multi
 line
@@ -13,10 +12,11 @@ orphan off
 
 char c1=1
 chars c2={2,3}
-char c3="0\01\t2\"3"
+char c3="01
+23"
 word c5=1;datau c6=1;str c7=1;value c8=1
 vstr c9="";vword ca=1;vdata cb=1
-char cc="\taz"^
+char cc="az"^
 #constu a1=1
 const a1=1
 constif a1=2 #ok
@@ -78,7 +78,7 @@ entryv main(sd argc)
 
 	hex -:,~\,~-\\+(1+01+0x2+\intern+\\intern+\intern.a+\intern.a\)
 
-	call intern(1,"q\nw\re\tr",main.a:a,main.a)
+	call intern(1,"0\n1\r2\t3\04\\5\"6",main.a:a,main.a)
 	set b puts()
 
 	if 1=1

@@ -153,36 +153,9 @@ function varfunc(sv pbuffer,sd outfile)
 	end
 end
 
-function write_string_filter(sd outfile,ss pointer,sd size)
-	# strpbrk was good but we are working with a mem,size data
-	sd term;set term pointer;add term size
-	sd start;set start pointer
-	while pointer!=term
-		char chars="\t\""
-		char *    ="t\""^
-		ss r;set r strchr(#chars,pointer#)
-		if r!=(NULL)
-			if start!=pointer
-				sd c;set c pointer;sub c start
-				call write(outfile,start,c)
-			end
-			char bs=asciibs;char d#1
-			add r \.chars
-			set d r#
-			call write(outfile,#bs,2)
-			inc pointer
-			set start pointer
-			continue
-		end
-		inc pointer
-	end
-	sub pointer start
-	if pointer!=0
-		callg write(outfile,start,pointer)
-	end
-end
 function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 	if is_multiline=(Xfile_string_multiline_yes)
+		#if memmem(pointer,sz,)",2)=(NULL) #at o can \h0a(or force a \linefeed) to add new line but not mark as multiline
 		char a="R";call write(outfile,#a,1)
 		call writeq(outfile)
 		call writel(outfile)
@@ -192,22 +165,40 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 		ret
 	end
 	call writeq(outfile)
-	whiletrue
-		ss str
-		set str memchr(pointer,(asciinul),sz)
-		if str=(NULL)
-			call write_string_filter(outfile,pointer,sz)
-			break
+	char map1={h,h,            h,h,h,h,h,h,h,asciit,asciin,h,h,asciir,h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h} #at 0 can be asciizero but \000 at c is 0
+	char    *={0,0,asciidquote,0,0,0,0,0,0,0,0,     0,     0,0,       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,      0,0,0}
+	char    *={0,0,            0,0,0,0,0,0,0,0,     0,     0,0,0,     0,0,0,0,0,0,0,0,0,0,0,0,0,0,asciibs,0,0,0}
+	char    *={0,0,            0,0,0,0,0,0,0,0,     0,     0,0,0,     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,      0,0,h}
+	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
+	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
+	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
+	char    *={h,h,            h,h,h,h,h,h,h,h,     h,     h,h,h,     h,h,h,h,h,h,h,h,h,h,h,h,h,h,h,      h,h,h}
+	sd term;set term pointer;add term sz
+	sd start;set start pointer
+	while pointer!=term
+		ss map^map1
+		add map pointer#
+		if map#!=0
+			if start!=pointer
+				sd c;set c pointer;sub c start
+				call write(outfile,start,c)
+			end
+			char bs=asciibs;char b#1;char h1#1;char *#1
+			set b map#
+			if b=(h)
+				call sprintf(#h1,"%02x",pointer#)
+				call write(outfile,#bs,4)
+			else
+				call write(outfile,#bs,2)
+			end
+			set start pointer
+			inc start
 		end
-		sd size;set size str
-		sub size pointer
-		call write_string_filter(outfile,pointer,size)
-		char bs=asciibs;char *=asciizero
-		call write(outfile,#bs,2)
-		inc str
-		set pointer str
-		sub sz size
-		dec sz
+		inc pointer
+	end
+	if start!=pointer
+		sub pointer start
+		call write(outfile,start,pointer)
 	end
 	callg writeq(outfile)
 end
