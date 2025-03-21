@@ -19,7 +19,8 @@ comp () {
 	if [ "${edb}" = "0" ]; then
 		edb --run ${OCOMP} ${n} ${OFLAGS} || exit 1
 	else
-		LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${OCOMP} ${n} ${OFLAGS} || exit 1
+		#LD_LIBRARY_PATH=${LD_LIBRARY_PATH} this only if was at source ./inits
+		${OCOMP} ${n} ${OFLAGS} || exit 1
 	fi
 	if [ -n "${write_to_expected}" ]; then
 		copy ${n}.log
