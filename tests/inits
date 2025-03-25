@@ -1,5 +1,5 @@
 
 if [ "`uname -m`" = "aarch64" ]; then
-	#LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu now this is at: q (atm is glibc 2.39-0ubuntu8), and qq with glibc 2.27, and qemu or box64
+	#LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/bc/Desktop/libc_i386/usr/lib/i386-linux-gnu now this is at: q (atm is glibc 2.39 at noble), and qq with glibc 2.27 bionic, and qemu or box64
 	if [ -z "${OCOMP}" ]; then OCOMP="q ../src/o"; fi
 elif [ -z "${OCOMP}" ]; then OCOMP=../src/o; fi
