@@ -1,3 +1,9 @@
+ocompiler (1-5+222) xenial; urgency=medium
+
+  * unsigned on arm, signed on x86
+
+ -- bc <bc@bc-desktop>  Wed, 26 Mar 2025 08:00:33 +0200
+
 ocompiler (1-5+221) xenial; urgency=medium
 
   * and tests
