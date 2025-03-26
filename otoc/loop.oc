@@ -650,9 +650,9 @@ function unsigned(sd outfile)
 end
 function unsigned_type(sd outfile,sd type,sd sign)
 	if sign=(Xfile_declext_no)
-		if type<=(Xfile_decltype_longByte) #char is already unsigned
-			ret
-		end
+		#the problem with char is that it is signed char on arm and unsigned char on x86
+		#if type<=(Xfile_decltype_longByte); ret; end
+
 		callg write(outfile,#unsigned.a,\unsigned.a)
 		ret
 	end
