@@ -1,3 +1,9 @@
+ocompiler (1-5+223) xenial; urgency=medium
+
+  * fix a.out.c
+
+ -- bc <bc@bc-desktop>  Wed, 26 Mar 2025 08:48:02 +0200
+
 ocompiler (1-5+222) xenial; urgency=medium
 
   * unsigned on arm, signed on x86
