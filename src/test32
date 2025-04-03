@@ -1,4 +1,4 @@
-
+#!/bin/bash
 make && \
 testlinker=/home/bc/Desktop/out/libc6/lib32 make test && \
 if [ $? = 0 ]; then

@@ -1,3 +1,3 @@
-
-/bin/bash ./compile && \
-/bin/bash ./c 1
+#!/bin/bash
+${SHELL} ./compile && \
+${SHELL} ./c 1
