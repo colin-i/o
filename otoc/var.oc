@@ -99,7 +99,7 @@ function var(sv pbuffer,sd outfile)
 			call writer(outfile)
 		end
 		call writesl(outfile)
-		char a=asciizero
+		char a=zr
 		call write(outfile,#a,1)
 		call writesr(outfile)
 	else
@@ -165,14 +165,14 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 		ret
 	end
 	call writeq(outfile)
-	char map1={x,x,            x,x,x,x,x,x,x,asciit,asciin,x,x,asciir,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x} #at 0 can be asciizero but \000 at c is 0
-	char    *={0,0,asciidquote,0,0,0,0,0,0,0,0,     0,     0,0,       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,      0,0,0}
-	char    *={0,0,            0,0,0,0,0,0,0,0,     0,     0,0,0,     0,0,0,0,0,0,0,0,0,0,0,0,0,0,asciibs,0,0,0}
-	char    *={0,0,            0,0,0,0,0,0,0,0,     0,     0,0,0,     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,      0,0,x}
-	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
-	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
-	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
-	char    *={x,x,            x,x,x,x,x,x,x,x,     x,     x,x,x,     x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,      x,x,x}
+	char map1={zr,zr,           zr,zr,zr,zr,zr,zr,zr,asciit,asciin,zr,zr,asciir,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr} #at 0 can be asciizero but \000 at c is 0
+	char    *={0, 0,asciidquote,0, 0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,       0, 0, 0} #\xhh... , then \x0acan't will be \x0aca
+	char    *={0, 0,            0, 0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, asciibs, 0, 0, 0}
+	char    *={0, 0,            0, 0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,       0, 0, zr}
+	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
+	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
+	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
+	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
 	sd term;set term pointer;add term sz
 	sd start;set start pointer
 	while pointer!=term
@@ -183,10 +183,10 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 				sd c;set c pointer;sub c start
 				call write(outfile,start,c)
 			end
-			char bs=asciibs;char b#1;char h1#1;char *#1
+			char bs=asciibs;char b#1;char *#2
 			set b map#
-			if b=(x)
-				call sprintf(#h1,"%02x",pointer#)
+			if b=(zr)
+				call sprintf(#b,"%03o",pointer#)
 				call write(outfile,#bs,4)
 			else
 				call write(outfile,#bs,2)

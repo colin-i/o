@@ -421,7 +421,6 @@ function quotes_forward(sd p_content,ss last)#,sd p_newlines,sd p_lastlinestart)
 	if content=last
 		return unend
 	endif
-	sd newlines=0
 	while content#!=delim
 		char escape_c=asciibs
 		while content#=escape_c
