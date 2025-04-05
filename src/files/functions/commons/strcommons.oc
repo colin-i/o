@@ -343,7 +343,9 @@ function quotinmem_err(ss content,sd pquotsz,sd pescapes,sd null_ok)
 			sd dif
 			set byte bytescaped(#content,content,#dif)
 			add pescapes# dif
-		endif
+		else
+			call quotes_new_line(content)
+		endelse
 		if byte=bnull
 			if null_ok=(FALSE)
 				return "Null will break the include/import/library statement."
@@ -400,8 +402,15 @@ function maxpathverif(str safecurrentdirtopath,str logextension)
 	return err
 endfunction
 
+function quotes_new_line(ss content)
+	if content#=(asciireturn)
+		inc content
+		set main.textlinestart content
+		add main.totalnewlines main.linesadd
+	end
+endfunction
 #err
-function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
+function quotes_forward(sd p_content,ss last)#,sd p_newlines,sd p_lastlinestart)
 #this version is knowing that the first char is "
 	char delim=asciidoublequote
 	ss content
@@ -424,34 +433,24 @@ function quotes_forward(sd p_content,ss last,sd p_newlines,sd p_lastlinestart)
 			inc content
 			if content=last
 				set p_content# content
-				if p_newlines!=0;set p_newlines# newlines;endif
 				return unend
 			endif
 		endwhile
-		char newline=asciireturn
-		if content#=newline
-			if p_newlines!=0
-				inc newlines
-				set p_lastlinestart# content
-				inc p_lastlinestart#
-			endif
-		endif
 		if escapes=1
 			inc content
 			set escapes 0
-		elseif content#!=delim
-			inc content
-		endelseif
+		else
+			if content#!=delim
+				call quotes_new_line(content)
+				inc content
+			endif
+		endelse
 		if content=last
 			set p_content# content
-			if p_newlines!=0;set p_newlines# newlines;endif
 			return unend
 		endif
 	endwhile
 	inc content
 	set p_content# content
-	if p_newlines!=0
-		set p_newlines# newlines
-	endif
 	return (noerror)
 endfunction

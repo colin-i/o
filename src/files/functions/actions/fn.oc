@@ -275,7 +275,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				return err
 			endif
 		endelseif
-	Else
+	Else #push, hex is at fndecandgroup
+		sd lines;set lines main.totalnewlines
+		set main.linesadd (BACKWARD)
 		if parses=(pass_init)
 			if sz!=zero
 				SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 7 more arguments but are not used
@@ -292,10 +294,9 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				else
 					if sz!=zero
 						setcall p nr_of_args_64need_p_get();set p# 0
-						SetCall err enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 7 more arguments but are not used
-						if err=noerr
-							setcall err align_ante(p#)
-						endif
+						Call enumcommas(ptrcontent,ptrsize,sz,is_declare,parses) #there are 7 more arguments but are not used
+						#there is no err at push,passcalls,enumcommas
+						setcall err align_ante(p#)
 					else
 						setcall err align_ante(0)
 					endelse
@@ -354,6 +355,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				if err!=noerr;return err;endif
 			endelse
 		endelse
+		set main.linesadd (FORWARD)
+		set main.totalnewlines lines
 	EndElse
 	Call stepcursors(ptrcontent,ptrsize)
 	Return noerr

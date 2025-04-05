@@ -1,16 +1,14 @@
 
 sd comsize#1
 
-sd newlines
-sd totalnewlines=0
-
 Data pcontent^content
 Data pcomsize^comsize
 
-Str textlinestart#1
 if dot_comma_end=0
 	Set textlinestart content
 endif
+set first_textlinestart textlinestart
+set totalnewlines 0
 
 #test the line size and set the size of line break
 Char newline=asciireturn
@@ -77,8 +75,7 @@ while loop=2
 		endelse
 	elseif is_comment=0
 		if pointer#=(asciidoublequote)
-			setcall errormsg quotes_forward(#pointer,last,#newlines,#textlinestart)
-			add totalnewlines newlines  ##this is also good when error
+			setcall errormsg quotes_forward(#pointer,last) #,#totalnewlines,#textlinestart)
 			if errormsg!=(noerror)
 				set loop 1
 				set content pointer
@@ -103,6 +100,9 @@ if errormsg=(noerror)
 
 	ss was_whitespaces
 	If comsize!=0
+		set textlinestart first_textlinestart
+		set totalnewlines 0
+
 		Data pointtosearchat%compointersloc
 		SetCall commandset getcommand(pcontent,pcomsize,ptrsubtype,_errormsg,pointtosearchat)
 		If errormsg=noerr
@@ -274,7 +274,7 @@ if errormsg=(noerror)
 					endelseIf
 				endIf
 			EndIf
-		EndIf
+		endif
 	Elseif cursor_start!=content
 		#if parses==(pass_write) if all parses then extra code for wrongers (only at not w_as_e)
 		#this is only whitespace

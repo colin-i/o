@@ -580,3 +580,8 @@ datax varargs#1
 charx is_constif#1
 
 charx callret_end_warn#1
+
+#for errors
+vStrx textlinestart#1;datax totalnewlines#1
+vstrx first_textlinestart#1
+data linesadd=FORWARD
