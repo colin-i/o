@@ -1,4 +1,2 @@
 
-echo a key when local test is ready
-read -n1 -t $((60*60*24))
 test `cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"` = `cat localtest`

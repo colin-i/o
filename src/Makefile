@@ -115,7 +115,7 @@ test-obj:
 test: test-obj
 	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
 	if [ -z "${testlinker}" ]; then \
-		cd ../../; $(SHELL) ./test32; \
+		RUN__SHELL=$(SHELL) . ../../shl && cd ../../ && $${RUN__SHELL} ./test32; \
 	else \
 		LD_LIBRARY_PATH=${testlinker} ${testlinker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
 		diff o z; \

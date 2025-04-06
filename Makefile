@@ -26,15 +26,15 @@ $(SUBDIRS):
 verify_comp_with_link:
 	cd ./src; ${launcher} ../ounused/ounused ./linux/obj.oc.log
 version.h:
-	$(SHELL) ./versionscript
+	RUN__SHELL=$(SHELL) . ./shl && $${RUN__SHELL} ./versionscript
 #s=`pwd`; cd ${s} is working here, is not working on launchpad
 
 test:
-	cd tests; $(SHELL) ./tests
+	RUN__SHELL=$(SHELL) . ./shl && cd tests && RUN__SHELL="$${RUN__SHELL}" $${RUN__SHELL} ./tests
 
 clean:
 	-rm -f version.h
-	cd tests; $(SHELL) ./c
+	RUN__SHELL=$(SHELL) . ./shl && cd tests && $${RUN__SHELL} ./c
 
 #phony only in this file not in subdirs, then can write extra for a PHONYTOPTARGETS
 .PHONY: all install $(TOPTARGETS) $(SUBDIRS) verify_comp_with_link

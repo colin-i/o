@@ -1,5 +1,6 @@
 #!/bin/bash
-if [ -z "${1}" ]; then is_del=1;
+if [ -z "${1}" ]; then
+	is_del=1
 else
 	is_del=0
 	is_diff=${1}   # ./c 1 is diff, else(example: 0) to populate .expected
@@ -59,7 +60,7 @@ sw () {
 	n="$(find -maxdepth 1 -name "*${1}")"
 	if [ -n "${n}" ]; then
 		for v in ${n}; do
-			switch $(echo $(expr substr ${v} 3 $(echo $(echo -n ${v} | wc -m)-2 | bc)))  #switch ${v:2}
+			switch $(expr substr ${v} 3 $(echo $(echo -n ${v} | wc -m)-2 | bc))  #switch ${v:2}
 		done
 	fi
 }
@@ -71,7 +72,7 @@ del () {
 	switch a.out  #when ld also a.out.oc
 }
 a="`ls`"
-_e_=$(echo $(expr substr ${e} 1 $(echo $(echo -n ${e} | wc -m)-1 | bc)))   #${e::-1}
+_e_=$(expr substr ${e} 1 $(echo $(echo -n ${e} | wc -m)-1 | bc))   #${e::-1}
 for var in ${a}; do
 	if [ -d "${var}" ]; then
 		if [ "${var}" != "${_e_}" ]; then

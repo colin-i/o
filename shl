@@ -1,0 +1,16 @@
+
+if [ -n "$(test "${RUN__SHELL}" != "/bin/bash" && echo x)" ] && [ -n "$(test "${RUN__SHELL}" != "/bin/sh" && echo x)" ]; then
+	if [ $(test -x /bin/bash) ]; then
+		RUN__SHELL="/bin/bash"
+		echo "set /bin/bash"
+	elif [ $(test -x /bin/sh) ]; then
+		RUN__SHELL="/bin/sh"
+		echo "set /bin/sh"
+	else
+		RUN__SHELL="${RUN__SHELL}"
+		echo "is ${RUN__SHELL}"
+	fi
+else
+	RUN__SHELL="${RUN__SHELL}"
+	echo "ok ${RUN__SHELL}"
+fi
