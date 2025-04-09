@@ -1,3 +1,9 @@
+ocompiler (1-5+224) xenial; urgency=medium
+
+  * fix column error print
+
+ -- bc <bc@bc-desktop>  Wed, 09 Apr 2025 08:48:54 +0300
+
 ocompiler (1-5+223) xenial; urgency=medium
 
   * fix a.out.c
