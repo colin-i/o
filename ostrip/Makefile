@@ -41,7 +41,8 @@ ${OBJ}: ${FULLOBJS}
 	${launcher} ${OCOMP} $< ${OFLAGS}
 
 ATCCCOM = $(CC) ${linkerflags} -o
-ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o
+ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -l:libc.so.6 -entry main -o
+#strange that aarch64 cross ld can't -lc but -l:libc.so.6
 
 ${OB}: ${OBJ}
 	${launcher} ${OLINK} ${FULLOBJLOG}

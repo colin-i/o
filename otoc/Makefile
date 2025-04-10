@@ -30,7 +30,8 @@ endif
 #problems at box64 and CC
 ifeq (${conv_64},0)
 	ATCCCOM = $(CC) ${linkerflags} -o
-	ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -lc -entry main -o
+	ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -l:libc.so.6 -entry main -o
+	#same like ostrip for libc.so.6
 else
 	ATCCCOM = $(CC) -m32 ${linkerflags} -o
 	ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${linkerflags} ${L} -lc -entry main -o
@@ -53,7 +54,7 @@ number.pre: number.pre.o
 		${ATLDCOM} $@ $^; \
 	fi
 ${number}: number.pre
-	./$<
+	${launcher} ./$<
 #       in case otoc.oc is modified
 ${OBJ}: ${FULLOBJS} ${number}
 	${OCOMP} $< ${OFLAGS}

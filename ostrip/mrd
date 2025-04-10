@@ -1,2 +1,5 @@
 
-launcher=q LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd L=-L/home/bc/before/lib OFLAGSEXTRA="inplace_reloc 0" ./md
+launcher=q LD=/usr/x86_64-linux-gnu/bin/ld OFLAGSEXTRA="inplace_reloc 0" ./md
+
+#old:
+#launcher=q LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/x86_64-linux-gnu-ld.bfd L=-L/home/bc/before/lib OFLAGSEXTRA="inplace_reloc 0" ./md
