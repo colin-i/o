@@ -1,7 +1,7 @@
 
 if [ -e obj.o ]; then rm obj.o; fi
 
-LD=/usr/i686-linux-gnu/bin/ld ./md
+LD=/usr/i686-linux-gnu/bin/ld ./md $@
 
 #old:
 #LD_LIBRARY_PATH=/home/bc/before LD=/home/bc/before/i686-linux-gnu-ld.bfd ./md

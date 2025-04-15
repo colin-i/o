@@ -57,7 +57,7 @@ ${OBJ}: ${FULLOBJS} ${etcinclude} ${vers}
 		echo text; \
 		base64 -d ${OBT} > $@; \
 		${_ATLDCOM} o $@; \
-		./o ${FULLOBJS}; \
+		${launcher} ./o ${FULLOBJS} ${OFLAGS}; \
 	else \
 		${OCOMP} $< ${OFLAGS}; \
 	fi; \
@@ -124,5 +124,15 @@ test: test-obj
 #use ./test32
 #there is a backport in ppa-stagging for jammy
 #still at xenial/bionic but launchpad stop working for ./z . solution? local test
+
+${OBT}: ${FULLOBJS} ${etcinclude} ${vers}
+	${OCOMP} ${FULLOBJS} ${OFLAGS}
+	base64 ${FULLOBJO} > $@
+	$(MAKE) ${OBJ}
+	base64 ${OBJ} > $@2
+	diff $@ $@2
+	rm $@2
+	mv $@ ..
+	echo ok
 
 .PHONY: all install install-proj clean clean-compile clean-link clean-test clean-test-obj distclean uninstall test test-obj
