@@ -1,0 +1,49 @@
+
+on:
+ workflow_dispatch:
+env:
+ #for upload
+ GITHUB_TOKEN: ${{ secrets.PAT }}
+
+jobs:
+ archbuild:
+  runs-on: ubuntu-latest
+  container: archlinux:latest
+
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v3
+  - name: build
+    run: |
+     name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
+     here=`pwd`
+
+     useradd bot
+     cd /home
+     mkdir bot
+     chown bot:bot bot
+     cd bot
+
+     pacman -Sy --noconfirm --needed git base-devel wget
+     su bot -c 'git clone -n --depth=1 --filter=tree:0 https://github.com/colin-i/pkgbuilds'
+     cd pkgbuilds
+     su bot -c "git sparse-checkout set --no-cone /${name}"
+     su bot -c 'git checkout'
+     cd ${name}
+     pacman -S --noconfirm lib32-glibc bc
+     su bot -c makepkg
+     ls
+     nm=`ls | grep ".*\.zst$" | grep -v debug`
+     nm2=`echo ${nm} | sed s/-any/-arch-x86_64/`
+     mv ${nm} ${here}/${nm2}
+     echo "file=${nm2}" >> $GITHUB_ENV
+
+     wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
+     echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
+  - name: Upload Release Asset
+    uses: actions/upload-release-asset@v1
+    with:
+     upload_url: ${{ env.up_url }}
+     asset_path: ./${{ env.file }}
+     asset_name: ${{ env.file }}
+     asset_content_type: application/zstd

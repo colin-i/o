@@ -3,12 +3,13 @@ TOPTARGETS := install-proj clean distclean uninstall test
 
 #NOOCONV ? is at debian/ocompiler.install , will install here but not in the final deb
 
-ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), amd64)
-SUBDIRS := src ounused ostrip otoc
-conv_64=0
-else
+#this at pkgbuild, must set because is not found dpkg-architecture, and that is making ifeq i386 not same as ifneq amd64
+ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
 SUBDIRS := src ounused otoc
 conv_64=1
+else
+SUBDIRS := src ounused ostrip otoc
+conv_64=0
 endif
 
 #all must be first rule (rule: ...) to be executed in case of make with no args
