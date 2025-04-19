@@ -1,12 +1,18 @@
 #!/bin/bash
+e=.expected/
 if [ -z "${1}" ]; then
 	is_del=1
 else
 	is_del=0
 	is_diff=${1}   # ./c 1 is diff, else(example: 0) to populate .expected
 	diffs=0
+	if [ ${is_diff} = 1 ]; then
+		if [ ! -e ${e} ]; then
+			echo ${e} comparisons only at https://launchpad.net/~colin-i/+archive/ubuntu/ppa
+			exit 0
+		fi
+	fi
 fi
-e=.expected/
 to_expected () {
 	if [ -z "${is_log}" ]; then
 		base64 ${1} > ${exp}${1}.txt
