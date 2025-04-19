@@ -132,7 +132,7 @@ else
 	fi
 
 	#remove base64 troubles #or remove them after diff
-	cd ${e}
+	cd ${e} || exit 0
 	a="$(find . -type f ! -name "*.txt" ! -name "*.log" ! -name "*.c")"
 	if [ -n "${a}" ]; then
 		for var in ${a}; do
