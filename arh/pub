@@ -6,9 +6,9 @@ if [ -z "${msg}" ]; then # more at test/publ
 fi
 last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_name -r` && echo ${last} && \
 ~/test/keyring2 && \
-arhstore_exclude_file=obj.txt ~/test/arh3 ${last} && \
+arhstore_exclude_file=obj.txt.gz ~/test/arh3 ${last} && \
 ~/test/arhpub ${last} && \
-from_env_files="\*rpm .windows.zip" ~/test/del x && \
+from_env_files="\*rpm .windows.zip \*zst" ~/test/del x && \
 #here must arh fast to push changelog + old file same time
 afterversion=./test32local ~/test/debinit2 "${1}" && \
 #there are problems at amd64xenial, not at bionic. can use xi386 amd64 at b but then will be a mess to copy both x and normal version from bionic onward
@@ -24,9 +24,9 @@ arch=i386 ~/test/publp && \
 ./makewin32 && \
 ~/test/pub appimage rpm rel && \
 ~/test/upapp && \
-~/test/up && \
+~/test/upgen ocompiler.zip application/zip ocompiler.windows.zip && \
 ./mrtext && \
-~/test/upgen txt obj.txt && \
+~/test/upgen obj.txt.gz application/gzip && \
 ~/test/pkg/onb && \
 ~/test/pub upapp pkg && \
 ~/test/pub2 && \

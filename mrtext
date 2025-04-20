@@ -1,1 +1,2 @@
-cd src && ./mrtext && make clean
+cd src && ./mrtext && make clean && \
+cd .. && gzip obj.txt
