@@ -15,17 +15,18 @@ endif
 ifndef conv_64
 conv_64=0
 endif
+ifndef ldprefer
+OFLAGSPRE= include_sec 1
+endif
+ifndef prefix
+prefix=/usr
+endif
 
 OBJ = ${prog}.o
 FULLOBJ = ./${prog}
 FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
-
-
-ifndef ldprefer
-	OFLAGSPRE= include_sec 1
-endif
 
 #problems at box64 and CC
 ifeq (${conv_64},0)

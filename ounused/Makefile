@@ -18,6 +18,10 @@ linkerflags=-O3 -s
 #             1
 endif
 
+ifndef prefix
+prefix=/usr
+endif
+
 ver=version.h
 vers=../${ver}
 ${vers}:

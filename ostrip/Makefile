@@ -29,6 +29,10 @@ ifndef OCOMP
 OCOMP=../src/o
 endif
 
+ifndef prefix
+prefix=/usr
+endif
+
 OBJ = ${OB}.o
 OBT = ${OB}.txt
 FULLOBJ = ./${OB}
