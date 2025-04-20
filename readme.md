@@ -5,18 +5,25 @@ On Ubuntu from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
-Or the *Manual installation step* from this [link](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6):
+Or the *Manual installation step* from this [link](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6).\
+Then:
 ```sh
 sudo apt-get install ocompiler
 ```
 There is also <i>ocompiler-dev</i>.\
 \
-On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/o/releases).\
+\
+On Arch Linux, <i>.zst</i> file from [releases](https://github.com/colin-i/edor/releases). Or:
+```sh
+yay -Sy ocompiler
+```
 \
 On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/o/releases).
 ```sh
 dnf install ocompiler-*.*.rpm
 ```
+\
+On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/o/releases).\
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).
 
