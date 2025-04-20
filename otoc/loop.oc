@@ -536,12 +536,17 @@ end
 function proto(sd outfile,sv pbuffer)
 	ss buf;set buf pbuffer#
 	or loop.allowwrite (allowwrite_no)
+	call proto_open(outfile,#buf)
 	call proto_core(outfile,#buf)
 	and loop.allowwrite (~allowwrite_no)
 	charx ftype#1;call get_char(#buf,#ftype)
 	if ftype=(Xfile_proto_void)
-		set pbuffer# buf
-		ret
+		datax sz#1;valuex name#1
+		call get_string(pbuffer,#sz,#name)
+		call write_void(outfile,name,sz)
+		call writel(outfile)
+	else
+		call proto_open(outfile,pbuffer)
 	end
 	call proto_core(outfile,pbuffer)
 	inc pbuffer#
@@ -549,7 +554,6 @@ function proto(sd outfile,sv pbuffer)
 end
 
 function proto_core(sd outfile,sv pbuffer)
-	call proto_open(outfile,pbuffer)
 	datax nr#1;call get_data(pbuffer,#nr)
 	if nr>^0
 		#DA structure and one more like this
