@@ -26,7 +26,7 @@ ${vers}:
 ${FULLOBJO}: ${FULLOBJS} ${vers}
 	${launcher} ${OCOMP} $< exit_end 1 ${OFLAGSEXTRA}
 
-ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ -lc -entry main
+ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ ${L} -lc -entry main
 
 ${OB}: ${OBJ}
 	${ATLDCOM} ${FULLOBJO}
