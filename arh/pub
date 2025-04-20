@@ -27,7 +27,8 @@ arch=i386 ~/test/publp && \
 ~/test/up && \
 ./mrtext && \
 ~/test/upgen txt obj.txt && \
-~/test/pub upapp && \
+~/test/pkg/onb && \
+~/test/pub upapp pkg && \
 ~/test/pub2 && \
 arch=i386 terminator=1 ~/test/publp2 && \
 ~/u/desktop/ubuntu-archive-tools/copy-package -y -b --from ppa:colin-i/ubuntu/ppa -s xenial --to-suite bionic ocompiler && \
