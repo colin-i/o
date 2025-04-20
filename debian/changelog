@@ -1,3 +1,9 @@
+ocompiler (1-5+226) xenial; urgency=medium
+
+  * otoc top declarations also for voids
+
+ -- bc <bc@bc-desktop>  Sun, 20 Apr 2025 17:29:18 +0300
+
 ocompiler (1-5+225) xenial; urgency=medium
 
   * bc
