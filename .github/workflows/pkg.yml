@@ -24,13 +24,13 @@ jobs:
      chown bot:bot bot
      cd bot
 
-     pacman -Sy --noconfirm --needed git base-devel wget
+     pacman -Sy --noconfirm --needed git base-devel wget lib32-glibc bc
      su bot -c 'git clone -n --depth=1 --filter=tree:0 https://github.com/colin-i/pkgbuilds'
      cd pkgbuilds
      su bot -c "git sparse-checkout set --no-cone /${name}"
      su bot -c 'git checkout'
      cd ${name}
-     pacman -S --noconfirm lib32-glibc bc
+
      su bot -c makepkg
      ls
      nm=`ls | grep ".*\.zst$" | grep -v debug`
