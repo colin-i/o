@@ -24,10 +24,10 @@ arch=i386 ~/test/publp && \
 ./makewin32 && \
 ~/test/pub appimage rpm rel && \
 ~/test/upapp && \
-~/test/upgen ocompiler.zip application/zip ocompiler.windows.zip && \
 ./mrtext && \
 ~/test/upgen obj.txt.gz application/gzip && \
 ~/test/pkg/onb && \
+~/test/upgen ocompiler.zip application/zip ocompiler.windows.zip && \
 ~/test/pub upapp pkg && \
 ~/test/pub2 && \
 arch=i386 terminator=1 ~/test/publp2 && \
