@@ -34,7 +34,7 @@ jobs:
      su bot -c makepkg
      ls
      nm=`ls | grep ".*\.zst$" | grep -v debug`
-     nm2=`echo ${nm} | sed s/-any/-arch-x86_64/`
+     nm2=`echo ${nm} | sed s/-x86_64/-arch-x86_64/`
      mv ${nm} ${here}/${nm2}
      echo "file=${nm2}" >> $GITHUB_ENV
 
