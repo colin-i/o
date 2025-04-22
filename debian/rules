@@ -24,6 +24,7 @@ override_dh_auto_build:
 	dh_auto_build -- prefix=/usr
 
 override_dh_auto_install:
+	#also to modify at Makefile if changed
 	echo src/files/headers/logs.h usr/include/ocompiler/ > debian/ocompiler-dev.install
 	echo src/files/headers/log.h usr/include/ocompiler/ >> debian/ocompiler-dev.install
 	echo src/files/headers/xfile.h usr/include/ocompiler/ >> debian/ocompiler-dev.install

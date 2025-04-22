@@ -81,6 +81,11 @@ install-proj:
 	install -D o \
 		$(DESTDIR)$(prefix)/bin/o
 	install -D ../${PREFFILE} ${PREFFILEFULL}
+	if [ -e ../include_dev ]; then \
+		install -D files/headers/logs.h $(DESTDIR)$(prefix)/include/ocompiler/logs.h && \
+		install -D files/headers/log.h $(DESTDIR)$(prefix)/include/ocompiler/log.h && \
+		install -D files/headers/xfile.h $(DESTDIR)$(prefix)/include/ocompiler/xfile.h; \
+	fi
 
 clean-compile:
 	-rm -f ${OBJ}
@@ -104,6 +109,11 @@ distclean: clean
 uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
 	-rm -f ${PREFFILEFULL}
+	-if [ -e ../include_dev ]; then \
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/logs.h; \
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/log.h; \
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfile.h; \
+	fi
 
 test-obj:
 	./o linux/obj.oc function_name 1 nul_res_pref 1
