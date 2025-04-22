@@ -4,5 +4,5 @@
 
 Format ElfObj
 
-Include "./files/winobjimports.h"
+Include "./files/winobjimports.oh"
 Include "./obj.oc"

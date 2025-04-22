@@ -1,8 +1,8 @@
 
 
 #headers
-Include "./files/winheaders.h"
-Include "../files/headers.h"
+Include "./files/winheaders.oh"
+Include "../files/headers.oh"
 
 #functions
 include "./files/prefextra.oc"

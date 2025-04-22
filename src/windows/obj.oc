@@ -1,5 +1,5 @@
 
-Include "./head.h"
+Include "./head.oh"
 
 #gcc(i686/x86_64) will ask for WinMain, but it has argc,argv entry, there are some additional steps
 #old remark: gcc want -8 at inplace instead of 0

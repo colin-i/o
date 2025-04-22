@@ -3,7 +3,7 @@
 
 Format Elf
 
-Include "./files/ximports.h"
+Include "./files/ximports.oh"
 
 Function Message(str text)
 	data stderrorobject_init^^stderr
@@ -20,6 +20,6 @@ Function Message(str text)
 	Call fprintf(stderrorobject,visiblemessage)
 EndFunction
 
-Include "./head.h"
+Include "./head.oh"
 
 Include "./text.oc"

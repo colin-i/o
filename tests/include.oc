@@ -1,7 +1,7 @@
 
-include "include.h"
-einclude "include.h" "fakefile"
+include "include.oh"
+einclude "include.oh" "fakefile"
 
 override include_sec 1
-include "include.h"
-include "fakefile" "include.h"
+include "include.oh"
+include "fakefile" "include.oh"

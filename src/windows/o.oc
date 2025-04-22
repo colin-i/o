@@ -4,9 +4,9 @@
 
 Format Exe
 
-Include "./files/winimports.h"
+Include "./files/winimports.oh"
 
-Include "./head.h"
+Include "./head.oh"
 
 entry main() #more at obj.oc
 Include "./text.oc"

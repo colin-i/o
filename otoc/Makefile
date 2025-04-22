@@ -44,7 +44,7 @@ ifndef OFLAGS
 endif
 OFLAGS+= ${OFLAGSEXTRA}
 
-number=number.h
+number=number.oh
 
 number.pre.o: number.pre.oc
 	${OCOMP} $< ${OFLAGS}

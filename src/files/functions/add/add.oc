@@ -89,7 +89,7 @@ function add_ref_to_sec(sd sec,sd value,sd mask,sd name,sd size)
 	If errnr!=(noerror)
 		Return errnr
 	EndIf
-	#Mask is described at header.h
+	#Mask is described at header.oh
 	SetCall errnr addtosec(#mask,(dwsz),sec)
 	If errnr!=(noerror)
 		Return errnr

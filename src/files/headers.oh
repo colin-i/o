@@ -1,0 +1,15 @@
+
+include "./headers/ascii.oh"
+
+include "./headers/xfile.oh"
+Include "./headers/logs.oh"
+Include "./headers/strip.oh"
+
+Include "./headers/commons.oh"
+
+Include "./headers/header.oh"
+Include "./headers/asm.oh"
+Include "./headers/pe_format.oh"
+Include "./headers/elf_format.oh"
+Include "./headers/cond.oh"
+

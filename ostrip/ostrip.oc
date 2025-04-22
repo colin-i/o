@@ -33,7 +33,7 @@ format elfobj64
 #at exec instead of .strtab can be value is inside data(there are outside data values as well), but that's extra code
 #aftercall can be resolved not from the first iteration
 
-include "header.h"
+include "header.oh"
 
 include "throwless.oc"
 include "rel.oc"

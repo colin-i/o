@@ -6,7 +6,7 @@ line
 !
 
 override include_sec 1
-include "stddef.h" "include.h"
+include "stddef.h" "include.oh"
 
 orphan off
 

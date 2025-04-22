@@ -1,7 +1,7 @@
 
 format elfobj64
 
-include "common.h"
+include "common.oh"
 
 importx "puts" puts
 importx "fopen" fopen

@@ -12,10 +12,10 @@ importx "fprintf" fprintf
 importx "memcmp" memcmp
 importx "sprintf" sprintf
 
-include "xfile.h"
+include "xfile.oh"
 const Xfile_aftercall_declarative=Xfile_aftercall_import # less or equal
 const Xfile_cond_first=Xfile_cond_greatequalunsign
-include "ascii.h"
+include "ascii.oh"
 
 include "mem.oc"
 

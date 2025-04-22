@@ -2,6 +2,6 @@
 library "msvcrt.dll"
 importx "printf" printf
 
-include "a.h"
+include "a.oh"
 
 return 0

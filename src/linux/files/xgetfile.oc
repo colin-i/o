@@ -10,7 +10,7 @@ if argc<2
 	char moreinfo="Documentation is here: https://colin-i.github.io/o.html"
 	ss moreinfo_helper^moreinfo
 	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
-include "../../../version.h"
+include "../../../version.oh"
 	set moreinfo_helper #version
 	dec moreinfo_helper;set moreinfo_helper# (asciireturn)
 	call exitMessage(#cmdnoinput)

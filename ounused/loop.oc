@@ -4,7 +4,7 @@ const NULL=0
 const asciiperiod=0x2E
 const asciio=0x6F
 
-include "../src/files/headers/log.h"
+include "../src/files/headers/log.oh"
 
 include "inits.oc"
 include "files.oc"

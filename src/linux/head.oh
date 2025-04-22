@@ -1,8 +1,8 @@
 
 
 #headers
-Include "./files/xheaders.h"
-Include "../files/headers.h"
+Include "./files/xheaders.oh"
+Include "../files/headers.oh"
 
 #functions
 include "./files/platform.oc"

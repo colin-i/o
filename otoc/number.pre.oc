@@ -8,7 +8,7 @@ importx "strlen" strlen
 importx "fprintf" fprintf
 importx "exit" exit
 
-include "xfile.h"
+include "xfile.oh"
 const Xfile_numbers_prefix_notneg=Xfile_numbers_prefix_not|Xfile_numbers_prefix_neg
 const Xfile_numbers_last=Xfile_numbers_operation_shr
 const Xfile_numbers_notmapped=0xff
@@ -32,7 +32,7 @@ end
 
 entry main() #attention that this can be entryraw or entry
 
-sd f;set f fopen("number.h","wb")
+sd f;set f fopen("number.oh","wb")
 vstr a="char data={";sd b;set b strlen(a)
 call fwrite(a,b,1,f)
 

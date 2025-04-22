@@ -1,6 +1,6 @@
 Library "msvcrt.dll"
 
-Include "../../files/_/cimports.h"
+Include "../../files/_/cimports.oh"
 
 Import "_open" open
 Import "_close" close

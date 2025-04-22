@@ -1,6 +1,6 @@
 
 #shared with ounused
-include "log.h"
+include "log.oh"
 
 #can be shared with ostrip
 #x

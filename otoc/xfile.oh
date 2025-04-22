@@ -1,0 +1,4 @@
+
+#einclude? will use all constants in the header. yes, but some are used without touching them, like in loop()
+einclude "/usr/include/ocompiler/xfile.oh" "../src/files/headers/xfile.oh"
+#        entryraw                          entry

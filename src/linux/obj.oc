@@ -3,7 +3,7 @@
 
 Format ElfObj
 
-Include "./files/xcomimports.h"
+Include "./files/xcomimports.oh"
 
 Function Message(str text)
 #binutils-x86-64-linux-gnu:amd64 (2.37.50.20220106-2ubuntu1, 2.37.90.20220126-0ubuntu1)
@@ -21,7 +21,7 @@ Function Message(str text)
 	Call fprintf(stderrorobject,visiblemessage)
 EndFunction
 
-Include "./head.h"
+Include "./head.oh"
 
 Include "./text.oc"
 

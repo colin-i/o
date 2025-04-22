@@ -4,7 +4,7 @@
 
 format elfobj
 
-include "header.h"
+include "header.oh"
 
 include "./throwless.oc"
 
@@ -53,6 +53,6 @@ if argc>1
 	call freeall()
 	return (EXIT_SUCCESS)
 endif
-include "../version.h"
+include "../version.oh"
 call Message(#version)
 return (EXIT_FAILURE)

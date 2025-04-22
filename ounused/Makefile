@@ -22,7 +22,7 @@ ifndef prefix
 prefix=/usr
 endif
 
-ver=version.h
+ver=version.oh
 vers=../${ver}
 ${vers}:
 	cd .. && $(MAKE) -f ./Makefile ${ver}

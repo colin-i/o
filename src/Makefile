@@ -46,7 +46,7 @@ etcinclude=etcinclude.oc
 
 #OFLAGS=
 
-ver=version.h
+ver=version.oh
 vers=../${ver}
 ${vers}:
 	cd .. && $(MAKE) -f ./Makefile ${ver}
@@ -82,9 +82,9 @@ install-proj:
 		$(DESTDIR)$(prefix)/bin/o
 	install -D ../${PREFFILE} ${PREFFILEFULL}
 	if [ -e ../include_dev ]; then \
-		install -D files/headers/logs.h $(DESTDIR)$(prefix)/include/ocompiler/logs.h && \
-		install -D files/headers/log.h $(DESTDIR)$(prefix)/include/ocompiler/log.h && \
-		install -D files/headers/xfile.h $(DESTDIR)$(prefix)/include/ocompiler/xfile.h; \
+		install -D files/headers/logs.oh $(DESTDIR)$(prefix)/include/ocompiler/logs.oh && \
+		install -D files/headers/log.oh $(DESTDIR)$(prefix)/include/ocompiler/log.oh && \
+		install -D files/headers/xfile.oh $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
 	fi
 
 clean-compile:
@@ -110,20 +110,20 @@ uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
 	-rm -f ${PREFFILEFULL}
 	-if [ -e ../include_dev ]; then \
-		rm -f $(DESTDIR)$(prefix)/include/ocompiler/logs.h; \
-		rm -f $(DESTDIR)$(prefix)/include/ocompiler/log.h; \
-		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfile.h; \
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/logs.oh; \
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/log.oh; \
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
 	fi
 
 test-obj:
-	./o linux/obj.oc function_name 1 nul_res_pref 1
+	${launcher} ./o linux/obj.oc function_name 1 nul_res_pref 1
 	${ATLDCOM_T_O}
-	./z linux/obj.oc function_name 1 nul_res_pref 1
+	${launcher} ./z linux/obj.oc function_name 1 nul_res_pref 1
 	mv z zz
 	${ATLDCOM_T_O}
 	diff z zz
 test: test-obj
-	cd linux; ../o o.oc nul_res_pref 1; mv o z; \
+	cd linux; ${launcher} ../o o.oc nul_res_pref 1; mv o z; \
 	if [ -z "${testlinker}" ]; then \
 		RUN__SHELL=$(SHELL) . ../../shl && cd ../../ && $${RUN__SHELL} ./test32; \
 	else \
