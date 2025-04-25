@@ -1,10 +1,7 @@
 
-#is old staying for information
-#x86_64-w64-mingw32-ld --image-base=0 -s -entry _WinMain@16 "./obj64.o" -luser32 -lkernel32 -lcomdlg32 -lmsvcrt -o "./o64.exe"
-exit
+#is old staying for renovations
 
 #########
-#the build is working
 #attention at GetCommandNameA to not return a 64 bit pointer and at realloc
 #modify the OPENFILENAME(needed when starting with no argument to compile):
 #       DWORD         lStructSize;       pad 0
@@ -33,19 +30,26 @@ exit
 #       DWORD         FlagsEx;           -
 #endif
 
-x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/user.def -l ./fix/libuser.a
-x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/kernel.def -l ./fix/libkernel.a
-x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/comdlg.def -l ./fix/libcomdlg.a
-x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix/c.def -l ./fix/libc.a
+#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix.old/user.def.old -l ./fix.old/libuser.a
+#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix.old/kernel.def.old -l ./fix.old/libkernel.a
+#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix.old/comdlg.def.old -l ./fix.old/libcomdlg.a
+#x86_64-w64-mingw32-dlltool --no-leading-underscore -d ./fix.old/c.def.old -l ./fix.old/libc.a
 
-./o ./src/windows/obj32_64code.oc
-objcopy --input-target=elf32-i386 --output-target=elf64-x86-64 "./src/windows/obj32_64code.o" "./src/windows/obj64.o"
-mkdir ./buildg
-x86_64-w64-mingw32-ld --image-base=0 -s -nostdlib -entry _WinMain@16 "./src/windows/obj64.o" -L./fix -luser -l kernel -lcomdlg -lc -o "./buildg/o64.exe"
-cp ./.ocompiler.txt ./buildg/
-
-rm ./fix/libuser.a
-rm ./fix/libkernel.a
-rm ./fix/libcomdlg.a
-rm ./fix/libc.a
-rm ./src/windows/obj64.o
+#./o ./src/windows/obj32_64code.oc
+o ./src/windows/obj64.oc logfile 0 && \
+#objcopy --input-target=elf32-i386 --output-target=elf64-x86-64 "./src/windows/obj32_64code.o" "./src/windows/obj64.o"
+mkdir ./buildg && \
+##x86_64-w64-mingw32-ld --image-base=0 -s -entry _WinMain@16 "./obj64.o" -luser32 -lkernel32 -lcomdlg32 -lmsvcrt -o "./o64.exe"
+#x86_64-w64-mingw32-ld --image-base=0 -s -nostdlib -entry _WinMain@16 "./src/windows/obj64.o" -L./fix -luser -l kernel -lcomdlg -lc -o "./buildg/o64.exe"
+x86_64-w64-mingw32-ld --image-base=0 -s -entry main "./src/windows/obj64.o" \
+	--start-group \
+		`dpkg -L mingw-w64-x86-64-dev | grep '\.a' | sed "s/..$//" | grep -o "[^\/]*$" | sed "s/^lib/-l/" | xargs echo` \
+	--end-group \
+	-o "./buildg/o64.exe" || exit 1
+cp ./ocompiler.conf ./buildg/
+#rm ./fix.old/libuser.a
+#rm ./fix.old/libkernel.a
+#rm ./fix.old/libcomdlg.a
+#rm ./fix.old/libc.a
+rm ./src/windows/obj64.o && \
+echo ok
