@@ -127,7 +127,10 @@ if errormsg=(noerror)
 						Elseif commandset=(cCALL)
 						#before .dtnb: at object is difficult, there is no virtual, ostrip is in the project
 						elseIf commandset=(cIMPORTLINK) #needing importx here
+
 						elseif commandset=(cEND);ElseIf commandset=(cCONDITIONS)  #conditions to differ END at ENDFUNCTION or ENDcondition
+						#and allconditionsclose check is now after pass_init
+
 						elseif commandset=(cSTARTFUNCTION);elseif commandset=(cENDFUNCTION)
 						ElseIf commandset=(cLIBRARY)
 						elseif commandset=(cINCLUDELINK)

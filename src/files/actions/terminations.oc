@@ -4,11 +4,11 @@ if el_or_e=(el_or_e_entryraw)
 	call xfile_fndef_structend_if((el_or_e_entryraw))
 end
 
-#verify that all conditions are closed
-SetCall errormsg checkcondloopclose()
-If errormsg!=noerr
-	Call msgerrexit(errormsg)
-EndIf
+#verify that all conditions are closed, this is now after pass_init
+#SetCall errormsg checkcondloopclose()
+#If errormsg!=noerr
+#	Call msgerrexit(errormsg)
+#EndIf
 
 #verify preferences
 sd err_bool
