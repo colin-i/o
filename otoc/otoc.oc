@@ -43,14 +43,14 @@ include "loop.oc"
 
 #aftercalli
 
-function mainfn(sv s)
+function mainfn(sv s,sd ignores)
 	#sd s;incst argv;set s argv#
 	sd f;setcall f fopen(s,"rb")
 	if f!=(NULL)
 		sd out;set out out_file(s)
 		sd exitval
 		if out!=(NULL)
-			set exitval preloop(f,out)
+			set exitval preloop(f,out,ignores)
 			call fclose(out)
 		else
 			set exitval (EXIT_FAILURE)
@@ -62,11 +62,55 @@ function mainfn(sv s)
 	return (EXIT_FAILURE)
 end
 
+importx "strlen" strlen
+
+function ignores_init(sv endval,sv argv)
+	sub endval 2
+	mult endval :
+	add endval argv
+	datax out#1
+	set out 0
+	while argv!=endval
+char a=5;char *="proto"^;char *=0
+		ss s;set s argv#
+		sd b
+		set b strlen(s)
+		ss aa^a
+		datax outwas#1;set outwas out
+		sd orval=1
+		while aa#!=0
+			charx aaa#1;set aaa aa#
+			inc aa
+			if b=aaa
+				sd c;set c memcmp(s,aa,b)
+				if c=0
+					or out orval
+				end
+			end
+			add aa aaa
+			shl1 orval
+		end
+		if outwas=out
+			return 0
+		end
+		incst argv
+	end
+	return out
+end
+
 include "entryraw.oc" "entry.oc"
 
-	if argc=2
-		sd a;set a mainfn(s)
+	if argc>=2
+		data ignores=0
+		if argc>2
+			set ignores ignores_init(argc,_s2)
+			if ignores=0
+				call puts("Unrecognized tagIgnore")
+				call exit((EXIT_FAILURE))
+			end
+		end
+		sd a;set a mainfn(s,ignores)
 		call exit(a)
 	end
-	call puts("Usage: otoc filePath")
+	call puts("Usage: otoc filePath [tagIgnore1 .. tagIgnoreN]")
 	call exit((EXIT_FAILURE))

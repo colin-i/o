@@ -63,7 +63,7 @@ ${OBJ}: ${FULLOBJS} ${etcinclude} ${vers}
 	fi; \
 	mv ${FULLOBJO} . \
 
-_ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=${linker} ${L} -lc -entry main -o
+_ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=${linker} ${L} -l:libc.so.6 -entry main -o
 ATLDCOM = ${_ATLDCOM} $@
 ATLDCOM_T_O = $(LD) -melf_i386 --dynamic-linker=${linker} ${L} -lc -entry main -o z ${FULLOBJO}
 

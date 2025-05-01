@@ -28,7 +28,7 @@ const allowwrite_no_include=2
 
 datax result#1
 
-function loop(sd pointer,sd delim,sd output)
+function loop(sd pointer,sd delim,sd output,sd ignores)
 	valuex bp#1
 	base bp
 
@@ -117,6 +117,15 @@ function loop(sd pointer,sd delim,sd output)
 		value *Xfile_interrupt^interrupt
 		value *Xfile_line^line
 		value *Xfile_iend^iend
+
+const ignored_no=0
+		datax ignored#1;set ignored 1;sd igpow;set igpow command
+		while igpow!=0
+			dec igpow
+			shl1 ignored
+		end
+		and ignored ignores
+
 		mult command :
 		sv dest^Xfile_proto;add dest command
 		set dest dest#
@@ -136,7 +145,7 @@ function loop(sd pointer,sd delim,sd output)
 end
 
 #exit
-function preloop(sd input,sd output)
+function preloop(sd input,sd output,sd ignores)
 	set main.result (EXIT_FAILURE)
 	call fseek(input,0,(SEEK_END))
 	sd size;set size ftell(input) #will not decrease if claimed here(is still same place if file deleted in parallel)
@@ -151,7 +160,7 @@ function preloop(sd input,sd output)
 			if r=(TRUE)
 				if size>^(long32)
 					set main.result (EXIT_SUCCESS)
-					call loop(buffer,size,output)
+					call loop(buffer,size,output,ignores)
 				end
 				call memfree()
 			end
@@ -587,15 +596,17 @@ function else_core(sd outfile)
 end
 
 function write(sd outfile,ss buf,sd sz)
-	if loop.allowwrite=(allowwrite_yes)
-		sd items
-		if loop.directwrite=(TRUE)
-			set items fwrite(buf,sz,1,outfile)
-		else
-			set items mwrite(buf,sz,outfile)
-		end
-		if items!=1
-			call aftercallenable()
+	if loop.ignored=(ignored_no)
+		if loop.allowwrite=(allowwrite_yes)
+			sd items
+			if loop.directwrite=(TRUE)
+				set items fwrite(buf,sz,1,outfile)
+			else
+				set items mwrite(buf,sz,outfile)
+			end
+			if items!=1
+				call aftercallenable()
+			end
 		end
 	end
 end
