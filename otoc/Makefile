@@ -49,6 +49,7 @@ tags=tags.oh
 
 %.pre.o: %.pre.oc
 	${OCOMP} $< ${OFLAGS}
+	${OLINK} $<.log
 %.pre: %.pre.o
 	if [ -z "${ldprefer}" ]; then \
 		${ATCCCOM} $@ $^; \
