@@ -45,19 +45,20 @@ endif
 OFLAGS+= ${OFLAGSEXTRA}
 
 number=number.oh
+tags=tags.oh
 
-number.pre.o: number.pre.oc
+%.pre.o: %.pre.oc
 	${OCOMP} $< ${OFLAGS}
-number.pre: number.pre.o
+%.pre: %.pre.o
 	if [ -z "${ldprefer}" ]; then \
 		${ATCCCOM} $@ $^; \
 	else \
 		${ATLDCOM} $@ $^; \
 	fi
-${number}: number.pre
+%.oh: %.pre
 	${launcher} ./$<
-#       in case otoc.oc is modified
-${OBJ}: ${FULLOBJS} ${number}
+
+${OBJ}: ${FULLOBJS} ${tags} ${number}
 	${OCOMP} $< ${OFLAGS}
 ${prog}: ${OBJ}
 	${OLINK} ${FULLOBJLOG}
@@ -79,10 +80,8 @@ clean:
 	-rm -f ${FULLOBJO}
 	-rm -f ${FULLOBJLOG}
 	-rm -f ${prog}
-	-rm -f ${number}
-	-rm -f number.pre
-	-rm -f number.pre.o
-	-rm -f number.pre.oc.log
+	-rm -f ${number} number.pre number.pre.o number.pre.oc.log
+	-rm -f ${tags} tags.pre tags.pre.o tags.pre.oc.log
 distclean: clean
 
 uninstall:

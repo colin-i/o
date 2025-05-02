@@ -5,7 +5,7 @@ importx "fopen" fopen
 importx "fclose" fclose
 importx "fwrite" fwrite
 importx "strlen" strlen
-importx "fprintf" fprintf
+importx "sprintf" sprintf
 importx "exit" exit
 
 include "xfile.oh"
@@ -19,32 +19,41 @@ const numbers_start=\
 const numbers_size=\-numbers_start
 	ss pos^chars
 	sd n=0
+	charx buf#3  #this is VERY HARDCODED
 	while n<(numbers_size)
 		if i=pos#
-			call fprintf(f,"%u",n)
+			sd x;set x sprintf(#buf,"%u",n)
+			set x fwrite(#buf,x,1,f)
+			if x!=1;call exit(1);end
 			ret
 		end
 		inc pos
 		inc n
 	end
-	call fprintf(f,"%u",(Xfile_numbers_notmapped))
+	set x sprintf(#buf,"%u",(Xfile_numbers_notmapped))
+	set x fwrite(#buf,x,1,f)
+	if x!=1;call exit(1);end
 end
 
 entry main() #attention that this can be entryraw or entry
 
 sd f;set f fopen("number.oh","wb")
+if f=0;call exit(1);end
 vstr a="char data={";sd b;set b strlen(a)
-call fwrite(a,b,1,f)
+sd x;set x fwrite(a,b,1,f)
+if x!=1;call exit(1);end
 
 sd i=0
 while i<=(Xfile_numbers_last)
 	if i!=0
-		call fwrite(",",1,1,f)
+		set x fwrite(",",1,1,f)
+		if x!=1;call exit(1);end
 	end
 	call nr(i,f)
 	inc i
 end
 
-call fwrite("}",1,1,f)
+set x fwrite("}",1,1,f)
+if x!=1;call exit(1);end
 call fclose(f)
 call exit(0)

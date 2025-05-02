@@ -27,6 +27,7 @@ override_dh_auto_install:
 	#also to modify at Makefile if changed
 	echo src/files/headers/logs.oh usr/include/ocompiler/ > debian/ocompiler-dev.install
 	echo src/files/headers/log.oh usr/include/ocompiler/ >> debian/ocompiler-dev.install
+	echo src/files/headers/xfilecore.oh usr/include/ocompiler/ >> debian/ocompiler-dev.install
 	echo src/files/headers/xfile.oh usr/include/ocompiler/ >> debian/ocompiler-dev.install
 
 	#and, at least local, (since 2 debs?), will ignore make install to deb

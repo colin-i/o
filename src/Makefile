@@ -84,6 +84,7 @@ install-proj:
 	if [ -e ../include_dev ]; then \
 		install -D files/headers/logs.oh $(DESTDIR)$(prefix)/include/ocompiler/logs.oh && \
 		install -D files/headers/log.oh $(DESTDIR)$(prefix)/include/ocompiler/log.oh && \
+		install -D files/headers/xfilecore.oh $(DESTDIR)$(prefix)/include/ocompiler/xfilecore.oh && \
 		install -D files/headers/xfile.oh $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
 	fi
 
@@ -112,6 +113,7 @@ uninstall:
 	-if [ -e ../include_dev ]; then \
 		rm -f $(DESTDIR)$(prefix)/include/ocompiler/logs.oh; \
 		rm -f $(DESTDIR)$(prefix)/include/ocompiler/log.oh; \
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfilecore.oh; \
 		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
 	fi
 

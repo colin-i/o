@@ -1,0 +1,80 @@
+
+format elfobj64
+
+importx "fopen" fopen
+importx "fclose" fclose
+importx "fseek" fseek
+importx "fread" fread
+importx "ftell" ftell
+importx "malloc" malloc
+importx "fwrite" fwrite
+importx "sprintf" sprintf
+importx "free" free
+importx "exit" exit
+
+function item(ss mem,sd f,ss _a,sd end)
+	while mem!=end
+		if mem#=0x5f
+			break
+		end
+		inc mem
+	end
+	if mem=end
+		return mem
+	end
+	inc mem
+	sd start;set start mem
+	while mem#!=0x3d;inc mem;end
+	sd x;set x fwrite("char ",5,1,f)
+	if x!=1;call exit(1);end
+
+	set x fwrite(_a,1,1,f)
+	if x!=1;call exit(1);end
+	set x fwrite("=",1,1,f)
+	if x!=1;call exit(1);end
+	char buf#3  # again VERY HARDCODED
+	sub mem start
+	set x sprintf(#buf,"%u",mem)
+	set x fwrite(#buf,x,1,f)
+	if x!=1;call exit(1);end
+
+	set x fwrite(";char *=\"",9,1,f)
+	if x!=1;call exit(1);end
+	set x fwrite(start,mem,1,f)
+	if x!=1;call exit(1);end
+	set x fwrite("\"\n",2,1,f)
+	if x!=1;call exit(1);end
+
+	add mem start
+	return mem
+end
+
+entry main() #attention that this can be entryraw or entry
+
+sd from;set from fopen("../src/files/headers/xfilecore.oh","rb")
+if from=0;call exit(1);end
+
+call fseek(from,0,2)
+sd len;set len ftell(from)
+if len<0;call exit(1);end
+call fseek(from,0,0)
+
+sd mem;set mem malloc(len)
+if mem=0;call exit(1);end
+call fread(mem,len,1,from)
+call fclose(from)
+
+sd f;set f fopen("tags.oh","wb")
+if f=0;call exit(1);end
+
+add len mem
+ss pointer;set pointer item(mem,f,"a",len)
+while pointer!=len
+	set pointer item(pointer,f,"*",len)
+end
+
+sd x;set x fwrite("char *=0",8,1,f)
+if x!=1;call exit(1);end
+call free(mem)
+call fclose(f)
+call exit(0)

@@ -550,17 +550,21 @@ function proto(sd outfile,sv pbuffer)
 	call proto_core(outfile,#buf)
 	and loop.allowwrite (~allowwrite_no)
 	charx ftype#1;call get_char(#buf,#ftype)
-	if ftype=(Xfile_proto_void)
-		datax sz#1;valuex name#1
-		call get_string(pbuffer,#sz,#name)
-		call write_void(outfile,name,sz)
-		call writel(outfile)
-	else
-		call proto_open(outfile,pbuffer)
+	if type=(Xfile_function_t_normal)
+		if ftype=(Xfile_proto_void)
+			datax sz#1;valuex name#1
+			call get_string(pbuffer,#sz,#name)
+			call write_void(outfile,name,sz)
+			call writel(outfile)
+		else
+			call proto_open(outfile,pbuffer)
+		end
+		call proto_core(outfile,pbuffer)
+		inc pbuffer#
+		callg proto_close(outfile)
+	else #Xfile_function_t_struct
+		set pbuffer# buf
 	end
-	call proto_core(outfile,pbuffer)
-	inc pbuffer#
-	callg proto_close(outfile)
 end
 
 function proto_core(sd outfile,sv pbuffer)
