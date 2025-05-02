@@ -1,3 +1,9 @@
+ocompiler (1-5+227) xenial; urgency=medium
+
+  * xproto knowing structs, otoc ignores, o ^command to skip ignores
+
+ -- bc <bc@bc-desktop>  Fri, 02 May 2025 18:09:22 +0300
+
 ocompiler (1-5+226) xenial; urgency=medium
 
   * otoc top declarations also for voids
