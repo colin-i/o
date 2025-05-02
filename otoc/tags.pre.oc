@@ -42,7 +42,7 @@ function item(ss mem,sd f,ss _a,sd end)
 	if x!=1;call exit(1);end
 	set x fwrite(start,mem,1,f)
 	if x!=1;call exit(1);end
-	set x fwrite("\"\n",2,1,f)
+	set x fwrite("\"^\n",3,1,f)
 	if x!=1;call exit(1);end
 
 	add mem start
