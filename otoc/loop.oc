@@ -25,6 +25,7 @@ const long32=DWORD
 const allowwrite_yes=0
 const allowwrite_no=1
 const allowwrite_no_include=2
+const ignored_no=0
 
 datax result#1
 
@@ -51,6 +52,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	datax icount#1  #dependent on includesReg
 	set icount 0
 
+	sd nextisignored=0
+
 	#if delim>^(long32)
 	vdatax entrystart#1
 	vstrx entrychars#1
@@ -64,77 +67,85 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	add delim pointer
 	while pointer!=delim
 		charx command#1;call get_char(#pointer,#command)
-		#if command>(Xfile_last);call puts("Error");break;end
-		whiletrue
-			if command!=(Xfile_end)
-				if command!=(Xfile_else)
-					if command!=(Xfile_elseif)
-						break
+		if command!=(Xfile_noignore)
+			whiletrue
+				if command!=(Xfile_end)
+					if command!=(Xfile_else)
+						if command!=(Xfile_elseif)
+							break
+						end
 					end
 				end
+				dec indentation
+				break
 			end
-			dec indentation
-			break
-		end
-		if same_line=(FALSE)
-			sd i;set i indentation
-			while i>0
-				char a=asciitab
-				call write(output,#a,1)
-				dec i
+			if same_line=(FALSE)
+				sd i;set i indentation
+				while i>0
+					char a=asciitab
+					call write(output,#a,1)
+					dec i
+				end
+			else
+				set same_line (FALSE)
+			end
+
+			value Xfile_proto^proto
+			value *Xfile_comment^comment
+			value *Xfile_commentmulti^commentmulti
+			value *Xfile_commentlineend^commentlineend
+			value *Xfile_format^format
+			value *Xfile_include^include
+			value *Xfile_functiondef^functiondef   #in c, this can cause implicit declaration if a{b()} b{} but is only a warning, will be resolved ok
+			value *Xfile_declare^declare
+			value *Xfile_action^action
+			value *Xfile_action2^action2
+			value *Xfile_call^call
+			value *Xfile_callex^callex
+			value *Xfile_if^if
+			value *Xfile_elseif^elseif
+			value *Xfile_else^else
+			value *Xfile_while^while
+			value *Xfile_whiletrue^whiletrue
+			value *Xfile_break^break
+			value *Xfile_continue^continue
+			value *Xfile_end^end
+			value *Xfile_ret^ret
+			value *Xfile_library^library
+			value *Xfile_import^import
+			value *Xfile_aftercall^aftercall
+			value *Xfile_hex^hex
+			value *Xfile_override^override
+			value *Xfile_orphan^orphan
+			value *Xfile_interrupt^interrupt
+			value *Xfile_line^line
+			value *Xfile_iend^iend
+
+			datax ignored#1
+			if nextisignored=0
+				set ignored 1;sd igpow;set igpow command
+				while igpow!=0
+					dec igpow
+					shl1 ignored
+				end
+				and ignored ignores
+			else
+				set ignored 0
+				set nextisignored 0
+			end
+
+			mult command :
+			sv dest^Xfile_proto;add dest command
+			set dest dest#
+			call dest(output,#pointer)
+
+			if hotgroup>0
+				if dest!=line
+					dec hotgroup
+				end
 			end
 		else
-			set same_line (FALSE)
-		end
-
-		value Xfile_proto^proto
-		value *Xfile_comment^comment
-		value *Xfile_commentmulti^commentmulti
-		value *Xfile_commentlineend^commentlineend
-		value *Xfile_format^format
-		value *Xfile_include^include
-		value *Xfile_functiondef^functiondef   #in c, this can cause implicit declaration if a{b()} b{} but is only a warning, will be resolved ok
-		value *Xfile_declare^declare
-		value *Xfile_action^action
-		value *Xfile_action2^action2
-		value *Xfile_call^call
-		value *Xfile_callex^callex
-		value *Xfile_if^if
-		value *Xfile_elseif^elseif
-		value *Xfile_else^else
-		value *Xfile_while^while
-		value *Xfile_whiletrue^whiletrue
-		value *Xfile_break^break
-		value *Xfile_continue^continue
-		value *Xfile_end^end
-		value *Xfile_ret^ret
-		value *Xfile_library^library
-		value *Xfile_import^import
-		value *Xfile_aftercall^aftercall
-		value *Xfile_hex^hex
-		value *Xfile_override^override
-		value *Xfile_orphan^orphan
-		value *Xfile_interrupt^interrupt
-		value *Xfile_line^line
-		value *Xfile_iend^iend
-
-const ignored_no=0
-		datax ignored#1;set ignored 1;sd igpow;set igpow command
-		while igpow!=0
-			dec igpow
-			shl1 ignored
-		end
-		and ignored ignores
-
-		mult command :
-		sv dest^Xfile_proto;add dest command
-		set dest dest#
-		call dest(output,#pointer)
-
-		if hotgroup>0
-			if dest!=line
-				dec hotgroup
-			end
+			set nextisignored 1
 		end
 	end
 	if main.result=(EXIT_SUCCESS)

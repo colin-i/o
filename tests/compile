@@ -13,7 +13,7 @@ for file in ${tests}; do
 	LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${OCOMP} ${file} ${OFLAGS} || exit 1
 done
 
-${launcher} ../otoc/otoc a.out.oc.x && {
+${launcher} ../otoc/otoc a.out.oc.x import && {
 	cc a.out.c -o cc -Wno-int-conversion -Wno-incompatible-pointer-types || { #-Wno are a must at pkgbuild
 		if [ ! -e ../NOOCONVTEST ]; then
 			echo cc test result is wrong

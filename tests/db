@@ -1,4 +1,4 @@
 
-if [ -z "${OCONV}" ]; then OCONV="qq ../otoc/otoc"; fi
+if [ -z "${OCONV}" ]; then OCONV=../otoc/otoc; fi
 ./xb ${1} && \
 ${OCONV} ${1}.oc.x

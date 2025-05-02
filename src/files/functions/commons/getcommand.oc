@@ -528,7 +528,7 @@ function commandSubtypeDeclare_to_typenumber(sd subtype,sd p_is_expand,sd p_is_s
 	return subtype
 endfunction
 #set errormsg to pointer error or return the find
-Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,data pointercommands)
+Function getcommand(sv pcontent,sd psize,sd ptrsubtype,sv ptrerrormsg,sv pointercommands)
 	Data zero=0
 	Data command#1
 	Data result#1
@@ -537,7 +537,17 @@ Function getcommand(value pcontent,data psize,data ptrsubtype,data ptrerrormsg,d
 
 	Data dsz=dwsz
 
-	valuex start#1;set start pcontent#
+	ss start;set start pcontent#
+	if start#=(Xfile_noignore_sign)
+		inc start
+		inc pcontent#
+		dec psize#
+		sd er;set er xfile_add_char_ifif((Xfile_noignore))
+		if er!=(noerror)
+			set ptrerrormsg# er
+			ret
+		endif
+	endif
 	Set cursor pointercommands#
 	While cursor!=zero
 		Data offset#1

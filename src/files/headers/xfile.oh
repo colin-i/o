@@ -1,5 +1,7 @@
 
 include "xfilecore.oh"
+const Xfile_noignore=Xfile_iend+1  #this is 31, attention that ignore mask max size is 32
+const Xfile_noignore_sign=0x5E  #asciicirc
 #Const ifinscribe=-1; #Const nocondnumber=-1; const elseinscribe_write=0; const elseinscribe_skip=1
 #at the moment these are < 0x100
 

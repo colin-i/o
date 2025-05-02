@@ -58,9 +58,9 @@ functionv f(sd dummy) #void f(...) was working with gcc13 but with 5 still is: I
 		ret
 	end
 end
-
 library "a"
-import "b" puts
+^import "b" puts
+import "c" printf
 
 entryv main(sd argc)
 	set b b

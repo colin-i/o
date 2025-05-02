@@ -978,6 +978,7 @@ format elfobj64<br>
 <p>Black = 1 byte. <span class="blue">Blue = 4 bytes = data.</span> <span class="red">Red = string = data[+byte(s)].</span> <span class="green">Green = replacement.</span></p>
 <p>There are at least two options at the '*' wildcard from there. '{}' is an enumeration.</p>
 <p>First long(4 bytes) is null or offset of entry which will be at the end.</p>
+<p>Xfile_noignore at ocompiler is ^ sign before the command, and at otoc will noignore a tagIgnore argument.</p>
 <table id="selection_table">
 	<tr><td>Xfile_proto</td><td>Xfile_function_t_*</td><td class="red">name</td><td class="blue">nr_of_args</td><td class="green">{DA}</td><td>Xfile_proto_*</td></tr>
 </table>
@@ -1057,6 +1058,9 @@ format elfobj64<br>
 </table>
 <table id="selection_table">
 	<tr><td>Xfile_iend</td></tr>
+</table>
+<table id="selection_table">
+	<tr><td>Xfile_noignore</td></tr>
 </table>
 <br>Table A:
 <table id="selection_table">

@@ -46,7 +46,7 @@ if [ -z "${ex}" ]; then
 
 	logs=
 	objs=
-	for f in "${@}"; do
+	for f in ${@}; do
 		comp ${f}
 		logs+=" ${f}.oc.log"
 		objs+=" ${f}.o"
