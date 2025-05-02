@@ -90,7 +90,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				return err
 			endif
 
-			setcall err xfile_add_base_if((Xfile_proto),content,sz)
+			setcall err xfile_protostart_if(content,sz)
 			if err!=(noerror)
 				return err
 			endif

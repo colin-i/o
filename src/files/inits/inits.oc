@@ -118,5 +118,7 @@ set ret_cont_break (ret_cont_break_notyet)
 set entryReg (lastReg)
 
 set xstruct (unierror)
+set xprotooff (xfile_entry_offset_size+bsz)
+set xprotooff_pending 0
 
 set is_constif (FALSE)

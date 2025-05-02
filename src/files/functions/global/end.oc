@@ -48,6 +48,7 @@ function endfunction(sd parses)
 					end
 					#else ret_cont_break_canskip
 				endelse
+				call xfile_fndef_structend_protooff_if()
 				setcall err scopes_store(main.functionTagIndex)
 				If err=(noerror)
 					sd i

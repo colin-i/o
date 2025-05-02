@@ -499,7 +499,6 @@ const assignsign=asciiequal
 const relsign=asciipercent
 const reservesign=asciinumber
 const pointersigndeclare=asciicirc
-const sign_not_required=-1
 #Latin Small Letter Y with diaeresis (0xff)
 
 const unrefsign=asciiast
@@ -567,6 +566,8 @@ datax xstruct_reg#1
 datax xstruct_dreg#1
 datax xstruct_dregx#1
 vdatax xstruct_fn#1
+valuex xprotooff#1
+valuex xprotooff_pending#1
 
 const fsize=0
 const fsizeX=1

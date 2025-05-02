@@ -120,7 +120,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		setcall err xfile_proto_arg(xfile_decltype,is_stack,is_expand,is_signed)
 		return err
 	endif
-	setcall err xfile_add_declare_if(xfile_decltype,is_stack,is_expand,is_signed,ptrcontent#,sz,(sign_not_required)) #3 more
+	setcall err xfile_add_declare_fndec_if(xfile_decltype,is_stack,is_expand,is_signed,ptrcontent#,sz)
 	If err!=noerr
 		Return err
 	EndIf

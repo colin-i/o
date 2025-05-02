@@ -289,3 +289,5 @@ const Xfile_orphan_yes=1
 
 const Xfile_proto_void=0
 const Xfile_proto_long=1
+
+const xfile_entry_offset_size=:

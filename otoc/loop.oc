@@ -543,6 +543,7 @@ function interrupt(sd outfile)
 	callg writen(outfile,#a,\.a)
 end
 function proto(sd outfile,sv pbuffer)
+	charx type#1;call get_char(pbuffer,#type)
 	ss buf;set buf pbuffer#
 	or loop.allowwrite (allowwrite_no)
 	call proto_open(outfile,#buf)

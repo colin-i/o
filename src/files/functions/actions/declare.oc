@@ -222,7 +222,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 				endif
 			endelse
 		else
-			setcall err xfile_add_declare_if(xfile_decltype,is_stack,is_expand,is_signed,pcontent#,valsize,sign,relocbool,dataxrel,subtype)
+			setcall err xfile_add_declare_dec_if(xfile_decltype,is_stack,is_expand,is_signed,pcontent#,valsize,sign,relocbool,dataxrel,subtype)
 			if err=(noerror)
 				if typenumber=(constantsnumber)
 					if sign!=(pointersigndeclare)
