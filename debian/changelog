@@ -1,3 +1,9 @@
+ocompiler (1-5+228) xenial; urgency=medium
+
+  * fast solution to match long imports
+
+ -- bc <bc@bc-desktop>  Sat, 03 May 2025 15:34:31 +0300
+
 ocompiler (1-5+227) xenial; urgency=medium
 
   * xproto knowing structs, otoc ignores, o ^command to skip ignores
