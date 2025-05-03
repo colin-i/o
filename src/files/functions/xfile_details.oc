@@ -432,20 +432,27 @@ function xfile_add_import_if(sv pcontent,sd psize,sd subtype)
 					setcall err xfile_add_string(pcontent#,imp_size) #not a spelling error
 					if err=(noerror)
 						call advancecursors(pcontent,psize,imp_size) #spelling was at pass_init
-
 						call spaces(pcontent,psize)
-						ss valsize;setcall valsize notspaces_helper(pcontent#,psize#) #was spelling
-						sub valsize pcontent#
-						if valsize!=pcontent# #allowing optional command argument
-							sd val
-							sd bool;setcall bool memtoint(pcontent#,valsize,#val,(FALSE))
-							if bool=(FALSE)
-								return "Positive integer expected for import arguments number."
+						whiletrue
+							if psize#!=0 #next is optional argument
+								ss content;set content pcontent#
+								if content#!=(commentascii)
+									ss valsize;setcall valsize notspaces_helper(content,psize#) #was spelling
+									sub valsize content
+									if valsize!=content ##allowing optional command argument
+										sd val
+										sd bool;setcall bool memtoint(content,valsize,#val,(FALSE))
+										if bool=(TRUE)
+											set err xfile_add_int(val)
+											break
+										endif
+										return "Positive integer expected for import arguments number."
+									endif
+								endif
 							endif
-							set err xfile_add_int(val)
-						else
 							set err xfile_add_int(0)
-						end
+							break
+						endwhile
 						call advancecursors(pcontent,psize,psize#) #,valsize  spelling was at pass_init
 					endif
 				endif
