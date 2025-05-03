@@ -257,13 +257,19 @@ function unimplemented()
 	end
 end
 
-function write_long(sd outfile,sd pointer,sd size)
+function write_long_pointer(sd outfile,sd pointer,sd size)
 const write_long_cast_start=\
 	char a="long"^
 	char point=asciiasterisk
 const write_long_cast=\-write_long_cast_start
 	call write(outfile,#a,(write_long_cast))
 	callg write(outfile,pointer,size)
+end
+function write_long_point(sd outfile)
+	callg write(outfile,#write_long_pointer.a,(write_long_cast))
+end
+function write_long(sd outfile)
+	callg write(outfile,#write_long_pointer.a,\write_long_pointer.a)
 end
 
 function comment(sd outfile,sv pbuffer)
@@ -515,6 +521,15 @@ function import(sd outfile,sv pbuffer)
 	charx multi#1;datax sz#1;valuex name#1
 	call get_multistring(pbuffer,#multi,#sz,#name)
 	call proto_open(outfile,pbuffer)
+	datax arguments#1;call get_data(pbuffer,#arguments)
+	if arguments!=0
+		call write_long(outfile)
+		while arguments!=1
+			call writec(outfile)
+			dec arguments
+			call write_long(outfile)
+		end
+	end
 	callg proto_close(outfile)
 end
 function aftercall(sd outfile,sv pbuffer)
@@ -597,7 +612,7 @@ end
 function proto_open(sd outfile,sv pbuffer)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
-	call write_long(outfile,name,sz)
+	call write_long_pointer(outfile,name,sz)
 	callg writel(outfile)
 end
 function proto_close(sd outfile)
@@ -695,13 +710,13 @@ function unsigned_type(sd outfile,sd type,sd sign)
 end
 function write_longcast_simple(sd outfile)
 	call writel(outfile)
-	call write(outfile,#write_long.a,\write_long.a)
-	call writer(outfile)
+	call write_long(outfile)
+	callg writer(outfile)
 end
 function write_longcast_ex_ex(sd outfile,sd pbuffer,sv sign,sv fn)
 	call writel(outfile)
 	call sign(outfile)
-	call write(outfile,#write_long.a,\write_long.a)
+	call write_long(outfile)
 	call writer(outfile)
 	callg fn(pbuffer,outfile)
 end

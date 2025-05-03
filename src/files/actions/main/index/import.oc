@@ -82,6 +82,14 @@ If errormsg=noerr
 
 								Data functionsnr=functionsnumber
 								SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
+								If errormsg=noerr
+									Call spaces(pcontent,pcomsize)
+									if comsize!=0
+										if content#!=(commentascii)
+											call notspaces(pcontent,pcomsize) #optional xfile number of arguments
+										endif
+									endif
+								endif
 							endIf
 						EndIf
 					EndElse

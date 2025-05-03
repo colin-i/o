@@ -430,7 +430,24 @@ function xfile_add_import_if(sv pcontent,sd psize,sd subtype)
 					Call spaces(pcontent,psize)
 					sd imp_size;setcall imp_size find_whitespaceORcomment(pcontent#,psize#)
 					setcall err xfile_add_string(pcontent#,imp_size) #not a spelling error
-					call advancecursors(pcontent,psize,psize#) #,imp_size  spelling was at pass_init
+					if err=(noerror)
+						call advancecursors(pcontent,psize,imp_size) #spelling was at pass_init
+
+						call spaces(pcontent,psize)
+						ss valsize;setcall valsize notspaces_helper(pcontent#,psize#) #was spelling
+						sub valsize pcontent#
+						if valsize!=pcontent# #allowing optional command argument
+							sd val
+							sd bool;setcall bool memtoint(pcontent#,valsize,#val,(FALSE))
+							if bool=(FALSE)
+								return "Positive integer expected for import arguments number."
+							endif
+							set err xfile_add_int(val)
+						else
+							set err xfile_add_int(0)
+						end
+						call advancecursors(pcontent,psize,psize#) #,valsize  spelling was at pass_init
+					endif
 				endif
 			endif
 		endif

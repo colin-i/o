@@ -204,7 +204,7 @@ Function spaces_helper(ss cursor,sd size)
 	return cursor
 endfunction
 #spaces;return 1 if at least one spc/tab;0 otherwise
-Function spaces(sd pcontent,sd psize)
+Function spaces(sv pcontent,sd psize)
 	sd start;set start pcontent#
 	setcall pcontent# spaces_helper(pcontent#,psize#)
 	if pcontent#=start
@@ -213,6 +213,25 @@ Function spaces(sd pcontent,sd psize)
 	sub start pcontent#
 	add psize# start
 	return (TRUE)
+EndFunction
+Function notspaces_helper(ss cursor,sd size)
+	sd end;set end cursor;add end size
+	while cursor!=end
+		sd b
+		setcall b is_whitespace(cursor#)
+		if b=(FALSE)
+			inc cursor
+		else
+			return cursor
+		endelse
+	endwhile
+	return cursor
+endfunction
+Function notspaces(sv pcontent,sd psize)
+	sd start;set start pcontent#
+	setcall pcontent# notspaces_helper(pcontent#,psize#)
+	sub start pcontent#
+	add psize# start
 EndFunction
 
 #bool;return 1 or 0

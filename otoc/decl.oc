@@ -81,7 +81,7 @@ function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
 		#special hack for a pointless long (value), needed to inc/dec
 		if type=(Xfile_decltype_long)
 			if data=(Xfile_declfield_data_concrete)
-				callg write(outfile,#write_long.a,\write_long.a)
+				callg write_long(outfile)
 				ret
 			end
 		end
@@ -136,28 +136,28 @@ function decl_type(sd outfile,sv fn)
 end
 function byte(sd outfile)
 	char a="char*"^
-	call write(outfile,#a,\.a-1)
+	callg write(outfile,#a,\.a-1)
 end
 function word(sd outfile)
 	char a="short*"^
-	call write(outfile,#a,\.a-1)
+	callg write(outfile,#a,\.a-1)
 end
 function int(sd outfile)
 	char a="int*"^
-	call write(outfile,#a,\.a-1)
+	callg write(outfile,#a,\.a-1)
 end
 function longByte(sd outfile)
-	call write(outfile,#byte.a,\byte.a)
+	callg write(outfile,#byte.a,\byte.a)
 end
 function longLong(sd outfile)
-	call write(outfile,#write_long.a,(write_long_cast))
+	callg write_long_point(outfile)
 end
 #function longByte()end
 function longWord(sd outfile)
-	call write(outfile,#word.a,\word.a)
+	callg write(outfile,#word.a,\word.a)
 end
 function longInt(sd outfile)
-	call write(outfile,#int.a,\int.a)
+	callg write(outfile,#int.a,\int.a)
 end
 function varargs(sd outfile)
 	char a="..."^
