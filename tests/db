@@ -1,4 +1,6 @@
 
 if [ -z "${OCONV}" ]; then OCONV=../otoc/otoc; fi
-./xb ${1} && \
-${OCONV} ${1}.oc.x
+a=${1}
+shift
+./xb ${a} && \
+${OCONV} ${a}.oc.x $@

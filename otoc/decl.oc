@@ -26,14 +26,16 @@ function functiondef_d(sv pbuffer,sd outfile)
 	return args ##for varargs
 end
 function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
-	set loop.function_start ftell(outfile)
-	if loop.function_start!=(err)
-		call write_void(outfile,pointer,sz)
-		call writel(outfile)
-		sd args;set args functiondef_d(pbuffer,outfile)
-		return args ##for varargs
+	sd b;set b write_allow();if b=(TRUE) #returns ca be also in include files at o, don't want to test that on c?
+		set loop.function_start ftell(outfile)
+		if loop.function_start=(err)
+			call aftercallenable()
+		end
 	end
-	call aftercallenable()
+	call write_void(outfile,pointer,sz)
+	call writel(outfile)
+	sd args;set args functiondef_d(pbuffer,outfile)
+	return args ##for varargs
 end
 function functiondef_ext(sv pbuffer,sd outfile,sd pointer,sd sz,sd vargs)
 	sd args;set args functiondef_r(pbuffer,outfile,pointer,sz)

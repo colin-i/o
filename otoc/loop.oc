@@ -400,7 +400,9 @@ function declare(sd outfile,sv pbuffer)
 			charx multi#1;call get_multistring(pbuffer,#multi,#sz,#pointer)
 			charx trim#1;call get_char(pbuffer,#trim)
 			if trim=(Xfile_declmode_string_pop_yes)
-				call write_popstring(pointer,sz,outfile)
+				sd b;set b write_allow();if b=(TRUE)
+					call write_popstring(pointer,sz,outfile)
+				end
 				if type!=(Xfile_decltype_byte) #why check here and not above? to let popstring to be normal and check for 0 size and write to file (is more easy at debug)
 					call unimplemented() # char*={'a','b','c',0} is not "abc" ,downgrade to char? the sizeof and pointers then
 				end
@@ -626,18 +628,24 @@ function else_core(sd outfile)
 	callg write(outfile,#a,\.a)
 end
 
-function write(sd outfile,ss buf,sd sz)
+function write_allow()
 	if loop.ignored=(ignored_no)
 		if loop.allowwrite=(allowwrite_yes)
-			sd items
-			if loop.directwrite=(TRUE)
-				set items fwrite(buf,sz,1,outfile)
-			else
-				set items mwrite(buf,sz,outfile)
-			end
-			if items!=1
-				call aftercallenable()
-			end
+			return (TRUE)
+		end
+	end
+	return (FALSE)
+end
+function write(sd outfile,ss buf,sd sz)
+	sd b;set b write_allow();if b=(TRUE)
+		sd items
+		if loop.directwrite=(TRUE)
+			set items fwrite(buf,sz,1,outfile)
+		else
+			set items mwrite(buf,sz,outfile)
+		end
+		if items!=1
+			call aftercallenable()
 		end
 	end
 end
@@ -756,8 +764,8 @@ function writetn(sd outfile) #terminator newline
 	callg writenl(outfile)
 end
 
-function fprintu(sd outfile,sd c)
-	sd items;set items fprintf(outfile,"%u",c) #this does't encounter allowwrite or directwrite at this moment
+function fprintu(sd outfile,sd c)  #has an upper write_allow check
+	sd items;set items fprintf(outfile,"%u",c) #safe from directwrite at this moment
 	if items<0
 		call aftercallenable()
 	end

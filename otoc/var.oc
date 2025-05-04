@@ -207,7 +207,7 @@ function write_string_ex(sv pbuffer,sd outfile) #not also at string_pop? will ex
 	call get_multistring(pbuffer,#multiline,#sz,#pointer)
 	callg write_string(outfile,multiline,sz,pointer)
 end
-function write_popstring(ss pointer,sd sz,sd outfile)
+function write_popstring(ss pointer,sd sz,sd outfile) #has an upper write_allow check
 	call writecl(outfile) #write {}, can work for char*?see at declare
 	add sz pointer
 	if pointer!=sz
