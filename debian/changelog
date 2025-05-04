@@ -1,3 +1,9 @@
+ocompiler (1-5+229) xenial; urgency=medium
+
+  * allow write fix
+
+ -- bc <bc@bc-desktop>  Sun, 04 May 2025 13:29:11 +0300
+
 ocompiler (1-5+228) xenial; urgency=medium
 
   * fast solution to match long imports
