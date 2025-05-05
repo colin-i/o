@@ -18,17 +18,17 @@ arch=i386 ~/test/publp && \
 ~/u/desktop/ubuntu-archive-tools/copy-package -y --from ppa:colin-i/ubuntu/ppa -s xenial --to-suite bionic ocompiler && \
 arch=amd64 ~/test/publp && \
 ~/test/ai && \
-~/test/rpm && \
 ~/test/del && \
 ~/test/rel && \
 ./makewin32 && \
-~/test/pub appimage rpm rel && \
+~/test/pub appimage rel && \
+~/test/rpm && \
 ~/test/upapp && \
 ./mrtext && \
 ~/test/upgen obj.txt.gz application/gzip && \
 ~/test/pkg/onb && \
 ~/test/upgen ocompiler.zip application/zip ocompiler.windows.zip && \
-~/test/pub upapp pkg && \
+~/test/pub rpm upapp pkg && \
 ~/test/pkg/aur && \
 ~/test/pub2 && \
 arch=i386 terminator=1 ~/test/publp2 && \
