@@ -22,7 +22,7 @@ arch=amd64 ~/test/publp && \
 ~/test/rel && \
 ./makewin32 && \
 ~/test/pub appimage rel && \
-~/test/rpm && \
+~/test/rpm/rpm && \
 ~/test/upapp && \
 ./mrtext && \
 ~/test/upgen obj.txt.gz application/gzip && \
