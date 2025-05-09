@@ -74,8 +74,8 @@ install:
 	$(MAKE) install-proj
 install-proj:
 	install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog}
-	#if [ "${NOOCONV}" != "1" ]; then install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog} && echo ${prog} is installed; else echo ${prog} is not installed; fi
-	#is at debian/ocompiler.install , will install here but not in the final deb
+#if [ "${NOOCONV}" != "1" ]; then install -D ${prog} $(DESTDIR)$(prefix)/bin/${prog} && echo ${prog} is installed; else echo ${prog} is not installed; fi
+#is at debian/ocompiler.install , will install here but not in the final deb
 
 clean:
 	-rm -f ${FULLOBJO}

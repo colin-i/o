@@ -1,7 +1,6 @@
 %global srcname ocompiler
 
 %global debug_package %{nil}
-#maybe at oadbg when we will use -g
 
 Name: ocompiler
 Version: 5+229
@@ -14,12 +13,9 @@ Source1: https://github.com/colin-i/o/releases/download/1-%{version}/obj.txt.gz
 
 BuildArch: x86_64
 
-BuildRequires: make glibc32
-#BuildRequires: glibc.i686
-#cannot write this instead of glibc32, will error, and with occasion must also remove glibc32 when installing
+BuildRequires: make (glibc32 or glibc(x86-32))
 
-#Requires: glibc32
-#cannot write this, will be a problem at dnf install, anyway will ask for glibc.i686 knowing about libc.so.6
+Requires: (glibc32 or glibc(x86-32))
 
 %description
 O Language compiler and dev files.
@@ -27,7 +23,6 @@ O Language compiler and dev files.
 %package devel
 BuildArch: noarch
 Summary: O Language dev files
-Provides: ocompiler-devel
 
 %description devel
 This package contains necessary header files for O Language development.
@@ -35,7 +30,6 @@ This package contains necessary header files for O Language development.
 #-- PREP, BUILD & INSTALL -----------------------------------------------------#
 %prep
 %autosetup
-#cd at ${RPM_BUILD_DIR}/(to know at --test, is almost this $RPM_PACKAGE_RELEASE) is done by autosetup
 gzip -dc %{S:1} > src/obj.txt
 touch include_dev
 
