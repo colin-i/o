@@ -11,9 +11,7 @@ Url: https://github.com/colin-i/o
 Source0: %{name}-%{version}.tar.gz
 Source1: https://github.com/colin-i/o/releases/download/1-%{version}/obj.txt.gz
 
-BuildArch: x86_64
-
-BuildRequires: make (glibc32 or glibc(x86-32))
+BuildRequires: make (glibc32 or glibc(x86-32)) gcc
 
 Requires: (glibc32 or glibc(x86-32))
 
@@ -21,8 +19,9 @@ Requires: (glibc32 or glibc(x86-32))
 O Language compiler and dev files.
 
 %package devel
-BuildArch: noarch
 Summary: O Language dev files
+BuildArch: noarch
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 This package contains necessary header files for O Language development.
@@ -55,3 +54,6 @@ make
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Fri May 09 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-0
+- new package built with tito
+
