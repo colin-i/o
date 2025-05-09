@@ -28,7 +28,7 @@ arch=amd64 ~/test/publp && \
 ~/test/upgen ocompiler.zip application/zip ocompiler.windows.zip && \
 ~/test/pub upapp pkg && \
 ~/test/pkg/aur && \
-~/test/rpm/get && \
+~/test/rpm/copr && \
 ~/test/pub2 && \
 arch=i386 terminator=1 ~/test/publp2 && \
 ~/u/desktop/ubuntu-archive-tools/copy-package -y -b --from ppa:colin-i/ubuntu/ppa -s xenial --to-suite bionic ocompiler && \
