@@ -18,10 +18,12 @@ On Arch Linux, <i>.zst</i> file from [releases](https://github.com/colin-i/edor/
 yay -Sy ocompiler
 ```
 \
-On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/o/releases).
+On Fedora:
 ```sh
-dnf install ocompiler-*.*.rpm
+sudo dnf copr enable colin/project
+sudo dnf install ocompiler
 ```
+There is also <i>ocompiler-devel</i>.\
 \
 On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/o/releases).\
 \
