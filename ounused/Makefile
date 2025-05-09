@@ -30,7 +30,8 @@ ${vers}:
 ${FULLOBJO}: ${FULLOBJS} ${vers}
 	${launcher} ${OCOMP} $< exit_end 1 ${OFLAGSEXTRA}
 
-ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 -o $@ ${L} -l:libc.so.6 -entry main
+ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 --build-id -o $@ ${L} -l:libc.so.6 -entry main
+#build-id for rpm
 
 ${OB}: ${OBJ}
 	${ATLDCOM} ${FULLOBJO}
