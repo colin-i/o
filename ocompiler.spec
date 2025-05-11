@@ -4,16 +4,16 @@
 
 Name: ocompiler
 Version: 5+229
-Release: 0
+Release: 1
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
 Source0: %{name}-%{version}.tar.gz
 Source1: https://github.com/colin-i/o/releases/download/1-%{version}/obj.txt.gz
 
-BuildRequires: make (glibc32 or glibc(x86-32)) gcc
+BuildRequires: make glibc(x86-32) gcc
 
-Requires: (glibc32 or glibc(x86-32))
+Requires: glibc(x86-32)
 
 %description
 O Language compiler and dev files.
@@ -54,6 +54,9 @@ make
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Sun May 11 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-1
+- fix glibc 
+
 * Sun May 11 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-0
 - new package built with tito
 
