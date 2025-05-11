@@ -1,10 +1,10 @@
 %global srcname ocompiler
 
-%global _debugsource_template %{nil}  #"The regular rpm along with the debuginfo one is generated but no src package is generated." src = debugsource? anyway, here, also debuginfo will go, like with debug_package
+%global _debugsource_template %{nil}
 
 Name: ocompiler
 Version: 5+229
-Release: 1
+Release: 2
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
@@ -33,7 +33,7 @@ gzip -dc %{S:1} > src/obj.txt
 touch include_dev
 
 %build
-make
+linkerflags="-O3 -g" make
 
 %install
 %make_install
@@ -54,6 +54,9 @@ make
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Sun May 11 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-2
+- debuginfo
+
 * Sun May 11 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-1
 - fix glibc 
 
