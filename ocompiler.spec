@@ -1,6 +1,6 @@
 %global srcname ocompiler
 
-%global debug_package %{nil}
+%global _debugsource_template %{nil}  #"The regular rpm along with the debuginfo one is generated but no src package is generated." src = debugsource? anyway, here, also debuginfo will go, like with debug_package
 
 Name: ocompiler
 Version: 5+229
@@ -54,6 +54,6 @@ make
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
-* Fri May 09 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-0
+* Sun May 11 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-0
 - new package built with tito
 
