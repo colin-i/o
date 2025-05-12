@@ -1,4 +1,3 @@
-%global srcname ocompiler
 
 %global _debugsource_template %{nil}
 
