@@ -1,3 +1,15 @@
+ocompiler (1-5+231) xenial; urgency=medium
+
+  * and test
+
+ -- bc <bc@bc-desktop>  Mon, 12 May 2025 08:48:07 +0300
+
+ocompiler (1-5+230) xenial; urgency=medium
+
+  * dev depending on binaries
+
+ -- bc <bc@bc-desktop>  Mon, 12 May 2025 08:15:42 +0300
+
 ocompiler (1-5+229) xenial; urgency=medium
 
   * allow write fix
