@@ -39,18 +39,10 @@ override_dh_auto_install:
 
 	dh_auto_install -- prefix=/usr
 
-#override_dh_install:
-#	dh_install --list-missing -X.pyc -X.pyo
-
-#ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
-#override_dh_auto_configure:
-#	dh_auto_configure
-#	sed -i '/ostrip/d' debian/ocompiler.install
-	#sed -i '/otoc/d' debian/ocompiler.install
-	#touch NOOCONVTEST
-#else
-#override_dh_auto_configure:
-#	dh_auto_configure
-	#sed -i '/otoc/d' debian/ocompiler.install
-	#touch NOOCONVTEST
-#endif
+ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), amd64)
+override_dh_gencontrol:
+	dh_gencontrol
+	echo -n "Depends: ocompiler (= " >> debian/ocompiler-dev/DEBIAN/control
+	echo -n `cat debian/changelog | head -1 | grep -Poe "[^(]*(?=\))"` >> debian/ocompiler-dev/DEBIAN/control
+	echo ")" >> debian/ocompiler-dev/DEBIAN/control
+endif
