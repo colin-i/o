@@ -537,17 +537,29 @@ Function getcommand(sv pcontent,sd psize,sd ptrsubtype,sv ptrerrormsg,sv pointer
 
 	Data dsz=dwsz
 
+	sd er
 	ss start;set start pcontent#
 	if start#=(Xfile_noignore_sign)
 		inc start
 		inc pcontent#
 		dec psize#
-		sd er;set er xfile_add_char_ifif((Xfile_noignore))
+		set er xfile_add_char_ifif((Xfile_noignore))
 		if er!=(noerror)
 			set ptrerrormsg# er
 			ret
 		endif
 	endif
+	if start#=(Xfile_yesignore_sign)
+		inc start
+		inc pcontent#
+		dec psize#
+		set er xfile_add_char_ifif((Xfile_yesignore))
+		if er!=(noerror)
+			set ptrerrormsg# er
+			ret
+		endif
+	endif
+
 	Set cursor pointercommands#
 	While cursor!=zero
 		Data offset#1

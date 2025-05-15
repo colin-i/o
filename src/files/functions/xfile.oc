@@ -1,6 +1,8 @@
 
 const Xfile_function_not_x=Xfile_function_traw
 const Xfile_decltype_const=Xfile_decltype_long+1
+const Xfile_noignore_sign=asciicirc
+const Xfile_yesignore_sign=asciiexclamationmark
 
 #err
 function xfile_add_int(sd int)

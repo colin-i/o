@@ -997,11 +997,11 @@ format elfobj64<br>
 	<tr>                                    <td>Xfile_function_e*</td></tr>
 </table>
 <table id="selection_table">
-	<tr><td rowspan=5>Xfile_declare</td><td class="green" rowspan=5>D</td><td>Xfile_declsign_pointer</td>     <td class="red">var/fn</td></tr>
+	<tr><td rowspan=5>Xfile_declare</td><td class="green" rowspan=5>D</td><td>Xfile_declsign_pointer</td>     <td>Xfile_declsign_pointer_*</td><td class="red">var/fn</td></tr>
 	<tr>                                                                  <td>Xfile_declsign_reserve</td>     <td class="green">N</td></tr>
-	<tr>                                                                  <td rowspan=3>Xfile_declsign_e*</td><td>Xfile_declmode_value</td> <td class="green">N</td></tr>
-	<tr>                                                                                                      <td>Xfile_declmode_group</td> <td class="blue">nr_of_args</td><td class="green">{N}</td></tr>
-	<tr>                                                                                                      <td>Xfile_declmode_string</td><td class="green">S</td>        <td>Xfile_declmode_string_pop_*</td></tr>
+	<tr>                                                                  <td rowspan=3>Xfile_declsign_e*</td><td>Xfile_declmode_value</td>    <td class="green">N</td></tr>
+	<tr>                                                                                                      <td>Xfile_declmode_group</td>    <td class="blue">nr_of_args</td><td class="green">{N}</td></tr>
+	<tr>                                                                                                      <td>Xfile_declmode_string</td>   <td class="green">S</td>        <td>Xfile_declmode_string_pop_*</td></tr>
 </table>
 <table id="selection_table">
 	<tr><td rowspan=2>Xfile_action</td><td>Xfile_action_a*</td><td class="green">A</td></tr>
@@ -1061,6 +1061,9 @@ format elfobj64<br>
 </table>
 <table id="selection_table">
 	<tr><td>Xfile_noignore</td></tr>
+</table>
+<table id="selection_table">
+	<tr><td>Xfile_yesignore</td></tr>
 </table>
 <br>Table A:
 <table id="selection_table">

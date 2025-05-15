@@ -26,6 +26,8 @@ const allowwrite_yes=0
 const allowwrite_no=1
 const allowwrite_no_include=2
 const ignored_no=0
+const ignored_yes=1
+const ignored_depending_on_tags=2
 
 datax result#1
 
@@ -52,7 +54,7 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	datax icount#1  #dependent on includesReg
 	set icount 0
 
-	sd nextisignored=0
+	sd nextisignored=ignored_depending_on_tags
 
 	#if delim>^(long32)
 	vdatax entrystart#1
@@ -67,7 +69,11 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	add delim pointer
 	while pointer!=delim
 		charx command#1;call get_char(#pointer,#command)
-		if command!=(Xfile_noignore)
+		if command=(Xfile_noignore)
+			set nextisignored (ignored_no)
+		elseif command=(Xfile_yesignore)
+			set nextisignored (ignored_yes)
+		else
 			whiletrue
 				if command!=(Xfile_end)
 					if command!=(Xfile_else)
@@ -120,18 +126,18 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			value *Xfile_interrupt^interrupt
 			value *Xfile_line^line
 			value *Xfile_iend^iend
+			datau mults={1,2,4,6,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
+			datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000} #,0x40000000,0x80000000}
 
 			datax ignored#1
-			if nextisignored=0
-				set ignored 1;sd igpow;set igpow command
-				while igpow!=0
-					dec igpow
-					shl1 ignored
-				end
+			if nextisignored=(ignored_depending_on_tags)
+				sd igpow=DWORD;mult igpow command
+				sd x^mults;add x igpow
+				set ignored x#
 				and ignored ignores
-			else
-				set ignored 0
-				set nextisignored 0
+			else # yes/no
+				set ignored nextisignored
+				set nextisignored (ignored_depending_on_tags)
 			end
 
 			mult command :
@@ -144,8 +150,6 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 					dec hotgroup
 				end
 			end
-		else
-			set nextisignored 1
 		end
 	end
 	if main.result=(EXIT_SUCCESS)
@@ -361,8 +365,11 @@ function declare(sd outfile,sv pbuffer)
 		and loop.allowwrite (~allowwrite_no)  # example: at unimplemented commands and at condition sign check is FALSE
 	elseif sign=(Xfile_declsign_pointer)
 		call writee(outfile)
-		if loop.hotgroup=0
-			call write(outfile,#and.a,1) #in o, #rezerve/""/{} stays at pointing on first val,modify this behaviour or keep this trick
+		charx atr#1;call get_char(pbuffer,#atr)
+		if atr=(Xfile_declsign_pointer_var)
+			if loop.hotgroup=0
+				call write(outfile,#and.a,1) #in o, #rezerve/""/{} stays at pointing on first val,modify this behaviour or keep this trick
+			end
 		end
 		call get_string(pbuffer,#sz,#pointer)
 		call write(outfile,pointer,sz)

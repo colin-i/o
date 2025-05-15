@@ -286,6 +286,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 		call arg_size(content,size,#size)
 		SetCall pointer strinvars(content,size,tp)
 		If pointer!=zero
+			setcall err xfile_add_char_if((Xfile_declsign_pointer_var))
+			if err!=(noerror)
+				return err
+			endif
 			data rightstackbit#1
 			setcall rightstackbit stackbit(pointer)
 			if rightstackbit=0
@@ -338,6 +342,10 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				setcall err undefinedvar_fn()
 				return err
 			EndIf
+			setcall err xfile_add_char_if((Xfile_declsign_pointer_fn))
+			if err!=(noerror)
+				return err
+			endif
 
 			setcall importbittest importbit(pointer)
 			setcall value get_function_value(importbittest,pointer)
