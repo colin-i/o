@@ -99,11 +99,12 @@ include "tags.oh"
 end
 
 include "entryraw.oc" "entry.oc"
-
 	if argc>=2
+		ss s;set s argv#
 		data ignores=0
 		if argc>2
-			set ignores ignores_init(argc,_s2)
+			incst argv
+			set ignores ignores_init(argc,argv)
 			if ignores=0
 				call puts("Unrecognized tagIgnore")
 				call exit((EXIT_FAILURE))

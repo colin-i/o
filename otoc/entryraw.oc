@@ -1,2 +1,2 @@
-entryraw main(sd argc,sv *,sd s,ss s2)
-sv _s2;set _s2 #s2
+entryraw main(sd argc,sv *s0,ss s1) #,ss s2)
+sv argv;set argv #s1
