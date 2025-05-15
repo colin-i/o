@@ -25,7 +25,7 @@ end
 function return(sd outfile)
 	if loop.function_start!=(err)
 		call fseek(outfile,loop.function_start,(SEEK_SET))
-		call fwrite(#write_long_pointer.a,(write_long_cast),1,outfile)
+		call fwrite(main.long,main.long_cast_size,1,outfile)
 		call fseek(outfile,0,(SEEK_END))
 		set loop.function_start (err) #if is not at endfunction, is here. multipe returns,write once
 	end

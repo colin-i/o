@@ -32,7 +32,9 @@ function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
 			call aftercallenable()
 		end
 	end
-	call write_void(outfile,pointer,sz)
+	call write_void(outfile)
+	call write(outfile,#main.long_long_reserve,\main.long_long_reserve)
+	call write(outfile,pointer,sz)
 	call writel(outfile)
 	sd args;set args functiondef_d(pbuffer,outfile)
 	return args ##for varargs

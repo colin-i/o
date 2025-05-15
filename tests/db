@@ -3,4 +3,4 @@ if [ -z "${OCONV}" ]; then OCONV=../otoc/otoc; fi
 a=${1}
 shift
 ./xb ${a} && \
-${OCONV} ${a}.oc.x $@
+${OCONV} ${a}.oc.x import $@

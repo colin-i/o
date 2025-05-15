@@ -39,6 +39,14 @@ function out_file(sd in)
 	return (NULL)
 end
 
+vstrx long#1
+charx long_size#1
+charx long_cast_size#1
+#
+char long_long="long "^
+char long_simple="long"^
+char point=asciiasterisk
+char long_long_reserve={asciispace,asciispace,asciispace,asciispace,asciispace}
 include "loop.oc"
 
 #aftercalli
@@ -98,20 +106,47 @@ include "tags.oh"
 	return out
 end
 
+function parse_options(sd _argc,sv _argv)
+	sv argv;set argv _argv#
+	ss s;set s argv#
+	if s#=(asciihyphen)
+		inc s
+		if s#=(asciinul)
+			if _argc#<3
+				return (EXIT_FAILURE)
+			end
+			#long long
+			dec _argc#
+			incst _argv#
+			set main.long #main.long_long
+			set main.long_size \main.long_long+\main.long_simple
+			set main.long_cast_size \main.long_long+\main.long_simple+\main.point
+			return (EXIT_SUCCESS)
+		end
+	end
+	set main.long #main.long_simple
+	set main.long_size \main.long_simple
+	set main.long_cast_size \main.long_simple+\main.point
+	return (EXIT_SUCCESS)
+end
+
 include "entryraw.oc" "entry.oc"
 	if argc>=2
-		ss s;set s argv#
-		data ignores=0
-		if argc>2
-			incst argv
-			set ignores ignores_init(argc,argv)
-			if ignores=0
-				call puts("Unrecognized tagIgnore")
-				call exit((EXIT_FAILURE))
+		sd ok;set ok parse_options(#argc,#argv)
+		if ok=(EXIT_SUCCESS)
+			ss s;set s argv#
+			data ignores=0
+			if argc>2
+				incst argv
+				set ignores ignores_init(argc,argv)
+				if ignores=0
+					call puts("Unrecognized tagIgnore")
+					call exit((EXIT_FAILURE))
+				end
 			end
+			sd a;set a mainfn(s,ignores)
+			call exit(a)
 		end
-		sd a;set a mainfn(s,ignores)
-		call exit(a)
 	end
-	call puts("Usage: otoc filePath [tagIgnore1 .. tagIgnoreN]")
+	call puts("Usage: otoc [-] filePath [tagIgnore1 .. tagIgnoreN]")
 	call exit((EXIT_FAILURE))

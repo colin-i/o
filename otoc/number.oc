@@ -44,8 +44,10 @@ function numbertype(sv pbuffer,sd outfile)
 end
 
 function number_int_long(sd outfile)
-	char a="sizeof(long)"^
-	callg write(outfile,#a,\.a)
+	char a="sizeof("^
+	call write(outfile,#a,\.a)
+	call write_long(outfile)
+	callg writer(outfile)
 end
 function number_int_data()
 	callg unimplemented()
@@ -154,7 +156,7 @@ function sub(sd outfile)
 	callg write(outfile,#action_tdec.a,1)
 end
 function mul(sd outfile)
-	callg write(outfile,#write_long_pointer.point,1)
+	callg write(outfile,#main.point,1)
 end
 function div(sd outfile)
 	callg write(outfile,#comment.a,1)
