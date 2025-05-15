@@ -25,6 +25,8 @@ char a#3;value b^a
 char no_hotgroup=1;value no_hotgroup_test^no_hotgroup
 
 function intern(data a,sd b,sv c,svu d) #commenting
+	svu pointing^intern
+	!set pointing# pointing
 	inc a
 	dec a
 	incst c
