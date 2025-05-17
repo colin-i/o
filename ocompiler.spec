@@ -2,13 +2,13 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+229
-Release: 2
+Version: 5+232
+Release: 1
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
 Source0: %{name}-%{version}.tar.gz
-Source1: https://github.com/colin-i/o/releases/download/1-%{version}/obj.txt.gz
+Source1: https://github.com/colin-i/o/releases/download/2-%{version}/obj.txt.gz
 
 BuildRequires: make glibc(x86-32) gcc
 
@@ -53,6 +53,20 @@ linkerflags="-O3 -g" make
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Sat May 17 2025 Costin Botescu <costin.botescu@gmail.com> 5+232-1
+- added Xfile_yesignore and Xfile_declsign_pointer_var/fn
+  (costin.b.84@gmail.com)
+- added Xfile_yesignore and Xfile_declsign_pointer_var/fn
+  (costin.botescu@gmail.com)
+- "tests" (costin.b.84@gmail.com)
+- long long option (costin.botescu@gmail.com)
+- set this way to make room for long long at first otoc argument?
+  (costin.botescu@gmail.com)
+- "sync" (costin.b.84@gmail.com)
+- dev depending on binaries (costin.botescu@gmail.com)
+- "tests" (costin.b.84@gmail.com)
+- excluding files from deb (costin.botescu@gmail.com)
+
 * Sun May 11 2025 Costin Botescu <costin.botescu@gmail.com> 5+229-2
 - debuginfo
 
