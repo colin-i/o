@@ -1,3 +1,9 @@
+ocompiler (2-5+232) xenial; urgency=medium
+
+  * long logn and Xfile_declsign_pointer_var/fn
+
+ -- bc <bc@bc-Type1ProductConfigId>  Sat, 17 May 2025 07:21:25 +0300
+
 ocompiler (1-5+231) xenial; urgency=medium
 
   * and test
