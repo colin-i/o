@@ -2,6 +2,7 @@
 prog=otoc
 
 all: ${prog}
+#platform win with x86_64-w64-mingw32-gcc and entry main(sd argc,sv argv)
 
 ifndef linkerflags
 linkerflags=-O3 -s

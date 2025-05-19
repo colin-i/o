@@ -24,19 +24,19 @@ vers=../${ver}
 OFLAGS=
 #export OFLAGS inside will not be enough
 ifneq (${platform},win)
-OFLAGS=exit_end 1 underscore_pref 1
 
+OFLAGS=exit_end 1 underscore_pref 1
 all: ${OB}
 ${OB}: ${OBJ}
 	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 --build-id -o $@ ${L} -l:libc.so.6 -entry main ${FULLOBJO}
 	${launcher} ./${OB} ${FULLOBJLOG}
 
 else
-OFLAGS=inplace_reloc 0
 
+OFLAGS=inplace_reloc 0 include_sec 1
 all: ${OB}.exe
 ${OB}.exe: ${OBJ}
-	$(LD) ${linkerflags} ${FULLOBJO} -lmsvcrt -o $@ -entry main
+	i686-w64-mingw32-gcc ${linkerflags} ${FULLOBJO} -o $@
 
 endif
 

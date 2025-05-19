@@ -32,7 +32,7 @@ endfunction
 include "./loop.oc"
 include "./resolve.oc"
 
-entryraw main(sd argc,ss *argv0,ss argv1)
+include "entryraw.oc" "entry.oc"
 
 if argc>1
 	call inits()
@@ -42,7 +42,6 @@ if argc>1
 	sd i
 	set i argc
 	mult argc :
-	sv argv;set argv #argv1
 	add argc argv
 	while argv!=argc
 		call log_file(argv#)

@@ -1,7 +1,8 @@
 
 Include "./head.oh"
 
-#gcc(i686/x86_64) will ask for WinMain, but it has argc,argv entry, there are some additional steps
+#see ounused and otoc for windows
+#old remark: gcc(i686/x86_64) will ask for WinMain, but it has argc,argv entry, there are some additional steps
 #old remark: gcc want -8 at inplace instead of 0
 
 #gcc:
