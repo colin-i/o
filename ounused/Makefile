@@ -1,8 +1,6 @@
 
 OB = ounused
 
-all: ${OB}
-
 OBJ = ${OB}.o
 FULLOBJ = ./${OB}
 FULLOBJS = ${FULLOBJ}.oc
@@ -12,30 +10,41 @@ FULLOBJLOG = ${FULLOBJS}.log
 ifndef OCOMP
 OCOMP=../src/o
 endif
-
 ifndef linkerflags
 linkerflags=-O3 -s
 #             1
 endif
-
 ifndef prefix
 prefix=/usr
 endif
 
 ver=version.oh
 vers=../${ver}
+
+OFLAGS=
+#export OFLAGS inside will not be enough
+ifneq (${platform},win)
+OFLAGS=exit_end 1 underscore_pref 1
+
+all: ${OB}
+${OB}: ${OBJ}
+	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 --build-id -o $@ ${L} -l:libc.so.6 -entry main ${FULLOBJO}
+	${launcher} ./${OB} ${FULLOBJLOG}
+
+else
+OFLAGS=inplace_reloc 0
+
+all: ${OB}.exe
+${OB}.exe: ${OBJ}
+	$(LD) ${linkerflags} ${FULLOBJO} -lmsvcrt -o $@ -entry main
+
+endif
+
 ${vers}:
 	cd .. && $(MAKE) -f ./Makefile ${ver}
 
 ${FULLOBJO}: ${FULLOBJS} ${vers}
-	${launcher} ${OCOMP} $< exit_end 1 ${OFLAGSEXTRA}
-
-ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 --build-id -o $@ ${L} -l:libc.so.6 -entry main
-#build-id for rpm
-
-${OB}: ${OBJ}
-	${ATLDCOM} ${FULLOBJO}
-	${launcher} ./${OB} ${FULLOBJLOG}
+	${launcher} ${OCOMP} $< ${OFLAGS} ${OFLAGSEXTRA}
 
 install:
 	$(MAKE) all
