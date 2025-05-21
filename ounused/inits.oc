@@ -8,7 +8,7 @@ function allocs()
 	call alloc1(fp)
 
 	sv cwd%cwd_p
-	setcall cwd# get_current_dir_name()
+	setcall cwd# _get_current_dir_name()
 	if cwd#=(NULL)
 		call erExit("get_current_dir_name error")
 	endif

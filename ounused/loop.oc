@@ -175,11 +175,11 @@ function printlink(sd file)
 						set back# (asciio)
 						inc back
 						set back# (NULL)
-						sv st^stdout
+						sv st;set st stdout()
 						sd len
-						setCall len fprintf(st#," ")
+						setCall len fprintf(st," ")
 						if len=1
-							setCall len fprintf(st#,file)
+							setCall len fprintf(st,file)
 							sub back file
 							if len=back
 								ret

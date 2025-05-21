@@ -29,10 +29,10 @@ function resolve(sd j)
 	sd k
 	setcall k uconst_resolved(2)
 	#
-	sv so^stdout
-	call fflush(so#) #there is no line end at stdout, then flush is required
+	sv so;set so stdout()
+	call fflush(so) #there is no line end at stdout, then flush is required
 	#
-	sv st^stderr
+	sv st;set st stderr()
 	sd fls
 	setcall fls filessize()
 	div fls :
@@ -40,14 +40,13 @@ function resolve(sd j)
 	setcall imps_sz importssize()
 	sd const_sz
 	setcall const_sz constssize()
-	Call fprintf(st#,"\n%u logs, %u files, %u unique imports, %u %s/%s, %u %s resolved, %u %s/%s resolved.",j,fls,imps_sz,const_sz,c,v,i,f,k,c,v) #starting with a new line to not be on the same line with stdout
+	Call fprintf(st,"\n%u logs, %u files, %u unique imports, %u %s/%s, %u %s resolved, %u %s/%s resolved.",j,fls,imps_sz,const_sz,c,v,i,f,k,c,v) #starting with a new line to not be on the same line with stdout
 	#\n, end ending with another one for no echo after this program
 	call messagedelim()
 endfunction
 
 function wrongExit(ss x,ss n,sd len)
-	sv st^stderr
-	set st st#
+	sv st;set st stderr()
 	Call fprintf(st,"Unused %s: ",x)
 	call fwrite(n,len,1,st)
 	call erExit("")

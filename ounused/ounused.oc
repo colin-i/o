@@ -9,13 +9,13 @@ include "header.oh"
 include "./throwless.oc"
 
 function messagedelim()
-	sv st^stderr
+	sv st;set st stderr()
 	Char visiblemessage={0x0a,0}
-	Call fprintf(st#,#visiblemessage)
+	Call fprintf(st,#visiblemessage)
 endfunction
 Function Message(ss text)
-	sv st^stderr
-	Call fprintf(st#,text)
+	sv st;set st stderr()
+	Call fprintf(st,text)
 	call messagedelim()
 EndFunction
 function erMessage(ss text)
