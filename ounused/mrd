@@ -1,3 +1,2 @@
 
-if [ -e ounused.o ]; then rm ounused.o; fi
 launcher=q LD=/usr/i686-linux-gnu/bin/ld ./md

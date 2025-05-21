@@ -22,7 +22,7 @@ function log_file(ss file)
 		sd sz=0
 		sd link=TRUE
 		while sz!=-1
-			setcall sz getline(p,bsz,f)
+			setcall sz _getline(p,bsz,f)
 			if sz!=-1
 				#knowing line\r\n from ocompiler
 				sub sz 2

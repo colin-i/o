@@ -1,6 +1,4 @@
 
-const dword=4
-
 function alloc1(sd p)
 	sd er
 	setcall er alloc1_throwless(p)

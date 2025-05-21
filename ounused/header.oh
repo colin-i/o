@@ -1,6 +1,7 @@
 
 const EXIT_SUCCESS=0
 const EXIT_FAILURE=1
+const dword=4
 
 Importx "_fprintf" fprintf
 
@@ -11,9 +12,6 @@ importx "_fflush" fflush
 #inits
 importx "_strlen" strlen
 
-#files
-importx "realpath" realpath
-
 #mem
 importx "_malloc" malloc
 importx "_realloc" realloc
@@ -23,7 +21,6 @@ importx "_memcmp" memcmp
 #loop
 importx "_fopen" fopen
 importx "_fclose" fclose
-importx "getline" getline
 importx "_feof" feof
 importx "_free" free
 importx "_chdir" chdir

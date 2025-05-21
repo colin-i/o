@@ -12,7 +12,19 @@ function _get_current_dir_name()
 	return a
 end
 
+#files
+importx "realpath" realpath
+function _realpath(sv a,sv b)
+	ss c;set c realpath(a,b)
+	return c
+end
+
 #loop
+importx "getline" getline
+function _getline(sv a,sv b,sv c)
+	sd d;set d getline(a,b,c)
+	return d
+end
 importx "stdout" _stdout
 function stdout()
 	svu s^_stdout

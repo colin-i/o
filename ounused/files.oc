@@ -60,7 +60,7 @@ endfunction
 function fileentry(sd s,sd sz)
 	call nullend(s,sz)
 	sd temp
-	setcall temp realpath(s,(NULL))
+	setcall temp _realpath(s,(NULL))
 	if temp!=(NULL)
 		call fileentry_exists(temp)
 		call free(temp)
