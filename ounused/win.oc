@@ -1,9 +1,11 @@
 
-importx "___iob_func" _iob_func
-
+const asciinewline=0xa
+const EOF=-1
 #const STDIN_FILENO=0
 const STDOUT_FILENO=1
 const STDERR_FILENO=2
+
+importx "___iob_func" _iob_func
 function iob_func(sd type)
 	#typedef struct FILE{ #char *_ptr; #int _cnt; #char *_base; #int _flag; #int _file; #int _charbuf;#int _bufsiz; #char *_tmpfname; #}
 	sd std
@@ -21,9 +23,11 @@ function stderr()
 	return a
 end
 
+importx "_getcwd" getcwd
 #inits
 function _get_current_dir_name()
-#	sv a;return a
+	ss a;set a getcwd((NULL),0) #NULL is at loop.oc
+	return a
 end
 
 #files
@@ -32,10 +36,51 @@ function _realpath(sv *a,sv *b)
 end
 
 #loop
-function _getline(sv *a,sv *b,sv *c)
-#ssize_t	sd d;return d
+const getline_increments=0x80
+importx "_fgetc" fgetc
+function _getline(sv lineptr,sv n,sd stream)
+#lineptr is ok, n is ok and with a minimum size, stream is ok, ssize_t return
+#knowing line\r\n from ocompiler, but basing only on \n
+#to match linux behavior, return size+termsize+null
+#here no term+null termination write, and n+= is negligent
+	charxs c#1
+	set c fgetc(stream) #unsigned char cast to int
+	if c=(EOF)
+		return -1
+	end
+	ss bufptr;set bufptr lineptr#
+	ss pointer;set pointer bufptr
+	ss end;set end pointer
+	add end n#
+	whiletrue
+		set pointer# c
+		inc pointer
+		set c fgetc(stream)
+		if c=(EOF)
+			break
+		end
+		if c=(asciinewline)
+			inc pointer
+			break
+		end
+		if pointer=end
+			add n# (getline_increments)
+			ss newstart;set newstart realloc(bufptr,n#)
+			if newstart=(NULL)
+				return -1
+			end
+			sub bufptr newstart
+			sub pointer bufptr
+			sub end bufptr
+			add end (getline_increments)
+			set bufptr newstart
+			set lineptr# bufptr
+		end
+	end
+	sub pointer bufptr
+	return pointer
 end
 function stdout()
-#	sd a;set a iob_func((STDOUT_FILENO))
-#	return a
+	sd a;set a iob_func((STDOUT_FILENO))
+	return a
 end

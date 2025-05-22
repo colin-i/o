@@ -8,7 +8,7 @@ end
 #inits
 importx "get_current_dir_name" get_current_dir_name
 function _get_current_dir_name()
-	sv a;set a get_current_dir_name()
+	ss a;set a get_current_dir_name()
 	return a
 end
 

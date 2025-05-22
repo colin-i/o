@@ -1,5 +1,4 @@
 
-const NULL=0
 #const void=0
 const asciiperiod=0x2E
 const asciio=0x6F
