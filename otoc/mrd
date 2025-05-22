@@ -1,12 +1,11 @@
 
 if [ -z "${OCOMP}" ]; then export OCOMP="q ../src/o"; fi
-if [ "${ldprefer}" = "0" ]; then
+if [ "${ldprefer}" = "0" ]; then # windows and if wanting to see gcc warnings
 	ldprefer=
-else
-	if [ -n "${ldprefer}" ]; then
-		export OFLAGSPRE="include_sec 1"
-		export LD=/usr/x86_64-linux-gnu/bin/ld
-	fi
+else # default linux
+	export ldprefer=1
+	export OFLAGSPRE="include_sec 1"
+	export LD=/usr/x86_64-linux-gnu/bin/ld
 fi
 if [ -z "${launcher}" ]; then export launcher=qq; fi
 OFLAGSEXTRA="inplace_reloc 0" ./md $@
