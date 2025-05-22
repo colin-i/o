@@ -19,7 +19,7 @@ arch=amd64 ~/test/publp && \
 ~/test/ai && \
 ~/test/del && \
 ~/test/rel && \
-./makewin32 && \
+./makewin && \
 ~/test/pub appimage rel && \
 ~/test/upapp && \
 ./mrtext && \
