@@ -31,8 +31,18 @@ function _get_current_dir_name()
 end
 
 #files
-function _realpath(sv *a,sv *b)
-#	ss c;return c
+importx "_GetFullPathNameA@16" GetFullPathName
+function _realpath(ss a,ss *b)
+#b is null here
+	datax sz#1;set sz GetFullPathName(a,0,(NULL),(NULL))
+	if sz!=0  #easy to test with a ushort+ path,a long time ago was MAX_PATH=255, maybe nowadays is same
+		sd b;set b malloc(sz)
+		if b!=(NULL)
+			call GetFullPathName(a,sz,b,(NULL)) #now size return will not include null termination
+			return b
+		end
+	end
+	return (NULL)
 end
 
 #loop

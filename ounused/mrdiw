@@ -1,1 +1,1 @@
-platform=win OCOMP=o ./md $@
+platform=win OCOMP=o exelauncher=wine6 ./md $@

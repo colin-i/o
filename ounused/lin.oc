@@ -14,14 +14,14 @@ end
 
 #files
 importx "realpath" realpath
-function _realpath(sv a,sv b)
+function _realpath(ss a,ss b)
 	ss c;set c realpath(a,b)
 	return c
 end
 
 #loop
 importx "getline" getline
-function _getline(sv a,sv b,sv c)
+function _getline(sv a,sv b,sd c)
 	sd d;set d getline(a,b,c)
 	return d
 end

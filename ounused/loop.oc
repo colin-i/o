@@ -12,7 +12,7 @@ include "uconst.oc"
 
 function log_file(ss file)
 	sd f
-	setcall f fopen(file,"r")
+	setcall f fopen(file,"rb") #b is important to make windows version to not translate fgetc \r\n into \n, "r" at linux is not translating from windows \r\n
 	if f!=(NULL)
 		sv fp%logf_p
 		set fp# f

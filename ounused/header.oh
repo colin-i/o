@@ -14,7 +14,7 @@ importx "_fflush" fflush
 importx "_strlen" strlen
 
 #mem
-importx "_malloc" malloc
+importx "_malloc" malloc   #win
 importx "_realloc" realloc #win
 importx "_memcpy" memcpy
 importx "_memcmp" memcmp
