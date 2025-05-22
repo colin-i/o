@@ -1,8 +1,15 @@
 
-if [ -e otoc.o ]; then rm otoc.o; fi
-if [ -z "${1}" ]; then OCOMP="q ../src/o"; fi
-
-launcher=qq OCOMP=${OCOMP} LD=/usr/x86_64-linux-gnu/bin/ld OFLAGSEXTRA="inplace_reloc 0" ldprefer=1 ./md
+if [ -z "${OCOMP}" ]; then export OCOMP="q ../src/o"; fi
+if [ "${ldprefer}" = "0" ]; then
+	ldprefer=
+else
+	if [ -n "${ldprefer}" ]; then
+		export OFLAGSPRE="include_sec 1"
+		export LD=/usr/x86_64-linux-gnu/bin/ld
+	fi
+fi
+if [ -z "${launcher}" ]; then export launcher=qq; fi
+OFLAGSEXTRA="inplace_reloc 0" ./md $@
 
 #old:
 #saying this?: cannot find /usr/x86_64-linux-gnu/lib/libc.so.6

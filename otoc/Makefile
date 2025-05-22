@@ -1,9 +1,6 @@
 
 prog=otoc
 
-all: ${prog}
-#platform win with x86_64-w64-mingw32-gcc and entry main(sd argc,sv argv)
-
 ifndef linkerflags
 linkerflags=-O3 -s
 endif
@@ -16,9 +13,6 @@ endif
 ifndef conv_64
 conv_64=0
 endif
-ifndef ldprefer
-OFLAGSPRE= include_sec 1
-endif
 ifndef prefix
 prefix=/usr
 endif
@@ -29,7 +23,12 @@ FULLOBJS = ${FULLOBJ}.oc
 FULLOBJO = ${FULLOBJ}.o
 FULLOBJLOG = ${FULLOBJS}.log
 
-#problems at box64 and CC
+number=number.oh
+tags=tags.oh
+
+
+ifneq (${platform},win)
+
 ifeq (${conv_64},0)
 	ATCCCOM = $(CC) ${linkerflags} -o
 	ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -l:libc.so.6 -entry main -o
@@ -37,16 +36,24 @@ ifeq (${conv_64},0)
 else
 	ATCCCOM = $(CC) -m32 ${linkerflags} -o
 	ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${linkerflags} ${L} -lc -entry main -o
+endif
+fullprog=${prog}
+all: ${fullprog}
+
+else
+
+#OFLAGSPRE+= conv_64 2 #this is only when using linux ocomp
+ATCCCOM = x86_64-w64-mingw32-gcc -o
+fullprog=${prog}.exe
+all: ${fullprog}
+
+endif
+
+
+ifeq (${conv_64},1)
 	OFLAGSPRE+= conv_64 1
 endif
-
-ifndef OFLAGS
-	OFLAGS= ${OFLAGSPRE}
-endif
-OFLAGS+= ${OFLAGSEXTRA}
-
-number=number.oh
-tags=tags.oh
+OFLAGS=${OFLAGSPRE} ${OFLAGSEXTRA}
 
 %.pre.o: %.pre.oc
 	${OCOMP} $< ${OFLAGS}
@@ -62,7 +69,7 @@ tags=tags.oh
 
 ${OBJ}: ${FULLOBJS} ${tags} ${number}
 	${OCOMP} $< ${OFLAGS}
-${prog}: ${OBJ}
+${fullprog}: ${OBJ}
 	${OLINK} ${FULLOBJLOG}
 	if [ -z "${ldprefer}" ]; then \
 		${ATCCCOM} ${prog} ${FULLOBJO}; \
@@ -81,7 +88,7 @@ install-proj:
 clean:
 	-rm -f ${FULLOBJO}
 	-rm -f ${FULLOBJLOG}
-	-rm -f ${prog}
+	-rm -f ${fullprog}
 	-rm -f ${number} number.pre number.pre.o number.pre.oc.log
 	-rm -f ${tags} tags.pre tags.pre.o tags.pre.oc.log
 distclean: clean

@@ -1,1 +1,1 @@
-./mrd x
+OCOMP=o ./mrd $@

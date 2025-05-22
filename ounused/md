@@ -1,3 +1,7 @@
 
-if [ -e ounused.o ]; then rm ounused.o; fi
+if [ -e ounused.o ]; then
+	if [ -z "${no_reset}" ]; then
+		rm ounused.o
+	fi
+fi
 OFLAGSEXTRA="function_name 1 nul_res_pref 1" make linkerflags= $@

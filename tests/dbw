@@ -1,0 +1,1 @@
+OCONV="wine6 ../otoc/otoc.exe" ./db $@

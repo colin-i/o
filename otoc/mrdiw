@@ -1,0 +1,1 @@
+platform=win ldprefer=0 launcher=wine6 OFLAGSPRE="conv_64 2" ./mrdi $@

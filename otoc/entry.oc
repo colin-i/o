@@ -1,4 +1,1 @@
-entry main(sd argc,sv argv)
-incst argv
-#sd s;set s _s2#
-#incst _s2
+entry main(sd argc,sv argv);incst argv

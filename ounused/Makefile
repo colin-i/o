@@ -24,24 +24,23 @@ endif
 ver=version.oh
 vers=../${ver}
 
-OFLAGS=
-#export OFLAGS inside will not be enough
-platform_ob=
 ifneq (${platform},win)
 
 OFLAGS=exit_end 1 underscore_pref 1
 platform_ob=${OB}
-all: ${platform_ob} link
+all: ${platform_ob}
 ${platform_ob}: ${OBJ}
 	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 --build-id -o $@ ${L} -l:libc.so.6 -entry main ${FULLOBJO}
+	$(MAKE) -f ./Makefile link
 
 else
 
 OFLAGS=inplace_reloc 0 include_sec 1
 platform_ob=${OB}.exe
-all: ${platform_ob} link
+all: ${platform_ob}
 ${platform_ob}: ${OBJ}
 	i686-w64-mingw32-gcc ${linkerflags} ${FULLOBJO} -o $@
+	$(MAKE) -f ./Makefile link
 
 endif
 

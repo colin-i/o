@@ -7,15 +7,18 @@ importx "puts" puts
 importx "fopen" fopen
 importx "fclose" fclose
 importx "strrchr" strrchr
-importx "memrchr" memrchr
 importx "exit" exit  #only for problems at box64
 
 function out_file(sd in)
 	ss p;set p strrchr(in,(asciidot))
 	if p!=(NULL)
-		sub p in
-		set p memrchr(in,(asciidot),p)
-		if p!=(NULL)
+		while in!=p
+			dec p
+			if p#=(asciidot)
+				break
+			end
+		end
+		if in!=p
 			#here we know there at at least two dots and of course the term null char
 			inc p
 			charx ext#1;set ext (asciic)
@@ -130,7 +133,7 @@ function parse_options(sd _argc,sv _argv)
 	return (EXIT_SUCCESS)
 end
 
-include "entryraw.oc" "entry.oc"
+include "entry.oc" "entryraw.oc"
 	if argc>=2
 		sd ok;set ok parse_options(#argc,#argv)
 		if ok=(EXIT_SUCCESS)
