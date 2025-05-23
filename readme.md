@@ -26,9 +26,10 @@ sudo dnf install ocompiler
 There is also <i>ocompiler-devel</i>.\
 \
 \
-On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/o/releases).\
+On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).\
 \
-On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).
+\
+On other linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/o/releases).
 
 ## Info
 Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html).\
