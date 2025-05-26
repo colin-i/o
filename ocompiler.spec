@@ -3,7 +3,7 @@
 
 Name: ocompiler
 Version: 5+232
-Release: 2
+Release: 3
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
@@ -32,7 +32,7 @@ gzip -dc %{S:1} > src/obj.txt
 touch include_dev
 
 %build
-make
+linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo package
 
 %install
 %make_install
@@ -53,6 +53,9 @@ make
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon May 26 2025 Costin Botescu <costin.botescu@gmail.com> 5+232-3
+- 
+
 * Mon May 26 2025 Costin Botescu <costin.botescu@gmail.com> 5+232-2
 - other distros (costin.botescu@gmail.com)
 - "sync" (costin.b.84@gmail.com)
