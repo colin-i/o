@@ -3,7 +3,7 @@
 
 Name: ocompiler
 Version: 5+232
-Release: 1
+Release: 2
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
@@ -32,7 +32,7 @@ gzip -dc %{S:1} > src/obj.txt
 touch include_dev
 
 %build
-linkerflags="-O3 -g" make
+make
 
 %install
 %make_install
@@ -53,6 +53,21 @@ linkerflags="-O3 -g" make
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon May 26 2025 Costin Botescu <costin.botescu@gmail.com> 5+232-2
+- other distros (costin.botescu@gmail.com)
+- "sync" (costin.b.84@gmail.com)
+- "sync" (costin.b.84@gmail.com)
+- ldprefer for fast default (costin.botescu@gmail.com)
+- windows otoc (costin.botescu@gmail.com)
+- win ounused (costin.botescu@gmail.com)
+- win getline (costin.botescu@gmail.com)
+- win stderr (costin.botescu@gmail.com)
+- in process of supporting windows at ounused, stderr/out/get_current_dir_name
+  lin wraps (costin.botescu@gmail.com)
+- argc/argv entry ounused(i386),otoc(x86_64) (costin.botescu@gmail.com)
+- win ounused, 5 functions to go (costin.botescu@gmail.com)
+- "sync" (costin.b.84@gmail.com)
+
 * Sat May 17 2025 Costin Botescu <costin.botescu@gmail.com> 5+232-1
 - added Xfile_yesignore and Xfile_declsign_pointer_var/fn
   (costin.b.84@gmail.com)
