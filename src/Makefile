@@ -56,23 +56,25 @@ ${OBJ}: ${FULLOBJS} ${etcinclude} ${vers}
 	if [ -s ${OBT} ];then \
 		echo text; \
 		base64 -d ${OBT} > $@; \
-		${_ATLDCOM} o $@; \
+		${_ATLDCOM} o $@ ${AFTERLDCOM}; \
 		${launcher} ./o ${FULLOBJS} ${OFLAGS}; \
 	else \
 		${OCOMP} $< ${OFLAGS}; \
 	fi; \
 	mv ${FULLOBJO} . \
 
-_ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=${linker} --build-id ${L} -l:libc.so.6 -entry main -o
+#suse will not work if -l is not at end
+AFTERLDCOM = ${L} -l:libc.so.6
+_ATLDCOM = $(LD) ${linkerflags} -melf_i386 --dynamic-linker=${linker} --build-id -entry main -o
 ATLDCOM = ${_ATLDCOM} $@
-ATLDCOM_T_O = $(LD) -melf_i386 --dynamic-linker=${linker} ${L} -lc -entry main -o z ${FULLOBJO}
+ATLDCOM_T_O = $(LD) -melf_i386 --dynamic-linker=${linker} -entry main -o z ${FULLOBJO} ${AFTERLDCOM}
 #--build-id for rpm
 
 ${etcinclude}:
 	echo sd etchelper=${etchelper}\;ss etc_helper=\"${etc_helper}\" > ${etcinclude}
 
 ${projname}: ${OBJ}
-	${ATLDCOM} $^
+	${ATLDCOM} $^ ${AFTERLDCOM}
 #$^ is all objects here, $< is first object
 
 install:

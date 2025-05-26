@@ -30,7 +30,7 @@ OFLAGS=exit_end 1 underscore_pref 1
 platform_ob=${OB}
 all: ${platform_ob}
 ${platform_ob}: ${OBJ}
-	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 --build-id -o $@ ${L} -l:libc.so.6 -entry main ${FULLOBJO}
+	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 --build-id -o $@ -entry main ${FULLOBJO} ${L} -l:libc.so.6
 	$(MAKE) -f ./Makefile link
 
 else

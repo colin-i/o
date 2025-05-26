@@ -1,2 +1,9 @@
 #!/bin/sh
-echo char version=\"`cat ./debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`\" > ./version.oh
+echo char version=\"`
+if [ -e ./debian/changelog ]; then
+	cat ./debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"
+else
+	#also removed from static rpm: cat ./ocompiler.spec | grep ^Version | grep -o "[^ ]*$"
+	cat ./localtest
+fi
+`\" > ./version.oh

@@ -1,7 +1,7 @@
 
-Importx "stderr" _stderr
-function stderr()
-	svu s^_stderr
+Importx "stderr" stderr
+function std_err()
+	svu s^stderr
 	return s#
 end
 
@@ -25,8 +25,8 @@ function _getline(sv a,sv b,sd c)
 	sd d;set d getline(a,b,c)
 	return d
 end
-importx "stdout" _stdout
-function stdout()
-	svu s^_stdout
+importx "stdout" stdout
+function std_out()
+	svu s^stdout
 	return s#
 end

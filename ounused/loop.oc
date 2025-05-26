@@ -174,7 +174,7 @@ function printlink(sd file)
 						set back# (asciio)
 						inc back
 						set back# (NULL)
-						sv st;set st stdout()
+						sv st;set st std_out()
 						sd len
 						setCall len fprintf(st," ")
 						if len=1

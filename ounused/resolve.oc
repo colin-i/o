@@ -29,10 +29,10 @@ function resolve(sd j)
 	sd k
 	setcall k uconst_resolved(2)
 	#
-	sv so;set so stdout()
+	sv so;set so std_out()
 	call fflush(so) #there is no line end at stdout, then flush is required
 	#
-	sv st;set st stderr()
+	sv st;set st std_err()
 	sd fls
 	setcall fls filessize()
 	div fls :
@@ -46,7 +46,7 @@ function resolve(sd j)
 endfunction
 
 function wrongExit(ss x,ss n,sd len)
-	sv st;set st stderr()
+	sv st;set st std_err()
 	Call fprintf(st,"Unused %s: ",x)
 	call fwrite(n,len,1,st)
 	call erExit("")

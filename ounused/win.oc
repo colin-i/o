@@ -18,7 +18,7 @@ function iob_func(sd type)
 	return std
 endfunction
 
-function stderr()
+function std_err()
 	sd a;set a iob_func((STDERR_FILENO))
 	return a
 end
@@ -90,7 +90,7 @@ function _getline(sv lineptr,sv n,sd stream)
 	sub pointer bufptr
 	return pointer
 end
-function stdout()
+function std_out()
 	sd a;set a iob_func((STDOUT_FILENO))
 	return a
 end

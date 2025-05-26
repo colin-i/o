@@ -9,12 +9,12 @@ include "header.oh"
 include "./throwless.oc"
 
 function messagedelim()
-	sv st;set st stderr()
+	sv st;set st std_err()
 	Char visiblemessage={0x0a,0}
 	Call fprintf(st,#visiblemessage)
 endfunction
 Function Message(ss text)
-	sv st;set st stderr()
+	sv st;set st std_err()
 	Call fprintf(st,text)
 	call messagedelim()
 EndFunction

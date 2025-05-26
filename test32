@@ -1,2 +1,7 @@
 
-test `cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"` = `cat localtest`
+if [ -e debian/changelog ]; then
+	test `cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"` = `cat localtest`
+else
+	#ocompiler.spec is also removed
+	exit 0
+fi
