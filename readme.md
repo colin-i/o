@@ -26,6 +26,23 @@ sudo dnf install ocompiler
 There is also <i>ocompiler-devel</i>.\
 \
 \
+On openSUSE, run the following as __root__:\
+For openSUSE Tumbleweed:
+```sh
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Tumbleweed/home:costin.repo
+```
+For openSUSE Leap:
+```sh
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Leap_15.6/home:costin.repo
+```
+And:
+```sh
+zypper refresh
+zypper install ocompiler
+```
+An optional step is to install **ocompiler-devel**.\
+\
+\
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).\
 \
 \
