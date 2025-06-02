@@ -16,12 +16,12 @@ arch=i386 ~/test/publp && \
 #if copy will not work because of already published error, manual "Copy binaries" and will also rebuild missing amd64
 ~/u/desktop/ubuntu-archive-tools/copy-package -y --from ppa:colin-i/ubuntu/ppa -s xenial --to-suite bionic ocompiler && \
 arch=amd64 ~/test/publp && \
-~/test/ai && \
+~/test/ai/ai && \
 ~/test/del && \
 ~/test/rel && \
 ./makewin && \
 ~/test/pub appimage rel && \
-~/test/upapp && \
+~/test/ai/upapp && \
 ./mrtext && \
 ~/test/upgen obj.txt.gz application/gzip && \
 ~/test/pkg/onb && \
