@@ -5,11 +5,17 @@ TOPTARGETS := install-proj clean distclean uninstall test
 
 #this at pkgbuild, must set because is not found dpkg-architecture, and that is making ifeq i386 not same as ifneq amd64
 ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
-SUBDIRS := src ounused otoc
 conv_64=1
 else
-SUBDIRS := src ounused ostrip otoc
+ifndef conv_64
 conv_64=0
+endif
+endif
+
+ifeq ($(conv_64),1)
+SUBDIRS := src ounused otoc
+else
+SUBDIRS := src ounused ostrip otoc
 endif
 
 #all must be first rule (rule: ...) to be executed in case of make with no args

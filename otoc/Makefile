@@ -29,13 +29,14 @@ tags=tags.oh
 
 ifneq (${platform},win)
 
-#same like ostrip for libc.so.6
+#same like ostrip for libc.so.6, and same suse and AFTERLDCOM
+AFTERLDCOM= ${L} -l:libc.so.6
 ifeq (${conv_64},0)
 	ATCCCOM = $(CC) ${linkerflags} ${linkerflagsextra} -o
-	ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} ${L} -l:libc.so.6 -entry main -o
+	ATLDCOM = $(LD) --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${linkerflags} -entry main -o
 else
 	ATCCCOM = $(CC) -m32 ${linkerflags} -o
-	ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${linkerflags} ${L} -lc -entry main -o
+	ATLDCOM = $(LD) -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${linkerflags} -entry main -o
 endif
 fullprog=${prog}
 all: ${fullprog}
@@ -49,11 +50,10 @@ all: ${fullprog}
 
 endif
 
-
-ifeq (${conv_64},1)
-	OFLAGSPRE+= conv_64 1
-endif
 OFLAGS=${OFLAGSPRE} ${OFLAGSEXTRA}
+ifeq (${conv_64},1)
+	OFLAGS+= conv_64 1 include_sec 1
+endif
 
 %.pre.o: %.pre.oc
 	${OCOMP} $< ${OFLAGS}
@@ -62,7 +62,7 @@ OFLAGS=${OFLAGSPRE} ${OFLAGSEXTRA}
 	if [ -z "${ldprefer}" ]; then \
 		${ATCCCOM} $@ $^; \
 	else \
-		${ATLDCOM} $@ $^; \
+		${ATLDCOM} $@ $^ ${AFTERLDCOM}; \
 	fi
 %.oh: %.pre
 	${launcher} ./$<
@@ -74,7 +74,7 @@ ${fullprog}: ${OBJ}
 	if [ -z "${ldprefer}" ]; then \
 		${ATCCCOM} ${prog} ${FULLOBJO}; \
 	else \
-		${ATLDCOM} ${prog} ${FULLOBJO}; \
+		${ATLDCOM} ${prog} ${FULLOBJO} ${AFTERLDCOM}; \
 	fi
 
 install:
