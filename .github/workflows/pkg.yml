@@ -35,7 +35,7 @@ jobs:
      ls ${here}
      echo "file=${nm2}" >> $GITHUB_ENV
 
-     tag=`echo ${nm} | grep -oP "(?<=${name}-)[^-]*" | sed s/\\./-/`
+     tag=`echo ${nm} | grep -oP "(?<=${name}-)[^-]*" | sed "s/\./-/"`
      echo "tag=${tag}" >> $GITHUB_ENV
   - name: Upload Release Asset
     uses: svenstaro/upload-release-action@master
