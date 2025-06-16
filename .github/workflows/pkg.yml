@@ -37,15 +37,14 @@ jobs:
      mv ${nm} ${here}/${nm2}
      ls ${here}
      echo "file=${nm2}" >> $GITHUB_ENV
-
-     wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
-     echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
   - name: Upload Release Asset
     uses: svenstaro/upload-release-action@master
     with:
      repo_token: ${{ secrets.PAT }}
      file: ./${{ env.file }}
      asset_name: ${{ env.file }}
+#		wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
+#		echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
 #		- name: Upload Release Asset
 #				uses: actions/upload-release-asset@v1
 #				with:
