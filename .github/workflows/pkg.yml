@@ -1,9 +1,6 @@
 
 on:
  workflow_dispatch:
-env:
- #for upload
- GITHUB_TOKEN: ${{ secrets.PAT }}
 
 jobs:
  archbuild:
@@ -37,12 +34,16 @@ jobs:
      mv ${nm} ${here}/${nm2}
      ls ${here}
      echo "file=${nm2}" >> $GITHUB_ENV
+
+     tag=`echo ${nm} | grep -oP "(?<=${name}-)[^-]*" | sed s/\\./-/`
+     echo "tag=${tag}" >> $GITHUB_ENV
   - name: Upload Release Asset
     uses: svenstaro/upload-release-action@master
     with:
      repo_token: ${{ secrets.PAT }}
      file: ./${{ env.file }}
      asset_name: ${{ env.file }}
+     tag: ${{ env.tag }}
 #		wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
 #		echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
 #		- name: Upload Release Asset
