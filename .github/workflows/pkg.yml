@@ -21,7 +21,7 @@ jobs:
      chown bot:bot bot
      cd bot
 
-     pacman -Sy --noconfirm --needed git base-devel wget lib32-glibc bc
+     pacman -Sy --noconfirm --needed git base-devel lib32-glibc bc
      su bot -c 'git clone -n --depth=1 --filter=tree:0 https://github.com/colin-i/pkgbuilds'
      cd pkgbuilds
      su bot -c "git sparse-checkout set --no-cone /${name}"
@@ -44,6 +44,7 @@ jobs:
      file: ./${{ env.file }}
      asset_name: ${{ env.file }}
      tag: ${{ env.tag }}
+#		pacman wget
 #		wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
 #		echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
 #		- name: Upload Release Asset
