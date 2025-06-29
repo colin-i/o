@@ -5,7 +5,6 @@ if [ -z "${msg}" ]; then # more at test/publ
 	msg="${1}"
 fi
 last=`curl https://api.github.com/repos/colin-i/o/releases/latest -s | jq .tag_name -r` && echo ${last} && \
-~/test/keyring && \
 arhstore_exclude_file=obj.txt.gz ~/test/arh3 ${last} && \
 from_env_files=".windows.zip *zst" ~/test/del x ${last} && \
 #when was old rpm list: here must arh fast to push changelog + old file same time
