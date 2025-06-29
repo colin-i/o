@@ -255,7 +255,7 @@ function setpreferences(vstr scrpath)
 	Data preferencessize#1
 	Data ptrpreferencessize^preferencessize
 
-	setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent,scrpath)
+	setcall err prefextra(preferences,ptrpreferencessize,ptrpreferencescontent) #,scrpath
 	If err!=noerr
 		data null=0
 		#data void#1

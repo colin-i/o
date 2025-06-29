@@ -27,19 +27,22 @@ endif
 
 #set preffile data
 PREFFILE=ocompiler.conf
-#there is not suposed to be a /usr/etc, /usr is read-only
+#there is not supposed to be a /usr/etc, /usr is read-only
+#move back is not working on fedora if sbin/o and on suse interactive bash(in scripts is ok) o is another alias and ocompiler is with move back
 ifeq ($(prefix),/usr)
 	PREFFILEFULL=$(DESTDIR)/etc/${PREFFILE}
-	#also move back the usr folder: usr/bin/o
-	#$((3+1+3+1+${#projname}))
-	etchelper=9
-	etc_helper=usr/bin/o
+	##also move back the usr folder: usr/bin/o
+	##$((3+1+3+1+${#projname}))
+	#etchelper=9
+	#etc_helper=usr/bin/o
+	etc_helper=/etc/${PREFFILE}
 else
 	PREFFILEFULL=$(DESTDIR)$(prefix)/etc/${PREFFILE}
-	#move back only exec name and bin folder: /usr/local/etc is ok. bin/o
-	#$((3+1+${#projname}))
-	etchelper=5
-	etc_helper=bin/o
+	##move back only exec name and bin folder: /usr/local/etc is ok. bin/o
+	##$((3+1+${#projname}))
+	#etchelper=5
+	#etc_helper=bin/o
+	etc_helper=$(prefix)/etc/${PREFFILE}
 endif
 etcinclude=etcinclude.oc
 #debian/ocompiler.install is forcing to usr/ / etc/
@@ -71,7 +74,8 @@ ATLDCOM_T_O = $(LD) -melf_i386 --dynamic-linker=${linker} -entry main -o z ${FUL
 #--build-id for rpm
 
 ${etcinclude}:
-	echo sd etchelper=${etchelper}\;ss etc_helper=\"${etc_helper}\" > ${etcinclude}
+	echo ss etc_helper=\"${etc_helper}\" > ${etcinclude}
+#sd etchelper=${etchelper}\;
 
 ${projname}: ${OBJ}
 	${ATLDCOM} $^ ${AFTERLDCOM}
