@@ -2,8 +2,8 @@ Source: ocompiler
 Section: utils
 Priority: optional
 Maintainer: Costin Botescu <costin.botescu@gmail.com>
-Build-Depends: debhelper (>= 9), ocompiler, libc6-dev-i386 [amd64], bc
-#, lsb-release [amd64], ostriputil [amd64]
+Build-Depends: debhelper (>= 9), ocompiler, libc6-i386 [amd64], bc
+#, lsb-release [amd64], ostriputil [amd64]  # was libc6-dev-i386 ?
 Standards-Version: 4.5.0
 Homepage: https://github.com/colin-i/o
 Rules-Requires-Root: no
