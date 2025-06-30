@@ -3,7 +3,7 @@
 
 Name: ocompiler
 Version: 5+235
-Release: 0
+Release: 1
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
@@ -53,6 +53,11 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon Jun 30 2025 Costin Botescu <costin.botescu@gmail.com> 5+235-1
+- spec fix (costin.botescu@gmail.com)
+- arh at last (costin.botescu@gmail.com)
+- pkg composite (costin.botescu@gmail.com)
+
 * Mon Jun 30 2025 Costin Botescu <costin.botescu@gmail.com> 5+235-0
 - test (costin.botescu@gmail.com)
 
