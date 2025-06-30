@@ -25,7 +25,7 @@ cd ounused && platform=win launcher=wine6 OCOMP=../ocompiler/o.exe make && \
 mv ounused.exe ../ocompiler && make clean && cd .. && \
 \
 cd otoc && platform=win launcher=wine6 OCOMP="wine6 ../ocompiler/o.exe" OLINK="wine6 ../ocompiler/ounused.exe" OFLAGSEXTRA="inplace_reloc 0" make && \
-mv otoc.exe ../ocompiler && make clean && cd ../tests && OCOMP="wine6 ../ocompiler/o.exe" OCONV="wine6 ../ocompiler/otoc.exe" ./db a.out && ./c1 a.out && ./c && \
+mv otoc.exe ../ocompiler && make clean && cd ../tests && OCOMP="wine6 ../ocompiler/o.exe" OCONV="wine6 ../ocompiler/otoc.exe" ./db a.out && ./c1 a.out && ./c && cd .. && \
 \
 zip -r ocompiler.zip ocompiler && \
 rm -r ./ocompiler && \

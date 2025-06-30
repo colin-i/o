@@ -1,56 +1,13 @@
-
 on:
  workflow_dispatch:
-
+env:
+ #for composite
+ GITHUB_TOKEN: ${{ secrets.PAT }}
 jobs:
  archbuild:
   runs-on: ubuntu-latest
   container: archlinux:latest
-
   steps:
-  - name: Checkout
-    uses: actions/checkout@v3
-  - name: build
-    run: |
-     name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
-     here=`pwd`
-
-     useradd bot
-     cd /home
-     mkdir bot
-     chown bot:bot bot
-     cd bot
-
-     pacman -Sy --noconfirm --needed git base-devel lib32-glibc bc
-     su bot -c 'git clone -n --depth=1 --filter=tree:0 https://github.com/colin-i/pkgbuilds'
-     cd pkgbuilds
-     su bot -c "git sparse-checkout set --no-cone /${name}"
-     su bot -c 'git checkout'
-     cd ${name}
-
-     su bot -c makepkg
-     nm=`ls | grep ".*\.zst$" | grep -v debug`
-     nm2=`echo ${nm} | sed s/-x86_64/-arch-x86_64/`
-     mv ${nm} ${here}/${nm2}
-     ls ${here}
-     echo "file=${nm2}" >> $GITHUB_ENV
-
-     tag=`echo ${nm} | grep -oP "(?<=${name}-)[^-]*" | sed "s/\./-/"`
-     echo "tag=${tag}" >> $GITHUB_ENV
-  - name: Upload Release Asset
-    uses: svenstaro/upload-release-action@master
-    with:
-     repo_token: ${{ secrets.PAT }}
-     file: ./${{ env.file }}
-     asset_name: ${{ env.file }}
-     tag: ${{ env.tag }}
-#		pacman wget
-#		wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
-#		echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
-#		- name: Upload Release Asset
-#				uses: actions/upload-release-asset@v1
-#				with:
-#					upload_url: ${{ env.up_url }}
-#					asset_path: ./${{ env.file }}
-#					asset_name: ${{ env.file }}
-#					asset_content_type: application/zstd
+   - uses: colin-i/test/.github/actions/pkg@main
+     with:
+      amd64: x
