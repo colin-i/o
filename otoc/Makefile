@@ -52,7 +52,7 @@ endif
 
 OFLAGS=${OFLAGSPRE} ${OFLAGSEXTRA}
 ifeq (${conv_64},1)
-	OFLAGS+= conv_64 1 include_sec 1
+	OFLAGS+= conv_64 1
 endif
 
 %.pre.o: %.pre.oc
