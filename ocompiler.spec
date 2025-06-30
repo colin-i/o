@@ -2,8 +2,8 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+232
-Release: 3
+Version: 5+233
+Release: 0
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
@@ -53,6 +53,24 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon Jun 30 2025 Costin Botescu <costin.botescu@gmail.com> 5+233-0
+- "up" (costin.botescu@gmail.com)
+- still having more cases wrong at etchelper, another solution with abs paths
+  (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- was -dev required there? (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- detailed log (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- Makefile corrected for suse (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- readme and pub (costin.botescu@gmail.com)
+- fixes for opensuse build (costin.botescu@gmail.com)
+
 * Mon May 26 2025 Costin Botescu <costin.botescu@gmail.com> 5+232-3
 - 
 

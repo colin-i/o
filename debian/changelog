@@ -1,3 +1,9 @@
+ocompiler (2-5+233) xenial; urgency=medium
+
+  * new way to find conf file
+
+ -- bc <bc@bc-desktop>  Mon, 30 Jun 2025 07:40:01 +0300
+
 ocompiler (2-5+232) xenial; urgency=medium
 
   * long logn and Xfile_declsign_pointer_var/fn
