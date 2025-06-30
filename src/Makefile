@@ -94,6 +94,7 @@ install-proj:
 		install -D files/headers/xfilecore.oh $(DESTDIR)$(prefix)/include/ocompiler/xfilecore.oh && \
 		install -D files/headers/xfile.oh $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
 	fi
+#	ln -s o $(DESTDIR)$(prefix)/bin/ocompiler #at suse, at use interactive bash (not inside scripts) o is another alias
 
 clean-compile:
 	-rm -f ${OBJ}
@@ -123,6 +124,7 @@ uninstall:
 		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfilecore.oh; \
 		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
 	fi
+#	-rm -f $(DESTDIR)$(prefix)/bin/ocompiler
 
 test-obj:
 	${launcher} ./o linux/obj.oc function_name 1 nul_res_pref 1

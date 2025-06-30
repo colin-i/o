@@ -4,7 +4,7 @@ if [ "${ldprefer}" = "0" ]; then # windows and if wanting to see gcc warnings
 	ldprefer=
 else # default linux
 	export ldprefer=1
-	export OFLAGSPRE="include_sec 1"
+	#export OFLAGSPRE="include_sec 1"
 	export LD=/usr/x86_64-linux-gnu/bin/ld
 fi
 if [ -z "${launcher}" ]; then export launcher=qq; fi

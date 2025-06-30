@@ -54,6 +54,9 @@ OFLAGS=${OFLAGSPRE} ${OFLAGSEXTRA}
 ifeq (${conv_64},1)
 	OFLAGS+= conv_64 1
 endif
+ifdef ldprefer
+	OFLAGS+= include_sec 1
+endif
 
 %.pre.o: %.pre.oc
 	${OCOMP} $< ${OFLAGS}
