@@ -8,7 +8,7 @@ License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
 Source0: %{name}-%{version}.tar.gz
-Source1: https://github.com/colin-i/o/releases/download/2-%{version}/obj.txt.gz
+Source1: https://github.com/colin-i/o/releases/download/%{name}-%{version}-%{release}/obj.txt.gz
 
 BuildRequires: make glibc(x86-32) gcc
 
