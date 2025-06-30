@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+234
+Version: 5+235
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,9 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon Jun 30 2025 Costin Botescu <costin.botescu@gmail.com> 5+235-0
+- test (costin.botescu@gmail.com)
+
 * Mon Jun 30 2025 Costin Botescu <costin.botescu@gmail.com> 5+234-0
 - fix otoc i386 (costin.botescu@gmail.com)
 
