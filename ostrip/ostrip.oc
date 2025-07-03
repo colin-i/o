@@ -26,10 +26,10 @@ format elfobj64
 #only at shared:
 #	aftercall value at .dynsym
 
-#pin about .data align at objects that ld respects when concatenating
-#aftercall is retrieved in .symtab in an entry with Type=NOTYPE and Ndx=dataind, then .strtab for name, then in another objects an import with that name
-#at exec instead of .strtab can be value is inside data(there are outside data values as well), but that's extra code
-#aftercall can be resolved not from the first iteration
+# pin about .data align at objects that ld respects when concatenating
+# aftercall is retrieved in .symtab in an entry with Type=NOTYPE and Ndx=dataind, then .strtab for name, then in another objects an import with that name
+# at exec instead of .strtab can be value is inside data(there are outside data values as well), but that's extra code
+# aftercall can be resolved not from the first iteration
 
 include "header.oh"
 
