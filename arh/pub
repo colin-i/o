@@ -15,9 +15,9 @@ arch=amd64 ~/test/publp && \
 ~/test/rel && \
 ./makewin && \
 ~/test/pub appimage rel && \
-~/test/ai/upapp && \
 ./mrtext && \
 ~/test/upgen obj.txt.gz application/gzip && \
+~/test/ai/upapppic && \
 ~/test/pkg/onb && \
 ~/test/upgen ocompiler.zip application/zip ocompiler.windows.zip && \
 ~/test/pub upapp pkg && \

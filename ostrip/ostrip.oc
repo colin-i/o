@@ -1,8 +1,6 @@
 
 #must do a stripped .data and resolved .text (and .symtab with offset (more at leaf.py))
 
-#input: exec log1 o1 ... logN oN
-
 format elfobj64
 #modify debian/control exec depends,appimage.yml,debian/control arh order
 
@@ -172,4 +170,5 @@ if argc>=(1+3)  #0 is all the time
 	call frees()
 	call exit((EXIT_SUCCESS))
 endif
+call eMessage("Usage: exec log1 o1 [... logN oN]")
 call exit((EXIT_FAILURE))
