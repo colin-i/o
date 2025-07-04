@@ -2,8 +2,8 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+235
-Release: 1
+Version: 5+236
+Release: 0
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
@@ -53,6 +53,15 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Fri Jul 04 2025 Costin Botescu <costin.botescu@gmail.com> 5+236-0
+- ostrip usage (costin.botescu@gmail.com)
+- test ready for fuse3 (costin.botescu@gmail.com)
+- acall syntax (costin.botescu@gmail.com)
+- test.yml (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- suse ocompiler ln fix (costin.botescu@gmail.com)
+- not required to bump version only for fedora patch (costin.botescu@gmail.com)
+
 * Mon Jun 30 2025 Costin Botescu <costin.botescu@gmail.com> 5+235-1
 - spec fix (costin.botescu@gmail.com)
 - arh at last (costin.botescu@gmail.com)
