@@ -27,23 +27,15 @@ jobs:
      run: |
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
       name2=OCompiler
-      #
       mkdir -p AppDir
-      file=runtime
-      arch_ai=-x86_64
-      archfile=${file}${arch_ai}
-      kitpart () {
-       #https://github.com/AppImage/pkg2appimage
-       #this is not working anymore urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/latest -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
-       urlpart=AppImage/AppImageKit/releases/latest/download/${archfile}
-      }
-      if [ ! -e "${file}" ]; then
-       kitpart
-       #"pkg2appimage-.*-x86_64.AppImage"
-       wget -c https://github.com/${urlpart}
-       mv ${archfile} ${file}
-       chmod a+x ${file}
+
+      run=runtime
+      if [ ! -e "${run}" ]; then
+       archfile=runtime-x86_64
+       wget -c https://github.com/AppImage/type2-runtime/releases/download/continuous/${archfile}
+       mv ${archfile} ${run}
       fi
+
       if [ ! -e "${name}.deb" ]; then
        arh=amd64
        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
@@ -56,6 +48,7 @@ jobs:
        wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
        dpkg -x ${name}.deb AppDir
       fi
+
       pkg=libc6-i386
       maindeb=${pkg}.deb
       if [ ! -e "${maindeb}" ]; then
@@ -70,39 +63,16 @@ jobs:
        wget_url=http://${src}/ubuntu/${debfilename}
        wget ${wget_url} -O ${maindeb}
        dpkg -x ${maindeb} AppDir
+       rm AppDir/usr/bin/ocompiler #a link inside an appimage
       fi
+
       cd AppDir
-      file2=AppRun
-      if [ ! -e "${file2}" ]; then
-       if [ -z "${urlpart}" ]; then
-        kitpart
-       fi
-       archfile2=${file2}${arch_ai}
-       urlpart=${urlpart:0:`echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1`}${archfile2}
-       wget -c https://github.com/${urlpart}
-       chmod a+x ${archfile2}
-       mv ${archfile2} ${file2}
-      fi
-      pngfile=${name}.png
-      if [ ! -e "${pngfile}" ]; then
-       wget https://github.com/colin-i/test/releases/download/1.5/${name}.png -O ${pngfile}
-       cat > ${name}.desktop <<EOF
-      [Desktop Entry]
-      Type=Application
-      Name=${name2}
-      Exec=${name}
-      Icon=${name}
-      Categories=Utility
-      EOF
-       ln -s ${pngfile} .DirIcon
-      fi
-      #
-      if [ ! -e "usr/bin/${name}" ]; then
+      file=AppRun
+      if [ ! -e "${file}" ]; then
        echo launcher
-       cd usr/bin
-       cat > ${name} <<EOF
+       cat > ${file} <<EOF
       #!/bin/sh
-      cd "\$(dirname "\$0")"
+      root_dir="\$(readlink -f "\$(dirname "\$0")")"
       if [ "\${1}" = "0" ]; then
        cmd=o
       elif [ "\${1}" = "1" ]; then
@@ -117,17 +87,30 @@ jobs:
         exit 1
        fi
        shift
-       ./\${cmd} "\$@"
+       "\${root_dir}/usr/bin/\${cmd}" "\$@"
        exit \$?
       fi
       shift
-      cd ../../
-      LD_LIBRARY_PATH="\$(pwd)/lib32" \
-       ./lib32/ld-linux.so.2 ./usr/bin/\${cmd} "\$@"
+      LD_LIBRARY_PATH="\${root_dir}/lib32"\
+       "\${root_dir}/lib32/ld-linux.so.2" "\${root_dir}/usr/bin/\${cmd}" "\$@"
       EOF
        chmod 755 ${name}
-       cd ../../
       fi
+
+      pngfile=${name}.png
+      if [ ! -e "${pngfile}" ]; then
+       wget https://github.com/colin-i/test/releases/download/1.5/${name}.png -O ${pngfile}
+       cat > ${name}.desktop <<EOF
+      [Desktop Entry]
+      Type=Application
+      Name=${name2}
+      Exec=${name}
+      Icon=${name}
+      Categories=Utility
+      EOF
+       ln -s ${pngfile} .DirIcon
+      fi
+
       #metadata file
       mi=usr/share/metainfo
       mif=${mi}/com.colin.${name}.appdata.xml
@@ -154,17 +137,16 @@ jobs:
       </component>
       EOF
       fi
-      #
       cd ..
-      #
+
       if [ ! -e "${name}.AppImage" ]; then
        mksquashfs AppDir ${name}.squashfs -root-owned -noappend
-       cat runtime >> ${name}.AppImage
+       cat runtime > ${name}.AppImage
        cat ${name}.squashfs >> ${name}.AppImage
        chmod a+x ${name}.AppImage
       fi
    - name: artifact
-     uses: actions/upload-artifact@v4
+     uses: actions/upload-artifact@master
      with:
       name: appimage
       path: ./*.AppImage

@@ -85,8 +85,10 @@ install:
 	$(MAKE) all
 	$(MAKE) install-proj
 install-proj:
-	install -D o \
-		$(DESTDIR)$(prefix)/bin/o
+	install -D o $(DESTDIR)$(prefix)/bin/o
+	if [ -e ../ocompiler_is_o ]; then\
+		ln -s o $(DESTDIR)$(prefix)/bin/ocompiler;\
+	fi
 	install -D ../${PREFFILE} ${PREFFILEFULL}
 	if [ -e ../include_dev ]; then \
 		install -D files/headers/logs.oh $(DESTDIR)$(prefix)/include/ocompiler/logs.oh && \
@@ -94,7 +96,11 @@ install-proj:
 		install -D files/headers/xfilecore.oh $(DESTDIR)$(prefix)/include/ocompiler/xfilecore.oh && \
 		install -D files/headers/xfile.oh $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
 	fi
-#	ln -s o $(DESTDIR)$(prefix)/bin/ocompiler #at suse, at use interactive bash (not inside scripts) o is another alias
+#at suse, at use interactive bash (not inside scripts) o is another alias
+#not install because is not installing a link
+#ln -s o %{_buildrootdir}/BUILDROOT%{_bindir}/ocompiler || ln -s o %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}%{_bindir}/ocompiler #this because at use interactive bash (not inside scripts) o is another alias
+#ln here because since debian .install file, will go through that
+#		ln -s o ocompiler;\
 
 clean-compile:
 	-rm -f ${OBJ}
@@ -117,14 +123,17 @@ distclean: clean
 
 uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/o
-	-rm -f ${PREFFILEFULL}
-	-if [ -e ../include_dev ]; then \
-		rm -f $(DESTDIR)$(prefix)/include/ocompiler/logs.oh; \
-		rm -f $(DESTDIR)$(prefix)/include/ocompiler/log.oh; \
-		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfilecore.oh; \
-		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh; \
+	if [ -e ../ocompiler_is_o ]; then\
+		-rm -f $(DESTDIR)$(prefix)/bin/ocompiler;\
 	fi
-#	-rm -f $(DESTDIR)$(prefix)/bin/ocompiler
+	-rm -f ${PREFFILEFULL}
+	-if [ -e ../include_dev ]; then\
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/logs.oh;\
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/log.oh;\
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfilecore.oh;\
+		rm -f $(DESTDIR)$(prefix)/include/ocompiler/xfile.oh;\
+	fi
+#		-rm -f ocompiler;\
 
 test-obj:
 	${launcher} ./o linux/obj.oc function_name 1 nul_res_pref 1

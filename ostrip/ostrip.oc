@@ -170,5 +170,5 @@ if argc>=(1+3)  #0 is all the time
 	call frees()
 	call exit((EXIT_SUCCESS))
 endif
-call eMessage("Usage: exec log1 o1 [... logN oN]")
+call eMessage("Usage: ostrip exec log1 o1 [... logN oN]")
 call exit((EXIT_FAILURE))
