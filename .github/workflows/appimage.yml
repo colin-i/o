@@ -63,7 +63,6 @@ jobs:
        wget_url=http://${src}/ubuntu/${debfilename}
        wget ${wget_url} -O ${maindeb}
        dpkg -x ${maindeb} AppDir
-       rm AppDir/usr/bin/ocompiler #a link inside an appimage
       fi
 
       cd AppDir
