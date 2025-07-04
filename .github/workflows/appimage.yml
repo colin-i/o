@@ -93,7 +93,7 @@ jobs:
       LD_LIBRARY_PATH="\${root_dir}/lib32"\
        "\${root_dir}/lib32/ld-linux.so.2" "\${root_dir}/usr/bin/\${cmd}" "\$@"
       EOF
-       chmod 755 ${name}
+       chmod 755 ${file}
       fi
 
       pngfile=${name}.png
