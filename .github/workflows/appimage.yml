@@ -69,6 +69,7 @@ jobs:
       file=AppRun
       if [ ! -e "${file}" ]; then
        echo launcher
+       #exit after exec? exec return -1 only if an error was there
        cat > ${file} <<EOF
       #!/bin/sh
       root_dir="\$(readlink -f "\$(dirname "\$0")")"
@@ -86,12 +87,12 @@ jobs:
         exit 1
        fi
        shift
-       "\${root_dir}/usr/bin/\${cmd}" "\$@"
+       exec "\${root_dir}"/usr/bin/\${cmd} "\$@"
        exit \$?
       fi
       shift
-      LD_LIBRARY_PATH="\${root_dir}/lib32"\
-       "\${root_dir}/lib32/ld-linux.so.2" "\${root_dir}/usr/bin/\${cmd}" "\$@"
+      LD_LIBRARY_PATH="\${root_dir}"/lib32\
+       exec "\${root_dir}"/lib32/ld-linux.so.2 "\${root_dir}"/usr/bin/\${cmd} "\$@"
       EOF
        chmod 755 ${file}
       fi
@@ -140,7 +141,7 @@ jobs:
 
       if [ ! -e "${name}.AppImage" ]; then
        mksquashfs AppDir ${name}.squashfs -root-owned -noappend
-       cat runtime > ${name}.AppImage
+       cat ${run} > ${name}.AppImage
        cat ${name}.squashfs >> ${name}.AppImage
        chmod a+x ${name}.AppImage
       fi
