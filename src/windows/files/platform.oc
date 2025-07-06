@@ -2,7 +2,7 @@
 function platform_free()
 	sd a%p_argv
 	if a#!=(NULL)
-		call free(a#)
+		call LocalFree(a#)
 	endif
 	sd b%p_path_free
 	if b#!=(NULL)

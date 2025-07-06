@@ -22,6 +22,7 @@ Importx "strcat" strcat
 #kernel32
 Importx "GetCommandLineW" GetCommandName
 Importx "GetTickCount" GetTickCount
+Importx "LocalFree" LocalFree
 
 #user32
 Importx "MessageBoxA" MessageBox

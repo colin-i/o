@@ -15,6 +15,7 @@ Import "strcat" strcat
 Library "kernel32.dll"
 Import "GetCommandLineW" GetCommandName
 Import "GetTickCount" GetTickCount
+Import "LocalFree" LocalFree
 
 Library "user32.dll"
 Import "MessageBoxA" MessageBox
