@@ -235,7 +235,7 @@ function initpreferences()
 	set ptr_nobits_virtual# (Yes)
 	set ptr_has_debug# (No)
 	set main.xbool (No)
-	set main.callret_end_warn (Yes)
+	set main.callret_end_warn (callret_end_no_strict)
 
 	#this is used also at arguments
 

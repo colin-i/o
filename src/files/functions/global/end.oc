@@ -34,15 +34,17 @@ function endfunction(sd parses)
 				else
 					call set_programentrypoint()
 					if main.ret_cont_break=(ret_cont_break_canskip_warn)
-						if main.xbool!=(Yes_strict) #at c is ok, is return argument
-							whiletrue
-								if main.xbool=(Yes)
-									if main.callret_end_warn=(Yes)
-										call Message("CallRet;EndFunction warning") #at c more important
-										break
+						if main.callret_end_warn!=(callret_end_no_strict)
+							if main.xbool!=(Yes_strict) #at c is ok, is return argument
+								whiletrue
+									if main.xbool=(Yes)
+										if main.callret_end_warn=(Yes)
+											call Message("CallRet;EndFunction warning") #at c more important
+											break
+										end
 									end
+									return uselessret ##at only o or o more important
 								end
-								return uselessret ##at only o or o more important
 							end
 						end
 					end

@@ -5,7 +5,9 @@ Const FALSE=0
 Const NULL=0
 Const No=FALSE
 Const Yes=TRUE
-Const Yes_strict=2
+Const After_no_yes=2
+Const Yes_strict=After_no_yes
+Const callret_end_no_strict=After_no_yes
 const negative=-1
 const nonzero=-1
 
