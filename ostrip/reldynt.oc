@@ -113,6 +113,7 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 						break
 					endif
 					incst reloc_dyn_initobj.objects
+					call verbstart("rd")
 					if reloc_dyn_initobj.objects#!=(NULL)
 						setcall datavaddr reloc_dyn_initobj(datavaddr)
 						continue
@@ -120,6 +121,7 @@ function reloc_iteration(sv pointer,sd end,sd datavaddr,sd datavaddrend,sd diff)
 					ret     #it's not in .data anymore
 				endwhile
 				setcall cursor# reloc_dyn_value(offset)
+				call verb(cursor#)
 				add cursor (rel_size)
 				call verbose((verbose_count))
 			endwhile

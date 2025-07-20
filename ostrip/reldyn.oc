@@ -1,4 +1,5 @@
 
+#aftercalli
 
 function reloc_dyn(sd datavaddrstart,sd datavaddrend)
 	sd pointer;set pointer frees.execreladyn

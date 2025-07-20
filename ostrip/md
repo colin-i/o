@@ -5,3 +5,4 @@ if [ -z "${ccprefer}" ]; then
 fi
 OFLAGSEXTRA+=" function_name 1 nul_res_pref 1"
 OFLAGSEXTRA="${OFLAGSEXTRA}" make linkerflags= ldprefer=${ldprefer} $@
+if [ -n "${test}" ]; then OFLAGSEXTRA="${OFLAGSEXTRA}" make linkerflags= ldprefer=${ldprefer} test; fi

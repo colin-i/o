@@ -1,0 +1,3 @@
+
+strippy="python /home/bc/a/Desktop/ostriputil/ostriputil-1/ostriputil/main.py"\
+	nobits_virtual=0 test=x ./md

@@ -12,7 +12,9 @@ linkerflags=-O3 -s
 #             1
 endif
 
+ifndef strippy
 strippy=ostriputil
+endif
 
 ifndef ldprefer
 	OFLAGSPRE= include_sec 1

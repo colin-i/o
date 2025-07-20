@@ -1,4 +1,6 @@
 
+#aftercalli
+
 #data extra align at realoffset,concat,reldyn then unaligned at reloc,reldyn
 #text extra aligned
 
@@ -149,12 +151,12 @@ function write_symtab_offset(sd file,sd offset,sd end,sd shentsize,sd pnr)
 			if offs=nr
 				sd off=sh64_addr_to_offset
 				call get_section_loc(file,offset,#off)
-				sd fout;setcall fout fopen(#main.s3o,"wb")
+				sd fout;setcall fout fopen(#wrap.s3o,"wb")
 				if fout!=(NULL)
 					call writeclose(fout,#off,:)
 					ret
 				endif
-				call fError(#main.s3o)
+				call fError(#wrap.s3o)
 			endif
 			call seekc(file,rest)
 			add offset shentsize

@@ -68,6 +68,7 @@ function reloc_sec(sv object,sd doffset,sd voffset,sd voffset_obj,sd soffset)
 				sv rel_offset;set rel_offset pointer#
 				add rel_offset soffset
 				set rel_offset# addend
+				call verb(addend)
 				call verbose((verbose_count))
 			endif
 		endif
