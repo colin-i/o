@@ -9,9 +9,7 @@ Function is_variable_char(sd byte)
 	If byte<=(asciinine)
 		Return (TRUE)
 	EndIf
-	sd bool
-	setcall bool is_variable_char_not_numeric(byte)
-	return bool
+	callret is_variable_char_not_numeric(byte)
 EndFunction
 
 #bool

@@ -145,8 +145,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				return (noerror)
 			endif
 			add q_size 2
-			setcall errnr verify_syntax_end_and_restore(ptrcontent,ptrsize,q_size)
-			return errnr
+			callret verify_syntax_end_and_restore(ptrcontent,ptrsize,q_size)
 		endelse
 	elseif allowdata!=(allow_later)  #exclude pass_init, but even there jump over first arg
 		call arg_size(content,argsize,#argsize)  #spc,tab
@@ -193,8 +192,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				if sens=(FORWARD)
 					return (noerror)
 				endif
-				setcall errnr verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
-				return errnr
+				callret verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
 			endif
 			sd imm;setcall imm getimm()
 			if imm=(TRUE) #if is FALSE, this is the only option for xfile. also allow(string) is no
@@ -314,8 +312,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			if sens=(FORWARD)
 				return (noerror)
 			endif
-			setcall errnr verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
-			return errnr
+			callret verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
 		endif
 	endelseif
 	If sens=(FORWARD)
@@ -329,7 +326,7 @@ function getarg_dot_any(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrl
 	sd scope
 	setcall errnr get_scope_inner(#content,#argsize,container_sz,#scope)
 	if errnr=(noerror)
-		SetCall errnr varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
+		callret varsufix_ex(content,argsize,ptrdata,ptrlow,ptrsufix,scope)
 	endif
 	return errnr
 endfunction
@@ -346,7 +343,7 @@ function getarg_dot(sd content,sd argsize,sd container_sz,sd ptrdata,sd ptrlow,s
 		if test=0
 			return (noerror)
 		endif
-		setcall errnr there_is_nothing_there()
+		callret there_is_nothing_there()
 	endif
 	return errnr
 endfunction
@@ -456,12 +453,10 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 				endif
 				sd nr;setcall ptrdata# searchinvars_scope(content,container_sz,#nr,scope)
 				if ptrdata#=(NULL)
-					setcall err undefinedvariable()
-					return err
+					callret undefinedvariable()
 				endif
 				if nr>=(totalmemvariables)
-					setcall err there_is_nothing_there()
-					return err
+					callret there_is_nothing_there()
 				endif
 				set is_stack 0   #use later when keeping location
 			else
@@ -472,8 +467,7 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			if err=(noerror)
 				setcall ptrdata# searchinvars(content,container_sz,(NULL),(NULL),1)
 				if ptrdata#=(NULL)
-					setcall err undefinedvariable()
-					return err
+					callret undefinedvariable()
 				endif
 				setcall is_stack stackbit(ptrdata#)
 			else
@@ -570,15 +564,12 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 endfunction
 #err
 function getarg_testdot(sd content,sd size,sd ptrdata,sd ptrlow,sd ptrsufix)
-	sd errnr
 	sd container_sz
 	setcall container_sz valinmem(content,size,(asciidot))
 	if container_sz!=size
-		setcall errnr getarg_dot(content,size,container_sz,ptrdata,ptrlow,ptrsufix)
-	else
-		SetCall errnr varsufix(content,size,ptrdata,ptrlow,ptrsufix)
-	endelse
-	return errnr
+		callret getarg_dot(content,size,container_sz,ptrdata,ptrlow,ptrsufix)
+	end
+	callret varsufix(content,size,ptrdata,ptrlow,ptrsufix)
 endfunction
 
 #err
@@ -682,8 +673,7 @@ function get_scope_pos(ss content,sd sz,sv ppos)
 			return und
 		endif
 	endelse
-	sd err;setcall err xfile_add_string_if(content,sz)
-	return err
+	callret xfile_add_string_if(content,sz)
 endfunction
 
 function function_in_code()

@@ -50,9 +50,7 @@ function argument_return(sd termswitch,ss pop,sd pregprepare_bool,sv pptrcontinu
 	if termswitch=(TRUE)
 		data ebxregnumber=ebxregnumber
 		set pregopcode# ebxregnumber
-		sd err
-		setcall err getexit(pptrcontinuation,psizeofcontinuation)
-		return err
+		callret getexit(pptrcontinuation,psizeofcontinuation)
 	endif
 	set pregopcode# (eaxregnumber)
 	setcall psizeofcontinuation# getreturn(pptrcontinuation)
@@ -270,7 +268,6 @@ endfunction
 
 #err
 function argument_init(sv ptrcontent,sd ptrsize,sd subtype)
-	sd err
 	if subtype!=(cRETURN)
 		if subtype!=(cEXIT)
 			#exclude strings at inc,dec,...
@@ -281,6 +278,5 @@ function argument_init(sv ptrcontent,sd ptrsize,sd subtype)
 		endif
 	endif
 	call xfile_proto()
-	setcall err getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 3 more arguments but are not used
-	return err
+	callret getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 3 more arguments but are not used
 endfunction

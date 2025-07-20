@@ -2,13 +2,11 @@
 
 #errnr
 Function addtosecstresc(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad)
-	sd err;setcall err addtosecstresc_base(pcontent,psize,sz,escapes,pdest,wordpad,(FALSE))
-	return err
+	callret addtosecstresc_base(pcontent,psize,sz,escapes,pdest,wordpad,(FALSE))
 endFunction
 #errnr
 Function addtosecstresc_xfile(sd pcontent,sd psize,sd sz,sd escapes,sd pdest)
-	sd err;setcall err addtosecstresc_base(pcontent,psize,sz,escapes,pdest,(FALSE),(TRUE))
-	return err
+	callret addtosecstresc_base(pcontent,psize,sz,escapes,pdest,(FALSE),(TRUE))
 endFunction
 #errnr
 Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd wordpad,sd write_to_xfile)
@@ -75,8 +73,7 @@ Function addtosecstresc_base(sd pcontent,sd psize,sd sz,sd escapes,sd pdest,sd w
 
 	if write_to_xfile=(TRUE)
 		#ifif only for include tag
-		setcall errnr xfile_add_multistring_ifif(xfileloc,xfilesz,is_multiline)
-		return errnr
+		callret xfile_add_multistring_ifif(xfileloc,xfilesz,is_multiline)
 	endif
 
 	Return (noerror)

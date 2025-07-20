@@ -123,7 +123,7 @@ Function elfaddstrsec(data stringofname,data type,data flags,data fileoffset,dat
 	sd ptrregnr^regnr
 	SetCall err addtonames(stringofname,ptrregnr)
 	If err=(noerror)
-		setcall err elfaddsec(regnr,type,flags,fileoffset,seccont,link,info,align,entsize)
+		callret elfaddsec(regnr,type,flags,fileoffset,seccont,link,info,align,entsize)
 	endif
 	return err
 EndFunction
@@ -283,9 +283,7 @@ EndFunction
 
 #err
 Function addrel(sd offset,sd symbolindex,sd struct)
-	sd err
-	setcall err addrel_base(offset,symbolindex,0,struct)
-	return err
+	callret addrel_base(offset,symbolindex,0,struct)
 endfunction
 
 #err

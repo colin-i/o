@@ -132,23 +132,18 @@ endfunction
 function addtolog_term(sd filehandle)
 	sd sz
 	ss text;setcall text log_term(#sz)
-	sd err
-	setcall err writefile_errversion(filehandle,text,sz)
-	return err
+	callret writefile_errversion(filehandle,text,sz)
 endfunction
 #err
 function addtolog_handle(ss content,sd sizetowrite,sd filehandle)
 	sd err
 	setcall err writefile_errversion(filehandle,content,sizetowrite)
 	if err!=(noerror);return err;endif
-	setcall err addtolog_term(filehandle)
-	return err
+	callret addtolog_term(filehandle)
 endfunction
 #err
 function addtolog_char(sd type,sd handle)
-	sd err
-	setcall err addtolog_withchar_handle((NULL),0,type,handle)
-	return err
+	callret addtolog_withchar_handle((NULL),0,type,handle)
 endfunction
 #err
 function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
@@ -157,7 +152,7 @@ function addtolog_withchar_handle(ss content,sd size,sd type,sd handle)
 		sd err
 		setcall err writefile_errversion(handle,#type,1)
 		if err=(noerror)
-			setcall err addtolog_handle(content,size,handle)
+			callret addtolog_handle(content,size,handle)
 		endif
 		return err
 	endif
@@ -166,17 +161,13 @@ endfunction
 #err
 function addtolog_withchar_ex(ss content,sd size,sd type)
 	vdata ptrfilehandle%ptrlogfile
-	sd err
-	setcall err addtolog_withchar_handle(content,size,type,ptrfilehandle#)
-	return err
+	callret addtolog_withchar_handle(content,size,type,ptrfilehandle#)
 endfunction
 #err
 function addtolog_withchar(ss content,sd type)
 	sd len
 	setcall len strlen(content)
-	sd err
-	setcall err addtolog_withchar_ex(content,len,type)
-	return err
+	callret addtolog_withchar_ex(content,len,type)
 endfunction
 #err
 function addtolog_array_withchar(sv array,sd type)
@@ -192,7 +183,7 @@ function addtolog_array_withchar(sv array,sd type)
 				if err!=(noerror);return err;endif
 				add array (dwsz)
 			endwhile
-			setcall err addtolog_term(ptrfilehandle#)
+			callret addtolog_term(ptrfilehandle#)
 		endif
 		return err
 	endif
@@ -200,22 +191,21 @@ function addtolog_array_withchar(sv array,sd type)
 endfunction
 #err
 function addtolog_withchar_parses(ss content,sd type,sd both)
-	sd err
 	if both=(FALSE)
 		sd ptrparses%ptr_parses
 		if ptrparses#=(pass_init)
-			setcall err addtolog_withchar(content,type)
-		elseif ptrparses#=(pass_write)
-			setcall err addtodebug_withchar(content,type)
-		else
+			callret addtolog_withchar(content,type)
+		end
+		if ptrparses#=(pass_write)
+			callret addtodebug_withchar(content,type)
+		end
 		#skip pass_calls
-			return (noerror)
-		endelse
-		return err
+		return (noerror)
 	endif
+	sd err
 	setcall err addtolog_withchar(content,type)
 	if err=(noerror)
-		setcall err addtodebug_withchar(content,type)
+		callret addtodebug_withchar(content,type)
 	endif
 	return err
 endfunction
@@ -223,9 +213,7 @@ endfunction
 function addtolog_withchar_ex_atunused(ss content,sd size,sd type)
 	data ptrobject%ptrobject
 	if ptrobject#=(TRUE)
-		sd err
-		setcall err addtolog_withchar_ex(content,size,type)
-		return err
+		callret addtolog_withchar_ex(content,size,type)
 	endif
 	return (noerror)
 endfunction
@@ -233,9 +221,7 @@ endfunction
 function addtolog_withchar_ex_atunused_handle(ss content,sd size,sd type,sd filehandle)
 	data ptrobject%ptrobject
 	if ptrobject#=(TRUE)
-		sd err
-		setcall err addtolog_withchar_handle(content,size,type,filehandle)
-		return err
+		callret addtolog_withchar_handle(content,size,type,filehandle)
 	endif
 	return (noerror)
 endfunction
@@ -243,6 +229,5 @@ endfunction
 function addtolog_natural(sd number)
 	char buf#8+1
 	call sprintf(#buf,"%08x",number)  #for file seek at position
-	sd err;setcall err addtolog_withchar(#buf,(log_expand))
-	return err
+	callret addtolog_withchar(#buf,(log_expand))
 endfunction

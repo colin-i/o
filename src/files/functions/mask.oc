@@ -8,53 +8,35 @@ function data_get_maskbit(sd pointer,sd bit)
 	return bit
 endfunction
 function importbit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(idatabitfunction))
-	return bit
+	callret data_get_maskbit(pointer,(idatabitfunction))
 endfunction
 function stackbit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(stackbit))
-	return bit
+	callret data_get_maskbit(pointer,(stackbit))
 endfunction
 function stackrelativebit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(stackrelativebit))
-	return bit
+	callret data_get_maskbit(pointer,(stackrelativebit))
 endfunction
 function datapointbit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(datapointbit))
-	return bit
+	callret data_get_maskbit(pointer,(datapointbit))
 endfunction
 function expandbit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(expandbit))
-	return bit
+	callret data_get_maskbit(pointer,(expandbit))
 endfunction
 function expandbit_wrap(sd pointer)
 	vdata ptr_nobits_virtual%ptr_nobits_virtual
 	if ptr_nobits_virtual#=(Yes)
-		sd bit
-		setcall bit data_get_maskbit(pointer,(expandbit))
-		return bit
+		callret data_get_maskbit(pointer,(expandbit))
 	endif
 	return 0
 endfunction
 function pointbit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(pointbit))
-	return bit
+	callret data_get_maskbit(pointer,(pointbit))
 endfunction
 function suffixbit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(suffixbit))
-	return bit
+	callret data_get_maskbit(pointer,(suffixbit))
 endfunction
 function signbit(sd pointer)
-	sd bit
-	setcall bit data_get_maskbit(pointer,(signbit))
-	return bit
+	callret data_get_maskbit(pointer,(signbit))
 endfunction
 
 function stack_get_relative(sd location)

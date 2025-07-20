@@ -326,10 +326,8 @@ endfunction
 function inplace_reloc_unres(sd p,sd add)
 	sd p_inplace_reloc_pref%p_inplace_reloc_pref
 	if p_inplace_reloc_pref#!=(zero_reloc)
-		sd err
 		sd ptrcodesec%%ptr_codesec
-		setcall err unresLc(add,ptrcodesec,0)
-		return err
+		callret unresLc(add,ptrcodesec,0)
 	endif
 	set p# (i386_obj_default_reloc)
 	return (noerror)

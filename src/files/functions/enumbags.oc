@@ -24,8 +24,7 @@ EndFunction
 function enumbags_alloc(sd container)
 	sd max;call getcontMax(container,#max)
 	sd pcont;call getptrcont(container,#pcont)
-	sd err;setcall err mem_alloc(max,pcont)
-	return err
+	callret mem_alloc(max,pcont)
 endfunction
 function enumbags_free(sd container)
 	sd cont;call getcont(container,#cont)

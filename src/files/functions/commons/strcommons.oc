@@ -173,8 +173,7 @@ endfunction
 #err
 function warn_hidden_whitespaces_after(sd inc,sd dot_comma_end)
 	if dot_comma_end=0
-		sd er;setcall er warn_hidden_whitespaces(inc)
-		return er
+		callret warn_hidden_whitespaces(inc)
 	endif
 	return (noerror)
 endfunction
@@ -385,18 +384,15 @@ Function quotinmem(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	If intnr=0
 		Return "Expecting quotation mark."
 	EndIf
-	sd err;setcall err quotinmem_err(ptrcontent#,pquotsz,pescapes,(FALSE))
-	return err
+	callret quotinmem_err(ptrcontent#,pquotsz,pescapes,(FALSE))
 endfunction
 Function quotinmem_started(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
-	sd err;setcall err quotinmem_err(ptrcontent#,pquotsz,pescapes,(FALSE))
-	return err
+	callret quotinmem_err(ptrcontent#,pquotsz,pescapes,(FALSE))
 EndFunction
 Function quotinmem_started_blind(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
-	sd err;setcall err quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE))
-	return err
+	callret quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE))
 EndFunction
 Function quotinmem_started_blind_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
@@ -416,9 +412,7 @@ function maxpathverif(str safecurrentdirtopath,str logextension)
 	add size1 size2
 	inc size1
 
-	data err#1
-	setcall err compareagainstmaxpath(size1)
-	return err
+	callret compareagainstmaxpath(size1)
 endfunction
 
 function quotes_new_line(ss content)

@@ -78,10 +78,8 @@ function write_imm(sd dataarg,sd op)
 endfunction
 #er
 function write_imm_simple(sd value,sd reg)
-	sd err
 	add reg (ateaximm)
-	setcall err write_imm(value,reg)
-	return err
+	callret write_imm(value,reg)
 endfunction
 #er
 function write_imm_sign(sd val,sd regopcode)
@@ -94,36 +92,31 @@ function write_imm_sign(sd val,sd regopcode)
 		if err=(noerror)
 			sd op
 			SetCall op formmodrm((RegReg),0,regopcode)
-			setcall err write_imm(val,op)
+			callret write_imm(val,op)
 		endif
 	endif
 	return err
 endfunction
 #er
 function write_imm_sign_dependent(sd val,sd regopcode,sd dataargdependent)
-	ss err
 	sd s
 	set s signbit(dataargdependent)
 	if s=0 #signed (default)
-		set err write_imm_sign(val,regopcode)
-	else #unsigned
-		set err write_imm_simple(val,regopcode)
+		callret write_imm_sign(val,regopcode)
 	end
-	return err
+	#unsigned
+	callret write_imm_simple(val,regopcode)
 endfunction
 #err
 function write_imm_trunc(sd value,sd reg,sd low,sd data,sd sufix)
-	sd err
 	if low=(FALSE)
 		sd bool;setcall bool is_big_imm(data,sufix)
 		if bool=(FALSE)
 			#mediu
-			setcall err write_imm_simple(value,reg)
-			return err
+			callret write_imm_simple(value,reg)
 		endif
 		#big
-		setcall err write_imm_sign_dependent(value,reg,data)  #there is one if64 inside that extends the sign
-		return err
+		callret write_imm_sign_dependent(value,reg,data)  #there is one if64 inside that extends the sign
 	endif
 	#low
 	char a#2
@@ -133,6 +126,5 @@ function write_imm_trunc(sd value,sd reg,sd low,sd data,sd sufix)
 	set b# value
 	dec b
 	vData codeptr%%ptr_codesec
-	setcall err addtosec(b,2,codeptr)
-	return err
+	callret addtosec(b,2,codeptr)
 endfunction

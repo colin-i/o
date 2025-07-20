@@ -180,8 +180,7 @@ function addvarreferenceorunref_signed(sv ptrcontent,sd ptrsize,sd valsize,sd ty
 	if is_signed=(Xfile_declext_yes)
 		or mask (signbit)
 	endif
-	sd er;set er addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
-	return er
+	callret addvarreferenceorunref(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
 endfunction
 
 function getsign_size(sd start,sd last,sd mark,sd pdest) #mark is if was ended by a sign or whitespaces

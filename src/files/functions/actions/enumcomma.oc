@@ -34,7 +34,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 				#endif
 				SetCall err addtosec(ptrvalue,(dwsz),ptrdatasec)
 				If err=(noerror)
-					setcall err reloc64_post_base(ptrdatasec)
+					callret reloc64_post_base(ptrdatasec)
 				EndIf
 				return err
 			endif
@@ -76,8 +76,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 			endif
 			#else s^dat
 			call inplace_reloc(ptrvalue)
-			setcall err addtocodefordata(ptrvalue#,for_64,(NULL))
-			return err
+			callret addtocodefordata(ptrvalue#,for_64,(NULL))
 		EndIf
 	endif
 	if rightstackpointer!=(NULL)

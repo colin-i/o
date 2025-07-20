@@ -108,8 +108,7 @@ function is_big(sd dataarg,sd sufix)
 				return (FALSE)
 			endif
 		endif
-		setcall b is_for_64()
-		return b
+		callret is_for_64()
 	endif
 	return (FALSE)
 endfunction
@@ -158,8 +157,7 @@ function stack64_base(sv data)
 	if is_arg=0
 		return 0
 	endif
-	sd val;setcall val stack64_enlarge((stackinitpush+dwsz))  #ebp/ebx+return
-	return val
+	callret stack64_enlarge((stackinitpush+dwsz))  #ebp/ebx+return
 endfunction
 
 #setx
@@ -321,7 +319,7 @@ function function_call_64f(sd hex_n,sd conv,sd code)
 				#sub esp,x;default 4 args stack space convention
 				char hex_w={REX_Operand_64,0x83,0xEC};char argspush#1
 				set argspush nr_of_args;sub argspush conv;mult argspush ~qwszbits #minus 1 mult qwsz
-				SetCall err addtosec(#hex_w,4,code)
+				callret addtosec(#hex_w,4,code)
 			endif
 		elseif nr_of_args>0
 			#lin_convention
@@ -329,7 +327,7 @@ function function_call_64f(sd hex_n,sd conv,sd code)
 			char hex_x={REX_Operand_64,0x83,regregmod|espregnumber};char adjuster#1
 			if nr_of_args>conv;set adjuster conv;else;set adjuster nr_of_args;endelse
 			mult adjuster (qwsz)
-			SetCall err addtosec(#hex_x,4,code)
+			callret addtosec(#hex_x,4,code)
 		endelseif
 	endIf
 	return err
@@ -412,8 +410,8 @@ function function_call_64(sd is_callex)
 		set shadow_neg conv;dec shadow_neg
 		set j_off 12
 		SetCall err addtosec(#cmp_je,8,code);If err!=(noerror);Return err;EndIf
-		SetCall err addtosec(#callex_shadow,12,code)
-	else
+		callret addtosec(#callex_shadow,12,code)
+	end
 		#lin_convention
 		#cmp rax,imm32
 		char callex_unshadow={REX_Operand_64,0x3d};data *cmp_imm32=lin_convention
@@ -429,18 +427,14 @@ function function_call_64(sd is_callex)
 		#add rsp,rax
 		char *={REX_Operand_64,0x03,espregnumber*toregopcode|regregmod}
 		#
-		SetCall err addtosec(#callex_unshadow,28,code)
-	endelse
-	return err
+		callret addtosec(#callex_unshadow,28,code)
 endfunction
 #err
 function function_start_64(sd nr_of_args)
 	Data code%%ptr_codesec
 	sd data;sd sz
 	setcall data convdata((convdata_fn),#sz,nr_of_args)
-	sd err
-	SetCall err addtosec(data,sz,code)
-	return err
+	callret addtosec(data,sz,code)
 endfunction
 #err
 function callex64_call()
@@ -478,7 +472,5 @@ function callex64_call()
 	#mov rdx,rcx
 	char *keep_nr_args={REX_Operand_64,0x8b,edxregnumber*toregopcode|ecxregnumber|regregmod}
 	sd ptrcodesec%%ptr_codesec
-	sd err
-	SetCall err addtosec(#callex64_code,(\-callex64_start),ptrcodesec)
-	return err
+	callret addtosec(#callex64_code,(\-callex64_start),ptrcodesec)
 endfunction

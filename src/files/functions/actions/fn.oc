@@ -571,9 +571,7 @@ endfunction
 function entryraw_top()
 	char s={0x6a,0}
 	data code%%ptr_codesec
-	sd err
-	setcall err addtosec(#s,2,code)
-	return err
+	callret addtosec(#s,2,code)
 endfunction
 
 #err

@@ -38,23 +38,17 @@ endfunction
 function reloc64_post_base_extension(sd struct,sd fill)
 	sd a%p_elf64_r_info_type
 	if a#=(R_X86_64_64)
-		sd err
 		#extension is for example -1 at sd=const, mostly are 0
-		SetCall err addtosec(#fill,(reloc64_add),struct)
-		return err
+		callret addtosec(#fill,(reloc64_add),struct)
 	endif
 	return (noerror)
 endfunction
 #er
 function reloc64_post_base(sd struct)
-	sd err
-	setcall err reloc64_post_base_extension(struct,(reloc64_main))
-	return err
+	callret reloc64_post_base_extension(struct,(reloc64_main))
 endfunction
 #er
 function reloc64_post()
 	sd ptrcodesec%%ptr_codesec
-	sd err
-	setcall err reloc64_post_base(ptrcodesec)
-	return err
+	callret reloc64_post_base(ptrcodesec)
 endfunction

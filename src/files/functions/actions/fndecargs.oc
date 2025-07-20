@@ -117,8 +117,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		endelse
 	endelse
 	if parses=(pass_init) # long_mask and again datasize are extra
-		setcall err xfile_proto_arg(xfile_decltype,is_stack,is_expand,is_signed)
-		return err
+		callret xfile_proto_arg(xfile_decltype,is_stack,is_expand,is_signed)
 	endif
 	setcall err xfile_add_declare_fndec_if(xfile_decltype,is_stack,is_expand,is_signed,ptrcontent#,sz)
 	If err!=noerr
@@ -217,8 +216,7 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		#at 64 code:
 		#A3 XX.XX.XX.XX_XX.XX.XX.XX
 		sd z=i386_obj_default_reloc_rah
-		SetCall err addtosec(#z,(dwsz),_codesec)
-		return err
+		callret addtosec(#z,(dwsz),_codesec)
 	endif
 
 	Return (noerror)

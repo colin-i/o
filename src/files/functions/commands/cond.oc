@@ -43,8 +43,7 @@ EndFunction
 
 #err
 Function condbegin(sv ptrcontent,sd ptrsize,sd condnumber)
-	sd err;setcall err condbegin_ex(ptrcontent,ptrsize,condnumber,(TRUE))
-	return err
+	callret condbegin_ex(ptrcontent,ptrsize,condnumber,(TRUE))
 endfunction
 function condbegin_ex(sv ptrcontent,sd ptrsize,sd condnumber,sd write_xfile_cond)
 	Data cond#1
@@ -61,9 +60,10 @@ function condbegin_ex(sv ptrcontent,sd ptrsize,sd condnumber,sd write_xfile_cond
 		end
 		if condnumber!=(whiletruenumber)
 			SetCall err twoargs(ptrcontent,ptrsize,(not_a_subtype),ptrcond)
-			If err!=noerr;Return err;EndIf
-			SetCall err condbeginwrite(condnumber)
-			return err
+			If err=noerr
+				callret condbeginwrite(condnumber)
+			EndIf
+			Return err
 		endif
 		set condnr (whilenumber)
 	else
@@ -287,9 +287,7 @@ function jumpback(sd codeoffset,sd condstruct)
 	sub condstruct (condpack_codereg)
 	sub codeoffset condstruct#
 	neg codeoffset
-	sd err
-	SetCall err condjump(codeoffset)
-	return err
+	callret condjump(codeoffset)
 endfunction
 
 #err
@@ -427,8 +425,7 @@ function continue()
 					sd codeoffset
 					call getcontReg(ptrcodesec,#codeoffset)
 					Add codeoffset (backjumpsize)
-					sd err;setcall err jumpback(codeoffset,structure)
-					return err
+					callret jumpback(codeoffset,structure)
 				endif
 				if type=(elsenumber)
 					sub structure (condpack_elseinscribe)
@@ -479,7 +476,7 @@ function whilebegin(sd pcontent,sd pcomsize,sd number)
 	If err=(noerror)
 		SetCall err coderegtocondloop()
 		If err=(noerror)
-			SetCall err condbegin(pcontent,pcomsize,number)
+			callret condbegin(pcontent,pcomsize,number)
 		EndIf
 	endif
 	return err
@@ -488,7 +485,7 @@ endfunction
 function whileend()
 	sd err;setcall err xfile_add_end_ifif()
 	If err=(noerror)
-		SetCall err condend((whilenumber))
+		callret condend((whilenumber))
 	EndIf
 	return err
 endfunction

@@ -178,11 +178,11 @@ function include_sec_skip(sv pcontent,sd pcomsize)
 			setcall err xfile_add_char_ifif((Xfile_include_alternative_yes))
 			if err=(noerror)
 				Value ptrtemp%%ptr_tempdata
-				setcall err addtosecstresc_xfile(pcontent,pcomsize,sz,escapes,ptrtemp) #misc has first include file, and is ok with casts
+				callret addtosecstresc_xfile(pcontent,pcomsize,sz,escapes,ptrtemp) #misc has first include file, and is ok with casts
 			endif
 		endif
 	else
-		setcall err xfile_add_char_ifif((Xfile_include_alternative_no))
+		callret xfile_add_char_ifif((Xfile_include_alternative_no))
 	endelse
 	return err
 endfunction

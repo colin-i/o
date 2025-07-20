@@ -71,9 +71,7 @@ function unresLc(sd addition,sd structure,sd direct)
 	set isdirect direct
 
 	data unresLocal%%ptr_unresLocal
-	sd err
-	SetCall err addtosec(ptradd,12,unresLocal)
-	return err
+	callret addtosec(ptradd,12,unresLocal)
 endfunction
 
 #e
@@ -91,12 +89,9 @@ endfunction
 #e
 function unresReloc(sd section)
 	sd for_64
-	sd err
 	setcall for_64 is_for_64()
 	if for_64=(TRUE)
-		setcall err unresLc((-qwsz),section,0)
-	else
-		setcall err unresLc((-dwsz),section,0)
-	endelse
-	return err
+		callret unresLc((-qwsz),section,0)
+	end
+	callret unresLc((-dwsz),section,0)
 endfunction

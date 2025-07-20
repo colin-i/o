@@ -55,9 +55,7 @@ endfunction
 function addramp(sv perr)
 	sd index
 	setcall index stack64_enlarge((dwsz))
-	data ramp#1
-	setcall ramp growramp(index,perr)
-	return ramp
+	callret growramp(index,perr)
 endfunction
 #ind
 function getramp_ebxrel()
@@ -94,8 +92,7 @@ function entryscope()
 		data set=0;call ramp_index(set,container) #here is storing the sum when stackvariables(ebx) is required
 	endif
 
-	setcall err align_entryscope()
-	return err
+	callret align_entryscope()
 endfunction
 
 #
@@ -138,7 +135,7 @@ function addtocode_decstack(sd for_64)
 			setcall modrm formmodrm((disp32),0,(ebxregnumber))
 			set size 6
 		endelse
-		setcall err addtosec(stack,size,ptrcodesec)
+		callret addtosec(stack,size,ptrcodesec)
 	endif
 	return err
 endfunction
@@ -153,8 +150,7 @@ function addtocodeforstack(sd rightstackpointer,sd for_64)
 		return err
 	endif
 
-	setcall err addtocode_decstack(for_64)
-	return err
+	callret addtocode_decstack(for_64)
 endfunction
 #er
 function addtocodefordata(sd value,sd for_64,sd ext)
@@ -168,6 +164,5 @@ function addtocodefordata(sd value,sd for_64,sd ext)
 	setcall err addtosec(#code,5,ptrcodesec);If err!=(noerror);Return err;EndIf
 	setcall err reloc64_post_base_extension(ptrcodesec,ext);If err!=(noerror);Return err;EndIf
 
-	setcall err addtocode_decstack(for_64)
-	return err
+	callret addtocode_decstack(for_64)
 endfunction

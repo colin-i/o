@@ -122,8 +122,7 @@ Function operation(sv ptrcontent,sd size,sd inoutvalue,sd number)
 		Return errptr
 	EndIf
 
-	setcall errptr operation_core(inoutvalue,number,newitem)
-	return errptr
+	callret operation_core(inoutvalue,number,newitem)
 EndFunction
 
 #err
@@ -381,8 +380,7 @@ endfunction
 
 #err pointer
 Function parseoperations(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments)
-	sd er;setcall er parseoperations_base(ptrcontent,ptrsize,sz,outvalue,comments,(Xfile_numbers_done))
-	return er
+	callret parseoperations_base(ptrcontent,ptrsize,sz,outvalue,comments,(Xfile_numbers_done))
 EndFunction
 #err pointer
 Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comments,sd xfile_numbers)

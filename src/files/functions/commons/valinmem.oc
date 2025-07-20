@@ -36,8 +36,6 @@ Function valinmemsens(str content,data size,char delim,data sens)
 EndFunction
 
 Function valinmem(str content,data size,char delim)
-	Data returnvalue#1
 	Data forward=FORWARD
-	SetCall returnvalue valinmemsens(content,size,delim,forward)
-	Return returnvalue
+	callret valinmemsens(content,size,delim,forward)
 EndFunction

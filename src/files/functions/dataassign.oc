@@ -334,13 +334,11 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			endelse
 		Else
 			If typenumber=constantsnr
-				SetCall err undefinedvariable()
-				Return err
+				callret undefinedvariable()
 			EndIf
 			SetCall pointer vars(content,size,ptrfunctions)
 			If pointer=zero
-				setcall err undefinedvar_fn()
-				return err
+				callret undefinedvar_fn()
 			EndIf
 			setcall err xfile_add_char_if((Xfile_declsign_pointer_fn))
 			if err!=(noerror)
@@ -461,7 +459,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				sd ptrdata;call getptrcontReg(ptrdatasec,#ptrdata)
 				sub ptrdata# trim
 			endif
-			setcall err xfile_add_char_if(trim)
+			callret xfile_add_char_if(trim)
 		endif
 		return err
 	endif

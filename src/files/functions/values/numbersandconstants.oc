@@ -208,8 +208,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			#the current data cursor   [calculation]
 			setcall outval# get_img_vdata_dataReg()
 
-			setcall err xfile_add_char_ifif((Xfile_numbers_type_idata))
-			return err
+			callret xfile_add_char_ifif((Xfile_numbers_type_idata))
 		endif
 
 		vdata p_parses%ptr_parses
@@ -228,8 +227,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				endif
 				setcall outval# get_img_vdata_dataSize()
 
-				setcall err xfile_add_char_ifif((Xfile_numbers_type_idatax))
-				return err
+				callret xfile_add_char_ifif((Xfile_numbers_type_idatax))
 			endif
 
 			#[calculation][calculation]fsize
@@ -240,7 +238,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 			endif
 			setcall err xfile_add_char_if((Xfile_numbers_type_fsizeX))  #next in get_scope_pos
 			if err=(noerror)
-				setcall err get_sizeoffunction(content,size,outval,(fsizeX))
+				callret get_sizeoffunction(content,size,outval,(fsizeX))
 			endif
 			return err
 		endif
@@ -326,12 +324,12 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 				dec size
 				setcall err xfile_add_char_if((Xfile_numbers_type_fsizeXX))  #next in get_scope_pos
 				if err=(noerror)
-					setcall err get_sizeoffunction(content,size,outval,(fsize_fsizeX))
+					callret get_sizeoffunction(content,size,outval,(fsize_fsizeX))
 				endif
 			else #[calculation]fsize
 				setcall err xfile_add_char_if((Xfile_numbers_type_fsize))  #next in get_scope_pos
 				if err=(noerror)
-					setcall err get_sizeoffunction(content,size,outval,(fsize))
+					callret get_sizeoffunction(content,size,outval,(fsize))
 				endif
 			end
 		endelse
@@ -343,26 +341,22 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		if b=(FALSE);set outval# (dwsz)
 		else;set outval# (qwsz);endelse
 
-		setcall err xfile_add_char_ifif((Xfile_numbers_type_ilong))
-		return err
+		callret xfile_add_char_ifif((Xfile_numbers_type_ilong))
 	endelseif
 	#0X ?
 	SetCall bool memtohex(content,size,outval)
 	If bool=(TRUE)
-		setcall err xfile_add_base_ifif((Xfile_numbers_type_thexadec),content,size)
-		return err
+		callret xfile_add_base_ifif((Xfile_numbers_type_thexadec),content,size)
 	endif
 	#0 ?
 	SetCall bool memtooct(content,size,outval)
 	If bool=(TRUE)
-		setcall err xfile_add_base_ifif((Xfile_numbers_type_toctal),content,size)
-		return err
+		callret xfile_add_base_ifif((Xfile_numbers_type_toctal),content,size)
 	endif
 	#decimal number
 	SetCall bool memtoint(content,size,outval,minusbool)
 	If bool=(TRUE)
-		setcall err xfile_add_base_ifif((Xfile_numbers_type_tdecimal),content,size)
-		return err
+		callret xfile_add_base_ifif((Xfile_numbers_type_tdecimal),content,size)
 	endif
 	Char _intvalerr="Integer(dec/oct/hex) value not recognized."
 	vStr intvallerr^_intvalerr
@@ -490,7 +484,5 @@ endfunction
 
 #len
 function dwtomem(sd dw,ss mem)
-	sd len
-	setcall len sprintf(mem,"%u",dw)
-	return len
+	callret sprintf(mem,"%u",dw) #int , here is a char, attention at otoc returns
 endfunction

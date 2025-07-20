@@ -51,15 +51,13 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 		setcall subtype_test x_call_test(subtype,ptrcontent#,ptrsize#)
 		if subtype_test=0
 			if parses=(pass_init)
-				setcall errnr getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
-				return errnr
+				callret getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 4 more arguments but are not used
 			endif
 			#skip this at pass_calls
 			Call advancecursors(ptrcontent,ptrsize,ptrsize#)
 		else
 			#and subtype (x_callx_flag) #call and callex are testing without and
-			SetCall errnr parsefunction(ptrcontent,ptrsize,callfn,subtype) #there is 1 more argument but is not used
-			return errnr
+			callret parsefunction(ptrcontent,ptrsize,callfn,subtype) #there is 1 more argument but is not used
 		endelse
 		return (noerror)
 	endif
@@ -499,51 +497,49 @@ function writeoper(sd takeindex,sd location,sd sufix)
 endfunction
 
 function writeop_prim(sd dataargprim,sd opprim,sd sufixprim,sd lowprim,sd sameimportant,sd lowsec)
-	sd err
 	if sameimportant=(FALSE)
 		if lowsec=(TRUE)
 			#this is and/or... at sd low not needing to write rex
+			sd err
 			setcall err writeoper((edxregnumber),dataargprim,sufixprim)
 			if err!=(noerror);return err;endif
-			setcall err writeoperation_op(opprim,(FALSE),(eaxregnumber),(edxregnumber))
-			return err
+			callret writeoperation_op(opprim,(FALSE),(eaxregnumber),(edxregnumber))
 		endif
 	endif
-	SetCall err writeop(dataargprim,opprim,sufixprim,(eaxregnumber),lowprim)
-	return err
+	callret writeop(dataargprim,opprim,sufixprim,(eaxregnumber),lowprim)
 endfunction
 
 #err
 function writeop_promotes(sd dataarg,sd op,sd sufix,sd regopcode,sd low,sd comp_at_bigs)
 	sd err
 	if comp_at_bigs=-1
-		SetCall err writeop(dataarg,op,sufix,regopcode,low)
-	else #0-2
-		setcall err writeoper((edxregnumber),dataarg,sufix) #no val64 recordings
-		if err=(noerror)
-			sd s
-			if comp_at_bigs=1 #these are all 64
-				# sd    data    must take signextended data at 64
-				set s signbit(dataarg)
-				if s=0 #signed (default)
-					set op (moveatprocthemem_sign)
-					sd p;setcall p val64_p_get()
-					set p# (val64_willbe)
-				else #unsigned
-					set op (moveatprocthemem)
-				end
-			elseif comp_at_bigs=2
-				#2 for zero extend; these are all low
-				set s signbit(dataarg)
-				if s=0 #unsigned (default)
-					set op 0xB6
-				else #signed
-					set op 0xBE
-				endelse
-			endelseif
-			setcall err writeoperation_op(op,low,regopcode,(edxregnumber))
-		endif
-	endelse
+		callret writeop(dataarg,op,sufix,regopcode,low)
+	end
+	#0-2
+	setcall err writeoper((edxregnumber),dataarg,sufix) #no val64 recordings
+	if err=(noerror)
+		sd s
+		if comp_at_bigs=1 #these are all 64
+			# sd    data    must take signextended data at 64
+			set s signbit(dataarg)
+			if s=0 #signed (default)
+				set op (moveatprocthemem_sign)
+				sd p;setcall p val64_p_get()
+				set p# (val64_willbe)
+			else #unsigned
+				set op (moveatprocthemem)
+			end
+		elseif comp_at_bigs=2
+			#2 for zero extend; these are all low
+			set s signbit(dataarg)
+			if s=0 #unsigned (default)
+				set op 0xB6
+			else #signed
+				set op 0xBE
+			endelse
+		endelseif
+		callret writeoperation_op(op,low,regopcode,(edxregnumber))
+	endif
 	return err
 endfunction
 

@@ -154,9 +154,7 @@ Function openfile(sd pfile,sd path,sd oflag,sd permissions)
 EndFunction
 #err
 function openfile_write_add_extension(ss path,ss extension,sd popen)
-	sd er
-	setcall er openfile_mode_add_extension(path,extension,popen,(_open_write),(nonexec_perms))
-	return er
+	callret openfile_mode_add_extension(path,extension,popen,(_open_write),(nonexec_perms))
 endfunction
 #err
 function openfile_mode_add_extension(ss path,ss extension,sd popen,sd mod,sd perms)
@@ -307,14 +305,12 @@ function changedir(ss path)
 	sd testsamefolder
 	data null=0
 	data chdirok=chdirok
-	data chdirresult#1
 
 	setcall testsamefolder strlen(path)
 	if testsamefolder=null
 		return chdirok
 	endif
-	SetCall chdirresult chdir(path)
-	return chdirresult
+	callret chdir(path) #pointer
 endfunction
 
 #lseek

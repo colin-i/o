@@ -4,10 +4,9 @@
 function prefs_set(ss name,ss value,sv p_p)
 	sd err
 	setcall err comline_pointer(name,p_p)
-	if err!=(noerror)
-		return err
+	if err=(noerror)
+		callret comline_value(value,p_p#)
 	endif
-	setcall err comline_value(value,p_p#)
 	return err
 endfunction
 #err

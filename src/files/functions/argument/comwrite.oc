@@ -51,9 +51,7 @@ function takewithimm(sd ind,sd addr)
 	Data ptrcodesec%%ptr_codesec
 	Data sz1=bsz+dwsz
 
-	sd err
-	SetCall err addtosec(#takeop,sz1,ptrcodesec)
-	return err
+	callret addtosec(#takeop,sz1,ptrcodesec)
 endfunction
 #er
 function datatake_reloc(sd takeindex,sd take_loc)
@@ -67,16 +65,14 @@ function datatake_reloc(sd takeindex,sd take_loc)
 			Return errnr
 		EndIf
 	endif
-	setcall errnr datatake(takeindex,take_loc)
-	return errnr
+	callret datatake(takeindex,take_loc)
 endfunction
 #er
 function datatake(sd takeindex,sd take_loc)
 	sd errnr
 	setcall errnr reloc64_ante();If errnr!=(noerror);Return errnr;EndIf
 	setcall errnr takewithimm(takeindex,take_loc);If errnr!=(noerror);Return errnr;EndIf
-	setcall errnr reloc64_post()
-	return errnr
+	callret reloc64_post()
 endfunction
 #err
 function adddirectrel_base_inplace(sd relocoff,sd p_take_loc,sd sectionind)
@@ -192,7 +188,7 @@ function writetake_offset(sd takeindex,sd entry)
 							set op (0x81)
 							set sz 6
 						endelse
-						SetCall er addtosec(#op,sz,ptrcodesec)
+						callret addtosec(#op,sz,ptrcodesec)
 					endif
 				endif
 			endif
@@ -261,8 +257,7 @@ function sufix_take(sd takeindex,sd take64)
 	Str ptrnewtake^newtake
 	Data sz2=bsz+bsz
 	setcall newtakemodrm formmodrm((mod_0),takeindex,takeindex)
-	SetCall err addtosec(ptrnewtake,sz2,ptrcodesec)
-	return err
+	callret addtosec(ptrnewtake,sz2,ptrcodesec)
 endfunction
 #v64
 function sufix64(sd location)
@@ -338,16 +333,13 @@ Function writeoperation(sd location,sd operationopcode,sd sufix,sd regopcode,sd 
 	setcall v_64 writeoperation_take(#err,location,sufix,takeindex,is_low)
 	if err!=(noerror);return err;endif
 	sd v64;setcall v64 val64_p_get();set v64# v_64
-	setcall err writeoperation_op(operationopcode,(FALSE),regopcode,takeindex)
-	return err
+	callret writeoperation_op(operationopcode,(FALSE),regopcode,takeindex)
 Endfunction
 
 #er
 Function writeop(sd location,sd operationopcode,sd sufix,sd regopcode,sd is_low)
-	Data err#1
 	Data edxregnumber=edxregnumber
-	SetCall err writeoperation(location,operationopcode,sufix,regopcode,edxregnumber,is_low)
-	Return err
+	callret writeoperation(location,operationopcode,sufix,regopcode,edxregnumber,is_low)
 EndFunction
 
 #er
@@ -355,7 +347,7 @@ function writeopera(sd location,sd operationopcode,sd regopcode,sd takeindex)
 	sd err
 	setcall err writetake(takeindex,location)
 	if err=(noerror)
-		setcall err writeoperation_op(operationopcode,(FALSE),regopcode,takeindex)
+		callret writeoperation_op(operationopcode,(FALSE),regopcode,takeindex)
 	endif
 	return err
 endfunction
