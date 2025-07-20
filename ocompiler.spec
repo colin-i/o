@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+236
+Version: 5+237
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,14 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Sun Jul 20 2025 Costin Botescu <costin.botescu@gmail.com> 5+237-0
+- callret is good also at ocomp (costin.botescu@gmail.com)
+- LocalFree (costin.botescu@gmail.com)
+- exec one process (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- ${file} (costin.botescu@gmail.com)
+- was not implemented (costin.botescu@gmail.com)
+
 * Fri Jul 04 2025 Costin Botescu <costin.botescu@gmail.com> 5+236-0
 - ostrip usage (costin.botescu@gmail.com)
 - test ready for fuse3 (costin.botescu@gmail.com)
