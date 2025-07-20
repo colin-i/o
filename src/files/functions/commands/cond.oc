@@ -17,11 +17,9 @@ Function coderegtocondloop()
 
 	Call getcontReg(codesec,ptrcodeReg)
 
-	Data err#1
 	Data condloopsec%%ptr_conditionsloops
 
-	SetCall err addtosec(ptrcodeReg,(condpack_codereg),condloopsec)
-	Return err
+	callret addtosec(ptrcodeReg,(condpack_codereg),condloopsec)
 EndFunction
 
 #err
@@ -37,8 +35,7 @@ Function condbeginwrite(data condnumber)
 	vData condloopsec%%ptr_conditionsloops
 
 	vData ptrcondnumber^condnumber
-	SetCall err addtosec(ptrcondnumber,(condpack_number),condloopsec)
-	Return err
+	callret addtosec(ptrcondnumber,(condpack_number),condloopsec)
 EndFunction
 
 #err
@@ -75,8 +72,7 @@ function condbegin_ex(sv ptrcontent,sd ptrsize,sd condnumber,sd write_xfile_cond
 		endelse
 	endelse
 	vData condloopsec%%ptr_conditionsloops
-	SetCall err addtosec(#dummy,(condpacksize),condloopsec)
-	Return err
+	callret addtosec(#dummy,(condpacksize),condloopsec)
 EndFunction
 
 #err
@@ -108,10 +104,8 @@ Function condjump(data size)
 
 	Data pjump^jump
 
-	Data err#1
 	Data code%%ptr_codesec
-	SetCall err addtosec(pjump,bjsz,code)
-	Return err
+	callret addtosec(pjump,bjsz,code)
 EndFunction
 
 #err
@@ -372,7 +366,7 @@ Function closeifopenelse(sd xfile_type)
 			setcall err addtosec(#e1,(condpack_elseinscribe),structure)
 			if err=(noerror)
 				Data elsenr=elsenumber
-				SetCall err condbeginwrite(elsenr)
+				callret condbeginwrite(elsenr)
 			endif
 		else # ret_cont_break_canskip ret_cont_break_canskip_warn ret_cont_break_mustskip ret_cont_break_notyet
 			if main.ret_cont_break!=(ret_cont_break_notyet) #is useless JMP, if no previous JMP in this ifinscribe, is also useless ELSE
@@ -384,7 +378,7 @@ Function closeifopenelse(sd xfile_type)
 			data e2=elseinscribe_skip
 			data *ignored codesection index#1
 			data *nr=elsenumber
-			setcall err addtosec(#e2,(condpack_elseinscribe+condpacksize),structure)
+			callret addtosec(#e2,(condpack_elseinscribe+condpacksize),structure)
 		endelse
 	endif
 	Return err
@@ -455,7 +449,7 @@ function break()
 					sd err
 					SetCall err condjump(0)
 					if err=(noerror)
-						SetCall err condbeginwrite((breaknumber))
+						callret condbeginwrite((breaknumber))
 					endif
 					Return err
 				endif

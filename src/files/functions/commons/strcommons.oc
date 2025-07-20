@@ -275,9 +275,7 @@ EndFunction
 #return stringsatmemspc
 Function stratmemspc(data pcontent,data psize,str match,data spacereq)
 	Data null=NULL
-	Data bool#1
-	SetCall bool stringsatmemspc(pcontent,psize,match,spacereq,null,null,null)
-	Return bool
+	callret stringsatmemspc(pcontent,psize,match,spacereq,null,null,null)
 EndFunction
 
 #used at quotinmem and quotescaped

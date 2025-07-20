@@ -19,15 +19,13 @@ function iob_func(sd type)
 endfunction
 
 function std_err()
-	sd a;set a iob_func((STDERR_FILENO))
-	return a
+	callret iob_func((STDERR_FILENO)) #FILE*
 end
 
 importx "_getcwd" getcwd
 #inits
 function _get_current_dir_name()
-	ss a;set a getcwd((NULL),0) #NULL is at loop.oc
-	return a
+	callret getcwd((NULL),0) #NULL is at loop.oc
 end
 
 #files
@@ -91,6 +89,5 @@ function _getline(sv lineptr,sv n,sd stream)
 	return pointer
 end
 function std_out()
-	sd a;set a iob_func((STDOUT_FILENO))
-	return a
+	callret iob_func((STDOUT_FILENO)) #FILE*
 end

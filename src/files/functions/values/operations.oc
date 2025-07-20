@@ -458,8 +458,7 @@ Function parseoperations_base(sd ptrcontent,sd ptrsize,sd sz,sd outvalue,sd comm
 	endif
 	Call advancecursors(ptrcontent,ptrsize,sz)
 
-	setcall errptr xfile_add_char_ifif(xfile_numbers)
-	Return errptr
+	callret xfile_add_char_ifif(xfile_numbers)
 EndFunction
 
 function multisignoperation(ss pnr,sv pcontent,sd end)

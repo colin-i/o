@@ -423,10 +423,9 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 			setcall errnr addtosec(#storeex,2,codeptr)
 		else
 			if rem=(FALSE)
-				SetCall errnr writeop(dataargprim,storeex,sufixprim,eaxreg,lowprim)
-			else
-				SetCall errnr writeoperation(dataargprim,storeex,sufixprim,(edxregnumber),ecxreg,lowprim)
-			endelse
+				callret writeop(dataargprim,storeex,sufixprim,eaxreg,lowprim)
+			endif
+			callret writeoperation(dataargprim,storeex,sufixprim,(edxregnumber),ecxreg,lowprim)
 		endelse
 	ElseIf ptrcondition!=false
 		Char jumpifnotcond={0x0f}
@@ -439,7 +438,7 @@ Function twoargs_ex(sv ptrcontent,sd ptrsize,sd subtype,sd ptrcondition,sd allow
 
 		Set cond conditionmodrm
 
-		SetCall errnr addtosec(jumpcond,conddatasz,codeptr)
+		callret addtosec(jumpcond,conddatasz,codeptr)
 	EndElseIf
 	Return errnr
 EndFunction

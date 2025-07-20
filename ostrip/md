@@ -1,3 +1,7 @@
 
+if [ -e ostrip.o ]; then rm ostrip.o; fi
+if [ -z "${ccprefer}" ]; then
+	ldprefer=1
+fi
 OFLAGSEXTRA+=" function_name 1 nul_res_pref 1"
-OFLAGSEXTRA="${OFLAGSEXTRA}" make linkerflags= ldprefer=1 $@
+OFLAGSEXTRA="${OFLAGSEXTRA}" make linkerflags= ldprefer=${ldprefer} $@

@@ -3,18 +3,14 @@
 Function addtonamessized(data str,data sz,data regoff)
 	Data ptrnames%%ptr_names
 	Call getcontReg(ptrnames,regoff)
-	Data err#1
-	SetCall err addtosecstr(str,sz,ptrnames)
-	Return err
+	callret addtosecstr(str,sz,ptrnames)
 EndFunction
 
 #err
 Function addtonames(data str,data regoff)
 	Data sz#1
 	SetCall sz strlen(str)
-	Data err#1
-	SetCall err addtonamessized(str,sz,regoff)
-	Return err
+	callret addtonamessized(str,sz,regoff)
 EndFunction
 
 #err
@@ -79,42 +75,33 @@ function elfaddsec_base(sd stringname,sd type,sd flags,sd fileoffset,sd bsize,sd
 	#	EndIf
 	#EndIf
 
-	Data err#1
 	#is false at inits, no worry about only at object
 	sd e64;setcall e64 is_for_64()
 	if e64=(TRUE)
 		Set sh64_name stringname;Set sh64_type type;Set sh64_flags flags;set sh64_addr addr;Set sh64_offset fileoffset
 		set sh64_size bsize;Set sh64_link link;Set sh64_info info;Set sh64_addralign align;Set sh64_entsize entsize
-		setcall err addtosec(#sh64_name,(elf64_section_size),ptrbag)
-	else
+		callret addtosec(#sh64_name,(elf64_section_size),ptrbag)
+	endif
 		Set sh_name stringname;Set sh_type type;Set sh_flags flags;set sh_addr addr;Set sh_offset fileoffset
 		set sh_size bsize;Set sh_link link;Set sh_info info;Set sh_addralign align;Set sh_entsize entsize
-		SetCall err addtosec(#sh_name,(elf_section_size),ptrbag)
-	endelse
-	Return err
+	callret addtosec(#sh_name,(elf_section_size),ptrbag)
 endfunction
 #err
 function elfaddsecn()
 	Data ptrmiscbag%%ptr_miscbag
-	sd err
-	SetCall err elfaddsec_base((NULL),(SHT_NULL),0,(NULL),(NULL),0,0,0,0,(NULL),ptrmiscbag)
-	Return err
+	callret elfaddsec_base((NULL),(SHT_NULL),0,(NULL),(NULL),0,0,0,0,(NULL),ptrmiscbag)
 endfunction
 #err
 Function elfaddsecs(sd stringoff,sd type,sd flags,sd fileoffset,sd bsize,sd align)
 	Data ptrmiscbag%%ptr_miscbag
-	sd err
-	SetCall err elfaddsec_base(stringoff,type,flags,fileoffset,bsize,0,0,align,0,(NULL),ptrmiscbag)
-	Return err
+	callret elfaddsec_base(stringoff,type,flags,fileoffset,bsize,0,0,align,0,(NULL),ptrmiscbag)
 EndFunction
 #err
 Function elfaddsec(data stringoff,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
 	sd bsize
 	Call getcontReg(seccont,#bsize)
 	Data ptrmiscbag%%ptr_miscbag
-	sd err
-	SetCall err elfaddsec_base(stringoff,type,flags,fileoffset,bsize,link,info,align,entsize,(NULL),ptrmiscbag)
-	Return err
+	callret elfaddsec_base(stringoff,type,flags,fileoffset,bsize,link,info,align,entsize,(NULL),ptrmiscbag)
 EndFunction
 #err
 Function elfaddstrsec(data stringofname,data type,data flags,data fileoffset,data seccont,data link,data info,data align,data entsize)
@@ -139,7 +126,6 @@ const elf_sym_st_info_tohibyte=16
 	Data ptrndxsrc^index
 	Data wsz=wsz
 
-	sd err
 	sd x;setcall x is_for_64()
 	if x=(TRUE)
 		Data elf64_sym_st_name#1
@@ -157,8 +143,8 @@ const elf_sym_st_info_tohibyte=16
 		Call memtomem(#elf64_sym_st_shndx,ptrndxsrc,wsz)
 
 		Const elf64_sym_start^elf64_sym_st_name
-		SetCall err addtosec(#elf64_sym_st_name,(\-elf64_sym_start),struct)
-	else
+		callret addtosec(#elf64_sym_st_name,(\-elf64_sym_start),struct)
+	endif
 		#Symbol table entry
 		#Symbol name (string tbl index)
 		Data elf32_sym_st_name#1
@@ -185,10 +171,7 @@ const elf_sym_st_info_tohibyte=16
 		Call memtomem(#elf32_sym_st_shndx,ptrndxsrc,wsz)
 
 		Const elf_sym_start^elf32_sym_st_name
-		SetCall err addtosec(#elf32_sym_st_name,(\-elf_sym_start),struct)
-	endelse
-
-	Return err
+	callret addtosec(#elf32_sym_st_name,(\-elf_sym_start),struct)
 EndFunction
 #err
 Function elfaddstrszsym(data stringstroff,data sz,data value,data size,char type,char bind,data index,data struct)
@@ -198,7 +181,7 @@ Function elfaddstrszsym(data stringstroff,data sz,data value,data size,char type
 	Data noerr=noerror
 	SetCall err addtonamessized(stringstroff,sz,ptrregnr)
 	If err=noerr
-		SetCall err elfaddsym(regnr,value,size,type,bind,index,struct)
+		callret elfaddsym(regnr,value,size,type,bind,index,struct)
 	EndIf
 	Return err
 EndFunction
@@ -206,9 +189,7 @@ EndFunction
 Function elfaddstrsym(data stringstroff,data value,data size,char type,char bind,data index,data struct)
 	Data sz#1
 	SetCall sz strlen(stringstroff)
-	Data err#1
-	SetCall err elfaddstrszsym(stringstroff,sz,value,size,type,bind,index,struct)
-	Return err
+	callret elfaddstrszsym(stringstroff,sz,value,size,type,bind,index,struct)
 EndFunction
 
 Data STT_NOTYPE=STT_NOTYPE
@@ -244,7 +225,6 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 	#const R_X86_64_PC32=R_386_PC32
 	#const R_X86_64_PC64=24
 
-	sd err
 	sd x;setcall x is_for_64()
 	if x=(TRUE)
 		Data elf64_r_offset#1;data *=0
@@ -261,8 +241,8 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 		set elf64_r_info_symbolindex symbolindex
 		set elf64_r_addend addend
 
-		SetCall err addtosec(#elf64_r_offset,(elf64_dyn_d_val_relent),struct)
-	else
+		callret addtosec(#elf64_r_offset,(elf64_dyn_d_val_relent),struct)
+	endif
 		#offset
 		Data elf_r_offset#1
 		#Relocation type and symbol index
@@ -276,9 +256,7 @@ Function addrel_base(sd offset,sd symbolindex,sd addend,sd struct)
 		Call memtomem(#elf_r_info_symbolindex,#symbolindex,3)
 		set elf_r_addend addend
 
-		SetCall err addtosec(#elf_r_offset,(elf32_dyn_d_val_relent),struct)
-	endelse
-	Return err
+	callret addtosec(#elf_r_offset,(elf32_dyn_d_val_relent),struct)
 EndFunction
 
 #err
@@ -288,7 +266,6 @@ endfunction
 
 #err
 Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
-	Data err#1
 	Data off#1
 	Data ptroff^off
 	Data ptrdatasec%%ptr_datasec
@@ -302,6 +279,5 @@ Function adddirectrel_base(sd relsec,sd extraoff,sd index,sd addend)
 	EndElse
 	Call getcontReg(struct,ptroff)
 	Add off extraoff
-	SetCall err addrel_base(off,index,addend,relsec)
-	Return err
+	callret addrel_base(off,index,addend,relsec)
 EndFunction

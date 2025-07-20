@@ -29,11 +29,9 @@ EndFunction
 
 #err
 Function memoryalloc(data pathsize,data memptr)
-	Data err#1
 	Data null=NULL
 	Set memptr# null
-	SetCall err memrealloc(memptr,pathsize)
-	Return err
+	callret memrealloc(memptr,pathsize)
 EndFunction
 
 #null or ptr
@@ -144,10 +142,8 @@ Function openfile(sd pfile,sd path,sd oflag,sd permissions)
 	Data openfalse=openno
 	SetCall pfile# open(path,oflag,permissions)
 	If pfile#=openfalse
-		str errorreturn#1
 		Str fileOpenErr="Cannot open a file:"
-		setcall errorreturn errorDefOut(fileOpenErr,path)
-		Return errorreturn
+		callret errorDefOut(fileOpenErr,path)
 	EndIf
 	Data noerr=noerror
 	Return noerr
@@ -221,9 +217,7 @@ Function padwrite(data hfile,data size)
 	If padmem=null
 		return writefalse
 	EndIf
-	Data writeres#1
-	SetCall writeres writefile(hfile,padmem,size)
-	Return writeres
+	callret writefile(hfile,padmem,size)
 EndFunction
 
 #return writefile
@@ -251,17 +245,14 @@ Function paddedwrite(data hfile,str buf,data ln,data pad)
 			Return writeres
 		EndIf
 	EndIf
-	SetCall writeres padwrite(hfile,padvalue)
-	Return writeres
+	callret padwrite(hfile,padvalue)
 EndFunction
 
 #return writeres
 Function padsec(data hfile,data value,data pad)
 	Data valuetopad#1
 	SetCall valuetopad requiredpad(value,pad)
-	Data writeres#1
-	SetCall writeres padwrite(hfile,valuetopad)
-	Return writeres
+	callret padwrite(hfile,valuetopad)
 EndFunction
 
 #true if match or false

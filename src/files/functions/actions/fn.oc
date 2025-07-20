@@ -9,25 +9,22 @@ Function unresolvedcallsfn(data struct,data inneroffset,data atend,data valuedat
 	Call getcontReg(struct,poff)
 	add offset inneroffset
 
-	Data err#1
 	Data true=TRUE
 	Data ptrobject%ptrobject
 
 	If ptrobject#=true
 		Data ptrextra%%ptr_extra
-		SetCall err addrel_base(offset,valuedata,atend,ptrextra)
-	Else
-		#add to resolve at end
-		Data unressz=3*dwsz
-		Data uncall%%ptr_unresolvedcalls
-		data ptrstruct^structure
+		callret addrel_base(offset,valuedata,atend,ptrextra)
+	endif
+	#add to resolve at end
+	Data unressz=3*dwsz
+	Data uncall%%ptr_unresolvedcalls
+	data ptrstruct^structure
 
-		set structure struct
-		set addatend atend
+	set structure struct
+	set addatend atend
 
-		SetCall err addtosec(ptrstruct,unressz,uncall)
-	EndElse
-	Return err
+	callret addtosec(ptrstruct,unressz,uncall)
 EndFunction
 
 #err
@@ -411,7 +408,7 @@ function prepare_function_call(sv pcontent,sd psize,sd sz,sd p_data,sd p_bool_in
 		char espebx={moveatregthemodrm,0xe3}
 		Str ptrespebx^espebx
 		Data sizeespebx=2
-		SetCall err addtosec(ptrespebx,sizeespebx,code)
+		callret addtosec(ptrespebx,sizeespebx,code)
 	endif
 	Return err
 endfunction

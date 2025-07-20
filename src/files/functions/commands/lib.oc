@@ -25,9 +25,7 @@ Function openlib()
 	Data iid^OriginalFirstThunk
 	Data iid_size=IMAGE_IMPORT_DESCRIPTORsize
 	Data itable%%ptr_table
-	Data err#1
-	SetCall err addtosec(iid,iid_size,itable)
-	Return err
+	callret addtosec(iid,iid_size,itable)
 EndFunction
 
 #er
@@ -75,6 +73,5 @@ Function closelib()
 
 	Sub adrsize firstthunk
 
-	SetCall err addtosec(src,adrsize,iaddresses)
-	Return err
+	callret addtosec(src,adrsize,iaddresses)
 EndFunction

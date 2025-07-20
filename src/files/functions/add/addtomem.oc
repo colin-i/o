@@ -121,6 +121,5 @@ Function addtosecstr(str content,data size,data dst)
 	Char null={0}
 	Data sz=1
 	Str ptrnull^null
-	SetCall errnr addtosec(ptrnull,sz,dst)
-	Return errnr
+	callret addtosec(ptrnull,sz,dst)
 EndFunction

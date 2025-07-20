@@ -127,12 +127,10 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 		#this will be set outside Set value 0
 	EndElse
 
-	SetCall errnr addaref(value,ptrcontent,ptrsize,valsize,typenumber,mask)
-	Return errnr
+	callret addaref(value,ptrcontent,ptrsize,valsize,typenumber,mask)
 EndFunction
 #err
 function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd mask,sd stackoffset,sd is_expand)
-	data err#1
 	data noerr=noerror
 
 	Data zero=0
@@ -164,8 +162,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 				or mask (aftercallthrowlessbit)
 			endif
 		endelseif
-		SetCall err addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
-		Return err
+		callret addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
 	EndIf
 	If typenumber=(constantsnumber)
 		Char unrefconstant="Unexpected unreference sign ('*') at constant declaration."

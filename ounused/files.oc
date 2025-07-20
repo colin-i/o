@@ -80,7 +80,7 @@ function fileentry_exists(sd s)
 	set fls fls#d^
 	add fls p
 	while p!=fls
-		sd b
+		datax b#1
 		setcall b fileentry_compare(p#,s,sz)
 		if b=0
 			call skip_set()

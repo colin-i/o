@@ -340,8 +340,7 @@ function function_call_64(sd is_callex)
 	call convdata((convdata_call),#hex_1)
 	#
 	if is_callex=(FALSE)
-		setcall err function_call_64f(#hex_1,conv,code)
-		Return err
+		callret function_call_64f(#hex_1,conv,code)
 	endif
 	##
 	#mov edx,eax

@@ -36,8 +36,8 @@ function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
 	call write(outfile,#main.long_long_reserve,\main.long_long_reserve)
 	call write(outfile,pointer,sz)
 	call writel(outfile)
-	sd args;set args functiondef_d(pbuffer,outfile)
-	return args ##for varargs
+	callret functiondef_d(pbuffer,outfile)
+	# ret for varargs
 end
 function functiondef_ext(sv pbuffer,sd outfile,sd pointer,sd sz,sd vargs)
 	sd args;set args functiondef_r(pbuffer,outfile,pointer,sz)

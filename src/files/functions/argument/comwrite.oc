@@ -133,8 +133,8 @@ function writetake(sd takeindex,sd entry)
 				endif
 			endelse
 		endif
-		setcall errnr datatake(takeindex,take_loc)
-	else
+		callret datatake(takeindex,take_loc)
+	endif
 		char stack_relative#1
 		char regreg=RegReg
 		setcall stack_relative stack_get_relative(entry)
@@ -149,9 +149,7 @@ function writetake(sd takeindex,sd entry)
 		else;set getfromstack (moveatprocthemem);endelse
 		setcall errnr rex_w_if64();if errnr!=(noerror);return errnr;endif
 		Data ptrcodesec%%ptr_codesec
-		SetCall errnr addtosec(ptrgetfromstack,sizegetfromstack,ptrcodesec)
-	endelse
-	Return errnr
+	callret addtosec(ptrgetfromstack,sizegetfromstack,ptrcodesec)
 endfunction
 #er
 function writetake_offset(sd takeindex,sd entry)
@@ -324,8 +322,7 @@ Function writeoperation_op(sd operationopcode,sd is_prepare,sd regopcode,sd take
 
 	Set actionop operationopcode
 	SetCall actionmodrm formmodrm(mod,regopcode,takeindex)
-	SetCall errnr addtosec(#actionop,sz2,ptrcodesec)
-	Return errnr
+	callret addtosec(#actionop,sz2,ptrcodesec)
 Endfunction
 #er
 Function writeoperation(sd location,sd operationopcode,sd sufix,sd regopcode,sd takeindex,sd is_low)

@@ -214,9 +214,7 @@ function fileentry_compare(sd existent,sd new,sd sz)
 		return (~0)
 	endif
 	add existent (dword)
-	sd c
-	setcall c memcmp(existent,new,sz)
-	return c
+	callret memcmp(existent,new,sz)
 endfunction
 
 include "skip.oc"

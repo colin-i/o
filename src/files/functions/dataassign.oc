@@ -541,7 +541,7 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 				SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
 				If err=(noerror)
 					if long_mask!=(dummy_mask)
-						SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+						callret maxsectioncheck(ptrvalue#,ptrvalue)
 					endif
 				endIf
 			EndIf
@@ -554,7 +554,7 @@ function get_reserve_size(sv ptrcontent,sd ptrsize,sd size,sd ptrvalue,sd is_sta
 				#at format 64 can be a *2 at growramp
 				sd b;setcall b is_for_64()
 				if b=(TRUE)
-					SetCall err maxsectioncheck(ptrvalue#,ptrvalue)
+					callret maxsectioncheck(ptrvalue#,ptrvalue)
 				endIf
 			endIf
 		endIf

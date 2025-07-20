@@ -8,22 +8,19 @@ end
 #inits
 importx "get_current_dir_name" get_current_dir_name
 function _get_current_dir_name()
-	ss a;set a get_current_dir_name()
-	return a
+	callret get_current_dir_name() #pointer
 end
 
 #files
 importx "realpath" realpath
 function _realpath(ss a,ss b)
-	ss c;set c realpath(a,b)
-	return c
+	callret realpath(a,b) #pointer
 end
 
 #loop
 importx "getline" getline
 function _getline(sv a,sv b,sd c)
-	sd d;set d getline(a,b,c)
-	return d
+	callret getline(a,b,c) #ssize_t
 end
 importx "stdout" stdout
 function std_out()

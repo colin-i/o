@@ -708,9 +708,7 @@ Function arg(sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd sens,s
 	sd szarg
 	set szarg ptrsize#
 
-	Data errnr#1
-	SetCall errnr getarg(ptrcontent,ptrsize,szarg,allowdata,sens,ptrdata,ptrlow,ptrsufix)
-	Return errnr
+	callret getarg(ptrcontent,ptrsize,szarg,allowdata,sens,ptrdata,ptrlow,ptrsufix)
 EndFunction
 
 #err
@@ -726,13 +724,11 @@ endfunction
 #err
 function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,sd ptrlow,sd ptrsufix,sd allowdata)
 	Data null=NULL
-	Data err#1
 	Data forward=FORWARD
 
 	If ptrcondition=null
 		call unsetimm()
-		SetCall err arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward,allowdata)
-		Return err
+		callret arg(ptrcontent,ptrsize,ptrdata,ptrlow,ptrsufix,forward,allowdata)
 	EndIf
 	call setimm()
 
@@ -814,7 +810,6 @@ function argfilters_helper(sd ptrcondition,sv ptrcontent,sd ptrsize,sd ptrdata,s
 	Char conderr="Condition sign(s) expected."
 	Str _conderr^conderr
 	Return _conderr
-	Return err
 EndFunction
 
 function prefix_bool()
