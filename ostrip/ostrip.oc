@@ -52,7 +52,7 @@ Function Message_start(ss value)
 EndFunction
 Function lMessage_short(sd value)
 	sv st^stdout
-	Call fprintf(st#," %lu",value)
+	Call fprintf(st#," %lx",value)
 EndFunction
 
 Function eMessage(ss text)
