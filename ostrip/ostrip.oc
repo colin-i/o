@@ -63,8 +63,7 @@ EndFunction
 function erEnd()
 	call frees()
 	aftercall er
-	set er ~0
-	return (EXIT_FAILURE)
+	set er ~EXIT_SUCCESS
 endfunction
 function erMessage(ss text)
 	call eMessage(text)
@@ -77,8 +76,6 @@ function erMessages(ss m1,ss m2)
 endfunction
 
 function wrap(sd argc,sv argv)
-	charx ok#1;set ok (EXIT_FAILURE)
-
 	char s1=".data";char s2=".text";char s3=".symtab";char s3o=".symtab_offset";char s4=".strtab"
 
 	sv pfile%%pexefile
@@ -170,8 +167,6 @@ function wrap(sd argc,sv argv)
 	call write_sec(".rela.dyn",frees.execreladyn,frees.execreladynsize)
 
 	call frees()
-
-	set ok (EXIT_SUCCESS)
 end
 
 include "file.oc"
@@ -185,7 +180,7 @@ if argc>=(1+3)  #0 is all the time
 	sd verbo%%ptrverbose
 	setcall verbo# access(".debug",(F_OK))
 	callg wrap(argc,argv)
-	call exit(wrap.ok)
+	call exit(erEnd.er)
 endif
 call eMessage("Usage: ostrip exec log1 o1 [... logN oN]")
 call exit((EXIT_FAILURE))
