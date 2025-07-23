@@ -1,4 +1,5 @@
 
-echo a key when local test is ready
-read -n1 -t $((60*60*24))
-./test32
+#echo a key when local test is ready
+#read -n1 -t $((60*60*24))
+#./test32
+cd src && ./rtest

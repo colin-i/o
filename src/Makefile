@@ -147,7 +147,7 @@ test: test-obj
 	if [ -z "${testlinker}" ]; then \
 		RUN__SHELL=$(SHELL) . ../../shl && cd ../../ && $${RUN__SHELL} ./test32; \
 	else \
-		LD_LIBRARY_PATH=${testlinker} ${testlinker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
+		LD_LIBRARY_PATH=${testlinker} ${launcher2} ${testlinker}/ld-linux.so.2 ./z o.oc nul_res_pref 1; \
 		diff o z; \
 	fi
 #cannot extern LD_LIBRARY_PATH, will wrong between them

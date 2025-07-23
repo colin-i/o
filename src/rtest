@@ -1,0 +1,2 @@
+
+LD=/usr/i686-linux-gnu/bin/ld launcher=q launcher2=qemu-i386 testlinker=/home/bc/Desktop/libc6-i386-amd64-jammy/lib32 ./test32
