@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+237
+Version: 5+238
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,15 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Wed Jul 23 2025 Costin Botescu <costin.botescu@gmail.com> 5+238-0
+- rtest (costin.botescu@gmail.com)
+- was extra returning at erEnd (costin.botescu@gmail.com)
+- %%x values to compare (costin.botescu@gmail.com)
+- at ostrip trying to find the problem (costin.botescu@gmail.com)
+- info again, was not saved (costin.botescu@gmail.com)
+- callret part 2 (costin.botescu@gmail.com)
+- callret part 1 (costin.botescu@gmail.com)
+
 * Sun Jul 20 2025 Costin Botescu <costin.botescu@gmail.com> 5+237-0
 - callret is good also at ocomp (costin.botescu@gmail.com)
 - LocalFree (costin.botescu@gmail.com)

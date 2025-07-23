@@ -1,3 +1,9 @@
+ocompiler (2-5+238) xenial; urgency=medium
+
+  * callret optimizations
+
+ -- bc <bc@bc-desktop>  Wed, 23 Jul 2025 09:12:52 +0300
+
 ocompiler (2-5+237) xenial; urgency=medium
 
   * allow callret, is a marker in case of otoc
