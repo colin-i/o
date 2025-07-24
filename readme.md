@@ -1,7 +1,7 @@
 # O Compiler
 
 ## Install
-On Ubuntu(amd64 i386)[xenial(!amd64) bionic focal jammy noble] from PPA.
+On Ubuntu(amd64 i386)[xenial(not amd64) bionic focal jammy noble] from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
