@@ -18,7 +18,7 @@ On Arch Linux(x86_64), <i>.zst</i> file from [releases](https://github.com/colin
 yay -Sy ocompiler
 ```
 \
-On Fedora 42(x86_64):
+On Fedora 42/43(x86_64):
 ```sh
 sudo dnf copr enable colin/project
 sudo dnf install ocompiler
