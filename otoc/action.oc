@@ -78,16 +78,18 @@ function action_tbase(sv pbuffer,sd outfile)
 	char a="if(setjmp("^
 	call write(outfile,#a,\.a)
 	call varfunc(pbuffer,outfile)
-	char b="))return "^ #!=0
-	call write(outfile,#b,\.b)
-	if loop.function_start_base=(err)
-		set loop.function_start_base ftell(outfile)
+	sd bo;set bo write_allow();if bo=(TRUE) #returns can be also in include files at o
+		char b="))return "^ #!=0
+		call write(outfile,#b,\.b)
 		if loop.function_start_base=(err)
-			call aftercallenable()
+			set loop.function_start_base ftell(outfile)
+			if loop.function_start_base=(err)
+				call aftercallenable()
+			end
+			callg write(outfile,#main.long_long_reserve,2)
+		else
+			callg write(outfile,#return.b,\return.b)
 		end
-		callg write(outfile,#main.long_long_reserve,2)
-	else
-		callg write(outfile,#return.b,\return.b)
 	end
 end
 function action_tleave(sv pbuffer,sd outfile)

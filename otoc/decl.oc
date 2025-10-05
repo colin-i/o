@@ -31,11 +31,11 @@ function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
 		if loop.function_start=(err)
 			call aftercallenable()
 		end
+		call write_void(outfile)
+		call write(outfile,#main.long_long_reserve,\main.long_long_reserve)
+		call write(outfile,pointer,sz)
+		call writel(outfile)
 	end
-	call write_void(outfile)
-	call write(outfile,#main.long_long_reserve,\main.long_long_reserve)
-	call write(outfile,pointer,sz)
-	call writel(outfile)
 	callret functiondef_d(pbuffer,outfile)
 	# ret for varargs
 end
