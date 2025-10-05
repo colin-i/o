@@ -289,7 +289,7 @@ Function conditionscondend(data close1,data close2)
 	Data err#1
 	Data noerr=noerror
 
-	setcall err xfile_add_end_ifif()
+	setcall err xfile_add_end_cond_ifif()
 	if err=(noerror)
 		Data number#1
 		Set number close1
@@ -477,7 +477,7 @@ function whilebegin(sd pcontent,sd pcomsize,sd number)
 endfunction
 #err
 function whileend()
-	sd err;setcall err xfile_add_end_ifif()
+	sd err;setcall err xfile_add_end_cond_ifif()
 	If err=(noerror)
 		callret condend((whilenumber))
 	EndIf

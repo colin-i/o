@@ -269,3 +269,6 @@ const Xfile_proto_long=1
 const xfile_entry_offset_size=:
 const Xfile_sz_char=1
 const Xfile_sz_int=4
+
+const Xfile_end_cond=0
+const Xfile_end_func=1

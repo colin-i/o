@@ -4,6 +4,6 @@ if [ -z "${OCONV}" ]; then OCONV=../otoc/otoc; fi
 ./x ${1} && \
 ${OCONV} ${1}.oc.x import && \
 cat ${1}.c && {
-	cc -w ${1}.c
+	cc -w ${1}.c && \
 	mv ${1}.c .expected
 }

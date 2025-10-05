@@ -20,6 +20,7 @@ include "ascii.oh"
 include "mem.oc"
 
 const err=-1
+const ok=0
 const long32=DWORD
 
 const allowwrite_yes=0
@@ -43,6 +44,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	set directwrite (TRUE)
 	valuex function_start#1
 	set function_start (err)
+	valuex function_start_base#1
+	set function_start_base (err)
 	charx indentation#1
 	set indentation 0
 	charx same_line#1
@@ -154,7 +157,7 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	end
 	if main.result=(EXIT_SUCCESS)
 		if has_entry=(TRUE)
-			callg end(output)
+			callg writecrtn(output)
 		end
 	end
 end
@@ -468,7 +471,7 @@ function callex(sd outfile,sv pbuffer)
 	call unimplemented_start("callex",outfile)  #at some structures is complicated
 	char c#1;call get_char(pbuffer,#c)
 	call cal(pbuffer) #,outfile
-	call varfunc(pbuffer) #,outfile
+	call varfunc(pbuffer) #,outfile if was not unimplemented
 	call arg(pbuffer) #,outfile
 	call unimplemented_end()
 end
@@ -510,9 +513,12 @@ function continue(sd outfile)
 	call write(outfile,#a,\.a)
 	callg writetn(outfile)
 end
-function end(sd outfile)
-	call writecr(outfile)
-	callg writetn(outfile) #with termination only for struct
+function end(sd outfile,sv pbuffer)
+	charx type#1;call get_char(pbuffer,#type)
+	if type=(Xfile_end_func)
+		set loop.function_start_base (err)
+	end
+	callg writecrtn(outfile)
 end
 function ret(sd outfile)
 	call write(outfile,#return.a,\return.a-1)
@@ -766,6 +772,10 @@ end
 function writetn(sd outfile) #terminator newline
 	call writet(outfile)
 	callg writenl(outfile)
+end
+function writecrtn(sd outfile)
+	call writecr(outfile)
+	callg writetn(outfile) #with termination only for struct
 end
 
 function fprintu(sd outfile,sd c)  #has an upper write_allow check

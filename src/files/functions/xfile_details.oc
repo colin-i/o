@@ -364,13 +364,19 @@ function xfile_add_callret_ifif(sd action,sd subtype)
 endfunction
 
 #err
-function xfile_add_end_if()
-	callret xfile_add_char_if((Xfile_end))
+function xfile_add_end_if(sd type)
+	if main.xfile!=(openno)
+		sd err;setcall err xfile_add_char((Xfile_end))
+		if err=(noerror)
+			callret xfile_add_char(type)
+		endif
+	endif
+	return (noerror)
 endfunction
 #err
-function xfile_add_end_ifif()
+function xfile_add_end_cond_ifif()
 	if main.parses=(pass_write)
-		callret xfile_add_end_if()
+		callret xfile_add_end_if((Xfile_end_cond))
 	endif
 	return (noerror)
 endfunction

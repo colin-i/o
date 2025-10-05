@@ -7,6 +7,7 @@ line
 
 override include_sec 1
 include "stddef.h" "include.oh"
+include "the_setjmp.h" "include.oh"
 
 orphan off
 
@@ -33,8 +34,9 @@ function intern(data a,sd b,sv c,svu d) #commenting
 	decst c
 	neg c
 	not c
-	base c
-	leave c
+	!value the_jmp_buf#1
+	base the_jmp_buf
+	leave the_jmp_buf
 	shl1 c
 	shr1 c
 	sar1 c
@@ -115,4 +117,6 @@ entryv main(sd argc)
 	override x_file 1
 	i3
 	exit 2
+	!value the_jmp_buf#1
+	base the_jmp_buf
 	callret main(0)

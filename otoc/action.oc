@@ -12,7 +12,7 @@ function action1(sv act,sv pbuffer,sd outfile)
 	value         *^action_tneg
 	value         *^action_tnot
 	value         *^action_tbase
-	value         *^action_tbase #leave
+	value         *^action_tleave
 	value         *^action_tshl1
 	value         *^action_tshr1
 	value         *^action_tsar1
@@ -28,6 +28,14 @@ function return(sd outfile)
 		call fwrite(main.long,main.long_cast_size,1,outfile)
 		call fseek(outfile,0,(SEEK_END))
 		set loop.function_start (err) #if is not at endfunction, is here. multipe returns,write once
+		if loop.function_start_base!=(err) #reset it at start/function_end
+			call fseek(outfile,loop.function_start_base,(SEEK_SET))
+			char b={asciihyphen,asciione}  #is only for c rules. will not be functional for base(this),base,return.
+			call fwrite(#b,2,1,outfile)
+			call fseek(outfile,0,(SEEK_END))
+		else
+			set loop.function_start_base (ok) #for return,base
+		end
 	end
 	char a="return "^  #also used at ret
 	callg write(outfile,#a,\.a)
@@ -67,10 +75,27 @@ function action_tnot(sv pbuffer,sd outfile)
 	callg actionsimple(pbuffer,a,outfile)
 end
 function action_tbase(sv pbuffer,sd outfile)
-	call unimplemented_start("base/leave",outfile)
-	call varfunc(pbuffer)
-	call unimplemented_end()
-	call backchar(outfile);call backchar(outfile) #will term nl next
+	char a="if(setjmp("^
+	call write(outfile,#a,\.a)
+	call varfunc(pbuffer,outfile)
+	char b=")!=0)return "^
+	call write(outfile,#b,\.b)
+	if loop.function_start_base=(err)
+		set loop.function_start_base ftell(outfile)
+		if loop.function_start_base=(err)
+			call aftercallenable()
+		end
+		callg write(outfile,#main.long_long_reserve,2)
+	else
+		callg write(outfile,#return.b,\return.b)
+	end
+end
+function action_tleave(sv pbuffer,sd outfile)
+	char a="longjmp("^
+	call write(outfile,#a,\.a)
+	call varfunc(pbuffer,outfile)
+	char b={asciicomma,asciione,asciiparenthesisright}
+	callg write(outfile,#b,\.b)
 end
 function action_tshl1(sv pbuffer,sd outfile)
 	char a={asciileft,asciileft}

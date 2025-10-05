@@ -15,7 +15,7 @@ function endfunction(sd parses)
 		Set main.innerfunction (FALSE)
 		call vars_log_reset() #to let next variables be "o.var"
 	elseif parses=(pass_write)
-		setcall err xfile_add_end_if()
+		setcall err xfile_add_end_if((Xfile_end_func))
 		if err=(noerror)
 			setCall err checkcondloopclose()
 			If err=(noerror)

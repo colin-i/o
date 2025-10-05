@@ -26,7 +26,7 @@ function functiondef_d(sv pbuffer,sd outfile)
 	return args ##for varargs
 end
 function functiondef_r(sv pbuffer,sd outfile,sd pointer,sd sz)
-	sd b;set b write_allow();if b=(TRUE) #returns ca be also in include files at o, don't want to test that on c?
+	sd b;set b write_allow();if b=(TRUE) #returns can be also in include files at o, don't want to test that on c?
 		set loop.function_start ftell(outfile)
 		if loop.function_start=(err)
 			call aftercallenable()
