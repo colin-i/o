@@ -78,7 +78,7 @@ function action_tbase(sv pbuffer,sd outfile)
 	char a="if(setjmp("^
 	call write(outfile,#a,\.a)
 	call varfunc(pbuffer,outfile)
-	char b=")!=0)return "^
+	char b="))return "^ #!=0
 	call write(outfile,#b,\.b)
 	if loop.function_start_base=(err)
 		set loop.function_start_base ftell(outfile)
