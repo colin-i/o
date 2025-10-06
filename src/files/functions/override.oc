@@ -15,27 +15,18 @@ function override_com(sv pcontent,sd psize,sd parses)
 	endif
 
 	sd err
-	ss mem
-	sd valuesize;setcall valuesize find_whitespaceORcomment(pcontent#,psize#)
-
-	sd allocsize=1+1;add allocsize valuesize
-	add allocsize namesize
-	setcall err memoryalloc(allocsize,#mem)
+	sd pointer
+	setcall err comline_pointer(name,namesize,#pointer)
 	if err=(noerror)
-		ss p;set p mem
-		call memtomem(p,name,namesize);add p namesize
-		set p# 0;inc p
-		ss value;set value p
-		call memtomem(p,pcontent#,valuesize);add p valuesize
-		set p# 0
-		ss pointer;setcall err prefs_set(mem,value,#pointer) #pointer here is not required but at xfile is, and is faster this way
+		setcall err xfile_add_base_ifif((Xfile_override),name,namesize)
 		if err=(noerror)
-			call advancecursors(pcontent,psize,valuesize)
-			if parses=(pass_write)
-				setcall err xfile_add_override_if(mem,namesize,pointer#)
+			setcall err parseoperations(pcontent,psize,psize#,pointer,(TRUE))
+			if err=(noerror)
+				if pointer#>^(maximum_conf_digit)
+					return comline_value.err
+				endif
 			endif
 		endif
-		call free(mem)
 	endif
 	return err
 endfunction

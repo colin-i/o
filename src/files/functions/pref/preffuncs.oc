@@ -1,8 +1,8 @@
 
-data nul_res_pref#1
+data nul_res_pref#1 #pref#13
 const p_nul_res_pref^nul_res_pref
 
-data ignore_format_so#1
+data ignore_format_so#1 #pref#20
 const p_ignore_format_so^ignore_format_so
 
 #bool for err2
@@ -309,7 +309,7 @@ EndFunction
 #void
 
 function constants_bool(sd direction)
-	data bool#1
+	data bool#1 #pref#7
 	if direction=(const_warn_get)
 		return bool
 	endif

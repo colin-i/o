@@ -197,6 +197,7 @@ function memtooct(ss content,sd size,sd outvalue)
 endfunction
 
 const calculationmark=asciibs
+const prefsmark=asciiquestion
 #error
 function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 	Data bool#1
@@ -342,6 +343,13 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		else;set outval# (qwsz);endelse
 
 		callret xfile_add_char_ifif((Xfile_numbers_type_ilong))
+	elseif content#=(prefsmark)
+		inc content;dec size
+		ss p_value
+		setcall err comline_pointer(content,size,#p_value)
+		if err!=(noerror);return err;endif
+		set outval# p_value#
+		callret xfile_add_override(outval#)
 	endelseif
 	#0X ?
 	SetCall bool memtohex(content,size,outval)
@@ -426,11 +434,11 @@ Function numbersconstants(str content,data size,data outval)
 			setcall err xfile_add_base_ifif((Xfile_numbers_type_tconstant),content,size)
 		EndElse
 		if err=(noerror)
-			if notbool=(TRUE)
-				not outval#
-			endif
 			if minusbool=(TRUE)
 				mult outval# -1
+			endif
+			if notbool=(TRUE)
+				not outval#
 			endif
 		endif
 	endif

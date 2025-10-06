@@ -353,27 +353,27 @@ const ptrallocerrormsg^allocerrormsg
 Data _open_write=_open_write
 
 
-Data warningsbool#1
+Data warningsbool#1 #pref#1
 Const ptrwarningsbool^warningsbool
 
-data logbool#1
+data logbool#1 #pref#5
 const ptrlogbool^logbool
 data logfile#1
 data ptrlogfile^logfile
 const ptrlogfile^logfile
 
 
-data includedir#1
+data includedir#1 #pref#9
 const ptrincludedir^includedir
 char fileendchar#1
-datax relative_path#1
+datax relative_path#1 #pref#10
 const ptr_relativepath^relative_path
 
 const ignore_warn=0
 #const show_warn=1
 const log_warn=2
 
-data codeFnObj#1
+data codeFnObj#1 #pref#6
 const ptrcodeFnObj^codeFnObj
 
 #Data log_import_functions#1
@@ -382,7 +382,7 @@ const ptrcodeFnObj^codeFnObj
 const const_warn_get=0
 const const_warn_get_init=1
 
-datax offset_warn#1
+datax offset_warn#1 #pref#8
 const p_offset_warn^offset_warn
 
 
@@ -456,13 +456,13 @@ const popsign=asciicirc
 char uint32c#dw_char_0
 vstr uint32s^uint32c
 
-data w_as_e#1
+data w_as_e#1 #pref#4
 const p_w_as_e^w_as_e
 
-data over_pref#1
+data over_pref#1 #pref#2
 const p_over_pref^over_pref
 
-data hidden_pref#1
+data hidden_pref#1 #pref#3
 const p_hidden_pref^hidden_pref
 
 vstr safecurrentdirtopath#1
@@ -476,22 +476,22 @@ const nr_of_prefs_pointers_p^nr_of_prefs_pointers;const nr_of_prefs_strings_p^nr
 data prefs_backup#nr_of_prefs
 const prefs_backup_p^prefs_backup
 
-data inplace_reloc_pref#1
+data inplace_reloc_pref#1 #pref#15
 const p_inplace_reloc_pref^inplace_reloc_pref
 const zero_reloc=0
 const addend_reloc=1
 
-data pref_reloc_64#1
+data pref_reloc_64#1 #pref#16
 const p_pref_reloc_64^pref_reloc_64
 
-data underscore_pref#1
+data underscore_pref#1 #pref#17
 const p_underscore_pref^underscore_pref
 
 #exit end preference at main scope
-data exit_end#1
+data exit_end#1 #pref#18
 const p_exit_end^exit_end
 
-data include_sec#1
+data include_sec#1 #pref#19
 const p_include_sec^include_sec
 
 const nosign=0
@@ -508,7 +508,7 @@ const call_align_no=0
 const call_align_yes_all=1
 const call_align_yes_pushedArgs=2
 const maximum_conf_digit=call_align_yes_pushedArgs  #7 cases when maximum is 2
-data call_align#1
+data call_align#1 #pref#21
 const ptr_call_align^call_align
 
 const even_align=-1
@@ -530,15 +530,15 @@ const allow_yes=1
 
 const getarg_str=asciidoublequote
 
-data nobits_virtual#1
+data nobits_virtual#1 #pref#22
 const ptr_nobits_virtual^nobits_virtual
 
-data has_debug#1
+data has_debug#1 #pref#23
 const ptr_has_debug^has_debug
 
 const aftercall_disable=0
 
-data xbool#1
+data xbool#1 #pref#24
 data xfile#1
 charx xfile_sharp_comment#1
 
@@ -580,7 +580,7 @@ datax varargs#1
 
 charx is_constif#1
 
-charx callret_end_warn#1
+dataxu callret_end_warn#1 #pref#25 #override N needs data
 
 #for errors
 vStrx textlinestart#1;datax totalnewlines#1

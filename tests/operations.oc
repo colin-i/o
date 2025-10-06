@@ -22,3 +22,4 @@ data *=0xffFFffFE+1   #ff
 data *=0xffFFffFE+2   #0    overflow
 data *=0x40000000*2   #80
 data *=0x40000000*4   #00   overflow
+data *={?exit_end,?orphans,?callret_end_warn}

@@ -480,25 +480,12 @@ function xfile_add_library_if(sv pcontent,sd psize)
 	return (noerror)
 endfunction
 
-#err
-function xfile_add_override_if(sd name,sd size,sd value)
-	if main.xfile!=(openno)
-		sd err
-		setcall err xfile_add_base((Xfile_override),name,size)
-		if err=(noerror)
-			callret xfile_add_char(value)
-		endif
-		return err
-	endif
-	return (noerror)
-endfunction
-
 function xfile_proto()
 	if main.xfile!=(openno)
 		if main.innerfunctionreturn=(FALSE)
 			set main.innerfunctionreturn (TRUE)
-		end
-	end
+		endif
+	endif
 endfunction
 function xfile_protostart_if(sd content,sd size)
 	if main.xfile!=(openno)
@@ -508,12 +495,12 @@ function xfile_protostart_if(sd content,sd size)
 			setcall err xfile_add_char((Xfile_function_t_normal))
 			if err=(noerror)
 				setcall err xfile_add_string(content,size)
-			end
-		end
+			endif
+		endif
 		return err
-	end
+	endif
 	return (noerror)
-end
+endfunction
 #err
 function xfile_proto_done()
 	if main.xfile!=(openno)
@@ -523,15 +510,35 @@ function xfile_proto_done()
 		else
 			setcall err xfile_add_char((Xfile_proto_long))
 			set main.innerfunctionreturn (FALSE)
-		end
+		endelse
 		return err
-	end
+	endif
 	return (noerror)
 endfunction
 
+#err
 function xfile_proto_arg(sd type,sd is_stack,sd is_expand,sd is_signed)
 	if main.xfile!=(openno)
 		callret xfile_add_declare_base(type,is_stack,is_expand,is_signed)
-	end
+	endif
+	return (noerror)
+endfunction
+
+#err
+function xfile_add_override(sd value)
+	if main.parses=(pass_write)
+		if main.xfile!=(openno)
+			if value=0
+				char z=asciizero
+				callret xfile_add_base((Xfile_numbers_type_tdecimal),#z,1)
+			endif
+			if value=1
+				char o=asciione
+				callret xfile_add_base((Xfile_numbers_type_tdecimal),#o,1)
+			endif
+			char t=asciitwo
+			callret xfile_add_base((Xfile_numbers_type_tdecimal),#t,1)
+		endif
+	endif
 	return (noerror)
 endfunction

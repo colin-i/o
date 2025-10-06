@@ -568,7 +568,9 @@ function override(sd outfile,sv pbuffer)
 	call backindent(outfile)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
-	charx value#1;call get_char(pbuffer,#value)
+	or loop.allowwrite (allowwrite_no)
+	call number(pbuffer,outfile)
+	and loop.allowwrite (~allowwrite_no)
 end
 function orphan(sd *outfile,sv pbuffer)
 	charx orph#1;call get_char(pbuffer,#orph)

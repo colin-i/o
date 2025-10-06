@@ -1,6 +1,6 @@
 
 function sd_as_sv(sd direction,sd typenumber)
-	data bool#1
+	data bool#1 #pref#14
 	if direction=(sd_as_sv_bool)
 		if bool=(TRUE)
 			if typenumber=(stackdatanumber);return (TRUE);endif

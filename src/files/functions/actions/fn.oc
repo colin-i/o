@@ -360,7 +360,7 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 EndFunction
 #p
 function fn_text_info()
-	data text_info#1
+	data text_info#1 #pref#11
 	return #text_info
 endfunction
 

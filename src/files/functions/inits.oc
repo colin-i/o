@@ -1,11 +1,14 @@
 
 
 #err
-function prefs_set(ss name,ss value,sv p_p)
+function prefs_set(ss name,ss value)
 	sd err
-	setcall err comline_pointer(name,p_p)
+	sd a_len
+	sv p
+	setcall a_len strlen(name)
+	setcall err comline_pointer(name,a_len,#p)
 	if err=(noerror)
-		callret comline_value(value,p_p#)
+		callret comline_value(value,p)
 	endif
 	return err
 endfunction
@@ -25,7 +28,7 @@ function comline_parse(sd argc,sv argv)
 			endif
 			sd value
 			set value argv#
-			sd p;setcall err prefs_set(name,value,#p) #p here is not required but at xfile is, and is faster this way
+			setcall err prefs_set(name,value)
 			if err!=(noerror)
 				return err
 			endif
@@ -35,7 +38,7 @@ function comline_parse(sd argc,sv argv)
 	return (noerror)
 endfunction
 #err
-function comline_value(ss v,sd p)
+function comline_value(ss v,ss p)
 	char input#1
 	set input v#
 	if input!=0
@@ -47,7 +50,8 @@ function comline_value(ss v,sd p)
 					set p# input
 					return (noerror)
 				endif
-				return "a command line value can have only 0,1 or 2" #also connected to xfile output
+				vstr err="a command line value can have only 0,1 or 2" #also connected to xfile output
+				return err
 			endif
 			return "command line value must have only one digit"
 		endif
@@ -56,12 +60,10 @@ function comline_value(ss v,sd p)
 	return "command line value null"
 endfunction
 #err
-function comline_pointer(ss a,sd p_p)
+function comline_pointer(ss a,sd a_len,sd p_p)
 	sv t%nr_of_prefs_strings_p
 	sd e=nr_of_prefs_jumper
 	add e t
-	sd a_len
-	setcall a_len strlen(a)
 	while t!=e
 		ss b;set b t#
 		sd b_len

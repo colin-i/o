@@ -11,7 +11,7 @@ function is_for_64()
 endfunction
 #p_bits
 function p_neg_is_for_64()
-	data bool#1
+	data bool#1 #pref#12
 	return #bool
 endfunction
 
