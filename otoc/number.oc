@@ -30,6 +30,7 @@ function numbertype(sv pbuffer,sd outfile)
 	value         *^number_text_oct
 	value         *^number_text_hex
 	value         *^number_text_const
+	value         *^number_text_pref
 	value         *^number_func_size
 	value         *^number_func_sizex
 	value         *^number_func_sizexx
@@ -65,6 +66,11 @@ function number_text_oct(sd outfile,sv pbuffer)
 end
 function number_text_hex(sd outfile,sv pbuffer)
 	callg number_text_dec(outfile,pbuffer)
+end
+function number_text_pref(sd *outfile,sv pbuffer)
+	datax sz#1;valuex pointer#1
+	call get_string(pbuffer,#sz,#pointer)
+	callg unimplemented()
 end
 function number_text_const(sd outfile,sv pbuffer)
 	callg number_text_dec(outfile,pbuffer)

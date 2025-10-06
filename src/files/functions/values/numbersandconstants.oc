@@ -349,7 +349,7 @@ function numbertoint(vstrx content,datax size,datax outval,datax minusbool)
 		setcall err comline_pointer(content,size,#p_value)
 		if err!=(noerror);return err;endif
 		set outval# p_value#
-		callret xfile_add_override(outval#)
+		callret xfile_add_pref(content,size)
 	endelseif
 	#0X ?
 	SetCall bool memtohex(content,size,outval)

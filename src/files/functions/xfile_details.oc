@@ -525,19 +525,10 @@ function xfile_proto_arg(sd type,sd is_stack,sd is_expand,sd is_signed)
 endfunction
 
 #err
-function xfile_add_override(sd value)
+function xfile_add_pref(ss content,sd size)
 	if main.parses=(pass_write)
 		if main.xfile!=(openno)
-			if value=0
-				char z=asciizero
-				callret xfile_add_base((Xfile_numbers_type_tdecimal),#z,1)
-			endif
-			if value=1
-				char o=asciione
-				callret xfile_add_base((Xfile_numbers_type_tdecimal),#o,1)
-			endif
-			char t=asciitwo
-			callret xfile_add_base((Xfile_numbers_type_tdecimal),#t,1)
+			callret xfile_add_base((Xfile_numbers_type_tpref),content,size)
 		endif
 	endif
 	return (noerror)
