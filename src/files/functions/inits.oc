@@ -60,7 +60,7 @@ function comline_value(ss v,ss p)
 	return "command line value null"
 endfunction
 #err
-function comline_pointer(ss a,sd a_len,sd p_p)
+function comline_pointer(ss a,sd a_len,sv p_p)
 	sv t%nr_of_prefs_strings_p
 	sd e=nr_of_prefs_jumper
 	add e t
