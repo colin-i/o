@@ -20,7 +20,6 @@ Const asciidot=0x2E
 Const asciislash=0x2F
 Const asciizero=0x30
 Const asciione=0x31
-Const asciitwo=0x32
 Const asciithree=0x33
 Const asciieight=0x38
 Const asciinine=0x39

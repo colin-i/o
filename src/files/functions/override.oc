@@ -1,6 +1,6 @@
 
 #err
-function override_com(sv pcontent,sd psize,sd parses)
+function override_com(sv pcontent,sd psize)
 	sd name
 	sd namesize
 	setcall namesize valinmem(pcontent#,psize#,(asciispace))

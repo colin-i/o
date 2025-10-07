@@ -43,14 +43,6 @@ function xfile_add_string_if(sd text,sd size)
 	endif
 	return (noerror)
 endfunction
-function xfile_add_string_ifif(sd text,sd size)
-	if main.parses=(pass_write)
-		if main.xfile!=(openno)
-			callret xfile_add_string(text,size)
-		endif
-	endif
-	return (noerror)
-endfunction
 function xfile_add_multistring_ifif(sd text,sd size,sd is_multiline)
 	if main.parses=(pass_write)
 		if main.xfile!=(openno)

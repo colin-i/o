@@ -220,7 +220,7 @@ if errormsg=(noerror)
 				Include "./index/hex.oc"
 			ElseIf commandset=(cOVERRIDE)
 				#is at all, example at write hidden_pref
-				setcall errormsg override_com(#content,#comsize,parses)
+				setcall errormsg override_com(#content,#comsize)
 			ElseIf commandset=(cORPHAN)
 				Include "./index/warning.oc"
 			ElseIf commandset=(cI3)
