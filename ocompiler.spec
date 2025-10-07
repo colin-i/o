@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+238
+Version: 5+239
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,21 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Tue Oct 07 2025 Costin Botescu <costin.botescu@gmail.com> 5+239-0
+- unused (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- Xfile_numbers_type_tpref (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- override N struct . ?preference at numbers (costin.botescu@gmail.com)
+- in include files, allow write is false (costin.botescu@gmail.com)
+- extra !=0 (costin.botescu@gmail.com)
+- otoc base/leave (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- readme (costin.botescu@gmail.com)
+
 * Wed Jul 23 2025 Costin Botescu <costin.botescu@gmail.com> 5+238-0
 - rtest (costin.botescu@gmail.com)
 - was extra returning at erEnd (costin.botescu@gmail.com)

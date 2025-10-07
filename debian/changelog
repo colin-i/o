@@ -1,3 +1,9 @@
+ocompiler (2-5+239) xenial; urgency=medium
+
+  * otoc base/leave. ?preference
+
+ -- bc <bc@bc-desktop>  Tue, 07 Oct 2025 15:44:29 +0300
+
 ocompiler (2-5+238) xenial; urgency=medium
 
   * callret optimizations
