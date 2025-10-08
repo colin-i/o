@@ -1,6 +1,6 @@
 
 #err
-function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signed)
+function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signed,sv pcontent,sd psize)
 	sd err
 	if is_stack=(TRUE)
 		setcall err xfile_add_char((Xfile_declfield_stack))
@@ -29,7 +29,17 @@ function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signe
 			endelse
 		endelse
 		if err=(noerror)
-			callret xfile_add_char(decltype)
+			setcall err xfile_add_char(decltype)
+			if err=(noerror)
+				ss content;set content pcontent#
+				if content#!=(pointingsign)  #here is expecting to be in ..) or in ..=
+					callret xfile_add_char((Xfile_declvolatile_no))
+				endif
+				if psize!=(NULL)
+					call stepcursors(pcontent,psize)
+				endif
+				callret xfile_add_char((Xfile_declvolatile_yes))
+			endif
 		endif
 	endif
 	return err
@@ -41,8 +51,8 @@ function xfile_add_declare_fndec_if(sd decltype,sd is_stack,sd is_expand,sd is_s
 		sd err
 		setcall err xfile_add_declare_ex(decltype,is_stack,is_expand,is_signed,content,size) #1 ignored
 		if err=(noerror)
-			add main.xprotooff_pending (bsz+bsz+bsz)
-			if is_stack=(FALSE)
+			add main.xprotooff_pending (bsz+bsz+bsz+bsz) #declfield,declext,decltype,declvolatile
+			if is_stack=(FALSE) #declfield_data
 				inc main.xprotooff_pending
 			endif
 		endif
@@ -93,9 +103,9 @@ function xfile_add_declare_ex(sd decltype,sd is_stack,sd is_expand,sd is_signed,
 			endelse
 		endif
 	else
-		setcall err xfile_add_declare_base(decltype,is_stack,is_expand,is_signed)
+		setcall err xfile_add_declare_base(decltype,is_stack,is_expand,is_signed,#content,#size)
 		if err=(noerror)
-			if content#=(throwlesssign)
+			if content#=(throwlesssign) #here is expecting to be in ..) or in ..=
 				setcall err xfile_add_char((Xfile_declfeature_throwless))
 				call stepcursors(#content,#size)
 			elseif content#=(unrefsign)
@@ -526,9 +536,9 @@ function xfile_proto_done_if()
 endfunction
 
 #err
-function xfile_proto_arg_if(sd type,sd is_stack,sd is_expand,sd is_signed)
+function xfile_proto_arg_if(sd type,sd is_stack,sd is_expand,sd is_signed,ss content)
 	if main.xfile!=(openno)
-		callret xfile_add_declare_base(type,is_stack,is_expand,is_signed)
+		callret xfile_add_declare_base(type,is_stack,is_expand,is_signed,#content,(NULL))
 	endif
 	return (noerror)
 endfunction

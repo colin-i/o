@@ -981,6 +981,7 @@ format elfobj64<br>
 <p>There are at least two options at the '*' wildcard from there. '{}' is an enumeration.</p>
 <p>First long(4 bytes) is null or offset of entry which will be at the end.</p>
 <p>Xfile_noignore at ocompiler is '^' sign before the command, and at otoc will noignore a tagIgnore argument. Xfile_yesignore at compiler is '!' sign before the command and at otoc will ignore the command.</p>
+<p>Another option specific to otoc is Xfile_declvolatile_*: to use stack variables at o for recursion but not pointers at c.</p>
 <table id="selection_table">
 	<tr><td>Xfile_proto</td><td>Xfile_function_t_*</td><td class="red">name</td><td class="blue">nr_of_args</td><td class="green">{DA}</td><td>Xfile_proto_*</td></tr>
 </table>
@@ -1093,9 +1094,9 @@ format elfobj64<br>
 </table>
 <br>Table DA:
 <table id="selection_table">
-	<tr><td colspan=2>Xfile_declfield_stack</td>                     <td rowspan=2>Xfile_declext_*</td><td rowspan=2>Xfile_decltype_*</td></tr>
+	<tr><td colspan=2>Xfile_declfield_stack</td>                     <td rowspan=2>Xfile_declext_*</td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declvolatile_*</td></tr>
 	<tr><td>Xfile_declfield_data</td> <td>Xfile_declfield_data_*</td></tr>
-	<tr><td colspan=4>Xfile_declfield_varargs</td></tr>
+	<tr><td colspan=5>Xfile_declfield_varargs</td></tr>
 </table>
 <br>Table DT:
 <table id="selection_table">

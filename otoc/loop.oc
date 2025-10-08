@@ -611,7 +611,6 @@ end
 function proto_core(sd outfile,sv pbuffer)
 	datax nr#1;call get_data(pbuffer,#nr)
 	if nr>^0
-		#DA structure and one more like this
 		charx field#1;call get_char(pbuffer,#field)
 		call decl_runtime_core(pbuffer,outfile,field,(NULL))
 		#

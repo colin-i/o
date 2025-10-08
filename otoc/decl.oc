@@ -74,14 +74,16 @@ function functiondef_entry(sv pbuffer,sd outfile,sd pointer,sd sz,sd vargs)
 	set loop.has_entry (TRUE)
 end
 
-#D structure
+#DA structure(with field from argument)
 function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
-	charx sign#1;charx type#1
+	charx sign#1;charx type#1;charx volatile#1
 	if field=(Xfile_declfield_data)
 		charx data#1;call get_char(pbuffer,#data)
 		call get_char(pbuffer,#sign)
 		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
 		call unsigned_type(outfile,type,sign)
+
+		call get_char(pbuffer,#volatile)
 		#special hack for a pointless long (value), needed to inc/dec
 		if type=(Xfile_decltype_long)
 			if data=(Xfile_declfield_data_concrete)
@@ -89,12 +91,14 @@ function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
 				ret
 			end
 		end
-		callg decl_type(outfile,type)
+		callg decl_type(outfile,type,volatile)
 	elseif field=(Xfile_declfield_stack)
 		call get_char(pbuffer,#sign)
 		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
 		call unsigned_type(outfile,type,sign)
-		callg decl_type(outfile,type)
+
+		call get_char(pbuffer,#volatile)
+		callg decl_type(outfile,type,volatile)
 	else #Xfile_declfield_varargs
 		callg varargs(outfile)
 	end
@@ -124,19 +128,19 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype,ss pconstif)
 	callg write(outfile,pointer,sz)
 end
 const un_chars_size=2
-function decl_type(sd outfile,sv fn)
-	value f^byte      #char[x]                        Xfile_decltype_byte
-	value *^longByte  #is intByte but same as vstr    Xfile_decltype_intByte
-	value *^longByte  #vstr[x] ss                     Xfile_decltype_longByte
-	value *^word      #word[x]                        Xfile_decltype_word
-	value *^longWord  #vword[x] sw                    Xfile_decltype_longWord
-	value *^int       #data[x]                        Xfile_decltype_int
-	value *^longInt   #vdata[x] sd                    Xfile_decltype_longInt
-	value *^longLong  #valuex sv                      Xfile_decltype_long
+function decl_type(sd outfile,sv fn,sd volatile)
+	value f^byte         #char[x]                        Xfile_decltype_byte
+	value *^longByte_ex  #is intByte but same as vstr    Xfile_decltype_intByte
+	value *^longByte_ex  #vstr[x] ss                     Xfile_decltype_longByte
+	value *^word         #word[x]                        Xfile_decltype_word
+	value *^longWord_ex  #vword[x] sw                    Xfile_decltype_longWord
+	value *^int          #data[x]                        Xfile_decltype_int
+	value *^longInt_ex   #vdata[x] sd                    Xfile_decltype_longInt
+	value *^longLong     #valuex sv                      Xfile_decltype_long
 	mult fn :
 	add fn #f
 	set fn fn#
-	callg fn(outfile)
+	callg fn(outfile,volatile)
 end
 function byte(sd outfile)
 	char a="char*"^
@@ -153,15 +157,39 @@ end
 function longByte(sd outfile)
 	callg write(outfile,#byte.a,\byte.a)
 end
-function longLong(sd outfile)
-	callg write_long_point(outfile)
+function longByte_ex(sd outfile,sd volatile)
+	if volatile=(Xfile_declvolatile_no)
+		callg longByte(outfile)
+	else
+		callg byte(outfile)
+	end
 end
-#function longByte()end
+function longLong(sd outfile,sd volatile)
+	if volatile=(Xfile_declvolatile_no)
+		callg write_long_point(outfile)
+	else
+		callg write_long(outfile)
+	end
+end
 function longWord(sd outfile)
 	callg write(outfile,#word.a,\word.a)
 end
+function longWord_ex(sd outfile,sd volatile)
+	if volatile=(Xfile_declvolatile_no)
+		callg longWord(outfile)
+	else
+		callg word(outfile)
+	end
+end
 function longInt(sd outfile)
 	callg write(outfile,#int.a,\int.a)
+end
+function longInt_ex(sd outfile,sd volatile)
+	if volatile=(Xfile_declvolatile_no)
+		callg longInt(outfile)
+	else
+		callg int(outfile)
+	end
 end
 function varargs(sd outfile)
 	char a="..."^

@@ -43,6 +43,9 @@ const Xfile_decltype_long=7
 #const Xfile_decltype_varargs=Xfile_decltype_const+1  #is used only Xfile_declfield_varargs
 #const Xfile_decltype_done=0xff
 
+const Xfile_declvolatile_no=0
+const Xfile_declvolatile_yes=1
+
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1
 const Xfile_declfeature_throwless=2

@@ -142,8 +142,21 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 
 	data content#1
 	set content ptrcontent#
-	Char firstchar#1
+	Charx firstchar#1
 	Set firstchar content#
+
+	if firstchar=(pointingsign)
+		If typenumber!=(constantsnumber)
+			vstr varname="Name for variable expected."
+			dec valsize
+			If valsize=zero
+				Return varname
+			endif
+			call stepcursors(ptrcontent,ptrsize)
+		else
+			return "Unexpected pointing sign ('?') at constant declaration."
+		endelse
+	endif
 
 	If firstchar!=(unrefsign)
 		if firstchar=(throwlesssign)   #throwless if on a throwing area
@@ -152,7 +165,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 			EndIf
 			dec valsize
 			If valsize=zero
-				Return "Name for variable expected."
+				Return varname
 			endif
 			or mask (aftercallthrowlessbit)
 			call stepcursors(ptrcontent,ptrsize)

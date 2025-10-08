@@ -501,6 +501,7 @@ const reservesign=asciinumber
 const pointersigndeclare=asciicirc
 #Latin Small Letter Y with diaeresis (0xff)
 
+const pointingsign=asciiquestion #caret was ok but is a getsign and will be wrong error
 const unrefsign=asciiast
 const throwlesssign=asciiand
 

@@ -90,7 +90,7 @@ function var(sv pbuffer,sd outfile)
 			elseif cast=(Xfile_suffix_cast_data) #int*
 				call longInt(outfile)
 			else # Xfile_suffix_cast_value long*
-				call longLong(outfile)
+				call write_long_point(outfile)
 			end
 			call writer(outfile)
 		end

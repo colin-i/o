@@ -60,10 +60,6 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				add ptrdataSize# datasize
 			endelse
 		endif
-		setcall err vars_log_prepare(ptrcontent#,sz) #for ounused
-		If err=noerr
-			call advancecursors(ptrcontent,ptrsize,sz)
-		EndIf
 	else #pass_write
 		sd long_mask=(dummy_mask)
 	endelse
@@ -117,7 +113,12 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 		endelse
 	endelse
 	if parses=(pass_init) # long_mask and again datasize are extra
-		callret xfile_proto_arg_if(xfile_decltype,is_stack,is_expand,is_signed)
+		setcall err vars_log_prepare(ptrcontent#,sz) #for ounused
+		If err=noerr
+			setcall err xfile_proto_arg_if(xfile_decltype,is_stack,is_expand,is_signed,ptrcontent#)
+			call advancecursors(ptrcontent,ptrsize,sz) #is not important if error or not
+		EndIf
+		return err
 	endif
 	setcall err xfile_add_declare_fndec_if(xfile_decltype,is_stack,is_expand,is_signed,ptrcontent#,sz)
 	If err!=noerr

@@ -26,6 +26,7 @@ char a#3;value b^a
 char no_hotgroup=1;value no_hotgroup_test^no_hotgroup
 
 function intern(data a,sd b,sv c,svu d) #commenting
+	sd ?recursion
 	svu pointing^intern
 	!set pointing# pointing
 	inc a
@@ -33,7 +34,7 @@ function intern(data a,sd b,sv c,svu d) #commenting
 	incst c
 	decst c
 	neg c
-	not c
+	not recursion
 	!value the_jmp_buf#1
 	base the_jmp_buf
 	leave the_jmp_buf
