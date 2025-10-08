@@ -37,6 +37,9 @@ function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signe
 				endif
 				if psize!=(NULL)
 					call stepcursors(pcontent,psize)
+					if psize#=0 #this is the very rare case when the rare case at vars_log_prepare is not: x_file,not object,end of file,do not compare unallocated space
+						return vars_log_prepare.varname
+					endif
 				endif
 				callret xfile_add_char((Xfile_declvolatile_yes))
 			endif
