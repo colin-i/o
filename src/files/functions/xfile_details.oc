@@ -32,7 +32,7 @@ function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signe
 			setcall err xfile_add_char(decltype)
 			if err=(noerror)
 				ss content;set content pcontent#
-				if content#!=(pointingsign)  #here is expecting to be in ..) or in ..=
+				if content#!=(pointingsign)  #examples:in ..) or in ..= or one of the assign..expected
 					callret xfile_add_char((Xfile_declvolatile_no))
 				endif
 				if psize!=(NULL)
@@ -105,7 +105,7 @@ function xfile_add_declare_ex(sd decltype,sd is_stack,sd is_expand,sd is_signed,
 	else
 		setcall err xfile_add_declare_base(decltype,is_stack,is_expand,is_signed,#content,#size)
 		if err=(noerror)
-			if content#=(throwlesssign) #here is expecting to be in ..) or in ..=
+			if content#=(throwlesssign) #examples:in ..) or in ..= or one of the assign..expected
 				setcall err xfile_add_char((Xfile_declfeature_throwless))
 				call stepcursors(#content,#size)
 			elseif content#=(unrefsign)

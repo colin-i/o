@@ -81,8 +81,8 @@ endfunction
 function vars_log_prepare(ss content,sd size)
 	data ptrobject%ptrobject
 	if ptrobject#=(TRUE)
-		#if size>^0   #is no error write 0 , the error will be later
-		if content#=(pointingsign) #same like xfile, checking inside ..) or ..=
+		#if size>^0 #this is not even in the case when the file ends with no size(one of the assign...expected), most of the cases are ..) or ..=
+		if content#=(pointingsign)
 			inc content;dec size
 		end
 		if content#=(unrefsign)
@@ -92,7 +92,7 @@ function vars_log_prepare(ss content,sd size)
 			inc content;dec size
 		endif
 		sd vals;setcall vals vars_log((get),content,size)
-		callret addtolog_array_withchar(vals,(log_offset))
+		callret addtolog_array_withchar(vals,(log_offset))  #is no error write 0 , the error will be later
 		#endif
 	endif
 	return (noerror)
