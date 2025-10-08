@@ -8,7 +8,7 @@ function endfunction(sd parses)
 			Str unexeferr^unexef
 			return unexeferr
 		endif
-		setcall err xfile_proto_done()
+		setcall err xfile_proto_done_if()
 		if err!=(noerror)
 			return err
 		end

@@ -356,9 +356,18 @@ function xfile_add_callret_if(sd action,sd subtype)
 	return (noerror)
 endfunction
 #err
-function xfile_add_callret_ifif(sd action,sd subtype)
-	if main.parses=(pass_write)
-		callret xfile_add_callret_if(action,subtype)
+function xfile_add_callret_wrap(sd action,sd subtype)
+	if main.xfile!=(openno)
+		if main.parses=(pass_init)
+			if main.innerfunctionreturn=(FALSE)
+				setcall subtype callret_flag(subtype)
+				if subtype!=0
+					set main.innerfunctionreturn (TRUE)
+				endif
+			endif
+		elseif main.parses=(pass_write)
+			callret xfile_add_callret(action,subtype)
+		endelseif
 	endif
 	return (noerror)
 endfunction
@@ -480,7 +489,7 @@ function xfile_add_library_if(sv pcontent,sd psize)
 	return (noerror)
 endfunction
 
-function xfile_proto()
+function xfile_proto_if()
 	if main.xfile!=(openno)
 		if main.innerfunctionreturn=(FALSE)
 			set main.innerfunctionreturn (TRUE)
@@ -502,7 +511,7 @@ function xfile_protostart_if(sd content,sd size)
 	return (noerror)
 endfunction
 #err
-function xfile_proto_done()
+function xfile_proto_done_if()
 	if main.xfile!=(openno)
 		sd err
 		if main.innerfunctionreturn=(FALSE)
@@ -517,7 +526,7 @@ function xfile_proto_done()
 endfunction
 
 #err
-function xfile_proto_arg(sd type,sd is_stack,sd is_expand,sd is_signed)
+function xfile_proto_arg_if(sd type,sd is_stack,sd is_expand,sd is_signed)
 	if main.xfile!=(openno)
 		callret xfile_add_declare_base(type,is_stack,is_expand,is_signed)
 	endif
@@ -525,7 +534,7 @@ function xfile_proto_arg(sd type,sd is_stack,sd is_expand,sd is_signed)
 endfunction
 
 #err
-function xfile_add_pref(ss content,sd size)
+function xfile_add_pref_ifif(ss content,sd size)
 	if main.parses=(pass_write)
 		if main.xfile!=(openno)
 			callret xfile_add_base((Xfile_numbers_type_tpref),content,size)

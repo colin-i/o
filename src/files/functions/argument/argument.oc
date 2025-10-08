@@ -277,6 +277,6 @@ function argument_init(sv ptrcontent,sd ptrsize,sd subtype)
 			return (noerror)
 		endif
 	endif
-	call xfile_proto()
+	call xfile_proto_if()
 	callret getarg(ptrcontent,ptrsize,ptrsize#,(allow_later),(FORWARD)) #there are 3 more arguments but are not used
 endfunction
