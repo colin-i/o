@@ -81,9 +81,14 @@ endfunction
 function vars_log_prepare(ss content,sd size)
 	data ptrobject%ptrobject
 	if ptrobject#=(TRUE)
-		#if size>^0 #this is not even in the case when the file ends with no size(one of the assign...expected), most of the cases are ..) or ..=
+		#0 size and no size right is outside(one of the assign...expected), most of the cases are ..) or ..=
+		#can be 0 size but is something different at right, example ,)=^%# not ?&
 		if content#=(pointingsign)
 			inc content;dec size
+			if size=0 #this is the rare case when file end is coming and no more mem left to compare for next
+				vstr varname="Name for variable expected."
+				return varname  ##here are no constants
+			endif
 		end
 		if content#=(unrefsign)
 			return (noerror)

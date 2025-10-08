@@ -147,10 +147,9 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 
 	if firstchar=(pointingsign)
 		If typenumber!=(constantsnumber)
-			vstr varname="Name for variable expected."
 			dec valsize
 			If valsize=zero
-				Return varname
+				Return vars_log_prepare.varname
 			endif
 			call stepcursors(ptrcontent,ptrsize)
 		else
@@ -165,7 +164,7 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 			EndIf
 			dec valsize
 			If valsize=zero
-				Return varname
+				Return vars_log_prepare.varname
 			endif
 			or mask (aftercallthrowlessbit)
 			call stepcursors(ptrcontent,ptrsize)
