@@ -42,7 +42,7 @@ const signed_cond=1
 	elseif type=(signed_cond)
 		call arg(#replay,outfile)
 	else
-		call unimplemented()
+		call unimplemented("condition")
 	end
 
 	if set#=(asciinul)

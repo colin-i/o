@@ -51,10 +51,10 @@ function number_int_long(sd outfile)
 	callg writer(outfile)
 end
 function number_int_data()
-	callg unimplemented()
+	callg unimplemented("data section pointer")
 end
 function number_int_datax()
-	callg unimplemented()
+	callg unimplemented("data nobits section pointer")
 end
 function number_text_dec(sd outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
@@ -70,7 +70,7 @@ end
 function number_text_pref(sd *outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
-	callg unimplemented()
+	callg unimplemented("preference number")
 end
 function number_text_const(sd outfile,sv pbuffer)
 	callg number_text_dec(outfile,pbuffer)
@@ -183,7 +183,7 @@ function xor(sd outfile)
 	callg write(outfile,#a,1)
 end
 function pow()
-	callg unimplemented()
+	callg unimplemented("power operation")
 end
 function rem(sd outfile)
 	char a={asciipercent}
@@ -238,8 +238,8 @@ function unsignedgreaterequal(sd outfile)
 	callg greaterequal(outfile)
 end
 function parity()
-	callg unimplemented()
+	callg unimplemented("parity operation")
 end
 function odd()
-	callg unimplemented()
+	callg unimplemented("odd operation")
 end

@@ -235,15 +235,6 @@ function line(sd outfile) #this with the functions but is throwless
 	set loop.same_line (TRUE)
 end
 
-function unimplemented_start(ss com,sd outfile)
-	call printf("Unimplemented command: %s\n",com)
-	call backindent(outfile)
-	or loop.allowwrite (allowwrite_no)
-end
-function unimplemented_end()
-	and loop.allowwrite (~allowwrite_no)
-end
-
 include "util.oc"
 
 function aftercallenable()
@@ -258,9 +249,9 @@ end
 
 #aftercalli *
 
-function unimplemented()
-	call puts("unimplemented")
-	if loop.allowwrite=(allowwrite_yes)
+function unimplemented(ss reason)
+	call printf("unimplemented %s\n",reason)
+	sd b;set b write_allow();if b=(TRUE)
 		call aftercallenable()
 	end
 end
@@ -411,7 +402,7 @@ function declare(sd outfile,sv pbuffer)
 					call write_popstring(pointer,sz,outfile)
 				end
 				if type!=(Xfile_decltype_byte) #why check here and not above? to let popstring to be normal and check for 0 size and write to file (is more easy at debug)
-					call unimplemented() # char*={'a','b','c',0} is not "abc" ,downgrade to char? the sizeof and pointers then
+					call unimplemented("string with no term") # char*={'a','b','c',0} is not "abc" ,downgrade to char? the sizeof and pointers then
 				end
 			else
 				call write_string(outfile,multi,sz,pointer)
@@ -467,13 +458,12 @@ function call(sd outfile,sv pbuffer)
 	call cll(pbuffer,outfile)
 	callg writetn(outfile)
 end
-function callex(sd outfile,sv pbuffer)
-	call unimplemented_start("callex",outfile)  #at some structures is complicated
+function callex(sd *outfile,sv pbuffer)
+	call unimplemented("callex")
 	char c#1;call get_char(pbuffer,#c)
 	call cal(pbuffer) #,outfile
 	call varfunc(pbuffer) #,outfile if was not unimplemented
-	call arg(pbuffer) #,outfile
-	call unimplemented_end()
+	callg arg(pbuffer) #,outfile
 end
 function if(sd outfile,sv pbuffer)
 	char a="if"^
@@ -555,14 +545,13 @@ function aftercall(sd outfile,sv pbuffer)
 		end
 	end
 end
-function hex(sd outfile,sv pbuffer)
-	call unimplemented_start("hex",outfile)
+function hex(sd *outfile,sv pbuffer)
+	call unimplemented("hex")
 	datax args#1;call get_data(pbuffer,#args)
 	sd n=0;while n!=args
 		call number(pbuffer) #,outfile
 		inc n
 	end
-	call unimplemented_end()
 end
 function override(sd outfile,sv pbuffer)
 	call backindent(outfile)
