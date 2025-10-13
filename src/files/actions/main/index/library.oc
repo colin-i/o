@@ -29,7 +29,7 @@ EndElse
 If errormsg=noerr
 	SetCall errormsg quotinmem(pcontent,pcomsize,ptrlibquotsz,ptrlibescapes)
 	If errormsg=noerr
-		SetCall errormsg addtosecstresc(pcontent,pcomsize,libquotsz,libescapes,ptrnames,true)
+		SetCall errormsg addtosecstresc(pcontent,pcomsize,libquotsz,libescapes,ptrnames)
 		If errormsg=noerr
 			Set implibsstarted true
 		EndIf

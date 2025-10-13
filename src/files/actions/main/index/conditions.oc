@@ -30,12 +30,12 @@ ElseIf subtype=(cWHILETRUE)
 	SetCall errormsg whilebegin(pcontent,pcomsize,(whiletruenumber))
 Elseif parses=(pass_write)
 	If subtype=(cBREAK)
-		setcall errormsg xfile_add_char_if((Xfile_break))
+		setcall errormsg xfile_add_top_if((Xfile_break))
 		If errormsg=noerr
 			setcall errormsg break()
 		EndIf
 	Else #if subtype=(cCONTINUE)
-		setcall errormsg xfile_add_char_if((Xfile_continue))
+		setcall errormsg xfile_add_top_if((Xfile_continue))
 		If errormsg=noerr
 			setcall errormsg continue()
 		EndIf

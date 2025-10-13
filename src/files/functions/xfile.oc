@@ -43,16 +43,28 @@ function xfile_add_string_if(sd text,sd size)
 	endif
 	return (noerror)
 endfunction
+function xfile_add_string_ifif(sd text,sd size)
+	if main.parses=(pass_write)
+		callret xfile_add_string_if(text,size)
+	endif
+	return (noerror)
+endfunction
+function xfile_add_multistring_if(sd text,sd size,sd is_multiline)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_char(is_multiline)
+		if err=(noerror)
+			callret xfile_add_string_if(text,size)
+		endif
+		return err
+	endif
+	return (noerror)
+endfunction
 function xfile_add_multistring_ifif(sd text,sd size,sd is_multiline)
 	if main.parses=(pass_write)
-		if main.xfile!=(openno)
-			sd err
-			setcall err xfile_add_char(is_multiline)
-			if err=(noerror)
-				callret xfile_add_string_if(text,size)
-			endif
-			return err
-		endif
+		sd err
+		setcall err xfile_add_multistring_if(text,size,is_multiline)
+		return err
 	endif
 	return (noerror)
 endfunction
@@ -90,6 +102,26 @@ function xfile_add_comment_multi_ifif(sd start,sd end)
 	if main.parses=(pass_write)
 		add start 2 #one for commentascii and one for asciiexclamationmark
 		callret xfile_add_base_area_if((Xfile_commentmulti),start,end)
+	endif
+	return (noerror)
+endfunction
+
+function xfile_add_top(sd type)
+	if main.xfile_top!=(Xfile_ignore_nosigns)
+		sd err;set err writefile_errversion(main.xfile,#main.xfile_top,(Xfile_sz_char))
+		if err!=(noerror);return err;endif
+	end
+	callret writefile_errversion(main.xfile,#type,(Xfile_sz_char))
+endfunction
+function xfile_add_top_if(sd type)
+	if main.xfile!=(openno)
+		callret xfile_add_top(type)
+	endif
+	return (noerror)
+endfunction
+function xfile_add_top_ifif(sd type)
+	if main.parses=(pass_write)
+		callret xfile_add_top_if(type)
 	endif
 	return (noerror)
 endfunction

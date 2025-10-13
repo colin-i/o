@@ -1,5 +1,5 @@
 
-setcall errormsg xfile_add_char_if((Xfile_hex))
+setcall errormsg xfile_add_top_if((Xfile_hex))
 if errormsg=(noerror)
 	setcall errormsg enumcommas(pcontent,pcomsize,pcomsize#,(fndecandgroup),(charnumber),(NULL),(hexenum)) #there are 5 more arguments but are not used
 	if errormsg=(noerror)

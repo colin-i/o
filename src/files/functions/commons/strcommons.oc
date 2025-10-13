@@ -316,14 +316,14 @@ function bytescaped(sv _content,ss content,sd _dif)
 endfunction
 
 #return the escaped char and change the size and cursor
-Function quotescaped(sv pcontent,sd psize,sd write_to_xfile,sd p_is_multiline)
+Function quotescaped(sv pcontent,sd psize,sd p_is_multiline)
 	ss content
 	Char bs=asciibs
 	charx byte#1
 	Set content pcontent#
 	set byte content#
 	if byte!=bs
-		if write_to_xfile=(TRUE)
+		if p_is_multiline!=(NULL)
 			if p_is_multiline#=(Xfile_string_multiline_no)
 				whiletrue
 					if byte!=(asciireturn)

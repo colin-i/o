@@ -2,7 +2,7 @@
 if g_e_b_p#=(global_err_notset)
 	set errormsg "AfterCall is not defined."
 else
-	setcall errormsg xfile_add_char_if((Xfile_aftercall))
+	setcall errormsg xfile_add_top_if((Xfile_aftercall))
 	if errormsg=(noerror)
 		sd acall_val
 		if subtype=(cAFTERCALLENABLE)

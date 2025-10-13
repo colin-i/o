@@ -587,3 +587,5 @@ dataxu callret_end_warn#1 #pref#25 #override N needs data
 vStrx textlinestart#1;datax totalnewlines#1
 vstrx first_textlinestart#1
 data linesadd=FORWARD
+
+charx xfile_top#1

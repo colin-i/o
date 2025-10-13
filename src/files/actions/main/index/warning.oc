@@ -1,5 +1,5 @@
 
-setcall errormsg xfile_add_char_ifif((Xfile_orphan))
+setcall errormsg xfile_add_top_ifif((Xfile_orphan))
 if errormsg=(noerror)
 	Data warningsboolptr%ptrwarningsbool
 	sd warning_bool

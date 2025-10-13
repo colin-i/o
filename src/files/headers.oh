@@ -2,6 +2,8 @@
 include "./headers/ascii.oh"
 
 include "./headers/xfile.oh"
+const Xfile_ignore_nosigns=Xfile_yesignore+1
+
 Include "./headers/logs.oh"
 Include "./headers/strip.oh"
 

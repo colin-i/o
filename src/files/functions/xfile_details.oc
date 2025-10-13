@@ -129,7 +129,7 @@ endfunction
 function xfile_add_fndef_if(sd content,sd sz,sd fn)
 	if main.xfile!=(openno)
 		sd err
-		setcall err xfile_add_char((Xfile_functiondef))
+		setcall err xfile_add_top((Xfile_functiondef))
 		if err=(noerror)
 			setcall err xfile_add_char(fn)
 			if err=(noerror)
@@ -349,7 +349,7 @@ endfunction
 function xfile_add_callret(sd action,sd subtype)
 	sd err
 
-	setcall err xfile_add_char(action)
+	setcall err xfile_add_top(action)
 	if err=(noerror)
 		#this can go also with primsec with a test against CALL_primsec, add that flag at getcommand, but still there is a wrong cosmetic at subtype_test=0 and not subtype_test=CALL_primsec in a case
 		setcall subtype callret_flag(subtype)
@@ -362,14 +362,14 @@ function xfile_add_callret(sd action,sd subtype)
 	return err
 endfunction
 #err
-function xfile_add_callret_if(sd action,sd subtype)
+function xfile_add_callret_if(sd subtype)
 	if main.xfile!=(openno)
-		callret xfile_add_callret(action,subtype)
+		callret xfile_add_callret((Xfile_callex),subtype)
 	endif
 	return (noerror)
 endfunction
 #err
-function xfile_add_callret_wrap(sd action,sd subtype)
+function xfile_add_callret_wrap(sd subtype)
 	if main.xfile!=(openno)
 		if main.parses=(pass_init)
 			if main.innerfunctionreturn=(FALSE)
@@ -379,7 +379,7 @@ function xfile_add_callret_wrap(sd action,sd subtype)
 				endif
 			endif
 		elseif main.parses=(pass_write)
-			callret xfile_add_callret(action,subtype)
+			callret xfile_add_callret((Xfile_call),subtype)
 		endelseif
 	endif
 	return (noerror)
@@ -388,7 +388,7 @@ endfunction
 #err
 function xfile_add_end_if(sd type)
 	if main.xfile!=(openno)
-		sd err;setcall err xfile_add_char((Xfile_end))
+		sd err;setcall err xfile_add_top((Xfile_end))
 		if err=(noerror)
 			callret xfile_add_char(type)
 		endif
@@ -407,7 +407,7 @@ endfunction
 function xfile_add_format_if(sd format,sd ignore)
 	if main.xfile!=(openno)
 		sd err
-		setcall err xfile_add_char((Xfile_format))
+		setcall err xfile_add_top((Xfile_format))
 		if err=(noerror)
 			if format=(elf_unix)
 				sd ptrobject%ptrobject
@@ -434,52 +434,36 @@ function xfile_add_format_if(sd format,sd ignore)
 endfunction
 
 #err
-function xfile_add_import_if(sv pcontent,sd psize,sd subtype)
+function xfile_add_import_if(sd subtype,sv content,sd size,sd impescapes)
 	if main.xfile!=(openno)
+		if main.innerfunction=(TRUE)
+			return "It is not possible to write Import in functions and .x file at the same time." # Xfile_proto_* is write() later 
+		end
 		sd err
-		setcall err xfile_add_char((Xfile_import))
+		setcall err xfile_add_top((Xfile_import))
 		if err=(noerror)
 			setcall err xfile_add_char(subtype)
 			if err=(noerror)
-				Datax impquotsz#1
-				Datax impescapes#1
-				Call quotinmem_noerr(pcontent,psize,#impquotsz,#impescapes) #the spelling errors were at pass init
-				setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
-				if err=(noerror)
-					Call spaces(pcontent,psize)
-					sd imp_size;setcall imp_size find_whitespaceORcomment(pcontent#,psize#)
-					setcall err xfile_add_string(pcontent#,imp_size) #not a spelling error
-					if err=(noerror)
-						call advancecursors(pcontent,psize,imp_size) #spelling was at pass_init
-						call spaces(pcontent,psize)
-						whiletrue
-							if psize#!=0 #next is optional argument
-								ss content;set content pcontent#
-								if content#!=(commentascii)
-									ss valsize;setcall valsize notspaces_helper(content,psize#) #was spelling
-									sub valsize content
-									if valsize!=content ##allowing optional command argument
-										sd val
-										sd bool;setcall bool memtoint(content,valsize,#val,(FALSE))
-										if bool=(TRUE)
-											set err xfile_add_int(val)
-											break
-										endif
-										return "Positive integer expected for import arguments number."
-									endif
-								endif
-							endif
-							set err xfile_add_int(0)
-							break
-						endwhile
-						call advancecursors(pcontent,psize,psize#) #,valsize  spelling was at pass_init
-					endif
-				endif
+				setcall err addtosecstresc_xfile_if(#content,#size,size,impescapes,main.ptrtempdata)
 			endif
 		endif
 		return err
 	endif
-	call advancecursors(pcontent,psize,psize#)
+	return (noerror)
+endfunction
+function xfile_add_import_nr_if(ss content,sd valsize)
+	if main.xfile!=(openno)
+		sd err
+		sd val
+		sub valsize content
+		sd bool;setcall bool memtoint(content,valsize,#val,(FALSE))
+		if bool=(TRUE)
+			set err xfile_add_int(val)
+		else
+			return "Positive integer expected for import arguments number."
+		endelse
+		return err
+	endif
 	return (noerror)
 endfunction
 
@@ -487,12 +471,12 @@ endfunction
 function xfile_add_library_if(sv pcontent,sd psize)
 	if main.xfile!=(openno)
 		sd err
-		setcall err xfile_add_char((Xfile_library))
+		setcall err xfile_add_top((Xfile_library))
 		if err=(noerror)
 			Datax impquotsz#1
 			Datax impescapes#1
 			Call quotinmem_noerr(pcontent,psize,#impquotsz,#impescapes) #the spelling errors were at pass init
-			setcall err addtosecstresc_xfile(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
+			setcall err addtosecstresc_xfile_if(pcontent,psize,impquotsz,impescapes,main.ptrtempdata)
 			#here a low chances error, not a spelling error, spelling was at pass init
 			call advancecursors(pcontent,psize,psize#)
 		endif

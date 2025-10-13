@@ -5,7 +5,7 @@ const aftercalldeclaresize=1
 
 if comsize=0;set errormsg "AfterCall variable name expected."
 else
-	setcall errormsg xfile_add_char_if((Xfile_aftercall))
+	setcall errormsg xfile_add_top_if((Xfile_aftercall))
 	if errormsg=(noerror)
 		vstr ac_store_c#1;data ac_store_s#1
 		data acsym_value#1;data acsym_size#1;data acsym_shndx#1

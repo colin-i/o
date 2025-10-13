@@ -129,7 +129,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			data ptrdatasec%%ptr_datasec
 			set ptrcontent# content
 			set ptrsize# size
-			SetCall errnr addtosecstresc_xfile(ptrcontent,ptrsize,q_size,escapes,ptrdatasec)
+			SetCall errnr addtosecstresc_xfile_if(ptrcontent,ptrsize,q_size,escapes,ptrdatasec)
 			If errnr!=(noerror)
 				return errnr
 			endif

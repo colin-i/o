@@ -33,7 +33,6 @@ comp () {
 			base ${1}.o  #${n:0:-3}.o
 		fi
 	fi
-	if [ -n "${compile_only}" ]; then exit 0; fi
 }
 if [ -z "${ex}" ]; then
 	if [ -z "${OLINK}" ]; then OLINK=../ounused/ounused; fi
@@ -51,55 +50,55 @@ if [ -z "${ex}" ]; then
 		logs+=" ${f}.oc.log"
 		objs+=" ${f}.o"
 	done
-	${launcher} ${OLINK} ${logs} || exit 1
-	echo
-
-	if [ -n "${onlycomp}" ]; then exit 0; fi
-
-	if [ -z "${win}" ]; then
-		if [ -z "${old}" ]; then
-			if [ -z "${ldprefer}" ]; then
-				cc ${objs}
+	if [ -z "${onlycomp}" ]; then
+		${launcher} ${OLINK} ${logs} || exit 1
+		echo
+		if [ -z "${win}" ]; then
+			if [ -z "${old}" ]; then
+				if [ -z "${ldprefer}" ]; then
+					cc ${objs}
+				else
+					${LD} ${objs} --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${L} -lc --entry main -o a.out
+				fi
 			else
-				${LD} ${objs} --dynamic-linker=/lib64/ld-linux-x86-64.so.2 ${L} -lc --entry main -o a.out
+				if [ -z "${LD}" ]; then LD=ld; fi
+				${LD} ${objs} --entry main --dynamic-linker=/lib/ld-linux.so.2 -m elf_i386 -o a.out -lc
+			fi
+			if [ -z "${edb}" ]; then
+				if [ -n "${ldprefer}" ]; then  #for box64 case
+					./a.out
+				else
+					${launcher} ./a.out
+				fi
+			else edb --run a.out
 			fi
 		else
-			if [ -z "${LD}" ]; then LD=ld; fi
-			${LD} ${objs} --entry main --dynamic-linker=/lib/ld-linux.so.2 -m elf_i386 -o a.out -lc
-		fi
-		if [ -z "${edb}" ]; then
-			if [ -n "${ldprefer}" ]; then  #for box64 case
-				./a.out
+			if [ -z "${old}" ]; then
+				x86_64-w64-mingw32-gcc ${objs} -o a.out
+				if [ -z "${edb}" ]; then wine `pwd`/a.out
+				else wine /home/bc/Desktop/x64/release/x64/x64dbg.exe `pwd`/a.out
+				fi
 			else
-				${launcher} ./a.out
-			fi
-		else edb --run a.out
-		fi
-	else
-		if [ -z "${old}" ]; then
-			x86_64-w64-mingw32-gcc ${objs} -o a.out
-			if [ -z "${edb}" ]; then wine `pwd`/a.out
-			else wine /home/bc/Desktop/x64/release/x64/x64dbg.exe `pwd`/a.out
-			fi
-		else
-			i686-w64-mingw32-ld ${objs} -entry main -lmsvcrt -o ./a.out
-			if [ -z "${edb}" ]; then wine `pwd`/a.out
-			else wine /home/bc/Desktop/x64/release/x32/x32dbg.exe `pwd`/a.out
+				i686-w64-mingw32-ld ${objs} -entry main -lmsvcrt -o ./a.out
+				if [ -z "${edb}" ]; then wine `pwd`/a.out
+				else wine /home/bc/Desktop/x64/release/x32/x32dbg.exe `pwd`/a.out
+				fi
 			fi
 		fi
 	fi
 else
 	comp ${1}
-	if [ -n "${onlycomp}" ]; then exit 0; fi
-	if [ -z "${win}" ]; then
-		mv ${1} `pwd`/a.out
-		if [ -z "${edb}" ]; then /home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 ./a.out
-		else edb --run /home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 ./a.out
-		fi
-	else
-		mv ${1}.exe `pwd`/a.out
-		if [ -z "${edb}" ]; then wine `pwd`/a.out
-		else wine /home/bc/Desktop/x64/release/x32/x32dbg.exe `pwd`/a.out
+	if [ -z "${onlycomp}" ]; then
+		if [ -z "${win}" ]; then
+			mv ${1} `pwd`/a.out
+			if [ -z "${edb}" ]; then /home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 ./a.out
+			else edb --run /home/bc/Desktop/out/squashfs-root/lib32/ld-linux.so.2 ./a.out
+			fi
+		else
+			mv ${1}.exe `pwd`/a.out
+			if [ -z "${edb}" ]; then wine `pwd`/a.out
+			else wine /home/bc/Desktop/x64/release/x32/x32dbg.exe `pwd`/a.out
+			fi
 		fi
 	fi
 fi || {

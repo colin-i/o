@@ -538,26 +538,19 @@ Function getcommand(sv pcontent,sd psize,sd ptrsubtype,sv ptrerrormsg,sv pointer
 	Data dsz=dwsz
 
 	sd er
+	set main.xfile_top (Xfile_ignore_nosigns)
 	ss start;set start pcontent#
 	if start#=(Xfile_noignore_sign)
 		inc start
 		inc pcontent#
 		dec psize#
-		set er xfile_add_char_ifif((Xfile_noignore))
-		if er!=(noerror)
-			set ptrerrormsg# er
-			ret
-		endif
+		set main.xfile_top (Xfile_noignore)
 	endif
 	if start#=(Xfile_yesignore_sign)
 		inc start
 		inc pcontent#
 		dec psize#
-		set er xfile_add_char_ifif((Xfile_yesignore))
-		if er!=(noerror)
-			set ptrerrormsg# er
-			ret
-		endif
+		set main.xfile_top (Xfile_yesignore)
 	endif
 
 	Set cursor pointercommands#

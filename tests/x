@@ -1,3 +1,3 @@
 
-write_to_expected=1 compile_only=1 OFLAGS="x_file 1 includedir 0 relative_path 1" ./a $@
+write_to_expected=1 onlycomp=1 OFLAGS="x_file 1 includedir 0 relative_path 1" . ./a $@
 #       same as in ./compile

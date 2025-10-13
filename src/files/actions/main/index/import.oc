@@ -45,56 +45,69 @@ If errormsg=noerr
 	If errormsg=noerr
 		SetCall errormsg quotinmem(pcontent,pcomsize,ptrimpquotsz,ptrimpescapes)
 		If errormsg=noerr
-			Call import_leading_underscore(pcontent,pcomsize,ptrimpquotsz)
-			If object=true
-				#the sym entry
-				SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,(STB_GLOBAL),null,ptrtable)
-			EndIf
-			If errormsg=noerr
-				sd imp_mark;set imp_mark namesReg ##this is because the null at end makes code harder
-				SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames,true)
+			setcall errormsg xfile_add_import_if(subtype,content,impquotsz,impescapes) #before leading underscore
+			if errormsg=noerr
+				Call import_leading_underscore(pcontent,pcomsize,ptrimpquotsz)
+				If object=true
+					#the sym entry
+					SetCall errormsg elfaddsym(namesReg,zero,(sym_with_size),STT_NOTYPE,(STB_GLOBAL),null,ptrtable)
+				EndIf
 				If errormsg=noerr
-					Call spaces(pcontent,pcomsize)
-					#after this will find var in vars/fns and if not add a new
-					sd imp_size;setcall imp_size find_whitespaceORcomment(content,comsize)
-					If imp_size=zero
-						Char missimportref="Import name for compiler must be specified after the name for output."
-						Str ptrimpref^missimportref
-						Set errormsg ptrimpref
-					Else
-						SetCall errormsg fnimp_exists(content,imp_size) #it is at first pass when only fns and imports are
-						If errormsg=noerr
-							if subtype=(cIMPORT)
-								if codeFnObj=(log_warn)
-									sub impquotsz impescapes
-									add imp_mark names
-									setcall errormsg addtolog_withchar_ex_atunused_handle(imp_mark,impquotsz,(log_import),logfile)
-								endif
-							endif
+					sd imp_mark;set imp_mark namesReg ##this is because wordpad null at end makes code harder
+					SetCall errormsg addtosecstresc(pcontent,pcomsize,impquotsz,impescapes,ptrnames)
+					If errormsg=noerr
+						Call spaces(pcontent,pcomsize)
+						#after this will find var in vars/fns and if not add a new
+						sd imp_size;setcall imp_size find_whitespaceORcomment(content,comsize)
+						If imp_size=zero
+							Char missimportref="Import name for compiler must be specified after the name for output."
+							Str ptrimpref^missimportref
+							Set errormsg ptrimpref
+						Else
+							SetCall errormsg fnimp_exists(content,imp_size) #it is at first pass when only fns and imports are
 							If errormsg=noerr
-								sd import_ref_mask=idatabitfunction
-								if subtype=(cIMPORTX)
-									or import_ref_mask (x86_64bit)
-								endif
-								if g_e_b_p#=(global_err_notset)
-									or import_ref_mask (aftercallthrowlessbit)
-								endif
-
-								Data functionsnr=functionsnumber
-								SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
+								setcall errormsg xfile_add_string_if(content,imp_size)
 								If errormsg=noerr
-									Call spaces(pcontent,pcomsize)
-									if comsize!=0
-										if content#!=(commentascii)
-											call notspaces(pcontent,pcomsize) #optional xfile number of arguments
+									if subtype=(cIMPORT)
+										if codeFnObj=(log_warn)
+											sub impquotsz impescapes
+											add imp_mark names
+											setcall errormsg addtolog_withchar_ex_atunused_handle(imp_mark,impquotsz,(log_import),logfile)
 										endif
 									endif
-								endif
-							endIf
-						EndIf
-					EndElse
+									If errormsg=noerr
+										sd import_ref_mask=idatabitfunction
+										if subtype=(cIMPORTX)
+											or import_ref_mask (x86_64bit)
+										endif
+										if g_e_b_p#=(global_err_notset)
+											or import_ref_mask (aftercallthrowlessbit)
+										endif
+
+										Data functionsnr=functionsnumber
+										SetCall errormsg addaref(functionoffset,pcontent,pcomsize,imp_size,functionsnr,import_ref_mask)
+										If errormsg=noerr
+											Call spaces(pcontent,pcomsize)
+											if comsize!=0
+												if content#!=(commentascii)
+													ss cursor;set cursor content
+													call stepcursors(pcontent,pcomsize)
+													call notspaces(pcontent,pcomsize) #optional xfile number of arguments
+													setcall errormsg xfile_add_import_nr_if(cursor,content)
+												else
+													setcall errormsg xfile_add_int_if(0)
+												endelse
+											else
+												setcall errormsg xfile_add_int_if(0)
+											endelse
+										endIf
+									endIf
+								endIf
+							EndIf
+						EndElse
+					EndIf
 				EndIf
-			EndIf
+			endif
 		EndIf
 	EndIf
 EndIf

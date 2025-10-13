@@ -163,7 +163,7 @@ if errormsg=(noerror)
 					endif
 				endif
 			ElseIf commandset=(cDECLARE)
-				setcall errormsg xfile_add_char_ifif((Xfile_declare))
+				setcall errormsg xfile_add_top_ifif((Xfile_declare))
 				If errormsg=(noerror)
 					setcall errormsg declare(pcontent,pcomsize,subtype,parses,p_is_for_64_value#)
 				endIf
@@ -185,14 +185,14 @@ if errormsg=(noerror)
 				Include "./index/conditions.oc"
 			ElseIf commandset=(cIMPORTLINK)
 				if parses=(pass_init);Include "./index/import.oc"
-				else;setcall errormsg xfile_add_import_if(pcontent,pcomsize,subtype);endelse
+				else;call advancecursors(pcontent,pcomsize,comsize);endelse #is now at init for .x for top declare for calling from throwless area when imported in trow area
 			ElseIf commandset=(cSTARTFUNCTION)
 				Include "./index/function.oc"
 			ElseIf commandset=(cENDFUNCTION)
 				setcall errormsg endfunction(parses)
 			ElseIf commandset=(cRET)
 		call entryscope_verify_code()
-				setcall errormsg xfile_add_char_if((Xfile_ret));if errormsg=(noerror)
+				setcall errormsg xfile_add_top_if((Xfile_ret));if errormsg=(noerror)
 					setcall errormsg writeret((ret_cont_break_mustskip));endif
 			ElseIf commandset=(cINCLUDELINK)
 				Include "./index/include.oc"

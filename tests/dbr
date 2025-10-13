@@ -1,1 +1,0 @@
-OCONV="qq ../otoc/otoc" ./db $@

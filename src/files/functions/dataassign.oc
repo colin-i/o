@@ -440,7 +440,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			return err
 		endif
 		call quotinmem_started_blind_noerr(ptrcontent,ptrsize,ptrvalue,#escapes)
-		SetCall err addtosecstresc_xfile(ptrcontent,ptrsize,value,escapes,ptrdatasec)
+		SetCall err addtosecstresc_xfile_if(ptrcontent,ptrsize,value,escapes,ptrdatasec)
 		if err=(noerror)
 			sd trim
 			setcall trim string_pop(ptrcontent,ptrsize)

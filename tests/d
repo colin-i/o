@@ -1,9 +1,9 @@
+set -e
+if [ -z "${OCONV}" ]; then OCONV="${launcher} ../otoc/otoc"; fi
+. ./x ${1}
+${launcher} ${OCONV} ${1}.oc.x import
+cat ${1}.c
+z=`cat ~/s/actionswf-1/oad/cflags`
+cc -w ${z:14} ${1}.c
+mv ${1}.c .expected
 
-if [ -z "${OCONV}" ]; then OCONV=../otoc/otoc; fi
-
-./x ${1} && \
-${OCONV} ${1}.oc.x import && \
-cat ${1}.c && {
-	cc -w ${1}.c && \
-	mv ${1}.c .expected
-}

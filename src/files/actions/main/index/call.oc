@@ -1,5 +1,5 @@
 
-setcall errormsg xfile_add_callret_wrap((Xfile_call),subtype)
+setcall errormsg xfile_add_callret_wrap(subtype)
 if errormsg=(noerror)
 	Data callfn=callfunction
 	SetCall errormsg parsefunction(pcontent,pcomsize,callfn,subtype) #there is 1 more argument but is not used

@@ -1,5 +1,5 @@
 
-SetCall errormsg xfile_add_char_if((Xfile_interrupt))
+SetCall errormsg xfile_add_top_if((Xfile_interrupt))
 if errormsg=(noerror)
 	Char interrupt={0xCC}
 	vStr ptrinterrupt^interrupt

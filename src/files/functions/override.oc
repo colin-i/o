@@ -18,12 +18,15 @@ function override_com(sv pcontent,sd psize)
 	sd pointer
 	setcall err comline_pointer(name,namesize,#pointer)
 	if err=(noerror)
-		setcall err xfile_add_base_ifif((Xfile_override),name,namesize)
+		setcall err xfile_add_top_ifif((Xfile_override))
 		if err=(noerror)
-			setcall err parseoperations(pcontent,psize,psize#,pointer,(TRUE))
+			setcall err xfile_add_string_ifif(name,namesize)
 			if err=(noerror)
-				if pointer#>^(maximum_conf_digit)
-					return comline_value.err
+				setcall err parseoperations(pcontent,psize,psize#,pointer,(TRUE))
+				if err=(noerror)
+					if pointer#>^(maximum_conf_digit)
+						return comline_value.err
+					endif
 				endif
 			endif
 		endif
