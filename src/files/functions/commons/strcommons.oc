@@ -400,6 +400,11 @@ Function quotinmem_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
 	Call quotinmem_err(ptrcontent#,pquotsz,pescapes) #null_ok is irelevant, spelling was already
 EndFunction
+Function quotinmem_size_noerr(sv ptrcontent,sd ptrsize,sd pquotsz)
+	call stepcursors(ptrcontent,ptrsize)
+	sd escapes
+	Call quotinmem_err(ptrcontent#,pquotsz,#escapes) #null_ok is irelevant, spelling was already
+EndFunction
 
 #err
 function maxpathverif(str safecurrentdirtopath,str logextension)
