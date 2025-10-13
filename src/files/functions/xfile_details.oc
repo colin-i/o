@@ -437,7 +437,7 @@ endfunction
 function xfile_add_import_if(sd subtype,sv content,sd size,sd impescapes)
 	if main.xfile!=(openno)
 		if main.innerfunction=(TRUE)
-			return "It is not possible to write Import in functions and .x file at the same time." # Xfile_proto_* is write() later 
+			return "It is not possible to write Import in functions and .x file at the same time." # Xfile_proto_* is write() later
 		end
 		sd err
 		setcall err xfile_add_top((Xfile_import))
