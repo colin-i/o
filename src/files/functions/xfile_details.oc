@@ -549,6 +549,7 @@ function xfile_keep_cursor(sv pcontent,sd psize)
 	Call quotinmem_size_noerr(pcontent,psize,#impquotsz) #the spelling errors were at pass init
 	add main.xprotooff impquotsz
 	call advancecursors(pcontent,psize,impquotsz)
+	call stepcursors(pcontent,psize)
 	Call spaces(pcontent,psize)
 	ss valsize;setcall valsize notspaces_helper(pcontent#,psize#) #was spelling
 	sub valsize pcontent#
