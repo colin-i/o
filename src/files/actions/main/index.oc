@@ -185,7 +185,7 @@ if errormsg=(noerror)
 				Include "./index/conditions.oc"
 			ElseIf commandset=(cIMPORTLINK)
 				if parses=(pass_init);Include "./index/import.oc"
-				else;call xfile_keep_cursor(pcontent,pcomsize);endelse #is now at init for .x for top declare for calling from throwless area when imported in trow area
+				else;setcall errormsg xfile_keep_cursor(pcontent,pcomsize);endelse #is now at init for .x for top declare for calling from throwless area when imported in trow area
 			ElseIf commandset=(cSTARTFUNCTION)
 				Include "./index/function.oc"
 			ElseIf commandset=(cENDFUNCTION)

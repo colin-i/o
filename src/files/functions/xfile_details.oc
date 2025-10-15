@@ -541,18 +541,25 @@ function xfile_add_pref_ifif(ss content,sd size)
 endfunction
 
 function xfile_keep_cursor(sv pcontent,sd psize)
-	if main.xfile_top!=(Xfile_ignore_nosigns)
-		inc main.xprotooff
-	endif
-	add main.xprotooff (bsz+bsz+bsz+dwsz+dwsz+dwsz)
-	Datax impquotsz#1
-	Call quotinmem_size_noerr(pcontent,psize,#impquotsz) #the spelling errors were at pass init
-	add main.xprotooff impquotsz
-	call advancecursors(pcontent,psize,impquotsz)
-	call stepcursors(pcontent,psize)
-	Call spaces(pcontent,psize)
-	ss valsize;setcall valsize notspaces_helper(pcontent#,psize#) #was spelling
-	sub valsize pcontent#
-	add main.xprotooff valsize
+	sd err
+	if main.xfile!=(openno)
+		if main.xfile_top!=(Xfile_ignore_nosigns)
+			inc main.xprotooff
+		endif
+		add main.xprotooff (bsz+bsz+bsz+dwsz+dwsz+dwsz)
+		Datax impquotsz#1
+		Call quotinmem_size_noerr(pcontent,psize,#impquotsz) #the spelling errors were at pass init
+		add main.xprotooff impquotsz
+		call advancecursors(pcontent,psize,impquotsz)
+		call stepcursors(pcontent,psize)
+		Call spaces(pcontent,psize)
+		ss valsize;setcall valsize notspaces_helper(pcontent#,psize#) #was spelling
+		sub valsize pcontent#
+		add main.xprotooff valsize
+		setcall err xfile_add_base((Xfile_import_name),pcontent#,valsize)
+	else
+		set err (noerror)
+	endelse
 	call advancecursors(pcontent,psize,psize#)
+	return err
 endfunction

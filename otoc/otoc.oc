@@ -81,8 +81,8 @@ function ignores_init(sv endval,sv argv)
 	add endval argv
 	datax out#1
 	set out 0
-	while argv!=endval
 include "tags.oh"
+	while argv!=endval
 		ss s;set s argv#
 		sd b
 		set b strlen(s)

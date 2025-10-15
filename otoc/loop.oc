@@ -100,6 +100,7 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			end
 
 			value Xfile_proto^proto
+			value *Xfile_import^import
 			value *Xfile_comment^comment
 			value *Xfile_commentmulti^commentmulti
 			value *Xfile_commentlineend^commentlineend
@@ -121,7 +122,7 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			value *Xfile_end^end
 			value *Xfile_ret^ret
 			value *Xfile_library^library
-			value *Xfile_import^import
+			value *Xfile_import_name^import_name
 			value *Xfile_aftercall^aftercall
 			value *Xfile_hex^hex
 			value *Xfile_override^override
@@ -129,8 +130,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			value *Xfile_interrupt^interrupt
 			value *Xfile_line^line
 			value *Xfile_iend^iend
-			datau mults={1,2,4,6,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
-			datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000} #,0x40000000,0x80000000}
+			datau mults={1,2,4,8,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
+			datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000} #,0x80000000}
 
 			datax ignored#1
 			if nextisignored=(ignored_depending_on_tags)
@@ -533,6 +534,10 @@ function import(sd outfile,sv pbuffer)
 		end
 	end
 	callg proto_close(outfile)
+end
+function import_name(sd *outfile,sv pbuffer)
+	datax sz#1;valuex name#1
+	call get_string(pbuffer,#sz,#name)
 end
 function aftercall(sd outfile,sv pbuffer)
 	call backindent(outfile)
