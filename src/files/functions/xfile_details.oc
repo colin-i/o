@@ -392,6 +392,7 @@ function xfile_add_end_if(sd type)
 		if err=(noerror)
 			callret xfile_add_char(type)
 		endif
+		return err
 	endif
 	return (noerror)
 endfunction
@@ -530,7 +531,7 @@ function xfile_protostart_if(sd content,sd size)
 		if err=(noerror)
 			setcall err xfile_add_char((Xfile_function_t_normal))
 			if err=(noerror)
-				setcall err xfile_add_string(content,size)
+				callret xfile_add_string(content,size)
 			endif
 		endif
 		return err
@@ -540,14 +541,11 @@ endfunction
 #err
 function xfile_proto_done_if()
 	if main.xfile!=(openno)
-		sd err
 		if main.innerfunctionreturn=(FALSE)
-			setcall err xfile_add_char((Xfile_proto_void))
-		else
-			setcall err xfile_add_char((Xfile_proto_long))
-			set main.innerfunctionreturn (FALSE)
-		endelse
-		return err
+			callret xfile_add_char((Xfile_proto_void))
+		endif
+		set main.innerfunctionreturn (FALSE)
+		callret xfile_add_char((Xfile_proto_long))
 	endif
 	return (noerror)
 endfunction
