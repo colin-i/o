@@ -428,7 +428,6 @@ function xfile_add_format_if(sd format,sd ignore)
 			endif
 			callret xfile_add_char((Xfile_format_exe))
 		endif
-		return err
 	endif
 	return (noerror)
 endfunction
@@ -444,25 +443,52 @@ function xfile_add_import_if(sd subtype,sv content,sd size,sd impescapes)
 		if err=(noerror)
 			setcall err xfile_add_char(subtype)
 			if err=(noerror)
-				setcall err addtosecstresc_xfile_if(#content,#size,size,impescapes,main.ptrtempdata)
+				callret addtosecstresc_xfile_if(#content,#size,size,impescapes,main.ptrtempdata)
 			endif
 		endif
-		return err
 	endif
 	return (noerror)
 endfunction
-function xfile_add_import_nr_if(ss content,sd valsize)
+function xfile_add_import_nr_if(ss content,ss valsize)
 	if main.xfile!=(openno)
 		sd err
-		sd val
-		sub valsize content
-		sd bool;setcall bool memtoint(content,valsize,#val,(FALSE))
-		if bool=(TRUE)
-			set err xfile_add_int(val)
-		else
+		ss cursor=-1;add cursor valsize
+		whiletrue
+			if cursor#!=(asciiv)
+				if cursor#!=(asciiV)
+					setcall err xfile_add_char((Xfile_function_va_no))
+					break
+				endif
+			endif
+			setcall err xfile_add_char((Xfile_function_va_yes))
+			dec valsize
+			if valsize=content
+				if err=(noerror)
+					callret xfile_add_int(0)
+				endif
+				return (noerror)
+			endif
+			break
+		endwhile
+		if err=(noerror)
+			sd val
+			sub valsize content
+			sd bool;setcall bool memtoint(content,valsize,#val,(FALSE))
+			if bool=(TRUE)
+				callret xfile_add_int(val)
+			endif
 			return "Positive integer expected for import arguments number."
-		endelse
-		return err
+		endif
+	endif
+	return (noerror)
+endfunction
+function xfile_add_import_nr0_if(ss content,ss valsize)
+	if main.xfile!=(openno)
+		sd err
+		setcall err xfile_add_char((Xfile_function_va_no))
+		If err=(noerror)
+			callret xfile_add_int(0)
+		endIf
 	endif
 	return (noerror)
 endfunction
@@ -546,7 +572,7 @@ function xfile_keep_cursor(sv pcontent,sd psize)
 		if main.xfile_top!=(Xfile_ignore_nosigns)
 			inc main.xprotooff
 		endif
-		add main.xprotooff (bsz+bsz+bsz+dwsz+dwsz+dwsz)
+		add main.xprotooff (bsz+bsz+bsz+dwsz+dwsz+dwsz+bsz)
 		Datax impquotsz#1
 		Call quotinmem_size_noerr(pcontent,psize,#impquotsz) #the spelling errors were at pass init
 		add main.xprotooff impquotsz

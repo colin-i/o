@@ -95,10 +95,10 @@ If errormsg=noerr
 													call notspaces(pcontent,pcomsize) #optional xfile number of arguments
 													setcall errormsg xfile_add_import_nr_if(cursor,content)
 												else
-													setcall errormsg xfile_add_int_if(0)
+													setcall errormsg xfile_add_import_nr0_if()
 												endelse
 											else
-												setcall errormsg xfile_add_int_if(0)
+												setcall errormsg xfile_add_import_nr0_if()
 											endelse
 										endIf
 									endIf

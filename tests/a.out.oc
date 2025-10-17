@@ -66,6 +66,7 @@ end
 library "a"
 import "b" puts
 ^import "c" printf 2
+^import "f" sprintf 2v
 
 entryv main(sd argc)
 	set b b

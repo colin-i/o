@@ -524,6 +524,7 @@ function import(sd outfile,sv pbuffer)
 	charx multi#1;datax sz#1;valuex name#1
 	call get_multistring(pbuffer,#multi,#sz,#name)
 	call proto_open(outfile,pbuffer)
+	charx va#1;call get_char(pbuffer,#va)
 	datax arguments#1;call get_data(pbuffer,#arguments)
 	if arguments!=0
 		call write_long(outfile)
@@ -532,6 +533,12 @@ function import(sd outfile,sv pbuffer)
 			dec arguments
 			call write_long(outfile)
 		end
+		if va=(Xfile_function_va_yes)
+			call writec(outfile)
+		end
+	end
+	if va=(Xfile_function_va_yes)
+		call varargs(outfile)
 	end
 	callg proto_close(outfile)
 end

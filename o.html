@@ -788,7 +788,7 @@ format elfobj64<br>
         #A Hello World program<br>
         #the default format is Format Exe<br>
         Library "user32.dll"<br>
-        Import "MessageBoxA" Message 4 #extra 4 can be used by otoc<br>
+        Import "MessageBoxA" Message 4v #4v is used by otoc, 4 arguments, and V/v varargs if present<br>
         Char program="Program"<br>
         vStr title^program<br>
         Char data="Hello World"<br>
@@ -986,7 +986,7 @@ format elfobj64<br>
 	<tr><td>Xfile_proto</td><td>Xfile_function_t_*</td><td class="red">name</td><td class="blue">nr_of_args</td><td class="green">{DA}</td><td>Xfile_proto_*</td></tr>
 </table>
 <table id="selection_table">
-	<tr><td>Xfile_import</td><td>Xfile_import_*</td><td class="green">S</td><td class="red">intern</td><td class="blue">nr_of_args</td></tr>
+	<tr><td>Xfile_import</td><td>Xfile_import_*</td><td class="green">S</td><td class="red">intern</td><td>Xfile_function_va_*</td><td class="blue">nr_of_args</td></tr>
 </table>
 <table id="selection_table">
 	<tr><td>Xfile_comment*</td><td class="red">comment</td></tr>
