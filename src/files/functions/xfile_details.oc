@@ -428,6 +428,7 @@ function xfile_add_format_if(sd format,sd ignore)
 			endif
 			callret xfile_add_char((Xfile_format_exe))
 		endif
+		return err
 	endif
 	return (noerror)
 endfunction
@@ -446,6 +447,7 @@ function xfile_add_import_if(sd subtype,sv content,sd size,sd impescapes)
 				callret addtosecstresc_xfile_if(#content,#size,size,impescapes,main.ptrtempdata)
 			endif
 		endif
+		return err
 	endif
 	return (noerror)
 endfunction
@@ -479,6 +481,7 @@ function xfile_add_import_nr_if(ss content,ss valsize)
 			endif
 			return "Positive integer expected for import arguments number."
 		endif
+		return err
 	endif
 	return (noerror)
 endfunction
@@ -489,6 +492,7 @@ function xfile_add_import_nr0_if(ss content,ss valsize)
 		If err=(noerror)
 			callret xfile_add_int(0)
 		endIf
+		return err
 	endif
 	return (noerror)
 endfunction
