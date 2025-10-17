@@ -62,9 +62,7 @@ function xfile_add_multistring_if(sd text,sd size,sd is_multiline)
 endfunction
 function xfile_add_multistring_ifif(sd text,sd size,sd is_multiline)
 	if main.parses=(pass_write)
-		sd err
-		setcall err xfile_add_multistring_if(text,size,is_multiline)
-		return err
+		callret xfile_add_multistring_if(text,size,is_multiline)
 	endif
 	return (noerror)
 endfunction
