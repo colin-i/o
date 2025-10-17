@@ -468,7 +468,7 @@ function xfile_add_import_nr_if(ss content,ss valsize)
 				if err=(noerror)
 					callret xfile_add_int(0)
 				endif
-				return (noerror)
+				return err
 			endif
 			break
 		endwhile
