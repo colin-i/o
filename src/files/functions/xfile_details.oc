@@ -574,7 +574,7 @@ function xfile_keep_cursor(sv pcontent,sd psize)
 		if main.xfile_top!=(Xfile_ignore_nosigns)
 			inc main.xprotooff
 		endif
-		add main.xprotooff (bsz+bsz+bsz+dwsz+dwsz+dwsz+bsz)
+		add main.xprotooff (bsz+bsz+bsz+dwsz+dwsz+bsz+dwsz)
 		Datax impquotsz#1
 		Call quotinmem_size_noerr(pcontent,psize,#impquotsz) #the spelling errors were at pass init
 		add main.xprotooff impquotsz
