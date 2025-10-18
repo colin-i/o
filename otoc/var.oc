@@ -165,14 +165,14 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 		ret
 	end
 	call writeq(outfile)
-	char map1={zr,zr,           zr,zr,zr,zr,zr,zr,zr,asciit,asciin,zr,zr,asciir,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr} #at 0 can be asciizero but \000 at c is 0
-	char    *={0, 0,asciidquote,0, 0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,       0, 0, 0} #\xhh... , then \x0acan't will be \x0aca
-	char    *={0, 0,            0, 0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, asciibs, 0, 0, 0}
-	char    *={0, 0,            0, 0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,       0, 0, zr}
-	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
-	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
-	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
-	char    *={zr,zr,           zr,zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,      zr,zr,zr}
+	char map1={zr,zr,zr,         zr,zr,zr,zr,zr,zr,asciit,asciin,zr,zr,asciir,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,     zr,zr,zr} #at 0 can be asciizero but \000 at c is 0
+	char    *={0, 0, asciidquote,0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,      0, 0, 0} #\xhh... , then \x0acan't will be \x0aca
+	char    *={0, 0, 0,          0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, asciibs,0, 0, 0}
+	char    *={0, 0, 0,          0, 0, 0, 0, 0, 0, 0,     0,     0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,      0, 0, zr}
+	char    *={zr,zr,zr,         zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,     zr,zr,zr}
+	char    *={zr,zr,zr,         zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,     zr,zr,zr}
+	char    *={zr,zr,zr,         zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,     zr,zr,zr}
+	char    *={zr,zr,zr,         zr,zr,zr,zr,zr,zr,zr,    zr,    zr,zr,zr,    zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,zr,     zr,zr,zr}
 	sd term;set term pointer;add term sz
 	sd start;set start pointer
 	while pointer!=term
