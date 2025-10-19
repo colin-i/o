@@ -2,4 +2,4 @@
 #echo a key when local test is ready
 #read -n1 -t $((60*60*24))
 #./test32
-cd src && ./rtest
+cd src && ./rtest && cd ../ounused && ./mrd && cd .. && launcher=q make verify_comp_with_link && cd src && make clean && cd ../ounused && make clean

@@ -486,7 +486,7 @@ function xfile_add_import_nr_if(ss content,ss valsize)
 	endif
 	return (noerror)
 endfunction
-function xfile_add_import_nr0_if(ss content,ss valsize)
+function xfile_add_import_nr0_if()
 	if main.xfile!=(openno)
 		sd err
 		setcall err xfile_add_char((Xfile_function_va_no))

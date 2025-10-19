@@ -3,7 +3,6 @@ if [ -z "${testlinker}" ]; then export testlinker=/home/bc/Desktop/out/libc6/lib
 make && \
 make test && \
 if [ $? = 0 ]; then
-	make clean && \
 	cat ../debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))" > ../localtest && \
 	cat ../localtest
 fi
