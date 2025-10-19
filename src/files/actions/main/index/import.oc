@@ -90,10 +90,10 @@ If errormsg=noerr
 											Call spaces(pcontent,pcomsize)
 											if comsize!=0
 												if content#!=(commentascii)
-													ss cursor;set cursor content
+													ss impcursor;set impcursor content
 													call stepcursors(pcontent,pcomsize)
 													call notspaces(pcontent,pcomsize) #optional xfile number of arguments
-													setcall errormsg xfile_add_import_nr_if(cursor,content)
+													setcall errormsg xfile_add_import_nr_if(impcursor,content)
 												else
 													setcall errormsg xfile_add_import_nr0_if()
 												endelse

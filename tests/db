@@ -1,6 +1,7 @@
-
+set -e
 if [ -z "${OCONV}" ]; then OCONV=../otoc/otoc; fi
 a=${1}
 shift
 . ./xb $a
+if [ -n "${winlauncher}" ]; then launcher=${winlauncher}; fi
 ${launcher} ${OCONV} $a.oc.x import $@
