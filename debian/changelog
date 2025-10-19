@@ -1,3 +1,9 @@
+ocompiler (2-5+242) xenial; urgency=medium
+
+  * sss fix extension at declare/operations
+
+ -- bc <bc@bc-desktop>  Sun, 19 Oct 2025 21:17:44 +0300
+
 ocompiler (2-5+241) xenial; urgency=medium
 
   * volatile, import varargs, fixes and more

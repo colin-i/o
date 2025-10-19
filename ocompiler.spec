@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+241
+Version: 5+242
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,11 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Sun Oct 19 2025 Costin Botescu <costin.botescu@gmail.com> 5+242-0
+- s/u ext also at declare (costin.botescu@gmail.com)
+- ss/sss asm acting at operations (costin.botescu@gmail.com)
+- win fix (costin.botescu@gmail.com)
+
 * Sun Oct 19 2025 Costin Botescu <costin.botescu@gmail.com> 5+241-0
 - volatile, import varargs, fixes and more (costin.b.84@gmail.com)
 - local test (costin.botescu@gmail.com)
