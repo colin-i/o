@@ -37,11 +37,15 @@ const signbit=0x200
 #bit offset 10: struct like bit
 const structbit=0x400
 
-#11,12,13,14,15
+#bit offset 11: atm is used only at 64 at sss/ss,... at args2 to get imm sign/zero extended
+const bigstringbit=0x800
+
+#12,13,14,15
 #16-31: reserve units
 
 const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
+const stringslongmask=datapointbit|bigstringbit
 const location_bits=stackbit|expandbit
 const stack_location_bits=location_bits|stackrelativebit    #and expandbit? will be always 0 at stack, keep it clean from what we combine
 

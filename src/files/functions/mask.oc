@@ -38,6 +38,9 @@ endfunction
 function signbit(sd pointer)
 	callret data_get_maskbit(pointer,(signbit))
 endfunction
+function bstringsbit(sd pointer)
+	callret data_get_maskbit(pointer,(bigstringbit))
+endfunction
 
 function stack_get_relative(sd location)
 	sd mask

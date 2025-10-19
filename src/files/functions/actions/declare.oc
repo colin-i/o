@@ -67,7 +67,7 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 		endelse
 	elseif declare_typenumber=(vstringnumber)
 		set is_stack (FALSE);set typenumber (stringnumber)
-		if bool_64=(TRUE);set mask (datapointbit)
+		if bool_64=(TRUE);set mask (stringslongmask)
 			if parses=(pass_init)
 				set unitsize (qwsz)
 			else
@@ -138,25 +138,26 @@ function declare(sv pcontent,sd pcomsize,sd subtype,sd parses,sd bool_64)
 				endelse
 			endelse
 		else
+			set mask (dummy_mask)   #at pass_write, mask is used where stack is false (dataassign with stack false, descend into enumcomma and writevar again with stack false)
+			# at stack at bigstringbit
 			if is_stack=(TRUE)
 				#must be at the start
 				call entryscope_verify_code()
 
-				#xfile part
 				if typenumber=(valuesinnernumber)
 					set xfile_decltype (Xfile_decltype_long)
 				elseif typenumber=(integernumber)
 					set xfile_decltype (Xfile_decltype_longInt)
 				elseif typenumber=(stringnumber)
 					set xfile_decltype (Xfile_decltype_longByte)
+					if bool_64=(TRUE)
+						set mask (bigstringbit)
+					endif
 				else
 				#if typenumber=(wordnumber)
 					set xfile_decltype (Xfile_decltype_longWord)
 				endelse
 			else
-				set mask (dummy_mask)   #at pass_write, mask is used where stack is false (dataassign with stack false, descend into enumcomma and writevar again with stack false)
-				#                                         at stack is beginning with dummy_mask
-
 				#xfile part
 				if typenumber=(constantsnumber)
 					set xfile_decltype (Xfile_decltype_const)

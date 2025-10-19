@@ -101,9 +101,18 @@ endfunction
 function write_imm_sign_dependent(sd val,sd regopcode,sd dataargdependent)
 	sd s
 	set s signbit(dataargdependent)
-	if s=0 #signed (default)
+	sd t
+	set t bstringsbit(dataargdependent)
+	whiletrue
+		if s=0 # not u/s sign (default)
+			if t!=0
+				break #ss/vstr[x]
+			endif
+		elseif t=0
+			break # sdu/svu/vdata[x]u/value[x]u
+		endelseif
 		callret write_imm_sign(val,regopcode)
-	end
+	endwhile
 	#unsigned
 	callret write_imm_simple(val,regopcode)
 endfunction

@@ -110,7 +110,11 @@ Function addvarreference(sv ptrcontent,sd ptrsize,sd valsize,sd typenumber,sd ma
 			endelse
 			or mask (stackbit)
 			sd vbool
-			if typenumber=(stackvaluenumber);set vbool (TRUE);else;setcall vbool sd_as_sv((sd_as_sv_bool),typenumber);endelse
+			if typenumber=(stackvaluenumber)
+				set vbool (TRUE)
+			else
+				setcall vbool sd_as_sv((sd_as_sv_bool),typenumber)
+			endelse
 			if vbool=(TRUE)
 				or mask (pointbit)
 			endif

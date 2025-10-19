@@ -70,6 +70,9 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 			set xfile_decltype (Xfile_decltype_longInt)
 		elseif vartype=(stackstringnumber)
 			set xfile_decltype (Xfile_decltype_longByte)
+			if b=(TRUE)
+				or long_mask (bigstringbit) #only this OR is ignored at 32, but why to OR?
+			endif
 		elseif vartype=(stackvaluenumber)
 			set xfile_decltype (Xfile_decltype_long)
 		else
@@ -88,8 +91,12 @@ Function fndecargs(sv ptrcontent,sd ptrsize,sd sz,sd ptr_stackoffset,sd parses)
 				set xfile_decltype (Xfile_decltype_long)
 			else
 				if b=(TRUE)
-					or long_mask (datapointbit)
 					set datasize (qwsz)
+					if vartype=(stringnumber)
+						or long_mask (stringslongmask)
+					else
+						or long_mask (datapointbit)
+					endelse
 				endif
 				if vartype=(integernumber)
 					set xfile_decltype (Xfile_decltype_longInt)

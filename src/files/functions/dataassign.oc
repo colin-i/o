@@ -43,7 +43,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 				setcall immovable_struct_cont getstructcont(sectiontypenumber)
 				call getcontReg(immovable_struct_cont,#reg)
 				#
-				SetCall err addvarreferenceorunref_signed(ptrcontent,ptrsize,valsize,sectiontypenumber,(dummy_mask),is_signed,0) #there is 1 more argument but is not used
+				SetCall err addvarreferenceorunref_signed(ptrcontent,ptrsize,valsize,sectiontypenumber,long_mask,is_signed,0) #there is 1 more argument but is not used
 			else
 				#
 				setcall immovable_struct_cont getstructcont(typenumber)
