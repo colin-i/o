@@ -69,6 +69,7 @@ import "b" puts
 ^import "f" sprintf 2v
 
 entryv main(sd argc)
+	sss sigextstr=-1;set sigextstr -2
 	set b b
 	add b \st
 	sub b \\st

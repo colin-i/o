@@ -7,7 +7,7 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	data false=FALSE
 	data ptrobject%ptrobject
 
-	sd for_64;sd test
+	sd for_64;sd extval
 
 	if stack=false
 		data ptrdatasec%%ptr_datasec
@@ -41,21 +41,8 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 		endif
 		SetCall err addtosec(ptrvalue,unitsize,ptrdatasec);If err!=noerr;Return err;EndIf
 		if long_mask!=(dummy_mask)
-			whiletrue
-				if is_signed=(Xfile_declext_no) #signed (default) for long
-					set test (sign_bit)
-					and test ptrvalue#
-					if test!=0
-						data negative=-1
-						SetCall err addtosec(#negative,(dwsz),ptrdatasec)
-						break
-					end
-				end
-				data null=0
-				SetCall err addtosec(#null,(dwsz),ptrdatasec)
-				break
-			endwhile
-			return err
+			setcall extval writevar_ext(is_signed,long_mask,ptrvalue#)
+			callret addtosec(#extval,(dwsz),ptrdatasec)
 		endif
 		return (noerror)
 	endif
@@ -81,24 +68,30 @@ function writevar(sd ptrvalue,sd unitsize,sd relindex,sd stack,sd rightstackpoin
 	endif
 	if rightstackpointer!=(NULL)
 		#s^s
-		setcall err addtocodeforstack(rightstackpointer,for_64)
-	else
-		#s=consts
-		whiletrue
-			if is_signed=(Xfile_declext_no) #signed (default) ,stack values are long
-				set test (sign_bit)
-				and test ptrvalue#
-				if test!=0
-					#keep sign, for comparations
-					setcall err addtocodefordata(ptrvalue#,for_64,-1)
-					break
-				end
-			end
-			setcall err addtocodefordata(ptrvalue#,for_64,0)
+		callret addtocodeforstack(rightstackpointer,for_64)
+	endif
+	#s=consts
+	setcall extval writevar_ext(is_signed,long_mask,ptrvalue#)
+	callret addtocodefordata(ptrvalue#,for_64,extval)
+endfunction
+#0/-1
+function writevar_ext(sd is_signed,sd mask,sd val)
+	and mask (bigstringbit)
+	whiletrue  #same as at imm dependent
+		if is_signed=(Xfile_declext_no)
+			if mask!=0
+				break
+			endif
+		elseif mask=0
 			break
-		endwhile
-	endelse
-	return err
+		endelseif
+		and val (sign_bit)
+		if val!=0
+			return -1
+		endif
+		break
+	endwhile
+	return 0
 endfunction
 
 const fndecandgroup=1
