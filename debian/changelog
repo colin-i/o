@@ -1,3 +1,9 @@
+ocompiler (2-5+240) xenial; urgency=medium
+
+  * volatile, import varargs, fixes and more
+
+ -- bc <bc@bc-desktop>  Sun, 19 Oct 2025 07:45:26 +0300
+
 ocompiler (2-5+239) xenial; urgency=medium
 
   * otoc base/leave. ?preference

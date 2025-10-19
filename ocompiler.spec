@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+239
+Version: 5+240
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,29 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Sun Oct 19 2025 Costin Botescu <costin.botescu@gmail.com> 5+240-0
+- local test (costin.botescu@gmail.com)
+- fix otoc \\ (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- varargs at import (costin.botescu@gmail.com)
+- Xfile_import_name and some fixes (costin.botescu@gmail.com)
+- step fix (costin.botescu@gmail.com)
+- fix (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- otoc: move imports at top declarations (costin.botescu@gmail.com)
+- unimplemented more verbose (costin.botescu@gmail.com)
+- very rare case (costin.botescu@gmail.com)
+- to not compare unallocated space (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- volatile marks ocompiler <-> otoc (costin.botescu@gmail.com)
+- callret for otoc proto (costin.botescu@gmail.com)
+
 * Tue Oct 07 2025 Costin Botescu <costin.botescu@gmail.com> 5+239-0
 - unused (costin.botescu@gmail.com)
 - "up" (costin.botescu@gmail.com)
