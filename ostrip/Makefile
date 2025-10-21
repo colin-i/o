@@ -58,9 +58,9 @@ ${OB}: ${OBJ}
 		${ATLDCOM} ${OB} ${FULLOBJO}; \
 	fi
 	if [ "${nobits_virtual}" != "1" ]; then \
-		${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
+		${launcher6} ${FULLOBJ} ${FULLOBJ} ${FULLOBJLOG} ${FULLOBJO}; \
 		if [ "$$?" = "0" ]; then \
-			${strippy} ${FULLOBJ} ${FULLOBJ}; \
+			${strippy} ${FULLOBJ} ${FULLOBJ} ${anotherobjcopy}; \
 		fi; \
 	fi
 #	@echo
@@ -105,9 +105,9 @@ test:
 			${ATLDCOM} z ${FULLOBJO}; \
 		fi; \
 		if [ "$$?" = "0" ]; then \
-			${FULLOBJ} ./z ${FULLOBJLOG} ${FULLOBJO}; \
+			${launcher6} ${FULLOBJ} ./z ${FULLOBJLOG} ${FULLOBJO}; \
 			if [ "$$?" = "0" ]; then \
-				${strippy} ./z ./z; \
+				${strippy} ./z ./z ${anotherobjcopy}; \
 				if [ "$$?" = "0" ]; then \
 					diff ./z ${FULLOBJ}; \
 				fi; \
