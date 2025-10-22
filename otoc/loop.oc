@@ -546,8 +546,8 @@ function import_name(sd *outfile,sv pbuffer)
 	datax sz#1;valuex name#1
 	call get_string(pbuffer,#sz,#name)
 end
-function aftercall(sd outfile,sv pbuffer)
-	call backindent(outfile)
+function aftercall(sd *outfile,sv pbuffer)
+	call unimplemented("aftercall")
 	charx acall#1;call get_char(pbuffer,#acall)
 	if acall<=(Xfile_aftercall_declarative)
 		if acall=(Xfile_aftercall_declare)
@@ -658,6 +658,9 @@ function write(sd outfile,ss buf,sd sz)
 			set items mwrite(buf,sz,outfile)
 		end
 		if items!=1
+			if sz=0
+				call puts("0 size write") #example declare with unref, but not only
+			end
 			call aftercallenable()
 		end
 	end

@@ -116,7 +116,7 @@ entryv main(sd argc)
 
 	char q1=:;char q2=\st;char q3=\st.a\;char q4=\st.a
 
-	aftercall *tst
+	!aftercall *tst
 	override x_file 1
 	i3
 	exit 2

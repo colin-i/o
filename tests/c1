@@ -18,7 +18,10 @@ comp () {
 	bbb=${bb}.txt
 	base64 -d ${bbb} > 2
 	${xxd}2 > 3
-	diff 3 1
+	diff 3 1 || {
+		rm 1 2 3
+		exit 1
+	}
 	rm 1 2 3
 }
 
@@ -28,7 +31,7 @@ elif [ -e "${1}" ]; then
 	comp ${1}
 	if [ -e "${1}.c" ]; then
 		echo ${1}.c
-		diff ${exp}${1}.c ${1}.c
+		diff ${exp}${1}.c ${1}.c || exit 1
 	fi
 else
 	comp ${1}.exe
