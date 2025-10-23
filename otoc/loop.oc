@@ -658,9 +658,9 @@ function write(sd outfile,ss buf,sd sz)
 			set items mwrite(buf,sz,outfile)
 		end
 		if items!=1
-			if sz=0
-				call puts("0 size write") #example declare with unref, but not only
-			end
+			#if sz=0
+			call puts("0 size write. or write error") #example declare with unref, but not only
+			#end
 			call aftercallenable()
 		end
 	end
