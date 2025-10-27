@@ -111,6 +111,12 @@ function decl(sv pbuffer,sd outfile,ss pfield,ss ptype,ss pconstif)
 	call get_char(pbuffer,pfield)
 	datax sz#1;valuex pointer#1
 	if pfield#!=(Xfile_declfield_const)
+		if ptype!=(NULL) #from declare, not function arg
+			if loop.innerfunction=(FALSE)
+				char s="static "^
+				call write(outfile,#s,\.s)
+			end
+		end
 		call decl_runtime(pbuffer,outfile,pfield#,ptype)
 		call get_string(pbuffer,#sz,#pointer)
 	else

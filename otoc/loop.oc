@@ -46,6 +46,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	set function_start (err)
 	valuex function_start_base#1
 	set function_start_base (err)
+	charx innerfunction#1
+	set innerfunction (FALSE) #function_start is only until first return, and is not at structs
 	charx indentation#1
 	set indentation 0
 	charx same_line#1
@@ -279,6 +281,8 @@ function comment(sd outfile,sv pbuffer)
 	callg writenl(outfile)
 end
 function functiondef(sd outfile,sv pbuffer)
+	set loop.innerfunction (TRUE)
+
 	value intern^functiondef_intern
 	value *raw^functiondef_raw
 	value *extern^functiondef_extern
@@ -508,6 +512,7 @@ function end(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
 	if type=(Xfile_end_func)
 		set loop.function_start_base (err)
+		set loop.innerfunction (FALSE)
 	end
 	callg writecrtn(outfile)
 end
