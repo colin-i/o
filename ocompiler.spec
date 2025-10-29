@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+242
+Version: 5+243
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,14 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Wed Oct 29 2025 Costin Botescu <costin.botescu@gmail.com> 5+243-0
+- realizing that external variables are only extra exports at actionswf
+  (costin.botescu@gmail.com)
+- also catch other errors there (costin.botescu@gmail.com)
+- 0 size err info (costin.botescu@gmail.com)
+- strip arm test (costin.botescu@gmail.com)
+- "sync" (costin.b.84@gmail.com)
+
 * Sun Oct 19 2025 Costin Botescu <costin.botescu@gmail.com> 5+242-0
 - s/u ext also at declare (costin.botescu@gmail.com)
 - ss/sss asm acting at operations (costin.botescu@gmail.com)
