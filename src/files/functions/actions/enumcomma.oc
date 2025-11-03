@@ -203,7 +203,7 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 			endif
 
 			sd size_aux
-			sd mark
+			ss mark
 			if sz!=0
 				set argsize content
 				dec argsize
@@ -227,6 +227,11 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 							dec argsize
 						endelse
 					endwhile
+					if argsize<^main.textlinestart ##here is a multirow string
+						if typenumberOrparses!=(pass_calls) #there is a case where args are numbered and same step has multiple passes
+							call keep_textlinestart(argsize)
+						endif
+					endif
 					set mark argsize
 					sub argsize content
 					neg argsize
@@ -266,10 +271,12 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					Return err
 				EndIf
 			elseif typenumberOrparses=(pass_write)
+				set main.not_all_cases (FALSE)
 				SetCall err argument(ptrcontent,ptrargsize,backward) #there is 1 more argument but is not used
 				If err!=noerr
 					Return err
 				EndIf
+				set main.not_all_cases (TRUE)
 			endelseif
 			sub ptrcontent# size_aux
 			sub ptrsize# size_aux
@@ -294,3 +301,14 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 	EndIf
 	Return noerr
 EndFunction
+
+function keep_textlinestart(ss pointer)
+	while main.first_textlinestart!=pointer
+		dec pointer
+		if pointer#=(asciireturn) #and mac?
+			inc pointer
+			break
+		endif
+	endwhile
+	set main.textlinestart pointer
+endfunction

@@ -417,13 +417,15 @@ function maxpathverif(str safecurrentdirtopath,str logextension)
 
 	callret compareagainstmaxpath(size1)
 endfunction
-
+char not_all_cases=TRUE
 function quotes_new_line(ss content)
-	if content#=(asciireturn)
-		inc content
-		set main.textlinestart content
+	if content#=(asciireturn) #and mac?
+		if main.not_all_cases=(TRUE)
+			inc content
+			set main.textlinestart content
+		endif #only for textlinesstart because at backward is calculated backward, here is forward
 		add main.totalnewlines main.linesadd
-	end
+	endif
 endfunction
 #err
 function quotes_forward(sd p_content,ss last)#,sd p_newlines,sd p_lastlinestart)
