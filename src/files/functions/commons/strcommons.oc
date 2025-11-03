@@ -392,10 +392,10 @@ Function quotinmem_started_blind(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes
 	call stepcursors(ptrcontent,ptrsize)
 	callret quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE))
 EndFunction
-Function quotinmem_started_blind_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
-	call stepcursors(ptrcontent,ptrsize)
-	call quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE)) #null_ok will continue there
-EndFunction
+#Function quotinmem_started_blind_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes) #this is same as quotinmem_started_blind
+#	call stepcursors(ptrcontent,ptrsize)
+#	call quotinmem_err(ptrcontent#,pquotsz,pescapes,(TRUE)) #null_ok will continue there
+#EndFunction
 Function quotinmem_noerr(sv ptrcontent,sd ptrsize,sd pquotsz,sd pescapes)
 	call stepcursors(ptrcontent,ptrsize)
 	Call quotinmem_err(ptrcontent#,pquotsz,pescapes) #null_ok is irelevant, spelling was already
@@ -417,14 +417,14 @@ function maxpathverif(str safecurrentdirtopath,str logextension)
 
 	callret compareagainstmaxpath(size1)
 endfunction
-char not_all_cases=TRUE
+char not_this_case=FALSE
 function quotes_new_line(ss content)
 	if content#=(asciireturn) #and mac?
-		if main.not_all_cases=(TRUE)
+		if main.not_this_case=(FALSE) #only for forward
 			inc content
 			set main.textlinestart content
-		endif #only for textlinesstart because at backward is calculated backward, here is forward
-		add main.totalnewlines main.linesadd
+			add main.totalnewlines main.linesadd
+		endif
 	endif
 endfunction
 #err

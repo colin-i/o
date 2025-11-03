@@ -439,7 +439,7 @@ Function dataassign(sd ptrcontent,sd ptrsize,sd sign,sd valsize,sd typenumber,sd
 			endif
 			return err
 		endif
-		call quotinmem_started_blind_noerr(ptrcontent,ptrsize,ptrvalue,#escapes)
+		call quotinmem_started_blind(ptrcontent,ptrsize,ptrvalue,#escapes) #is _noerr and is same as err
 		SetCall err addtosecstresc_xfile_if(ptrcontent,ptrsize,value,escapes,ptrdatasec)
 		if err=(noerror)
 			sd trim
