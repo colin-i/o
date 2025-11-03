@@ -228,7 +228,8 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 						endelse
 					endwhile
 					if argsize<^main.textlinestart ##here is a multirow string
-						if typenumberOrparses!=(pass_calls) #there is a case where args are numbered and same step has multiple passes
+						if typenumberOrparses=(pass_write) #there is a case where args are numbered and same step has multiple passes calls
+						#pass_init is not erroring here
 							call keep_textlinestart(argsize)
 						endif
 					endif
