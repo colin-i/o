@@ -1,5 +1,5 @@
 
-function verify_syntax_end_and_restore(sv ptrcontent,sd ptrsize,sd argsize)
+function verify_syntax_end_and_restore(sv ptrcontent,sd ptrsize,sd argsize,ss er)
 	sd c
 	sd s
 	set c ptrcontent#
@@ -8,7 +8,6 @@ function verify_syntax_end_and_restore(sv ptrcontent,sd ptrsize,sd argsize)
 	Call spaces(ptrcontent,ptrsize)
 	data z=0
 	if ptrsize#!=z
-		str er="Unrecognized inner text."
 		return er
 	endif
 	sub c argsize
@@ -144,7 +143,10 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				return (noerror)
 			endif
 			add q_size 2
-			callret verify_syntax_end_and_restore(ptrcontent,ptrsize,q_size)
+			sub ptrcontent# q_size
+			add ptrsize# q_size
+			return (noerror)
+			#callret verify_syntax_end_and_restore(ptrcontent,ptrsize,q_size) #is not error since comma/quotes error at quotes, is only for restore
 		endelse
 	elseif allowdata!=(allow_later)  #exclude pass_init, but even there jump over first arg
 		call arg_size(content,argsize,#argsize)  #spc,tab
@@ -191,7 +193,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 				if sens=(FORWARD)
 					return (noerror)
 				endif
-				callret verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
+				callret verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize,"Unrecognized inner text at number arg.")
 			endif
 			sd imm;setcall imm getimm()
 			if imm=(TRUE) #if is FALSE, this is the only option for xfile. also allow(string) is no
@@ -311,7 +313,7 @@ Function getarg(sv ptrcontent,sd ptrsize,sd argsize,sd allowdata,sd sens,sd ptrd
 			if sens=(FORWARD)
 				return (noerror)
 			endif
-			callret verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize)
+			callret verify_syntax_end_and_restore(ptrcontent,ptrsize,argsize,"Unrecognized inner text at variable arg.")
 		endif
 	endelseif
 	If sens=(FORWARD)

@@ -241,6 +241,10 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					set size_aux sz
 					sub size_aux argsize
 					setcall size_aux valinmemsens(mark,size_aux,comma,sens)
+					ss another_quotes;set another_quotes valinmemsens(mark,size_aux,d_quot,sens)
+					if size_aux>^another_quotes
+						return "comma/quotes error at quotes"
+					endif
 
 					#and this to ensure no frontal inner_text
 					sub mark size_aux
@@ -250,6 +254,11 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					add argsize last
 				else
 					SetCall argsize valinmemsens(content,sz,comma,sens)
+					set another_quotes valinmemsens(content,sz,d_quot,sens)
+					if argsize>^another_quotes
+						return "comma/quotes error at values"
+					endif
+
 					#and don't let ( ) at getarg, there let only something(exlcuding spaces)/nothing like in all cases
 					set size_aux content
 					sub size_aux argsize
