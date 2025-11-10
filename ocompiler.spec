@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+243
+Version: 5+244
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,12 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon Nov 10 2025 Costin Botescu <costin.botescu@gmail.com> 5+244-0
+- comma/quotes mix error (costin.botescu@gmail.com)
+- similarities (costin.botescu@gmail.com)
+- only at pass write are problems at enum commas (costin.botescu@gmail.com)
+- fix error at backawrd multistrings (costin.botescu@gmail.com)
+
 * Wed Oct 29 2025 Costin Botescu <costin.botescu@gmail.com> 5+243-0
 - realizing that external variables are only extra exports at actionswf
   (costin.botescu@gmail.com)
