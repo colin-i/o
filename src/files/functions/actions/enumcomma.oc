@@ -231,7 +231,6 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					endwhile
 					if argsize<^main.textlinestart ##here is a multirow string
 						if typenumberOrparses!=(pass_calls) #there is a case where args are numbered and same step has multiple passes calls
-						#pass_init is not erroring here
 							call keep_textlinestart(argsize)
 						endif
 					endif
@@ -241,11 +240,13 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					set size_aux sz
 					sub size_aux argsize
 					setcall size_aux valinmemsens(mark,size_aux,comma,sens)
-					ss another_quotes;set another_quotes valinmemsens(mark,size_aux,d_quot,sens)
-					if size_aux>^another_quotes
-						return "comma/quotes error at quotes"
+					if typenumberOrparses=(pass_init)
+						ss another_quotes;set another_quotes valinmemsens(mark,size_aux,d_quot,sens)
+						if size_aux>^another_quotes
+							set ptrcontent# mark
+							return "comma/quotes error at quotes"  #add a "dsfsdf""fsdfsd"
+						endif
 					endif
-
 					#and this to ensure no frontal inner_text
 					sub mark size_aux
 					setcall mark mem_spaces(mark,last)
@@ -254,9 +255,11 @@ Function enumcommas(sv ptrcontent,sd ptrsize,sd sz,sd fndecandgroupOrpush,sd typ
 					add argsize last
 				else
 					SetCall argsize valinmemsens(content,sz,comma,sens)
-					set another_quotes valinmemsens(content,sz,d_quot,sens)
-					if argsize>^another_quotes
-						return "comma/quotes error at values"
+					if typenumberOrparses=(pass_init)
+						set another_quotes valinmemsens(content,sz,d_quot,sens)
+						if argsize>^another_quotes
+							return "comma/quotes error at values" #add a asfasdf""asfsfd
+						endif
 					endif
 
 					#and don't let ( ) at getarg, there let only something(exlcuding spaces)/nothing like in all cases
