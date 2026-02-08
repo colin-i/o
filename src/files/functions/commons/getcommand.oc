@@ -550,7 +550,6 @@ Function getcommand(sv pcontent,sd psize,sd ptrsubtype,sv ptrerrormsg,sv pointer
 		dec psize#
 		set main.xfile_top (Xfile_yesignore)
 	elseif start#=(Xfile_variadic_sign)
-		inc start
 		inc pcontent#
 		dec psize#
 		return (last_command)
