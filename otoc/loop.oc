@@ -78,6 +78,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			set nextisignored (ignored_no)
 		elseif command=(Xfile_yesignore)
 			set nextisignored (ignored_yes)
+		elseif command=(Xfile_variadic)
+			call variadic(#pointer,output)
 		else
 			whiletrue
 				if command!=(Xfile_end)
@@ -587,6 +589,13 @@ function interrupt(sd outfile)
 	char a="__builtin_trap();"^
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
 	callg writen(outfile,#a,\.a)
+end
+function variadic(sv pbuffer,sd *outfile)
+	charx type#1;call get_char(pbuffer,#type)
+	if type!=(Xfile_variadic_end)
+		datax sz#1;valuex name#1
+		call get_string(pbuffer,#sz,#name)
+	end
 end
 function proto(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)

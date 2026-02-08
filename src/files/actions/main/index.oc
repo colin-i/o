@@ -226,6 +226,8 @@ if errormsg=(noerror)
 			ElseIf commandset=(cI3)
 		call entryscope_verify_code()
 				Include "./index/i3.oc"
+			ElseIf commandset=(last_command)
+				setcall errormsg xfile_variadic(pcontent,pcomsize,comsize)
 			EndElseIf
 			#else commandset==(Error)
 			If errormsg=(noerror)

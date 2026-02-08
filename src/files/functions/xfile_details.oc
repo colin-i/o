@@ -591,3 +591,42 @@ function xfile_keep_cursor(sv pcontent,sd psize)
 	call advancecursors(pcontent,psize,psize#)
 	return err
 endfunction
+
+function xfile_variadic(sv pcontent,sd psize,sd size)
+	if main.xfile!=(openno)
+		sd er
+		setcall er xfile_add_char((Xfile_variadic))
+		if er=(noerror)
+			vstr err="error at xfile variadic."
+			if size!=0
+				ss content;set content pcontent#
+				char c#1
+				set c content#
+				call stepcursors(pcontent,psize)
+				if c=(Xfile_variadic_get)
+				elseif c=(Xfile_variadic_begin)
+				elseif c=(Xfile_variadic_end)
+					callret xfile_add_char(c)
+				else
+					return err
+				endelse
+				setcall er xfile_add_char(c)
+				if er=(noerror)
+					inc content
+					sd sz;set sz psize#
+					call notspaces(pcontent,psize)
+					if sz!=psize#
+						sub sz psize#
+						callret xfile_add_string(content,sz)
+					endif
+					return err
+				endif
+				return er
+			endif
+			return err
+		endif
+		return er
+	endif
+	call advancecursors(pcontent,psize,size)
+	return (noerror)
+endfunction

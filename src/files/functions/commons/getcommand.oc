@@ -476,8 +476,9 @@ Const numberofcommandsvars=(\-commandsvars_start)/com_size
 		Data *=cI3
 		Data *#1
 		Data *=spacenotreq
-Const numberofcommands=(\-coms_start)/com_size
-Const Error=\-coms_start
+Const last_command=\-coms_start
+Const numberofcommands=last_command/com_size
+Const Error=last_command+com_size
 
 Data pointers#numberofcommands+1
 Const compointersloc^pointers
@@ -534,7 +535,6 @@ Function getcommand(sv pcontent,sd psize,sd ptrsubtype,sv ptrerrormsg,sv pointer
 	Data result#1
 	Data cursor#1
 	Data true=TRUE
-
 	Data dsz=dwsz
 
 	set main.xfile_top (Xfile_ignore_nosigns)
@@ -544,13 +544,17 @@ Function getcommand(sv pcontent,sd psize,sd ptrsubtype,sv ptrerrormsg,sv pointer
 		inc pcontent#
 		dec psize#
 		set main.xfile_top (Xfile_noignore)
-	endif
-	if start#=(Xfile_yesignore_sign)
+	elseif start#=(Xfile_yesignore_sign)
 		inc start
 		inc pcontent#
 		dec psize#
 		set main.xfile_top (Xfile_yesignore)
-	endif
+	elseif start#=(Xfile_variadic_sign)
+		inc start
+		inc pcontent#
+		dec psize#
+		return (last_command)
+	endelseif
 
 	Set cursor pointercommands#
 	While cursor!=zero
