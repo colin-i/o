@@ -6,6 +6,7 @@ line
 !
 
 override include_sec 1
+include "stdarg.h" "include.oh"
 include "stddef.h" "include.oh"
 include "the_setjmp.h" "include.oh"
 
@@ -48,9 +49,12 @@ function st()
 	datax a#1
 end
 functionv f(sd dummy) #void f(...) was working with gcc13 but with 5 still is: ISO C requires a named argument before '...'
+	%<dummy
 	valuex a#1
 	value b=\main.c2
+	%|a
 	set a #b
+	%>
 	set b a#
 	set b a#s
 	set b a#w

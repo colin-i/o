@@ -78,8 +78,6 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			set nextisignored (ignored_no)
 		elseif command=(Xfile_yesignore)
 			set nextisignored (ignored_yes)
-		elseif command=(Xfile_variadic)
-			call variadic(#pointer,output)
 		else
 			whiletrue
 				if command!=(Xfile_end)
@@ -103,55 +101,59 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 				set same_line (FALSE)
 			end
 
-			value Xfile_proto^proto
-			value *Xfile_import^import
-			value *Xfile_comment^comment
-			value *Xfile_commentmulti^commentmulti
-			value *Xfile_commentlineend^commentlineend
-			value *Xfile_format^format
-			value *Xfile_include^include
-			value *Xfile_functiondef^functiondef   #in c, this can cause implicit declaration if a{b()} b{} but is only a warning, will be resolved ok
-			value *Xfile_declare^declare
-			value *Xfile_action^action
-			value *Xfile_action2^action2
-			value *Xfile_call^call
-			value *Xfile_callex^callex
-			value *Xfile_if^if
-			value *Xfile_elseif^elseif
-			value *Xfile_else^else
-			value *Xfile_while^while
-			value *Xfile_whiletrue^whiletrue
-			value *Xfile_break^break
-			value *Xfile_continue^continue
-			value *Xfile_end^end
-			value *Xfile_ret^ret
-			value *Xfile_library^library
-			value *Xfile_import_name^import_name
-			value *Xfile_aftercall^aftercall
-			value *Xfile_hex^hex
-			value *Xfile_override^override
-			value *Xfile_orphan^orphan
-			value *Xfile_interrupt^interrupt
-			value *Xfile_line^line
-			value *Xfile_iend^iend
-			datau mults={1,2,4,8,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
-			datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000} #,0x80000000}
+			if command=(Xfile_variadic)
+				call variadic(#pointer,output)
+			else
+				value Xfile_proto^proto
+				value *Xfile_import^import
+				value *Xfile_comment^comment
+				value *Xfile_commentmulti^commentmulti
+				value *Xfile_commentlineend^commentlineend
+				value *Xfile_format^format
+				value *Xfile_include^include
+				value *Xfile_functiondef^functiondef   #in c, this can cause implicit declaration if a{b()} b{} but is only a warning, will be resolved ok
+				value *Xfile_declare^declare
+				value *Xfile_action^action
+				value *Xfile_action2^action2
+				value *Xfile_call^call
+				value *Xfile_callex^callex
+				value *Xfile_if^if
+				value *Xfile_elseif^elseif
+				value *Xfile_else^else
+				value *Xfile_while^while
+				value *Xfile_whiletrue^whiletrue
+				value *Xfile_break^break
+				value *Xfile_continue^continue
+				value *Xfile_end^end
+				value *Xfile_ret^ret
+				value *Xfile_library^library
+				value *Xfile_import_name^import_name
+				value *Xfile_aftercall^aftercall
+				value *Xfile_hex^hex
+				value *Xfile_override^override
+				value *Xfile_orphan^orphan
+				value *Xfile_interrupt^interrupt
+				value *Xfile_line^line
+				value *Xfile_iend^iend
+				datau mults={1,2,4,8,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
+				datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000} #,0x80000000}
 
-			datax ignored#1
-			if nextisignored=(ignored_depending_on_tags)
-				sd igpow=DWORD;mult igpow command
-				sd x^mults;add x igpow
-				set ignored x#
-				and ignored ignores
-			else # yes/no
-				set ignored nextisignored
-				set nextisignored (ignored_depending_on_tags)
+				datax ignored#1
+				if nextisignored=(ignored_depending_on_tags)
+					sd igpow=DWORD;mult igpow command
+					sd x^mults;add x igpow
+					set ignored x#
+					and ignored ignores
+				else # yes/no
+					set ignored nextisignored
+					set nextisignored (ignored_depending_on_tags)
+				end
+
+				mult command :
+				sv dest^Xfile_proto;add dest command
+				set dest dest#
+				call dest(output,#pointer)
 			end
-
-			mult command :
-			sv dest^Xfile_proto;add dest command
-			set dest dest#
-			call dest(output,#pointer)
 
 			if hotgroup>0
 				if dest!=line
@@ -428,7 +430,7 @@ end
 function action(sd outfile,sv pbuffer)
 	charx act#1;call get_char(pbuffer,#act)
 	call action1(act,pbuffer,outfile)
-	callg writetn(outfile)
+	callg writetnl(outfile)
 end
 function action2(sd outfile,sv pbuffer)
 	sd replay;set replay pbuffer#
@@ -455,7 +457,7 @@ function action2(sd outfile,sv pbuffer)
 
 	call write_longcast_simple(outfile) #(long)p-log    invalid operands to binary - (have long int and char *)
 	call arg(pbuffer,outfile)
-	callg writetn(outfile)
+	callg writetnl(outfile)
 end
 function call(sd outfile,sv pbuffer)
 	char c#1;call get_char(pbuffer,#c)
@@ -463,7 +465,7 @@ function call(sd outfile,sv pbuffer)
 		call return(outfile)
 	end
 	call cll(pbuffer,outfile)
-	callg writetn(outfile)
+	callg writetnl(outfile)
 end
 function callex(sd *outfile,sv pbuffer)
 	call unimplemented("callex")
@@ -503,12 +505,12 @@ end
 function break(sd outfile)
 	char a="break"^
 	call write(outfile,#a,\.a)
-	callg writetn(outfile)
+	callg writetnl(outfile)
 end
 function continue(sd outfile)
 	char a="continue"^
 	call write(outfile,#a,\.a)
-	callg writetn(outfile)
+	callg writetnl(outfile)
 end
 function end(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
@@ -520,7 +522,7 @@ function end(sd outfile,sv pbuffer)
 end
 function ret(sd outfile)
 	call write(outfile,#return.a,\return.a-1)
-	callg writetn(outfile)
+	callg writetnl(outfile)
 end
 function library(sd *outfile,sv pbuffer)
 	charx multi#1;datax sz#1;valuex lib#1
@@ -547,7 +549,7 @@ function import(sd outfile,sv pbuffer)
 	if va=(Xfile_function_va_yes)
 		call varargs(outfile)
 	end
-	callg proto_close(outfile)
+	callg writertnl(outfile)
 end
 function import_name(sd *outfile,sv pbuffer)
 	datax sz#1;valuex name#1
@@ -590,11 +592,37 @@ function interrupt(sd outfile)
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
 	callg writen(outfile,#a,\.a)
 end
-function variadic(sv pbuffer,sd *outfile)
+function variadic(sv pbuffer,sd outfile)
 	charx type#1;call get_char(pbuffer,#type)
+importx "printf" qwe
+call qwe("%u\n",type)
 	if type!=(Xfile_variadic_end)
 		datax sz#1;valuex name#1
 		call get_string(pbuffer,#sz,#name)
+		if type=(Xfile_variadic_begin)
+			char va_list="va_list "^
+			char va_list_name="the_va_list"^
+			call write(outfile,#va_list,\.va_list+\.va_list_name)
+			call writet(outfile)
+			char va_start="va_start("^
+			call write(outfile,#va_start,\.va_start)
+			call write(outfile,#va_list_name,\.va_list_name)
+			call writec(outfile)
+			call write(outfile,name,sz)
+			call writertnl(outfile)
+		else
+			call write(outfile,name,sz)
+			call writee(outfile)
+			char va_arg="va_arg("^
+			call write(outfile,#va_arg,\.va_arg)
+			call write(outfile,#va_list_name,\.va_list_name)
+			call writec(outfile)
+			call write_long(outfile)
+			call writertnl(outfile)
+		end
+	else
+		char va_end="va_end(the_va_list)"^
+		callg writetn(outfile,#va_end,\.va_end)
 	end
 end
 function proto(sd outfile,sv pbuffer)
@@ -617,7 +645,7 @@ function proto(sd outfile,sv pbuffer)
 		end
 		call proto_core(outfile,pbuffer)
 		inc pbuffer#
-		callg proto_close(outfile)
+		callg writertnl(outfile)
 	else #Xfile_function_t_struct
 		set pbuffer# buf
 	end
@@ -643,10 +671,6 @@ function proto_open(sd outfile,sv pbuffer)
 	call get_string(pbuffer,#sz,#name)
 	call write_long_pointer(outfile,name,sz)
 	callg writel(outfile)
-end
-function proto_close(sd outfile)
-	call writer(outfile)
-	callg writetn(outfile)
 end
 
 function else_core(sd outfile)
@@ -780,21 +804,30 @@ function writecln(sd outfile)
 	call writecl(outfile)
 	callg writenl(outfile)
 end
-function writen(sd outfile,ss buf,sd sz)
-	call write(outfile,buf,sz)
-	callg writenl(outfile)
-end
 function writeslsr(sd outfile)
 	call writesl(outfile)
 	callg writesr(outfile)
 end
-function writetn(sd outfile) #terminator newline
+function writetnl(sd outfile) #terminator newline
 	call writet(outfile)
 	callg writenl(outfile)
 end
+function writertnl(sd outfile)
+	call writer(outfile)
+	callg writetnl(outfile)
+end
 function writecrtn(sd outfile)
 	call writecr(outfile)
-	callg writetn(outfile) #with termination only for struct
+	callg writetnl(outfile) #with termination only for struct
+end
+
+function writen(sd outfile,ss buf,sd sz)
+	call write(outfile,buf,sz)
+	callg writenl(outfile)
+end
+function writetn(sd outfile,ss buf,sd sz)
+	call write(outfile,buf,sz)
+	callg writetnl(outfile)
 end
 
 function fprintu(sd outfile,sd c)  #has an upper write_allow check

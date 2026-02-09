@@ -6,7 +6,7 @@ shift
 if [ -n "${winlauncher}" ]; then launcher=${winlauncher}; fi
 ${launcher} ${OCONV} $a.oc.x import $@
 ./c1 $a || {
-	echo enter or ctrl c
+	echo enter to write, ctrl c to exit
 	read -t $((60*60*24))
 	./d $a
 }
