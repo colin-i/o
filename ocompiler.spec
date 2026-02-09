@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+244
+Version: 5+245
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,13 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon Feb 09 2026 costin <costin.botescu@gmail.com> 5+245-0
+- and variadic at otoc (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- va_start va_arg va_end are only for c, at o is simple pointing
+  (costin.botescu@gmail.com)
+- quotes error correction (costin.botescu@gmail.com)
+
 * Mon Nov 10 2025 Costin Botescu <costin.botescu@gmail.com> 5+244-0
 - comma/quotes mix error (costin.botescu@gmail.com)
 - similarities (costin.botescu@gmail.com)

@@ -1,3 +1,9 @@
+ocompiler (2-5+245) xenial; urgency=medium
+
+  * c va_list
+
+ -- bc <bc@ubuntu>  Mon, 09 Feb 2026 10:35:37 +0200
+
 ocompiler (2-5+244) xenial; urgency=medium
 
   * backward comma errors
