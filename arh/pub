@@ -35,7 +35,7 @@ from_env_files=".windows.zip *zst" ~/test/del x ${last}
 
 #when was old rpm list: here must arh fast to push changelog + old file same time
 #there are problems at amd64xenial, not at bionic
-#if copy will not work because of already published error, manual "Copy binaries" and will also rebuild missing amd64
+#if copy will not work because of already published error, manual "Copy existing binaries" and will also rebuild missing amd64
 
 #plans:
 

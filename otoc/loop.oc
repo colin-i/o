@@ -90,6 +90,53 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 				dec indentation
 				break
 			end
+
+			value Xfile_proto^proto
+			value *Xfile_import^import
+			value *Xfile_comment^comment
+			value *Xfile_commentmulti^commentmulti
+			value *Xfile_commentlineend^commentlineend
+			value *Xfile_format^format
+			value *Xfile_include^include
+			value *Xfile_functiondef^functiondef   #in c, this can cause implicit declaration if a{b()} b{} but is only a warning, will be resolved ok
+			value *Xfile_declare^declare
+			value *Xfile_action^action
+			value *Xfile_action2^action2
+			value *Xfile_call^call
+			value *Xfile_callex^callex
+			value *Xfile_if^if
+			value *Xfile_elseif^elseif
+			value *Xfile_else^else
+			value *Xfile_while^while
+			value *Xfile_whiletrue^whiletrue
+			value *Xfile_break^break
+			value *Xfile_continue^continue
+			value *Xfile_end^end
+			value *Xfile_ret^ret
+			value *Xfile_library^library
+			value *Xfile_import_name^import_name
+			value *Xfile_aftercall^aftercall
+			value *Xfile_hex^hex
+			value *Xfile_override^override
+			value *Xfile_orphan^orphan
+			value *Xfile_interrupt^interrupt
+			value *Xfile_line^line
+			value *Xfile_iend^iend
+			value *Xfile_variadic^variadic
+			datau mults={1,2,4,8,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
+			datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}
+
+			datax ignored#1
+			if nextisignored=(ignored_depending_on_tags)
+				sd igpow=DWORD;mult igpow command
+				sd x^mults;add x igpow
+				set ignored x#
+				and ignored ignores
+			else # yes/no
+				set ignored nextisignored
+				set nextisignored (ignored_depending_on_tags)
+			end
+
 			if same_line=(FALSE)
 				sd i;set i indentation
 				while i>0
@@ -101,59 +148,10 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 				set same_line (FALSE)
 			end
 
-			if command=(Xfile_variadic)
-				call variadic(#pointer,output)
-			else
-				value Xfile_proto^proto
-				value *Xfile_import^import
-				value *Xfile_comment^comment
-				value *Xfile_commentmulti^commentmulti
-				value *Xfile_commentlineend^commentlineend
-				value *Xfile_format^format
-				value *Xfile_include^include
-				value *Xfile_functiondef^functiondef   #in c, this can cause implicit declaration if a{b()} b{} but is only a warning, will be resolved ok
-				value *Xfile_declare^declare
-				value *Xfile_action^action
-				value *Xfile_action2^action2
-				value *Xfile_call^call
-				value *Xfile_callex^callex
-				value *Xfile_if^if
-				value *Xfile_elseif^elseif
-				value *Xfile_else^else
-				value *Xfile_while^while
-				value *Xfile_whiletrue^whiletrue
-				value *Xfile_break^break
-				value *Xfile_continue^continue
-				value *Xfile_end^end
-				value *Xfile_ret^ret
-				value *Xfile_library^library
-				value *Xfile_import_name^import_name
-				value *Xfile_aftercall^aftercall
-				value *Xfile_hex^hex
-				value *Xfile_override^override
-				value *Xfile_orphan^orphan
-				value *Xfile_interrupt^interrupt
-				value *Xfile_line^line
-				value *Xfile_iend^iend
-				datau mults={1,2,4,8,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
-				datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000} #,0x80000000}
-
-				datax ignored#1
-				if nextisignored=(ignored_depending_on_tags)
-					sd igpow=DWORD;mult igpow command
-					sd x^mults;add x igpow
-					set ignored x#
-					and ignored ignores
-				else # yes/no
-					set ignored nextisignored
-					set nextisignored (ignored_depending_on_tags)
-				end
-
-				mult command :
-				sv dest^Xfile_proto;add dest command
-				set dest dest#
-				call dest(output,#pointer)
-			end
+			mult command :
+			sv dest^Xfile_proto;add dest command
+			set dest dest#
+			call dest(output,#pointer)
 
 			if hotgroup>0
 				if dest!=line
@@ -592,10 +590,8 @@ function interrupt(sd outfile)
 	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
 	callg writen(outfile,#a,\.a)
 end
-function variadic(sv pbuffer,sd outfile)
+function variadic(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
-importx "printf" qwe
-call qwe("%u\n",type)
 	if type!=(Xfile_variadic_end)
 		datax sz#1;valuex name#1
 		call get_string(pbuffer,#sz,#name)

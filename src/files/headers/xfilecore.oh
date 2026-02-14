@@ -29,3 +29,4 @@ const Xfile_orphan=27
 const Xfile_interrupt=28
 const Xfile_line=29
 const Xfile_iend=30
+const Xfile_variadic=31

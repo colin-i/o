@@ -1,9 +1,8 @@
 
-include "xfilecore.oh"                 #attention that ignore mask max at otoc size is 32, now is 31(0-30), and modify also at mults at loop.oc
-const Xfile_noignore=Xfile_iend+1      #this is 31
-const Xfile_yesignore=Xfile_noignore+1 #this is 32
+include "xfilecore.oh"                 #attention that ignore mask max at otoc size is 32, now is 32(0-31), and modify also at mults at loop.oc
+const Xfile_noignore=Xfile_variadic+1      #this is 32
+const Xfile_yesignore=Xfile_noignore+1 #this is 33
 #const Xfile_ignore_nosigns=Xfile_yesignore+1
-const Xfile_variadic=Xfile_yesignore+1
 #const Xfile_noignore_sign
 #const Xfile_yesignore_sign
 #Const ifinscribe=-1; #Const nocondnumber=-1; const elseinscribe_write=0; const elseinscribe_skip=1
