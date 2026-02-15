@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+245
+Version: 5+246
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,9 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Sun Feb 15 2026 costin <costin.botescu@gmail.com> 5+246-0
+- fix variadic after another ignore (costin.botescu@gmail.com)
+
 * Mon Feb 09 2026 costin <costin.botescu@gmail.com> 5+245-0
 - and variadic at otoc (costin.botescu@gmail.com)
 - "up" (costin.botescu@gmail.com)

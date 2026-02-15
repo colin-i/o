@@ -1,3 +1,9 @@
+ocompiler (2-5+246) xenial; urgency=medium
+
+  * fix variadic after another ignore
+
+ -- bc <bc@ubuntu>  Sun, 15 Feb 2026 10:38:01 +0200
+
 ocompiler (2-5+245) xenial; urgency=medium
 
   * c va_list
