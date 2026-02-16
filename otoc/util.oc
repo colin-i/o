@@ -9,6 +9,7 @@ function number_allowwrite(ss buffer)
 				if buffer#=(asciione)
 					inc buffer
 					if buffer#=(Xfile_numbers_done)
+						dec loop.hotgroup ##and also allow to be pointed next
 						return (allowwrite_no)
 					end
 				end
