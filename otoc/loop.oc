@@ -54,6 +54,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	set same_line (FALSE)
 	charx hotgroup#1
 	set hotgroup 0
+	charx hotgroup_test#1
+	set hotgroup_test 0
 	datax szfunctiondef#1
 	set szfunctiondef 0
 	datax icount#1  #dependent on includesReg
@@ -357,6 +359,7 @@ function declare(sd outfile,sv pbuffer)
 	charx sign#1;call get_char(pbuffer,#sign)
 	if sign=(Xfile_declsign_reserve)
 		set loop.hotgroup 2
+		set loop.hotgroup_test 3
 		#as a special case, [1] is removed for C. and whit what replaced? const a=1 and [a]. alternatives? structure with declared vars, = at nobits vars
 		#this for structures, and not only because at o #1 is not [1], will make more similar
 		or loop.allowwrite number_allowwrite(pbuffer#)

@@ -19,6 +19,14 @@ include "number.oh"
 		set f f#
 		call f(outfile,pbuffer)
 		call get_char(pbuffer,#item)
+		if loop.hotgroup_test!=0
+			if loop.hotgroup_test=1
+				if item=(Xfile_numbers_done)
+					dec loop.hotgroup ##this is a special case, for example, to allow  sd a  without reserve sign or with reserve sign and 1  to be pointed next instruction
+				end
+			end
+			set loop.hotgroup_test 0
+		end
 	end
 end
 
@@ -59,6 +67,13 @@ end
 function number_text_dec(sd outfile,sv pbuffer)
 	datax sz#1;valuex pointer#1
 	call get_string(pbuffer,#sz,#pointer)
+	if loop.hotgroup_test=2
+		if sz=1
+			if pointer#s=(asciione)
+				set loop.hotgroup_test 1
+			end
+		end
+	end
 	callg write(outfile,pointer,sz)
 end
 function number_text_oct(sd outfile,sv pbuffer)
@@ -135,6 +150,9 @@ function number_var_offset(sd outfile,sv pbuffer) #DoT
 end
 
 function normal(sd outfile,sv pbuffer)
+	if loop.hotgroup_test=3
+		set loop.hotgroup_test 2
+	end
 	callg numbertype(pbuffer,outfile)
 end
 function neg(sd outfile,sv pbuffer)
