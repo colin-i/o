@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+246
+Version: 5+247
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,12 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon Feb 23 2026 costin <costin.botescu@gmail.com> 5+247-0
+- "up" (costin.botescu@gmail.com)
+- same thing but at already existing code (costin.botescu@gmail.com)
+- at otoc, allow non-multiple reserve declarations to be not a hotgroup
+  (costin.botescu@gmail.com)
+
 * Sun Feb 15 2026 costin <costin.botescu@gmail.com> 5+246-0
 - fix variadic after another ignore (costin.botescu@gmail.com)
 
