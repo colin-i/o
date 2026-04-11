@@ -5,7 +5,9 @@
 function arg(sv pbuffer,sd outfile)
 	charx a#1;call get_char(pbuffer,#a)
 	if a=(Xfile_arg_number)
+		call writel(outfile) #at c macros are expanded, not come calculated like at const at o, another solution is to make _c constants but is extra
 		call number(pbuffer,outfile)
+		call writer(outfile)
 	elseif a=(Xfile_arg_varfn)
 		call varfunc(pbuffer,outfile)
 	elseif a=(Xfile_arg_string)
