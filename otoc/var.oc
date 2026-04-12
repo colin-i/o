@@ -185,7 +185,7 @@ function write_string(sd outfile,sd is_multiline,sd sz,ss pointer)
 				sd c;set c pointer;sub c start
 				call write(outfile,start,c)
 			end
-			char bs=asciibs;char b#1;char *#2
+			char bs=asciibs;char b#1;char *#2;char *#1 #last char is from sprintf that is null terminating
 			set b map#
 			if b=(zr)
 				call sprintf(#b,"%03o",pointer#)
