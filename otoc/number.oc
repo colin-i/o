@@ -73,7 +73,9 @@ function number_text_pref(sd *outfile,sv pbuffer)
 	callg unimplemented("preference number")
 end
 function number_text_const(sd outfile,sv pbuffer)
-	callg number_text_dec(outfile,pbuffer)
+	call writel(outfile) #same thing as consts in code, here are precalculated, at c are expanded
+	call number_text_dec(outfile,pbuffer)
+	callg writer(outfile)
 end
 function number_func_size(sd outfile,sv pbuffer)
 	callg number_func_sizex(outfile,pbuffer)
