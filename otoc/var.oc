@@ -5,10 +5,9 @@
 function arg(sv pbuffer,sd outfile)
 	charx a#1;call get_char(pbuffer,#a)
 	if a=(Xfile_arg_number)
-		#call writel(outfile) #at c macros are expanded, not precalculated, but we do this for constants, here will break some offset constants at oad
-		#	of course there are straight cases that can go wrong, for the moment can () in code, .x will have parenthesis
+		call writel(outfile) #to be consistent, example sub nr (A-10) will be same at o/c with these
 		call number(pbuffer,outfile)
-		#call writer(outfile)
+		call writer(outfile)
 	elseif a=(Xfile_arg_varfn)
 		call varfunc(pbuffer,outfile)
 	elseif a=(Xfile_arg_string)
