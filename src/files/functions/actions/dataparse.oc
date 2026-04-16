@@ -159,7 +159,17 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 		else
 			return "Unexpected pointing sign ('?') at constant declaration."
 		endelse
-	endif
+	elseif firstchar=(Xfile_variadic_sign)
+		If typenumber!=(constantsnumber)
+			dec valsize
+			If valsize=zero
+				Return vars_log_prepare.varname
+			endif
+			call stepcursors(ptrcontent,ptrsize)
+		else
+			return "Unexpected variadic sign ('%') at constant declaration."
+		endelse
+	endelseif
 
 	If firstchar!=(unrefsign)
 		if firstchar=(throwlesssign)   #throwless if on a throwing area
@@ -170,14 +180,19 @@ function addvarreferenceorunref(sv ptrcontent,sd ptrsize,sd valsize,sd typenumbe
 			If valsize=zero
 				Return vars_log_prepare.varname
 			endif
-			or mask (aftercallthrowlessbit)
+			#or mask (aftercallthrowlessbit)
 			call stepcursors(ptrcontent,ptrsize)
-		elseIf typenumber!=(constantsnumber)
-			sd global_err_pB;setcall global_err_pB global_err_pBool()
-			if global_err_pB#=(global_err_notset)
-				or mask (aftercallthrowlessbit)
-			endif
-		endelseif
+		else
+			#if firstchar=(Xfile_variadic_sign)
+			#else
+			If typenumber!=(constantsnumber)
+				sd global_err_pB;setcall global_err_pB global_err_pBool()
+				if global_err_pB#!=(global_err_notset)
+					or mask (aftercallthrowbit)
+				endif
+			#else
+			endIf
+		endelse
 		callret addvarreference(ptrcontent,ptrsize,valsize,typenumber,mask,stackoffset,is_expand)
 	EndIf
 	If typenumber=(constantsnumber)

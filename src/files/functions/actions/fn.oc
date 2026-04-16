@@ -109,8 +109,8 @@ Function parsefunction(data ptrcontent,data ptrsize,data is_declare,sd subtype,s
 				or mask (x86_64bit)
 			endif
 			sd err_pb;setcall err_pb global_err_pBool()
-			if err_pb#=(global_err_notset)
-				or mask (aftercallthrowlessbit)
+			if err_pb#!=(global_err_notset)
+				or mask (aftercallthrowbit)
 			endif
 
 			SetCall err addaref(value,ptrcontent,ptrsize,sz,fnnr,mask)
@@ -486,9 +486,9 @@ function write_function_call(sd ptrdata,sd boolindirect,sd is_callex,sd subtype)
 	EndElse
 	If err=(noerror)
 		#afterbit throwless is at fns imps if before aftercall; at values is throwless after aftercall if sign set
-		sd tless=aftercallthrowlessbit
+		sd tless=aftercallthrowbit
 		and tless mask
-		if tless=0
+		if tless!=0
 			if is_valuedata_call=(FALSE)
 				sd global_err_pB;setcall global_err_pB global_err_pBool()
 				if global_err_pB#=(FALSE)

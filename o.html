@@ -984,7 +984,7 @@ format elfobj64<br>
 Xfile_yesignore at compiler is '!' sign before the command and at otoc will ignore the command.
 Xfile_variadic at ocompiler is '%' sign at start, followed by '&lt;argument' for va_start at otoc, '|variable' for va_arg, '&gt;' for va_end.
 </p>
-<p>Another option specific to otoc is Xfile_declvolatile_yes, to use stack variables at o for recursion but not pointers at c (example: sdu ?attr).</p>
+<p>Another option specific to otoc is Xfile_c_volatile, to use stack variables at o for recursion but not pointers at c (example: sdu ?attr). And Xfile_c_variadic to work with va_list arguments.</p>
 <table id="selection_table">
 	<tr><td>Xfile_proto</td><td>Xfile_function_t_*</td><td class="red">name</td><td class="blue">nr_of_args</td><td class="green">{DA}</td><td>Xfile_proto_*</td></tr>
 </table>
@@ -1105,7 +1105,7 @@ Xfile_variadic at ocompiler is '%' sign at start, followed by '&lt;argument' for
 </table>
 <br>Table DA:
 <table id="selection_table">
-	<tr><td colspan=2>Xfile_declfield_stack</td>                     <td rowspan=2>Xfile_declext_*</td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_declvolatile_*</td></tr>
+	<tr><td colspan=2>Xfile_declfield_stack</td>                     <td rowspan=2>Xfile_declext_*</td><td rowspan=2>Xfile_decltype_*</td><td rowspan=2>Xfile_c_*</td></tr>
 	<tr><td>Xfile_declfield_data</td> <td>Xfile_declfield_data_*</td></tr>
 	<tr><td colspan=5>Xfile_declfield_varargs</td></tr>
 </table>

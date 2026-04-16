@@ -31,6 +31,7 @@ const Xfile_declfield_const_cond=1
 
 const Xfile_declfield_data_concrete=0
 const Xfile_declfield_data_expand=1
+#const Xfile_declfield_data_na=0xff at otoc decl_runtime_core_internal
 
 const Xfile_decltype_byte=0
 const Xfile_decltype_intByte=1
@@ -44,8 +45,9 @@ const Xfile_decltype_long=7
 #const Xfile_decltype_varargs=Xfile_decltype_const+1  #is used only Xfile_declfield_varargs
 #const Xfile_decltype_done=0xff
 
-const Xfile_declvolatile_no=0
-const Xfile_declvolatile_yes=1
+const Xfile_c_normal=0
+const Xfile_c_volatile=1
+const Xfile_c_variadic=2
 
 const Xfile_declfeature_normal=0
 const Xfile_declfeature_unref=1

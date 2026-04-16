@@ -1,4 +1,6 @@
 
+const Xfile_declfield_data_na=0xff
+
 #aftercalli
 
 function functiondef_varargs(sd outfile,sd args,sd vargs)
@@ -74,34 +76,45 @@ function functiondef_entry(sv pbuffer,sd outfile,sd pointer,sd sz,sd vargs)
 	set loop.has_entry (TRUE)
 end
 
-#DA structure(with field from argument)
-function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
+function decl_runtime_core_internal(sv pbuffer,sd outfile,ss ptype,ss ?data)
 	charx sign#1;charx type#1;charx volatile#1
-	if field=(Xfile_declfield_data)
-		charx data#1;call get_char(pbuffer,#data)
-		call get_char(pbuffer,#sign)
-		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
+	call get_char(pbuffer,#sign)
+	if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
+	call get_char(pbuffer,#volatile)
+	if volatile!=(Xfile_c_variadic)
 		call unsigned_type(outfile,type,sign)
-
-		call get_char(pbuffer,#volatile)
-		#special hack for a pointless long (value), needed to inc/dec
-		if type=(Xfile_decltype_long)
-			if data=(Xfile_declfield_data_concrete)
-				callg write_long(outfile)
-				ret
+		if data!=(Xfile_declfield_data_na)
+			#special hack for a pointless long (value), needed to inc/dec
+			if type=(Xfile_decltype_long)
+				if data=(Xfile_declfield_data_concrete)
+					callg write_long(outfile)
+					ret
+				end
 			end
 		end
 		callg decl_type(outfile,type,volatile)
-	elseif field=(Xfile_declfield_stack)
-		call get_char(pbuffer,#sign)
-		if ptype=(NULL);call get_char(pbuffer,#type);else;call get_char(pbuffer,ptype);set type ptype#;end
-		call unsigned_type(outfile,type,sign)
-
-		call get_char(pbuffer,#volatile)
-		callg decl_type(outfile,type,volatile)
-	else #Xfile_declfield_varargs
-		callg varargs(outfile)
+		ret
 	end
+	if loop.has_proto_valist=(FALSE) #proto tags are at start, no ignored/allowwrite/directwrite dependent
+		char s="  "^
+		call rewind(outfile)
+		call fwrite(#s,\.s,1,outfile)
+		call fseek(outfile,0,(SEEK_END))
+	end
+	char a="va_list"^
+	callg write(outfile,#a,\.a)
+end
+#DA structure(with field from argument)
+function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
+	if field=(Xfile_declfield_data)
+		charx data#1;call get_char(pbuffer,#data)
+		callret decl_runtime_core_internal(pbuffer,outfile,ptype,data)
+	end
+	if field=(Xfile_declfield_stack)
+		callret decl_runtime_core_internal(pbuffer,outfile,ptype,(Xfile_declfield_data_na))
+	end
+	#Xfile_declfield_varargs
+	callg varargs(outfile)
 end
 function decl_runtime(sv pbuffer,sd outfile,sd field,ss ptype)
 	call decl_runtime_core(pbuffer,outfile,field,ptype)
@@ -164,14 +177,14 @@ function longByte(sd outfile)
 	callg write(outfile,#byte.a,\byte.a)
 end
 function longByte_ex(sd outfile,sd volatile)
-	if volatile=(Xfile_declvolatile_no)
+	if volatile=(Xfile_c_normal)
 		callg longByte(outfile)
 	else
 		callg byte(outfile)
 	end
 end
 function longLong(sd outfile,sd volatile)
-	if volatile=(Xfile_declvolatile_no)
+	if volatile=(Xfile_c_normal)
 		callg write_long_point(outfile)
 	else
 		callg write_long(outfile)
@@ -181,7 +194,7 @@ function longWord(sd outfile)
 	callg write(outfile,#word.a,\word.a)
 end
 function longWord_ex(sd outfile,sd volatile)
-	if volatile=(Xfile_declvolatile_no)
+	if volatile=(Xfile_c_normal)
 		callg longWord(outfile)
 	else
 		callg word(outfile)
@@ -191,7 +204,7 @@ function longInt(sd outfile)
 	callg write(outfile,#int.a,\int.a)
 end
 function longInt_ex(sd outfile,sd volatile)
-	if volatile=(Xfile_declvolatile_no)
+	if volatile=(Xfile_c_normal)
 		callg longInt(outfile)
 	else
 		callg int(outfile)

@@ -6,7 +6,6 @@ line
 !
 
 override include_sec 1
-include "stdarg.h" "include.oh"
 include "stddef.h" "include.oh"
 include "the_setjmp.h" "include.oh"
 
@@ -26,7 +25,7 @@ constif a1=2 #ok
 char a#3;value b^a
 char no_hotgroup=1;value no_hotgroup_test^no_hotgroup
 
-function intern(data a,sd b,sv c,svu d) #commenting
+function intern(data a,sd b,sv c,svu d,sv %the_va_list) #commenting
 	sd ?recursion
 	svu pointing^intern
 	!set pointing# pointing
@@ -50,8 +49,10 @@ function st()
 end
 functionv f(sd dummy) #void f(...) was working with gcc13 but with 5 still is: ISO C requires a named argument before '...'
 	%<dummy
+	!sd the_va_list^dummy
 	valuex a#1
 	value b=\main.c2
+	call intern(1,"0\n1\r2\t3\04\\5\"6\x3g\x307",main.a:a,main.a,the_va_list)
 	%|a
 	set a #b
 	%>
@@ -89,7 +90,6 @@ entryv main(sd argc)
 
 	!hex -:,~\,~-\\+(1+01+0x2+?x_file+\intern+\\intern+\intern.a+\intern.a\)
 
-	call intern(1,"0\n1\r2\t3\04\\5\"6\x3g\x307",main.a:a,main.a)
 	set b printf(b,b)
 
 	if 1=1

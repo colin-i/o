@@ -31,21 +31,31 @@ function xfile_add_declare_base(sd decltype,sd is_stack,sd is_expand,sd is_signe
 		if err=(noerror)
 			setcall err xfile_add_char(decltype)
 			if err=(noerror)
-				ss content;set content pcontent#
-				if content#!=(pointingsign)  #examples:in ..) or in ..= or one of the assign..expected
-					callret xfile_add_char((Xfile_declvolatile_no))
-				endif
-				if psize!=(NULL)
-					call stepcursors(pcontent,psize)
-					if psize#=0 #this is the very rare case when the rare case at vars_log_prepare is not: x_file,not object,end of file,do not compare unallocated space
-						return vars_log_prepare.varname
-					endif
-				endif
-				callret xfile_add_char((Xfile_declvolatile_yes))
+				callret xfile_c_sign(pcontent,psize)
 			endif
 		endif
 	endif
 	return err
+endfunction
+#err
+function xfile_c_sign(sv pcontent,sd psize)
+	ss content;set content pcontent#
+	ss ?sign;set sign content#
+	if sign!=(pointingsign)  #examples:in ..) or in ..= or one of the assign..expected
+		if sign!=(Xfile_variadic_sign)
+			callret xfile_add_char((Xfile_c_normal))
+		endif
+	endif
+	if psize!=(NULL)
+		call stepcursors(pcontent,psize)
+		if psize#=0 #this is the very rare case when the rare case at vars_log_prepare is not: x_file,not object,end of file,do not compare unallocated space
+			return vars_log_prepare.varname
+		endif
+	endif
+	if sign=(pointingsign)
+		callret xfile_add_char((Xfile_c_volatile))
+	endif
+	callret xfile_add_char((Xfile_c_variadic))
 endfunction
 
 #err
@@ -200,7 +210,7 @@ function xfile_structdef(sd b)
 	call lseek(main.xfile,b,(SEEK_SET))
 	char a=Xfile_function_t_struct
 	call write(main.xfile,#a,(bsz))
-end
+endfunction
 function xfile_fndef_structend_if(sd el_or_e)
 	if main.xstruct!=(unierror)
 		datax reg#1

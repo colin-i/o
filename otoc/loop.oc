@@ -58,8 +58,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	set szfunctiondef 0
 	datax icount#1  #dependent on includesReg
 	set icount 0
-
-	sd nextisignored=ignored_depending_on_tags
+	charx has_proto_valist#1
+	set has_proto_valist (FALSE)
 
 	#if delim>^(long32)
 	vdatax entrystart#1
@@ -72,6 +72,13 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	add pointer (long32)
 	sub delim (long32)
 	add delim pointer
+
+	datax ignored#1
+	set ignored (ignored_no)
+	char s="//#include \"stdarg.h\""^ #in case of a proto va_list
+	call writen(output,#s,\.s)
+
+	sd nextisignored=ignored_depending_on_tags
 	while pointer!=delim
 		charx command#1;call get_char(#pointer,#command)
 		if command=(Xfile_noignore)
@@ -126,7 +133,6 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			datau mults={1,2,4,8,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000}
 			datau     *={0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}
 
-			datax ignored#1
 			if nextisignored=(ignored_depending_on_tags)
 				sd igpow=DWORD;mult igpow command
 				sd x^mults;add x igpow
@@ -160,10 +166,9 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 			end
 		end
 	end
-	if main.result=(EXIT_SUCCESS)
-		if has_entry=(TRUE)
-			callg writecrtn(output)
-		end
+	#if main.result=(EXIT_SUCCESS) leave is from this function
+	if has_entry=(TRUE)
+		callg writecrtn(output)
 	end
 end
 
