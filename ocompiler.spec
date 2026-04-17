@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+247
+Version: 5+248
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,15 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Fri Apr 17 2026 costin <costin.botescu@gmail.com> 5+248-0
+- va_list to downstream functions (costin.botescu@gmail.com)
+- () for consistency (costin.botescu@gmail.com)
+- back one step at expands (costin.botescu@gmail.com)
+- same c macro expand awareness at constants (costin.botescu@gmail.com)
+- fix otoc otcals (costin.botescu@gmail.com)
+- at c will expand constant macros in () (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+
 * Mon Feb 23 2026 costin <costin.botescu@gmail.com> 5+247-0
 - "up" (costin.botescu@gmail.com)
 - same thing but at already existing code (costin.botescu@gmail.com)

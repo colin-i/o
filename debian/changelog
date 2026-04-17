@@ -1,3 +1,9 @@
+ocompiler (2-5+248) xenial; urgency=medium
+
+  * xfile_c_* and c constant expands
+
+ -- bc <bc@ubuntu>  Fri, 17 Apr 2026 10:11:49 +0300
+
 ocompiler (2-5+247) xenial; urgency=medium
 
   * hot group fix
