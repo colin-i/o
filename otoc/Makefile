@@ -26,6 +26,8 @@ FULLOBJLOG = ${FULLOBJS}.log
 number=number.oh
 tags=tags.oh
 
+ver=version.oh
+vers=../${ver}
 
 ifneq (${platform},win)
 
@@ -70,7 +72,7 @@ endif
 %.oh: %.pre
 	${launcher} ./$<
 
-${OBJ}: ${FULLOBJS} ${tags} ${number}
+${OBJ}: ${FULLOBJS} ${tags} ${number} ${vers}
 	${OCOMP} $< ${OFLAGS}
 ${fullprog}: ${OBJ}
 	${OLINK} ${FULLOBJLOG}
@@ -79,6 +81,9 @@ ${fullprog}: ${OBJ}
 	else \
 		${ATLDCOM} ${prog} ${FULLOBJO} ${AFTERLDCOM}; \
 	fi
+
+${vers}:
+	cd .. && $(MAKE) -f ./Makefile ${ver}
 
 install:
 	$(MAKE) all
@@ -89,9 +94,7 @@ install-proj:
 #is at debian/ocompiler.install , will install here but not in the final deb
 
 clean:
-	-rm -f ${FULLOBJO}
-	-rm -f ${FULLOBJLOG}
-	-rm -f ${fullprog}
+	-rm -f ${FULLOBJO} ${FULLOBJLOG} ${fullprog} ${vers}
 	-rm -f ${number} number.pre number.pre.o number.pre.oc.log
 	-rm -f ${tags} tags.pre tags.pre.o tags.pre.oc.log
 distclean: clean

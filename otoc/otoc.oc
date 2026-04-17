@@ -3,6 +3,8 @@ format elfobj64
 
 include "common.oh"
 
+include "../version.oh"
+
 importx "puts" puts
 importx "fopen" fopen
 importx "fclose" fclose
@@ -153,4 +155,5 @@ include "entry.oc" "entryraw.oc"
 		end
 	end
 	call puts("Usage: otoc [-] filePath [tagIgnore1 .. tagIgnoreN]")
+	call puts(#version)
 	call exit((EXIT_FAILURE))
