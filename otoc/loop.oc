@@ -75,7 +75,7 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 
 	datax ignored#1
 	set ignored (ignored_no)
-	char s="//#include \"stdarg.h\""^ #in case of a proto va_list
+	char s="//#include <stdarg.h>"^ #in case of a proto va_list
 	call writen(output,#s,\.s)
 
 	sd nextisignored=ignored_depending_on_tags
@@ -590,9 +590,10 @@ function orphan(sd *outfile,sv pbuffer)
 end
 function interrupt(sd outfile)
 	#this is not arm #char a="__asm__(\"int $3\");"
-	#this is no x86 #__asm__("BKPT");
+	#this is no x86 #__asm__("BKPT"); for 32 and __asm__("brk #0"); for 64
+	#include <signal.h> and raise(SIGTRAP); plus one 'n' but this will be complex
 	char a="__builtin_trap();"^
-	#"__builtin_trap();" #this is not continuing on x86 but is an temporary solution
+	#"__builtin_trap();" #this is not continuing on x86 but is a temporary solution
 	callg writen(outfile,#a,\.a)
 end
 function variadic(sd outfile,sv pbuffer)
