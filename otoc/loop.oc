@@ -601,8 +601,8 @@ function interrupt(sd outfile)
 end
 function variadic(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
-	datax sz#1;valuex name#1
 	if type!=(Xfile_variadic_end)
+		datax sz#1;valuex name#1
 		call get_string(pbuffer,#sz,#name)
 		if type=(Xfile_variadic_begin)
 			char va_start="va_start"^
