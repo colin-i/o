@@ -105,9 +105,18 @@ function var(sv pbuffer,sd outfile)
 		call write(outfile,#a,1)
 		call writesr(outfile)
 	else
+		if loop.variadic_fork!=(NULL)
+			char va_list_name="the_va_list,"^
+			if sz=\.va_list_name-1
+				sd c;set c memcmp(pointer,#va_list_name,\.va_list_name-1)
+				if c=0
+					callg write(outfile,loop.variadic_fork,loop.variadic_fork_size)
+					ret
+				end
+			end
+		end
 		callg write(outfile,pointer,sz)
-	end
-	#Xfile_suffix_no Xfile_suffix_notasuffix
+	end #Xfile_suffix_notasuffix
 end
 
 #VF structure

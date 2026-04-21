@@ -612,27 +612,23 @@ function xfile_variadic(sv pcontent,sd psize,sd size)
 				ss content;set content pcontent#
 				char c#1
 				set c content#
-				call stepcursors(pcontent,psize)
+				call stepcursors(pcontent,psize) #step here for variadic_end
+				if c=(Xfile_variadic_get)
+				elseif c=(Xfile_variadic_begin)
+				elseif c=(Xfile_variadic_end)
+					callret xfile_add_char(c)
+				elseif c=(Xfile_variadic_copy)
+				else
+					return err
+				endelse
 				setcall er xfile_add_char(c)
 				if er=(noerror)
 					inc content
 					sd sz;set sz psize#
 					call notspaces(pcontent,psize)
 					if sz!=psize#
-						if c=(Xfile_variadic_end)
-							#set er xfile_add_char( _child )
-							#if er!=(noerror)
-								#return er
-							#endif
-							return err
-						endif
 						sub sz psize#
-						#else begin/arg/copy
 						callret xfile_add_string(content,sz)
-					endif
-					if c=(Xfile_variadic_end)
-						#callret xfile_add_char( _main )
-						return (noerror)
 					endif
 					return err
 				endif

@@ -281,5 +281,6 @@ const Xfile_end_cond=0
 const Xfile_end_func=1
 
 const Xfile_variadic_begin=Xfile_numbers_operation_less
+const Xfile_variadic_copy=Xfile_numbers_operation_and
 const Xfile_variadic_get=Xfile_numbers_operation_or
 const Xfile_variadic_end=Xfile_numbers_operation_greater

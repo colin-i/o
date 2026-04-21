@@ -52,9 +52,12 @@ functionv f(sd dummy) #void f(...) was working with gcc13 but with 5 still is: I
 	!sd the_va_list^dummy
 	valuex a#1
 	value b=\main.c2
+	%|a
+	%&test
 	call intern(1,"0\n1\r2\t3\04\\5\"6\x3g\x307",main.a:a,main.a,the_va_list)
 	%|a
 	set a #b
+	%>
 	%>
 	set b a#
 	set b a#s
