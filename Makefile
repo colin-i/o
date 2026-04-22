@@ -3,13 +3,16 @@ TOPTARGETS := install-proj clean distclean uninstall test
 
 #NOOCONV ? is at debian/ocompiler.install , will install here but not in the final deb
 
-#this at pkgbuild, must set because is not found dpkg-architecture, and that is making ifeq i386 not same as ifneq amd64
-ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH), i386)
-conv_64=1
+#                                                             || arch/fedora/suse
+ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null || uname -m)
+ARCH := $(patsubst i586,i386,$(ARCH))
+
+ifeq ($(ARCH),i386)
+	conv_64=1
 else
-ifndef conv_64
-conv_64=0
-endif
+	ifndef conv_64
+		conv_64=0
+	endif
 endif
 
 ifeq ($(conv_64),1)

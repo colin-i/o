@@ -89,27 +89,44 @@ include "tags.oh"
 	return out
 end
 
-function parse_options(sd _argc,sv _argv)
+function option_long_long()
+	set main.long #main.long_long
+	set main.long_size \main.long_long+\main.long_simple
+	set main.long_cast_size \main.long_long+\main.long_simple+\main.point
+end
+function options(sd _argc,sv _argv)
+	set main.long #main.long_simple
+	set main.long_size \main.long_simple
+	set main.long_cast_size \main.long_simple+\main.point
+	charx strip_va_list#1
+	set strip_va_list (FALSE)
 	sv argv;set argv _argv#
 	ss s;set s argv#
 	if s#=(asciihyphen)
 		inc s
+		ss a;set a s
+		if s#=(asciil) #long long
+			call option_long_long()
+			inc s
+		end
+		if s#=(asciis) # *va_list*
+			set strip_va_list (TRUE)
+			inc s
+		end
 		if s#=(asciinul)
 			if _argc#<3
 				return (EXIT_FAILURE)
 			end
-			#long long
+			if a=s
+				#here can return failure, but why not to remain backward compatible, - simple was long long
+				call option_long_long()
+			end
 			dec _argc#
 			incst _argv#
-			set main.long #main.long_long
-			set main.long_size \main.long_long+\main.long_simple
-			set main.long_cast_size \main.long_long+\main.long_simple+\main.point
 			return (EXIT_SUCCESS)
 		end
+		return (EXIT_FAILURE)
 	end
-	set main.long #main.long_simple
-	set main.long_size \main.long_simple
-	set main.long_cast_size \main.long_simple+\main.point
 	return (EXIT_SUCCESS)
 end
 
@@ -138,7 +155,7 @@ include "loop.oc"
 
 include "entry.oc" "entryraw.oc"
 	if argc>=2
-		sd ok;set ok parse_options(#argc,#argv)
+		sd ok;set ok options(#argc,#argv)
 		if ok=(EXIT_SUCCESS)
 			ss s;set s argv#
 			data ignores=0
@@ -154,6 +171,9 @@ include "entry.oc" "entryraw.oc"
 			call exit(a)
 		end
 	end
-	call puts("Usage: otoc [-] filePath [tagIgnore1 .. tagIgnoreN]")
+	call puts("Usage: otoc [-[OPTIONS]] filePath [tagIgnore1 .. tagIgnoreN]")
 	call puts(#version)
+	call puts("OPTIONS(only - is like l):")
+	call puts("\tl\tlong long")
+	call puts("\ts\tstrip pointer at va_list")
 	call exit((EXIT_FAILURE))

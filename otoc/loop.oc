@@ -637,8 +637,10 @@ function variadic(sd outfile,sv pbuffer)
 			call write(outfile,#va_arg,\.va_arg)
 			if loop.variadic_pointer=(TRUE)
 				if loop.variadic_fork=(NULL)
-					call mul(outfile)
-				endif
+					if options.strip_va_list=(FALSE)
+						call mul(outfile)
+					end
+				end
 			end
 			if loop.variadic_fork=(NULL)
 				call write(outfile,#var.va_list_name,\var.va_list_name)

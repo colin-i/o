@@ -103,7 +103,9 @@ function decl_runtime_core_internal(sv pbuffer,sd outfile,ss ptype,ss ?data)
 	end
 	set loop.variadic_pointer (TRUE)
 	call write(outfile,#variadic_wrap.va_list,\variadic_wrap.va_list-1)
-	callg mul(outfile)
+	if options.strip_va_list=(FALSE)
+		callg mul(outfile)
+	end
 end
 #DA structure(with field from argument)
 function decl_runtime_core(sv pbuffer,sd outfile,sd field,ss ptype)
