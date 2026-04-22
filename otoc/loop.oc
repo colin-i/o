@@ -63,6 +63,8 @@ function loop(sd pointer,sd delim,sd output,sd ignores)
 	valuex variadic_fork#1
 	set variadic_fork (NULL)
 	datax variadic_fork_size#1
+	charx variadic_pointer#1
+	set variadic_pointer (FALSE)
 
 	#if delim>^(long32)
 	vdatax entrystart#1
@@ -317,6 +319,15 @@ function iend()
 	end
 end
 
+function variadic_wrap(sd outfile,ss name,sd sz,ss fnname,sd fnsz)
+	char va_list="va_list "^
+	call write(outfile,#va_list,\.va_list)
+	call write(outfile,name,sz)
+	call writet(outfile)
+	call write(outfile,fnname,fnsz)
+	call writel(outfile)
+end
+
 include "action.oc"
 include "decl.oc"
 include "cond.oc"
@@ -324,7 +335,7 @@ include "number.oc"
 include "var.oc"
 
 function commentmulti(sd outfile,sv pbuffer)
-	char b=asciiasterisk
+	char b=asciiasterisk #this point is in a combination, is untouchable
 	char a={asciislash,asciiasterisk}
 	call write(outfile,#a,2)
 	datax sz#1;valuex pointer#1
@@ -523,6 +534,7 @@ function end(sd outfile,sv pbuffer)
 	if type=(Xfile_end_func)
 		set loop.function_start_base (err)
 		set loop.innerfunction (FALSE)
+		set loop.variadic_pointer (FALSE)
 	end
 	callg writecrtn(outfile)
 end
@@ -614,20 +626,26 @@ function variadic(sd outfile,sv pbuffer)
 			set loop.variadic_fork name;set loop.variadic_fork_size sz
 			char va_copy="va_copy"^
 			call variadic_wrap(outfile,name,sz,#va_copy,\.va_copy)
-			call write(outfile,#var.va_list_name,\var.va_list_name)
 			call write(outfile,name,sz)
+			call writec(outfile)
+			call write(outfile,#var.va_list_name,\var.va_list_name-1)
 			call writertnl(outfile)
 		else #Xfile_variadic_arg
 			call write(outfile,name,sz)
 			call writee(outfile)
 			char va_arg="va_arg("^
 			call write(outfile,#va_arg,\.va_arg)
+			if loop.variadic_pointer=(TRUE)
+				if loop.variadic_fork=(NULL)
+					call mul(outfile)
+				endif
+			end
 			if loop.variadic_fork=(NULL)
-				call write(outfile,#var.va_list_name,\var.va_list_name-1)
+				call write(outfile,#var.va_list_name,\var.va_list_name)
 			else
 				call write(outfile,loop.variadic_fork,loop.variadic_fork_size)
+				call writec(outfile)
 			end
-			call writec(outfile)
 			call write_long(outfile)
 			call writertnl(outfile)
 		end
@@ -697,15 +715,6 @@ function else_core(sd outfile)
 	callg write(outfile,#a,\.a)
 end
 
-function variadic_wrap(sd outfile,ss name,sd sz,ss fnname,sd fnsz)
-	char va_list="va_list "^
-	call write(outfile,#va_list,\.va_list)
-	call write(outfile,name,sz)
-	call writet(outfile)
-	call write(outfile,fnname,fnsz)
-	call writel(outfile)
-end
-
 function write_allow()
 	if loop.ignored=(ignored_no)
 		if loop.allowwrite=(allowwrite_yes)
@@ -735,6 +744,7 @@ function writen(sd outfile,ss buf,sd sz)
 	callg writenl(outfile)
 end
 
+#function writea is at mul from number and that is somehow with Makefile and number.pre.oc
 function writec(sd outfile)
 	char c=asciicomma
 	callg write(outfile,#c,1)

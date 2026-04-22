@@ -50,7 +50,7 @@ charx long_cast_size#1
 #
 char long_long="long "^
 char long_simple="long"^
-char point=asciiasterisk
+char point=asciiasterisk #this point is untouchable, is in a combination
 char long_long_reserve={asciispace,asciispace,asciispace,asciispace,asciispace}
 
 importx "strlen" strlen

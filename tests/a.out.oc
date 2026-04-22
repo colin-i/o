@@ -35,6 +35,10 @@ function intern(data a,sd b,sv c,svu d,sv %the_va_list) #commenting
 	decst c
 	neg c
 	not recursion
+	%|pointing
+	%&test
+	%|pointing
+	%>
 	!value the_jmp_buf#1
 	base the_jmp_buf
 	leave the_jmp_buf

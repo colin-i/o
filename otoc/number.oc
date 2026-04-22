@@ -164,7 +164,7 @@ function sub(sd outfile)
 	callg write(outfile,#action_tdec.a,1)
 end
 function mul(sd outfile)
-	callg write(outfile,#main.point,1)
+	callg write(outfile,#main.point,\main.point)
 end
 function div(sd outfile)
 	callg write(outfile,#comment.a,1)
