@@ -5,7 +5,7 @@ TOPTARGETS := install-proj clean distclean uninstall test
 
 #                                                             || arch/fedora/suse
 ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null || uname -m)
-ARCH := $(patsubst i586,i386,$(ARCH))
+ARCH := $(patsubst i686,i386,$(ARCH))
 
 ifeq ($(ARCH),i386)
 	conv_64=1
