@@ -52,6 +52,7 @@ if argc>1
 	call freeall()
 	return (EXIT_SUCCESS)
 endif
+call Message("Usage: ounused log1 [... logN]")
 include "../version.oh"
 call Message(#version)
 return (EXIT_FAILURE)
