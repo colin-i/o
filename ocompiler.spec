@@ -2,7 +2,7 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+248
+Version: 5+249
 Release: 0
 License: GPLv3
 Summary: O Language compiler
@@ -53,6 +53,16 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Thu Apr 23 2026 costin <costin.botescu@gmail.com> 5+249-0
+- ounused usage (costin.botescu@gmail.com)
+- otoc -s (costin.botescu@gmail.com)
+- va_list for actionswf server test (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- va_copy (costin.botescu@gmail.com)
+- a plan (costin.botescu@gmail.com)
+- <> (costin.botescu@gmail.com)
+- otoc version print (costin.botescu@gmail.com)
+
 * Fri Apr 17 2026 costin <costin.botescu@gmail.com> 5+248-0
 - va_list to downstream functions (costin.botescu@gmail.com)
 - () for consistency (costin.botescu@gmail.com)

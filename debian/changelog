@@ -1,3 +1,9 @@
+ocompiler (2-5+249) xenial; urgency=medium
+
+  * va with copy and it's pointers
+
+ -- bc <bc@ubuntu>  Thu, 23 Apr 2026 07:01:31 +0300
+
 ocompiler (2-5+248) xenial; urgency=medium
 
   * xfile_c_* and c constant expands
