@@ -1,11 +1,11 @@
 # O Compiler
 
 ## Install
-On Ubuntu(amd64 i386)[xenial(i386) bionic focal jammy noble] from PPA.
+On Ubuntu(amd64 i386)[xenial(i386) bionic focal jammy noble resolute] from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
-Or the *Manual installation step* from this [link](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6).\
+Or the *Manual installation step* from this [link](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6#manual-installation-step).\
 Then:
 ```sh
 sudo apt-get install ocompiler
@@ -54,4 +54,4 @@ Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/c
 [Preferences file](https://raw.githubusercontent.com/colin-i/o/master/ocompiler.conf).
 
 ## Donations
-The *Donations* section is [here](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6).
+The *Donations* section is [here](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6#donations).
