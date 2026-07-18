@@ -50,7 +50,7 @@ On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/
 On linux distributions(x86_64), <i>.AppImage</i> file from [releases](https://github.com/colin-i/o/releases).
 
 ## Info
-Documentation is at [o.html](https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html).\
+Documentation(O syntax and X syntax) is at [o.html](https://htmlpreview.github.io/?https://github.com/colin-i/o/blob/master/o.html).\
 [Preferences file](https://raw.githubusercontent.com/colin-i/o/master/ocompiler.conf).
 
 ## Donations
