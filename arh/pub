@@ -11,6 +11,7 @@ arch=i386 ~/test/publp && \
 ~/u/desktop/ubuntu-archive-tools/copy-package -y --from ppa:colin-i/ubuntu/ppa -s xenial --to-suite bionic ocompiler && \
 arch=amd64 ~/test/publp && \
 ~/test/ai/ai && \
+exc=aarch64 ~/test/rpm/copr && \
 ~/test/del && \
 ~/test/rel && \
 ./makewin && \
@@ -22,7 +23,6 @@ arch=amd64 ~/test/publp && \
 ~/test/upgen ocompiler.zip application/zip ocompiler.windows.zip && \
 ~/test/pub upapp pkg && \
 ~/test/pkg/aur && \
-exc=aarch64 ~/test/rpm/copr && \
 ~/test/rpm/suse && \
 ~/test/pub2 && \
 arch=i386 terminator=1 ~/test/publp2 && \
@@ -36,17 +36,3 @@ from_env_files=".windows.zip *zst" ~/test/del x ${last}
 #when was old rpm list: here must arh fast to push changelog + old file same time
 #there are problems at amd64xenial, not at bionic
 #if copy will not work because of already published error, manual "Copy existing binaries" and will also rebuild missing amd64
-
-#plans:
-
-#vars/fns/consts and usage locations in dbg sec for odbg
-#and or
-#={"a","b"}
-#~(page_sectionalignment-1)
-#function in code at execs
-#SizeofStackReserve against growramp?
-#at write when there is at 0x80.... or at exes it is a fixed virtual
-#there is 0x66 prefix for words and some movsw/movzw
-
-#info:
-#ocompiler.conf is not overwritten if modifying it locally, "any files under the /etc directory as conffile, so if your program only has conffiles there you do not need to specify them in debian/{package}.conffiles"
