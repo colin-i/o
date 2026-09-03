@@ -186,6 +186,14 @@ function writetake_offset(sd takeindex,sd entry)
 							set op (0x81)
 							set sz 6
 						endelse
+
+						sub entry (masksize)
+						sd tst=stackbit|datapointrememberbit
+						and tst entry#
+						if tst=(stackbit)
+							and entry# ~stackbit^stackrelativebit #more at set time
+						end
+
 						callret addtosec(#op,sz,ptrcodesec)
 					endif
 				endif

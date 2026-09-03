@@ -551,6 +551,13 @@ function getarg_colon(sd content,sd argsize,sd container_sz,sv ptrdata,sd ptrlow
 			if pointer_size!=0
 				#runtime
 				or pointer2# (suffixbit)
+				if is_stack!=0 #here is the allday usage at runtime when pointing from mem and cannot move qword on dword
+					and location_part data2#
+					and location_part (datapointbit)
+					if location_part!=0
+						or pointer2# (datapointrememberbit)
+					end
+				end
 				add pointer2 (masksize) #note that here is not on nameoffset, is on data#3 value from temp
 				set pointer2# data#
 				sub pointer2# subtract_base

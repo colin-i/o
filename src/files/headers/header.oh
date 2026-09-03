@@ -18,6 +18,8 @@ Const datapointbit=0x08
 
 #bit offset 4: 1 means is nobits
 const expandbit=0x10
+	#if stackbit & suffixbit
+const datapointrememberbit=0x10
 
 #bit offset 5: 1 means apply aftercall
 const aftercallthrowbit=0x20
@@ -47,7 +49,7 @@ const dummy_mask=0
 const valueslongmask=datapointbit|pointbit
 const stringslongmask=datapointbit|bigstringbit
 const location_bits=stackbit|expandbit
-const stack_location_bits=location_bits|stackrelativebit    #and expandbit? will be always 0 at stack, keep it clean from what we combine
+const stack_location_bits=location_bits|stackrelativebit    #expandbit since datapointrememberbit. was: will be always 0 at stack, keep it clean from what we combine
 
 const location=dwsz
 Const maskoffset=location

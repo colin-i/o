@@ -490,10 +490,10 @@ function tempdataadd(sv ptrdata)
 	sd err
 	sv original;set original ptrdata#
 	sv t%%ptr_tempdata
-	setcall err addtosec(original,(location_and_mask),t)
+	setcall err addtosec(original,(location_and_mask+location),t) #+location for colon mix and runtime suffix, needing 2 offsets there
 	if err=(noerror)
 		call getcontplusReg(t,ptrdata)
-		sub ptrdata# (location_and_mask)
+		sub ptrdata# (location_and_mask+location)               #same
 		call memtomem(ptrdata#,original,(location_and_mask))
 	endif
 	return err
