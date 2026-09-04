@@ -1,0 +1,5 @@
+#!/bin/bash
+./compile && \
+./c0
+
+# single with ./eb name, or ./db name , for c

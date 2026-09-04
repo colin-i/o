@@ -30,7 +30,16 @@ $(TOPTARGETS): $(SUBDIRS)
 install:
 	$(MAKE) all
 	$(MAKE) install-proj
-$(SUBDIRS):
+src:
+	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
+
+ounused: src
+	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
+
+ostrip: ounused
+	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
+
+otoc: ounused
 	conv_64=${conv_64} $(MAKE) -C $@ $(MAKECMDGOALS)
 
 verify_comp_with_link:
@@ -48,4 +57,3 @@ clean:
 
 #phony only in this file not in subdirs, then can write extra for a PHONYTOPTARGETS
 .PHONY: all install $(TOPTARGETS) $(SUBDIRS) verify_comp_with_link
-.NOTPARALLEL:

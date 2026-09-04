@@ -1,0 +1,8 @@
+set -e
+a=${1}
+shift
+. ./xb $a
+./c1 $a || {
+	read -t $((60*60*24)) ans
+	. ./x $a
+}
