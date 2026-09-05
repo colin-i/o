@@ -40,7 +40,7 @@ add test:test 4
 #set aux#:file.a 4
 set auxdata#:file.a 4
 
-set aux#:file.a 2
+set aux#:file.a aux#:file.a
 set aux#:file.path 2
 add aux#:file.lines 2
 add test test2
