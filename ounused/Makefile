@@ -48,9 +48,9 @@ link:
 	${exelauncher} ./${platform_ob} ${FULLOBJLOG}
 
 ${vers}:
-	cd .. && $(MAKE) -f ./Makefile ${ver}
+	$(MAKE) -C .. ${ver}
 
-${FULLOBJO}: ${FULLOBJS} ${vers}
+${OBJ}: ${FULLOBJS} ${vers}
 	${launcher} ${OCOMP} $< ${OFLAGS} ${OFLAGSEXTRA}
 
 install:
