@@ -1,3 +1,9 @@
+ocompiler (2-5+250) xenial; urgency=medium
+
+  * colon src fixes
+
+ -- bc <bc@ubuntu>  Sun, 06 Sep 2026 15:03:18 +0300
+
 ocompiler (2-5+249) xenial; urgency=medium
 
   * va with copy and it's pointers
