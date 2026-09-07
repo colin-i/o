@@ -1,5 +1,5 @@
 
-make clean && git status
+make clean && ~/test/git/sts
 
 #plans:
 
