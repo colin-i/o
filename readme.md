@@ -33,15 +33,15 @@ zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_T
 ```
 For openSUSE Leap:
 ```sh
-zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Leap_16.0/home:costin.repo
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Leap_16.1/home:costin.repo
 ```
-Replace *16.0*(x86_64) with *15.6*(x86_64 i586) if needed.\
+Replace *16.1*(x86_64) with *16.0*(x86_64) or *15.6*(x86_64 i586) if needed.\
 And:
 ```sh
 zypper refresh
 zypper install ocompiler
 ```
-An optional step is to install **ocompiler-devel**(noarch).\
+An optional step is to install **ocompiler-devel**(noarch). Leap >= 16, enable 32-bit x86 execution for ocompiler and ounused.\
 \
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/o/releases).\
