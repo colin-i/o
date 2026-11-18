@@ -52,6 +52,9 @@ char long_long="long "^
 char long_simple="long"^
 char point=asciiasterisk #this point is untouchable, is in a combination
 char long_long_reserve={asciispace,asciispace,asciispace,asciispace,asciispace}
+vstrx inl_ext#1
+datax inl_ext_size#1
+char inl_ext_default="oc"^ #goot at c on global
 
 importx "strlen" strlen
 
@@ -98,26 +101,46 @@ function options(sd _argc,sv _argv)
 	set main.long #main.long_simple
 	set main.long_size \main.long_simple
 	set main.long_cast_size \main.long_simple+\main.point
+	set main.inl_ext #main.inl_ext_default
+	set main.inl_ext_size \main.inl_ext_default
+
 	charx strip_va_list#1
 	set strip_va_list (FALSE)
+	ss ?has_ext
+	set has_ext (FALSE)
 	sv argv;set argv _argv#
 	ss s;set s argv#
 	if s#=(asciihyphen)
 		inc s
 		ss a;set a s
-		if s#=(asciil) #long long
-			call option_long_long()
-			inc s
-		end
-		if s#=(asciis) # *va_list*
-			set strip_va_list (TRUE)
+		whiletrue
+			if s#=(asciil) #long long
+				call option_long_long()
+			elseif s#=(asciis) # *va_list*
+				set strip_va_list (TRUE)
+			elseif s#=(asciii) # next argument is the extension of the inlined files
+				set has_ext (TRUE)
+			else
+				break
+			end
 			inc s
 		end
 		if s#=(asciinul)
 			if _argc#<3
 				return (EXIT_FAILURE)
 			end
-			if a=s
+			if has_ext=(TRUE)
+				if _argc#<4
+					return (EXIT_FAILURE)
+				end
+				incst argv   ##argv is still at the options argument, now at the extension
+				ss e;set e argv#
+				sd b;set b strlen(e)
+				set main.inl_ext e
+				set main.inl_ext_size b
+				dec _argc#
+				incst _argv#
+			elseif a=s
 				#here can return failure, but why not to remain backward compatible, - simple was long long
 				call option_long_long()
 			end
@@ -171,9 +194,10 @@ include "entry.oc" "entryraw.oc"
 			call exit(a)
 		end
 	end
-	call puts("Usage: otoc [-[OPTIONS]] filePath [tagIgnore1 .. tagIgnoreN]")
+	call puts("Usage: otoc [-[OPTIONS] [extension]] filePath [tagIgnore1 .. tagIgnoreN]")
 	call puts(#version)
 	call puts("OPTIONS(only - is like l):")
 	call puts("\tl\tlong long")
 	call puts("\ts\tstrip pointer at va_list")
+	call puts("\ti\tnext argument is the extension (without dot) of the files to inline, default oc")
 	call exit((EXIT_FAILURE))

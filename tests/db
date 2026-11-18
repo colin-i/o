@@ -2,15 +2,17 @@ set -e
 if [ -z "${OCONV}" ]; then OCONV=../otoc/otoc; fi
 a=${1}
 shift
+./toc
 . ./xb $a
 if [ -n "${winlauncher}" ]; then launcher=${winlauncher}; fi
-${launcher} ${OCONV} $a.oc.x import $@
+${launcher} ${OCONV} -i oc $a.oc.x import $@
 ./c1 $a || {
 	echo t enter for arm test, else write, ctrl c to exit
 	read -t $((60*60*24)) ans
 	if [ "${ans}" = t ]; then
-		./d_ $a
+		. ./d_ $a
 	else
 		./d $a
 	fi
 }
+rm b.oc

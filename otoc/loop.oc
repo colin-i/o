@@ -261,6 +261,21 @@ end
 function signed()
 end
 
+function is_oc(ss pointer,sd sz)
+	if sz>main.inl_ext_size
+		add pointer sz
+		sub pointer main.inl_ext_size
+		sd ?r;set r memcmp(pointer,main.inl_ext,main.inl_ext_size)
+		if r=0
+			dec pointer
+			if pointer#=(asciidot)
+				return (TRUE)
+			end
+		end
+	end
+	return (FALSE)
+end
+
 
 #aftercalli *
 
@@ -355,19 +370,29 @@ end
 function include(sd outfile,sv pbuffer)
 	charx type#1;call get_char(pbuffer,#type)
 
-	char s="#include "^
-	call write(outfile,#s,\.s)
-	call write_string_ex(pbuffer,outfile) #new line is useless: there are no escape chars in c include and, also: any member of the source character set except new-line and (quote or >)
-	call writenl(outfile)
+	charx multiline#1;datax sz#1;valuex pointer#1
+	call get_multistring(pbuffer,#multiline,#sz,#pointer)
 
 	charx alternative#1;call get_char(pbuffer,#alternative)
 	if alternative=(Xfile_include_alternative_yes)
-		charx multi#1;datax sz#1;valuex pointer#1
-		call get_multistring(pbuffer,#multi,#sz,#pointer)
+		charx multi#1;datax asz#1;valuex apointer#1
+		call get_multistring(pbuffer,#multi,#asz,#apointer)
 	end
 
-	inc loop.icount
-	or loop.allowwrite (allowwrite_no_include)
+	#.oc is code, not a header: keep its content in the .c and skip the #include tag
+	sd write_content=FALSE
+	if loop.icount=0
+		set write_content is_oc(pointer,sz)
+	end
+	if write_content=(FALSE)
+		char s="#include "^
+		call write(outfile,#s,\.s)
+		call write_string(outfile,multiline,sz,pointer) #new line is useless: there are no escape chars in c include and, also: any member of the source character set except new-line and (quote or >)
+		call writenl(outfile)
+
+		inc loop.icount
+		or loop.allowwrite (allowwrite_no_include)
+	end
 end
 function declare(sd outfile,sv pbuffer)
 	charx type#1;charx field#1;charx constif#1
