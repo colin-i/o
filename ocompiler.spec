@@ -2,8 +2,8 @@
 %global _debugsource_template %{nil}
 
 Name: ocompiler
-Version: 5+250
-Release: 0
+Version: 5+251
+Release: 0%{?dist}
 License: GPLv3
 Summary: O Language compiler
 Url: https://github.com/colin-i/o
@@ -53,6 +53,13 @@ linkerflags="-O3 -g" make  # -g here is important if wanting to have debuginfo p
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+* Mon Nov 23 2026 costin <costin.botescu@gmail.com> 5+251-0
+- otoc include inline files (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- "up" (costin.botescu@gmail.com)
+- OBJ (costin.botescu@gmail.com)
+
 * Sun Sep 06 2026 costin <costin.botescu@gmail.com> 5+250-0
 - test (costin.botescu@gmail.com)
 - parallel (costin.botescu@gmail.com)
